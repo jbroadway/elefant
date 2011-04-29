@@ -6,7 +6,9 @@
 require_once ('models/Webpage.php');
 
 $id = count ($this->params) ? $this->params[0] : 'index';
+
 $wp = new Webpage ($id);
+
 if ($wp->error) {
 	$page->title = 'Page Not Found';
 	$page->template = 'error';

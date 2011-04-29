@@ -1,0 +1,81 @@
+body {
+	background: #f5f5f5;
+	color: #333;
+}
+
+a {
+	color: #F52887;
+}
+
+h1, h2 {
+	color: #111;
+}
+
+#wrapper {
+	padding-top: 25px;
+}
+
+.nav {
+	text-align: right;
+}
+
+	.nav a {
+		padding: 2px 7px 5px 7px;
+		margin-left: 1px;
+		background-color: #111;
+		color: #f5f5f5;
+		/*font-weight: bold;*/
+		text-decoration: none;
+	}
+
+	.nav a:hover {
+		color: #F52887;
+		border-top: 3px solid #F52887;
+		padding-top: 1px;
+	}
+
+#head {
+	border-top: 3px solid #111;
+	padding-bottom: 0px;
+}
+
+	#head h1 {
+		width: 150px;
+		height: 37px;
+		background-color: #111;
+		color: #f5f5f5;
+		padding: 2px 5px 5px 45px;
+		background-image: url(/pix/qr.png);
+		background-position: 15px 11px;
+		background-repeat: no-repeat;
+		margin-left: 0px;
+		float: left;
+	}
+	
+	#slogan {
+		float: left;
+		padding-left: 20px;
+		padding-top: 13px;
+		font-size: 16px;
+	}
+	
+#banner {
+	margin-bottom: 15px;
+}
+	
+	.pink {
+		color: #F52887;
+		font-style: italic;
+		margin-right: -3px;
+	}
+
+#footer {
+	border-top: 1px solid #ccc;
+	padding-top: 5px;
+	margin-top: 25px;
+	padding-bottom: 25px;
+}
+
+	.copyright {
+		text-align: right;
+	}
