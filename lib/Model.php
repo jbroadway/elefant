@@ -12,9 +12,9 @@
  *
  *   class MyTable extends Model {
  *     function get_all_by_x () {
- *       return new MyTable ().query ()
- *         .order ('x desc')
- *         .fetch ();
+ *       return new MyTable ()->query ()
+ *         ->order ('x desc')
+ *         ->fetch ();
  *     }
  *   }
  *
@@ -29,11 +29,11 @@
  *   $two->fieldname = 'Some other value';
  *   $two->put ();
  *
- *   $res = new MyTable ().query ()
- *     .where ('fieldname', 'Some other value')
- *     .where ('id = 123')
- *     .order ('fieldname asc')
- *     .fetch (10, 5); // limit, offset
+ *   $res = new MyTable ()->query ()
+ *     ->where ('fieldname', 'Some other value')
+ *     ->where ('id = 123')
+ *     ->order ('fieldname asc')
+ *     ->fetch (10, 5); // limit, offset
  *
  *   $res = MyTable.get_all_by_x ();
  *
@@ -62,6 +62,7 @@ class Model {
 	function __construct ($vals = false, $is_new = true) {
 		$this->table = ($this->table == '') ? strtolower (get_class ($this)) : $this->table;
 
+		$vals = is_object ($vals) ? (array) $vals : $vals;
 		if (is_array ($vals)) {
 			$this->data = $vals;
 			if ($is_new) {
@@ -70,7 +71,7 @@ class Model {
 		} elseif ($vals != false) {
 			$res = db_single ('select * from ' . $this->table . ' where ' . $this->key . ' = %s', $vals);
 			if (! $res) {
-				$this->error = db_error ();
+				$this->error = 'No object by that ID.';
 			} else {
 				$this->data = (array) $res;
 			}
@@ -80,19 +81,22 @@ class Model {
 	}
 
 	function __get ($key) {
-		return $this->data[$key];
+		return (isset ($this->data[$key])) ? $this->data[$key] : null;
 	}
 
 	function __set ($key, $val) {
 		$this->data[$key] = $val;
 	}
 
+	/**
+	 * Save the object to the database.
+	 */
 	function put() {
 		if ($this->is_new) {
 			// insert
 			$ins = array ();
 			for ($i = 0; $i < count ($this->data); $i++) {
-				$ins[] = '%';
+				$ins[] = '%s';
 			}
 			if (! db_execute ('insert into ' . $this->table . ' (' . join (', ', array_keys ($this->data)) . ') values (' . join (', ', $ins) . ')', $this->data)) {
 				$this->error = db_error ();
@@ -114,9 +118,10 @@ class Model {
 				continue;
 			}
 			$ins .= $sep . $key . ' = %s';
+			$par[] = $val;
 			$sep = ', ';
 		}
-		$par[$this->key] = $this->data[$this->key];
+		$par[] = $this->data[$this->key];
 		if (! db_execute ('update ' . $this->table . ' set ' . $ins . ' where ' . $this->key . ' = %s', $par)) {
 			$this->error = db_error ();
 			return false;
@@ -124,6 +129,9 @@ class Model {
 		return true;
 	}
 	
+	/**
+	 * Delete the specified or the current element if no id is specified.
+	 */
 	function remove ($id = false) {
 		$id = ($id) ? $id : $this->data[$this->key];
 		if (! $id) {
@@ -137,12 +145,24 @@ class Model {
 		return true;
 	}
 
+	/**
+	 * Get a single object and update the current instance with that data.
+	 */
 	function get ($id) {
-		$this->data = (array) db_single ('select * from ' . $this->table . ' where ' . $this->key . ' = %s', $id);
+		$res = (array) db_single ('select * from ' . $this->table . ' where ' . $this->key . ' = %s', $id);
+		if (! $res) {
+			$this->error = 'No object by that ID.';
+			$this->data = array ();
+		} else {
+			$this->data = (array) $res;
+		}
 		$this->is_new = false;
 		return $this;
 	}
 
+	/**
+	 * Begin a new query. Resets the internal state for a new query.
+	 */
 	function query () {
 		$this->query_order = '';
 		$this->query_filters = array ();
@@ -150,11 +170,19 @@ class Model {
 		return $this;
 	}
 
+	/**
+	 * Order the query by the specified clauses.
+	 */
 	function order ($order) {
 		$this->query_order = $order;
 		return $this;
 	}
 
+	/**
+	 * Add a where condition to the query. Can be either a field/value
+	 * combo, or if no value is present it assumes a custom condition
+	 * in the first parameter.
+	 */
 	function where ($key, $val = false) {
 		if (! $val) {
 			array_push ($this->query_filters, $key);
@@ -165,6 +193,9 @@ class Model {
 		return $this;
 	}
 
+	/**
+	 * Fetch as an array of model objects.
+	 */
 	function fetch ($limit = false, $offset = 0) {
 		$sql = 'select * from ' . $this->table;
 		if (count ($this->query_filters) > 0) {
@@ -180,6 +211,30 @@ class Model {
 		$class = get_class ($this);
 		foreach ($res as $key => $row) {
 			$res[$key] = new $class ((array) $row, false);
+		}
+		return $res;
+	}
+
+	/**
+	 * Fetch as an associative array of the specified key/value fields.
+	 */
+	function fetch_assoc ($key, $value, $limit = false, $offset = 0) {
+		$tmp = $this->fetch ($limit, $offset);
+		$res = array ();
+		foreach ($tmp as $obj) {
+			$res[$obj->{$key}] = $obj->{$value};
+		}
+		return $res;
+	}
+
+	/**
+	 * Fetch as an array of the specified field name.
+	 */
+	function fetch_field ($value, $limit = false, $offset = 0) {
+		$tmp = $this->fetch ($limit, $offset);
+		$res = array ();
+		foreach ($tmp as $obj) {
+			$res[] = $obj->{$value};
 		}
 		return $res;
 	}
