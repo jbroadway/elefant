@@ -1,18 +1,25 @@
 <?php
 
+$conf = parse_ini_file ('conf/global.php', true);
+if ($conf['General']['mode'] == 'development') {
+	error_reporting (E_ALL);
+} else {
+	error_reporting (0);
+}
+date_default_timezone_set($conf['General']['timezone']);
+
+require_once ('lib/Functions.php');
 require_once ('lib/Page.php');
 require_once ('lib/Template.php');
 require_once ('lib/Controller.php');
 require_once ('lib/Database.php');
 require_once ('lib/Model.php');
 
-$conf = parse_ini_file ('conf/global.php');
-date_default_timezone_set($conf['timezone']);
 $page = new Page;
 $controller = new Controller;
-$tpl = new Template ($conf['charset']);
+$tpl = new Template ($conf['General']['charset']);
 
-if (! db_open ('conf/site.db')) {
+if (! db_open ($conf['Database'])) {
 	die (db_error ());
 }
 
