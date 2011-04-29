@@ -71,7 +71,42 @@ a good tool for getting certain jobs done quickly, and for me
 this helps make it a little easier/less painful. Hopefully it
 helps others do the same.
 
-## Examples
+## Getting Started
+
+1. Download the latest from GitHub:
+
+http://github.com/jbroadway/elefant
+
+2. Unzip into a site root somewhere (no sub-folders, use
+sub-domains instead). Change the permissions on folders
+conf and views/cache to 0777.
+
+3. Edit conf/global.php and add your database info (SQLite
+or MySQL).
+
+4. Run the conf/install.sql file to create the table for the
+admin example handlers.
+
+5. Go to your site and see that it worked. You should get a
+basic template with a Page Not Found. Sorry, no cute welcome
+screen yet.
+
+6. Go to /admin and you can log in with the master username
+and password from your global configuration. This is a really
+really basic admin area for editing web pages. It exists to
+give you some example code to read and help you get started,
+and if you want to improve on it and contribute that back to
+the project, I would love you forever :)
+
+7. Edit views/layout.html and add your site stylings.
+
+8. Create some models/handlers/views. Lather, rinse, repeat.
+
+9. The GitHub page is the place to go for issues and info. If
+there's a need, I'll make a Posterous Group for it as well,
+so let me know if you think that would be good to have.
+
+## Example Code
 
 ### 1. A basic handler: hello.php
 
@@ -147,3 +182,9 @@ function foo_bar ($foo = false) {
 
 Other than that, for documentation I use JavaDoc-style commenting
 and for inline comments I use the double-slash.
+
+## FAQ
+
+Q. Do you know you spelt Elephant wrong?
+
+A. This was my attempt at being hip and cool. No good?
