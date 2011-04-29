@@ -54,6 +54,7 @@ What else is missing?
 * Secure database abstraction/modeling
 * Compiled templates with output filtering *on* by default
 * As little scaffolding as possible
+* Speed. Less cruft, faster pages.
 
 On this last point is where Pink Elefant really stands out
 from the crowd (for better or worse). A handler is simply a
