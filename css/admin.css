@@ -31,7 +31,7 @@ h1, h2 {
 	.nav a:hover {
 		color: #F52887;
 		border-top: 3px solid #F52887;
-		padding-top: 1px;
+		padding-top: 2px;
 	}
 
 #head {
