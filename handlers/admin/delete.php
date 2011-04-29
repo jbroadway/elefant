@@ -4,8 +4,6 @@ auth_basic ();
 
 $page->layout = 'admin';
 
-require_once ('models/Webpage.php');
-
 $wp = new Webpage ($_GET['page']);
 
 if (! $wp->remove ()) {

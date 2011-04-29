@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * Autoloader for classes. Checks in lib and models folders.
+ */
+function __autoload ($class) {
+	if (file_exists ('lib/' . $class . '.php')) {
+		require_once ('lib/' . $class . '.php');
+		return true;
+	} elseif (file_exists ('models/' . $class . '.php')) {
+		require_once ('models/' . $class . '.php');
+		return true;
+	}
+	return false;
+}
+
+/**
  * Wraps a print_r() or var_dump() of the given $value with a set of <pre></pre>
  * tags around it, and echoes it.
  */
