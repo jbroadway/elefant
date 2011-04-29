@@ -12,6 +12,24 @@
  *
  *   {{ body }}
  *
+ * And blocks of the form:
+ *
+ *   {% foreach pages %}
+ *     {{ loop_index }} - {{ loop_value }}
+ *   {% end %}
+ *
+ *   {% if some_val %}
+ *     {{ some_val }}
+ *   {% end %}
+ *
+ * You can also test for more complex conditions, but make sure the
+ * value being tested for is not preceeded by anything. For example,
+ * no false checks via !some_val, instead use:
+ *
+ *   {% if some_val == false %}
+ *     {{ some_val }}
+ *   {% end %}
+ *
  * Filtering is supported, and htmlspecialchars() is the default
  * filter unless another is specified or 'none' is supplied via:
  *
@@ -43,6 +61,10 @@ class Template {
 		$this->charset = $charset;
 	}
 
+	/**
+	 * Render a template with the given data. Generate the PHP template if
+	 * necessary.
+	 */
 	function render ($template, $data) {
 		if (is_array ($data)) {
 			$data = (object) $data;
@@ -52,12 +74,13 @@ class Template {
 			$template = 'base';
 		}
 		$file = 'views/' . $template . '.html';
-		$cache = 'views/cache/' . $template . '.php';
+		$cache = 'views/cache/' . str_replace ('/', '-', $template) . '.php';
 		
 		if (! file_exists ($cache) || filemtime ($file) > filemtime ($cache)) {
 			// regenerate cached file
 			$out = file_get_contents ($file);
-			$out = preg_replace ('/\{\{ ?(.*?) ?\}\}/e', '$this->replace (\'\\1\', \'\\2\')', $out);
+			$out = preg_replace ('/\{\{ ?(.*?) ?\}\}/e', '$this->replace_vars (\'\\1\')', $out);
+			$out = preg_replace ('/\{\% ?(.*?) ?\%\}/e', '$this->replace_blocks (\'\\1\')', $out);
 
 			file_put_contents ($cache, $out);
 		}
@@ -69,7 +92,10 @@ class Template {
 		return $out;
 	}
 
-	function replace ($val) {
+	/**
+	 * Replace variables.
+	 */
+	private function replace_vars ($val) {
 		$filters = explode ('|', $val);
 		$val = array_shift ($filters);
 
@@ -93,6 +119,23 @@ class Template {
 			}
 		}
 		return $out . '$data->' . $val . $end;
+	}
+
+	/**
+	 * Replace foreach and if blocks.
+	 */
+	private function replace_blocks ($val) {
+		if ($val == 'end') {
+			return '<?php } ?>';
+		}
+		
+		list ($block, $extra) = explode (' ', $val, 2);
+		if ($block == 'foreach') {
+			return '<?php foreach ($data->' . $extra . ' as $data->loop_index => $data->loop_value) { ?>';
+		} elseif ($block == 'if') {
+			return '<?php if ($data->' . $extra . ') { ?>';
+		}
+		die ('Invalid template block: ' . $val);
 	}
 }
 
