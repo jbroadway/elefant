@@ -1,0 +1,3 @@
+#!/bin/sh
+
+chmod -R 777 /home/dotcloud/current/cache
