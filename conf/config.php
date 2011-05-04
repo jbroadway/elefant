@@ -3,8 +3,8 @@
 [General]
 
 ; A master login for the example /admin pages.
-master_username = master
-master_password = "CHANGE ME"
+master_username = elefantman
+master_password = "Mr$nuff13up@gu$"
 
 ; Default character set for output.
 charset = UTF-8
@@ -23,12 +23,12 @@ compress_output = On
 [Database]
 
 ; Database settings go here. SQLite and MySQL are supported.
-driver = sqlite
-file = "conf/site.db"
-;driver = mysql
-;host = "host:port"
-;name = dbname
-;user = username
-;pass = "password"
+;driver = sqlite
+;file = "conf/site.db"
+driver = mysql
+host = "mysql.pink.dotcloud.com:3185"
+name = pink
+user = pink
+pass = "unf0rG3tt@bl3"
 
 ; */ ?>
