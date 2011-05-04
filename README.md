@@ -98,21 +98,36 @@ the project, I will love you forever :)
 I'll make a Posterous Group for it as well, so let me know if you think that
 would be good to have.
 
+## Folder Layout
+
+* .htaccess - rewrites and permissions for Apache
+* apps - your apps go here
+* cache - templates rendered to PHP
+* conf - global configurations
+* css - global CSS files
+* index.php - the front-end controller, or request router
+* js - global Javascript files
+* layouts - design layouts
+* lib - main libraries
+* nginx.conf - rewrites and permissions for Nginx
+* README.md - this file
+* tests - unit tests
+
 ## Example Code
 
 ### 1. A basic handler: hello.php
 
 	<?php echo 'Hello ' . $_REQUEST['name']; ?>
 
-Save this to hello/handlers/index.php and you can access it via /hello in your
+Save this to `apps/hello/handlers/index.php` and you can access it via `/hello` in your
 browser.
 
 ### 2. Using URL components in handlers:
 
 	<?php echo 'Hello ' . $this->params[0]; ?>
 
-Now try calling that one via /hello/world. Extra values that didn't match the
-handler is part of the $controller->params array for you.
+Now try calling that one via `/hello/world`. Extra values that didn't match the
+handler is part of the `$controller->params` array for you.
 
 ### 3. Specifying an alternate template:
 
@@ -124,7 +139,7 @@ handler is part of the $controller->params array for you.
 	
 	?>
 
-I should mention, $this in a handler refers to the controller, although not
+I should mention, `$this` in a handler refers to the controller, although not
 necessarily the global one (since handlers can call each other as well).
 
 ### 4. Defining extra variables for your template:
@@ -138,20 +153,20 @@ necessarily the global one (since handlers can call each other as well).
 	
 	?>
 
-Now in your template you can use {{ title }} and {{ sidebar }} just like
-{{ body }} outputs the regular output.
+Now in your template you can use `{{ title }}` and `{{ sidebar }}` just like
+`{{ body }}` outputs the regular output.
 
 ### 5. From one handler to another:
 
 	<?php
 	
-	$page->sidebar = $this->run ('/sidebar');
+	$page->sidebar = $this->run ('myapp/sidebar');
 	
 	?>
 
 Or from inside a template:
 
-	<?php echo $controller->run ('/sidebar'); ?>
+	<?php echo $controller->run ('myapp/sidebar'); ?>
 
 ## Code Conventions
 
