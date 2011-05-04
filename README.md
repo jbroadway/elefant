@@ -2,9 +2,9 @@
 
 This is the PHP framework behind the PinkTicket.ca website. It was created
 as my take on how PHP MVC should be done, based on 10+ years of programming
-in PHP and running a monolithic CMS project (www.sitellite.org) that despite
-its huge size still got some things right. This is my attempt at taking
-those things and starting fresh.
+in PHP and running a monolithic CMS project [www.sitellite.org](http://www.sitellite.org/)
+that despite its huge size still got some things right. This is my attempt
+at taking those things and starting fresh.
 
 This framework doesn't look much at all like most other PHP-based MVC
 frameworks, but I've never been able to stomach the disconnect they had with
@@ -18,12 +18,10 @@ more natural to code in in our little monster of a "hypertext preprocessor" ;)
 
 In short: A lot. Why? Because you can get it elsewhere and include it
 yourself. This is a starting point, not the kitchen sink. That was my
-problem last time, and I'm not going down that road again.
-
-For example, I have another little library called PHPActiveResource
-that I often use to communicate with Rails-based APIs. While I could
-include that here, it's not essential so I left it out. If I need it,
-I simply drop it into my lib folder, require it, and I'm on my way.
+problem last time, and I'm not going down that road again. So I could
+include other things here, but if it's not essential I tried to leave
+it out. If you need something, drop it in your app lib folder, and
+you're on your way.
 
 What else is missing?
 
@@ -76,23 +74,23 @@ mistakes/luck and do it even better this time.
 http://github.com/jbroadway/elefant
 
 2. Unzip into a site root somewhere (no sub-folders, use sub-domains instead).
-Change the permissions on folders conf and cache to 0777.
+Change the permissions on folders conf and cache to `0777`.
 
-3. Edit conf/config.php and add your database connection info.
+3. Edit `conf/config.php` and add your database connection info.
 
-4. Run the appropriate conf/install_*.sql file to create the tables for the
+4. Run the appropriate `conf/install_*.sql` file to create the tables for the
 admin example handlers.
 
 5. Go to your site and see that it worked. You should see a basic welcome page
 if all went well.
 
-6. Go to /admin and you can log in with the master username and password
+6. Go to `/admin` and you can log in with the master username and password
 from your global configuration. This is a really really basic admin area for
 editing web pages. It exists to give you some example code to read and help
 you get started, and if you want to improve on it and contribute that back to
 the project, I will love you forever :)
 
-7. Edit layouts/default.html and add your site stylings.
+7. Edit `layouts/default.html` and add your site stylings.
 
 8. Create an app and write some models/handlers/views. Lather, rinse, repeat.
 
@@ -104,56 +102,56 @@ would be good to have.
 
 ### 1. A basic handler: hello.php
 
-<?php echo 'Hello ' . $_REQUEST['name']; ?>
+	<?php echo 'Hello ' . $_REQUEST['name']; ?>
 
 Save this to hello/handlers/index.php and you can access it via /hello in your
 browser.
 
 ### 2. Using URL components in handlers:
 
-<?php echo 'Hello ' . $this->params[0]; ?>
+	<?php echo 'Hello ' . $this->params[0]; ?>
 
 Now try calling that one via /hello/world. Extra values that didn't match the
 handler is part of the $controller->params array for you.
 
 ### 3. Specifying an alternate template:
 
-<?php
-
-$page->template = 'alternate';
-
-echo 'Hello world';
-
-?>
+	<?php
+	
+	$page->template = 'alternate';
+	
+	echo 'Hello world';
+	
+	?>
 
 I should mention, $this in a handler refers to the controller, although not
 necessarily the global one (since handlers can call each other as well).
 
 ### 4. Defining extra variables for your template:
 
-<?php
-
-$page->title = 'My Page';
-$page->sidebar = 'Some sidebar content.';
-
-echo 'Regular output is the body content.';
-
-?>
+	<?php
+	
+	$page->title = 'My Page';
+	$page->sidebar = 'Some sidebar content.';
+	
+	echo 'Regular output is the body content.';
+	
+	?>
 
 Now in your template you can use {{ title }} and {{ sidebar }} just like
 {{ body }} outputs the regular output.
 
 ### 5. From one handler to another:
 
-<?php
-
-$page->sidebar = $this->run ('/sidebar');
-
-?>
+	<?php
+	
+	$page->sidebar = $this->run ('/sidebar');
+	
+	?>
 
 Or from inside a template:
 
-<?= $controller->run ('/sidebar'); ?>
+	<?php echo $controller->run ('/sidebar'); ?>
 
 ## Code Conventions
 
@@ -166,11 +164,11 @@ I also use tabs instead of spaces, trailing braces instead of giving them
 their own lines, and put a space before open braces and between operators,
 for example:
 
-function foo_bar ($foo = false) {
-	if (! $foo) {
-		// etc.
+	function foo_bar ($foo = false) {
+		if (! $foo) {
+			// etc.
+		}
 	}
-}
 
 Other than that, for documentation I use JavaDoc-style commenting and for
 inline comments I use the double-slash.
