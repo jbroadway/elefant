@@ -1,0 +1,10 @@
+<html>
+<head>
+	<title>{{ title }}</title>
+	{{ head|none }}
+</head>
+<body>
+{% if title != '' %}<h1>{{ title }}</h1>{% end %}
+{{ body|none }}
+</body>
+</html>
