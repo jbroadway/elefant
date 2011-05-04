@@ -8,10 +8,19 @@
  * Matching is done by reducing the URL folder-by-folder until a file
  * matches. Here are some examples:
  *
- *   / -> handlers/index.php
- *   /foo -> handlers/foo.php
- *   /user/login -> handlers/user/login.php, handlers/user.php
- *   /user/123 -> handlers/user/123.php, handlers/user.php
+ *   / -> $conf[default_handler]
+ *
+ *   /foo -> apps/foo/handlers/index.php,
+ *           $conf[default_handler]
+ *
+ *   /user/login -> apps/user/handlers/login.php,
+ *                  apps/user/handlers/index.php,
+ *                  $conf[default_handler]
+ *
+ *   /user/info/123 -> apps/user/handlers/info/123.php,
+ *                     apps/user/handlers/info.php,
+ *                     apps/user/handlers/index.php,
+ *                     $conf[default_handler]
  *
  * The controller simply returns the matching URL so you can include
  * it via the following code:
@@ -60,18 +69,44 @@ class Controller {
 	}
 
 	function route ($uri) {
+		global $conf;
+		$this->app = array_shift (explode ('/', $conf['General']['default_handler']));
+		$this->params = array ();
+
+		// remove queries and hash from uri
 		$uri = preg_replace ('/(\?|#).*$/', '', $uri);
+
 		if (! $this->clean ($uri) || $uri == '/') {
-			return 'handlers/index.php';
+			$uri = $conf['General']['default_handler'];
 		}
-		
-		$route = 'handlers' . $uri . '.php';
-		while (! file_exists ($route)) {
-			$route = preg_replace ('/\/([^\/]*)\.php$/e', '$this->add_param (\'\\1\')', $route);
-			if ($route == 'handlers.php') {
-				return 'handlers/index.php';
+
+		// remove leading /
+		$uri = ltrim ($uri, '/');
+
+		// if no / and doesn't match an app's name with an index.php
+		// handler, then use the default handler.
+		if (! strstr ($uri, '/')) {
+			if (@file_exists ('apps/' . $uri . '/handlers/index.php')) {
+				$uri .= '/index';
+			} else {
+				$this->add_param ($uri);
+				$uri = $conf['General']['default_handler'];
 			}
 		}
+
+		list ($app, $handler) = preg_split ('/\//', $uri, 2);
+		$route = 'apps/' . $app . '/handlers/' . $handler . '.php';
+		while (! @file_exists ($route)) {
+			$route = preg_replace ('/\/([^\/]*)\.php$/e', '$this->add_param (\'\\1\')', $route);
+			if ($route == 'apps/' . $app . '/handlers.php') {
+				if (@file_exists ('apps/' . $app . '/handlers/index.php')) {
+					$this->app = $app;
+					return 'apps/' . $app . '/handlers/index.php';
+				}
+				return $conf['General']['default_handler'];
+			}
+		}
+		$this->app = $app;
 		return $route;
 	}
 
@@ -82,8 +117,11 @@ class Controller {
 		return true;
 	}
 
+	/**
+	 * Adds to the start, since route() parse them off the end of the URI.
+	 */
 	function add_param ($param) {
-		array_push ($this->params, $param);
+		array_unshift ($this->params, $param);
 		return '.php';
 	}
 }

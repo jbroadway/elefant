@@ -69,7 +69,7 @@ class Model {
 				$this->is_new = true;
 			}
 		} elseif ($vals != false) {
-			$res = db_single ('select * from ' . $this->table . ' where ' . $this->key . ' = %s', $vals);
+			$res = db_single ('select * from ' . $this->table . ' where ' . $this->key . ' = ?', $vals);
 			if (! $res) {
 				$this->error = 'No object by that ID.';
 			} else {
@@ -96,7 +96,7 @@ class Model {
 			// insert
 			$ins = array ();
 			for ($i = 0; $i < count ($this->data); $i++) {
-				$ins[] = '%s';
+				$ins[] = '?';
 			}
 			if (! db_execute ('insert into ' . $this->table . ' (' . join (', ', array_keys ($this->data)) . ') values (' . join (', ', $ins) . ')', $this->data)) {
 				$this->error = db_error ();
@@ -117,12 +117,12 @@ class Model {
 			if ($key == $this->key) {
 				continue;
 			}
-			$ins .= $sep . $key . ' = %s';
+			$ins .= $sep . $key . ' = ?';
 			$par[] = $val;
 			$sep = ', ';
 		}
 		$par[] = $this->data[$this->key];
-		if (! db_execute ('update ' . $this->table . ' set ' . $ins . ' where ' . $this->key . ' = %s', $par)) {
+		if (! db_execute ('update ' . $this->table . ' set ' . $ins . ' where ' . $this->key . ' = ?', $par)) {
 			$this->error = db_error ();
 			return false;
 		}
@@ -138,7 +138,7 @@ class Model {
 			$this->error = 'No id specified.';
 			return false;
 		}
-		if (! db_execute ('delete from ' . $this->table . ' where ' . $this->key . ' = %s', $id)) {
+		if (! db_execute ('delete from ' . $this->table . ' where ' . $this->key . ' = ?', $id)) {
 			$this->error = db_error ();
 			return false;
 		}
@@ -149,7 +149,7 @@ class Model {
 	 * Get a single object and update the current instance with that data.
 	 */
 	function get ($id) {
-		$res = (array) db_single ('select * from ' . $this->table . ' where ' . $this->key . ' = %s', $id);
+		$res = (array) db_single ('select * from ' . $this->table . ' where ' . $this->key . ' = ?', $id);
 		if (! $res) {
 			$this->error = 'No object by that ID.';
 			$this->data = array ();
@@ -187,7 +187,7 @@ class Model {
 		if (! $val) {
 			array_push ($this->query_filters, $key);
 		} else {
-			array_push ($this->query_filters, $key . ' = %s');
+			array_push ($this->query_filters, $key . ' = ?');
 			array_push ($this->query_params, $val);
 		}
 		return $this;
