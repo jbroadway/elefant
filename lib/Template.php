@@ -140,9 +140,7 @@ class Template {
 		
 		ob_start ();
 		require_once ($cache);
-		$out = ob_get_contents ();
-		ob_end_clean ();
-		return $out;
+		return ob_get_clean ();
 	}
 
 	/**
