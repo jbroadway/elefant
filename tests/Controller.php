@@ -5,7 +5,7 @@ require_once ('lib/Controller.php');
 class ControllerTest extends PHPUnit_Framework_TestCase {
 	function test_controller () {
 		$c = new Controller ();
-		$GLOBALS['conf'] = parse_ini_file ('conf/global.php', true);
+		$GLOBALS['conf'] = parse_ini_file ('conf/config.php', true);
 
 		$this->assertEquals ($c->route ('/'), 'apps/admin/handlers/page.php');
 		$this->assertEquals ($c->route ('/foo'), 'apps/admin/handlers/page.php');
