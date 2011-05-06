@@ -208,9 +208,35 @@ class Model {
 			$sql .= ' limit ' . $limit . ' offset ' . $offset;
 		}
 		$res = db_fetch_array ($sql, $this->query_params);
+		if (! $res) {
+			$this->error = db_error ();
+			return $res;
+		}
 		$class = get_class ($this);
 		foreach ($res as $key => $row) {
 			$res[$key] = new $class ((array) $row, false);
+		}
+		return $res;
+	}
+
+	/**
+	 * Fetch as an array of the original objects as returned from
+	 * the database.
+	 */
+	function fetch_orig ($limit = false, $offset = 0) {
+		$sql = 'select * from ' . $this->table;
+		if (count ($this->query_filters) > 0) {
+			$sql .= ' where ' . join (' and ', $this->query_filters);
+		}
+		if (! empty ($this->query_order)) {
+			$sql .= ' order by ' . $this->query_order;
+		}
+		if ($limit) {
+			$sql .= ' limit ' . $limit . ' offset ' . $offset;
+		}
+		$res = db_fetch_array ($sql, $this->query_params);
+		if (! $res) {
+			$this->error = db_error ();
 		}
 		return $res;
 	}
@@ -220,6 +246,9 @@ class Model {
 	 */
 	function fetch_assoc ($key, $value, $limit = false, $offset = 0) {
 		$tmp = $this->fetch ($limit, $offset);
+		if (! $tmp) {
+			return $tmp;
+		}
 		$res = array ();
 		foreach ($tmp as $obj) {
 			$res[$obj->{$key}] = $obj->{$value};
@@ -232,11 +261,21 @@ class Model {
 	 */
 	function fetch_field ($value, $limit = false, $offset = 0) {
 		$tmp = $this->fetch ($limit, $offset);
+		if (! $tmp) {
+			return $tmp;
+		}
 		$res = array ();
 		foreach ($tmp as $obj) {
 			$res[] = $obj->{$value};
 		}
 		return $res;
+	}
+
+	/**
+	 * Return the original data as an object.
+	 */
+	function orig () {
+		return (object) $this->data;
 	}
 }
 
