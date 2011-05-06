@@ -2,8 +2,8 @@
 
 /**
  * Basic routing controller. Maps $_SERVER['REQUEST_URI'] to files in
- * a handlers/ folder, defaulting to handlers/index.php if no others
- * match.
+ * a apps/{appname}/handlers/ folder, defaulting to
+ * $conf['General']['default_handler'] if no others match.
  *
  * Matching is done by reducing the URL folder-by-folder until a file
  * matches. Here are some examples:
@@ -28,8 +28,7 @@
  * $handler = $controller->route ($_SERVER['REQUEST_URI']);
  * ob_start ();
  * require_once ($handler);
- * $page->body = ob_get_contents ();
- * ob_end_clean ();
+ * $page->body = ob_get_clean ();
  *
  * Or more simply (but in practice the same):
  *
@@ -63,9 +62,7 @@ class Controller {
 		global $controller, $db, $conf, $page, $tpl;
 		ob_start ();
 		require ($handler);
-		$out = ob_get_contents ();
-		ob_end_clean ();
-		return $out;
+		return ob_get_clean ();
 	}
 
 	function route ($uri) {

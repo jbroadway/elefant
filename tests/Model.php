@@ -22,6 +22,14 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (db_shift ('select count() from qwerty'), 1);
 		$this->assertFalse ($q->is_new);
 
+		$orig = new StdClass;
+		$orig->foo = 'asdf';
+		$orig->bar = 'qwerty';
+		$this->assertEquals ($q->orig (), $orig);
+
+		$res = array_shift ($q->query ()->fetch_orig ());
+		$this->assertEquals ($res, $orig);
+
 		$q->bar = 'foobar';
 		$this->assertTrue ($q->put ());
 		$this->assertEquals (db_shift ('select bar from qwerty where foo = ?', 'asdf'), 'foobar');
