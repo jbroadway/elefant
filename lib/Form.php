@@ -45,6 +45,11 @@ class Form {
 	var $rules = array ();
 
 	/**
+	 * Whether to verify the referrer or not.
+	 */
+	var $verify_referrer = true;
+
+	/**
 	 * The reason submit() failed to pass.
 	 */
 	var $error = false;
@@ -75,7 +80,7 @@ class Form {
 			return false;
 		}
 		
-		if (! $this->verify_referrer ()) {
+		if ($this->verify_referrer && ! $this->verify_referrer ()) {
 			$this->error = 'Referrer must match the host name.';
 			return false;
 		}
