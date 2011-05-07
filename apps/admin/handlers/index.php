@@ -11,8 +11,6 @@ if (! simple_auth ()) {
 
 $page->template = 'admin/admin';
 
-$wp = new Webpage ();
-
-$page->pages = $wp->query ()->order ('title asc')->fetch_assoc ('id', 'title');
+$page->pages = Webpage::query ()->order ('title asc')->fetch_assoc ('id', 'title');
 
 ?>

@@ -12,7 +12,7 @@
  *
  *   class MyTable extends Model {
  *     function get_all_by_x () {
- *       return new MyTable ()->query ()
+ *       return MyTable::query ()
  *         ->order ('x desc')
  *         ->fetch ();
  *     }
@@ -24,18 +24,18 @@
  *   ));
  *   $one->put ();
  *
- *   $two = new MyTable ().get (123);
+ *   $two = MyTable::get (123);
  *
  *   $two->fieldname = 'Some other value';
  *   $two->put ();
  *
- *   $res = new MyTable ()->query ()
+ *   $res = MyTable::query ()
  *     ->where ('fieldname', 'Some other value')
  *     ->where ('id = 123')
  *     ->order ('fieldname asc')
  *     ->fetch (10, 5); // limit, offset
  *
- *   $res = MyTable.get_all_by_x ();
+ *   $res = MyTable::get_all_by_x ();
  *
  *   foreach ($res as $row) {
  *     $row->remove ();
@@ -148,26 +148,26 @@ class Model {
 	/**
 	 * Get a single object and update the current instance with that data.
 	 */
-	function get ($id) {
-		$res = (array) db_single ('select * from ' . $this->table . ' where ' . $this->key . ' = ?', $id);
+	static function get ($id) {
+		$class = get_called_class ();
+		$q = new $class;
+		$res = (array) db_single ('select * from ' . $q->table . ' where ' . $q->key . ' = ?', $id);
 		if (! $res) {
-			$this->error = 'No object by that ID.';
-			$this->data = array ();
+			$q->error = 'No object by that ID.';
+			$q->data = array ();
 		} else {
-			$this->data = (array) $res;
+			$q->data = (array) $res;
 		}
-		$this->is_new = false;
-		return $this;
+		$q->is_new = false;
+		return $q;
 	}
 
 	/**
 	 * Begin a new query. Resets the internal state for a new query.
 	 */
-	function query () {
-		$this->query_order = '';
-		$this->query_filters = array ();
-		$this->query_params = array ();
-		return $this;
+	static function query () {
+		$class = get_called_class ();
+		return new $class;
 	}
 
 	/**
