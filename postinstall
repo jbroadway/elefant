@@ -1,7 +1,0 @@
-#!/bin/sh
-
-if [ ! -d "/home/dotcloud/current/cache" ]; then
-	mkdir /home/dotcloud/current/cache
-fi
-
-chmod -R 777 /home/dotcloud/current/cache
