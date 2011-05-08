@@ -62,7 +62,7 @@ function simple_auth ($verifier = false, $method = false) {
 	}
 	if (! $method) {
 		$method = function ($callback) {
-			if (! isset ($_SERVER['PHP_AUTH_USER']) || ! call_user_func ($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
+			if (! isset ($_SERVER['PHP_AUTH_USER']) || ! call_user_func ($callback, $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
 				header ('WWW-Authenticate: Basic realm="This Website"');
 				header ('HTTP/1.0 401 Unauthorized');
 				//echo 'You must be logged in to access these pages.';
