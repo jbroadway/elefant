@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+	<name>jbroadway.github.com/elefant</name>
+	<summary>PinkElefant PEAR channel server</summary>
+	<alias>elefant</alias>
+	<url>http://jbroadway.github.com/elefant/</url>
+</server>
