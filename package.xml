@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+    http://pear.php.net/dtd/tasks-1.0.xsd
+    http://pear.php.net/dtd/package-2.0
+    http://pear.php.net/dtd/package-2.0.xsd">
+ <name>PinkElefant</name>
+ <channel>jbroadway.github.com/elefant</channel>
+ <summary>Simple, secure, and fast MVC web framework.</summary>
+ <description>PinkElefant is a very simple, secure and fast MVC web framework for PHP. It re-imagines
+what elegant MVC in PHP can be by doing things the &quot;PHP way&quot; throughout and not just
+translating concepts awkwardly from other languages.</description>
+ <lead>
+  <name>Johnny Broadway</name>
+  <user>jbroadway</user>
+  <email>johnny@johnnybroadway.com</email>
+  <active>yes</active>
+ </lead>
+ <date>2011-05-09</date>
+ <time>00:24:02</time>
+ <version>
+  <release>0.8.0</release>
+  <api>0.8.0</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+ <notes>
+Initial release
+ </notes>
+ <contents>
+  <dir baseinstalldir="." name="/">
+   <file baseinstalldir="." md5sum="1fc5d0d4149af66390026f14127fe5f5" name="apps/admin/forms/add.php" role="php" />
+   <file baseinstalldir="." md5sum="0cfadc6798655588285b016b40624b47" name="apps/admin/forms/edit.php" role="php" />
+   <file baseinstalldir="." md5sum="6051b7b94899fc8dfa79b17ee8d0d664" name="apps/admin/handlers/add.php" role="php" />
+   <file baseinstalldir="." md5sum="47ab8ac723931bea7d73c4c5606bc1ec" name="apps/admin/handlers/delete.php" role="php" />
+   <file baseinstalldir="." md5sum="0b9fb11a9f0a48d120788715d4302828" name="apps/admin/handlers/edit.php" role="php" />
+   <file baseinstalldir="." md5sum="46e027232d375656a16cade5d4c348e7" name="apps/admin/handlers/index.php" role="php" />
+   <file baseinstalldir="." md5sum="8308d594389749df0deac3fbbc68a50a" name="apps/admin/handlers/page.php" role="php" />
+   <file baseinstalldir="." md5sum="f3eab4c0c217a28f596e7189b3f62056" name="apps/admin/handlers/validator.php" role="php" />
+   <file baseinstalldir="." md5sum="93e1fc8b8041a1de7f89da07c7f438f7" name="apps/admin/models/User.php" role="php" />
+   <file baseinstalldir="." md5sum="54d4a571c68a3f067a5391423e72189c" name="apps/admin/models/Webpage.php" role="php" />
+   <file baseinstalldir="." md5sum="472e7a5fa66221e4af1508cf33f0251d" name="apps/admin/views/add.html" role="doc" />
+   <file baseinstalldir="." md5sum="f7873f8c631ff794dce40f8fdd3c1304" name="apps/admin/views/admin.html" role="doc" />
+   <file baseinstalldir="." md5sum="42a85ce52079bfc91059c7d7fb70faaf" name="apps/admin/views/base.html" role="doc" />
+   <file baseinstalldir="." md5sum="17344e6f2e236c05b3626759355d5a2e" name="apps/admin/views/edit.html" role="doc" />
+   <file baseinstalldir="." md5sum="ec12995723e4ee7ec28f4352405dd5f2" name="conf/config.php" role="php" />
+   <file baseinstalldir="." md5sum="cbf97401f12339bea71ec1f34936e232" name="conf/createdb.php" role="php" />
+   <file baseinstalldir="." md5sum="5c4aab0f2de4c5b2f544c85f534fb8cd" name="conf/install_mysql.sql" role="data" />
+   <file baseinstalldir="." md5sum="dc1e749b533a914b48a9f03410dc994f" name="conf/install_sqlite.sql" role="data" />
+   <file baseinstalldir="." md5sum="0d8e982ac24767934ee29e05cdf2bb1d" name="conf/make.php" role="php" />
+   <file baseinstalldir="." md5sum="d41d8cd98f00b204e9800998ecf8427e" name="conf/site.db" role="data" />
+   <file baseinstalldir="." md5sum="9edb9a7db86fe1d7006fb0ddb45a5745" name="css/960.css" role="data" />
+   <file baseinstalldir="." md5sum="c1f4e6b93e351bfa5f9b9a3c233df814" name="css/admin.css" role="data" />
+   <file baseinstalldir="." md5sum="27341ea1614e042375bff6b6c14f58dd" name="css/reset.css" role="data" />
+   <file baseinstalldir="." md5sum="5536bffea522a026b44b62f5350b9368" name="css/text.css" role="data" />
+   <file baseinstalldir="." md5sum="5bd9b02dbac417510f5adf9314510eb7" name="js/jquery.verify_values.js" role="data" />
+   <file baseinstalldir="." md5sum="190902c72341635f1227ddaa2de6b26e" name="layouts/admin.html" role="doc" />
+   <file baseinstalldir="." md5sum="4d71b21859d891fd22f8e7eda6e85bd1" name="layouts/default.html" role="doc" />
+   <file baseinstalldir="." md5sum="47a72a430fcb1581a24186cb7d0e76c3" name="lib/Controller.php" role="php" />
+   <file baseinstalldir="." md5sum="740f810db6d867ba4a52fa37326cf838" name="lib/Database.php" role="php" />
+   <file baseinstalldir="." md5sum="8fcb811e57b45a892a71de1d2c90a21f" name="lib/Form.php" role="php" />
+   <file baseinstalldir="." md5sum="5cc1dfd201833c9c45d257dbe4cc5e64" name="lib/Functions.php" role="php" />
+   <file baseinstalldir="." md5sum="1e205122bea9db9a415c9ba30d55d17f" name="lib/Model.php" role="php" />
+   <file baseinstalldir="." md5sum="baccfb590a5e8c81b42e825f8029d50a" name="lib/Page.php" role="php" />
+   <file baseinstalldir="." md5sum="62484a4df539a692bba80f38d6b0052a" name="lib/Template.php" role="php" />
+   <file baseinstalldir="." md5sum="5420f6d571386ff65eb5ebbfe7fc6e61" name="tests/Controller.php" role="test" />
+   <file baseinstalldir="." md5sum="8509baea1d62c64f055a4075854c9a6b" name="tests/Database.php" role="test" />
+   <file baseinstalldir="." md5sum="8502dda887508408e91e96974e4d0342" name="tests/Form.php" role="test" />
+   <file baseinstalldir="." md5sum="9c31adc49fc6ff4973ebdcac385c1d1f" name="tests/Functions.php" role="test" />
+   <file baseinstalldir="." md5sum="d9991b9dd5fdefea78f831e06d9fd8f7" name="tests/Model.php" role="test" />
+   <file baseinstalldir="." md5sum="ac8974e98c553e9e0901886319e6f438" name="tests/Template.php" role="test" />
+   <file baseinstalldir="." md5sum="21b0ee8c4943fcae31463359699aeccf" name="index.php" role="php" />
+   <file baseinstalldir="." md5sum="742b06aa45672f27acd9042856d7f8c6" name="LICENSE" role="data" />
+   <file baseinstalldir="." md5sum="4d09e77d631e5cabf55add5c3fea5d43" name="nginx.conf" role="data" />
+   <file baseinstalldir="." md5sum="cbf597a532fdc6e34dacbef3f5710591" name="README.md" role="data" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.3.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>0.8.0</release>
+    <api>0.8.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2011-05-09</date>
+   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+   <notes>
+Initial release
+   </notes>
+  </release>
+ </changelog>
+</package>
