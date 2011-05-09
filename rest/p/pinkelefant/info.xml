@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<p xmlns="http://pear.php.net/dtd/rest.package" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://pear.php.net/dtd/rest.package    http://pear.php.net/dtd/rest.package.xsd">
+<n>PinkElefant</n>
+<c>jbroadway.github.com/elefant</c>
+<ca xlink:href="/rest/c/Default">Default</ca>
+<l>MIT</l>
+<s>Simple, secure, and fast MVC web framework.</s>
+<d>PinkElefant is a very simple, secure and fast MVC web framework for PHP. It re-imagines
+what elegant MVC in PHP can be by doing things the &quot;PHP way&quot; throughout and not just
+translating concepts awkwardly from other languages.</d>
+<r xlink:href="/rest/r/pinkelefant" />
+</p>

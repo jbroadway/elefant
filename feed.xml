@@ -6,5 +6,18 @@
         <name>http://jbroadway.github.com/elefant/</name>
     </author>
 
-
+    <entry>
+        <title>PinkElefant 0.8.0 (beta)</title>
+        <link href="http://jbroadway.github.com/elefant//get/PinkElefant-0.8.0.tgz" />
+        <id>PinkElefant-0.8.0</id>
+        <author>
+            <name>jbroadway</name>
+        </author>
+        <updated>2011-05-09T00:25:49-05:00</updated>
+        <content>
+            PinkElefant is a very simple, secure and fast MVC web framework for PHP. It re-imagines
+what elegant MVC in PHP can be by doing things the &quot;PHP way&quot; throughout and not just
+translating concepts awkwardly from other languages.
+        </content>
+    </entry>
 </feed>
