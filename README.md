@@ -28,12 +28,9 @@ What else is missing?
 * Permissions/access control
 * Caching (templates are compiled so they'll be opcode-cached) - use memcache
 * RSS/XML/etc parsing - use SimplePie
-* Unit testing - use PHPUnit
-* AJAX handling - use jQuery + json_encode/json_decode
 * Internationalization/localization
-* Documentation system - see Pocco, Phrocco
 * Search engine
-* Mail management
+* Email management
 * Deployment management
 * Logging engine
 
@@ -47,7 +44,7 @@ What else is missing?
 * Customizable user authentication
 * As little scaffolding as possible
 * An example /admin app for editing pages
-* High quality documentation
+* [High quality documentation](https://github.com/jbroadway/elefant/wiki)
 * Near 100% unit test coverage
 * Speed. Less cruft, faster pages.
 
