@@ -1,15 +1,15 @@
 # Pink Elefant
 
 This is the PHP framework behind the PinkTicket.ca website. It was created
-as my take on how PHP MVC should be done, based on 10+ years of programming
+as my take on how PHP MVC should be done, based on almost 12 years of programming
 in PHP and running a monolithic CMS project [www.sitellite.org](http://www.sitellite.org/)
-that despite its huge size still got some things right. This is my attempt
-at taking those things and starting fresh.
+that despite its huge size still got some things right that I haven't seen
+elsewhere. This is my attempt at taking those things and starting fresh.
 
 This framework doesn't look much at all like most other PHP-based MVC
-frameworks, but I've never been able to stomach the disconnect they had with
+frameworks, but I've never been able to stomach the disconnect they have with
 the language itself. PHP isn't a very elegant language in a lot of ways, and
-the MVC constructs used in other languages feel very unnatural and clunky
+the MVC constructs used in other languages feel unnatural and clunky
 when translated into PHP. But if we flip it around and play on PHP's
 strengths, I think we can come up with something much more PHP-esque and
 more natural to code in in our little monster of a "hypertext preprocessor" ;)
@@ -31,11 +31,11 @@ What else is missing?
 * Unit testing - use PHPUnit
 * AJAX handling - use jQuery + json_encode/json_decode
 * Internationalization/localization
-* Documentation - see Pocco, Phrocco
-* Search
-* Mail
-* Deployment
-* Logging
+* Documentation system - see Pocco, Phrocco
+* Search engine
+* Mail management
+* Deployment management
+* Logging engine
 
 ## What *is* here?
 
@@ -47,6 +47,8 @@ What else is missing?
 * Customizable user authentication
 * As little scaffolding as possible
 * An example /admin app for editing pages
+* High quality documentation
+* Near 100% unit test coverage
 * Speed. Less cruft, faster pages.
 
 Request routing is where Pink Elefant really stands out (for better or worse).
