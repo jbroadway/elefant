@@ -1,10 +1,11 @@
 # Pink Elefant
 
-This is the PHP framework behind the PinkTicket.ca website. It was created
-as my take on how PHP MVC should be done, based on almost 12 years of programming
-in PHP and running a monolithic CMS project [www.sitellite.org](http://www.sitellite.org/)
-that despite its huge size still got some things right that I haven't seen
-elsewhere. This is my attempt at taking those things and starting fresh.
+This is the PHP framework behind the [PinkTicket.ca](http://www.pinkticket.ca/)
+website. It was created as my take on how PHP MVC should be done, based on
+12 years of programming in PHP and running a monolithic CMS project
+[www.sitellite.org](http://www.sitellite.org/) that despite its huge size
+did get a few things right that I haven't seen elsewhere. This is my attempt
+at taking those things and starting fresh.
 
 This framework doesn't look much at all like most other PHP-based MVC
 frameworks, but I've never been able to stomach the disconnect they have with
