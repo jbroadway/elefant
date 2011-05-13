@@ -98,6 +98,17 @@
  * You can also set additional parameters to a filter as follows:
  *
  *   {{ timestamp|date ('F j', %s) }}
+ *
+ * ## String translations
+ *
+ * You can use the following tag format to mark strings for translation
+ * into the current visitor's language:
+ *
+ *   {" Text here "}
+ *
+ * This will be replaced with a call to:
+ *
+ *   i18n_get('Text here')
  */
 class Template {
 	var $charset = 'UTF-8';
@@ -148,6 +159,7 @@ class Template {
 	 */
 	function parse_template ($val) {
 		$val = preg_replace ('/\{\{ ?(.*?) ?\}\}/e', '$this->replace_vars (\'\\1\')', $val);
+		$val = preg_replace ('/\{[\'"] ?(.*?) ?[\'"]\}/e', '$this->replace_strings (\'\\1\')', $val);
 		$val = preg_replace ('/\{\% ?(.*?) ?\%\}/e', '$this->replace_blocks (\'\\1\')', $val);
 		return $val;
 	}
@@ -189,6 +201,13 @@ class Template {
 			}
 		}
 		return $out . $val . $end;
+	}
+
+	/**
+	 * Replace strings with calls to i18n_get() for multilingual sites.
+	 */
+	function replace_strings ($val) {
+		return '<?php echo i18n_get (\'' . str_replace ('\'', '\\\'', $val) . '\'); ?>';
 	}
 
 	/**

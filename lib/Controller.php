@@ -59,7 +59,7 @@ class Controller {
 	}
 
 	function handle ($handler) {
-		global $controller, $db, $conf, $page, $tpl;
+		global $controller, $db, $conf, $i18n, $page, $tpl;
 		ob_start ();
 		require ($handler);
 		return ob_get_clean ();

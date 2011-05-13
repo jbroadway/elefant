@@ -29,7 +29,6 @@ What else is missing?
 * Permissions/access control
 * Caching (templates are compiled so they'll be opcode-cached) - use memcache
 * RSS/XML/etc parsing - use SimplePie
-* Internationalization/localization
 * Search engine
 * Email management
 * Deployment management
@@ -43,6 +42,7 @@ What else is missing?
 * Flexible input validation
 * Simple form handling including matching server and client-side validation
 * Customizable user authentication
+* Internationalization/localization
 * As little scaffolding as possible
 * An example /admin app for editing pages
 * [High quality documentation](https://github.com/jbroadway/elefant/wiki)

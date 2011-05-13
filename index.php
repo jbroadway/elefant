@@ -22,6 +22,7 @@ date_default_timezone_set($conf['General']['timezone']);
 require_once ('lib/Functions.php');
 require_once ('lib/Database.php');
 
+$i18n = new I18n ('lang', $conf['I18n']);
 $page = new Page;
 $controller = new Controller;
 $tpl = new Template ($conf['General']['charset']);
@@ -32,7 +33,11 @@ if (! db_open ($conf['Database'])) {
 }
 
 // handle the request
-$handler = $controller->route ($_SERVER['REQUEST_URI']);
+if ($i18n->url_includes_lang) {
+	$handler = $controller->route ($i18n->new_request_uri);
+} else {
+	$handler = $controller->route ($_SERVER['REQUEST_URI']);
+}
 $page->body = $controller->handle ($handler);
 
 // render and send the output

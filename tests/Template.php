@@ -18,6 +18,8 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($t->replace_vars ('$_POST[\'value\']|none'), '<?php echo $_POST[\'value\']; ?>');
 		$this->assertEquals ($t->replace_vars ('$_POST.value|none'), '<?php echo $_POST[\'value\']; ?>');
 
+		$this->assertEquals ($t->replace_strings ('Don\'t'), '<?php echo i18n_get (\'Don\\\'t\'); ?>');
+
 		$this->assertEquals ($t->replace_blocks ('end'), '<?php } ?>');
 		$this->assertEquals ($t->replace_blocks ('else'), '<?php } else { ?>');
 		$this->assertEquals ($t->replace_blocks ('if foo'), '<?php if ($data->foo) { ?>');
@@ -31,6 +33,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 			. '<?php if ($data->loop_index == 1) { ?><?php echo $data->loop_value; ?>'
 			. '<?php } ?><?php } ?>';
 		$this->assertEquals ($t->parse_template ($data), $out);
+		$this->assertEquals ($t->parse_template ('{" Hello "}'), '<?php echo i18n_get (\'Hello\'); ?>');
 	}
 }
 

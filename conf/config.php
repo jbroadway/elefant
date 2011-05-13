@@ -20,9 +20,13 @@ default_handler = "admin/page"
 ; This usually gives a noticeable performance boost.
 compress_output = On
 
+[I18n]
+
+negotiation_method = url
+
 [Database]
 
-; Database settings go here. SQLite and MySQL are supported.
+; Database settings go here.
 driver = sqlite
 file = "conf/site.db"
 ;driver = mysql
