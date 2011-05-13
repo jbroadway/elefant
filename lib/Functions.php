@@ -4,7 +4,11 @@
  * Autoloader for classes. Checks in lib and models folders.
  */
 function __autoload ($class) {
-	if (file_exists ('lib/' . $class . '.php')) {
+	if (strpos ($class, '\\') !== false) {
+		list ($app, $class) = explode ('\\', $class, 2);
+		require_once ('apps/' . $app . '/lib/' . $class . '.php');
+		return true;
+	} elseif (file_exists ('lib/' . $class . '.php')) {
 		require_once ('lib/' . $class . '.php');
 		return true;
 	} else {
