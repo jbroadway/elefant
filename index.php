@@ -21,6 +21,10 @@ date_default_timezone_set($conf['General']['timezone']);
 
 require_once ('lib/Functions.php');
 require_once ('lib/Database.php');
+require_once ('lib/Page.php');
+require_once ('lib/I18n.php');
+require_once ('lib/Controller.php');
+require_once ('lib/Template.php');
 
 $i18n = new I18n ('lang', $conf['I18n']);
 $page = new Page;
