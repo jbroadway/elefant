@@ -22,7 +22,8 @@ yourself. This is a starting point, not the kitchen sink. That was my
 problem last time, and I'm not going down that road again. So I could
 include other things here, but if it's not essential I tried to leave
 it out. If you need something, drop it in your app lib folder, and
-you're on your way.
+you're on your way. If you make a reusable app, it's self-contained
+in its own app folder, so you're welcome to share it with others.
 
 What else is missing?
 
@@ -47,13 +48,13 @@ What else is missing?
 * An example /admin app for editing pages
 * [High quality documentation](https://github.com/jbroadway/elefant/wiki)
 * Near 100% unit test coverage
-* Speed. Less cruft, faster pages.
+* [Speed](https://github.com/jbroadway/elefant/wiki/Performance). Less cruft, faster pages.
 
-Request routing is where Pink Elefant really stands out (for better or worse).
-A handler is simply a PHP script and mapping is automatic. You can write your
-handlers just like you would any other PHP script, starting at the top and
-using echo when you want to output something. At the end, they're handled
-properly and inserted into the right template for you. Just like that.
+Request routing is where Pink Elefant really stands out. A handler is simply
+a PHP script and mapping is automatic. You can write your handlers just like
+you would any other PHP script, starting at the top and using echo when you
+want to output something. At the end, they're handled properly and inserted
+into the right template for you. Just like that.
 
 ## Why?
 
