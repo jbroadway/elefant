@@ -56,27 +56,37 @@ function info ($value, $full = false) {
  */
 function simple_auth ($verifier = false, $method = false) {
 	if (! $verifier) {
-		$verifier = function ($user, $pass) {
-			global $conf;
-			if ($user == $conf['General']['master_username'] && $pass == $conf['General']['master_password']) {
-				return true;
-			}
-			return false;
-		};
+		$verifier = 'simple_auth_verifier';
 	}
 	if (! $method) {
-		$method = function ($callback) {
-			if (! isset ($_SERVER['PHP_AUTH_USER']) || ! call_user_func ($callback, $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
-				header ('WWW-Authenticate: Basic realm="This Website"');
-				header ('HTTP/1.0 401 Unauthorized');
-				//echo 'You must be logged in to access these pages.';
-				//exit;
-				return false;
-			}
-			return true;
-		};
+		$method = 'simple_auth_basic';
 	}
 	return call_user_func ($method, $verifier);
+}
+
+/**
+ * Default verifier for simple_auth().
+ */
+function simple_auth_verifier ($user, $pass) {
+	global $conf;
+	if ($user == $conf['General']['master_username'] && $pass == $conf['General']['master_password']) {
+		return true;
+	}
+	return false;
+}
+
+/**
+ * Default method for simple_auth().
+ */
+function simple_auth_basic ($callback) {
+	if (! isset ($_SERVER['PHP_AUTH_USER']) || ! call_user_func ($callback, $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
+		header ('WWW-Authenticate: Basic realm="This Website"');
+		header ('HTTP/1.0 401 Unauthorized');
+		//echo 'You must be logged in to access these pages.';
+		//exit;
+		return false;
+	}
+	return true;
 }
 
 /**
