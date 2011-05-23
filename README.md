@@ -47,7 +47,7 @@ What else is missing?
 * An example /admin app for editing pages
 * [High quality documentation](https://github.com/jbroadway/elefant/wiki)
 * Near 100% unit test coverage
-* Speed. Less cruft, faster pages.
+* [Speed](https://github.com/jbroadway/elefant/wiki/Performance). Less cruft, faster pages.
 
 Request routing is where Elefant really stands out (for better or worse).
 A handler is simply a PHP script and mapping is automatic. You can write your
