@@ -1,28 +1,26 @@
 # Elefant
 
-This is the PHP framework behind the [PinkTicket.ca](http://www.pinkticket.ca/)
-website. It was created as my take on how PHP MVC should be done, based on
+Elefant is the MVC framework in PHP re-imagined. Elefant is based on
 12 years of programming in PHP and running a monolithic CMS project
 [www.sitellite.org](http://www.sitellite.org/) that despite its huge size
 did get a few things right that I haven't seen elsewhere. This is my attempt
 at taking those things and starting fresh.
 
-This framework doesn't look much at all like most other PHP-based MVC
-frameworks, but I've never been able to stomach the disconnect they have with
-the language itself. PHP isn't a very elegant language in a lot of ways, and
-the MVC constructs used in other languages feel unnatural and clunky
-when translated into PHP. But if we flip it around and play on PHP's
-strengths, I think we can come up with something much more PHP-esque and
-more natural to code in in our little monster of a "hypertext preprocessor" ;)
+This framework doesn't look much like other PHP-based MVC frameworks, but
+I've never been able to stomach the disconnect they have with the language
+itself. PHP isn't the most elegant language, and MVC constructs used in other
+languages feel clunky when translated into it. But if we flip it around and
+play on PHP's strengths, we get something much more natural to code with in
+our little monster of a "hypertext preprocessor" ;)
 
 ## What's Missing
 
 In short: A lot. Why? Because you can get it elsewhere and include it
-yourself. This is a starting point, not the kitchen sink. That was my
-problem last time, and I'm not going down that road again. So I could
-include other things here, but if it's not essential I tried to leave
-it out. If you need something, drop it in your app lib folder, and
-you're on your way.
+yourself. This is a starting point, not the kitchen sink. So I could
+include other things, but if it's not essential I tried to leave it out.
+If you need something more, drop it in your app lib folder, and you're
+on your way. If you make a reusable app, it's self-contained in its own
+app folder, so you're welcome to share it with others.
 
 What else is missing?
 
@@ -49,11 +47,11 @@ What else is missing?
 * Near 100% unit test coverage
 * [Speed](https://github.com/jbroadway/elefant/wiki/Performance). Less cruft, faster pages.
 
-Request routing is where Elefant really stands out (for better or worse).
-A handler is simply a PHP script and mapping is automatic. You can write your
-handlers just like you would any other PHP script, starting at the top and
-using echo when you want to output something. At the end, they're handled
-properly and inserted into the right template for you. Just like that.
+Request routing is where Elefant really stands out. A handler is simply a
+PHP script and mapping is automatic. You can write your handlers just like
+you would any other PHP script, starting at the top and using echo when you
+want to output something. At the end, they're handled properly and inserted
+into the right template for you. Just like that.
 
 ## Why?
 
