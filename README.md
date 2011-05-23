@@ -1,4 +1,4 @@
-# Pink Elefant
+# Elefant
 
 This is the PHP framework behind the [PinkTicket.ca](http://www.pinkticket.ca/)
 website. It was created as my take on how PHP MVC should be done, based on
@@ -49,7 +49,7 @@ What else is missing?
 * Near 100% unit test coverage
 * Speed. Less cruft, faster pages.
 
-Request routing is where Pink Elefant really stands out (for better or worse).
+Request routing is where Elefant really stands out (for better or worse).
 A handler is simply a PHP script and mapping is automatic. You can write your
 handlers just like you would any other PHP script, starting at the top and
 using echo when you want to output something. At the end, they're handled
