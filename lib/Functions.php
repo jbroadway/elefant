@@ -6,8 +6,13 @@
 function __autoload ($class) {
 	if (strpos ($class, '\\') !== false) {
 		list ($app, $class) = explode ('\\', $class, 2);
-		require_once ('apps/' . $app . '/lib/' . $class . '.php');
-		return true;
+		if (@file_exists ('apps/' . $app . '/lib/' . $class . '.php')) {
+			require_once ('apps/' . $app . '/lib/' . $class . '.php');
+			return true;
+		} elseif (@file_exists ('apps/' . $app . '/models/' . $class . '.php')) {
+			require_once ('apps/' . $app . '/models/' . $class . '.php');
+			return true;
+		}
 	} elseif (file_exists ('lib/' . $class . '.php')) {
 		require_once ('lib/' . $class . '.php');
 		return true;
