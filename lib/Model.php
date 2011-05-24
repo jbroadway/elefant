@@ -126,6 +126,7 @@ class Model {
 			$this->error = db_error ();
 			return false;
 		}
+		$this->is_new = false;
 		return true;
 	}
 	
@@ -215,6 +216,24 @@ class Model {
 		$class = get_class ($this);
 		foreach ($res as $key => $row) {
 			$res[$key] = new $class ((array) $row, false);
+		}
+		return $res;
+	}
+
+	/**
+	 * Fetch the number of results for a query.
+	 */
+	function count ($limit = false, $offset = 0) {
+		$sql = 'select count(*) from ' . $this->table;
+		if (count ($this->query_filters) > 0) {
+			$sql .= ' where ' . join (' and ', $this->query_filters);
+		}
+		if (! empty ($this->query_order)) {
+			$sql .= ' order by ' . $this->query_order;
+		}
+		$res = db_shift ($sql, $this->query_params);
+		if ($res === false) {
+			$this->error = db_error ();
 		}
 		return $res;
 	}

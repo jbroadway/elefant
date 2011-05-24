@@ -30,6 +30,8 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$res = array_shift ($q->query ()->fetch_orig ());
 		$this->assertEquals ($res, $orig);
 
+		$this->assertEquals ($q->query ()->count (), 1);
+
 		$q->bar = 'foobar';
 		$this->assertTrue ($q->put ());
 		$this->assertEquals (db_shift ('select bar from qwerty where foo = ?', 'asdf'), 'foobar');
@@ -44,10 +46,10 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$res = $q->query ()->fetch_field ('bar');
 		$this->assertEquals ($res, array ('foobar'));
 
-		// should be the same after a query() reset since they're both
+		// should be the same since they're both
 		// Qwerty objects with the same database row
 		$res = array_shift ($q->query ()->where ('foo', 'asdf')->order ('foo asc')->fetch ());
-		$this->assertEquals ($res, $q->query ());
+		$this->assertEquals ($res, $q);
 
 		$this->assertTrue ($res->remove ());
 		$this->assertEquals (db_shift ('select count() from qwerty'), 0);
