@@ -1,1 +1,520 @@
-<meta http-equiv="refresh" content="0;url=http://github.com/jbroadway/elefant" />
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Elefant Cheat Sheet</title>
+	<link rel="stylesheet" type="text/css" href="reset.css" />
+	<link rel="stylesheet" type="text/css" href="text.css" />
+	<link rel="stylesheet" type="text/css" href="960.css" />
+	<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+
+<div id="wrapper" class="container_12">
+
+<div class="grid_6 alpha title">
+<h1>Elefant Cheat Sheet</h1>
+</div>
+<div class="grid_6 omega link">
+<a href="http://jbroadway.github.com/elefant/elefant_cheatsheet.pdf">Download as a PDF</a>
+</div>
+
+<div class="clear"></div>
+
+<div class="grid_8 alpha">
+
+	<div class="grid_5 alpha">
+	
+		<div class="block">
+		<h2>Getting Started</h2>
+		<table>
+		<tr><td colspan="2"><span>These are the steps to get a basic Elefant installation up and running.</span></td></tr>
+		<tr>
+			<td><code>git clone http://github.com/jbroadway/elefant.git</code></td>
+		</tr>
+		<tr>
+			<td><code>cd elefant</code></td>
+		</tr>
+		<tr>
+			<td><code>vi conf/config.php</code></td>
+		</tr>
+		<tr>
+			<td><code>chmod -R 777 cache conf</code></td>
+		</tr>
+		<tr>
+			<td><code>php conf/createdb.php</code></td>
+		</tr>
+		</table>
+		</div>
+		
+		<div class="block">
+		<h2>Utilities</h2>
+		<table>
+		<tr>
+			<td><code>php conf/make.php appname</code></td>
+			<td><span>Create an app skeleton</span></td>
+		</tr>
+		<tr>
+			<td><code>php conf/createdb.php</code></td>
+			<td><span>Initialize an SQLite database</span></td>
+		</tr>
+		<tr>
+			<td><code>phpunit tests/Form.php</code></td>
+			<td><span>Run one of the unit test sets</span></td>
+		</tr>
+		</table>
+		</div>
+	
+	</div>
+	
+	<div class="grid_3 omega">
+
+		<div class="block">
+		<h2>Folder Structure</h2>
+		<table>
+		<tr>
+			<td><code>apps</code></td>
+			<td><span>Your applications</span></td>
+		</tr>
+		<tr>
+			<td><code>cache</code></td>
+			<td><span>Cached templates</span></td>
+		</tr>
+		<tr>
+			<td><code>conf</code></td>
+			<td><span>Configuration files</span></td>
+		</tr>
+		<tr>
+			<td><code>css</code></td>
+			<td><span>Stylesheets</span></td>
+		</tr>
+		<tr>
+			<td><code>index.php</code></td>
+			<td><span>Front controller</span></td>
+		</tr>
+		<tr>
+			<td><code>js</code></td>
+			<td><span>Javascript files</span></td>
+		</tr>
+		<tr>
+			<td><code>lang</code></td>
+			<td><span>Translations</span></td>
+		</tr>
+		<tr>
+			<td><code>layouts</code></td>
+			<td><span>Design templates</span></td>
+		</tr>
+		<tr>
+			<td><code>lib</code></td>
+			<td><span>Core classes</span></td>
+		</tr>
+		<tr>
+			<td><code>tests</code></td>
+			<td><span>Unit tests</span></td>
+		</tr>
+		</table>
+		</div>
+	
+	</div>
+
+<div class="clear"></div>
+
+	<div class="grid_7 alpha block">
+	<h2>Request Routing</h2>
+	<table>
+	<tr>
+		<td><code>/</code></td>
+		<td><span>&rarr;&nbsp;&nbsp;</span></td>
+		<td><code>$conf['General']['default_handler']</code></td>
+	</tr>
+	<tr>
+		<td><code>/appname</code></td>
+		<td><span>&rarr;&nbsp;&nbsp;</span></td>
+		<td><code>apps/appname/handlers/index.php</code></td>
+	</tr>
+	<tr>
+		<td><code>/appname/handler</code></td>
+		<td><span>&rarr;&nbsp;&nbsp;</span></td>
+		<td><code>apps/appname/handlers/handler.php</code></td>
+	</tr>
+	<tr>
+		<td><code>/appname/handler/extra</code></td>
+		<td><span>&rarr;&nbsp;&nbsp;</span></td>
+		<td><code>apps/appname/handlers/handler/extra.php</code></td>
+	</tr>
+	<tr><td colspan="3"><span>Cascade occurs in reverse order until a matching handler is found.</span></td></tr>
+	</table>
+	</div>
+
+</div>
+
+<div class="grid_4 omega">
+
+	<div class="block">
+	<h2>App Structure</h2>
+	<table>
+	<tr>
+		<td colspan="2"><code>apps/appname/</code></td>
+	</tr>
+	<tr>
+		<td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;conf</code></td>
+		<td><span>Configuration files</span></td>
+	</tr>
+	<tr>
+		<td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forms</code></td>
+		<td><span>Form validations</span></td>
+	</tr>
+	<tr>
+		<td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;handlers</code></td>
+		<td><span>Request handlers</span></td>
+	</tr>
+	<tr>
+		<td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lib</code></td>
+		<td><span>Custom classes</span></td>
+	</tr>
+	<tr>
+		<td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;models</code></td>
+		<td><span>Data models</span></td>
+	</tr>
+	<tr>
+		<td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;views</code></td>
+		<td><span>App templates</span></td>
+	</tr>
+	</table>
+	</div>
+	
+	<div class="block">
+	<h2>Global Objects</h2>
+	<table>
+	<tr>
+		<td><code>$conf</code></td>
+		<td><span>Array of conf/config.php</span></td>
+	</tr>
+	<tr>
+		<td><code>$controller</code></td>
+		<td><span>Controller object</span></td>
+	</tr>
+	<tr>
+		<td><code>$db</code></td>
+		<td><span>PDO object</span></td>
+	</tr>
+	<tr>
+		<td><code>$i18n</code></td>
+		<td><span>I18n object</span></td>
+	</tr>
+	<tr>
+		<td><code>$page</code></td>
+		<td><span>Page object</span></td>
+	</tr>
+	<tr>
+		<td><code>$tpl</code></td>
+		<td><span>Template object</span></td>
+	</tr>
+	</table>
+	</div>
+
+</div>
+
+<div class="clear"></div>
+
+<div class="container_12">
+<h2>Core Classes</h2>
+<p>Useful properties and methods of the core classes.</p>
+
+<div class="grid_6 alpha">
+
+	<div class="block">
+	<h3>Controller</h3>
+	<table>
+	<tr>
+		<td><code>-&gt;run($uri)</code></td>
+		<td><span>Resolves and returns the output of a handler.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;handle($handler)</code></td>
+		<td><span>Returns the output of a handler.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;route($uri)</code></td>
+		<td><span>Resolves a handler from URI to filename.</span></td>
+	</tr>
+	</table>
+	</div>
+	
+	<div class="block">
+	<h3>Database functions</h3>
+	<table>
+	<tr>
+		<td colspan="2"><span>All functions except <tt>db_error()</tt> and <tt>db_lastid()</tt> accept <tt>$sql</tt> plus an array or variable number of values for replacement of placeholders, for example:</span><br />
+		<code>$res = db_execute('select * from mytable where id = ?', $id);</code></td>
+	</tr>
+	<tr>
+		<td><code>db_execute()</code></td>
+		<td><span>Execute a statement and return true/false.</span></td>
+	</tr>
+	<tr>
+		<td><code>db_single()</code></td>
+		<td><span>Fetch a single object.</span></td>
+	</tr>
+	<tr>
+		<td><code>db_shift()</code></td>
+		<td><span>Fetch the a single value from the first result returned.</span></td>
+	</tr>
+	<tr>
+		<td><code>db_fetch_array()</code></td>
+		<td><span>Fetch an array of all result objects.</span></td>
+	</tr>
+	<tr>
+		<td><code>db_shift_array()</code></td>
+		<td><span>Fetch an array of a single field.</span></td>
+	</tr>
+	<tr>
+		<td><code>db_pairs()</code></td>
+		<td><span>Fetch an associative array of two fields.</span></td>
+	</tr>
+	<tr>
+		<td><code>db_lastid()</code></td>
+		<td><span>Get the last inserted id value (int).</span></td>
+	</tr>
+	<tr>
+		<td><code>db_error()</code></td>
+		<td><span>Get the last error message, or false if no error.</span></td>
+	</tr>
+	</table>
+	</div>
+
+	<div class="block">
+	<h3>Form</h3>
+	<table>
+	<tr>
+		<td><code>$f = new Form($method, $rules)</code></td>
+		<td><span>Constructor method.</span></td>
+	</tr>
+	<tr>
+		<td><pre><code>if ($f->submit()) {
+  // handle form
+}</code></pre></td>
+		<td><span>Is the form submitted and valid?</span></td>
+	</tr>
+	<tr>
+		<td><code>Form::verify_value($value, $type, $validator)</code></td>
+		<td><span>Validate a data value, in or out of the context of a form.</span></td>
+	</tr>
+	<tr>
+		<td><code>Form::merge_values($obj)</code></td>
+		<td><span>Merge <tt>$_GET</tt> or <tt>$_POST</tt> values onto an object for pre-filling a re-rendered form.</span></td>
+	</tr>
+	<tr>
+		<td><code>$failed = array()</code></td>
+		<td><span>Fields that failed validation.</span></td>
+	</tr>
+	<tr>
+		<td><code>$method = 'post'</code></td>
+		<td><span>Required request method.</span></td>
+	</tr>
+	<tr>
+		<td><code>$rules = array()</code></td>
+		<td><span>Validation rules.</span></td>
+	</tr>
+	<tr>
+		<td><code>$verify_referrer = true</code></td>
+		<td><span>Whether to verify the referrer.</span></td>
+	</tr>
+	<tr>
+		<td><code>$error = false</code></td>
+		<td><span>The reason submit() failed to pass.</span></td>
+	</tr>
+	</table>
+	</div>
+
+	<div class="block">
+	<h3>I18n</h3>
+	<table>
+	<tr>
+		<td><code>i18n_get($original)</code></td>
+		<td><span>Translate a string into the current user's language.</span></td>
+	</tr>
+	<tr>
+		<td><code>i18n_getf($orig, $values)</code></td>
+		<td><span>Like <tt>i18n_get()</tt> with <tt>vsprintf()</tt> post-processing.</span></td>
+	</tr>
+	<tr>
+		<td><code>$language</code></td>
+		<td><span>The current language.</span></td>
+	</tr>
+	<tr>
+		<td><code>$locale</code></td>
+		<td><span>The current locale.</span></td>
+	</tr>
+	<tr>
+		<td><code>$charset = 'UTF-8'</code></td>
+		<td><span>The current language's character set.</span></td>
+	</tr>
+	<tr>
+		<td><code>$fullname</code></td>
+		<td><span>The full name of the current language.</span></td>
+	</tr>
+	<tr>
+		<td><code>$url_includes_lang</code></td>
+		<td><span>Whether the URL includes the language, e.g., <tt>/fr/index</tt>.</span></td>
+	</tr>
+	<tr>
+		<td><code>$new_request_uri</code></td>
+		<td><span>The URL with the prefixed language removed.</span></td>
+	</tr>
+	<tr>
+		<td><code>$negotiation</code></td>
+		<td><span>The negotiation method used to determine the current language.</span></td>
+	</tr>
+	<tr>
+		<td><code>$error</code></td>
+		<td><span>Any error that occurs in the class.</span></td>
+	</tr>
+	</table>
+		</div>
+
+</div>
+
+<div class="grid_6 omega">
+	
+	<div class="block">
+	<h3>Model</h3>
+	<table>
+	<tr>
+		<td colspan="2"><span>Usage:</span></td></td>
+	</tr>
+	<tr>
+		<td><code>class Mytable extends Model {}</code></td>
+		<td><span>Create model for <tt>mytable</tt> db table.</span></td>
+	</tr>
+	<tr>
+		<td><pre><code>$m = new Mytable(array(
+  'name'=>'John',
+  'age'=>30
+));
+$m->put();</code></pre></td>
+		<td><span>Insert a new object.</span></td>
+	</tr>
+	<tr>
+		<td><code>$m->id</code></td>
+		<td><span>The ID from the inserted object.</span></td>
+	</tr>
+	<tr>
+		<td><pre><code>$m->age = 31;
+$m->put();</code></pre></td>
+		<td><span>Update the object.</span></td>
+	</tr>
+	<tr>
+		<td><code>$m->remove()</code></td>
+		<td><span>Delete the object.</span></td>
+	</tr>
+	<tr>
+		<td><pre><code>$res = $m->query()
+  ->where('age > 30')
+  ->order('name asc')
+  ->fetch(20, 0);</code></pre></td>
+		<td><span>Build a custom query and fetch the results.<br /><tt>$res</tt> is an array of <tt>Mytable</tt> objects.</span></td>
+	</tr>
+	</table>
+	</div>
+
+	<div class="block">
+	<h3>Page</h3>
+	<table>
+	<tr>
+		<td><code>-&gt;render()</code></td>
+		<td><span>Renders the page with its view and layout templates.</span></td>
+	</tr>
+	<tr>
+		<td><code>$body = ''</code></td>
+		<td><span>Body content.</span></td>
+	</tr>
+	<tr>
+		<td><code>$head = ''</code></td>
+		<td><span>Extra HTML headers.</span></td>
+	</tr>
+	<tr>
+		<td><code>$layout = 'default'</code></td>
+		<td><span>Design template.</span></td>
+	</tr>
+	<tr>
+		<td><code>$template = ''</code></td>
+		<td><span>View template.</span></td>
+	</tr>
+	<tr>
+		<td><code>$title = ''</code></td>
+		<td><span>Page title.</span></td>
+	</tr>
+	</table>
+	</div>
+	
+	<div class="block">
+	<h3>Template</h3>
+	<table>
+	<tr>
+		<td><code>-&gt;render($template, $data)</code></td>
+		<td><span>Render a template file.</span></td>
+	</tr>
+	<tr>
+		<td><code>$charset = 'UTF-8'</code></td>
+		<td><span>Template character set.</span></td>
+	</tr>
+	<tr>
+		<td><code>{{ var }}</code></td>
+		<td><span>In-template variable substitution.</span></td>
+	</tr>
+	<tr>
+		<td><code>{{ var|filter_name }}</code></td>
+		<td><span>Variable filtering.</span></td>
+	</tr>
+	<tr>
+		<td><code>{" Text "}</code></td>
+		<td><span>In-template translatable text.</span></td>
+	</tr>
+	<tr>
+		<td><pre><code>{% foreach foo %}
+{% end %}</code></pre></td>
+		<td><span>In-template looping.</span></td>
+	</tr>
+	<tr>
+		<td><pre><code>{% if foo %}
+{% elseif bar %}
+{% else %}
+{% end %}</code></pre></td>
+		<td><span>In-template conditional logic.</span></td>
+	</tr>
+	</table>
+	</div>
+
+	<div class="block">
+	<h3>User</h3>
+	<table>
+	<tr>
+		<td colspan="2"><span>Extends <tt>Model</tt> with the following:</span></td>
+	</tr>
+	<tr>
+		<td><code>User::encrypt_pass($plain)</code></td>
+		<td><span>Generates a random salt and encrypts a string using MD5.</span></td>
+	</tr>
+	<tr>
+		<td><code>User::require_login()</code></td>
+		<td><span>Requires a user to be logged in.</span></td>
+	</tr>
+	<tr>
+		<td><code>User::is_valid()</code></td>
+		<td><span>Check if the user is valid.</span></td>
+	</tr>
+	<tr>
+		<td><code>User::logout($redirect_to)</code></td>
+		<td><span>Log the current user out.</span></td>
+	</tr>
+	</table>
+	</div>
+
+</div>
+
+<div class="clear"></div>
+
+</div>
+
+</body>
+</html>
