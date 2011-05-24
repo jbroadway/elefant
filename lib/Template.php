@@ -150,7 +150,7 @@ class Template {
 		}
 		
 		ob_start ();
-		require_once ($cache);
+		require ($cache);
 		return ob_get_clean ();
 	}
 
