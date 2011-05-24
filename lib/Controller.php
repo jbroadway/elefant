@@ -100,7 +100,10 @@ class Controller {
 					$this->app = $app;
 					return 'apps/' . $app . '/handlers/index.php';
 				}
-				return $conf['General']['default_handler'];
+				return vsprintf (
+					'apps/%s/handlers/%s.php',
+					explode ('/', $conf['General']['default_handler'])
+				);
 			}
 		}
 		$this->app = $app;

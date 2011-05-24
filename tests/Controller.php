@@ -17,6 +17,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($c->route ('/admin/add/one/two/three'), 'apps/admin/handlers/add.php');
 		$this->assertEquals ($c->params, array ('one', 'two', 'three'));
 		$this->assertEquals ($c->route ('/foo?bar=asdf'), 'apps/admin/handlers/page.php');
+		$this->assertEquals ($c->route ('/not/exists'), 'apps/admin/handlers/page.php');
 
 		$this->assertTrue ($c->clean ('/foo'));
 		$this->assertFalse ($c->clean ('/../foo'));
