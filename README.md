@@ -34,11 +34,11 @@ What else is missing?
 
 ## What *is* here?
 
-* Really simple URL routing
+* Really simple URL routing w/ friendly URLs
 * Secure database abstraction/modeling (based on PDO)
 * Compiled templates with output filtering *on* by default
-* Flexible input validation
-* Simple form handling including matching server and client-side validation
+* Flexible input validation (server-side and in-browser)
+* Simple form handling
 * Customizable user authentication
 * Internationalization/localization
 * As little scaffolding as possible
