@@ -15,22 +15,27 @@ our little monster of a "hypertext preprocessor" ;)
 
 ## What's Missing
 
-In short: A lot. Why? Because you can get it elsewhere and include it
-yourself. This is a starting point, not the kitchen sink. So I could
-include other things, but if it's not essential I tried to leave it out.
-If you need something more, drop it in your app lib folder, and you're
-on your way. If you make a reusable app, it's self-contained in its own
-app folder, so you're welcome to share it with others.
+This is a simple framework, but it is very capable and provides everything
+you need in a core MVC framework. There are lots of things I tried to leave
+out to keep things simple, and some things that I'm sure will appear down
+the road. If something you need is missing and you feel it might fit as
+part of the core framework, feel free to contribute!
 
-What else is missing?
+Elefant apps are self-contained, so you can also make reusable apps and share
+them with others as well.
+
+Some obvious missing pieces:
 
 * Permissions/access control
-* Caching (templates are compiled so they'll be opcode-cached) - use memcache
-* RSS/XML/etc parsing - use SimplePie
+* Caching (templates are compiled so they'll be opcode-cached) - memcache
+* RSS/XML/etc parsing - SimplePie
 * Search engine
 * Email management
 * Deployment management
 * Logging engine
+
+For a more complete discussion on missing pieces and the future of Elefant,
+see the [Future page on the wiki](https://github.com/jbroadway/elefant/wiki/Future).
 
 ## What *is* here?
 
