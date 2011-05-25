@@ -48,23 +48,69 @@
  * like this:
  *
  * $res = $this->run ('/user/123');
+ *
+ * Sometimes you might want to pass values to another handler for internal
+ * processing, which you can do like this:
+ *
+ * $res = $this->run ('/user/123', array ('foo' => 'bar'));
+ *
+ * You can then access the array via:
+ *
+ * echo $this->data['foo'];
  */
 class Controller {
+	/**
+	 * Extra parameters from the end of the URL.
+	 */
 	var $params = array ();
+	
+	/**
+	 * Whether the request originated internally or externally.
+	 */
+	var $internal = true;
+	
+	/**
+	 * Data sent from another handler to the current one.
+	 */
+	var $data = array ();
 
-	function run ($uri) {
-		$c = new Controller;
-		$handler = $c->route ($uri);
-		return $c->handle ($handler);
+	/**
+	 * Set to true if the request came from the command line.
+	 */
+	var $cli = false;
+
+	function __construct () {
+		if (defined ('STDIN')) {
+			$this->cli = true;
+		}
 	}
 
-	function handle ($handler) {
+	/**
+	 * Run an internal request from one handler to another.
+	 */
+	function run ($uri, $data = array ()) {
+		$c = new Controller;
+		$handler = $c->route ($uri);
+		return $c->handle ($handler, true, $data);
+	}
+
+	/**
+	 * Execute the request handler. $internal determines whether the
+	 * request originated internally from another handler or template,
+	 * or externally from a browser request.
+	 */
+	function handle ($handler, $internal = true, $data = array ()) {
 		global $controller, $db, $conf, $i18n, $page, $tpl;
+		$this->internal = $internal;
+		$this->data = $data;
 		ob_start ();
 		require ($handler);
 		return ob_get_clean ();
 	}
 
+	/**
+	 * Route a request URI to a file.
+	 */
 	function route ($uri) {
 		global $conf;
 		$this->app = array_shift (explode ('/', $conf['General']['default_handler']));
@@ -110,6 +156,9 @@ class Controller {
 		return $route;
 	}
 
+	/**
+	 * Is this URL clean of any directory manipulation attempts?
+	 */
 	function clean ($url) {
 		if (strstr ($url, '..')) {
 			return false;

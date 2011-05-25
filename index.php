@@ -26,6 +26,10 @@ require_once ('lib/I18n.php');
 require_once ('lib/Controller.php');
 require_once ('lib/Template.php');
 
+if (defined ('STDIN')) {
+	$_SERVER['REQUEST_URI'] = '/' . $argv[1];
+}
+
 $i18n = new I18n ('lang', $conf['I18n']);
 $page = new Page;
 $controller = new Controller;
@@ -42,7 +46,7 @@ if ($i18n->url_includes_lang) {
 } else {
 	$handler = $controller->route ($_SERVER['REQUEST_URI']);
 }
-$page->body = $controller->handle ($handler);
+$page->body = $controller->handle ($handler, false);
 
 // render and send the output
 $out = $page->render ();

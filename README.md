@@ -46,6 +46,7 @@ see the [Future page on the wiki](https://github.com/jbroadway/elefant/wiki/Futu
 * Simple form handling
 * Customizable user authentication
 * Internationalization/localization
+* CLI support for background tasks
 * As little scaffolding as possible
 * An example /admin app for editing pages
 * [High quality documentation](https://github.com/jbroadway/elefant/wiki)

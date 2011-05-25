@@ -26,6 +26,8 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 		$c->add_param ('two');
 		$this->assertEquals ($c->add_param ('one'), '.php');
 		$this->assertEquals ($c->params, array ('one', 'two'));
+		$this->assertTrue ($c->internal);
+		$this->assertTrue ($c->cli);
 	}
 }
 
