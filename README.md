@@ -29,7 +29,6 @@ Some obvious missing pieces:
 * Permissions/access control
 * Caching (templates are compiled so they'll be opcode-cached) - use memcache?
 * RSS/XML/etc parsing - use SimplePie?
-* Search engine
 * Email management
 * Deployment management
 * Logging engine
