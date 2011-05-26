@@ -48,9 +48,11 @@ see the [Future page on the wiki](https://github.com/jbroadway/elefant/wiki/Futu
 * Internationalization/localization
 * CLI support for background tasks
 * As little scaffolding as possible
-* An example /admin app for editing pages
+* Example /admin app for editing pages
+* Example /search app (powered by [IndexTank](http://www.indextank.com/))
 * [High quality documentation](https://github.com/jbroadway/elefant/wiki)
 * Near 100% unit test coverage
+* Gzip output compression
 * [Speed](https://github.com/jbroadway/elefant/wiki/Performance). Less cruft, faster pages.
 
 Request routing is where Elefant really stands out. A handler is simply a

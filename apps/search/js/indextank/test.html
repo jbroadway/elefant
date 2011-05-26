@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <!-- Dependencies -->
+
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="https://github.com/flaptor/indextank-jquery/raw/1.x/jquery.indextank.ize.js"></script>
+        <script type="text/javascript" src="https://github.com/flaptor/indextank-jquery/raw/1.x/jquery.indextank.autocomplete.js"></script>
+        <script type="text/javascript" src="https://github.com/flaptor/indextank-jquery/raw/1.x/jquery.indextank.ajaxsearch.js"></script>
+        <script type="text/javascript" src="https://github.com/flaptor/indextank-jquery/raw/1.x/jquery.indextank.renderer.js"></script>
+        <script type="text/javascript" src="https://github.com/flaptor/indextank-jquery/raw/1.x/jquery.indextank.instantsearch.js"></script>
+        <script type="text/javascript" src="https://github.com/flaptor/indextank-jquery/raw/1.x/jquery.indextank.basic.js"></script>
+        <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/south-street/jquery-ui.css" media="all" />
+
+
+        <script>
+            $(document).ready(function(){
+                $("#myform").indextank_Ize(YOUR_PUBLIC_API_URL, YOUR_INDEX_NAME);
+                var renderer =  $("#results").indextank_Renderer();
+                $("#query").indextank_Autocomplete().indextank_AjaxSearch( {listeners: renderer}).indextank_InstantSearch();
+            });
+        </script>
+    </head>
+
+    <body>
+        <h3>Start typing and see suggestions from indextank.com's documentation.</h3>
+        <form id="myform" action="ignored.html">
+            <input id="query" type="text"/>
+        </form>
+
+        <div id="results"></div>
+
+    </body>
+</html>
