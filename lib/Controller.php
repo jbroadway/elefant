@@ -57,6 +57,35 @@
  * You can then access the array via:
  *
  * echo $this->data['foo'];
+ *
+ * In addition to running one handler from another, you can configure
+ * hooks with one or more handlers to be run for you when you trigger
+ * the hook. This is a 3-step process:
+ *
+ * 1. Add your hook and its handler to conf/config.php:
+ *
+ * myapp/somehandler[] = otherapp/handler
+ *
+ * 2. In myapp/somehandler, add the hook call and pass it some data:
+ *
+ * $this->hook ('myapp/somehandler', array('id' => 123));
+ *
+ * 3. In otherapp/handler, verify the request and do something
+ * interesting with the id:
+ *
+ * <?php
+ *
+ * if (! $this->internal) {
+ *   die ('Cannot call me from a browser.');
+ * }
+ *
+ * if (! Form::verify_value ($this->data['id'], 'type', 'numeric')) {
+ *  die ('Invalid id value');
+ * }
+ *
+ * // do something with $this->data['id']
+ *
+ * ?>
  */
 class Controller {
 	/**
@@ -79,10 +108,19 @@ class Controller {
 	 */
 	var $cli = false;
 
-	function __construct () {
+	/**
+	 * A list of handlers defined to be called for each type of hook.
+	 * Similar to the idea of webhooks, this provides a means of triggering
+	 * handlers from each other without hard-coding the specific handlers in
+	 * the triggering code. See  conf/config.php's [Hooks] section for examples.
+	 */
+	var $hooks = array ();
+
+	function __construct ($hooks = array ()) {
 		if (defined ('STDIN')) {
 			$this->cli = true;
 		}
+		$this->hooks = $hooks;
 	}
 
 	/**
@@ -92,6 +130,18 @@ class Controller {
 		$c = new Controller;
 		$handler = $c->route ($uri);
 		return $c->handle ($handler, true, $data);
+	}
+
+	/**
+	 * Run any handlers for the specified hook type.
+	 */
+	function hook ($type, $data = array ()) {
+		if (! isset ($this->hooks[$type])) {
+			return false;
+		}
+		foreach ($this->hooks[$type] as $handler) {
+			$this->run ($handler, $data);
+		}
 	}
 
 	/**

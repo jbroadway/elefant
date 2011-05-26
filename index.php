@@ -32,7 +32,7 @@ if (defined ('STDIN')) {
 
 $i18n = new I18n ('lang', $conf['I18n']);
 $page = new Page;
-$controller = new Controller;
+$controller = new Controller ($conf['Hooks']);
 $tpl = new Template ($conf['General']['charset']);
 
 // connect to the database

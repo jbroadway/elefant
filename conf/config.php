@@ -35,4 +35,14 @@ file = "conf/site.db"
 ;user = username
 ;pass = "password"
 
+[Hooks]
+
+; This is a list of hooks in the system and associated handlers
+; to trigger when they occur. It's a good idea to name the hooks
+; you define after the handler they occur in, to make it easier
+; to look up the parameters they will receive.
+admin/add[] = search/add
+admin/edit[] = search/add
+admin/delete[] = search/delete
+
 ; */ ?>
