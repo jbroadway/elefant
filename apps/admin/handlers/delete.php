@@ -17,6 +17,7 @@ if (! $wp->remove ()) {
 }
 
 header ('Location: /admin');
+$this->hook ('admin/delete', $_GET);
 exit;
 
 ?>

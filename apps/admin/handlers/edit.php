@@ -21,6 +21,8 @@ if ($f->submit ()) {
 	$wp->put ();
 	if (! $wp->error) {
 		header ('Location: /admin');
+		$_POST['page'] = $_GET['page'];
+		$this->hook ('admin/edit', $_POST);
 		exit;
 	}
 	$page->title = 'An Error Occurred';
