@@ -26,14 +26,27 @@ require_once ('lib/I18n.php');
 require_once ('lib/Controller.php');
 require_once ('lib/Template.php');
 
+// cli support
 if (defined ('STDIN')) {
 	$_SERVER['REQUEST_URI'] = '/' . $argv[1];
 }
 
+// create core objects
 $i18n = new I18n ('lang', $conf['I18n']);
 $page = new Page;
 $controller = new Controller ($conf['Hooks']);
 $tpl = new Template ($conf['General']['charset']);
+
+// initialize cache
+if (isset ($conf['Cache']['server']) && extension_loaded ('memcache')) {
+	$memcache = new Memcache;
+	foreach ($conf['Cache']['server'] as $s) {
+		list ($server, $port) = explode (':', $s);
+		$memcache->addServer ($server, $port);
+	}
+} else {
+	$memcache = new Cache ();
+}
 
 // connect to the database
 if (! db_open ($conf['Database'])) {
