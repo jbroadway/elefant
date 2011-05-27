@@ -72,6 +72,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($b->name, 'Jim');
 		$this->assertEquals ($b->foo, 1);
 		$this->assertEquals ($b->foo ()->name, 'Joe');
+		$this->assertEquals ($b->foo ()->name, 'Joe');
 		try {
 			$this->assertTrue ($b->fake ());
 		} catch (Exception $e) {

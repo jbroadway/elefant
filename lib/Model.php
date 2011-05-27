@@ -82,9 +82,12 @@ class Model {
 
 	function __call($name, $arguments) {
 		if (isset ($this->data[$name]) && isset ($this->fields[$name]) && isset ($this->fields[$name]['ref'])) {
+			if (isset ($this->{'_ref_' . $name})) {
+				return $this->{'_ref_' . $name};
+			}
 			$class = $this->fields[$name]['ref'];
-			$obj = new $class ($this->data[$name]);
-			return $obj;
+			$this->{'_ref_' . $name} = new $class ($this->data[$name]);
+			return $this->{'_ref_' . $name};
 		}
 		$trace = debug_backtrace ();
 		trigger_error (
