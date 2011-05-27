@@ -80,6 +80,24 @@ class Model {
 		}
 	}
 
+	function __call($name, $arguments) {
+		if (isset ($this->data[$name]) && isset ($this->fields[$name]) && isset ($this->fields[$name]['ref'])) {
+			$class = $this->fields[$name]['ref'];
+			$obj = new $class ($this->data[$name]);
+			return $obj;
+		}
+		$trace = debug_backtrace ();
+		trigger_error (
+			sprintf ('Call to undefined method %s::%s in %s on line %d',
+				get_class ($this),
+				$name,
+				$trace[0]['file'],
+				$trace[0]['line']
+			),
+			E_USER_ERROR
+		);
+	}
+
 	function __get ($key) {
 		return (isset ($this->data[$key])) ? $this->data[$key] : null;
 	}

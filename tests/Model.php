@@ -7,6 +7,13 @@ class Qwerty extends Model {
 	var $key = 'foo';
 }
 
+class Foo extends Model {}
+class Bar extends Model {
+	var $fields = array (
+		'foo' => array ('ref' => 'Foo')
+	);
+}
+
 class ModelTest extends PHPUnit_Framework_TestCase {
 	function test_model () {
 		db_open (array ('driver' => 'sqlite', 'file' => ':memory:'));
@@ -53,6 +60,26 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertTrue ($res->remove ());
 		$this->assertEquals (db_shift ('select count() from qwerty'), 0);
+
+		db_execute ('create table foo(id int, name char(12))');
+		db_execute ('create table bar(id int, name char(12), foo int)');
+		
+		$f = new Foo (array ('id' => 1, 'name' => 'Joe'));
+		$f->put ();
+		$b = new Bar (array ('id' => 1, 'name' => 'Jim', 'foo' => 1));
+		$b->put ();
+
+		$this->assertEquals ($b->name, 'Jim');
+		$this->assertEquals ($b->foo, 1);
+		$this->assertEquals ($b->foo ()->name, 'Joe');
+		try {
+			$this->assertTrue ($b->fake ());
+		} catch (Exception $e) {
+			$this->assertRegExp (
+				'/Call to undefined method Bar::fake in .+tests\/Model\.php on line [0-9]+/',
+				$e->getMessage ()
+			);
+		}
 	}
 }
 
