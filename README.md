@@ -27,7 +27,6 @@ them with others as well.
 Some obvious missing pieces:
 
 * Permissions/access control
-* Caching (templates are compiled so they'll be opcode-cached) - use memcache?
 * RSS/XML/etc parsing - use SimplePie?
 * Email management
 * Deployment management
@@ -41,6 +40,7 @@ see the [Future page on the wiki](https://github.com/jbroadway/elefant/wiki/Futu
 * Really simple URL routing w/ friendly URLs
 * Secure database abstraction/modeling (based on PDO)
 * Compiled templates with output filtering *on* by default
+* Memcache integration
 * Flexible input validation (server-side and in-browser)
 * Simple form handling
 * Customizable user authentication
