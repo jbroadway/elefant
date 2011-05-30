@@ -133,6 +133,31 @@ class Controller {
 	}
 
 	/**
+	 * Trigger the default error handler. Note that you must echo the
+	 * output from your handler before returning, for example:
+	 *
+	 *   echo $this->error ();
+	 *   return;
+	 *
+	 * Not like this:
+	 *
+	 *   return $this->error ();
+	 */
+	function error ($code = 404, $title = 'Page not found', $message = '') {
+		global $conf;
+
+		// erase any existing output up to this point
+		ob_clean ();
+
+		// call the error handler
+		return $this->run ($conf['General']['error_handler'], array (
+			'code' => $code,
+			'title' => $title,
+			'message' => $message
+		));
+	}
+
+	/**
 	 * Run any handlers for the specified hook type.
 	 */
 	function hook ($type, $data = array ()) {

@@ -20,6 +20,12 @@ timezone = GMT
 
 default_handler = "admin/page"
 
+; Handler for errors, to be called by other handlers via
+; $controller->error() with 'code', 'title' and an optional
+; 'message' parameters.
+
+error_handler = "admin/error"
+
 ; Whether to gzip output for browsers that support it.
 ; This usually gives a noticeable performance boost.
 

@@ -1,6 +1,6 @@
 # Elefant
 
-Elefant is the MVC framework in PHP re-imagined. Elefant is based on
+Elefant is an MVC framework in PHP re-imagined. Elefant is based on
 12 years of programming in PHP and running a monolithic CMS project
 [www.sitellite.org](http://www.sitellite.org/) that despite its huge size
 did get a few things right that I haven't seen elsewhere. This is my attempt
@@ -24,18 +24,10 @@ part of the core framework, feel free to contribute!
 Elefant apps are self-contained, so you can also make reusable apps and share
 them with others as well.
 
-Some obvious missing pieces:
-
-* Permissions/access control
-* RSS/XML/etc parsing - use SimplePie?
-* Email management
-* Deployment management
-* Logging engine
-
-For a more complete discussion on missing pieces and the future of Elefant,
+For ideas on missing pieces and the future of Elefant,
 see the [Future page on the wiki](https://github.com/jbroadway/elefant/wiki/Future).
 
-## What *is* here?
+## What's Here
 
 * Really simple URL routing w/ friendly URLs
 * Secure database abstraction/modeling (based on PDO)
