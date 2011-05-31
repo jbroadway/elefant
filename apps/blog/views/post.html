@@ -1,0 +1,5 @@
+<div class="blog-post">
+<h2><a href="/blog/post/{{ id }}/{{ title|blog_filter_title }}">{{ title }}</a></h2>
+<p class="blog-info">{{ ts|blog_filter_date }} - {" by "} <a href="/blog/by/{{ author }}">{{ author }}</a></p>
+{{ body|none }}
+</div>

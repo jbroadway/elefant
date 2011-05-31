@@ -1,0 +1,11 @@
+{% if num > 1 %}
+<p class="blog-previous"><a href="/blog/by/{{ author }}/{{ num }}">&laquo; {" Newer posts "}</a></p>
+{% elseif num == 1 %}
+<p class="blog-previous"><a href="/blog/by/{{ author }}">&laquo; {" Newer posts "}</a></p>
+{% end %}
+
+{{ body|none }}
+
+{% if more %}
+<p class="blog-next"><a href="/blog/by/{{ author }}/{{ next }}">{" Older posts "} &raquo;</a></p>
+{% end %}
