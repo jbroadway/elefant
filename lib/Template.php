@@ -35,6 +35,9 @@
  *     {{ some_val }}
  *   {% end %}
  *
+ * Note that 'endif' and 'endforeach' are valid as well as 'end',
+ * if you prefer, for the sake of clarity.
+ *
  * ## Usage in PHP
  *
  * To call a template, use:
@@ -214,7 +217,7 @@ class Template {
 	 * Replace foreach and if blocks.
 	 */
 	function replace_blocks ($val) {
-		if ($val == 'end') {
+		if ($val == 'end' || $val == 'endif' || $val == 'endforeach') {
 			return '<?php } ?>';
 		}
 		

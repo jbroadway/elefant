@@ -21,6 +21,8 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($t->replace_strings ('Don\'t'), '<?php echo i18n_get (\'Don\\\'t\'); ?>');
 
 		$this->assertEquals ($t->replace_blocks ('end'), '<?php } ?>');
+		$this->assertEquals ($t->replace_blocks ('endif'), '<?php } ?>');
+		$this->assertEquals ($t->replace_blocks ('endforeach'), '<?php } ?>');
 		$this->assertEquals ($t->replace_blocks ('else'), '<?php } else { ?>');
 		$this->assertEquals ($t->replace_blocks ('if foo'), '<?php if ($data->foo) { ?>');
 		$this->assertEquals ($t->replace_blocks ('if foo.bar'), '<?php if ($GLOBALS[\'foo\']->bar) { ?>');
