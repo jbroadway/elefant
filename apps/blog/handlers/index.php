@@ -1,5 +1,7 @@
 <?php
 
+$appconf = parse_ini_file ('apps/blog/conf/config.php', true);
+
 require_once ('apps/blog/lib/Filters.php');
 
 $page->limit = 10;
@@ -16,6 +18,8 @@ $page->next = $page->num + 2;
 foreach ($posts as $post) {
 	echo $tpl->render ('blog/post', $post);
 }
+
+$page->title = $appconf['blog_title'];
 
 $page->template = 'blog/index';
 
