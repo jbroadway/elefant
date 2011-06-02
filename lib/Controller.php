@@ -116,6 +116,13 @@ class Controller {
 	 */
 	var $hooks = array ();
 
+	/**
+	 * Keeps track of the number of times each handler has been called in
+	 * this request. You can check $controller->called['handler'] for
+	 * the number.
+	 */
+	var $called = array ();
+
 	function __construct ($hooks = array ()) {
 		if (defined ('STDIN')) {
 			$this->cli = true;
@@ -129,6 +136,13 @@ class Controller {
 	function run ($uri, $data = array ()) {
 		$c = new Controller;
 		$handler = $c->route ($uri);
+
+		if (! isset ($this->called[$uri])) {
+			$this->called[$uri] = 1;
+		} else {
+			$this->called[$uri]++;
+		}
+
 		return $c->handle ($handler, true, $data);
 	}
 
@@ -158,7 +172,8 @@ class Controller {
 	}
 
 	/**
-	 * Run any handlers for the specified hook type.
+	 * Run any handlers for the specified hook type. Note that the
+	 * output for hooks is ignored.
 	 */
 	function hook ($type, $data = array ()) {
 		if (! isset ($this->hooks[$type])) {
@@ -177,6 +192,7 @@ class Controller {
 	function handle ($handler, $internal = true, $data = array ()) {
 		global $controller, $db, $conf, $i18n, $page, $tpl, $memcache;
 		$this->internal = $internal;
+		$data = (array) $data;
 		$this->data = $data;
 		ob_start ();
 		require ($handler);
