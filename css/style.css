@@ -56,6 +56,19 @@ a:hover {
 	padding-top: 15px;
 }
 
+	.block {
+		padding-bottom: 20px;
+	}
+
+	.block h3 {
+		margin-bottom: 0px;
+	}
+
+	.info {
+		color: #777;
+		margin-bottom: 0px;
+	}
+
 #footer {
 	border-top: 1px solid #ccc;
 	padding-top: 5px;
