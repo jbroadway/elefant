@@ -3,10 +3,10 @@
 require_once ('lib/Template.php');
 
 class TemplateTest extends PHPUnit_Framework_TestCase {
-	function test_template () {
+	function test_replace_vars () {
 		$t = new Template ('UTF-8');
 
-		$this->assertEquals ($t->replace_vars ('foo'), '<?php echo htmlspecialchars ($data->foo, ENT_QUOTES, \'UTF-8\'); ?>');
+		$this->assertEquals ($t->replace_vars ('foo'), '<?php echo Template::sanitize ($data->foo, \'UTF-8\'); ?>');
 		$this->assertEquals ($t->replace_vars ('foo|none'), '<?php echo $data->foo; ?>');
 		$this->assertEquals ($t->replace_vars ('foo|strtoupper|strtolower'), '<?php echo strtolower (strtoupper ($data->foo)); ?>');
 		$this->assertEquals ($t->replace_vars ('foo|date (\'F j\', %s)'), '<?php echo date (\'F j\', $data->foo); ?>');
@@ -17,8 +17,16 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($t->replace_vars ('$_POST[value]|none'), '<?php echo $_POST[value]; ?>');
 		$this->assertEquals ($t->replace_vars ('$_POST[\'value\']|none'), '<?php echo $_POST[\'value\']; ?>');
 		$this->assertEquals ($t->replace_vars ('$_POST.value|none'), '<?php echo $_POST[\'value\']; ?>');
+	}
+
+	function test_replace_strings () {
+		$t = new Template ('UTF-8');
 
 		$this->assertEquals ($t->replace_strings ('Don\'t'), '<?php echo i18n_get (\'Don\\\'t\'); ?>');
+	}
+
+	function test_replace_blocks () {
+		$t = new Template ('UTF-8');
 
 		$this->assertEquals ($t->replace_blocks ('end'), '<?php } ?>');
 		$this->assertEquals ($t->replace_blocks ('endif'), '<?php } ?>');
@@ -29,6 +37,10 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($t->replace_blocks ('if $_POST.value'), '<?php if ($_POST[\'value\']) { ?>');
 		$this->assertEquals ($t->replace_blocks ('elseif foo'), '<?php } elseif ($data->foo) { ?>');
 		$this->assertEquals ($t->replace_blocks ('foreach foo'), '<?php foreach ($data->foo as $data->loop_index => $data->loop_value) { ?>');
+	}
+
+	function test_parse_template () {
+		$t = new Template ('UTF-8');
 
 		$data = '{% foreach foo %}{% if loop_index == 1 %}{{ loop_value|none }}{% end %}{% end %}';
 		$out = '<?php foreach ($data->foo as $data->loop_index => $data->loop_value) { ?>'
@@ -36,6 +48,15 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 			. '<?php } ?><?php } ?>';
 		$this->assertEquals ($t->parse_template ($data), $out);
 		$this->assertEquals ($t->parse_template ('{" Hello "}'), '<?php echo i18n_get (\'Hello\'); ?>');
+	}
+
+	function test_sanitize () {
+		$t = new Template ('UTF-8');
+
+		$this->assertEquals (
+			$t->sanitize ('<script type="text/javascript">eval ("alert (typeof window)")</script>'),
+			'&lt;script type=&quot;text/javascript&quot;&gt;eval (&quot;alert (typeof window)&quot;)&lt;/script&gt;'
+		);
 	}
 }
 

@@ -185,7 +185,7 @@ class Template {
 		}
 
 		if (count ($filters) == 0) {
-			return '<?php echo htmlspecialchars (' . $val . ', ENT_QUOTES, \'' . $this->charset . '\'); ?>';
+			return '<?php echo Template::sanitize (' . $val . ', \'' . $this->charset . '\'); ?>';
 		} else if ($filters[0] == 'none') {
 			return '<?php echo ' . $val . '; ?>';
 		}
@@ -211,6 +211,13 @@ class Template {
 	 */
 	function replace_strings ($val) {
 		return '<?php echo i18n_get (\'' . str_replace ('\'', '\\\'', $val) . '\'); ?>';
+	}
+
+	/**
+	 * Sanitize a value for safe output, helping to prevent XSS attacks.
+	 */
+	function sanitize ($val, $charset = 'UTF-8') {
+		return htmlspecialchars ($val, ENT_QUOTES, $charset);
 	}
 
 	/**
