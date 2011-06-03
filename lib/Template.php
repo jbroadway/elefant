@@ -125,7 +125,7 @@ class Template {
 	 * Render a template with the given data. Generate the PHP template if
 	 * necessary.
 	 */
-	function render ($template, $data) {
+	function render ($template, $data = array ()) {
 		if (is_array ($data)) {
 			$data = (object) $data;
 		}
