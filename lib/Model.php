@@ -116,7 +116,8 @@ class Model {
 		if ($this->is_new) {
 			// insert
 			$ins = array ();
-			for ($i = 0; $i < count ($this->data); $i++) {
+			$len = count ($this->data);
+			for ($i = 0; $i < $len; $i++) {
 				$ins[] = '?';
 			}
 			if (! db_execute ('insert into ' . $this->table . ' (' . join (', ', array_keys ($this->data)) . ') values (' . join (', ', $ins) . ')', $this->data)) {
