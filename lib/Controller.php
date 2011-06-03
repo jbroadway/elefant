@@ -119,7 +119,8 @@ class Controller {
 	/**
 	 * Keeps track of the number of times each handler has been called in
 	 * this request. You can check $controller->called['handler'] for
-	 * the number.
+	 * the number, but make sure you use $controller and not $this in
+	 * handlers to make sure it refers to the global controller.
 	 */
 	var $called = array ();
 
@@ -134,13 +135,14 @@ class Controller {
 	 * Run an internal request from one handler to another.
 	 */
 	function run ($uri, $data = array ()) {
+		global $controller;
 		$c = new Controller;
 		$handler = $c->route ($uri);
 
-		if (! isset ($this->called[$uri])) {
-			$this->called[$uri] = 1;
+		if (! isset ($controller->called[$uri])) {
+			$controller->called[$uri] = 1;
 		} else {
-			$this->called[$uri]++;
+			$controller->called[$uri]++;
 		}
 
 		return $c->handle ($handler, true, $data);
