@@ -15,6 +15,10 @@ a:hover {
 	color: #A753CC;
 }
 
+#fb-root {
+	display: none;
+}
+
 #wrapper {
 	margin: 25px auto 25px auto;
 	padding: 20px 15px 40px 15px;
