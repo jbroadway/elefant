@@ -2,6 +2,8 @@
 
 $appconf = parse_ini_file ('apps/blog/conf/config.php', true);
 
+$page->layout = $appconf['blog_layout'];
+
 require_once ('apps/blog/lib/Filters.php');
 
 $page->limit = 10;
@@ -16,10 +18,13 @@ $page->more = ($page->count > $page->last) ? true : false;
 $page->next = $page->num + 2;
 
 foreach ($posts as $post) {
+	$post->url = '/blog/post/' . $post->id . '/' . blog_filter_title ($post->title);
 	echo $tpl->render ('blog/post', $post);
 }
 
-$page->title = $appconf['blog_title'];
+if (! $this->internal) {
+	$page->title = $appconf['blog_title'];
+}
 
 $page->template = 'blog/index';
 

@@ -1,5 +1,15 @@
-<div class="blog-post">
-<h2><a href="/blog/post/{{ id }}/{{ title|blog_filter_title }}">{{ title }}</a></h2>
-<p class="blog-info">{{ ts|blog_filter_date }} - {" by "} <a href="/blog/by/{{ author }}">{{ author }}</a></p>
+{% if full %}
+<p><a href="/blog">&laquo; {"Back to posts"}</a></p>
+{% end %}
+
+<div class="blog-post block">
+<h3><a href="{{ url }}">{{ title }}</a></h3>
+<p class="blog-info info">{{ ts|blog_filter_date }} - {" by "} <a href="/blog/by/{{ author }}">{{ author }}</a></p>
 {{ body|none }}
+<hr />
+<div class="blog-comments">
+<a href="{{ url }}">{{ controller.run ('social/facebook/commentcount', $data)|none }} comments</a>&nbsp;
+{{ controller.run ('social/twitter/tweet', $data)|none }}
+{{ controller.run ('social/facebook/like', $data)|none }}
+</div>
 </div>
