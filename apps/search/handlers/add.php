@@ -11,8 +11,6 @@ if (count ($failed) > 0) {
 
 require_once ('apps/search/lib/indextank_client.php');
 
-$appconf = parse_ini_file ('apps/search/conf/config.php', true);
-
 $client = new ApiClient ($appconf['IndexTank']['private_api_url']);
 $index = $client->get_index ($appconf['IndexTank']['index_name']);
 

@@ -1,7 +1,5 @@
 <?php
 
-$appconf = parse_ini_file ('apps/search/conf/config.php', true);
-
 $page->head = '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/apps/search/js/indextank/jquery.indextank.ize.js"></script>

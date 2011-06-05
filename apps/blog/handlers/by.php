@@ -1,8 +1,6 @@
 <?php
 
-$appconf = parse_ini_file ('apps/blog/conf/config.php', true);
-
-$page->layout = $appconf['blog_layout'];
+$page->layout = $appconf['Blog']['layout'];
 
 require_once ('apps/blog/lib/Filters.php');
 

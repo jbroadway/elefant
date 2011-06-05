@@ -1,8 +1,6 @@
 <?php
 
-$appconf = parse_ini_file ('apps/blog/conf/config.php', true);
-
-$page->layout = $appconf['blog_layout'];
+$page->layout = $appconf['Blog']['layout'];
 
 require_once ('apps/blog/lib/Filters.php');
 
@@ -23,7 +21,7 @@ foreach ($posts as $post) {
 }
 
 if (! $this->internal) {
-	$page->title = $appconf['blog_title'];
+	$page->title = $appconf['Blog']['title'];
 }
 
 $page->template = 'blog/index';
