@@ -124,6 +124,14 @@ class Controller {
 	 */
 	var $called = array ();
 
+	/**
+	 * When a handler is loaded, if there is a conf/config.php for that
+	 * app, its contents will be loaded into $appconf['appname'] once
+	 * the first time it is called, and accessible thereafter by any
+	 * handler in that app directly via $appconf.
+	 */
+	var $appconf = array ();
+
 	function __construct ($hooks = array ()) {
 		if (defined ('STDIN')) {
 			$this->cli = true;
@@ -196,6 +204,14 @@ class Controller {
 		$this->internal = $internal;
 		$data = (array) $data;
 		$this->data = $data;
+		if (! isset ($controller->appconf[$this->app])) {
+			if (@file_exists ('apps/' . $this->app . '/conf/config.php')) {
+				$controller->appconf[$this->app] = parse_ini_file ('apps/' . $this->app . '/conf/config.php', true);
+			} else {
+				$controller->appconf[$this->app] = array ();
+			}
+		}
+		$appconf = $controller->appconf[$this->app];
 		ob_start ();
 		require ($handler);
 		return ob_get_clean ();
