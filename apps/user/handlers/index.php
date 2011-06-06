@@ -1,0 +1,1 @@
+<?php $page->template = 'user/index'; ?>
