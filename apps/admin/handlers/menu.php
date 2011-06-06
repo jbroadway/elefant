@@ -1,12 +1,14 @@
 <?php
 
 $menu = Webpage::query ()
-	->order ('title asc')
-	->fetch_assoc ('id', 'title');
+	->where ('weight > -1') // negative weight leaves pages out of menus
+	->order ('weight desc')
+	->fetch_orig ();
 
 echo '<ul>';
-foreach ($menu as $id => $title) {
-	printf ('<li><a href="/%s">%s</a></li>', $id, $title);
+foreach ($menu as $page) {
+	$mt = (! empty ($page->menu_title)) ? $page->menu_title : $page->title;
+	printf ('<li><a href="/%s">%s</a></li>', $page->id, $mt);
 }
 echo '</ul>';
 
