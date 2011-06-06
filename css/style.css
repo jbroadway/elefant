@@ -3,7 +3,7 @@ body {
 	color: #222;
 }
 
-h1, h2 {
+h1, h2, h3, h4, h5, h6 {
 	color: #555;
 }
 
@@ -72,6 +72,10 @@ a:hover {
 		color: #777;
 		margin-bottom: 0px;
 	}
+
+#sidebar {
+	padding-top: 15px;
+}
 
 #footer {
 	border-top: 1px solid #ccc;

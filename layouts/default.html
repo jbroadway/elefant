@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Site Name - {{ title }}</title>
+	<title>Site Name - {{ window_title }}</title>
 	<link rel="stylesheet" type="text/css" href="/css/reset.css" />
 	<link rel="stylesheet" type="text/css" href="/css/text.css" />
 	<link rel="stylesheet" type="text/css" href="/css/960.css" />
@@ -19,11 +19,20 @@
 		</div>
 	</div>
 	<div class="clear"></div>
-	<div id="body" class="grid_12">
+	<div id="body" class="grid_8">
 
 {% if title != '' %}<h2>{{ title }}</h2>{% end %}
 {{ body|none }}
 
+	</div>
+	<div id="sidebar" class="grid_4">
+{% if ! User::is_valid () %}
+<h3>Members</h3>
+{{ controller.run ('user/login')|none }}
+{% else %}
+<h3>{{ user.name }}</h3>
+<p><a href="/user/logout?redirect=/">{"Log out"}</a></p>
+{% end %}
 	</div>
 	<div class="clear"></div>
 	<div id="footer" class="grid_12">
