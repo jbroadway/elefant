@@ -3,8 +3,9 @@
 [General]
 
 ; A master login for the example /admin pages.
+; Username should be an email address.
 
-master_username = master
+master_username = "you@example.com"
 master_password = "CHANGE ME"
 
 ; Default character set for output.
