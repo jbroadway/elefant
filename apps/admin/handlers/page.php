@@ -10,6 +10,10 @@ if ($wp->error) {
 }
 
 $page->title = $wp->title;
+$page->menu_title = $wp->menu_title;
+$page->window_title = $wp->window_title;
+$page->description = $wp->description;
+$page->keywords = $wp->keywords;
 $page->template = 'admin/base';
 $page->layout = $wp->layout;
 $page->head = $wp->head;
