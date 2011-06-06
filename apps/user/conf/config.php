@@ -3,6 +3,7 @@
 [User]
 
 logout_redirect = "/"
+user_types = "admin, member"
 
 [Admin]
 

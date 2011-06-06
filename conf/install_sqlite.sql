@@ -27,10 +27,3 @@ create table user (
 
 create index user_email_password on user (email, password);
 create index user_session_id on user (session_id);
-
-create table usertype (
-	usertype char(32) not null primary key
-);
-
-insert into usertype (usertype) values ('admin');
-insert into usertype (usertype) values ('member');
