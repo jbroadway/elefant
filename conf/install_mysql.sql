@@ -10,7 +10,7 @@ create table webpage (
 	body text
 );
 
-insert into webpage (id, title, menu_title, window_title, weight, layout, description, keywords, body) values ('index', 'Congratulations!', 'Home', 'Home', 0, '', '', '', '<p>You have successfully installed PinkElefant!</p>');
+insert into webpage (id, title, menu_title, window_title, weight, layout, description, keywords, body) values ('index', 'Congratulations!', 'Home', 'Home', 0, '', '', '', '<p>You have successfully installed Elefant!</p>');
 
 create table user (
 	id int not null auto_increment primary key,
