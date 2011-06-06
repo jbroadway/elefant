@@ -46,6 +46,14 @@ class Page {
 		}
 		return $this->body;
 	}
+
+	function __get ($key) {
+		if ($key == 'menu_title') {
+			return (! empty ($this->menu_title)) ? $this->menu_title : $this->title;
+		} elseif ($key == 'window_title') {
+			return (! empty ($this->window_title)) ? $this->window_title : $this->title;
+		}
+	}
 }
 
 ?>
