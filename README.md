@@ -39,7 +39,7 @@ see the [Future page on the wiki](https://github.com/jbroadway/elefant/wiki/Futu
 * Internationalization/localization
 * CLI support for background tasks
 * As little scaffolding as possible
-* Example /admin app for editing pages
+* Reusable apps for common tasks (admin, users, blog)
 * Example /search app (powered by [IndexTank](http://www.indextank.com/))
 * [High quality documentation](https://github.com/jbroadway/elefant/wiki)
 * Near 100% unit test coverage
@@ -73,10 +73,11 @@ http://github.com/jbroadway/elefant
 2. Unzip into a site root somewhere (no sub-folders, use sub-domains instead).
 Change the permissions on folders conf and cache to `0777`.
 
-3. Edit `conf/config.php` and add your database connection info.
+3. Edit `conf/config.php` and add your database connection info and default
+login info.
 
-4. Run the appropriate `conf/install_*.sql` file to create the tables for the
-admin example handlers.
+4. Run the command `php conf/createdb.php` to create the default database tables
+for the admin and user handlers.
 
 5. Go to your site and see that it worked. You should see a basic welcome page
 if all went well.
