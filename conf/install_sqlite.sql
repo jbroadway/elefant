@@ -13,7 +13,7 @@ create table webpage (
 insert into webpage (id, title, menu_title, window_title, weight, layout, description, keywords, body) values ('index', 'Congratulations!', 'Home', 'Home', 0, '', '', '', '<p>You have successfully installed Elefant!</p>');
 
 create table user (
-	id int not null primary key,
+	id integer primary key,
 	email char(72) unique not null,
 	password char(35) not null,
 	session_id char(32) unique,
@@ -29,7 +29,7 @@ create index user_email_password on user (email, password);
 create index user_session_id on user (session_id);
 
 create table versions (
-	id int not null primary key,
+	id integer primary key,
 	class char(72) not null,
 	pkey char(72) not null,
 	user int not null,

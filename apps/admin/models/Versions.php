@@ -1,14 +1,42 @@
 <?php
 
 /**
- * For keeping a change history of any object.
+ * Keeps a change history of any Model object.
  *
- * id
- * class
- * pkey
- * user
- * ts
- * serialized
+ * Usage:
+ *
+ *   // saving a new version
+ *   Versions::add ($obj);
+ *
+ *   // getting the history of an object
+ *   $history = Versions::history ($obj);
+ *
+ *   // get recent changes by current user
+ *   global $user;
+ *   $recent = Versions::recent ($user);
+ *
+ *   // compare current version of a web page to previous:
+ *
+ *   // 1. fetch the page
+ *   $w = new Webpage ('index');
+ *
+ *   // 2. get the previous version (limit=1, offset=1)
+ *   $history = Versions::history ($w, 1, 1);
+ *
+ *   // 3. restore the first result's object
+ *   $w2 = Versions::restore ($history[0]);
+ *
+ *   // 4. compare the two
+ *   $modified_fields = Versions::diff ($w, $w2);
+ *
+ * Fields:
+ *
+ * id - versions id
+ * class - class name of the object
+ * pkey - object's 'key' field value
+ * user - user id or 0 if no user saved
+ * ts - date/time of the change
+ * serialized - serialized version of the object
  */
 class Versions extends Model {
 	/**
@@ -21,10 +49,20 @@ class Versions extends Model {
 			'pkey' => $obj->{$obj->key},
 			'user' => (! $user) ? 0 : $user->id,
 			'ts' => gmdate ('Y-m-d H:i:s'),
-			'serialized' => serialize ($obj)
+			'serialized' => json_encode ($obj->data)
 		));
 		$v->put ();
 		return $v;
+	}
+
+	/**
+	 * Recreate an object from the stored version. Takes any
+	 * result from recent() or history().
+	 */
+	function restore ($vobj) {
+		$class = $vobj->class;
+		$obj = new $class (json_decode ($vobj->serialized), false);
+		return $obj;
 	}
 
 	/**
@@ -35,15 +73,15 @@ class Versions extends Model {
 		if ($user) {
 			$v->where ('user', $user);
 		}
-		$v->order ('ts desc');
-		$v->group ('class, pkey');
-		return $v->fetch_orig ($limit, $offset);
+		return $v->order ('ts desc')
+			->group ('class, pkey')
+			->fetch_orig ($limit, $offset);
 	}
 
 	/**
 	 * Get recent versions of an object.
 	 */
-	function for_object ($obj, $limit = 10, $offset = 0) {
+	function history ($obj, $limit = 10, $offset = 0) {
 		return Versions::query ()
 			->where ('class', get_class ($obj))
 			->where ('pkey', $obj->{$obj->key})
@@ -52,17 +90,24 @@ class Versions extends Model {
 	}
 
 	/**
-	 * Compare two versions of an object. Returns an array of properties
+	 * Compare two versions of a Model object. Returns an array of properties
 	 * that have changed between the two versions, but does no comparison
-	 * of the changes themselves.
+	 * of the changes themselves. Note that this looks at the data array
+	 * of the Model objects, not object properties, so it will not work
+	 * on ordinary objects, only Model-based objects and objects returned
+	 * by the recent() and history() methods.
 	 */
 	function diff ($obj1, $obj2) {
-		$diff = new Diff;
+		if (get_class ($obj1) == 'stdClass') {
+			$obj1 = Versions::restore ($obj1);
+		}
+		if (get_class ($obj2) == 'stdClass') {
+			$obj2 = Versions::restore ($obj2);
+		}
 
-		$vars = get_object_vars ($obj1);
 		$changed = array ();
-		foreach ($vars as $key => $value) {
-			if ($value !== $obj2->{$key}) {
+		foreach ($obj1->data as $key => $value) {
+			if ($value !== $obj2->data[$key]) {
 				$changed[] = $key;
 			}
 		}
