@@ -114,6 +114,31 @@ class User extends Model {
 	}
 
 	/**
+	 * Simplifies authorization for admins down to:
+	 *
+	 *   if (! User::require_admin ()) {
+	 *     // unauthorized
+	 *   }
+	 */
+	function require_admin () {
+		global $user;
+		if (is_object ($user)) {
+			if ($user->session_id == $_SESSION['session_id']) {
+				if ($user->type == 'admin') {
+					return true;
+				}
+				return false;
+			}
+		} else {
+			$res = simple_auth (array ('User', 'verifier'), array ('User', 'method'));
+			if ($res && $user->type == 'admin') {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Check if a user is valid.
 	 */
 	function is_valid () {
