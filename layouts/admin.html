@@ -1,25 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Elefant Admin</title>
+	<title>Elefant Admin - {{ window_title }}</title>
 	<link rel="stylesheet" type="text/css" href="/css/reset.css" />
 	<link rel="stylesheet" type="text/css" href="/css/text.css" />
 	<link rel="stylesheet" type="text/css" href="/css/960.css" />
 	<link rel="stylesheet" type="text/css" href="/css/admin.css" />
+	{{ controller.run ('admin/head')|none }}
+	{{ head|none }}
 </head>
 <body>
 <div id="wrapper" class="container_12">
-	<div id="head" class="grid_12">
-		<div class="grid_7 alpha">
-			<h1><em>Elefant</em>Admin</h1>
-			<span id="slogan">The PHP website framework re-imagined.</span>
-		</div>
-		<div class="grid_5 omega nav">
-			<a href="/admin">{" Home "}</a>
-		</div>
-	</div>
-	<div class="clear"></div>
 	<div id="body" class="grid_12">
+	{% if title != '' %}<h2>{{ title }}</h2>{% end %}
 	{{ body|none }}
 	</div>
 	<div class="clear"></div>
