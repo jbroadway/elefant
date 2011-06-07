@@ -27,3 +27,15 @@ create table user (
 
 create index user_email_password on user (email, password);
 create index user_session_id on user (session_id);
+
+create table versions (
+	id int not null primary key,
+	class char(72) not null,
+	pkey char(72) not null,
+	user int not null,
+	ts datetime not null,
+	serialized text not null
+);
+
+create index versions_class on versions (class, pkey, ts);
+create index versions_user on versions (user, ts);

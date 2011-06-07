@@ -26,3 +26,14 @@ create table user (
 	index(email, password),
 	index(session_id)
 );
+
+create table versions (
+	id int not null auto_increment primary key,
+	class char(72) not null,
+	pkey char(72) not null,
+	user int not null,
+	ts datetime not null,
+	serialized text not null,
+	index (class, pkey, ts),
+	index (user, ts)
+);
