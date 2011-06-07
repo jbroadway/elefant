@@ -2,10 +2,9 @@
 
 $page->layout = 'admin';
 
-if (! simple_auth ()) {
-	$page->title = 'Login Required';
-	echo '<p>You must be logged in to access these pages.</p>';
-	return;
+if (! User::require_admin ()) {
+	header ('Location: /');
+	exit;
 }
 
 $wp = new Webpage ($_GET['page']);
