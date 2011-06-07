@@ -20,10 +20,11 @@ body {
 
 	#admin-bar>span {
 		padding-top: 3px;
+		text-shadow: #000 0px 1px 0px;
 	}
 
 	#admin-bar>span>em {
-		color: #A753CC;
+		color: #B763DC;
 		font-style: italic;
 	}
 
@@ -38,25 +39,32 @@ body {
 		float: left;
 		margin: 0;
 		height: 25px;
-		padding: 5px 20px 0px 8px;
+		padding: 5px 8px 0px 8px;
 		font-weight: normal;
 		color: #f5f5f5;
 		position: relative;
 	}
 
-		#admin-links span:hover {
+		#admin-links>span:hover {
 			color: #A753CC;
 			background: rgba(0,0,0,.9);
 			text-decoration: none;
 		}
 
-	#admin-tools-arrow {
-		font-weight: normal;
-		font-size: 20px;
-		float: right;
-		margin-right: -12px;
-		margin-top: 2px;
-	}
+		#admin-tools>strong {
+			font-weight: normal;
+			background: #5a5a5a;
+			border: 1px solid #777;
+			-webkit-border-radius: 12px;
+			-moz-border-radius: 12px;
+			border-radius: 12px;
+			padding: 0px 3px 0px 3px;
+		}
+
+		#admin-tools:hover>strong {
+			background: rgba(167,83,204,.4);
+			border: 1px solid #A753CC;
+		}
 
 	#admin-links a {
 		display: block;
@@ -100,11 +108,11 @@ body {
 		padding: 5px 0 0 5px;
 		margin: 0;
 		color: #fff;
-		background: rgba(0,0,0,.65);
+		background: rgba(0,0,0,.7);
 		border-bottom: 1px solid rgba(255,255,255,.25);
 	}
 
 	#admin-tools-list li a:hover {
 		text-decoration: none;
-		background: rgba(0,0,0,.75);
+		background: rgba(0,0,0,.8);
 	}
