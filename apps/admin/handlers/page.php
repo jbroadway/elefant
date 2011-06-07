@@ -9,6 +9,7 @@ if ($wp->error) {
 	return;
 }
 
+$page->id = $id;
 $page->title = $wp->title;
 $page->menu_title = $wp->menu_title;
 $page->window_title = $wp->window_title;
@@ -20,7 +21,9 @@ $page->head = $wp->head;
 
 echo $wp->body;
 
-if (User::is_valid ()) {
+global $user;
+
+if (User::is_valid () && $user->type == 'admin') {
 	$page->template = 'admin/editable';
 	$page->head .= '<script type="text/javascript" src="/js/jquery.editable.js"></script>';
 }

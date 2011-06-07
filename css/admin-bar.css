@@ -116,3 +116,18 @@ body {
 		text-decoration: none;
 		background: rgba(0,0,0,.8);
 	}
+
+.admin-options a {
+	width: 50px;
+	padding: 5px 10px 5px 10px;
+	margin: 0;
+	background: rgba(0,0,0,.75);
+	color: #fff;
+	text-decoration: none;
+}
+
+.admin-options a:hover {
+	color: #A753CC;
+	background: rgba(0,0,0,.9);
+	text-decoration: none;
+}
