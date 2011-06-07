@@ -20,4 +20,9 @@ $page->head = $wp->head;
 
 echo $wp->body;
 
+if (User::is_valid ()) {
+	$page->template = 'admin/editable';
+	$page->head .= '<script type="text/javascript" src="/js/jquery.editable.js"></script>';
+}
+
 ?>

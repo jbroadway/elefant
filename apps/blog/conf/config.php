@@ -9,7 +9,7 @@ comments = facebook
 
 [Admin]
 
-handler = admin
+handler = blog/admin
 name = Blog Posts
 
 ; */ ?>

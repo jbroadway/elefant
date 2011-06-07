@@ -1,0 +1,9 @@
+<span id="admin-tools"><strong id="admin-tools-arrow">&#780;</strong>Tools
+<ul id="admin-tools-list">
+{% foreach tools %}
+	<li><a href="/{{ loop_index }}">{{ loop_value }}</a></li>
+{% end %}
+</ul>
+</span>
+<a href="/user/profile">{{ user }}</a>
+<a href="/user/logout">{"Log out"}</a>

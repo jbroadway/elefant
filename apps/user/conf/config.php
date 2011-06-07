@@ -7,7 +7,7 @@ user_types = "admin, member"
 
 [Admin]
 
-handler = admin
+handler = user/admin
 name = Users
 
 ; */ ?>

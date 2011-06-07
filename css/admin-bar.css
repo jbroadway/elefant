@@ -1,0 +1,110 @@
+body {
+	padding-top: 20px;
+}
+
+#admin-bar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 30px;
+	width: 100%;
+	z-index: 100000;
+	background: rgba(0,0,0,.75);
+	color: #f5f5f5;
+	position: fixed;
+	padding: 0px 10px 0px 10px;
+	font-size: 18px;
+	font-weight: bold;
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+	#admin-bar>span {
+		padding-top: 3px;
+	}
+
+	#admin-bar>span>em {
+		color: #A753CC;
+		font-style: italic;
+	}
+
+#admin-links {
+	float: right;
+	font-size: 12px;
+	margin-right: 20px;
+}
+
+	#admin-links>span {
+		display: block;
+		float: left;
+		margin: 0;
+		height: 25px;
+		padding: 5px 20px 0px 8px;
+		font-weight: normal;
+		color: #f5f5f5;
+		position: relative;
+	}
+
+		#admin-links span:hover {
+			color: #A753CC;
+			background: rgba(0,0,0,.9);
+			text-decoration: none;
+		}
+
+	#admin-tools-arrow {
+		font-weight: normal;
+		font-size: 20px;
+		float: right;
+		margin-right: -12px;
+		margin-top: 2px;
+	}
+
+	#admin-links a {
+		display: block;
+		float: left;
+		margin: 0;
+		height: 25px;
+		padding: 5px 8px 0px 8px;
+		font-weight: normal;
+		color: #f5f5f5;
+		text-decoration: none;
+	}
+
+		#admin-links a:hover {
+			color: #A753CC;
+			background: rgba(0,0,0,.9);
+			text-decoration: none;
+		}
+
+	#admin-tools-list {
+		display: none;
+		position: absolute;
+		left: 0;
+		top: 30px;
+		margin: 0;
+		padding: 0;
+		float: left;
+		border: 0;
+		list-style: none;
+	}
+
+	#admin-tools-list li {
+		margin: 0;
+		padding: 0;
+		clear: both;
+	}
+
+	#admin-tools-list li a {
+		display: block;
+		width: 150px;
+		text-decoration: none;
+		padding: 5px 0 0 5px;
+		margin: 0;
+		color: #fff;
+		background: rgba(0,0,0,.65);
+		border-bottom: 1px solid rgba(0,0,0,.75);
+	}
+
+	#admin-tools-list li a:hover {
+		text-decoration: none;
+		background: rgba(0,0,0,.75);
+	}
