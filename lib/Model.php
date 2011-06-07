@@ -233,11 +233,11 @@ class Model {
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ' . join (' and ', $this->query_filters);
 		}
-		if (! empty ($this->query_order)) {
-			$sql .= ' order by ' . $this->query_order;
-		}
 		if (! empty ($this->query_group)) {
 			$sql .= ' group by ' . $this->query_group;
+		}
+		if (! empty ($this->query_order)) {
+			$sql .= ' order by ' . $this->query_order;
 		}
 		if ($limit) {
 			$sql .= ' limit ' . $limit . ' offset ' . $offset;
@@ -262,11 +262,11 @@ class Model {
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ' . join (' and ', $this->query_filters);
 		}
-		if (! empty ($this->query_order)) {
-			$sql .= ' order by ' . $this->query_order;
-		}
 		if (! empty ($this->query_group)) {
 			$sql .= ' group by ' . $this->query_group;
+		}
+		if (! empty ($this->query_order)) {
+			$sql .= ' order by ' . $this->query_order;
 		}
 		$res = db_shift ($sql, $this->query_params);
 		if ($res === false) {
@@ -284,11 +284,11 @@ class Model {
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ' . join (' and ', $this->query_filters);
 		}
-		if (! empty ($this->query_order)) {
-			$sql .= ' order by ' . $this->query_order;
-		}
 		if (! empty ($this->query_group)) {
 			$sql .= ' group by ' . $this->query_group;
+		}
+		if (! empty ($this->query_order)) {
+			$sql .= ' order by ' . $this->query_order;
 		}
 		if ($limit) {
 			$sql .= ' limit ' . $limit . ' offset ' . $offset;
