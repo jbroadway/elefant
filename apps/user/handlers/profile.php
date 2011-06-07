@@ -9,6 +9,8 @@ if (! $this->params[0]) {
 }
 
 $page->title = $u->name;
-echo $tpl->render ('user/profile', $u->orig ());
+$data = $u->orig ();
+$data->hash = md5 (strtolower (trim ($data->email)));
+echo $tpl->render ('user/profile', $data);
 
 ?>
