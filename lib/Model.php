@@ -49,6 +49,7 @@ class Model {
 	var $error = false;
 	var $is_new = false;
 	var $query_order = '';
+	var $query_group = '';
 	var $query_filters = array ();
 	var $query_params = array ();
 
@@ -202,6 +203,14 @@ class Model {
 	}
 
 	/**
+	 * Group the query by the specific clauses.
+	 */
+	function group ($group) {
+		$this->query_group = $group;
+		return $this;
+	}
+
+	/**
 	 * Add a where condition to the query. Can be either a field/value
 	 * combo, or if no value is present it assumes a custom condition
 	 * in the first parameter.
@@ -226,6 +235,9 @@ class Model {
 		}
 		if (! empty ($this->query_order)) {
 			$sql .= ' order by ' . $this->query_order;
+		}
+		if (! empty ($this->query_group)) {
+			$sql .= ' group by ' . $this->query_group;
 		}
 		if ($limit) {
 			$sql .= ' limit ' . $limit . ' offset ' . $offset;
@@ -253,6 +265,9 @@ class Model {
 		if (! empty ($this->query_order)) {
 			$sql .= ' order by ' . $this->query_order;
 		}
+		if (! empty ($this->query_group)) {
+			$sql .= ' group by ' . $this->query_group;
+		}
 		$res = db_shift ($sql, $this->query_params);
 		if ($res === false) {
 			$this->error = db_error ();
@@ -271,6 +286,9 @@ class Model {
 		}
 		if (! empty ($this->query_order)) {
 			$sql .= ' order by ' . $this->query_order;
+		}
+		if (! empty ($this->query_group)) {
+			$sql .= ' group by ' . $this->query_group;
 		}
 		if ($limit) {
 			$sql .= ' limit ' . $limit . ' offset ' . $offset;
