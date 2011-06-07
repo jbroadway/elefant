@@ -16,8 +16,9 @@ if (! $wp->remove ()) {
 	return;
 }
 
-header ('Location: /admin');
 $this->hook ('admin/delete', $_GET);
-exit;
+$page->title = 'Page Deleted';
+echo '<p>The page has been deleted.</p>';
+echo '<p><a href="/">Continue</a></p>';
 
 ?>
