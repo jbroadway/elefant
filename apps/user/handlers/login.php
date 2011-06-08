@@ -10,7 +10,7 @@ if (! isset ($_POST['redirect'])) {
 
 if (! User::require_login ()) {
 	if (! $this->internal && ! empty ($_POST['username'])) {
-		echo '<p class="notice">' . i18n_get ('Incorrect email or password, please try again.') . '</p>';
+		echo '<p>' . i18n_get ('Incorrect email or password, please try again.') . '</p>';
 	}
 	echo $tpl->render ('user/login', $_POST);
 } elseif (! $this->internal) {
