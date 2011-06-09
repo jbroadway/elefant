@@ -39,3 +39,12 @@ create table versions (
 
 create index versions_class on versions (class, pkey, ts);
 create index versions_user on versions (user, ts);
+
+create table api (
+	token char(35) not null primary key,
+	api_key char(35) not null,
+	user_id int not null
+);
+
+create index api_token on api (token, api_key);
+create index api_user on api (user_id);

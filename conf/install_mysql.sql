@@ -37,3 +37,11 @@ create table versions (
 	index (class, pkey, ts),
 	index (user, ts)
 );
+
+create table api (
+	token char(35) not null primary key,
+	api_key char(35) not null,
+	user_id int not null,
+	index (token, api_key),
+	index (user_id)
+);
