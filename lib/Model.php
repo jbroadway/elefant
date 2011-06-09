@@ -44,6 +44,7 @@
 class Model {
 	var $table = '';
 	var $key = 'id';
+	var $keyval = false;
 	var $data = array ();
 	var $fields = array ();
 	var $error = false;
@@ -66,6 +67,7 @@ class Model {
 		$vals = is_object ($vals) ? (array) $vals : $vals;
 		if (is_array ($vals)) {
 			$this->data = $vals;
+			$this->keyval = $vals[$this->key];
 			if ($is_new) {
 				$this->is_new = true;
 			}
@@ -75,6 +77,7 @@ class Model {
 				$this->error = 'No object by that ID.';
 			} else {
 				$this->data = (array) $res;
+				$this->keyval = $this->data[$this->key];
 			}
 		} else {
 			$this->is_new = true;
@@ -127,6 +130,7 @@ class Model {
 			}
 			if (! isset ($this->data[$this->key])) {
 				$this->data[$this->key] = db_lastid ();
+				$this->keyval = $this->data[$this->key];
 			}
 			$this->is_new = false;
 			return true;
@@ -137,14 +141,16 @@ class Model {
 		$par = array ();
 		$sep = '';
 		foreach ($this->data as $key => $val) {
-			if ($key == $this->key) {
-				continue;
-			}
 			$ins .= $sep . $key . ' = ?';
 			$par[] = $val;
 			$sep = ', ';
 		}
-		$par[] = $this->data[$this->key];
+		if ($this->keyval && $this->keyval != $this->data[$this->key]) {
+			$par[] = $this->keyval;
+		} else {
+			$par[] = $this->data[$this->key];
+			$this->keyval = $this->data[$this->key];
+		}
 		if (! db_execute ('update ' . $this->table . ' set ' . $ins . ' where ' . $this->key . ' = ?', $par)) {
 			$this->error = db_error ();
 			return false;
@@ -181,6 +187,7 @@ class Model {
 			$q->data = array ();
 		} else {
 			$q->data = (array) $res;
+			$q->keyval = $id;
 		}
 		$q->is_new = false;
 		return $q;
