@@ -1,6 +1,7 @@
 <?php
 
 $page->template = false;
+header ('Content-Type: application/json');
 
 if (! Api::require_auth ()) {
 	$res = new StdClass;
