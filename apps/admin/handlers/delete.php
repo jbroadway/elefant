@@ -3,7 +3,7 @@
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {
-	header ('Location: /');
+	header ('Location: /admin');
 	exit;
 }
 

@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="/css/wysiwyg/jquery.wysiwyg.css" type="text/css" />
+<script type="text/javascript" src="/js/wysiwyg/jquery.wysiwyg.js"></script>
+<script type="text/javascript" src="/js/wysiwyg/controls/wysiwyg.image.js"></script>
+<script type="text/javascript" src="/js/wysiwyg/controls/wysiwyg.link.js"></script>
+<script type="text/javascript" src="/js/wysiwyg/controls/wysiwyg.table.js"></script>
+<script type="text/javascript">
+$(function () {
+	$('#webpage-body').wysiwyg ({
+		controls: {
+			strikeThrough	:{visible:false},
+			justifyFull		:{visible:false},
+			paragraph		:{visible:true},
+			removeFormat	:{visible:true},
+			html			:{visible:true}
+		},
+		dialog:'jqueryui'
+	});
+});
+</script>

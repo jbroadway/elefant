@@ -20,6 +20,38 @@ h1, h2 {
 	display: none;
 }
 
+#extra-options {
+	display: none;
+}
+
+	.extra-options-link {
+		color: #333;
+		text-decoration: none;
+	}
+
+	.extra-options-link:hover {
+		color: #333;
+		text-decoration: none;
+	}
+
+	.arrow {
+		display: block;
+		float: left;
+		width: 16px;
+		height: 20px;
+		margin-top: 3px;
+		padding-right: 5px;
+		background-image: url(/css/admin/arrow-down.png);
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+	}
+
+	.arrow-off {
+		background-image: url(/css/admin/arrow-right.png) !important;
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+	}
+
 #wrapper {
 	padding-top: 25px;
 }

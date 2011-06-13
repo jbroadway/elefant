@@ -4,13 +4,15 @@ create table webpage (
 	menu_title char(72) not null,
 	window_title char(72) not null,
 	weight int not null,
+	access enum('public','member','private') not null default 'public',
 	layout char(48) not null,
 	description text,
 	keywords text,
-	body text
+	body text,
+	index (access, weight)
 );
 
-insert into webpage (id, title, menu_title, window_title, weight, layout, description, keywords, body) values ('index', 'Congratulations!', 'Home', 'Home', 0, '', '', '', '<p>You have successfully installed Elefant!</p>');
+insert into webpage (id, title, menu_title, window_title, weight, access, layout, description, keywords, body) values ('index', 'Congratulations!', 'Home', 'Home', 0, 'public', '', '', '', '<p>You have successfully installed Elefant!</p>');
 
 create table user (
 	id int not null auto_increment primary key,
