@@ -9,6 +9,16 @@ if ($wp->error) {
 	return;
 }
 
+if ($wp->access == 'member' && ! User::require_login ()) {
+	$page->title = i18n_get ('Login required');
+	echo $this->run ('user/login');
+	return;
+} elseif ($wp->access == 'private' && ! User::require_admin ()) {
+	$page->title = i18n_get ('Login required');
+	echo $this->run ('user/login');
+	return;
+}
+
 $page->id = $id;
 $page->title = $wp->title;
 $page->menu_title = $wp->menu_title;
