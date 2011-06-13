@@ -21,7 +21,7 @@ a:hover {
 
 #wrapper {
 	margin: 25px auto 25px auto;
-	padding: 20px 15px 40px 15px;
+	padding: 20px 15px 0px 15px;
 	background-color: #fff;
 	border: 1px solid #ddd;
 	border-radius: 7px;
@@ -80,6 +80,8 @@ a:hover {
 #footer {
 	border-top: 1px solid #ccc;
 	padding-top: 5px;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
 }
 
 	#footer .menu ul {
