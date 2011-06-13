@@ -2,6 +2,11 @@
 
 $page->layout = 'admin';
 
+if (! User::require_admin ()) {
+	header ('Location: /admin');
+	exit;
+}
+
 $ver = new Versions ($_GET['id']);
 $old = $ver->restore ();
 $class = $ver->class;
