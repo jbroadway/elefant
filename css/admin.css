@@ -15,9 +15,28 @@ h1, h2 {
 	color: #111;
 }
 
+table tr th {
+	padding: 5px 7px 5px 7px;
+	border-bottom: 1px solid #666;
+	font-weight: bold;
+}
+
+table tr th a {
+	font-weight: normal;
+}
+
+table tr td {
+	padding: 5px 7px 5px 7px;
+	border-bottom: 1px solid #ccc;
+}
+
 .notice {
 	color: #8A5AB5;
 	display: none;
+}
+
+.different {
+	background: #e5f2ff;
 }
 
 #extra-options {
