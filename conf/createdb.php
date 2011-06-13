@@ -14,6 +14,10 @@ if (basename (getcwd ()) == 'conf') {
 }
 require_once ('lib/Functions.php');
 require_once ('lib/Database.php');
+require_once ('lib/Model.php');
+require_once ('apps/admin/models/Webpage.php');
+require_once ('apps/admin/models/Versions.php');
+require_once ('apps/user/models/User.php');
 
 $conf = parse_ini_file ('conf/config.php', true);
 date_default_timezone_set($conf['General']['timezone']);
@@ -22,6 +26,7 @@ if (! db_open ($conf['Database'])) {
 	die (db_error ());
 }
 
+// import the database schema
 $sqldata = sql_split (file_get_contents ('conf/install_' . $conf['Database']['driver'] . '.sql'));
 
 foreach ($sqldata as $sql) {
@@ -30,8 +35,8 @@ foreach ($sqldata as $sql) {
 	}
 }
 
+// create first admin user
 $date = gmdate ('Y-m-d H:i:s');
-
 if (! db_execute (
 	'insert into user (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, "Admin User", "admin", ?, ?, ?)',
 	$conf['General']['master_username'],
@@ -43,5 +48,11 @@ if (! db_execute (
 )) {
 	echo 'Error: ' . db_error () . "\n";
 }
+
+$user = new User (1);
+
+// create versions entry for the index page
+$wp = new Webpage ('index');
+Versions::add ($wp);
 
 ?>
