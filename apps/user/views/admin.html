@@ -1,0 +1,28 @@
+<p><a href="/user/add">{"Add User"}</a></p>
+
+{% if offset > 0 %}
+<p class="previous"><a href="/user/admin?offset={{ prev }}">&laquo; {"Previous"}</a></p>
+{% end %}
+
+<p>
+<table>
+	<tr>
+		<th>{"Name"}</th>
+		<th>{"Email"}</th>
+		<th>{"Type"}</th>
+		<th>&nbsp;</th>
+	</tr>
+{% foreach users %}
+	<tr>
+		<td>{{ loop_value->name }}</td>
+		<td>{{ loop_value->email }}</td>
+		<td>{{ loop_value->type|ucfirst }}</td>
+		<td><a href="/user/edit?id={{ loop_value->id }}">{"Edit"}</a> | <a href="/user/delete?id={{ loop_value->id }}">{"Delete"}</a></td>
+	</tr>
+{% end %}
+</table>
+</p>
+
+{% if more %}
+<p class="next"><a href="/user/admin?offset={{ next }}">{"Next"} &raquo;</a></p>
+{% end %}

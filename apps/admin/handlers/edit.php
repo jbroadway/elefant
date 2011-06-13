@@ -12,7 +12,6 @@ $wp = new Webpage ($_GET['page']);
 
 $f = new Form ('post', 'admin/edit');
 if ($f->submit ()) {
-	$wp = new Webpage ($_GET['page']);
 	$wp->id = $_POST['id'];
 	$wp->title = $_POST['title'];
 	$wp->menu_title = $_POST['menu_title'];
