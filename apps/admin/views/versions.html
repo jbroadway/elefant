@@ -1,0 +1,62 @@
+{% if id === false %}
+<p class="selector">
+<form method="GET" action="/admin/versions">
+<input type="hidden" name="id" value="{{ id }}" />
+{"Type"}: <select name="type" onchange="this.form.submit ()">
+{% foreach classes %}
+	<option value="{{ loop_value }}" {% if type == $data->loop_value %}selected{% end %}>{{ loop_value }}</option>
+{% end %}
+</select>
+</form>
+</p>
+{% end %}
+
+{% if offset > 0 %}
+<p class="previous"><a href="/admin/versions?type={{ type }}&id={{ id }}&offset={{ prev }}">&laquo; {"Newer items"}</a></p>
+{% end %}
+
+{% if id === false %}
+	<p>
+	<table>
+		<tr>
+			<th>{"ID"}</th>
+			<th>{"Last changed"}</th>
+			<th>{"Author"}</th>
+			<th>&nbsp;</th>
+		</tr>
+	{% foreach history %}
+		<tr>
+			<td>{{ loop_value->pkey }}</td>
+			<td>{{ loop_value->ts|gmdate ('F j, Y - g:ia', strtotime (%s)) }}</td>
+			<td>{{ loop_value->user|admin_filter_user_name }}</td>
+			<td><a href="/admin/versions?type={{ type }}&id={{ loop_value->pkey }}">{"Show versions"}</a></td>
+		</tr>
+	{% end %}
+	</table>
+	</p>
+{% else %}
+	<p>
+	<table>
+		<tr>
+			<th>{"Changed on"}</th>
+			<th>{"Author"}</th>
+			<th>&nbsp;</th>
+		</tr>
+	{% foreach history %}
+		<tr>
+			<td>{{ loop_value->ts|gmdate ('F j, Y - g:ia', strtotime (%s)) }}</td>
+			<td>{{ loop_value->user|admin_filter_user_name }}</td>
+		{% if loop_index == 0 %}
+			<td><strong>Current version</strong></td>
+		{% else %}
+			<td><a href="/admin/compare?id={{ loop_value->id }}">{"Compare to current"}</a></td>
+		{% end %}
+		</tr>
+	{% end %}
+	</table>
+	</p>
+{% end %}
+
+{% if more %}
+<p class="next"><a href="/admin/versions?type={{ type }}&id={{ id }}&offset={{ next }}">{"Older items"} &raquo;</a></p>
+{% end %}

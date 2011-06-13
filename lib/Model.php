@@ -67,7 +67,9 @@ class Model {
 		$vals = is_object ($vals) ? (array) $vals : $vals;
 		if (is_array ($vals)) {
 			$this->data = $vals;
-			$this->keyval = $vals[$this->key];
+			if (isset ($vals[$this->key])) {
+				$this->keyval = $vals[$this->key];
+			}
 			if ($is_new) {
 				$this->is_new = true;
 			}
@@ -265,7 +267,7 @@ class Model {
 	 * Fetch the number of results for a query.
 	 */
 	function count ($limit = false, $offset = 0) {
-		$sql = 'select count(*) from ' . $this->table;
+		$sql = 'select count() from ' . $this->table;
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ' . join (' and ', $this->query_filters);
 		}

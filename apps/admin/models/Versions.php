@@ -59,7 +59,10 @@ class Versions extends Model {
 	 * Recreate an object from the stored version. Takes any
 	 * result from recent() or history().
 	 */
-	function restore ($vobj) {
+	function restore ($vobj = false) {
+		if (! $vobj) {
+			$vobj = $this;
+		}
 		$class = $vobj->class;
 		$obj = new $class (json_decode ($vobj->serialized), false);
 		return $obj;
@@ -79,9 +82,29 @@ class Versions extends Model {
 	}
 
 	/**
-	 * Get recent versions of an object.
+	 * Get recent versions of an object, or of objects of a specific
+	 * class.
 	 */
 	function history ($obj, $limit = 10, $offset = 0) {
+		if ($limit === true) {
+			if (is_string ($obj)) {
+				return count (Versions::query ()
+					->where ('class', $obj)
+					->group ('pkey')
+					->fetch_field ('pkey'));
+			}
+			return count (Versions::query ()
+				->where ('class', get_class ($obj))
+				->where ('pkey', $obj->{$obj->key})
+				->fetch_field ('pkey'));
+		}
+		if (is_string ($obj)) {
+			return Versions::query ()
+				->where ('class', $obj)
+				->order ('ts desc')
+				->group ('pkey')
+				->fetch_orig ($limit, $offset);
+		}
 		return Versions::query ()
 			->where ('class', get_class ($obj))
 			->where ('pkey', $obj->{$obj->key})
@@ -112,6 +135,15 @@ class Versions extends Model {
 			}
 		}
 		return $changed;
+	}
+
+	/**
+	 * Get a list of classes that have objects stored.
+	 */
+	function get_classes () {
+		return db_shift_array (
+			'select distinct class from versions order by class asc'
+		);
 	}
 }
 
