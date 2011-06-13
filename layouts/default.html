@@ -32,7 +32,8 @@
 {{ controller.run ('user/login')|none }}
 {% else %}
 <h3>{{ user.name }}</h3>
-<p><a href="/user/logout?redirect=/">{"Log out"}</a></p>
+<p><a href="/user">{"View profile"}</a><br />
+<a href="/user/logout?redirect=/">{"Log out"}</a></p>
 {% end %}
 	</div>
 	<div class="clear"></div>
