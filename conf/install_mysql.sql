@@ -12,7 +12,7 @@ create table webpage (
 	index (access, weight)
 );
 
-insert into webpage (id, title, menu_title, window_title, weight, access, layout, description, keywords, body) values ('index', 'Congratulations!', 'Home', 'Home', 0, 'public', '', '', '', '<p>You have successfully installed Elefant!</p>');
+insert into webpage (id, title, menu_title, window_title, weight, access, layout, description, keywords, body) values ('index', 'Congratulations!', 'Home', 'Home', 0, 'public', 'default', '', '', '<p>You have successfully installed Elefant!</p>');
 
 create table user (
 	id int not null auto_increment primary key,
