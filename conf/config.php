@@ -61,9 +61,9 @@ file = "conf/site.db"
 ; you define after the handler they occur in, to make it easier
 ; to look up the parameters they will receive.
 
-admin/add[] = search/add
-admin/edit[] = search/add
-admin/delete[] = search/delete
+;admin/add[] = search/add
+;admin/edit[] = search/add
+;admin/delete[] = search/delete
 
 [Memcache]
 
