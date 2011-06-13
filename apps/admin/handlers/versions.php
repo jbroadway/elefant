@@ -8,6 +8,7 @@ if (! User::require_admin ()) {
 	exit;
 }
 
+$limit = 20;
 $_GET['offset'] = (isset ($_GET['offset'])) ? $_GET['offset'] : 0;
 $_GET['type'] = (isset ($_GET['type'])) ? $_GET['type'] : 'Webpage';
 
@@ -20,7 +21,7 @@ if (isset ($_GET['type']) && preg_match ('/^[A-Z][a-z0-9_]+$/', $_GET['type'])) 
 	} else {
 		$obj = $class;
 	}
-	$history = Versions::history ($obj, 2, $_GET['offset']);
+	$history = Versions::history ($obj, $limit, $_GET['offset']);
 	$count = Versions::history ($obj, true);
 } else {
 	$history = array ();
@@ -47,9 +48,9 @@ echo $tpl->render ('admin/versions', array (
 	'history' => $history,
 	'count' => $count,
 	'offset' => $_GET['offset'],
-	'more' => ($count > $_GET['offset'] + 2) ? true : false,
-	'prev' => $_GET['offset'] - 2,
-	'next' => $_GET['offset'] + 2
+	'more' => ($count > $_GET['offset'] + $limit) ? true : false,
+	'prev' => $_GET['offset'] - $limit,
+	'next' => $_GET['offset'] + $limit
 ));
 
 ?>
