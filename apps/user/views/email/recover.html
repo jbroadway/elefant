@@ -1,0 +1,13 @@
+Hi {{ name }},
+
+A request has been made to reset your password. You can verify your
+email address and reset your password at the following link:
+
+http://{{ $_SERVER.HTTP_HOST }}/user/newpass?recover={{ recover }}&email={{ email|urlencode }}
+
+
+If you received this message in error, you can safely ignore it.
+
+Regards,
+
+{{ conf('General', 'site_name') }}

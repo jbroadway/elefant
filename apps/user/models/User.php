@@ -34,6 +34,8 @@
  *   User::logout ('/');
  */
 class User extends Model {
+	var $_userdata = false;
+
 	/**
 	 * Generates a random salt and encrypts a password using MD5.
 	 */
@@ -170,8 +172,8 @@ class User extends Model {
 
 	function __get ($key) {
 		if ($key == 'userdata') {
-			if (! isset ($this->_userdata)) {
-				$this->_userdata = json_decode ($user->data['userdata']);
+			if ($this->_userdata === false) {
+				$this->_userdata = json_decode ($this->data['userdata']);
 			}
 			return $this->_userdata;
 		}

@@ -8,9 +8,10 @@ To verify your email address, click here:
 
 http://{{ $_SERVER.HTTP_HOST }}/user/verify?verifier={{ verifier }}&email={{ email|urlencode }}
 
+
 Thanks again for joining, and if you have any questions just
 reply to let us know!
 
 Regards,
 
-{{ site_name }}
+{{ conf('General', 'site_name') }}

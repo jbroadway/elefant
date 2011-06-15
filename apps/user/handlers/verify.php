@@ -1,22 +1,16 @@
 <?php
 
-$verified = false;
-
-$res = User::query ()
+$row = User::query ()
 	->where ('email', $_GET['email'])
-	->fetch ();
+	->single ();
 
-foreach ($res as $row) {
-	$data = $row->userdata;
-	if (isset ($data['verifier']) && $data['verifier'] == $_GET['verifier']) {
-		unset ($data['verifier']);
-		$row->userdata = $data;
-		$row->put ();
-		$verified = true;
-	}
-}
+$data = $row->userdata;
 
-if ($verified) {
+if ($row && isset ($data->verifier) && $data->verifier == $_GET['verifier']) {
+	unset ($data->verifier);
+	$row->userdata = $data;
+	$row->put ();
+
 	$page->title = i18n_get ('Account Verified');
 	echo '<p><a href="/user">' . i18n_get ('Continue') . '</a></p>';
 } else {

@@ -23,8 +23,7 @@ if ($f->submit ()) {
 			$tpl->render ('user/email/verification', array (
 				'verifier' => $verifier,
 				'email' => $_POST['email'],
-				'name' => $_POST['name'],
-				'site_name' => $conf['General']['site_name']
+				'name' => $_POST['name']
 			)),
 			'From: ' . $conf['General']['site_name'] . ' <' . $conf['General']['email_from'] . '>'
 		)) {

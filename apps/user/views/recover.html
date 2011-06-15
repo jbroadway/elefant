@@ -1,0 +1,32 @@
+<style type="text/css">
+.notice { display: none; }
+</style>
+
+<form method="POST" id="recover-form">
+<p>Email address:<br /><input type="text" name="email" size="40" value="{{ email }}" />
+<span class="notice" id="email-notice">You must enter a valid email, or email not found.</span></p>
+<p><input type="submit" value="Send verification" /></p>
+</form>
+
+<script type="text/javascript" src="/js/jquery.verify_values.js"></script>
+<script type="text/javascript">
+$(function () {
+	$('#recover-form').verify_values ({
+		handler: 'user/recover',
+		callback: function (failed) {
+			// highlight the failed elements
+			for (var i = 0; i < failed.length; i++) {
+				$('#' + failed[i] + '-notice').show ();
+			}
+		},
+		reset: function (fields) {
+			for (var i = 0; i < fields.length; i++) {
+				$('#' + fields[i] + '-notice').hide ();
+			}
+		}
+	});
+	{% foreach failed %}
+	$('#{{ loop_value }}-notice').show ();
+	{% end %}
+});
+</script>
