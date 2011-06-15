@@ -29,6 +29,7 @@ class Page {
 	var $body = '';
 	var $template = '';
 	var $layout = 'default';
+	var $scripts = array ();
 
 	function render () {
 		global $tpl;
@@ -52,6 +53,17 @@ class Page {
 			return (! empty ($this->menu_title)) ? $this->menu_title : $this->title;
 		} elseif ($key == 'window_title') {
 			return (! empty ($this->window_title)) ? $this->window_title : $this->title;
+		}
+	}
+
+	/**
+	 * Add a script to the header. Tracks duplicate additions so scripts will only
+	 * be added once.
+	 */
+	function add_script ($script) {
+		if (! in_array ($script, $this->scripts)) {
+			$this->scripts[] = $script;
+			$this->head .= $script;
 		}
 	}
 }
