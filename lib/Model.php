@@ -264,6 +264,33 @@ class Model {
 	}
 
 	/**
+	 * Fetch a single result as a model object.
+	 */
+	function single () {
+		$sql = 'select * from ' . $this->table;
+		if (count ($this->query_filters) > 0) {
+			$sql .= ' where ' . join (' and ', $this->query_filters);
+		}
+		if (! empty ($this->query_group)) {
+			$sql .= ' group by ' . $this->query_group;
+		}
+		if (! empty ($this->query_order)) {
+			$sql .= ' order by ' . $this->query_order;
+		}
+		if ($limit) {
+			$sql .= ' limit ' . $limit . ' offset ' . $offset;
+		}
+		$res = db_single ($sql, $this->query_params);
+		if (! $res) {
+			$this->error = db_error ();
+			return $res;
+		}
+		$class = get_class ($this);
+		$res = new $class ((array) $row, false);
+		return $res;
+	}
+
+	/**
 	 * Fetch the number of results for a query.
 	 */
 	function count ($limit = false, $offset = 0) {
