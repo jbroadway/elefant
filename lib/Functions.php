@@ -49,6 +49,15 @@ function info ($value, $full = false) {
 }
 
 /**
+ * Get a global configuration value from any namespace,
+ * without calling `global $conf` first. Useful in templates
+ * as well.
+ */
+function conf ($section, $value) {
+	return $GLOBALS['conf'][$section][$value];
+}
+
+/**
  * Implements a simple authentication mechanism based on callbacks.
  * You provide a verifier function and a communication method function.
  * It then returns them like this:
