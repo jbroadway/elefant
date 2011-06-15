@@ -70,7 +70,9 @@ function simple_auth ($verifier = false, $method = false) {
 }
 
 /**
- * Default verifier for simple_auth().
+ * Default verifier for simple_auth(). This is meant to serve
+ * as an example, and should be overridden with your own
+ * implementation.
  */
 function simple_auth_verifier ($user, $pass) {
 	global $conf;
@@ -81,7 +83,8 @@ function simple_auth_verifier ($user, $pass) {
 }
 
 /**
- * Default method for simple_auth().
+ * Default method for simple_auth(). Implements an HTTP basic
+ * protocol.
  */
 function simple_auth_basic ($callback) {
 	if (! isset ($_SERVER['PHP_AUTH_USER']) || ! call_user_func ($callback, $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {

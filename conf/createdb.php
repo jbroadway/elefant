@@ -36,11 +36,12 @@ foreach ($sqldata as $sql) {
 }
 
 // create first admin user
+$pass = substr (md5 (uniqid (mt_rand (), 1)), 0, 8);
 $date = gmdate ('Y-m-d H:i:s');
 if (! db_execute (
 	'insert into user (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, "Admin User", "admin", ?, ?, ?)',
-	$conf['General']['master_username'],
-	encrypt_pass ($conf['General']['master_password']),
+	$conf['General']['email_from'],
+	encrypt_pass ($pass),
 	$date,
 	$date,
 	$date,
@@ -54,5 +55,10 @@ $user = new User (1);
 // create versions entry for the index page
 $wp = new Webpage ('index');
 Versions::add ($wp);
+
+// respond with the root password
+echo "Database created. Your initial admin account is:\n";
+echo 'Username: ' . $conf['General']['email_from'] . "\n";
+echo 'Password: ' . $pass . "\n";
 
 ?>

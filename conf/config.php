@@ -2,11 +2,11 @@
 
 [General]
 
-; A master login for the example /admin pages.
-; Username should be an email address.
+; The name of your website.
+site_name = Site Name
 
-master_username = "you@example.com"
-master_password = "CHANGE ME"
+; Default outbound email address.
+email_from = "you@example.com"
 
 ; Default character set for output.
 
