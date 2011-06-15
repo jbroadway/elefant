@@ -286,7 +286,7 @@ class Model {
 			return $res;
 		}
 		$class = get_class ($this);
-		$res = new $class ((array) $row, false);
+		$res = new $class ((array) $res, false);
 		return $res;
 	}
 
