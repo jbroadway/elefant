@@ -85,6 +85,10 @@
 				type = options.type,
 				validator = options.validator;
 			
+			if (type.match (/^(not )?(type|callback|header|unique|exists)$/)) {
+				return true;
+			}
+			
 			if (type.match (/^not /)) {
 				type = type.replace (/^not /, '');
 				_false = true;
