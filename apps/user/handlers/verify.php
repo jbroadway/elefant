@@ -7,10 +7,10 @@ $res = User::query ()
 	->fetch ();
 
 foreach ($res as $row) {
-	$data = json_decode ($row->userdata);
+	$data = $row->userdata;
 	if (isset ($data['verifier']) && $data['verifier'] == $_GET['verifier']) {
 		unset ($data['verifier']);
-		$row->userdata = json_encode ($data);
+		$row->userdata = $data;
 		$row->put ();
 		$verified = true;
 	}

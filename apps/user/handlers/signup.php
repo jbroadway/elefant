@@ -30,7 +30,8 @@ if ($f->submit ()) {
 		)) {
 			// undo verification since email failed
 			// here we assume they're okay
-			$u->userdata = json_encode (array ());
+			@error_log ('Email failed (user/signup): ' . $u->error);
+			$u->userdata = array ();
 			$u->put ();
 		}
 
@@ -45,7 +46,8 @@ if ($f->submit ()) {
 	echo '<p><a href="/">' . i18n_get ('Back') . '</a></p>';
 } else {
 	$u = new User;
-	$u->failed = $f->merge_values ($u);
+	$u = $f->merge_values ($u);
+	$u->failed = $f->failed;
 	$page->title = i18n_get ('Sign Up');
 	echo $tpl->render ('user/signup', $u);
 }

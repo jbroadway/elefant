@@ -30,7 +30,8 @@ if ($f->submit ()) {
 	echo '<p><a href="/user">' . i18n_get ('Back') . '</a></p>';
 } else {
 	$u->password = '';
-	$u->failed = $f->merge_values ($u);
+	$u = $f->merge_values ($u);
+	$u->failed = $f->failed;
 	$page->title = i18n_get ('Update Profile');
 	echo $tpl->render ('user/update', $u);
 }
