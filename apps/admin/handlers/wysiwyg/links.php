@@ -2,7 +2,7 @@
 
 $page->template = false;
 
-$menu = Webpage::query ()
+$menu = Webpage::query ('id, title, menu_title')
 		->where ('access', 'public')
 		->where ('weight > -1') // negative weight leaves pages out of menus
 		->order ('weight desc')

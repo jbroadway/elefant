@@ -1,18 +1,18 @@
 <?php
 
 if (! User::require_login ()) {
-	$menu = Webpage::query ()
+	$menu = Webpage::query ('id, title, menu_title')
 		->where ('access', 'public')
 		->where ('weight > -1') // negative weight leaves pages out of menus
 		->order ('weight desc')
 		->fetch_orig ();
 } elseif (User::require_admin ()) {
-	$menu = Webpage::query ()
+	$menu = Webpage::query ('id, title, menu_title')
 		->where ('weight > -1') // negative weight leaves pages out of menus
 		->order ('weight desc')
 		->fetch_orig ();
 } else {
-	$menu = Webpage::query ()
+	$menu = Webpage::query ('id, title, menu_title')
 		->where ('access in("public","member")')
 		->where ('weight > -1') // negative weight leaves pages out of menus
 		->order ('weight desc')
