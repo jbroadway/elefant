@@ -10,7 +10,7 @@ if (! User::require_admin ()) {
 $limit = 20;
 $_GET['offset'] = (isset ($_GET['offset'])) ? $_GET['offset'] : 0;
 
-$users = User::query ()
+$users = User::query ('id, name, email, type')
 	->order ('name asc')
 	->fetch_orig ($limit, $_GET['offset']);
 $count = User::query ()->count ();
