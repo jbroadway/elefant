@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Model.php</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="layout.css" />
+  <style>
+    /*--------------------- Layout and Typography ----------------------------*/
+body { font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif; font-size: 15px; line-height: 22px; color: #252519; margin: 0; padding: 0;
+}
+a { color: #261a3b;
+} a:visited { color: #261a3b; }
+p { margin: 0 0 15px 0;
+}
+h1, h2, h3, h4, h5, h6 { margin: 40px 0 15px 0;
+} h3, h4, h5, h6 { margin-top: 20px; }
+#container { position: relative;
+}
+#background { position: fixed; top: 0; left: 575px; right: 0; bottom: 0; background: #f5f5ff; border-left: 1px solid #e5e5ee; z-index: -1;
+}
+#jump_to, #jump_page { background: white; -webkit-box-shadow: 0 0 25px #777; -moz-box-shadow: 0 0 25px #777; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; font: 10px Arial; text-transform: uppercase; cursor: pointer; text-align: right;
+}
+#jump_to, #jump_wrapper { position: fixed; right: 0; top: 0; padding: 5px 10px;
+} #jump_wrapper { padding: 0; display: none; } #jump_to:hover #jump_wrapper { display: block; } #jump_page { padding: 5px 0 3px; margin: 0 0 25px 25px; overflow:hidden; } #jump_page .source { display: block; padding: 5px 10px; text-decoration: none; border-top: 1px solid #eee; float:left; min-width:180px; text-align:left; text-transform:none; font-size:11px; } #jump_page .source:hover { background: #f5f5ff; } #jump_page .source:first-child { }
+table td { border: 0; outline: 0;
+} td.docs, th.docs { max-width: 450px; min-width: 450px; min-height: 5px; padding: 10px 25px 1px 50px; overflow-x: hidden; vertical-align: top; text-align: left; } .docs pre { margin: 15px 0 15px; padding-left: 15px; } .docs p tt, .docs p code { background: #f8f8ff; border: 1px solid #dedede; font-size: 12px; padding: 0 0.2em; } .pilwrap { position: relative; } .pilcrow { font: 12px Arial; text-decoration: none; color: #454545; position: absolute; top: 3px; left: -20px; padding: 1px 2px; opacity: 0; -webkit-transition: opacity 0.2s linear; } td.docs:hover .pilcrow { opacity: 1; } td.code, th.code { padding: 14px 15px 16px 25px; width: 100%; vertical-align: top; background: #f5f5ff; border-left: 1px solid #e5e5ee; } pre, tt, code { font-size: 12px; line-height: 18px; font-family: Monaco, Consolas, "Lucida Console", monospace; margin: 0; padding: 0; } /*---------------------- Syntax Highlighting -----------------------------*/
+td.linenos { background-color: #f0f0f0; padding-right: 10px; }
+span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
+body .hll { background-color: #ffffcc }
+body .c { color: #408080; font-style: italic } /* Comment */
+body .err { border: 1px solid #FF0000 } /* Error */
+body .k { color: #954121 } /* Keyword */
+body .o { color: #666666 } /* Operator */
+body .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+body .cp { color: #BC7A00 } /* Comment.Preproc */
+body .c1 { color: #408080; font-style: italic } /* Comment.Single */
+body .cs { color: #408080; font-style: italic } /* Comment.Special */
+body .gd { color: #A00000 } /* Generic.Deleted */
+body .ge { font-style: italic } /* Generic.Emph */
+body .gr { color: #FF0000 } /* Generic.Error */
+body .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+body .gi { color: #00A000 } /* Generic.Inserted */
+body .go { color: #808080 } /* Generic.Output */
+body .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+body .gs { font-weight: bold } /* Generic.Strong */
+body .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+body .gt { color: #0040D0 } /* Generic.Traceback */
+body .kc { color: #954121 } /* Keyword.Constant */
+body .kd { color: #954121; font-weight: bold } /* Keyword.Declaration */
+body .kn { color: #954121; font-weight: bold } /* Keyword.Namespace */
+body .kp { color: #954121 } /* Keyword.Pseudo */
+body .kr { color: #954121; font-weight: bold } /* Keyword.Reserved */
+body .kt { color: #B00040 } /* Keyword.Type */
+body .m { color: #666666 } /* Literal.Number */
+body .s { color: #219161 } /* Literal.String */
+body .na { color: #7D9029 } /* Name.Attribute */
+body .nb { color: #954121 } /* Name.Builtin */
+body .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+body .no { color: #880000 } /* Name.Constant */
+body .nd { color: #AA22FF } /* Name.Decorator */
+body .ni { color: #999999; font-weight: bold } /* Name.Entity */
+body .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+body .nf { color: #0000FF } /* Name.Function */
+body .nl { color: #A0A000 } /* Name.Label */
+body .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+body .nt { color: #954121; font-weight: bold } /* Name.Tag */
+body .nv { color: #19469D } /* Name.Variable */
+body .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+body .w { color: #bbbbbb } /* Text.Whitespace */
+body .mf { color: #666666 } /* Literal.Number.Float */
+body .mh { color: #666666 } /* Literal.Number.Hex */
+body .mi { color: #666666 } /* Literal.Number.Integer */
+body .mo { color: #666666 } /* Literal.Number.Oct */
+body .sb { color: #219161 } /* Literal.String.Backtick */
+body .sc { color: #219161 } /* Literal.String.Char */
+body .sd { color: #219161; font-style: italic } /* Literal.String.Doc */
+body .s2 { color: #219161 } /* Literal.String.Double */
+body .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+body .sh { color: #219161 } /* Literal.String.Heredoc */
+body .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+body .sx { color: #954121 } /* Literal.String.Other */
+body .sr { color: #BB6688 } /* Literal.String.Regex */
+body .s1 { color: #219161 } /* Literal.String.Single */
+body .ss { color: #19469D } /* Literal.String.Symbol */
+body .bp { color: #954121 } /* Name.Builtin.Pseudo */
+body .vc { color: #19469D } /* Name.Variable.Class */
+body .vg { color: #19469D } /* Name.Variable.Global */
+body .vi { color: #19469D } /* Name.Variable.Instance */
+body .il { color: #666666 } /* Literal.Number.Integer.Long */ /********** PHP Comment Additions ********/
+td.docs .docparam {color:#DB251A;font-weight:bold;}
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+          <div id="jump_to">
+        Jump To &hellip;
+        <div id="jump_wrapper">
+          <div id="jump_page">
+                                          <a class="source" href="./ActiveResource.html">
+                              ActiveResource.php              </a>
+                                          <a class="source" href="./Cache.html">
+                              Cache.php              </a>
+                                          <a class="source" href="./Controller.html">
+                              Controller.php              </a>
+                                          <a class="source" href="./Database.html">
+                              Database.php              </a>
+                                          <a class="source" href="./Form.html">
+                              Form.php              </a>
+                                          <a class="source" href="./Functions.html">
+                              Functions.php              </a>
+                                          <a class="source" href="./I18n.html">
+                              I18n.php              </a>
+                                          <a class="source" href="./Model.html">
+                              Model.php              </a>
+                                          <a class="source" href="./Page.html">
+                              Page.php              </a>
+                                          <a class="source" href="./Template.html">
+                              Template.php              </a>
+                      </div>
+        </div>
+      </div>
+        <table cellpadding="0" cellspacing="0">
+      <thead>
+        <tr>
+          <th class="docs">
+            <h1>
+              Model.php            </h1>
+          </th>
+          <th class="code">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+                  <tr id="section-0">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-0">&#182;</a>
+              </div>
+              <p>A class you can extend to create model objects in your application. Assumes table and
+ class name are identical, but that the table is lowercase. Assumes primary key field
+ is named <code>'id'</code>. Both of these can be changed by specifying custom table and key properties.
+ Note that this class doesn't impose field names. It provides an easy way to get at the
+ usual query methods for a database table, but mainly to encapsulate your logic around
+ that data.</p>
+
+<p>Usage:</p>
+
+<pre><code> class MyTable extends Model {
+     function get_all_by_x () {
+         return MyTable::query ()
+             -&gt;order ('x desc')
+             -&gt;fetch ();
+     }
+ }
+
+ $one = new MyTable (array (
+     'id' =&gt; 123,
+     'fieldname' =&gt; 'Some value'
+ ));
+ $one-&gt;put ();
+
+ $two = MyTable::get (123);
+
+ $two-&gt;fieldname = 'Some other value';
+ $two-&gt;put ();
+
+ $res = MyTable::query ()
+     -&gt;where ('fieldname', 'Some other value')
+     -&gt;where ('id = 123')
+     -&gt;order ('fieldname asc')
+     -&gt;fetch (10, 5);  limit, offset
+
+ $res = MyTable::get_all_by_x ();
+
+ foreach ($res as $row) {
+     $row-&gt;remove ();
+ }
+</code></pre>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">class</span> <span class="nc">Model</span> <span class="p">{</span>
+ <span class="k">var</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+ <span class="k">var</span> <span class="nv">$key</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">;</span>
+ <span class="k">var</span> <span class="nv">$keyval</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+ <span class="k">var</span> <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
+ <span class="k">var</span> <span class="nv">$fields</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
+ <span class="k">var</span> <span class="nv">$error</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+ <span class="k">var</span> <span class="nv">$is_new</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+ <span class="k">var</span> <span class="nv">$query_fields</span> <span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">;</span>
+ <span class="k">var</span> <span class="nv">$query_order</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+ <span class="k">var</span> <span class="nv">$query_group</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+ <span class="k">var</span> <span class="nv">$query_filters</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
+ <span class="k">var</span> <span class="nv">$query_params</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-1">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>If <code>$vals</code> is false, we're creating a new object from scratch.
+ If it contains an array, it's a new object from an array.
+ If <code>$is_new</code> is false, then the array is an existing field
+ (mainly used internally by <code>fetch()</code>).
+ If <code>$vals</code> contains a single value, the object is retrieved from the database.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">__construct</span> <span class="p">(</span><span class="nv">$vals</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$is_new</span> <span class="o">=</span> <span class="k">true</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nb">get_class</span> <span class="p">(</span><span class="nv">$this</span><span class="p">))</span> <span class="o">:</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">;</span>
+
+  <span class="nv">$vals</span> <span class="o">=</span> <span class="nb">is_object</span> <span class="p">(</span><span class="nv">$vals</span><span class="p">)</span> <span class="o">?</span> <span class="p">(</span><span class="k">array</span><span class="p">)</span> <span class="nv">$vals</span> <span class="o">:</span> <span class="nv">$vals</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$vals</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">=</span> <span class="nv">$vals</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$vals</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">key</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">keyval</span> <span class="o">=</span> <span class="nv">$vals</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">key</span><span class="p">];</span>
+   <span class="p">}</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nv">$is_new</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">is_new</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+   <span class="p">}</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$vals</span> <span class="o">!=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$res</span> <span class="o">=</span> <span class="nx">db_single</span> <span class="p">(</span><span class="s1">&#39;select * from &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span> <span class="o">.</span> <span class="s1">&#39; where &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">key</span> <span class="o">.</span> <span class="s1">&#39; = ?&#39;</span><span class="p">,</span> <span class="nv">$vals</span><span class="p">);</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="s1">&#39;No object by that ID.&#39;</span><span class="p">;</span>
+   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">=</span> <span class="p">(</span><span class="k">array</span><span class="p">)</span> <span class="nv">$res</span><span class="p">;</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">keyval</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">key</span><span class="p">];</span>
+   <span class="p">}</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">is_new</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+  <span class="p">}</span>
+ <span class="p">}</span>
+
+ <span class="k">function</span> <span class="nf">__call</span><span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$arguments</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$name</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fields</span><span class="p">[</span><span class="nv">$name</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fields</span><span class="p">[</span><span class="nv">$name</span><span class="p">][</span><span class="s1">&#39;ref&#39;</span><span class="p">]))</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="p">{</span><span class="s1">&#39;_ref_&#39;</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">}))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="p">{</span><span class="s1">&#39;_ref_&#39;</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">};</span>
+   <span class="p">}</span>
+   <span class="nv">$class</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fields</span><span class="p">[</span><span class="nv">$name</span><span class="p">][</span><span class="s1">&#39;ref&#39;</span><span class="p">];</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="p">{</span><span class="s1">&#39;_ref_&#39;</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">}</span> <span class="o">=</span> <span class="k">new</span> <span class="nv">$class</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$name</span><span class="p">]);</span>
+   <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="p">{</span><span class="s1">&#39;_ref_&#39;</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">};</span>
+  <span class="p">}</span>
+  <span class="nv">$trace</span> <span class="o">=</span> <span class="nb">debug_backtrace</span> <span class="p">();</span>
+  <span class="nb">trigger_error</span> <span class="p">(</span>
+   <span class="nb">sprintf</span> <span class="p">(</span><span class="s1">&#39;Call to undefined method %s::%s in %s on line %d&#39;</span><span class="p">,</span>
+    <span class="nb">get_class</span> <span class="p">(</span><span class="nv">$this</span><span class="p">),</span>
+    <span class="nv">$name</span><span class="p">,</span>
+    <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">],</span>
+    <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">]</span>
+   <span class="p">),</span>
+   <span class="nx">E_USER_ERROR</span>
+  <span class="p">);</span>
+ <span class="p">}</span>
+
+ <span class="k">function</span> <span class="nf">__get</span> <span class="p">(</span><span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$key</span><span class="p">]))</span> <span class="o">?</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">:</span> <span class="k">null</span><span class="p">;</span>
+ <span class="p">}</span>
+
+ <span class="k">function</span> <span class="nf">__set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$val</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-2">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Save the object to the database.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">put</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">is_new</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-3">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Insert</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="nv">$ins</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
+   <span class="nv">$len</span> <span class="o">=</span> <span class="nb">count</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">);</span>
+   <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="m">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$len</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$ins</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">&#39;?&#39;</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">db_execute</span> <span class="p">(</span><span class="s1">&#39;insert into &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span> <span class="o">.</span> <span class="s1">&#39; (&#39;</span> <span class="o">.</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="nb">array_keys</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">))</span> <span class="o">.</span> <span class="s1">&#39;) values (&#39;</span> <span class="o">.</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="nv">$ins</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="nx">db_error</span> <span class="p">();</span>
+    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">key</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">db_lastid</span> <span class="p">();</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">keyval</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">key</span><span class="p">];</span>
+   <span class="p">}</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">is_new</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-4">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Update</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="nv">$ins</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="nv">$par</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
+  <span class="nv">$sep</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$ins</span> <span class="o">.=</span> <span class="nv">$sep</span> <span class="o">.</span> <span class="nv">$key</span> <span class="o">.</span> <span class="s1">&#39; = ?&#39;</span><span class="p">;</span>
+   <span class="nv">$par</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$val</span><span class="p">;</span>
+   <span class="nv">$sep</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">keyval</span> <span class="o">&amp;&amp;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">keyval</span> <span class="o">!=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">key</span><span class="p">])</span> <span class="p">{</span>
+   <span class="nv">$par</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">keyval</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="nv">$par</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">key</span><span class="p">];</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">keyval</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">key</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">db_execute</span> <span class="p">(</span><span class="s1">&#39;update &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span> <span class="o">.</span> <span class="s1">&#39; set &#39;</span> <span class="o">.</span> <span class="nv">$ins</span> <span class="o">.</span> <span class="s1">&#39; where &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">key</span> <span class="o">.</span> <span class="s1">&#39; = ?&#39;</span><span class="p">,</span> <span class="nv">$par</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="nx">db_error</span> <span class="p">();</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">is_new</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-5">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Delete the specified or the current element if no id is specified.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">remove</span> <span class="p">(</span><span class="nv">$id</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$id</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="o">?</span> <span class="nv">$id</span> <span class="o">:</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">key</span><span class="p">];</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="s1">&#39;No id specified.&#39;</span><span class="p">;</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">db_execute</span> <span class="p">(</span><span class="s1">&#39;delete from &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span> <span class="o">.</span> <span class="s1">&#39; where &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">key</span> <span class="o">.</span> <span class="s1">&#39; = ?&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="nx">db_error</span> <span class="p">();</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-6">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Get a single object and update the current instance with that data.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">static</span> <span class="k">function</span> <span class="nf">get</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$class</span> <span class="o">=</span> <span class="nx">get_called_class</span> <span class="p">();</span>
+  <span class="nv">$q</span> <span class="o">=</span> <span class="k">new</span> <span class="nv">$class</span><span class="p">;</span>
+  <span class="nv">$res</span> <span class="o">=</span> <span class="p">(</span><span class="k">array</span><span class="p">)</span> <span class="nx">db_single</span> <span class="p">(</span><span class="s1">&#39;select * from &#39;</span> <span class="o">.</span> <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">table</span> <span class="o">.</span> <span class="s1">&#39; where &#39;</span> <span class="o">.</span> <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">key</span> <span class="o">.</span> <span class="s1">&#39; = ?&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$res</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="s1">&#39;No object by that ID.&#39;</span><span class="p">;</span>
+   <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">=</span> <span class="p">(</span><span class="k">array</span><span class="p">)</span> <span class="nv">$res</span><span class="p">;</span>
+   <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">keyval</span> <span class="o">=</span> <span class="nv">$id</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">is_new</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nv">$q</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-7">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Begin a new query. Resets the internal state for a new query.
+ Optionally you can pass the fields you want to return in
+ the query, so you can optimize and not return them all.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">static</span> <span class="k">function</span> <span class="nf">query</span> <span class="p">(</span><span class="nv">$fields</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$class</span> <span class="o">=</span> <span class="nx">get_called_class</span> <span class="p">();</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$fields</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nv">$class</span><span class="p">;</span>
+   <span class="nv">$obj</span><span class="o">-&gt;</span><span class="na">query_fields</span> <span class="o">=</span> <span class="nv">$fields</span><span class="p">;</span>
+   <span class="k">return</span> <span class="nv">$obj</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nv">$class</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-8">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Order the query by the specified clauses.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">order</span> <span class="p">(</span><span class="nv">$order</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_order</span> <span class="o">=</span> <span class="nv">$order</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-9">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Group the query by the specific clauses.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">group</span> <span class="p">(</span><span class="nv">$group</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_group</span> <span class="o">=</span> <span class="nv">$group</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-10">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Add a where condition to the query. Can be either a field/value
+ combo, or if no value is present it assumes a custom condition
+ in the first parameter.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">where</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nb">array_push</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_filters</span><span class="p">,</span> <span class="nv">$key</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="nb">array_push</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_filters</span><span class="p">,</span> <span class="nv">$key</span> <span class="o">.</span> <span class="s1">&#39; = ?&#39;</span><span class="p">);</span>
+   <span class="nb">array_push</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_params</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-11">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Fetch as an array of model objects.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">fetch</span> <span class="p">(</span><span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_fields</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_fields</span> <span class="o">=</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_fields</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nv">$sql</span> <span class="o">=</span> <span class="s1">&#39;select &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_fields</span> <span class="o">.</span> <span class="s1">&#39; from &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_filters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; where &#39;</span> <span class="o">.</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39; and &#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_filters</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_group</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; group by &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_group</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_order</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; order by &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_order</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$limit</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; limit &#39;</span> <span class="o">.</span> <span class="nv">$limit</span> <span class="o">.</span> <span class="s1">&#39; offset &#39;</span> <span class="o">.</span> <span class="nv">$offset</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nv">$res</span> <span class="o">=</span> <span class="nx">db_fetch_array</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_params</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$res</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="nx">db_error</span> <span class="p">();</span>
+   <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nv">$class</span> <span class="o">=</span> <span class="nb">get_class</span> <span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$res</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$row</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$res</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nv">$class</span> <span class="p">((</span><span class="k">array</span><span class="p">)</span> <span class="nv">$row</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-12">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Fetch a single result as a model object.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">single</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_fields</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_fields</span> <span class="o">=</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_fields</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nv">$sql</span> <span class="o">=</span> <span class="s1">&#39;select &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_fields</span> <span class="o">.</span> <span class="s1">&#39; from &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_filters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; where &#39;</span> <span class="o">.</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39; and &#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_filters</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_group</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; group by &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_group</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_order</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; order by &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_order</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nv">$res</span> <span class="o">=</span> <span class="nx">db_single</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_params</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$res</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="nx">db_error</span> <span class="p">();</span>
+   <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nv">$class</span> <span class="o">=</span> <span class="nb">get_class</span> <span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+  <span class="nv">$res</span> <span class="o">=</span> <span class="k">new</span> <span class="nv">$class</span> <span class="p">((</span><span class="k">array</span><span class="p">)</span> <span class="nv">$res</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-13">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Fetch the number of results for a query.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">count</span> <span class="p">(</span><span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$sql</span> <span class="o">=</span> <span class="s1">&#39;select count() from &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_filters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; where &#39;</span> <span class="o">.</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39; and &#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_filters</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_group</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; group by &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_group</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_order</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; order by &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_order</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nv">$res</span> <span class="o">=</span> <span class="nx">db_shift</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_params</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$res</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="nx">db_error</span> <span class="p">();</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-14">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Fetch as an array of the original objects as returned from
+ the database.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">fetch_orig</span> <span class="p">(</span><span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_fields</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_fields</span> <span class="o">=</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_fields</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nv">$sql</span> <span class="o">=</span> <span class="s1">&#39;select &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_fields</span> <span class="o">.</span> <span class="s1">&#39; from &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_filters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; where &#39;</span> <span class="o">.</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39; and &#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_filters</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_group</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; group by &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_group</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_order</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; order by &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_order</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$limit</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; limit &#39;</span> <span class="o">.</span> <span class="nv">$limit</span> <span class="o">.</span> <span class="s1">&#39; offset &#39;</span> <span class="o">.</span> <span class="nv">$offset</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nv">$res</span> <span class="o">=</span> <span class="nx">db_fetch_array</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_params</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$res</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="nx">db_error</span> <span class="p">();</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-15">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Fetch as an associative array of the specified key/value fields.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">fetch_assoc</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">,</span> <span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$tmp</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fetch</span> <span class="p">(</span><span class="nv">$limit</span><span class="p">,</span> <span class="nv">$offset</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$tmp</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="nv">$tmp</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nv">$res</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
+  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$tmp</span> <span class="k">as</span> <span class="nv">$obj</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$res</span><span class="p">[</span><span class="nv">$obj</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$key</span><span class="p">}]</span> <span class="o">=</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$value</span><span class="p">};</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-16">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Fetch as an array of the specified field name.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">fetch_field</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$tmp</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fetch</span> <span class="p">(</span><span class="nv">$limit</span><span class="p">,</span> <span class="nv">$offset</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$tmp</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="nv">$tmp</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nv">$res</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
+  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$tmp</span> <span class="k">as</span> <span class="nv">$obj</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$res</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$value</span><span class="p">};</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-17">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Return the original data as an object.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">orig</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span><span class="nx">object</span><span class="p">)</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">;</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div></pre></div>            </td>
+          </tr>
+              </tbody>
+    </table>
+  </div>
+</body>
+</html>

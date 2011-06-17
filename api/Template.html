@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Template.php</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="layout.css" />
+  <style>
+    /*--------------------- Layout and Typography ----------------------------*/
+body { font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif; font-size: 15px; line-height: 22px; color: #252519; margin: 0; padding: 0;
+}
+a { color: #261a3b;
+} a:visited { color: #261a3b; }
+p { margin: 0 0 15px 0;
+}
+h1, h2, h3, h4, h5, h6 { margin: 40px 0 15px 0;
+} h3, h4, h5, h6 { margin-top: 20px; }
+#container { position: relative;
+}
+#background { position: fixed; top: 0; left: 575px; right: 0; bottom: 0; background: #f5f5ff; border-left: 1px solid #e5e5ee; z-index: -1;
+}
+#jump_to, #jump_page { background: white; -webkit-box-shadow: 0 0 25px #777; -moz-box-shadow: 0 0 25px #777; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; font: 10px Arial; text-transform: uppercase; cursor: pointer; text-align: right;
+}
+#jump_to, #jump_wrapper { position: fixed; right: 0; top: 0; padding: 5px 10px;
+} #jump_wrapper { padding: 0; display: none; } #jump_to:hover #jump_wrapper { display: block; } #jump_page { padding: 5px 0 3px; margin: 0 0 25px 25px; overflow:hidden; } #jump_page .source { display: block; padding: 5px 10px; text-decoration: none; border-top: 1px solid #eee; float:left; min-width:180px; text-align:left; text-transform:none; font-size:11px; } #jump_page .source:hover { background: #f5f5ff; } #jump_page .source:first-child { }
+table td { border: 0; outline: 0;
+} td.docs, th.docs { max-width: 450px; min-width: 450px; min-height: 5px; padding: 10px 25px 1px 50px; overflow-x: hidden; vertical-align: top; text-align: left; } .docs pre { margin: 15px 0 15px; padding-left: 15px; } .docs p tt, .docs p code { background: #f8f8ff; border: 1px solid #dedede; font-size: 12px; padding: 0 0.2em; } .pilwrap { position: relative; } .pilcrow { font: 12px Arial; text-decoration: none; color: #454545; position: absolute; top: 3px; left: -20px; padding: 1px 2px; opacity: 0; -webkit-transition: opacity 0.2s linear; } td.docs:hover .pilcrow { opacity: 1; } td.code, th.code { padding: 14px 15px 16px 25px; width: 100%; vertical-align: top; background: #f5f5ff; border-left: 1px solid #e5e5ee; } pre, tt, code { font-size: 12px; line-height: 18px; font-family: Monaco, Consolas, "Lucida Console", monospace; margin: 0; padding: 0; } /*---------------------- Syntax Highlighting -----------------------------*/
+td.linenos { background-color: #f0f0f0; padding-right: 10px; }
+span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
+body .hll { background-color: #ffffcc }
+body .c { color: #408080; font-style: italic } /* Comment */
+body .err { border: 1px solid #FF0000 } /* Error */
+body .k { color: #954121 } /* Keyword */
+body .o { color: #666666 } /* Operator */
+body .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+body .cp { color: #BC7A00 } /* Comment.Preproc */
+body .c1 { color: #408080; font-style: italic } /* Comment.Single */
+body .cs { color: #408080; font-style: italic } /* Comment.Special */
+body .gd { color: #A00000 } /* Generic.Deleted */
+body .ge { font-style: italic } /* Generic.Emph */
+body .gr { color: #FF0000 } /* Generic.Error */
+body .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+body .gi { color: #00A000 } /* Generic.Inserted */
+body .go { color: #808080 } /* Generic.Output */
+body .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+body .gs { font-weight: bold } /* Generic.Strong */
+body .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+body .gt { color: #0040D0 } /* Generic.Traceback */
+body .kc { color: #954121 } /* Keyword.Constant */
+body .kd { color: #954121; font-weight: bold } /* Keyword.Declaration */
+body .kn { color: #954121; font-weight: bold } /* Keyword.Namespace */
+body .kp { color: #954121 } /* Keyword.Pseudo */
+body .kr { color: #954121; font-weight: bold } /* Keyword.Reserved */
+body .kt { color: #B00040 } /* Keyword.Type */
+body .m { color: #666666 } /* Literal.Number */
+body .s { color: #219161 } /* Literal.String */
+body .na { color: #7D9029 } /* Name.Attribute */
+body .nb { color: #954121 } /* Name.Builtin */
+body .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+body .no { color: #880000 } /* Name.Constant */
+body .nd { color: #AA22FF } /* Name.Decorator */
+body .ni { color: #999999; font-weight: bold } /* Name.Entity */
+body .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+body .nf { color: #0000FF } /* Name.Function */
+body .nl { color: #A0A000 } /* Name.Label */
+body .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+body .nt { color: #954121; font-weight: bold } /* Name.Tag */
+body .nv { color: #19469D } /* Name.Variable */
+body .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+body .w { color: #bbbbbb } /* Text.Whitespace */
+body .mf { color: #666666 } /* Literal.Number.Float */
+body .mh { color: #666666 } /* Literal.Number.Hex */
+body .mi { color: #666666 } /* Literal.Number.Integer */
+body .mo { color: #666666 } /* Literal.Number.Oct */
+body .sb { color: #219161 } /* Literal.String.Backtick */
+body .sc { color: #219161 } /* Literal.String.Char */
+body .sd { color: #219161; font-style: italic } /* Literal.String.Doc */
+body .s2 { color: #219161 } /* Literal.String.Double */
+body .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+body .sh { color: #219161 } /* Literal.String.Heredoc */
+body .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+body .sx { color: #954121 } /* Literal.String.Other */
+body .sr { color: #BB6688 } /* Literal.String.Regex */
+body .s1 { color: #219161 } /* Literal.String.Single */
+body .ss { color: #19469D } /* Literal.String.Symbol */
+body .bp { color: #954121 } /* Name.Builtin.Pseudo */
+body .vc { color: #19469D } /* Name.Variable.Class */
+body .vg { color: #19469D } /* Name.Variable.Global */
+body .vi { color: #19469D } /* Name.Variable.Instance */
+body .il { color: #666666 } /* Literal.Number.Integer.Long */ /********** PHP Comment Additions ********/
+td.docs .docparam {color:#DB251A;font-weight:bold;}
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+          <div id="jump_to">
+        Jump To &hellip;
+        <div id="jump_wrapper">
+          <div id="jump_page">
+                                          <a class="source" href="./ActiveResource.html">
+                              ActiveResource.php              </a>
+                                          <a class="source" href="./Cache.html">
+                              Cache.php              </a>
+                                          <a class="source" href="./Controller.html">
+                              Controller.php              </a>
+                                          <a class="source" href="./Database.html">
+                              Database.php              </a>
+                                          <a class="source" href="./Form.html">
+                              Form.php              </a>
+                                          <a class="source" href="./Functions.html">
+                              Functions.php              </a>
+                                          <a class="source" href="./I18n.html">
+                              I18n.php              </a>
+                                          <a class="source" href="./Model.html">
+                              Model.php              </a>
+                                          <a class="source" href="./Page.html">
+                              Page.php              </a>
+                                          <a class="source" href="./Template.html">
+                              Template.php              </a>
+                      </div>
+        </div>
+      </div>
+        <table cellpadding="0" cellspacing="0">
+      <thead>
+        <tr>
+          <th class="docs">
+            <h1>
+              Template.php            </h1>
+          </th>
+          <th class="code">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+                  <tr id="section-0">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-0">&#182;</a>
+              </div>
+              <p>Basic template renderer. Looks for templates via the pattern
+ <code>apps/{app}/views/{file}.html</code> where the template is passed as
+ <code>'app/file'</code>. Failing that, it looks for <code>layouts/{file}.html</code>
+ and finally <code>layouts/default.html</code>. It then creates a PHP version
+ of the template  and caches it to <code>cache/{app}-{template}.php</code>,
+ so the cache folder must be writeable. Auto-refreshes cached
+ versions when the originals change.</p>
+
+<p>As a result, templates can include any PHP, along with tags of
+ the form:</p>
+
+<pre><code> {{ body }}
+</code></pre>
+
+<p>And blocks of the form:</p>
+
+<pre><code> {% foreach pages %}
+     {{ loop_index }} - {{ loop_value }}
+ {% end %}
+
+ {% if some_val %}
+     {{ some_val }}
+ {% end %}
+</code></pre>
+
+<p>Note the use of loop<em>index and loop</em>value, which are defined for
+ you inside foreach loops by the template engine.</p>
+
+<p>You can also test for more complex conditions, but make sure the
+ value being tested for is not preceeded by anything. For example,
+ no false checks via <code>{% if !some_val %}</code>, instead use:</p>
+
+<pre><code> {% if some_val == false %}
+     {{ some_val }}
+ {% end %}
+</code></pre>
+
+<p>Note that <code>'endif'</code> and <code>'endforeach'</code> are valid as well as <code>'end'</code>,
+ if you prefer, for the sake of clarity.</p>
+
+<p>## Usage in PHP</p>
+
+<p>To call a template, use:</p>
+
+<pre><code> echo $tpl-&gt;render ('base', array ('foo' =&gt; 'bar'));
+</code></pre>
+
+<p>Note that arrays passed to templates are converted to objects,
+ and objects are left as-is.</p>
+
+<p>## Globals</p>
+
+<p>In addition to the fields in the data array passed to <code>render()</code>,
+ you can also call global objects and class methods as follows
+ from within if and foreach blocks as well as variable
+ substitutions:</p>
+
+<p>Call User::constant_value:</p>
+
+<pre><code> {{ User::constant_value }}
+</code></pre>
+
+<p>Call $GLOBALS['user']->name:</p>
+
+<pre><code> {{ user.name }}
+</code></pre>
+
+<p>Call a function:</p>
+
+<pre><code> {{ db_shift ('select * from foo') }}
+</code></pre>
+
+<p>In an if block:</p>
+
+<pre><code> {% if User::is_valid () %}
+
+ {% if user.name != '' %}
+</code></pre>
+
+<p>In a foreach:</p>
+
+<pre><code> {% foreach Oject::some_method () %}
+</code></pre>
+
+<p>Calling a superglobal:</p>
+
+<pre><code> {{ $_POST.value }}
+</code></pre>
+
+<p>Note that these must come at the beginning of a statement, not
+ anywhere else within it. The replacement mechanism is very
+ simplistic.</p>
+
+<p>## Filters</p>
+
+<p>Filtering is supported, and <code>htmlspecialchars()</code> is the default
+ filter unless another is specified or 'none' is supplied via:</p>
+
+<pre><code> {{ body|none }}
+</code></pre>
+
+<p>Any valid function can be a filter, and filters can be chained,
+ executing in the following order:</p>
+
+<pre><code> {{ body|strtoupper|strtolower }}
+
+ &lt;?php echo strtolower (strtoupper ($data-&gt;body)); ?&gt;
+</code></pre>
+
+<p>You can also set additional parameters to a filter as follows:</p>
+
+<pre><code> {{ timestamp|date ('F j', %s) }}
+</code></pre>
+
+<p>## String translations</p>
+
+<p>You can use the following tag format to mark strings for translation
+ into the current visitor's language:</p>
+
+<pre><code> {" Text here "}
+</code></pre>
+
+<p>This will be replaced with a call to:</p>
+
+<pre><code> i18n_get('Text here')
+</code></pre>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">class</span> <span class="nc">Template</span> <span class="p">{</span>
+ <span class="k">var</span> <span class="nv">$charset</span> <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">;</span>
+ <span class="k">var</span> <span class="nv">$quotes</span> <span class="o">=</span> <span class="nx">ENT_QUOTES</span><span class="p">;</span>
+
+ <span class="k">function</span> <span class="nf">__construct</span> <span class="p">(</span><span class="nv">$charset</span> <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">charset</span> <span class="o">=</span> <span class="nv">$charset</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-1">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>Render a template with the given data. Generate the PHP template if
+ necessary.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">render</span> <span class="p">(</span><span class="nv">$template</span><span class="p">,</span> <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span> <span class="p">())</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$data</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$data</span> <span class="o">=</span> <span class="p">(</span><span class="nx">object</span><span class="p">)</span> <span class="nv">$data</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$template</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$file</span><span class="p">)</span> <span class="o">=</span> <span class="nb">preg_split</span> <span class="p">(</span><span class="s1">&#39;/\//&#39;</span><span class="p">,</span> <span class="nv">$template</span><span class="p">,</span> <span class="m">2</span><span class="p">);</span>
+   <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/views/&#39;</span> <span class="o">.</span> <span class="nv">$file</span> <span class="o">.</span> <span class="s1">&#39;.html&#39;</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$file</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">die</span> <span class="p">(</span><span class="s1">&#39;Template not found: &#39;</span> <span class="o">.</span> <span class="nv">$template</span><span class="p">);</span>
+   <span class="p">}</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;layouts/&#39;</span> <span class="o">.</span> <span class="nv">$template</span> <span class="o">.</span> <span class="s1">&#39;.html&#39;</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;layouts/&#39;</span> <span class="o">.</span> <span class="nv">$template</span> <span class="o">.</span> <span class="s1">&#39;.html&#39;</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;layouts/default.html&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nv">$cache</span> <span class="o">=</span> <span class="s1">&#39;cache/&#39;</span> <span class="o">.</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="nv">$template</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$cache</span><span class="p">)</span> <span class="o">||</span> <span class="nb">filemtime</span> <span class="p">(</span><span class="nv">$file</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">filemtime</span> <span class="p">(</span><span class="nv">$cache</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-2">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Regenerate cached file</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="nv">$out</span> <span class="o">=</span> <span class="nb">file_get_contents</span> <span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+   <span class="nv">$out</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">parse_template</span> <span class="p">(</span><span class="nv">$out</span><span class="p">);</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_put_contents</span> <span class="p">(</span><span class="nv">$cache</span><span class="p">,</span> <span class="nv">$out</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">die</span> <span class="p">(</span><span class="s1">&#39;Failed to generate cached template: &#39;</span> <span class="o">.</span> <span class="nv">$cache</span><span class="p">);</span>
+   <span class="p">}</span>
+  <span class="p">}</span>
+  
+  <span class="nb">ob_start</span> <span class="p">();</span>
+  <span class="k">require</span> <span class="p">(</span><span class="nv">$cache</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nb">ob_get_clean</span> <span class="p">();</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-3">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Replace values from template as string.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">parse_template</span> <span class="p">(</span><span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$val</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\{\{ ?(.*?) ?\}\}/e&#39;</span><span class="p">,</span> <span class="s1">&#39;$this-&gt;replace_vars (\&#39;\\1\&#39;)&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
+  <span class="nv">$val</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\{[\&#39;&quot;] ?(.*?) ?[\&#39;&quot;]\}/e&#39;</span><span class="p">,</span> <span class="s1">&#39;$this-&gt;replace_strings (\&#39;\\1\&#39;)&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
+  <span class="nv">$val</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\{\% ?(.*?) ?\%\}/e&#39;</span><span class="p">,</span> <span class="s1">&#39;$this-&gt;replace_blocks (\&#39;\\1\&#39;)&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nv">$val</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-4">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Replace variables.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">replace_vars</span> <span class="p">(</span><span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$filters</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
+  <span class="nv">$val</span> <span class="o">=</span> <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$filters</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="s1">&#39;$_&#39;</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nv">$val</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\.([a-zA-Z0-9_]+)/&#39;</span><span class="p">,</span> <span class="s1">&#39;[\&#39;\1\&#39;]&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span>
+   <span class="p">}</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$val</span> <span class="o">=</span> <span class="s1">&#39;$GLOBALS[\&#39;&#39;</span> <span class="o">.</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\./&#39;</span><span class="p">,</span> <span class="s1">&#39;\&#39;]-&gt;&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="o">!</span> <span class="nb">strstr</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="s1">&#39;::&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span> <span class="nb">strstr</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="s1">&#39;(&#39;</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$val</span> <span class="o">=</span> <span class="s1">&#39;$data-&gt;&#39;</span> <span class="o">.</span> <span class="nv">$val</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$filters</span><span class="p">)</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="s1">&#39;&lt;?php echo Template::sanitize (&#39;</span> <span class="o">.</span> <span class="nv">$val</span> <span class="o">.</span> <span class="s1">&#39;, \&#39;&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">charset</span> <span class="o">.</span> <span class="s1">&#39;\&#39;); ?&gt;&#39;</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$filters</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;none&#39;</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="s1">&#39;&lt;?php echo &#39;</span> <span class="o">.</span> <span class="nv">$val</span> <span class="o">.</span> <span class="s1">&#39;; ?&gt;&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nv">$filters</span> <span class="o">=</span> <span class="nb">array_reverse</span> <span class="p">(</span><span class="nv">$filters</span><span class="p">);</span>
+  <span class="nv">$out</span> <span class="o">=</span> <span class="s1">&#39;&lt;?php echo &#39;</span><span class="p">;</span>
+  <span class="nv">$end</span> <span class="o">=</span> <span class="s1">&#39;; ?&gt;&#39;</span><span class="p">;</span>
+  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$filters</span> <span class="k">as</span> <span class="nv">$filter</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$filter</span><span class="p">,</span> <span class="s1">&#39;%s&#39;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">list</span> <span class="p">(</span><span class="nv">$one</span><span class="p">,</span> <span class="nv">$two</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;%s&#39;</span><span class="p">,</span> <span class="nv">$filter</span><span class="p">);</span>
+    <span class="nv">$out</span> <span class="o">.=</span> <span class="nv">$one</span><span class="p">;</span>
+    <span class="nv">$end</span> <span class="o">=</span> <span class="nv">$two</span> <span class="o">.</span> <span class="nv">$end</span><span class="p">;</span>
+   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nv">$out</span> <span class="o">.=</span> <span class="nv">$filter</span> <span class="o">.</span> <span class="s1">&#39; (&#39;</span><span class="p">;</span>
+    <span class="nv">$end</span> <span class="o">=</span> <span class="s1">&#39;)&#39;</span> <span class="o">.</span> <span class="nv">$end</span><span class="p">;</span>
+   <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$out</span> <span class="o">.</span> <span class="nv">$val</span> <span class="o">.</span> <span class="nv">$end</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-5">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Replace strings with calls to <code>i18n_get()</code> for multilingual sites.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">replace_strings</span> <span class="p">(</span><span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s1">&#39;&lt;?php echo i18n_get (\&#39;&#39;</span> <span class="o">.</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;\&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;\\\&#39;&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;\&#39;); ?&gt;&#39;</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-6">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Sanitize a value for safe output, helping to prevent XSS attacks.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">sanitize</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="nv">$charset</span> <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nb">htmlspecialchars</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="nx">ENT_QUOTES</span><span class="p">,</span> <span class="nv">$charset</span><span class="p">);</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-7">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Replace foreach and if blocks.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">replace_blocks</span> <span class="p">(</span><span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$val</span> <span class="o">==</span> <span class="s1">&#39;end&#39;</span> <span class="o">||</span> <span class="nv">$val</span> <span class="o">==</span> <span class="s1">&#39;endif&#39;</span> <span class="o">||</span> <span class="nv">$val</span> <span class="o">==</span> <span class="s1">&#39;endforeach&#39;</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="s1">&#39;&lt;?php } ?&gt;&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">list</span> <span class="p">(</span><span class="nv">$block</span><span class="p">,</span> <span class="nv">$extra</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="m">2</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="nv">$block</span> <span class="o">=</span> <span class="nv">$val</span><span class="p">;</span>
+   <span class="nv">$extra</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$extra</span><span class="p">,</span> <span class="s1">&#39;$_&#39;</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nv">$extra</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\.([a-zA-Z0-9_]+)/&#39;</span><span class="p">,</span> <span class="s1">&#39;[\&#39;\1\&#39;]&#39;</span><span class="p">,</span> <span class="nv">$extra</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span>
+   <span class="p">}</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$extra</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$extra</span> <span class="o">=</span> <span class="s1">&#39;$GLOBALS[\&#39;&#39;</span> <span class="o">.</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\./&#39;</span><span class="p">,</span> <span class="s1">&#39;\&#39;]-&gt;&#39;</span><span class="p">,</span> <span class="nv">$extra</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="o">!</span> <span class="nb">strstr</span> <span class="p">(</span><span class="nv">$extra</span><span class="p">,</span> <span class="s1">&#39;::&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span> <span class="nb">strstr</span> <span class="p">(</span><span class="nv">$extra</span><span class="p">,</span> <span class="s1">&#39;(&#39;</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$extra</span> <span class="o">=</span> <span class="s1">&#39;$data-&gt;&#39;</span> <span class="o">.</span> <span class="nv">$extra</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$block</span> <span class="o">==</span> <span class="s1">&#39;foreach&#39;</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="s1">&#39;&lt;?php foreach (&#39;</span> <span class="o">.</span> <span class="nv">$extra</span> <span class="o">.</span> <span class="s1">&#39; as $data-&gt;loop_index =&gt; $data-&gt;loop_value) { ?&gt;&#39;</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$block</span> <span class="o">==</span> <span class="s1">&#39;if&#39;</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="s1">&#39;&lt;?php if (&#39;</span> <span class="o">.</span> <span class="nv">$extra</span> <span class="o">.</span> <span class="s1">&#39;) { ?&gt;&#39;</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$block</span> <span class="o">==</span> <span class="s1">&#39;elseif&#39;</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="s1">&#39;&lt;?php } elseif (&#39;</span> <span class="o">.</span> <span class="nv">$extra</span> <span class="o">.</span> <span class="s1">&#39;) { ?&gt;&#39;</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$block</span> <span class="o">==</span> <span class="s1">&#39;else&#39;</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="s1">&#39;&lt;?php } else { ?&gt;&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">die</span> <span class="p">(</span><span class="s1">&#39;Invalid template block: &#39;</span> <span class="o">.</span> <span class="nv">$val</span><span class="p">);</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div></pre></div>            </td>
+          </tr>
+              </tbody>
+    </table>
+  </div>
+</body>
+</html>
