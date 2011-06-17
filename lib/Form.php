@@ -7,26 +7,26 @@
  *
  * Usage:
  *
- *   $form = new Form ('post', 'apps/myapp/forms/verify.php');
- *   if ($form->submit ()) {
- *     // handle form
- *   } else {
- *     $page->failed = $form->failed;
- *     $page->head = '<script src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
- *       <script src="/js/jquery.verify_values.js"></script>
- *       <script>
- *       $(function () {
- *         $.verify_values ({
- *           element: "#myapp-form",
- *           handler: "myapp/verify",
- *           callback: function (failed) {
- *             // highlight the failed elements
- *           }
- *         });
- *       });
- *     </script>';
- *     $page->template = 'myapp/form';
- *   }
+ *     $form = new Form ('post', 'apps/myapp/forms/verify.php');
+ *     if ($form->submit ()) {
+ *         // handle form
+ *     } else {
+ *         $page->failed = $form->failed;
+ *         $page->head = '<script src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
+ *             <script src="/js/jquery.verify_values.js"></script>
+ *             <script>
+ *             $(function () {
+ *                 $.verify_values ({
+ *                     element: "#myapp-form",
+ *                     handler: "myapp/verify",
+ *                     callback: function (failed) {
+ *                         // highlight the failed elements
+ *                     }
+ *                 });
+ *             });
+ *             </script>';
+ *         $page->template = 'myapp/form';
+ *     }
  */
 class Form {
 	/**
@@ -50,7 +50,7 @@ class Form {
 	var $verify_referrer = true;
 
 	/**
-	 * The reason submit() failed to pass.
+	 * The reason `submit()` failed to pass.
 	 */
 	var $error = false;
 
@@ -94,7 +94,7 @@ class Form {
 	}
 
 	/**
-	 * Merge the values from $_GET or $_POST onto a data array or
+	 * Merge the values from `$_GET` or `$_POST` onto a data array or
 	 * object for re-rendering a form with the latest data entered.
 	 */
 	function merge_values ($obj) {
@@ -137,32 +137,32 @@ class Form {
 	 * Pass the value, a type of validation, and a validator.
 	 * Types include:
 	 *
-	 * - skip_if_empty - a special verifier that tells verify_values() to skip
+	 * - `skip_if_empty` - a special verifier that tells `verify_values()` to skip
 	 *                   validation on the field if it's been left blank.
-	 * - regex - calls preg_match($validator, $value)
-	 * - type - calls is_$validator ($value)
-	 * - callback - calls call_user_func ($validator, $value)
-	 * - email - a valid email address
-	 * - range - number within a range e.g., 123-456
-	 * - length - string of length, $verifier examples: 6, 6+, 6-12, 12-
-	 * - gt - greater than
-	 * - gte - greater than or equal to
-	 * - lt - less than
-	 * - lte - less than or equal to
-	 * - empty - value is empty
-	 * - not empty - value is not empty
-	 * - contains - stristr ($value, $validator)
-	 * - equals - equality test
-	 * - date - date value (YYYY-MM-DD)
-	 * - time - time value (HH:MM:SS)
-	 * - datetime - date and time value (YYYY-MM-DD HH:MM:SS)
-	 * - header - verifies there are no newlines so spammers can't pass headers to mail()
-	 * - unique - verifies it's unique to a table and column in the database,
-	 *            $verifier should be 'table_name.column_name'
-	 * - exists - verifies that a file exists in the specified directory,
-	 *            $verifier should be a directory path with no trailing /,
-	 *            or optionally a file path with %s in it for the form value.
-	 * - matches - Matches another variable, e.g., "$_POST['name']", must be a
+	 * - `regex` - calls `preg_match($validator, $value)`
+	 * - `type` - calls `is_$validator($value)`
+	 * - `callback` - calls `call_user_func($validator, $value)`
+	 * - `email` - a valid email address
+	 * - `range` - number within a range e.g., `123-456`
+	 * - `length` - string of length, $verifier examples: `6, 6+, 6-12, 12-`
+	 * - `gt` - greater than
+	 * - `gte` - greater than or equal to
+	 * - `lt` - less than
+	 * - `lte` - less than or equal to
+	 * - `empty` - value is empty
+	 * - `not empty` - value is not empty
+	 * - `contains` - `stristr($value, $validator)`
+	 * - `equals` - equality test
+	 * - `date` - date value (`YYYY-MM-DD`)
+	 * - `time` - time value (`HH:MM:SS`)
+	 * - `datetime` - date and time value (`YYYY-MM-DD HH:MM:SS`)
+	 * - `header` - verifies there are no newlines so spammers can't pass headers to `mail()`
+	 * - `unique` - verifies it's unique to a table and column in the database,
+	 *            `$verifier` should be `'table_name.column_name'`
+	 * - `exists` - verifies that a file exists in the specified directory,
+	 *            `$verifier` should be a directory path with no trailing /,
+	 *            or optionally a file path with `%s` in it for the form value.
+	 * - `matches` - Matches another variable, e.g., `"$_POST['name']"`, must be a
 	 *             global or superglobal.
 	 *
 	 * Functions must accept only the value of the variable and return
@@ -178,7 +178,7 @@ class Form {
 		switch ($type) {
 			case 'matches':
 				if (preg_match ('/\$(_[a-z]+|GLOBALS)\[[\'"]?([a-z0-9_-]+)[\'"]?\]/i', $validator, $regs)) {
-					// can't dynamically reference superglobals, so instead...
+					// Can't dynamically reference superglobals, so instead...
 					switch ($regs[1]) {
 						case '_POST':
 							return ($value == $_POST[$regs[2]]);
@@ -269,26 +269,26 @@ class Form {
 				}
 				return @file_exists ($validator . '/' . $value);
 		}
-		// if tests fail, be safe and fail by default
+		// If tests fail, be safe and fail by default
 		return false;
 	}
 	
 	/**
-	 * Validate a list of values, such as $_GET or $_POST data against
+	 * Validate a list of values, such as `$_GET` or `$_POST` data against
 	 * a list of validation rules. If the rules are a string, it will
-	 * look for a file and parse it using parse_ini_file() for the rules.
+	 * look for a file and parse it using `parse_ini_file()` for the rules.
 	 * The format is as follows:
 	 *
-	 * [field1]
-	 * email = 1
-	 *
-	 * [field2]
-	 * type = string
-	 * regex = "/^[a-z]+$/i"
-	 *
-	 * [field3]
-	 * skip_if_empty = 1
-	 * unique = "table.column"
+	 *     [field1]
+	 *     email = 1
+	 *     
+	 *     [field2]
+	 *     type = string
+	 *     regex = "/^[a-z]+$/i"
+	 *     
+	 *     [field3]
+	 *     skip_if_empty = 1
+	 *     unique = "table.column"
 	 *
 	 * Returns an array of failed fields. If the array is empty, everything
 	 * passed.

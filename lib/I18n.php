@@ -49,31 +49,31 @@ class I18n {
 	var $fallbacks = array ();
 
 	/**
-	 * 2-D list of available languages, retrieved from getLanguages().
+	 * 2-D list of available languages, retrieved from `getLanguages()`.
 	 */
 	var $languages = array ();
 
 	/**
-	 * The name of the language cookie for negotiate=cookie.
+	 * The name of the language cookie for `$negotiation=cookie`.
 	 */
 	var $cookieName = 'lang';
 
 	/**
 	 * Tells the controller that the first level of the URL is the language
-	 * and not the page ID when $negotiation=url.
+	 * and not the page ID when `$negotiation=url`.
 	 */
 	var $url_includes_lang = false;
 
 	/**
-	 * If $url_includes_lang is true, this will include the request with
+	 * If `$url_includes_lang` is true, this will include the request with
 	 * the language stripped out.
 	 */
 	var $new_request_uri = '';
 
 	/**
-	 * If $url_includes_lang is true, this will include the stripped out
+	 * If `$url_includes_lang` is true, this will include the stripped out
 	 * part of the URL. Otherwise it will be empty. This is useful for
-	 * including language URL prefixes in views via {{ i18n.prefix }}.
+	 * including language URL prefixes in views via `{{ i18n.prefix }}`.
 	 */
 	var $prefix = '';
 
@@ -89,10 +89,10 @@ class I18n {
 	var $error;
 
 	/**
-	 * Includes the appropriate language file in the provided $directory.
-	 * This file is intended to fill out the $lang_hash array.
-	 * $negotiationMethod determines the method whereby the language of
-	 * choice is determined.  See the negotiate() method for more info on this.
+	 * Includes the appropriate language file in the provided `$directory`.
+	 * This file is intended to fill out the `$lang_hash` array.
+	 * `$negotiationMethod` determines the method whereby the language of
+	 * choice is determined. See the `negotiate()` method for more info on this.
 	 */
 	function __construct ($directory = 'lang', $conf = array ()) {
 		$this->directory = $directory;
@@ -126,6 +126,9 @@ class I18n {
 		}
 	}
 
+	/**
+	 * Calls `setlocale()` based on the current language.
+	 */
 	function setLocale () {
 		$params = array (LC_TIME); // | LC_MONETARY | LC_CTYPE | LC_COLLATE);
 		if (! empty ($this->languages[$this->language]['locale'])) {
@@ -136,6 +139,9 @@ class I18n {
 		return call_user_func_array ('setlocale', $params);
 	}
 
+	/**
+	 * Includes the language index.
+	 */
 	function getIndex () {
 		if ((! empty ($this->language)) && (@file_exists ($this->directory . '/' . $this->language . '.php'))) {
 			include_once ($this->directory . '/' . $this->language . '.php');
@@ -151,13 +157,9 @@ class I18n {
 
 	/**
 	 * Takes a string, serializes it to generate a key, and performs
-	 * a key/value lookup on the $lang_hash array.  Returns the value found,
+	 * a key/value lookup on the `$lang_hash` array.  Returns the value found,
 	 * or the original string if not found.  This is the method used in I18n
-	 * to return translated text.  Optionally includes a second parameter, which
-	 * if included, tells I18n to use a global $tpl object to parse the current
-	 * string and feed it the specified object (or associative array).  This
-	 * allows developers to make elements dynamic, and even re-order elements,
-	 * inside a language string.
+	 * to return translated text.
 	 */
 	function get ($original = '') {
 		if (empty ($original)) {
@@ -174,15 +176,14 @@ class I18n {
 
 	/**
 	 * Takes a string, serializes it to generate a key, and performs
-	 * a key/value lookup on the $lang_hash array.  Returns the value found,
-	 * or the original string if not found.  This method is very similar to
-	 * the get() method, except instead of using saf.Template to insert values
-	 * into the string, it uses the vsprintf() function to fill in the values.
+	 * a key/value lookup on the `$lang_hash` array.  Returns the value found,
+	 * or the original string if not found.  This method is similar to
+	 * `get()`, except it uses `vsprintf()` to insert values.
 	 * If you pass an array as the second value, it will use that instead of
-	 * however many additional arguments you fed it.  This is a good thing,
+	 * however many additional arguments you fed it.  This is handy
 	 * because if you already have all your values in an array, you can
-	 * simply say get($original, $array) instead of getf($original, $array[0],
-	 * $array[1], $array[2]).
+	 * simply say `getf($original, $array)` instead of `getf($original, $array[0],
+	 * $array[1], $array[2])`.
 	 */
 	function getf () {
 		$args = func_get_args ();
@@ -223,14 +224,14 @@ class I18n {
 
 	/**
 	 * Returns the preferred language of the current visitor.
-	 * If the $method is 'http' then it uses the HTTP Accept-Language
-	 * string for this info.  If the $method is 'cookie' it uses a
-	 * cookie (specified by the $cookieName property) to determine,
-	 * if the $method is 'subdomain' then it looks for it in the
-	 * subdomain of the site (e.g., en.sitename.com, fr.sitename.com),
-	 * and if the $method is 'url' then it uses the start of the URL
-	 * to determine the language (e.g., /fr/ or /en/).
-	 * Default is 'url'.
+	 * If the `$method` is `'http'` then it uses the HTTP Accept-Language
+	 * string for this info.  If the `$method` is `'cookie'` it uses a
+	 * cookie (specified by the `$cookieName` property) to determine,
+	 * if the `$method` is `'subdomain'` then it looks for it in the
+	 * subdomain of the site (e.g., `en.sitename.com`, `fr.sitename.com`),
+	 * and if the `$method` is `'url'` then it uses the start of the URL
+	 * to determine the language (e.g., `/fr/` or `/en/`).
+	 * Default is `'url'`.
 	 */
 	function negotiate ($method = false) {
 		if (! $method) {
@@ -242,12 +243,12 @@ class I18n {
 			$keys = explode (',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
 
 			foreach ($keys as $lang) {
-				// remove trailing ";q=" data
+				// Remove trailing ";q=" data
 				if ($pos = strpos ($lang, ';')) {
 					$lang = trim (substr ($lang, 0, $pos));
 				}
 
-				// check for country code
+				// Check for country code
 				if ($pos = strpos ($lang, '-')) {
 					list ($lang, $cn) = explode ('-', $lang);
 
@@ -282,7 +283,7 @@ class I18n {
 						$name = $lang;
 					}
 					if (isset ($this->languages[$name])) {
-						// found
+						// Found
 						return $name;
 					}
 				}
@@ -315,10 +316,16 @@ class I18n {
 	}
 }
 
+/**
+ * Helper function available globablly. Alias of `I18n::get()`.
+ */
 function i18n_get ($original = '') {
 	return $GLOBALS['i18n']->get ($original);
 }
 
+/**
+ * Helper function available globablly. Alias of `I18n::getf()`.
+ */
 function i18n_getf () {
 	$args = func_get_args ();
 	return call_user_func_array (array ($GLOBALS['i18n'], 'getf'), $args);

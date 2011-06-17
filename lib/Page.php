@@ -11,11 +11,11 @@
  * layouts/default.html to render the overall layout, unless you
  * also specify:
  *
- *   $page->layout = false;
+ *     $page->layout = false;
  *
  * To skip a template altogether for things like JSON, use:
  *
- *   $page->template = false;
+ *     $page->template = false;
  *
  * This will skip both the template and the layout and simply
  * return the page body to the user.
@@ -31,6 +31,9 @@ class Page {
 	var $layout = 'default';
 	var $scripts = array ();
 
+	/**
+	 * Render the page in its template and layout.
+	 */
 	function render () {
 		global $tpl;
 
@@ -48,6 +51,9 @@ class Page {
 		return $this->body;
 	}
 
+	/**
+	 * Returns title for menu_title or window_title if they're empty.
+	 */
 	function __get ($key) {
 		if ($key == 'menu_title') {
 			return (! empty ($this->menu_title)) ? $this->menu_title : $this->title;

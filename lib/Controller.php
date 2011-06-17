@@ -1,39 +1,39 @@
 <?php
 
 /**
- * Basic routing controller. Maps $_SERVER['REQUEST_URI'] to files in
- * a apps/{appname}/handlers/ folder, defaulting to
- * $conf['General']['default_handler'] if no others match.
+ * Basic routing controller. Maps `$_SERVER['REQUEST_URI']` to files in
+ * a `apps/{appname}/handlers/` folder, defaulting to
+ * `$conf['General']['default_handler']` if no others match.
  *
  * Matching is done by reducing the URL folder-by-folder until a file
  * matches. Here are some examples:
  *
- *   / -> $conf[default_handler]
+ *     / -> $conf[default_handler]
  *
- *   /foo -> apps/foo/handlers/index.php,
- *           $conf[default_handler]
+ *     /foo -> apps/foo/handlers/index.php,
+ *             $conf[default_handler]
  *
- *   /user/login -> apps/user/handlers/login.php,
- *                  apps/user/handlers/index.php,
- *                  $conf[default_handler]
+ *     /user/login -> apps/user/handlers/login.php,
+ *                    apps/user/handlers/index.php,
+ *                    $conf[default_handler]
  *
- *   /user/info/123 -> apps/user/handlers/info/123.php,
- *                     apps/user/handlers/info.php,
- *                     apps/user/handlers/index.php,
- *                     $conf[default_handler]
+ *     /user/info/123 -> apps/user/handlers/info/123.php,
+ *                       apps/user/handlers/info.php,
+ *                       apps/user/handlers/index.php,
+ *                       $conf[default_handler]
  *
  * The controller simply returns the matching URL so you can include
  * it via the following code:
  *
- * $handler = $controller->route ($_SERVER['REQUEST_URI']);
- * ob_start ();
- * require_once ($handler);
- * $page->body = ob_get_clean ();
+ *     $handler = $controller->route ($_SERVER['REQUEST_URI']);
+ *     ob_start ();
+ *     require_once ($handler);
+ *     $page->body = ob_get_clean ();
  *
  * Or more simply (but in practice the same):
  *
- * $handler = $controller->route ($_SERVER['REQUEST_URI']);
- * $page->body = $controller->handle ($handler);
+ *     $handler = $controller->route ($_SERVER['REQUEST_URI']);
+ *     $page->body = $controller->handle ($handler);
  *
  * In this way, there is less scaffolding code for individual controllers,
  * they can simply begin executing in the global namespace just like an
@@ -41,51 +41,51 @@
  * PHP script too.
  *
  * The remaining elements of the URL are accessible in the array
- * $this->params, so for /user/123 handled by handlers/user.php,
- * you could get the value '123' via $this->params[0].
+ * `$this->params`, so for `/user/123` handled by `handlers/user.php`,
+ * you could get the value `'123'` via `$this->params[0]`.
  *
  * You can also call one handler from within another and get its results
  * like this:
  *
- * $res = $this->run ('/user/123');
+ *     $res = $this->run ('/user/123');
  *
  * Sometimes you might want to pass values to another handler for internal
  * processing, which you can do like this:
  *
- * $res = $this->run ('/user/123', array ('foo' => 'bar'));
+ *     $res = $this->run ('/user/123', array ('foo' => 'bar'));
  *
  * You can then access the array via:
  *
- * echo $this->data['foo'];
+ *     echo $this->data['foo'];
  *
  * In addition to running one handler from another, you can configure
  * hooks with one or more handlers to be run for you when you trigger
  * the hook. This is a 3-step process:
  *
- * 1. Add your hook and its handler to conf/config.php:
+ * 1. Add your hook and its handler to `conf/config.php`:
  *
- * myapp/somehandler[] = otherapp/handler
+ *     myapp/somehandler[] = otherapp/handler
  *
- * 2. In myapp/somehandler, add the hook call and pass it some data:
+ * 2. In `myapp/somehandler`, add the hook call and pass it some data:
  *
- * $this->hook ('myapp/somehandler', array('id' => 123));
+ *     $this->hook ('myapp/somehandler', array('id' => 123));
  *
- * 3. In otherapp/handler, verify the request and do something
+ * 3. In `otherapp/handler`, verify the request and do something
  * interesting with the id:
  *
- * <?php
- *
- * if (! $this->internal) {
- *   die ('Cannot call me from a browser.');
- * }
- *
- * if (! Form::verify_value ($this->data['id'], 'type', 'numeric')) {
- *  die ('Invalid id value');
- * }
- *
- * // do something with $this->data['id']
- *
- * ?>
+ *     <?php
+ *     
+ *     if (! $this->internal) {
+ *         die ('Cannot call me from a browser.');
+ *     }
+ *     
+ *     if (! Form::verify_value ($this->data['id'], 'type', 'numeric')) {
+ *         die ('Invalid id value');
+ *     }
+ *     
+ *     // do something with $this->data['id']
+ *     
+ *     ?>
  */
 class Controller {
 	/**
@@ -112,21 +112,21 @@ class Controller {
 	 * A list of handlers defined to be called for each type of hook.
 	 * Similar to the idea of webhooks, this provides a means of triggering
 	 * handlers from each other without hard-coding the specific handlers in
-	 * the triggering code. See  conf/config.php's [Hooks] section for examples.
+	 * the triggering code. See `conf/config.php`'s `[Hooks]` section for examples.
 	 */
 	var $hooks = array ();
 
 	/**
 	 * Keeps track of the number of times each handler has been called in
-	 * this request. You can check $controller->called['handler'] for
+	 * this request. You can check `$controller->called['handler']` for
 	 * the number, but make sure you use $controller and not $this in
 	 * handlers to make sure it refers to the global controller.
 	 */
 	var $called = array ();
 
 	/**
-	 * When a handler is loaded, if there is a conf/config.php for that
-	 * app, its contents will be loaded into $appconf['appname'] once
+	 * When a handler is loaded, if there is a `conf/config.php` for that
+	 * app, its contents will be loaded into `$appconf['appname']` once
 	 * the first time it is called, and accessible thereafter by any
 	 * handler in that app directly via $appconf.
 	 */
@@ -160,20 +160,20 @@ class Controller {
 	 * Trigger the default error handler. Note that you must echo the
 	 * output from your handler before returning, for example:
 	 *
-	 *   echo $this->error ();
-	 *   return;
+	 *     echo $this->error ();
+	 *     return;
 	 *
 	 * Not like this:
 	 *
-	 *   return $this->error ();
+	 *     return $this->error ();
 	 */
 	function error ($code = 404, $title = 'Page not found', $message = '') {
 		global $conf;
 
-		// erase any existing output up to this point
+		// Erase any existing output up to this point
 		ob_clean ();
 
-		// call the error handler
+		// Call the error handler
 		return $this->run ($conf['General']['error_handler'], array (
 			'code' => $code,
 			'title' => $title,
@@ -225,17 +225,17 @@ class Controller {
 		$this->app = array_shift (explode ('/', $conf['General']['default_handler']));
 		$this->params = array ();
 
-		// remove queries and hash from uri
+		// Remove queries and hash from uri
 		$uri = preg_replace ('/(\?|#).*$/', '', $uri);
 
 		if (! $this->clean ($uri) || $uri == '/') {
 			$uri = $conf['General']['default_handler'];
 		}
 
-		// remove leading /
+		// Remove leading /
 		$uri = ltrim ($uri, '/');
 
-		// if no / and doesn't match an app's name with an index.php
+		// If no / and doesn't match an app's name with an index.php
 		// handler, then use the default handler.
 		if (! strstr ($uri, '/')) {
 			if (@file_exists ('apps/' . $uri . '/handlers/index.php')) {
@@ -276,7 +276,7 @@ class Controller {
 	}
 
 	/**
-	 * Adds to the start, since route() parse them off the end of the URI.
+	 * Adds to the start, since `route()` parse them off the end of the URI.
 	 */
 	function add_param ($param) {
 		array_unshift ($this->params, $param);

@@ -3,43 +3,43 @@
 /**
  * A class you can extend to create model objects in your application. Assumes table and
  * class name are identical, but that the table is lowercase. Assumes primary key field
- * is named 'id'. Both of these can be changed by specifying custom table and key properties.
+ * is named `'id'`. Both of these can be changed by specifying custom table and key properties.
  * Note that this class doesn't impose field names. It provides an easy way to get at the
  * usual query methods for a database table, but mainly to encapsulate your logic around
  * that data.
  *
  * Usage:
  *
- *   class MyTable extends Model {
- *     function get_all_by_x () {
- *       return MyTable::query ()
- *         ->order ('x desc')
- *         ->fetch ();
+ *     class MyTable extends Model {
+ *         function get_all_by_x () {
+ *             return MyTable::query ()
+ *                 ->order ('x desc')
+ *                 ->fetch ();
+ *         }
  *     }
- *   }
  *
- *   $one = new MyTable (array (
- *     'id' => 123,
- *     'fieldname' => 'Some value'
- *   ));
- *   $one->put ();
+ *     $one = new MyTable (array (
+ *         'id' => 123,
+ *         'fieldname' => 'Some value'
+ *     ));
+ *     $one->put ();
  *
- *   $two = MyTable::get (123);
+ *     $two = MyTable::get (123);
  *
- *   $two->fieldname = 'Some other value';
- *   $two->put ();
+ *     $two->fieldname = 'Some other value';
+ *     $two->put ();
  *
- *   $res = MyTable::query ()
- *     ->where ('fieldname', 'Some other value')
- *     ->where ('id = 123')
- *     ->order ('fieldname asc')
- *     ->fetch (10, 5); // limit, offset
+ *     $res = MyTable::query ()
+ *         ->where ('fieldname', 'Some other value')
+ *         ->where ('id = 123')
+ *         ->order ('fieldname asc')
+ *         ->fetch (10, 5); // limit, offset
  *
- *   $res = MyTable::get_all_by_x ();
+ *     $res = MyTable::get_all_by_x ();
  *
- *   foreach ($res as $row) {
- *     $row->remove ();
- *   }
+ *     foreach ($res as $row) {
+ *         $row->remove ();
+ *     }
  */
 class Model {
 	var $table = '';
@@ -56,11 +56,11 @@ class Model {
 	var $query_params = array ();
 
 	/**
-	 * If $vals is false, we're creating a new object from scratch.
+	 * If `$vals` is false, we're creating a new object from scratch.
 	 * If it contains an array, it's a new object from an array.
-	 * If $is_new is false, then the array is an existing field
-	 * (mainly used internally by fetch()).
-	 * If $vals contains a single value, the object is retrieved from the database.
+	 * If `$is_new` is false, then the array is an existing field
+	 * (mainly used internally by `fetch()`).
+	 * If `$vals` contains a single value, the object is retrieved from the database.
 	 */
 	function __construct ($vals = false, $is_new = true) {
 		$this->table = ($this->table == '') ? strtolower (get_class ($this)) : $this->table;
@@ -121,7 +121,7 @@ class Model {
 	 */
 	function put() {
 		if ($this->is_new) {
-			// insert
+			// Insert
 			$ins = array ();
 			$len = count ($this->data);
 			for ($i = 0; $i < $len; $i++) {
@@ -139,7 +139,7 @@ class Model {
 			return true;
 		}
 		
-		// update
+		// Update
 		$ins = '';
 		$par = array ();
 		$sep = '';

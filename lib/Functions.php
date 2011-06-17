@@ -27,7 +27,7 @@ function __autoload ($class) {
 }
 
 /**
- * Wraps a print_r() or var_dump() of the given $value with a set of <pre></pre>
+ * Wraps a `print_r()` or `var_dump()` of the given `$value` with a set of `<pre></pre>`
  * tags around it, and echoes it.
  */
 function info ($value, $full = false) {
@@ -62,10 +62,10 @@ function conf ($section, $value) {
  * You provide a verifier function and a communication method function.
  * It then returns them like this:
  *
- *   method(verifier(user, pass));
+ *     method(verifier(user, pass));
  *
  * Implements HTTP Basic auth as a default method if none is given, and
- * uses the master account defined in conf/global.php if no verifier is
+ * uses the master account defined in `conf/global.php` if no verifier is
  * given.
  */
 function simple_auth ($verifier = false, $method = false) {
@@ -79,7 +79,7 @@ function simple_auth ($verifier = false, $method = false) {
 }
 
 /**
- * Default verifier for simple_auth(). This is meant to serve
+ * Default verifier for `simple_auth()`. This is meant to serve
  * as an example, and should be overridden with your own
  * implementation.
  */
@@ -92,15 +92,13 @@ function simple_auth_verifier ($user, $pass) {
 }
 
 /**
- * Default method for simple_auth(). Implements an HTTP basic
+ * Default method for `simple_auth()`. Implements an HTTP basic
  * protocol.
  */
 function simple_auth_basic ($callback) {
 	if (! isset ($_SERVER['PHP_AUTH_USER']) || ! call_user_func ($callback, $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
 		header ('WWW-Authenticate: Basic realm="This Website"');
 		header ('HTTP/1.0 401 Unauthorized');
-		//echo 'You must be logged in to access these pages.';
-		//exit;
 		return false;
 	}
 	return true;
@@ -109,10 +107,6 @@ function simple_auth_basic ($callback) {
 /**
  * Splits an SQL script into distinct queries which can be evaluated or
  * manipulated individually.
- *
- * @access public
- * @param string
- * @return array
  */
 function sql_split ($sql) {
 	$out = array ('');

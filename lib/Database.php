@@ -2,30 +2,36 @@
 
 /**
  * The database package is just a list of functions that act on
- * a global $db PDO object. These provide direct access to the database
+ * a global `$db` PDO object. These provide direct access to the database
  * through a set of convenience functions, and can help reduce
  * direct-to-database logic down to just one or two lines of code.
  *
- * For object modelling, see lib/Model.php.
+ * For object modelling, see `lib/Model.php`.
  *
  * Usage:
  *
- *   if (! db_open (array ('driver' => 'sqlite', 'file' => 'conf/site.db'))) {
- *     die (db_error ());
- *   }
+ *     if (! db_open (array (
+ *         'driver' => 'sqlite', 'file' => 'conf/site.db'
+ *     ))) {
+ *         die (db_error ());
+ *     }
+ *     
+ *     db_execute (
+ *         'insert into sometable values (%s, %s)', 'one', 'two'
+ *     );
  *
- *   db_execute ('insert into sometable values (%s, %s)', 'one', 'two');
- *
- *   $id = db_lastid ();
- *
- *   $res = db_fetch_array ('select * from sometable');
- *   foreach ($res as $row) {
- *     echo $row->fieldname;
- *   }
- *
- *   $row = db_single ('select * from sometable where id = %s', $id);
- *
- *   $fieldname = db_shift ('select fieldname from sometable where id = %s', $id);
+ *     $id = db_lastid ();
+ *     
+ *     $res = db_fetch_array ('select * from sometable');
+ *     foreach ($res as $row) {
+ *         echo $row->fieldname;
+ *     }
+ *     
+ *     $row = db_single ('select * from sometable where id = %s', $id);
+ *     
+ *     $fieldname = db_shift (
+ *         'select fieldname from sometable where id = %s', $id
+ *     );
  *
  * Note that values inserted in the above way are automatically
  * escaped upon insertion.
@@ -150,7 +156,7 @@ function db_single ($sql) {
 
 /**
  * Fetch the a single value from the first result returned.
- * Useful for count() and other such calculations, and when
+ * Useful for `count()` and other such calculations, and when
  * you only need a single piece of information.
  */
 function db_shift ($sql) {

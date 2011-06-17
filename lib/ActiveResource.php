@@ -7,38 +7,38 @@
  *
  * Usage:
  *
- * <?php
- *
- * require_once ('ActiveResource.php');
- *
- * class Song extends ActiveResource {
- *     var $site = 'http://localhost:3000/';
- *     var $element_name = 'songs';
- * }
- *
- * // create new item
- * $song = new Song (array ('artist' => 'Joe Cocker', 'title' => 'A Little Help From My Friends'));
- * $song->save ();
- *
- * // fetch and update an item
- * $song->find (44)->set ('title', 'The River')->save ();
- *
- * // line by line
- * $song->find (44);
- * $song->title = 'The River';
- * $song->save ();
- *
- * // get all songs
- * $songs = $song->find ('all');
- *
- * // delete a song
- * $song->find (44);
- * $song->destroy ();
- *
- * // custom method
- * $songs = $song->get ('by_year', array ('year' => 1999));
- *
- * ?>
+ *     <?php
+ *     
+ *     require_once ('ActiveResource.php');
+ *     
+ *     class Song extends ActiveResource {
+ *         var $site = 'http://localhost:3000/';
+ *         var $element_name = 'songs';
+ *     }
+ *     
+ *     // create new item
+ *     $song = new Song (array ('artist' => 'Joe Cocker', 'title' => 'A Little Help From My Friends'));
+ *     $song->save ();
+ *     
+ *     // fetch and update an item
+ *     $song->find (44)->set ('title', 'The River')->save ();
+ *     
+ *     // line by line
+ *     $song->find (44);
+ *     $song->title = 'The River';
+ *     $song->save ();
+ *     
+ *     // get all songs
+ *     $songs = $song->find ('all');
+ *     
+ *     // delete a song
+ *     $song->find (44);
+ *     $song->destroy ();
+ *     
+ *     // custom method
+ *     $songs = $song->get ('by_year', array ('year' => 1999));
+ *     
+ *     ?>
  *
  * @author John Luxford <lux@companymachine.com>
  * @version 0.14 beta
@@ -46,7 +46,7 @@
  */
 class ActiveResource {
 	/**
-	 * The REST site address, e.g., http://user:pass@domain:port/
+	 * The REST site address, e.g., `http://user:pass@domain:port/`
 	 */
 	var $site = false;
 
@@ -161,7 +161,7 @@ class ActiveResource {
 			$this->element_name = end($classItems);
 		}
 
-		// if configuration file (config.ini.php) exists use it (overwrite class properties/attribute values).
+		// If configuration file (`config.ini.php`) exists use it (overwrite class properties/attribute values).
 		$config_file_path = dirname (__FILE__) . '/' . 'config.ini.php';
 		if (file_exists ($config_file_path)) {
 			$properties = parse_ini_file ($config_file_path);
@@ -197,20 +197,20 @@ class ActiveResource {
 	/**
 	 * Saves a new record or updates an existing one via:
 	 *
-	 * POST /collection.xml
-	 * PUT  /collection/id.xml
+	 *     POST /collection.xml
+	 *     PUT  /collection/id.xml
 	 */
 	function save () {
 		if (isset ($this->_data['id'])) {
-			return $this->_send_and_receive ($this->site . $this->element_name . '/' . $this->_data['id'] . '.xml', 'PUT', $this->_data); // update
+			return $this->_send_and_receive ($this->site . $this->element_name . '/' . $this->_data['id'] . '.xml', 'PUT', $this->_data); // Update
 		}
-		return $this->_send_and_receive ($this->site . $this->element_name . '.xml', 'POST', $this->_data); // create
+		return $this->_send_and_receive ($this->site . $this->element_name . '.xml', 'POST', $this->_data); // Create
 	}
 
 	/**
 	 * Deletes a record via:
 	 *
-	 * DELETE /collection/id.xml
+	 *     DELETE /collection/id.xml
 	 */
 	function destroy () {
 		return $this->_send_and_receive ($this->site . $this->element_name . '/' . $this->_data['id'] . '.xml', 'DELETE');
@@ -219,8 +219,8 @@ class ActiveResource {
 	/**
 	 * Finds a record or records via:
 	 *
-	 * GET /collection/id.xml
-	 * GET /collection.xml
+	 *     GET /collection/id.xml
+	 *     GET /collection.xml
 	 */
 	function find ($id = false, $options = array ()) {
 		if (! $id) {
@@ -239,8 +239,8 @@ class ActiveResource {
 	/**
 	 * Gets a specified custom method on the current object via:
 	 *
-	 * GET /collection/id/method.xml
-	 * GET /collection/id/method.xml?attr=value
+	 *     GET /collection/id/method.xml
+	 *     GET /collection/id/method.xml?attr=value
 	 */
 	function get ($method, $options = array ()) {
 		$req = $this->site . $this->element_name;
@@ -257,7 +257,7 @@ class ActiveResource {
 	/**
 	 * Posts to a specified custom method on the current object via:
 	 *
-	 * POST /collection/id/method.xml
+	 *     POST /collection/id/method.xml
 	 */
 	function post ($method, $options = array ()) {
 		$req = $this->site . $this->element_name;
@@ -271,7 +271,7 @@ class ActiveResource {
 	/**
 	 * Puts to a specified custom method on the current object via:
 	 *
-	 * PUT /collection/id/method.xml
+	 *     PUT /collection/id/method.xml
 	 */
 	function put ($method, $options = array ()) {
 		$req = $this->site . $this->element_name;
@@ -320,7 +320,7 @@ class ActiveResource {
 	}
 
 	/**
-	 * Converts entities to unicode entities (ie. < becomes &#60;).
+	 * Converts entities to unicode entities (ie. `<` becomes `&#60;`).
 	 * From php.net/htmlentities comments, user "webwurst at web dot de"
 	 */
 	function _xml_entities ($string) {
@@ -334,7 +334,7 @@ class ActiveResource {
 	}
 
 	/**
-	 * Build the request, call _fetch() and parse the results.
+	 * Build the request, call `_fetch()` and parse the results.
 	 */
 	function _send_and_receive ($url, $method, $data = array ()) {
 		$params = '';
@@ -391,11 +391,11 @@ class ActiveResource {
 			}
 		}
 
-		// parse XML response
+		// Parse XML response
 		$xml = new SimpleXMLElement ($res);
 
 		if ($xml->getName () == $this->element_name) {
-			// multiple
+			// Multiple
 			$res = array ();
 			$cls = get_class ($this);
 			foreach ($xml->children () as $child) {
@@ -412,7 +412,7 @@ class ActiveResource {
 			}
 			return $res;
 		} elseif ($xml->getName () == 'errors') {
-			// parse error message
+			// Parse error message
 			$this->error = $xml->error;
 			$this->errno = $this->response_code;
 			return false;
@@ -449,7 +449,7 @@ class ActiveResource {
 		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
 		curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
 
-		/* HTTP Basic Authentication */
+		// HTTP Basic Authentication
 		if ($this->user && $this->password) {
 			curl_setopt ($ch, CURLOPT_USERPWD, $this->user . ":" . $this->password);	
 		}
@@ -461,7 +461,6 @@ class ActiveResource {
 			case 'POST':
 				curl_setopt ($ch, CURLOPT_POST, 1);
 				curl_setopt ($ch, CURLOPT_POSTFIELDS, $params);
-				//curl_setopt ($ch, CURLOPT_HTTPHEADER, array ("Content-Type: application/x-www-form-urlencoded\n"));
 				break;
 			case 'DELETE':
 				curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
@@ -469,7 +468,6 @@ class ActiveResource {
 			case 'PUT':
 				curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 				curl_setopt ($ch, CURLOPT_POSTFIELDS, $params);
-				//curl_setopt ($ch, CURLOPT_HTTPHEADER, array ("Content-Type: application/x-www-form-urlencoded\n"));
 				break;
 			case 'GET':
 			default:

@@ -2,83 +2,83 @@
 
 /**
  * Basic template renderer. Looks for templates via the pattern
- * apps/{app}/views/{file}.html where the template is passed as
- * 'app/file'. Failing that, it looks for layouts/{file}.html
- * and finally layouts/default.html. It then creates a PHP version
- * of the template  and caches it to cache/{app}-{template}.php,
- * so the cache  folder must be writeable. Auto-refreshes cached
- * versions when  the originals change.
+ * `apps/{app}/views/{file}.html` where the template is passed as
+ * `'app/file'`. Failing that, it looks for `layouts/{file}.html`
+ * and finally `layouts/default.html`. It then creates a PHP version
+ * of the template  and caches it to `cache/{app}-{template}.php`,
+ * so the cache folder must be writeable. Auto-refreshes cached
+ * versions when the originals change.
  *
  * As a result, templates can include any PHP, along with tags of
  * the form:
  *
- *   {{ body }}
+ *     {{ body }}
  *
  * And blocks of the form:
  *
- *   {% foreach pages %}
- *     {{ loop_index }} - {{ loop_value }}
- *   {% end %}
+ *     {% foreach pages %}
+ *         {{ loop_index }} - {{ loop_value }}
+ *     {% end %}
  *
- *   {% if some_val %}
- *     {{ some_val }}
- *   {% end %}
+ *     {% if some_val %}
+ *         {{ some_val }}
+ *     {% end %}
  *
  * Note the use of loop_index and loop_value, which are defined for
  * you inside foreach loops by the template engine.
  *
  * You can also test for more complex conditions, but make sure the
  * value being tested for is not preceeded by anything. For example,
- * no false checks via {% if !some_val %}, instead use:
+ * no false checks via `{% if !some_val %}`, instead use:
  *
- *   {% if some_val == false %}
- *     {{ some_val }}
- *   {% end %}
+ *     {% if some_val == false %}
+ *         {{ some_val }}
+ *     {% end %}
  *
- * Note that 'endif' and 'endforeach' are valid as well as 'end',
+ * Note that `'endif'` and `'endforeach'` are valid as well as `'end'`,
  * if you prefer, for the sake of clarity.
  *
  * ## Usage in PHP
  *
  * To call a template, use:
  *
- *   echo $tpl->render ('base', array ('foo' => 'bar'));
+ *     echo $tpl->render ('base', array ('foo' => 'bar'));
  *
  * Note that arrays passed to templates are converted to objects,
  * and objects are left as-is.
  *
  * ## Globals
  *
- * In addition to the fields in the data array passed to render(),
+ * In addition to the fields in the data array passed to `render()`,
  * you can also call global objects and class methods as follows
  * from within if and foreach blocks as well as variable
  * substitutions:
  *
  * Call User::constant_value:
  *
- *   {{ User::constant_value }}
+ *     {{ User::constant_value }}
  *
  * Call $GLOBALS['user']->name:
  *
- *   {{ user.name }}
+ *     {{ user.name }}
  *
  * Call a function:
  *
- *   {{ db_shift ('select * from foo') }}
+ *     {{ db_shift ('select * from foo') }}
  *
  * In an if block:
  *
- *   {% if User::is_valid () %}
+ *     {% if User::is_valid () %}
  *
- *   {% if user.name != '' %}
+ *     {% if user.name != '' %}
  *
  * In a foreach:
  *
- *   {% foreach Oject::some_method () %}
+ *     {% foreach Oject::some_method () %}
  *
  * Calling a superglobal:
  *
- *   {{ $_POST.value }}
+ *     {{ $_POST.value }}
  *
  * Note that these must come at the beginning of a statement, not
  * anywhere else within it. The replacement mechanism is very
@@ -86,32 +86,32 @@
  *
  * ## Filters
  *
- * Filtering is supported, and htmlspecialchars() is the default
+ * Filtering is supported, and `htmlspecialchars()` is the default
  * filter unless another is specified or 'none' is supplied via:
  *
- *   {{ body|none }}
+ *     {{ body|none }}
  *
  * Any valid function can be a filter, and filters can be chained,
  * executing in the following order:
  *
- *   {{ body|strtoupper|strtolower }}
+ *     {{ body|strtoupper|strtolower }}
  *
- *   <?php echo strtolower (strtoupper ($data->body)); ?>
+ *     <?php echo strtolower (strtoupper ($data->body)); ?>
  *
  * You can also set additional parameters to a filter as follows:
  *
- *   {{ timestamp|date ('F j', %s) }}
+ *     {{ timestamp|date ('F j', %s) }}
  *
  * ## String translations
  *
  * You can use the following tag format to mark strings for translation
  * into the current visitor's language:
  *
- *   {" Text here "}
+ *     {" Text here "}
  *
  * This will be replaced with a call to:
  *
- *   i18n_get('Text here')
+ *     i18n_get('Text here')
  */
 class Template {
 	var $charset = 'UTF-8';
@@ -144,7 +144,7 @@ class Template {
 		$cache = 'cache/' . str_replace ('/', '-', $template) . '.php';
 
 		if (! file_exists ($cache) || filemtime ($file) > filemtime ($cache)) {
-			// regenerate cached file
+			// Regenerate cached file
 			$out = file_get_contents ($file);
 			$out = $this->parse_template ($out);
 			if (! file_put_contents ($cache, $out)) {
@@ -207,7 +207,7 @@ class Template {
 	}
 
 	/**
-	 * Replace strings with calls to i18n_get() for multilingual sites.
+	 * Replace strings with calls to `i18n_get()` for multilingual sites.
 	 */
 	function replace_strings ($val) {
 		return '<?php echo i18n_get (\'' . str_replace ('\'', '\\\'', $val) . '\'); ?>';
