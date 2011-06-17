@@ -49,6 +49,7 @@ class Model {
 	var $fields = array ();
 	var $error = false;
 	var $is_new = false;
+	var $query_fields = '*';
 	var $query_order = '';
 	var $query_group = '';
 	var $query_filters = array ();
@@ -197,9 +198,16 @@ class Model {
 
 	/**
 	 * Begin a new query. Resets the internal state for a new query.
+	 * Optionally you can pass the fields you want to return in
+	 * the query, so you can optimize and not return them all.
 	 */
-	static function query () {
+	static function query ($fields = false) {
 		$class = get_called_class ();
+		if ($fields) {
+			$obj = new $class;
+			$obj->query_fields = $fields;
+			return $obj;
+		}
 		return new $class;
 	}
 
@@ -238,7 +246,10 @@ class Model {
 	 * Fetch as an array of model objects.
 	 */
 	function fetch ($limit = false, $offset = 0) {
-		$sql = 'select * from ' . $this->table;
+		if (is_array ($this->query_fields)) {
+			$this->query_fields = join (', ', $this->query_fields);
+		}
+		$sql = 'select ' . $this->query_fields . ' from ' . $this->table;
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ' . join (' and ', $this->query_filters);
 		}
@@ -267,7 +278,10 @@ class Model {
 	 * Fetch a single result as a model object.
 	 */
 	function single () {
-		$sql = 'select * from ' . $this->table;
+		if (is_array ($this->query_fields)) {
+			$this->query_fields = join (', ', $this->query_fields);
+		}
+		$sql = 'select ' . $this->query_fields . ' from ' . $this->table;
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ' . join (' and ', $this->query_filters);
 		}
@@ -276,9 +290,6 @@ class Model {
 		}
 		if (! empty ($this->query_order)) {
 			$sql .= ' order by ' . $this->query_order;
-		}
-		if ($limit) {
-			$sql .= ' limit ' . $limit . ' offset ' . $offset;
 		}
 		$res = db_single ($sql, $this->query_params);
 		if (! $res) {
@@ -316,7 +327,10 @@ class Model {
 	 * the database.
 	 */
 	function fetch_orig ($limit = false, $offset = 0) {
-		$sql = 'select * from ' . $this->table;
+		if (is_array ($this->query_fields)) {
+			$this->query_fields = join (', ', $this->query_fields);
+		}
+		$sql = 'select ' . $this->query_fields . ' from ' . $this->table;
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ' . join (' and ', $this->query_filters);
 		}
