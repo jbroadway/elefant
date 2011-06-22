@@ -1,0 +1,51 @@
+<h2>
+{% if path == '' %}
+	Files
+{% else %}
+	<a href="/filemanager">Files</a>
+	{% foreach parts %}
+		{% if loop_value == $data->slashpath %}
+			/ {{ loop_index }}
+		{% else %}
+			/ <a href="filemanager?path={{ loop_value }}">{{ loop_index }}</a>
+		{% end %}
+	{% end %}
+{% end %}
+</h2>
+
+<p>
+<form action="/filemanager/upload" method="post" enctype="multipart/form-data">
+<input type="hidden" name="path" value="{{ path }}" />
+<a href="#" onclick="var name = prompt ('New folder name:', ''); window.location = '/filemanager/newfolder?path={{ path }}&name=' + name; return false">New folder</a> |
+New file: <input type="file" /><input type="submit" value="Upload" onclick="this.value = 'Uploading...'; this.disabled = true; this.form.submit ()" />
+</form>
+</p>
+
+<p>
+<table width="50%">
+	<tr>
+		<th>{" Name "}</th>
+		<th>{" Last modified "}</th>
+		<th>&nbsp;</th>
+	</tr>
+{% foreach dirs %}
+	<tr>
+		<td><img src="/css/admin/folder.png" alt="{{ loop_index }}" style="padding-right: 5px; margin-top: -2px" /> <a href="/filemanager?path={{ path }}/{{ loop_index }}">{{ loop_index }}</a></td>
+		<td>{{ loop_value|date ('F j, Y - g:ia', %s) }}</td>
+		<td>
+			<a href="#" onclick="var new_name = prompt ('Rename file:', '{{ loop_index }}'); window.location = '/filemanager/rename?file={{ path }}/{{ loop_index }}&new_name=' + new_name; return false">Rename</a>
+		</td>
+	</tr>
+{% end %}
+{% foreach files %}
+	<tr>
+		<td><img src="/css/admin/file.png" alt="{{ loop_index }}" style="padding-right: 5px; margin-top: -2px" /> <a href="/files/{{ path }}/{{ loop_index }}" target="_blank">{{ loop_index }}</a></td>
+		<td>{{ loop_value|date ('F j, Y - g:ia', %s) }}</td>
+		<td>
+			<a href="#" onclick="var new_name = prompt ('Rename file:', '{{ loop_index }}'); window.location = '/filemanager/rename?file={{ path }}/{{ loop_index }}&new_name=' + new_name; return false">Rename</a> |
+			<a href="/filemanager/delete?file={{ path }}/{{ loop_index }}" onclick="return confirm ('Are you sure you want to delete this file?')">Delete</a>
+		</td>
+	</tr>
+{% end %}
+</table>
+</p>

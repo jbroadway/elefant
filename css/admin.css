@@ -15,10 +15,15 @@ h1, h2 {
 	color: #111;
 }
 
+table tr:hover {
+	background: #eee;
+}
+
 table tr th {
 	padding: 5px 7px 5px 7px;
 	border-bottom: 1px solid #666;
 	font-weight: bold;
+	background: #f5f5f5;
 }
 
 table tr th a {
@@ -37,6 +42,10 @@ table tr td {
 
 .different {
 	background: #e5f2ff;
+}
+
+.different:hover {
+	background: #def;
 }
 
 #extra-options {

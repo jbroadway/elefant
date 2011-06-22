@@ -1,72 +1,55 @@
 <?php
 
-$page->template = false;
-header ('Content-Type: application/json');
+$page->layout = 'admin';
 
-$error = false;
-
-switch ($_GET['action']) {
-	case 'auth':
-		if ($_GET['auth'] != 'jwysiwyg') {
-			$error = 'Authorization failed.';
-			break;
-		}
-		$out = array (
-			'move' => array ('enabled' => false),
-			'rename' => array ('enabled' => false),
-			'remove' => array ('enabled' => false),
-			'mkdir' => array ('enabled' => false),
-			'upload' => array ('enabled' => false)
-		);
-		break;
-	case 'list':
-		$ok = 0;
-		if ($_GET['dir'] == '/files') {
-			$ok = 3;
-		} else {
-			if (strpos ($_GET['dir'], '..') === false) {
-				$ok++;
-			}
-			if (strpos ($_GET['dir'], '/files/') === 0) {
-				$ok++;
-			}
-			if (@is_dir (getcwd () . $_GET['dir'])) {
-				$ok++;
-			}
-		}
-		if ($ok < 3) {
-			$error = 'Invalid directory.';
-			break;
-		}
-		$out = array (
-			'directories' => array (),
-			'files' => array ()
-		);
-		$d = dir (getcwd () . $_GET['dir']);
-		while (false !== ($entry = $d->read ())) {
-			if ($entry == '.' || $entry == '..') {
-				continue;
-			} elseif (@is_dir ($_GET['dir'] . '/' . $entry)) {
-				$out['directories'][] = $_GET['dir'] . '/' . $entry;
-			} else {
-				$out['files'][] = $_GET['dir'] . '/' . $entry;
-			}
-		}
-		$d->close ();
-		break;
+if (! User::require_admin ()) {
+	header ('Location: /admin');
+	exit;
 }
 
-if ($error) {
-	echo json_encode (array (
-		'success' => false,
-		'error' => $error,
-		'errno' => 1
-	));
+$o = new StdClass;
+
+if (isset ($_GET['path'])) {
+	$o->path = trim ($_GET['path'], '/');
+	$o->slashpath = '/' . $o->path;
+	$o->fullpath = getcwd () . '/files/' . $o->path;
+	$tmp = explode ('/', $o->path);
+	$o->parts = array ();
+	foreach ($tmp as $part) {
+		$joined = join ('/', $o->parts);
+		$o->parts[$part] = $joined . '/' . $part;
+	}
+	if (strpos ($o->path, '..') !== false || ! @is_dir ($o->fullpath)) {
+		$page->title = 'Invalid Path';
+		echo '<p><a href="/filemanager">Back</a></p>';
+		return;
+	}
+	$page->window_title = 'Files/' . $o->path;
 } else {
-	echo json_encode (array (
-		'success' => true,
-		'data' => $out
-	));
+	$o->path = '';
+	$o->slashpath = '/';
+	$o->fullpath = getcwd () . '/files';
+	$o->parts = array ();
+	$page->window_title = 'Files';
 }
+
+$d = dir ($o->fullpath);
+$o->files = array ();
+$o->dirs = array ();
+while (false != ($entry = $d->read ())) {
+	if (preg_match ('/^\./', $entry)) {
+		continue;
+	} elseif (@is_dir ($o->fullpath . '/' . $entry)) {
+		$o->dirs[$entry] = filemtime ($o->fullpath . '/' . $entry);
+	} else {
+		$o->files[$entry] = filemtime ($o->fullpath . '/' . $entry);
+	}
+}
+$d->close ();
+
+asort ($o->dirs);
+asort ($o->files);
+
+echo $tpl->render ('filemanager/index', $o);
 
 ?>
