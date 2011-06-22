@@ -7,48 +7,37 @@ if (! User::require_admin ()) {
 	exit;
 }
 
+$root = getcwd () . '/files/';
+
 $o = new StdClass;
 
 if (isset ($_GET['path'])) {
-	$o->path = trim ($_GET['path'], '/');
-	$o->slashpath = '/' . $o->path;
-	$o->fullpath = getcwd () . '/files/' . $o->path;
-	$tmp = explode ('/', $o->path);
-	$o->parts = array ();
-	foreach ($tmp as $part) {
-		$joined = join ('/', $o->parts);
-		$o->parts[$part] = $joined . '/' . $part;
-	}
-	if (strpos ($o->path, '..') !== false || ! @is_dir ($o->fullpath)) {
+	if (! FileManager::verify_folder ($_GET['path'], $root)) {
 		$page->title = 'Invalid Path';
 		echo '<p><a href="/filemanager">Back</a></p>';
 		return;
 	}
+	$o->path = trim ($_GET['path'], '/');
+	$o->fullpath = $root . $o->path;
+	$tmp = explode ('/', $o->path);
+	$joined = '';
+	$sep = '';
+	$o->parts = array ();
+	$o->lastpath = '';
+	foreach ($tmp as $part) {
+		$joined .= $sep . $part;
+		$sep = '/';
+		$o->parts[$part] = $joined;
+		$o->lastpath = $part;
+	}
 	$page->window_title = 'Files/' . $o->path;
 } else {
 	$o->path = '';
-	$o->slashpath = '/';
-	$o->fullpath = getcwd () . '/files';
+	$o->fullpath = $root;
 	$o->parts = array ();
+	$o->lastpath = '';
 	$page->window_title = 'Files';
 }
-
-$d = dir ($o->fullpath);
-$o->files = array ();
-$o->dirs = array ();
-while (false != ($entry = $d->read ())) {
-	if (preg_match ('/^\./', $entry)) {
-		continue;
-	} elseif (@is_dir ($o->fullpath . '/' . $entry)) {
-		$o->dirs[$entry] = filemtime ($o->fullpath . '/' . $entry);
-	} else {
-		$o->files[$entry] = filemtime ($o->fullpath . '/' . $entry);
-	}
-}
-$d->close ();
-
-asort ($o->dirs);
-asort ($o->files);
 
 echo $tpl->render ('filemanager/index', $o);
 
