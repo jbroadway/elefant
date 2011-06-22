@@ -128,4 +128,20 @@ function sql_split ($sql) {
 	return $out;
 }
 
+/**
+ * Returns a file size formatted in a more human-friendly format, rounded
+ * to the nearest GB, MB, KB, or byte.
+ */
+function format_filesize ($size = 0) {
+	if ($size >= 1073741824) {
+		return round ($size / 1073741824 * 10) / 10 . " GB";
+	} elseif ($size >= 1048576) {
+		return round ($size / 1048576 * 10) / 10 . " MB";
+	} elseif ($size >= 1024) {
+		return round ($size / 1024) . " KB";
+	} else {
+		return $size . " b";
+	}
+}
+
 ?>

@@ -92,7 +92,8 @@ switch ($cmd) {
 					$out['files'][] = array (
 						'name' => $entry,
 						'path' => ltrim ($file . '/' . $entry, '/'),
-						'mtime' => date ('F j, Y - g:ia', filemtime ($root . $file . '/' . $entry))
+						'mtime' => date ('F j, Y - g:ia', filemtime ($root . $file . '/' . $entry)),
+						'fsize' => format_filesize (filesize ($root . $file . '/' . $entry))
 					);
 				}
 			}
