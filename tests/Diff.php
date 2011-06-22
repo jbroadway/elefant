@@ -1,6 +1,6 @@
 <?php
 
-require_once ('lib/Diff.php');
+require_once ('apps/admin/lib/Diff.php');
 
 class DiffTest extends PHPUnit_Framework_TestCase {
 	function test_compare () {
