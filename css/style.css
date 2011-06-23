@@ -73,6 +73,17 @@ a:hover {
 		margin-bottom: 0px;
 	}
 
+	.blog-tags a {
+		text-decoration: none;
+		color: #999;
+		margin-right: 4px;
+	}
+
+	.blog-tags a:hover {
+		text-decoration: underline;
+		color: #777;
+	}
+
 #sidebar {
 	padding-top: 15px;
 }
