@@ -38,7 +38,7 @@ if ($f->submit ()) {
 	$pg->failed = $f->failed;
 	$pg = $f->merge_values ($pg);
 	$page->title = 'Add Page';
-	$page->head = $tpl->render ('admin/add/head')
+	$page->head = $tpl->render ('admin/add/head', $pg)
 				. $tpl->render ('admin/wysiwyg');
 	echo $tpl->render ('admin/add', $pg);
 }

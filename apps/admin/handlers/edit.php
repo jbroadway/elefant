@@ -45,7 +45,7 @@ if ($f->submit ()) {
 	$wp->failed = $f->failed;
 	$wp = $f->merge_values ($wp);
 	$page->title = 'Edit Page: ' . $wp->title;
-	$page->head = $tpl->render ('admin/edit/head')
+	$page->head = $tpl->render ('admin/edit/head', $wp)
 				. $tpl->render ('admin/wysiwyg');
 	echo $tpl->render ('admin/edit', $wp);
 }
