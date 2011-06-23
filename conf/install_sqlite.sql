@@ -51,3 +51,13 @@ create table api (
 
 create index api_token on api (token, api_key);
 create index api_user on api (user_id);
+
+create table blog_post (
+	id integer primary key,
+	title char(72) not null,
+	ts datetime not null,
+	author char(32) not null,
+	body text not null
+);
+
+create index blog_post_ts on blog_post (ts);
