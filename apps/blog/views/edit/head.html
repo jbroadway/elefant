@@ -1,0 +1,53 @@
+<style type="text/css">
+/* css for timepicker */
+.ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
+.ui-timepicker-div dl{ text-align: left; }
+.ui-timepicker-div dl dt{ height: 25px; }
+.ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+</style>
+<script type="text/javascript" src="/js/jquery.timepicker.js"></script>
+<script type="text/javascript" src="/js/jquery.verify_values.js"></script>
+<script type="text/javascript">
+$(function () {
+	$('#ts').datetimepicker ({
+		ampm: true,
+		timeFormat: 'hh:mm:ss',
+		dateFormat: 'yy-mm-dd',
+		hourGrid: 4,
+		minuteGrid: 10
+	});
+	$('#edit-form').verify_values ({
+		handler: 'blog/edit',
+		callback: function (failed) {
+			// highlight the failed elements
+			for (var i = 0; i < failed.length; i++) {
+				$('#' + failed[i] + '-notice').show ();
+			}
+		},
+		reset: function (fields) {
+			for (var i = 0; i < fields.length; i++) {
+				$('#' + fields[i] + '-notice').hide ();
+			}
+		}
+	});
+	{% foreach failed %}
+	$('#{{ loop_value }}-notice').show ();
+	{% end %}
+});
+function webpage_show_extra_options (link) {
+	var eo = $('#extra-options');
+	if (eo.css ('display') == 'none') {
+		eo.slideDown ('fast', function () {
+			window.scrollTo (0, 1000);
+		});
+		$(link).find ('.arrow').removeClass ('arrow-off');
+	} else {
+		eo.slideUp ('fast', function () {
+			$(this).css ('display', 'none');
+		});
+		$(link).find ('.arrow').addClass ('arrow-off');
+	}
+	return false;
+}
+</script>
