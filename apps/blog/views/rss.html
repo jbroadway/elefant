@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns="http://purl.org/rss/1.0/"
+>
+
+<channel rdf:about="http://{{ $_SERVER.HTTP_HOST }}/blog">
+
+	<title>{{ title }}</title>
+	<link>http://{{ $_SERVER.HTTP_HOST }}/blog</link>
+	<description>{{ $_SERVER.HTTP_HOST }} official blog.</description>
+
+	<dc:language>{{ i18n.language }}</dc:language>
+	<dc:date>{{ date }}</dc:date>
+
+	<items>
+		<rdf:Seq>
+{% foreach posts %}
+			<rdf:li rdf:resource="http://{{ $_SERVER.HTTP_HOST }}{{ loop_value->url }}" />
+{% end %}
+		</rdf:Seq>
+	</items>
+
+</channel>
+
+{% foreach posts %}
+<item rdf:about="http://{{ $_SERVER.HTTP_HOST }}{{ loop_value->url }}">
+	<title>{{ loop_value->title }}</title>
+	<link>http://{{ $_SERVER.HTTP_HOST }}{{ loop_value->url }}</link>
+	<description>{{ loop_value->body }}</description>
+	<dc:date>{{ loop_value->ts|str_replace (' ', 'T', %s) }}</dc:date>
+</item>
+
+{% end %}
+</rdf:RDF>

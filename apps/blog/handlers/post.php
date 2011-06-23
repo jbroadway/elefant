@@ -11,6 +11,7 @@ $page->title = $appconf['Blog']['title'];
 $post = $p->orig ();
 $post->full = true;
 $post->url = '/blog/post/' . $post->id . '/' . blog_filter_title ($post->title);
+$post->tag_list = explode (',', $post->tags);
 
 echo $tpl->render ('blog/post', $post);
 
@@ -19,5 +20,10 @@ switch ($appconf['Blog']['comments']) {
 		echo $this->run ('social/facebook/comments', $post);
 		break;
 }
+
+$page->add_script (sprintf (
+	'<link rel="alternate" type="application/rss+xml" href="http://%s/blog/rss" />',
+	$_SERVER['HTTP_HOST']
+));
 
 ?>

@@ -1,0 +1,3 @@
+{% foreach tags %}
+<a href="/blog/tag/{{ loop_index|strtolower }}" style="padding-right: 5px; font-size: {{ loop_value }}em">{{ loop_index }}</a>
+{% end %}

@@ -6,6 +6,12 @@
 <h3><a href="{{ url }}">{{ title }}</a></h3>
 <p class="blog-info info">{{ ts|blog_filter_date }} - {" by "} <a href="/blog/by/{{ author }}">{{ author }}</a></p>
 {{ body|none }}
+<div class="blog-tags info">
+{"Tags"}: 
+{% foreach tag_list %}
+<a href="/blog/tag/{{ loop_value|trim|strtolower }}">{{ loop_value|trim|ucfirst }}</a>
+{% end %}
+</div>
 <hr />
 <div class="blog-comments">
 <a href="{{ url }}">{{ controller.run ('social/facebook/commentcount', $data)|none }} comments</a>&nbsp;

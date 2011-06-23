@@ -7,6 +7,11 @@ layout = default
 post_layout = default
 comments = facebook
 
+[Twitter]
+
+username = ""
+password = ""
+
 [Admin]
 
 handler = blog/admin

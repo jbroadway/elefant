@@ -57,7 +57,21 @@ create table blog_post (
 	title char(72) not null,
 	ts datetime not null,
 	author char(32) not null,
-	body text not null
+	published char(3) not null,
+	body text not null,
+	tags text not null
 );
 
 create index blog_post_ts on blog_post (ts);
+create index blog_post_pts on blog_post (ts, published);
+
+create table blog_tag (
+	id char(24) not null,
+	primary key (id)
+);
+
+create table blog_post_tag (
+	tag_id char(24) not null,
+	post_id int not null,
+	primary key (tag_id, post_id)
+);

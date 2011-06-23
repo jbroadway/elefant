@@ -12,7 +12,7 @@ require_once ('apps/blog/lib/Filters.php');
 $limit = 20;
 $_GET['offset'] = (isset ($_GET['offset'])) ? $_GET['offset'] : 0;
 
-$posts = blog\Post::query ('id, title, ts, author')
+$posts = blog\Post::query ('id, title, ts, author, published')
 	->order ('ts desc')
 	->fetch_orig ($limit, $_GET['offset']);
 $count = blog\Post::query ()->count ();
