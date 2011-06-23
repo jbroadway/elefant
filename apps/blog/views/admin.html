@@ -1,0 +1,28 @@
+<p><a href="/blog/add">{"New Post"}</a></p>
+
+{% if offset > 0 %}
+<p class="previous"><a href="/blog/admin?offset={{ prev }}">&laquo; {"Previous"}</a></p>
+{% end %}
+
+<p>
+<table>
+	<tr>
+		<th>{"Title"}</th>
+		<th>{"Date"}</th>
+		<th>{"Author"}</th>
+		<th>&nbsp;</th>
+	</tr>
+{% foreach posts %}
+	<tr>
+		<td><a href="/blog/post/{{ loop_value->id }}/{{ loop_value->title|blog_filter_title }}">{{ loop_value->title }}</a></td>
+		<td>{{ loop_value->ts|date ('F j, Y - g:ia', strtotime (%s)) }}</td>
+		<td>{{ loop_value->author }}</td>
+		<td><a href="/blog/edit?id={{ loop_value->id }}">{"Edit"}</a> | <a href="/blog/delete?id={{ loop_value->id }}" onclick="return confirm ('{"Are you sure you want to delete this post?"}');">{"Delete"}</a></td>
+	</tr>
+{% end %}
+</table>
+</p>
+
+{% if more %}
+<p class="next"><a href="/blog/admin?offset={{ next }}">{"Next"} &raquo;</a></p>
+{% end %}
