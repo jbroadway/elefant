@@ -35,7 +35,6 @@ global $user;
 
 if (User::is_valid () && $user->type == 'admin') {
 	$page->template = 'admin/editable';
-	$page->head .= '<script type="text/javascript" src="/js/jquery.editable.js"></script>';
 }
 
 ?>

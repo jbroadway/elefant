@@ -69,13 +69,13 @@ table tr td {
 		height: 20px;
 		margin-top: 3px;
 		padding-right: 5px;
-		background-image: url(/css/admin/arrow-down.png);
+		background-image: url(admin/arrow-down.png);
 		background-repeat: no-repeat;
 		background-position: 50% 50%;
 	}
 
 	.arrow-off {
-		background-image: url(/css/admin/arrow-right.png) !important;
+		background-image: url(admin/arrow-right.png) !important;
 		background-repeat: no-repeat;
 		background-position: 50% 50%;
 	}
