@@ -54,6 +54,7 @@ if ($f->submit ()) {
 			}
 		}
 
+		$_POST['page'] = 'blog/post/' . $p->id . '/' . blog_filter_title ($p->title);
 		$this->hook ('blog/add', $_POST);
 		return;
 	}

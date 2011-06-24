@@ -64,6 +64,9 @@ file = "conf/site.db"
 ;admin/add[] = search/add
 ;admin/edit[] = search/add
 ;admin/delete[] = search/delete
+;blog/add[] = search/add
+;blog/edit[] = search/add
+;blog/delete[] = search/delete
 
 [Memcache]
 
