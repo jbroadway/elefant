@@ -12,4 +12,20 @@ $(function () {
 			);
 		})
 	});
+	$('.admin-options a').hover (
+		function () {
+			this.tip = this.title;
+			$(this).append (
+				'<div class="admin-tooltip"><div class="admin-tooltip-top"></div>' +
+				'<div class="admin-tooltip-body">' + this.tip + '</div></div>'
+			);
+			this.title = '';
+			$('.admin-tooltip').fadeIn (100);
+		},
+		function () {
+			$('.admin-tooltip').fadeOut (100);
+			$('.admin-tooltip').remove ();
+			this.title = this.tip;
+		}
+	);
 });

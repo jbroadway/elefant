@@ -128,6 +128,7 @@ body {
 	}
 
 .admin-options a {
+	position: relative;
 	margin: 0;
 	padding: 3px 5px 5px 5px;
 	background: rgba(0,0,0,.75);
@@ -135,4 +136,37 @@ body {
 
 .admin-options a:hover {
 	background: rgba(0,0,0,.9);
+	text-decoration: none !important;
 }
+
+.admin-tooltip {
+	position: absolute;
+	z-index: 25;
+	display: none;
+	top: 23px;
+	width: 100px;
+	left: -37px;
+}
+
+	.admin-tooltip-top {
+		height: 8px;
+		background: url(/apps/admin/css/admin/tooltip-top.png);
+		background-position: 50% 0%;
+	}
+
+	.admin-tooltip-body {
+		padding: 2px 5px 0px 5px;
+		font-size: 12px;
+		color: #222;
+		font-weight: bold;
+		background-color: #fff;
+		border-left: 1px solid #222;
+		border-right: 1px solid #222;
+		border-bottom: 1px solid #222;
+		height: 20px;
+		text-align: center;
+	}
+
+	.admin-tooltip-body {
+		text-decoration: none !important;
+	}
