@@ -84,6 +84,17 @@
  * anywhere else within it. The replacement mechanism is very
  * simplistic.
  *
+ * ## Embedding handlers
+ *
+ * You can use special `{! app/handler !}` tags to embed handlers
+ * directly into your templates. These are the equivalent of calling:
+ *
+ *     {{ controller.run ('app/handler') }}
+ *
+ * You can also pass them an array of data using a shorthand like a url:
+ *
+ *     {! app/handler?param=value&another=value2 !}
+ *
  * ## Filters
  *
  * Filtering is supported, and `htmlspecialchars()` is the default
@@ -164,6 +175,7 @@ class Template {
 		$val = preg_replace ('/\{\{ ?(.*?) ?\}\}/e', '$this->replace_vars (\'\\1\')', $val);
 		$val = preg_replace ('/\{[\'"] ?(.*?) ?[\'"]\}/e', '$this->replace_strings (\'\\1\')', $val);
 		$val = preg_replace ('/\{\% ?(.*?) ?\%\}/e', '$this->replace_blocks (\'\\1\')', $val);
+		$val = preg_replace ('/\{\! ?(.*?) ?\!\}/e', '$this->replace_includes (\'\\1\')', $val);
 		return $val;
 	}
 
@@ -204,6 +216,29 @@ class Template {
 			}
 		}
 		return $out . $val . $end;
+	}
+
+	/**
+	 * Replace `{! app/handler?param=value !}` with calls to `Controller::run()`.
+	 */
+	function replace_includes ($val) {
+		$url = parse_url ($val);
+		if (isset ($url['query'])) {
+			parse_str ($url['query'], $data);
+		} else {
+			$data = array ();
+		}
+		$arr = '';
+		$sep = '';
+		foreach ($data as $k => $v) {
+			$arr .= sprintf ('%s\'%s\' => \'%s\'', $sep, $k, $v);
+			$sep = ', ';
+		}
+		return sprintf (
+			'<?php echo $GLOBALS[\'controller\']->run (\'%s\', array (%s)); ?>',
+			$url['path'],
+			$arr
+		);
 	}
 
 	/**
