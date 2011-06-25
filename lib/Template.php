@@ -242,6 +242,30 @@ class Template {
 	}
 
 	/**
+	 * Run any includes and include their output in the return value. Primarily
+	 * for page body in the admin app.
+	 */
+	function run_includes ($val) {
+		$parts = preg_split ('/(\{\! ?.*? ?\!\})/e', $val, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$out = '';
+		foreach ($parts as $part) {
+			if (strpos ($part, '{!') === 0) {
+				$part = trim ($part, '{! }');
+				$url = parse_url ($part);
+				if (isset ($url['query'])) {
+					parse_str ($url['query'], $data);
+				} else {
+					$data = array ();
+				}
+				$out .= $GLOBALS['controller']->run ($url['path'], $data);
+			} else {
+				$out .= $part;
+			}
+		}
+		return $out;
+	}
+
+	/**
 	 * Replace strings with calls to `i18n_get()` for multilingual sites.
 	 */
 	function replace_strings ($val) {

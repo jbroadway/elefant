@@ -20,9 +20,9 @@ if (! User::require_login ()) {
 }
 
 echo '<ul>';
-foreach ($menu as $page) {
-	$mt = (! empty ($page->menu_title)) ? $page->menu_title : $page->title;
-	printf ('<li><a href="/%s">%s</a></li>', $page->id, $mt);
+foreach ($menu as $pg) {
+	$mt = (! empty ($pg->menu_title)) ? $pg->menu_title : $pg->title;
+	printf ('<li><a href="/%s">%s</a></li>', $pg->id, $mt);
 }
 echo '</ul>';
 

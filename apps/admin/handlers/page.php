@@ -29,7 +29,7 @@ $page->template = 'admin/base';
 $page->layout = $wp->layout;
 $page->head = $wp->head;
 
-echo $wp->body;
+echo $tpl->run_includes ($wp->body);
 
 global $user;
 
