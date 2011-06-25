@@ -7,15 +7,44 @@
 .ui-timepicker-div td { font-size: 90%; }
 </style>
 <script type="text/javascript" src="/apps/blog/js/jquery.timepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="/apps/blog/css/jquery.tagit.css" />
+<script type="text/javascript" src="/apps/blog/js/autocomplete.js"></script>
+<script type="text/javascript" src="/apps/blog/js/tag-it.js"></script>
 <script type="text/javascript" src="/js/jquery.verify_values.js"></script>
 <script type="text/javascript">
+var tagit_available_tags = [];
 $(function () {
+	function subtract_array (a1, a2) {
+		var result = [];
+		for (var i = 0; i < a1.length; i++) {
+			if ($.inArray (a1[i], a2) == -1) {
+				result.push (a1[i]);
+			}
+		}
+		return result;
+	};
+	$.getJSON ('/blog/taglist', function (res) {
+		tagit_available_tags = res;
+	});
 	$('#ts').datetimepicker ({
 		ampm: true,
 		timeFormat: 'hh:mm:ss',
 		dateFormat: 'yy-mm-dd',
 		hourGrid: 4,
 		minuteGrid: 10
+	});
+	$('#tagit').tagit ({
+		singleFieldNode: document.getElementById ('tags'),
+		allowSpaces: true,
+		singleField: true,
+		caseSensitive: false,
+		tagSource: function (search, showChoices) {
+			var filter = search.term.toLowerCase ();
+			var choices = $.grep (tagit_available_tags, function (element) {
+				return (element.toLowerCase ().indexOf(filter) === 0);
+			});
+			showChoices (subtract_array (choices, $('#tagit').tagit ('assignedTags')));
+		}
 	});
 	$('#edit-form').verify_values ({
 		handler: 'blog/edit',

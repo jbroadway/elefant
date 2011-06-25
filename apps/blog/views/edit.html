@@ -16,7 +16,13 @@
 	<option value="{{ loop_value }}"{% if loop_value == $data->published %} selected{% end %}>{{ loop_value|ucfirst }}</option>
 {% end %}
 </select></p>
-<p>Tags (comma-separated):<br /><textarea name="tags" cols="60" rows="4">{{ tags }}</textarea></p>
+<p>Tags (comma-separated):
+<ul id="tagit" style="width: 580px; padding-top: 0px; margin-top: -16px">
+{% foreach tag_list %}
+	<li>{{ loop_value }}</li>
+{% end %}
+</ul>
+<input type="hidden" name="tags" id="tags"></p>
 <p>Auto-post options:<br />
 <input type="checkbox" name="autopost_pom" id="autopost_pom" value="yes" {% if autopost_tw %}checked{% end %} /> <label for="autopost_pom">Ping-o-matic</label><br />
 <input type="checkbox" name="autopost_tw" id="autopost_tw" value="yes" {% if autopost_tw %}checked{% end %} /> <label for="autopost_tw">Twitter</label>

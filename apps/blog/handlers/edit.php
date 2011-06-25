@@ -79,6 +79,7 @@ if ($f->submit ()) {
 	$p->yes_no = array ('yes', 'no');
 	$p->autopost_pom = 'yes';
 	$p->autopost_tw = 'yes';
+	$p->tag_list = explode (',', $p->tags);
 
 	$p->failed = $f->failed;
 	$p = $f->merge_values ($p);
