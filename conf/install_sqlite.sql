@@ -16,6 +16,18 @@ create index webpage_access on webpage (access, weight);
 insert into webpage (id, title, menu_title, window_title, weight, access, layout, description, keywords, body) values ('index', 'Welcome to Elefant', 'Home', '', 1, 'public', 'index', '', '', '<table><tbody><tr><td><h3>Congratulations!</h3>You have successfully installed Elefant, the refreshingly simple new PHP web framework and CMS.</td><td><h3>Getting Started</h3>To log in as an administrator and edit pages, write a blog post, or upload files, go to <a href="/admin">/admin</a>.</td><td><h3>Developers</h3>Documentation, source code and issue tracking can be found at <a href="http://github.com/jbroadway/elefant">github.com/jbroadway/elefant</a></td></tr></tbody></table>');
 insert into webpage (id, title, menu_title, window_title, weight, access, layout, description, keywords, body) values ('blog', 'Blog', '', '', 0, 'public', 'default', '', '', '{! admin/forward?to=/blog !}');
 
+create table block (
+	id integer primary key,
+	title char(72) not null,
+	body text,
+	access char(12) not null,
+	show_title char(3) not null
+);
+
+create index block_access on block (access);
+
+insert into block (id, title, access, body, show_title) values (1, 'Members', 'public', '{! user/sidebar !}', 'no');
+
 create table user (
 	id integer primary key,
 	email char(72) unique not null,

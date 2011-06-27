@@ -1,0 +1,37 @@
+<script type="text/javascript" src="/js/jquery.verify_values.js"></script>
+<script type="text/javascript">
+$(function () {
+	$('#add-form').verify_values ({
+		handler: 'blocks/add',
+		callback: function (failed) {
+			// highlight the failed elements
+			for (var i = 0; i < failed.length; i++) {
+				$('#' + failed[i] + '-notice').show ();
+			}
+		},
+		reset: function (fields) {
+			for (var i = 0; i < fields.length; i++) {
+				$('#' + fields[i] + '-notice').hide ();
+			}
+		}
+	});
+	{% foreach failed %}
+	$('#{{ loop_value }}-notice').show ();
+	{% end %}
+});
+function webpage_show_extra_options (link) {
+	var eo = $('#extra-options');
+	if (eo.css ('display') == 'none') {
+		eo.slideDown ('fast', function () {
+			window.scrollTo (0, 1000);
+		});
+		$(link).find ('.arrow').removeClass ('arrow-off');
+	} else {
+		eo.slideUp ('fast', function () {
+			$(this).css ('display', 'none');
+		});
+		$(link).find ('.arrow').addClass ('arrow-off');
+	}
+	return false;
+}
+</script>

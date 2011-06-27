@@ -15,6 +15,17 @@ create table webpage (
 insert into webpage (id, title, menu_title, window_title, weight, access, layout, description, keywords, body) values ('index', 'Welcome to Elefant', 'Home', '', 1, 'public', 'index', '', '', '<table><tbody><tr><td><h3>Congratulations!</h3>You have successfully installed Elefant, the refreshingly simple new PHP web framework and CMS.</td><td><h3>Getting Started</h3>To log in as an administrator and edit pages, write a blog post, or upload files, go to <a href="/admin">/admin</a>.</td><td><h3>Developers</h3>Documentation, source code and issue tracking can be found at <a href="http://github.com/jbroadway/elefant">github.com/jbroadway/elefant</a></td></tr></tbody></table>');
 insert into webpage (id, title, menu_title, window_title, weight, access, layout, description, keywords, body) values ('blog', 'Blog', '', '', 0, 'public', 'default', '', '', '{! admin/forward?to=/blog !}');
 
+create table block (
+	id int not null auto_increment primary key,
+	title char(72) not null,
+	body text,
+	access enum('public','member','private') not null default 'public',
+	show_title enum('yes','no') not null default 'yes',
+	index (access)
+);
+
+insert into block (id, title, access, body, show_title) values (1, 'Members', 'public', '{! user/sidebar !}', 'no');
+
 create table user (
 	id int not null auto_increment primary key,
 	email char(72) unique not null,
