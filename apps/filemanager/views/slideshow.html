@@ -1,0 +1,40 @@
+<script type="text/javascript" src="/apps/filemanager/js/jquery.cycle.all.min.js"></script>
+<script type="text/javascript"> 
+$(window).load (function () {
+	$('#slideshow').cycle ({
+		fx: 'fade',
+		pager: '#slideshow-nav',
+		timeout: 6000,
+		startingSlide: Math.floor (Math.random () * 5)
+	});
+});
+</script>
+<style type="text/css">
+#slideshow-nav {
+	margin-left: 48%;
+	margin-top: 10px;
+}
+#slideshow-nav a {
+	display: block;
+	width: 10px;
+	height: 10px;
+	background: url(/apps/filemanager/css/notcurrent.jpg) no-repeat;
+	float: left;
+	text-indent: -9999px;
+	border: 0;
+	margin-right: 3px;
+	text-decoration: none;
+}
+
+#slideshow-nav a.activeSlide {
+	background: url(/apps/filemanager/css/current.jpg) no-repeat;
+}
+</style>
+
+<div id="slideshow">
+{% foreach files %}
+	<img src="/{{ loop_value }}" alt="" />
+{% end %}
+</div>
+<div id="slideshow-nav"></div>
+<br clear="both" />
