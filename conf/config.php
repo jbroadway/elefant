@@ -3,7 +3,7 @@
 [General]
 
 ; The name of your website.
-site_name = Site Name
+site_name = Your Site Name
 
 ; Default outbound email address.
 email_from = "you@example.com"

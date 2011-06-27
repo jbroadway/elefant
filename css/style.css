@@ -1,18 +1,19 @@
 body {
-	background-color: #eee;
+	background: url(/files/design/bg.png);
 	color: #222;
 }
 
 h1, h2, h3, h4, h5, h6 {
-	color: #555;
+	color: #666;
 }
 
 a {
-	color: #8A5AB5;
+	color: #E4426B;
+	text-decoration: none;
 }
 
 a:hover {
-	color: #A753CC;
+	text-decoration: underline;
 }
 
 #fb-root {
@@ -23,20 +24,19 @@ a:hover {
 	margin: 25px auto 25px auto;
 	padding: 20px 15px 0px 15px;
 	background-color: #fff;
-	border: 1px solid #ddd;
-	border-radius: 7px;
-	-moz-border-radius: 7px;
-	-webkit-border-radius: 7px;
+	-moz-box-shadow: 0px 0px 4px #aaa;
+	-webkit-box-shadow: 0px 0px 4px #aaa;
+	box-shadow: 0px 0px 4px #aaa;
 }
 
 #head {
-	border-bottom: 1px solid #ccc;
+	border-bottom: 4px solid #ddd;
 }
 
 	#head h1 {
 		padding-bottom: 10px;
 		margin-bottom: 0px;
-		color: #8A5AB5;
+		color: #444;
 	}
 
 	#head .menu {
@@ -52,8 +52,21 @@ a:hover {
 	#head .menu ul li {
 		list-style-type: none;
 		margin-left: 0px;
-		padding-left: 15px;
+		padding-left: 0px;
 		display: inline;
+	}
+
+	#head .menu ul li a {
+		padding: 5px 12px 5px 12px;
+		font-weight: bold;
+		text-decoration: none;
+	}
+
+	#head .menu ul li a:hover {
+		background: #E4426B;
+		color: #fff;
+		font-weight: bold;
+		text-decoration: none;
 	}
 
 #body {
@@ -84,12 +97,27 @@ a:hover {
 		color: #777;
 	}
 
+.index-body #slideshow img {
+	width: 940px;
+}
+
+.index-body table td {
+	width: 33%;
+	border-left: 1px dotted #ddd;
+	padding-left: 10px;
+}
+
+	.index-body table td:first-child {
+		border-left: 0px;
+		padding-left: 0px;
+	}
+
 #sidebar {
 	padding-top: 15px;
 }
 
 #footer {
-	border-top: 1px solid #ccc;
+	border-top: 4px solid #ddd;
 	padding-top: 5px;
 	margin-bottom: 0px;
 	padding-bottom: 0px;
