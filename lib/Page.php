@@ -37,6 +37,9 @@ class Page {
 	function render () {
 		global $tpl;
 
+		$this->menu_title = (! empty ($this->menu_title)) ? $this->menu_title : $this->title;
+		$this->window_title = (! empty ($this->window_title)) ? $this->window_title : $this->title;
+
 		if ($this->layout === '') {
 			$this->layout = 'default';
 		}
