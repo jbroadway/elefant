@@ -1,0 +1,8 @@
+{% if ! User::is_valid () %}
+<h3>Members</h3>
+{! user/login !}
+{% else %}
+<h3>{{ user.name }}</h3>
+<p><a href="/user">{"View profile"}</a><br />
+<a href="/user/logout?redirect=/">{"Log out"}</a></p>
+{% end %}
