@@ -47,6 +47,8 @@ a:hover {
 		list-style-type: none;
 		margin-left: 0px;
 		padding-left: 0px;
+		margin-top: 15px;
+		margin-bottom: 0px;
 	}
 
 	#head .menu ul li {
