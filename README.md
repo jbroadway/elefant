@@ -84,12 +84,13 @@ you to use in the admin area.
 5. Go to your site and see that it worked. You should see a basic website and
 welcome page if all went well.
 
-6. Go to `/admin` and you can log in with the master username and password
-from your global configuration.
+6. Go to `/admin` and you can log in with the username and password
+from step 4.
 
 7. Edit `layouts/default.html` and add your site stylings.
 
-8. Create an app and write some models/handlers/views. Lather, rinse, repeat.
+8. Create an app using `php conf/make.php myapp` and write some
+models/handlers/views. Lather, rinse, repeat.
 
 The GitHub page is the place to go for issues and info. If there's a need,
 I'll make a Posterous Group for it as well, so let me know if you think that
