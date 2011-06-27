@@ -21,6 +21,9 @@ switch ($_GET['action']) {
 		break;
 	case 'list':
 		$ok = 0;
+		if (! isset ($_GET['dir']) || $_GET['dir'] == '/') {
+			$_GET['dir'] = '/files';
+		}
 		if ($_GET['dir'] == '/files') {
 			$ok = 3;
 		} else {
@@ -35,7 +38,7 @@ switch ($_GET['action']) {
 			}
 		}
 		if ($ok < 3) {
-			$error = 'Invalid directory.';
+			$error = 'Invalid directory: ' . $_GET['dir'];
 			break;
 		}
 		$out = array (
