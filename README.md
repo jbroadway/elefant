@@ -1,12 +1,13 @@
 # Elefant
 
-Elefant is an MVC framework in PHP re-imagined. Elefant is based on
-12 years of programming in PHP and running a monolithic CMS project
-[www.sitellite.org](http://www.sitellite.org/) that despite its huge size
-did get a few things right that I haven't seen elsewhere. This is my attempt
-at taking those things and starting fresh.
+Elefant is an MVC framework in PHP re-imagined, with a complete but
+refreshingly simple CMS included. Elefant is based on 12 years of programming
+in PHP and running a monolithic CMS project [www.sitellite.org](http://www.sitellite.org/)
+that despite its growing 12 years of cruft, did get a few key things right
+that I haven't seen elsewhere. This is my attempt at taking those things
+and starting fresh.
 
-This framework doesn't look much like other PHP-based MVC frameworks, but
+Elefant doesn't look much like other PHP-based MVC frameworks, but
 I've never been able to stomach the disconnect they have with the language
 itself. PHP isn't the most elegant language, and MVC constructs used in other
 languages feel clunky when translated into it. But if we flip it around and
@@ -16,7 +17,8 @@ our little monster of a "hypertext preprocessor" ;)
 ## What's Missing
 
 This is a simple framework, but it is very capable and provides everything
-you need in a core MVC framework. There are lots of things I tried to leave
+you need in a core MVC framework, including the core CMS features needed
+to get a working website up in minutes. There are lots of things I tried to leave
 out to keep things simple, and some things that I'm sure will appear down
 the road. If something you need is missing and you feel it might fit as
 part of the core framework, feel free to contribute!
@@ -39,9 +41,8 @@ see the [Future page on the wiki](https://github.com/jbroadway/elefant/wiki/Futu
 * Internationalization/localization
 * CLI support for background tasks
 * As little scaffolding as possible
-* Reusable apps for common tasks (admin, users, blog)
-* Example /search app (powered by [IndexTank](http://www.indextank.com/))
-* [High quality documentation](https://github.com/jbroadway/elefant/wiki)
+* Reusable apps for common CMS tasks (admin, users, blog, filemanager, search)
+* [High quality developer docs](https://github.com/jbroadway/elefant/wiki)
 * Near 100% unit test coverage
 * Gzip output compression
 * [Speed](https://github.com/jbroadway/elefant/wiki/Performance). Less cruft, faster pages.
@@ -71,28 +72,26 @@ mistakes/luck and do it even better this time.
 http://github.com/jbroadway/elefant
 
 2. Unzip into a site root somewhere (no sub-folders, use sub-domains instead).
-Change the permissions on folders conf and cache to `0777`.
+Change the permissions on folders `conf`, `cache`, and `files` to `0777`.
 
 3. Edit `conf/config.php` and add your database connection info and default
-login info.
+site info.
 
 4. Run the command `php conf/createdb.php` to create the default database tables
-for the admin and user handlers.
+for the built-in apps. This will output an initial username and password for
+you to use in the admin area.
 
-5. Go to your site and see that it worked. You should see a basic welcome page
-if all went well.
+5. Go to your site and see that it worked. You should see a basic website and
+welcome page if all went well.
 
 6. Go to `/admin` and you can log in with the master username and password
-from your global configuration. This is a really really basic admin area for
-editing web pages. It exists to give you some example code to read and help
-you get started, and if you want to improve on it and contribute that back to
-the project, I will love you forever :)
+from your global configuration.
 
 7. Edit `layouts/default.html` and add your site stylings.
 
 8. Create an app and write some models/handlers/views. Lather, rinse, repeat.
 
-9. The GitHub page is the place to go for issues and info. If there's a need,
+The GitHub page is the place to go for issues and info. If there's a need,
 I'll make a Posterous Group for it as well, so let me know if you think that
 would be good to have.
 
@@ -103,10 +102,12 @@ would be good to have.
 * cache - templates rendered to PHP
 * conf - global configurations
 * css - global CSS files
+* files - files uploaded through the admin area
 * index.php - the front-end controller, or request router
 * js - global Javascript files
 * layouts - design layouts
 * lib - main libraries
+* LICENSE - the MIT license info
 * nginx.conf - rewrites and permissions for Nginx
 * README.md - this file
 * tests - unit tests
