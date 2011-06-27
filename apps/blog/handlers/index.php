@@ -15,10 +15,14 @@ $page->last = $page->offset + count ($posts);
 $page->more = ($page->count > $page->last) ? true : false;
 $page->next = $page->num + 2;
 
-foreach ($posts as $post) {
-	$post->url = '/blog/post/' . $post->id . '/' . blog_filter_title ($post->title);
-	$post->tag_list = explode (',', $post->tags);
-	echo $tpl->render ('blog/post', $post);
+if (count ($posts) == 0) {
+	echo '<p>' . i18n_get ('No posts yet... :(') . '</p>';
+} else {
+	foreach ($posts as $post) {
+		$post->url = '/blog/post/' . $post->id . '/' . blog_filter_title ($post->title);
+		$post->tag_list = explode (',', $post->tags);
+		echo $tpl->render ('blog/post', $post);
+	}
 }
 
 if (! $this->internal) {
