@@ -34,4 +34,9 @@ function webpage_show_extra_options (link) {
 	}
 	return false;
 }
+function webpage_add_title_to_id (f) {
+	if (f.elements.id.value == '') {
+		f.elements.id.value = f.elements.title.value.toLowerCase ().replace (/[^a-z0-9\-]+/g, '-');
+	}
+}
 </script>

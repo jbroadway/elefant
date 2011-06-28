@@ -1,30 +1,36 @@
 <?php
 
-$id = (isset ($data['id'])) ? $data['id'] : ((isset ($_GET['id'])) ? $_GET['id'] : false);
+global $user;
+
+$id = (isset ($this->params[0])) ? $this->params[0] : false;
 if (! $id) {
-	// no id
-	echo 'no id';
+	if (User::is_valid () && $user->type == 'admin') {
+		echo $tpl->render ('blocks/editable', (object) array ('id' => $id));
+	}
 	return;
 }
 
 $b = new Block ($id);
 if ($b->error) {
-	// not found
-	echo 'not found';
+	if (User::is_valid () && $user->type == 'admin') {
+		echo $tpl->render ('blocks/editable', (object) array ('id' => $id));
+	}
 	return;
 }
 
 // permissions
 if ($b->access == 'member' && ! User::require_login ()) {
-	echo 'member only';
 	return;
-} elseif ($wp->access == 'private' && ! User::require_admin ()) {
-	echo 'private';
+} elseif ($b->access == 'private' && ! User::require_admin ()) {
 	return;
 }
 
 if ($b->show_title == 'yes') {
 	printf ('<h3>%s</h3>', $b->title);
+}
+
+if (User::is_valid () && $user->type == 'admin') {
+	echo $tpl->render ('blocks/editable', $b);
 }
 
 echo $tpl->run_includes ($b->body);

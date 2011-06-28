@@ -16,8 +16,14 @@ if (! $b->remove ()) {
 }
 
 $this->hook ('blocks/delete', $_GET);
-$page->title = 'Block Deleted';
-echo '<p>The block has been deleted.</p>';
-echo '<p><a href="/blocks/admin">Continue</a></p>';
+
+if (! isset ($_GET['return'])) {
+	$page->title = 'Block Deleted';
+	echo '<p>The block has been deleted.</p>';
+	echo '<p><a href="/blocks/admin">Continue</a></p>';
+} else {
+	header ('Location: ' . $_GET['return']);
+	exit;
+}
 
 ?>

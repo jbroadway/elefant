@@ -8,7 +8,7 @@ if (! User::require_admin ()) {
 	exit;
 }
 
-$b = new Blocks ($_GET['id']);
+$b = new Block ($_GET['id']);
 
 $f = new Form ('post', 'blocks/edit');
 if ($f->submit ()) {
@@ -19,6 +19,12 @@ if ($f->submit ()) {
 	$b->put ();
 	Versions::add ($b);
 	if (! $b->error) {
+		if (isset ($_GET['return'])) {
+			header ('Location: ' . $_GET['return']);
+			$_POST['id'] = $_GET['id'];
+			$this->hook ('blocks/edit', $_POST);
+			exit;
+		}
 		$page->title = i18n_get ('Block Saved');
 		echo '<p><a href="/blocks/admin">' . i18n_get ('Continue') . '</a></p>';
 		$_POST['id'] = $_GET['id'];
@@ -32,9 +38,9 @@ if ($f->submit ()) {
 	$b->failed = $f->failed;
 	$b = $f->merge_values ($b);
 	$page->title = 'Edit Block: ' . $b->title;
-	$page->head = $tpl->render ('blocks/edit/head', $wp)
+	$page->head = $tpl->render ('blocks/edit/head', $b)
 				. $tpl->render ('admin/wysiwyg');
-	echo $tpl->render ('blocks/edit', $wp);
+	echo $tpl->render ('blocks/edit', $b);
 }
 
 ?>

@@ -14,9 +14,13 @@ if ($f->submit ()) {
 	$b->put ();
 	Versions::add ($b);
 	if (! $b->error) {
+		if (isset ($_GET['return'])) {
+			header ('Location: ' . $_GET['return']);
+			$this->hook ('blocks/add', $_POST);
+			exit;
+		}
 		$page->title = i18n_get ('Block Added');
 		echo '<p><a href="/blocks/admin">' . i18n_get ('Continue') . '</a></p>';
-		$_POST['id'] = $_POST['id'];
 		$this->hook ('blocks/add', $_POST);
 		return;
 	}
@@ -24,6 +28,7 @@ if ($f->submit ()) {
 	echo 'Error Message: ' . $wp->error;
 } else {
 	$b = new Block;
+	$b->id = $_GET['id'];
 	$b->access = 'public';
 	$b->yes_no = array ('yes', 'no');
 
