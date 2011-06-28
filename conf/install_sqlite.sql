@@ -17,16 +17,16 @@ insert into webpage (id, title, menu_title, window_title, weight, access, layout
 insert into webpage (id, title, menu_title, window_title, weight, access, layout, description, keywords, body) values ('blog', 'Blog', '', '', 0, 'public', 'default', '', '', '{! admin/forward?to=/blog !}');
 
 create table block (
-	id integer primary key,
+	id char(72) not null primary key,
 	title char(72) not null,
 	body text,
 	access char(12) not null,
 	show_title char(3) not null
 );
 
-create index block_access on block (access);
+create index block_access on block (id, access);
 
-insert into block (id, title, access, body, show_title) values (1, 'Members', 'public', '{! user/sidebar !}', 'no');
+insert into block (id, title, access, body, show_title) values ('members', 'Members', 'public', '{! user/sidebar !}', 'no');
 
 create table user (
 	id integer primary key,

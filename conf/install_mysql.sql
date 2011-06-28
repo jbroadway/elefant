@@ -16,7 +16,7 @@ insert into webpage (id, title, menu_title, window_title, weight, access, layout
 insert into webpage (id, title, menu_title, window_title, weight, access, layout, description, keywords, body) values ('blog', 'Blog', '', '', 0, 'public', 'default', '', '', '{! admin/forward?to=/blog !}');
 
 create table block (
-	id int not null auto_increment primary key,
+	id char(72) not null primary key,
 	title char(72) not null,
 	body text,
 	access enum('public','member','private') not null default 'public',
@@ -24,7 +24,7 @@ create table block (
 	index (access)
 );
 
-insert into block (id, title, access, body, show_title) values (1, 'Members', 'public', '{! user/sidebar !}', 'no');
+insert into block (id, title, access, body, show_title) values ('members', 'Members', 'public', '{! user/sidebar !}', 'no');
 
 create table user (
 	id int not null auto_increment primary key,

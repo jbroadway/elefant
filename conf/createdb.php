@@ -18,6 +18,7 @@ require_once ('lib/Model.php');
 require_once ('apps/admin/models/Webpage.php');
 require_once ('apps/admin/models/Versions.php');
 require_once ('apps/user/models/User.php');
+require_once ('apps/blocks/models/Block.php');
 
 $conf = parse_ini_file ('conf/config.php', true);
 date_default_timezone_set($conf['General']['timezone']);
@@ -32,10 +33,6 @@ $sqldata = sql_split (file_get_contents ('conf/install_' . $conf['Database']['dr
 foreach ($sqldata as $sql) {
 	if (! db_execute ($sql)) {
 		echo 'Error: ' . db_error () . "\n";
-	} elseif (strpos ($sql, 'insert into webpage') === 0) {
-		// create versions entry for the index page
-		$wp = new Webpage ('index');
-		Versions::add ($wp);
 	}
 }
 
@@ -61,6 +58,14 @@ if (db_shift ('select count() from user') == 0) {
 	echo "Database created. Your initial admin account is:\n";
 	echo 'Username: ' . $conf['General']['email_from'] . "\n";
 	echo 'Password: ' . $pass . "\n";
+
+	// create versions entries for initial content
+	$wp = new Webpage ('index');
+	Versions::add ($wp);
+	$wp = new Webpage ('blog');
+	Versions::add ($wp);
+	$b = new Block ('members');
+	Versions::add ($b);
 } else {
 	echo "Database created.\n";
 }
