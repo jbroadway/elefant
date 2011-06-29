@@ -1,0 +1,118 @@
+<div id="tabs">
+	<ul>
+		<li><a href="#layouts">{"Layouts"}</a></li>
+		<li><a href="#stylesheets">{"Stylesheets"}</a></li>
+	</ul>
+	<div id="layouts">
+
+<p><a href="/designer/add/layout">{"New Layout"}</a></p>
+
+<p>
+<table width="100%">
+	<tr>
+		<th width="40%">{"Layout"}</th>
+		<th width="25%">{"Last Modified"}</th>
+		<th width="20%">{"File Size"}</th>
+		<th width="15%">&nbsp;</th>
+	</tr>
+{% foreach layouts %}
+	<tr>
+		<td><a href="/{{ loop_value }}" target="_blank">{{ loop_value }}</a></td>
+		<td>{{ loop_value|filemtime|gmdate ('F j, Y - g:ia', %s) }}</td>
+		<td>{{ loop_value|filesize|format_filesize }}</td>
+		<td>
+			<a href="/designer/edit/layout?file={{ loop_value }}">{"Edit"}</a> |
+			<a href="/designer/delete?file={{ loop_value }}" onclick="return confirm ('{"Are you sure you want to permanently delete this layout file?"}');">{"Delete"}</a>
+		</td>
+	</tr>
+{% end %}
+</table>
+</p>
+
+	</div>
+	<div id="stylesheets">
+
+<p><a href="/designer/add/stylesheet">{"New Stylesheet"}</a></p>
+
+<p>
+<table width="100%">
+	<tr>
+		<th width="40%">{"Stylesheet"}</th>
+		<th width="25%">{"Last Modified"}</th>
+		<th width="20%">{"File Size"}</th>
+		<th width="15%">&nbsp;</th>
+	</tr>
+{% foreach stylesheets %}
+	<tr>
+		<td><a href="/{{ loop_value }}" target="_blank">{{ loop_value }}</a></td>
+		<td>{{ loop_value|filemtime|gmdate ('F j, Y - g:ia', %s) }}</td>
+		<td>{{ loop_value|filesize|format_filesize }}</td>
+		<td>
+			<a href="/designer/edit/stylesheet?file={{ loop_value }}">{"Edit"}</a> |
+			<a href="/designer/delete?file={{ loop_value }}" onclick="return confirm ('{"Are you sure you want to permanently delete this stylesheet file?"}');">{"Delete"}</a>
+		</td>
+	</tr>
+{% end %}
+</table>
+</p>
+
+	</div>
+</div>
+
+<style>
+
+.ui-tabs-panel {
+	padding-top: 15px;
+}
+
+.ui-tabs-hide {
+	display: none;
+}
+
+.ui-tabs-nav {
+	list-style: none;
+	border-bottom: 1px solid #8A5AB5;
+	padding: 0px;
+	margin: 0px;
+	padding-bottom: 2px;
+}
+
+.ui-state-default {
+	display: inline;
+	margin: 0px;
+	padding: 0px;
+}
+
+	.ui-state-default a {
+		text-decoration: none;
+		margin: 0px;
+		line-height: 20px;
+		padding: 5px 10px 5px 10px;
+		background: #e5e5e5;
+		border-right: 1px solid #ccc;
+	}
+	
+	.ui-state-default a:hover {
+		background: #e8d8ed;
+		color: #8A5AB5;
+	}
+
+	.ui-tabs-selected a {
+		background: #8A5AB5;
+		color: #f5f5f5;
+		border-right: 0px;
+	}
+	
+	.ui-tabs-selected a:hover {
+		background: #8A5AB5;
+		color: #f5f5f5;
+	}
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+<script>
+$(function () {
+	$('#tabs').tabs ();
+});
+</script>
+

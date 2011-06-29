@@ -1,0 +1,63 @@
+<form method="POST" id="edit-form">
+<p>Insert tag:&nbsp;
+	<a href="#" onclick="_codemirror.replaceRange ('{' + '{ var }}', _codemirror.getCursor (true)); return false">{<span></span>{ var }}</a> &nbsp;
+	<a href="#" onclick="_codemirror.replaceRange ('{' + '% foreach %}\n', _codemirror.getCursor (true)); _codemirror.replaceRange ('\n{' + '% end %}', _codemirror.getCursor (false)); return false">{<span></span>% foreach %}</a> &nbsp;
+	<a href="#" onclick="_codemirror.replaceRange ('{' + '% if %}', _codemirror.getCursor (true)); _codemirror.replaceRange ('{' + '% end %}', _codemirror.getCursor (false)); return false">{<span></span>% if %}</a> &nbsp;
+	<a href="#" onclick="_codemirror.replaceRange ('{' + '! app/handler !}', _codemirror.getCursor (true)); return false">{<span></span>! handler !}</a> &nbsp;
+	<a href="#" onclick="_codemirror.replaceRange ('{&quot; text &quot;}', _codemirror.getCursor (true)); return false">{<span></span>" text "}</a>
+	<br />
+<textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
+<p><input type="submit" value="Save Layout" /><span class="notice" id="body-notice">&nbsp; You must enter body content.</span></p>
+</form>
+
+<link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/lib/codemirror.css" />
+<link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/theme/default.css" />
+<script type="text/javascript" src="/apps/designer/js/codemirror/lib/codemirror.js"></script>
+<script type="text/javascript" src="/apps/designer/js/codemirror/mode/xml/xml.js"></script>
+<script type="text/javascript" src="/apps/designer/js/codemirror/mode/css/css.js"></script>
+<script type="text/javascript" src="/apps/designer/js/codemirror/mode/javascript/javascript.js"></script>
+<script type="text/javascript" src="/apps/designer/js/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+<style>
+.CodeMirror {
+	border: 1px solid #ccc;
+	background: #fff;
+}
+.CodeMirror-scroll {
+	height: 500px;
+}
+</style>
+
+<script type="text/javascript" src="/js/jquery.verify_values.js"></script>
+<script type="text/javascript">
+var _codemirror;
+
+$(function () {
+	_codemirror = CodeMirror.fromTextArea(
+		document.getElementById ('webpage-body'),
+		{
+			mode: 'text/html',
+			theme: 'default',
+			indentWithTabs: true,
+			lineNumbers: true
+		}
+	);
+
+	$('#edit-form').verify_values ({
+		handler: 'designer/editlayout',
+		callback: function (failed) {
+			// highlight the failed elements
+			for (var i = 0; i < failed.length; i++) {
+				$('#' + failed[i] + '-notice').show ();
+			}
+		},
+		reset: function (fields) {
+			for (var i = 0; i < fields.length; i++) {
+				$('#' + fields[i] + '-notice').hide ();
+			}
+		}
+	});
+	{% foreach failed %}
+	$('#{{ loop_value }}-notice').show ();
+	{% end %}
+});
+</script>
