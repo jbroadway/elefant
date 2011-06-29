@@ -72,7 +72,8 @@ mistakes/luck and do it even better this time.
 http://github.com/jbroadway/elefant
 
 2. Unzip into a site root somewhere (no sub-folders, use sub-domains instead).
-Change the permissions on folders `conf`, `cache`, and `files` to `0777`.
+Change the permissions on folders `conf`, `cache`, `css`, `files`, and `layouts`
+to `0777`.
 
 3. Edit `conf/config.php` and add your database connection info and default
 site info.
