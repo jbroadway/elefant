@@ -10,6 +10,7 @@
 <script type="text/javascript">
 $(function () {
 	$('#webpage-body').wysiwyg ({
+		initialContent: '<p><br /></p>',
 		controls: {
 			strikeThrough	:{visible:false},
 			justifyFull		:{visible:false},
@@ -24,14 +25,24 @@ $(function () {
 					$.wysiwyg.fileManager.init (function (file) {
 						if (file.match (/\.(jpg|png|gif)$/i)) {
 							$('#webpage-body').wysiwyg ('insertImage', file);
+						} else if (file.match (/\.swf$/i)) {
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! filemanager/swf?file=' + file + ' !}</span></p>');
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
 						} else {
-							$('#webpage-bodu').wysiwyg ('createLink', file);
+							$('#webpage-body').wysiwyg ('createLink', file);
 						}
 					});
 				}
+			},
+			'dynamic': {
+				visible: true,
+				exec: function () {
+					$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! admin/menu !}</span></p>');
+					$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
+				}
 			}
 		},
-		dialog:'jqueryui',
+		//dialog:'jqueryui',
 		css: '/css/wysiwyg/default.css'
 	});
 	$.wysiwyg.fileManager.setAjaxHandler ('http://{{ $_SERVER.HTTP_HOST }}/filemanager/embed');

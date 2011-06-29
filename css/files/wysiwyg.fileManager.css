@@ -16,7 +16,7 @@ div.wysiwyg-fileManager { width:16px; height:16px; cursor: pointer; cursor: hand
 #wysiwyg-files-list-wrapper { min-height:50px; max-height:400px; overflow:auto; }
 * html #wysiwyg-files-list-wrapper { height: 600px; }
 
-.wysiwyg-files-ajax { background: url(ajax-loader.gif) left top no-repeat; }
+.wysiwyg-files-ajax { background: url(../../ajax-loader.gif) left top no-repeat; }
 
 .wysiwyg-files-file-preview { position:absolute; background-position:center center; background-color:#fff; border:solid 1px; padding:2px; min-width:16px; min-height:16px; max-width:300px; z-index:200000; }
 * html .wysiwyg-files-file-preview { width:90px; }

@@ -47,12 +47,12 @@ switch ($_GET['action']) {
 		);
 		$d = dir (getcwd () . $_GET['dir']);
 		while (false !== ($entry = $d->read ())) {
-			if ($entry == '.' || $entry == '..') {
+			if (strpos ($entry, '.') === 0) {
 				continue;
-			} elseif (@is_dir ($_GET['dir'] . '/' . $entry)) {
-				$out['directories'][] = $_GET['dir'] . '/' . $entry;
+			} elseif (@is_dir (ltrim ($_GET['dir'], '/') . '/' . $entry)) {
+				$out['directories'][$entry] = rtrim ($_GET['dir'], '/') . '/' . $entry;
 			} else {
-				$out['files'][] = $_GET['dir'] . '/' . $entry;
+				$out['files'][$entry] = rtrim ($_GET['dir'], '/') . '/' . $entry;
 			}
 		}
 		$d->close ();

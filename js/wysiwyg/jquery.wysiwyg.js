@@ -1009,10 +1009,28 @@
 
 		this.increaseFontSize = function () {
 			if ($.browser.mozilla || $.browser.opera) {
-				this.editorDoc.execCommand('increaseFontSize', false, null);
-			} else if ($.browser.safari) {
-				var newNode = this.editorDoc.createElement('big');
-				this.getInternalRange().surroundContents(newNode);
+				this.editorDoc.execCommand("increaseFontSize", false, null);
+			} else if ($.browser.safari) {				
+				var Range = this.getInternalRange(),
+					Selection = this.getInternalSelection(),
+					newNode = this.editorDoc.createElement("big");
+
+				// If cursor placed on text node
+				if (true === Range.collapsed && 3 === Range.commonAncestorContainer.nodeType) {
+					var text = Range.commonAncestorContainer.nodeValue.toString(),
+						start = text.lastIndexOf(" ", Range.startOffset) + 1,
+						end = (-1 === text.indexOf(" ", Range.startOffset)) ? text : text.indexOf(" ", Range.startOffset);
+
+					Range.setStart(Range.commonAncestorContainer, start);
+					Range.setEnd(Range.commonAncestorContainer, end);
+
+					Range.surroundContents(newNode);
+					Selection.addRange(Range);
+				} else {
+					Range.surroundContents(newNode);
+					Selection.removeAllRanges();
+					Selection.addRange(Range);
+				}
 			} else {
 				console.error("Internet Explorer?");
 			}
@@ -1020,10 +1038,28 @@
 
 		this.decreaseFontSize = function () {
 			if ($.browser.mozilla || $.browser.opera) {
-				this.editorDoc.execCommand('decreaseFontSize', false, null);
+				this.editorDoc.execCommand("decreaseFontSize", false, null);
 			} else if ($.browser.safari) {
-				var newNode = this.editorDoc.createElement('small');
-				this.getInternalRange().surroundContents(newNode);
+				var Range = this.getInternalRange(),
+					Selection = this.getInternalSelection(),
+					newNode = this.editorDoc.createElement("small");
+
+				// If cursor placed on text node
+				if (true === Range.collapsed && 3 === Range.commonAncestorContainer.nodeType) {
+					var text = Range.commonAncestorContainer.nodeValue.toString(),
+						start = text.lastIndexOf(" ", Range.startOffset) + 1,
+						end = (-1 === text.indexOf(" ", Range.startOffset)) ? text : text.indexOf(" ", Range.startOffset);
+	
+					Range.setStart(Range.commonAncestorContainer, start);
+					Range.setEnd(Range.commonAncestorContainer, end);
+	
+					Range.surroundContents(newNode);
+					Selection.addRange(Range);
+				} else {
+					Range.surroundContents(newNode);
+					Selection.removeAllRanges();
+					Selection.addRange(Range);
+				}
 			} else {
 				console.error("Internet Explorer?");
 			}
@@ -1303,7 +1339,7 @@
 			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=20
 			 */
 			$(self.original).focus(function () {
-				if ($(this).filter(":visible")) {
+				if ($(this).filter(":visible").length === 0) {
 					return;
 				}
 				self.ui.focus();
@@ -1496,6 +1532,7 @@
 					});
 				});
 			}
+			$(self.original).trigger('ready.jwysiwyg', [self.editorDoc, self]);
 		};
 
 		this.innerDocument = function () {
@@ -2049,8 +2086,9 @@
 	 * 
 	 */
 	$.wysiwyg.dialog = function (jWysiwyg, opts) {
-		var theme	= (jWysiwyg && jWysiwyg.options && jWysiwyg.options.dialog) ? jWysiwyg.options.dialog : "default",
-			obj		= $.wysiwyg.dialog.createDialog(theme),
+		
+		var theme	= (jWysiwyg && jWysiwyg.options && jWysiwyg.options.dialog) ? jWysiwyg.options.dialog : (opts.theme ? opts.theme : "default"),
+			obj		= new $.wysiwyg.dialog.createDialog(theme),
 			that	= this,
 			$that	= $(that);
 				
@@ -2068,6 +2106,8 @@
 		this.isOpen = false;
 
 		$.extend(this.options, opts);
+
+		this.object = obj;
 
 		// Opens a dialog with the specified content
 		this.open = function () {
@@ -2260,8 +2300,8 @@
 						$(this).css({ "cursor": "move" });
 						var $topbar = $(this),
 							_dialog = $(this).parents(".wysiwyg-dialog"),
-							offsetX = (e.pageX - parseInt(_dialog.css("left"))),
-							offsetY = (e.pageY - parseInt(_dialog.css("top")));
+							offsetX = (e.pageX - parseInt(_dialog.css("left"), 10)),
+							offsetY = (e.pageY - parseInt(_dialog.css("top"), 10));
 						mouseDown = true;
 						$(this).css({ "cursor": "move" });
 						

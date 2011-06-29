@@ -24,13 +24,13 @@
 			$.wysiwyg.controls.image.init(this);
 		},
 		tags: ["img"],
-		tooltip: "Insert image",	
+		tooltip: "Insert image",
 		init: function (Wysiwyg) {
 			var self = this, elements, adialog, dialog, formImageHtml, regexp, dialogReplacements, key, translation,
 				img = {
 					alt: "",
 					self: Wysiwyg.dom ? Wysiwyg.dom.getElement("img") : null, // link to element node
-					src: "http://",
+					src: "/css/files/spacer.gif",
 					title: ""
 				};
 
@@ -39,11 +39,11 @@
 				preview : "Preview",
 				url     : "URL",
 				title   : "Title",
-				description : "Description",
+				description : "Alt text",
 				width   : "Width",
 				height  : "Height",
 				original : "Original W x H",
-				"float"	: "Float",
+				"float"	: "Align",
 				floatNone : "None",
 				floatLeft : "Left",
 				floatRight : "Right",
@@ -62,7 +62,7 @@
 			}
 			
 			formImageHtml += '</div></div>' +
-				'<div class="form-row"><label for="name">{title}:</label><div class="form-row-value"><input type="text" name="imgtitle" value=""/></div></div>' +
+				//'<div class="form-row"><label for="name">{title}:</label><div class="form-row-value"><input type="text" name="imgtitle" value=""/></div></div>' +
 				'<div class="form-row"><label for="name">{description}:</label><div class="form-row-value"><input type="text" name="description" value=""/></div></div>' +
 				'<div class="form-row"><label for="name">{width} x {height}:</label><div class="form-row-value"><input type="text" name="width" value="" class="width-small"/> x <input type="text" name="height" value="" class="width-small"/></div></div>' +
 				'<div class="form-row"><label for="name">{original}:</label><div class="form-row-value"><input type="text" name="naturalWidth" value="" class="width-small" disabled="disabled"/> x ' +
@@ -143,7 +143,7 @@
 		processInsert: function (context, Wysiwyg, img) {
 			var image,
 				url = $('input[name="src"]', context).val(),
-				title = $('input[name="imgtitle"]', context).val(),
+				//title = $('input[name="imgtitle"]', context).val(),
 				description = $('input[name="description"]', context).val(),
 				width = $('input[name="width"]', context).val(),
 				height = $('input[name="height"]', context).val(),
@@ -163,7 +163,7 @@
 			if (img.self) {
 				// to preserve all img attributes
 				$(img.self).attr("src", url)
-					.attr("title", title)
+					//.attr("title", title)
 					.attr("alt", description)
 					.css("float", styleFloat);
 
@@ -207,14 +207,15 @@
 					style = ' style="' + styles.join(" ") + '"';
 				}
 
-				image = "<img src='" + url + "' title='" + title + "' alt='" + description + "'" + style + "/>";
+				//image = "<img src='" + url + "' title='" + title + "' alt='" + description + "'" + style + "/>";
+				image = "<img src='" + url + "' alt='" + description + "'" + style + "/>";
 				Wysiwyg.insertHtml(image);
 			}
 		},
 
 		makeForm: function (form, img) {
 			form.find("input[name=src]").val(img.src);
-			form.find("input[name=imgtitle]").val(img.title);
+			//form.find("input[name=imgtitle]").val(img.title);
 			form.find("input[name=description]").val(img.alt);
 			form.find('input[name="width"]').val(img.width);
 			form.find('input[name="height"]').val(img.height);
