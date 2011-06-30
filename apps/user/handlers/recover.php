@@ -7,8 +7,8 @@ if ($f->submit ()) {
 		->single ();
 
 	$data = $u->userdata;
-	$data->recover = md5 (uniqid (mt_rand (), 1));
-	$data->recover_expires = time () + 7200;
+	$data['recover'] = md5 (uniqid (mt_rand (), 1));
+	$data['recover_expires'] = time () + 7200;
 	$u->userdata = $data;
 	$u->put ();
 
@@ -16,7 +16,7 @@ if ($f->submit ()) {
 		$u->name . ' <' . $u->email . '>',
 		'Password recovery',
 		$tpl->render ('user/email/recover', array (
-			'recover' => $data->recover,
+			'recover' => $data['recover'],
 			'email' => $u->email,
 			'name' => $u->name
 		)),

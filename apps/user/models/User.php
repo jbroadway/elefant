@@ -173,7 +173,7 @@ class User extends Model {
 	function __get ($key) {
 		if ($key == 'userdata') {
 			if ($this->_userdata === false) {
-				$this->_userdata = json_decode ($this->data['userdata']);
+				$this->_userdata = (array) json_decode ($this->data['userdata']);
 			}
 			return $this->_userdata;
 		}

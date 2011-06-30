@@ -8,12 +8,12 @@ $u = User::query ()
 
 $data = $u->userdata;
 
-if ($data->recover == $_GET['recover'] && $data->recover_expires > time () + 60) {
+if ($data['recover'] == $_GET['recover'] && $data['recover_expires'] > time () + 60) {
 	$f = new Form ('post', 'user/newpass');
 	if ($f->submit ()) {
 		$u->password = User::encrypt_pass ($_POST['password']);
-		unset ($data->recover);
-		unset ($data->recover_expires);
+		unset ($data['recover']);
+		unset ($data['recover_expires']);
 		$u->userdata = $data;
 		$u->put ();
 
