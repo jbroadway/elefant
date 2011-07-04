@@ -13,7 +13,7 @@ var autosave_interval = null,
 			var options = $.extend (defaults, options);
 
 			options.form = this[0];
-			options.cookie_name = 'autosave-' + window.location.pathname.replace (/[^a-zA-Z0-9-]+/g, '');
+			options.cookie_name = 'autosave-' + (window.location.pathname + window.location.search).replace (/[^a-zA-Z0-9-]+/g, '');
 			
 			$('.autosave-clear').click (function () {
 				var opts = options;

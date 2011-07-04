@@ -1,3 +1,7 @@
+{% if isset ($_COOKIE['autosave-admineditpage' . $_GET['page']]) %}
+<p class="autosave-notice">Auto-saved data found for this form. <a href="#" class="autosave-restore">Click here to restore.</a></p>
+{% end %}
+
 <form method="POST" id="add-form">
 <p>Page title:<br /><input type="text" name="title" size="50" value="{{ title }}" onblur="webpage_add_title_to_id (this.form)" />
 <span class="notice" id="title-notice">You must enter a page title.</span></p>
