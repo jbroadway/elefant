@@ -1,3 +1,7 @@
+{% if isset ($_COOKIE['autosave-adminadd']) %}
+<p class="autosave-notice">Auto-saved data found for this form. <a href="#" class="autosave-restore">Click here to restore.</a></p>
+{% end %}
+
 <form method="POST" id="add-form">
 <p>Page title:<br /><input type="text" name="title" size="50" value="{{ title }}" onblur="webpage_add_title_to_id (this.form)" />
 <span class="notice" id="title-notice">You must enter a page title.</span></p>
@@ -27,5 +31,5 @@
 <p>Description:<br /><textarea name="description" cols="60" rows="4">{{ description }}</textarea></p>
 <p>Keywords (comma-separated):<br /><textarea name="keywords" cols="60" rows="4">{{ keywords }}</textarea></p>
 </div>
-<p><input type="submit" value="Add Page" /> <input type="submit" value="Preview" onclick="return webpage_preview (this.form)" /></p>
+<p><input type="submit" value="Add Page" class="autosave-clear" /> <input type="submit" value="Preview" onclick="return webpage_preview (this.form)" /></p>
 </form>

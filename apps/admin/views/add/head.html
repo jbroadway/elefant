@@ -1,3 +1,6 @@
+<script type="text/javascript" src="/js/json2.js"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/js/jquery.autosave.js"></script>
 <script type="text/javascript" src="/js/jquery.verify_values.js"></script>
 <script type="text/javascript">
 $(function () {
@@ -18,6 +21,8 @@ $(function () {
 	{% foreach failed %}
 	$('#{{ loop_value }}-notice').show ();
 	{% end %}
+
+	$('#add-form').autosave ();
 });
 function webpage_add_title_to_id (f) {
 	if (f.elements.id.value == '') {

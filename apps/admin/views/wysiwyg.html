@@ -43,7 +43,14 @@ $(function () {
 			}
 		},
 		//dialog:'jqueryui',
-		css: '/css/wysiwyg/default.css'
+		css: '/css/wysiwyg/default.css',
+		'events': {
+			click: function () {
+				try {
+					$('#add-form').autosave ();
+				} catch (e) {}
+			}
+		}
 	});
 	$.wysiwyg.fileManager.setAjaxHandler ('http://{{ $_SERVER.HTTP_HOST }}/filemanager/embed');
 });
