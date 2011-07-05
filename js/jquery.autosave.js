@@ -23,7 +23,7 @@
  * 3. Add a restore option if the cookie is detected on page load
  * (using an Elefant template as an example):
  *
- *   {% if isset ($_COOKIE['autosave-apphandler']) %}
+ *   {% if isset ($_COOKIE['autosave-' . preg_replace ('/[^a-z0-9-]/', '', $_SERVER['REQUEST_URI'])]) %}
  *   <p class="autosave-notice">Auto-saved data found for this form. <a href="#" class="autosave-restore">Click here to restore.</a></p>
  *   {% end %}
  *
@@ -68,10 +68,12 @@ var autosave_interval = null,
 					vals = $.parseJSON ($.cookie (opts.cookie_name));
 
 				for (i = 0; i < vals.length; i++) {
-					opts.form.elements[vals[i].name].value = vals[i].value;
-					if (opts.form.elements[vals[i].name].getAttribute ('id') == 'webpage-body') {
-						$('#webpage-body').wysiwyg ('setContent', vals[i].value);
-					}
+					try {
+						opts.form.elements[vals[i].name].value = vals[i].value;
+						if (opts.form.elements[vals[i].name].getAttribute ('id') == 'webpage-body') {
+							$('#webpage-body').wysiwyg ('setContent', vals[i].value);
+						}
+					} catch (e) {}
 				}
 
 				$('.autosave-notice').slideUp ('slow');

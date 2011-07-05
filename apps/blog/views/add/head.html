@@ -1,3 +1,6 @@
+<script type="text/javascript" src="/js/json2.js"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/js/jquery.autosave.js"></script>
 <style type="text/css">
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
@@ -63,6 +66,8 @@ $(function () {
 	{% foreach failed %}
 	$('#{{ loop_value }}-notice').show ();
 	{% end %}
+
+	$('#add-form').autosave ();
 });
 function webpage_show_extra_options (link) {
 	var eo = $('#extra-options');

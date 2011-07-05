@@ -1,8 +1,8 @@
-{% if isset ($_COOKIE['autosave-admineditpage' . $_GET['page']]) %}
+{% if isset ($_COOKIE['autosave-' . preg_replace ('/[^a-z0-9-]/', '', $_SERVER['REQUEST_URI'])]) %}
 <p class="autosave-notice">Auto-saved data found for this form. <a href="#" class="autosave-restore">Click here to restore.</a></p>
 {% end %}
 
-<form method="POST" id="add-form">
+<form method="POST" id="edit-form">
 <p>Page title:<br /><input type="text" name="title" size="50" value="{{ title }}" onblur="webpage_add_title_to_id (this.form)" />
 <span class="notice" id="title-notice">You must enter a page title.</span></p>
 <p>Page ID (ex: <tt>{{ $_SERVER.HTTP_HOST }}/<strong>your-page-id</strong></tt>):<br /><input type="text" name="id" size="35" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />

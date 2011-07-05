@@ -4,7 +4,7 @@
 <script type="text/javascript" src="/js/jquery.verify_values.js"></script>
 <script type="text/javascript">
 $(function () {
-	$('#add-form').verify_values ({
+	$('#edit-form').verify_values ({
 		handler: 'admin/edit',
 		callback: function (failed) {
 			// highlight the failed elements
@@ -22,7 +22,7 @@ $(function () {
 	$('#{{ loop_value }}-notice').show ();
 	{% end %}
 
-	$('#add-form').autosave ();
+	$('#edit-form').autosave ();
 });
 function webpage_add_title_to_id (f) {
 	if (f.elements.id.value == '') {

@@ -1,3 +1,7 @@
+{% if isset ($_COOKIE['autosave-' . preg_replace ('/[^a-z0-9-]/', '', $_SERVER['REQUEST_URI'])]) %}
+<p class="autosave-notice">Auto-saved data found for this form. <a href="#" class="autosave-restore">Click here to restore.</a></p>
+{% end %}
+
 <form method="POST" id="edit-form">
 <p><textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 <p><input type="submit" value="Save Stylesheet" /><span class="notice" id="body-notice">&nbsp; You must enter body content.</span></p>
@@ -17,6 +21,9 @@
 }
 </style>
 
+<script type="text/javascript" src="/js/json2.js"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/js/jquery.autosave.js"></script>
 <script type="text/javascript" src="/js/jquery.verify_values.js"></script>
 <script type="text/javascript">
 var _codemirror;
@@ -49,5 +56,7 @@ $(function () {
 	{% foreach failed %}
 	$('#{{ loop_value }}-notice').show ();
 	{% end %}
+
+	$('#edit-form').autosave ();
 });
 </script>
