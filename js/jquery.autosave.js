@@ -78,7 +78,15 @@ var autosave_interval = null,
 				for (i = 0; i < vals.length; i++) {
 					try {
 						// Set the field value
-						opts.form.elements[vals[i].name].value = vals[i].value;
+						if ($(opts.form.elements[vals[i].name]).is (':radio') || $(opts.form.elements[vals[i].name]).is (':checkbox')) {
+							if (vals[i].value) {
+								$(opts.form.elements[vals[i].name]).attr ('checked', 'checked');
+							} else {
+								$(opts.form.elements[vals[i].name]).attr ('checked', null);
+							}
+						} else {
+							opts.form.elements[vals[i].name].value = vals[i].value;
+						}
 						if (opts.form.elements[vals[i].name].getAttribute ('id') == 'webpage-body') {
 							// Set the contents of wysiwyg editor
 							$('#webpage-body').wysiwyg ('setContent', vals[i].value);
@@ -127,6 +135,18 @@ var autosave_interval = null,
 							name: opts.form.elements[i].name,
 							value: _codemirror.getValue ()
 						};
+					} else if ($(opts.form.elements[i]).is (':radio') || $(opts.form.elements[i]).is (':checkbox')) {
+						if (opts.form.elements[i].checked) {
+							vals[i] = {
+								name: opts.form.elements[i].name,
+								value: true
+							};
+						} else {
+							vals[i] = {
+								name: opts.form.elements[i].name,
+								value: false
+							};
+						}
 					} else {
 						// Get the contents from the field itself
 						vals[i] = {
