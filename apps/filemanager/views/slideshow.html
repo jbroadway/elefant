@@ -33,7 +33,7 @@ $(window).load (function () {
 
 <div id="slideshow">
 {% foreach files %}
-	<img src="/{{ loop_value }}" alt="" />
+	<img src="/{{ loop_value }}" alt="" {% if loop_index > 0 %}style="display: none"{% end %} />
 {% end %}
 </div>
 <div id="slideshow-nav"></div>
