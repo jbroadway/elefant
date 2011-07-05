@@ -87,12 +87,20 @@ var autosave_interval = null,
 						} else {
 							opts.form.elements[vals[i].name].value = vals[i].value;
 						}
+
 						if (opts.form.elements[vals[i].name].getAttribute ('id') == 'webpage-body') {
 							// Set the contents of wysiwyg editor
 							$('#webpage-body').wysiwyg ('setContent', vals[i].value);
 						} else if (opts.form.elements[vals[i].name].getAttribute ('id') == 'code-body') {
 							// Set the contents of codemirror editor
 							_codemirror.setValue (vals[i].value);
+						} else if (opts.form.elements[vals[i].name].getAttribute ('id') == 'tags') {
+							// Set the contents of tag-it widget
+							$('#tagit').tagit ('removeAll');
+							var tags = vals[i].value.split (',');
+							for (var t = 0; t < tags.length; t++) {
+								$('#tagit').tagit ('createTag', tags[t]);
+							}
 						}
 					} catch (e) {}
 				}
