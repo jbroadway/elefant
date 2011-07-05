@@ -8,6 +8,15 @@ if (! User::require_admin ()) {
 	exit;
 }
 
+$lock = new Lock ('Webpage', $_GET['page']);
+if ($lock->exists ()) {
+	$page->title = i18n_get ('Editing Locked');
+	echo $tpl->render ('admin/locked', $lock->info ());
+	return;
+} else {
+	$lock->add ();
+}
+
 $wp = new Webpage ($_GET['page']);
 
 $f = new Form ('post', 'admin/edit');
@@ -27,6 +36,7 @@ if ($f->submit ()) {
 	if (! $wp->error) {
 		header ('Location: /' . $_POST['id']);
 		$_POST['page'] = $_GET['page'];
+		$lock->remove ();
 		$this->hook ('admin/edit', $_POST);
 		exit;
 	}
