@@ -5,7 +5,7 @@
 <form method="POST" id="add-form">
 <p>Name (ex: <tt>css/<strong>name</strong>.css</tt>):<br /><input type="text" name="name" size="40" value="{{ name }}" />
 <span class="notice" id="name-notice">Your name must be alphanumeric and not a duplicate of an existing stylesheet.</span></p>
-<p><textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
+<p><textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea></p>
 <p><input type="submit" value="Create Stylesheet" /><span class="notice" id="body-notice">&nbsp; You must enter body content.</span></p>
 </form>
 
@@ -32,12 +32,17 @@ var _codemirror;
 
 $(function () {
 	_codemirror = CodeMirror.fromTextArea(
-		document.getElementById ('webpage-body'),
+		document.getElementById ('code-body'),
 		{
 			mode: 'text/css',
 			theme: 'default',
 			indentWithTabs: true,
-			lineNumbers: true
+			lineNumbers: true,
+			onFocus: function () {
+				try {
+					$('form').autosave ();
+				} catch (e) {}
+			}
 		}
 	);
 

@@ -12,7 +12,7 @@
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '! app/handler !}', _codemirror.getCursor (true)); return false">{<span></span>! handler !}</a> &nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{&quot; text &quot;}', _codemirror.getCursor (true)); return false">{<span></span>" text "}</a>
 	<br />
-<textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
+<textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea></p>
 <p><input type="submit" value="Create Layout" /><span class="notice" id="body-notice">&nbsp; You must enter body content.</span></p>
 </form>
 
@@ -42,12 +42,17 @@ var _codemirror;
 
 $(function () {
 	_codemirror = CodeMirror.fromTextArea(
-		document.getElementById ('webpage-body'),
+		document.getElementById ('code-body'),
 		{
 			mode: 'text/html',
 			theme: 'default',
 			indentWithTabs: true,
-			lineNumbers: true
+			lineNumbers: true,
+			onFocus: function () {
+				try {
+					$('form').autosave ();
+				} catch (e) {}
+			}
 		}
 	);
 

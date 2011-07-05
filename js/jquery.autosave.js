@@ -72,6 +72,8 @@ var autosave_interval = null,
 						opts.form.elements[vals[i].name].value = vals[i].value;
 						if (opts.form.elements[vals[i].name].getAttribute ('id') == 'webpage-body') {
 							$('#webpage-body').wysiwyg ('setContent', vals[i].value);
+						} else if (opts.form.elements[vals[i].name].getAttribute ('id') == 'code-body') {
+							_codemirror.setValue (vals[i].value);
 						}
 					} catch (e) {}
 				}
@@ -103,10 +105,17 @@ var autosave_interval = null,
 					if (! opts.form.elements[i].name) {
 						continue;
 					}
-					vals[i] = {
-						name: opts.form.elements[i].name,
-						value: opts.form.elements[i].value
-					};
+					if (opts.form.elements[i].getAttribute ('id') == 'code-body') {
+						vals[i] = {
+							name: opts.form.elements[i].name,
+							value: _codemirror.getValue ()
+						};
+					} else {
+						vals[i] = {
+							name: opts.form.elements[i].name,
+							value: opts.form.elements[i].value
+						};
+					}
 				}
 				
 				$.cookie (opts.cookie_name, JSON.stringify (vals), { expires: 1, path: '/' });
