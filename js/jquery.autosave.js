@@ -1,3 +1,45 @@
+/**
+ * Use this jQuery plugin to auto-save and restore form data via
+ * a cookie to protect against browser crashes and other accidental
+ * interruptions.
+ *
+ * Usage:
+ *
+ * 1. Include the script and prerequisites:
+ *
+ *   <script src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
+ *   <script src="/js/json2.js"></script>
+ *   <script src="/js/jquery.cookie.js"></script>
+ *   <script src="/js/jquery.autosave.js"></script>
+ *
+ * 2. Initialize the form:
+ *
+ *   <script>
+ *     $(function () {
+ *       $('form').autosave ();
+ *     });
+ *   </script>
+ *
+ * 3. Add a restore option if the cookie is detected on page load
+ * (using an Elefant template as an example):
+ *
+ *   {% if isset ($_COOKIE['autosave-apphandler']) %}
+ *   <p class="autosave-notice">Auto-saved data found for this form. <a href="#" class="autosave-restore">Click here to restore.</a></p>
+ *   {% end %}
+ *
+ * The cookie name is determined as follows:
+ *
+ *   "autosave-" + (pathname + parameters).replace (/[^a-z0-9-]/g, '')
+ *
+ * So for example if the request is:
+ *
+ *   /admin/edit?page=index
+ *
+ * The cookie name will be:
+ *
+ *   autosave-admineditpageindex
+ *
+ */
 var autosave_interval = null,
 	autosave_focused = false;
 
