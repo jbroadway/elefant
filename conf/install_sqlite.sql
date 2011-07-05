@@ -88,3 +88,16 @@ create table blog_post_tag (
 	post_id int not null,
 	primary key (tag_id, post_id)
 );
+
+create table lock (
+	id integer primary key,
+	user int not null,
+	resource varchar(72) not null,
+	resource_id varchar(72) not null,
+	expires datetime not null,
+	created datetime not null,
+	modified datetime not null
+);
+
+create index lock_resource on lock (resource, resource_id, expires);
+create index lock_user on lock (user);
