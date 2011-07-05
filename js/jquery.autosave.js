@@ -27,6 +27,9 @@
  *   <p class="autosave-notice">Auto-saved data found for this form. <a href="#" class="autosave-restore">Click here to restore.</a></p>
  *   {% end %}
  *
+ * 4. Add class="autosave-clear" to the submit button so saving the form
+ * clears the cookie.
+ *
  * The cookie name is determined as follows:
  *
  *   "autosave-" + (pathname + parameters).replace (/[^a-z0-9-]/g, '')
@@ -54,14 +57,19 @@ var autosave_interval = null,
 			
 			var options = $.extend (defaults, options);
 
+			// Get the form object
 			options.form = this[0];
+
+			// Set the cookie name based on the current request uri
 			options.cookie_name = 'autosave-' + (window.location.pathname + window.location.search).replace (/[^a-zA-Z0-9-]+/g, '');
 			
+			// Handler to clear the cookie (used on submit)
 			$('.autosave-clear').click (function () {
 				var opts = options;
 				$.cookie (opts.cookie_name, null);
 			});
 
+			// Handler to restore data from the cookie
 			$('.autosave-restore').click (function () {
 				var i = 0,
 					opts = options,
@@ -69,29 +77,36 @@ var autosave_interval = null,
 
 				for (i = 0; i < vals.length; i++) {
 					try {
+						// Set the field value
 						opts.form.elements[vals[i].name].value = vals[i].value;
 						if (opts.form.elements[vals[i].name].getAttribute ('id') == 'webpage-body') {
+							// Set the contents of wysiwyg editor
 							$('#webpage-body').wysiwyg ('setContent', vals[i].value);
 						} else if (opts.form.elements[vals[i].name].getAttribute ('id') == 'code-body') {
+							// Set the contents of codemirror editor
 							_codemirror.setValue (vals[i].value);
 						}
 					} catch (e) {}
 				}
 
+				// Hide the restore notice
 				$('.autosave-notice').slideUp ('slow');
 				return false;
 			});
 
+			// Add a focus handler that triggers saving only once the form is active
 			for (var i = 0; i < options.form.elements.length; i++) {
 				$(options.form.elements[i]).focus (function () {
 					autosave_focused = true;
 				});
 			}
 			
+			// Don't set the interval more than once
 			if (autosave_interval != null) {
 				return;
 			}
 
+			// Set an interval to save the form data to the cookie
 			autosave_interval = setInterval (function () {
 				if (autosave_focused === false) {
 					return;
@@ -103,14 +118,17 @@ var autosave_interval = null,
 
 				for (i = 0; i < opts.form.elements.length; i++) {
 					if (! opts.form.elements[i].name) {
+						// Unnamed fields can be ignored (submit buttons)
 						continue;
 					}
 					if (opts.form.elements[i].getAttribute ('id') == 'code-body') {
+						// Get the contents from codemirror editor
 						vals[i] = {
 							name: opts.form.elements[i].name,
 							value: _codemirror.getValue ()
 						};
 					} else {
+						// Get the contents from the field itself
 						vals[i] = {
 							name: opts.form.elements[i].name,
 							value: opts.form.elements[i].value
