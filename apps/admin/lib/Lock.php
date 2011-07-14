@@ -50,10 +50,8 @@ class Lock {
 	function add ($resource = false, $key = false) {
 		global $user;
 		
-		if (! $resource) {
-			$resource = $this->resource;
-			$key = $this->key;
-		}
+		$resource = ($resource) ? $resource : $this->resource;
+		$key = ($key) ? $key : $this->key;
 		
 		if (db_execute (
 			'insert into lock
@@ -79,10 +77,8 @@ class Lock {
 	function exists ($resource = false, $key = false) {
 		global $user;
 
-		if (! $resource) {
-			$resource = $this->resource;
-			$key = $this->key;
-		}
+		$resource = ($resource) ? $resource : $this->resource;
+		$key = ($key) ? $key : $this->key;
 
 		return db_shift (
 			'select id from lock where user != ? and resource = ? and resource_id = ? and expires > ?',
@@ -97,11 +93,8 @@ class Lock {
 	 * Get the info about a lock.
 	 */
 	function info ($resource = false, $key = false) {
-
-		if (! $resource) {
-			$resource = $this->resource;
-			$key = $this->key;
-		}
+		$resource = ($resource) ? $resource : $this->resource;
+		$key = ($key) ? $key : $this->key;
 
 		return db_single ('select * from lock where resource = ? and resource_id = ?', $resource, $key);
 	}
@@ -112,10 +105,8 @@ class Lock {
 	function update ($resource = false, $key = false) {
 		global $user;
 
-		if (! $resource) {
-			$resource = $this->resource;
-			$key = $this->key;
-		}
+		$resource = ($resource) ? $resource : $this->resource;
+		$key = ($key) ? $key : $this->key;
 
 		if (db_execute (
 			'update lock set modified = ?, expires = ? where resource = ? and resource_id = ?',
@@ -134,11 +125,8 @@ class Lock {
 	 * Remove a specific lock.
 	 */
 	function remove ($resource = false, $key = false) {
-
-		if (! $resource) {
-			$resource = $this->resource;
-			$key = $this->key;
-		}
+		$resource = ($resource) ? $resource : $this->resource;
+		$key = ($key) ? $key : $this->key;
 
 		return db_execute ('delete from lock where resource = ? and resource_id = ?', $resource, $key);
 	}

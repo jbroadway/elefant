@@ -19,7 +19,13 @@
 		<td>{{ loop_value->ts|date ('F j, Y - g:ia', strtotime (%s)) }}</td>
 		<td>{{ loop_value->author }}</td>
 		<td>{{ loop_value->published|ucfirst }}</td>
-		<td><a href="/blog/edit?id={{ loop_value->id }}">{"Edit"}</a> | <a href="/blog/delete?id={{ loop_value->id }}" onclick="return confirm ('{"Are you sure you want to delete this post?"}');">{"Delete"}</a></td>
+		<td>
+			{% if loop_value->locked %}
+			{"Editing Locked"}
+			{% else %}
+			<a href="/blog/edit?id={{ loop_value->id }}">{"Edit"}</a> | <a href="/blog/delete?id={{ loop_value->id }}" onclick="return confirm ('{"Are you sure you want to delete this post?"}');">{"Delete"}</a>
+			{% end %}
+		</td>
 	</tr>
 {% end %}
 </table>
