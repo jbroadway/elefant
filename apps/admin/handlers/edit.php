@@ -23,8 +23,8 @@ if ($f->submit ()) {
 	$wp->keywords = $_POST['keywords'];
 	$wp->body = $_POST['body'];
 	$wp->put ();
-	Versions::add ($wp);
 	if (! $wp->error) {
+		Versions::add ($wp);
 		header ('Location: /' . $_POST['id']);
 		$_POST['page'] = $_GET['page'];
 		$this->hook ('admin/edit', $_POST);
