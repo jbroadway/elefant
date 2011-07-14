@@ -1,6 +1,10 @@
 <p class="admin-options">
 {% if title %}
-	<a href="/blocks/edit?id={{ id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Edit Block"}"><img src="/apps/admin/css/admin/edit.png" /></a><a href="/admin/versions?type=Block&id={{ id }}" title="{"Versions"}"><img src="/apps/admin/css/admin/versions.png" /></a><a href="/blocks/delete?id={{ id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Delete Block"}" onclick="return confirm ('{"Are you sure you want to delete the current block?"}');"><img src="/apps/admin/css/admin/delete.png" /></a>
+	{% if locked %}
+		<a href="javascript:void(0)" title="{"Editing Locked"}"><img src="/apps/admin/css/admin/lock.png" /></a>
+	{% else %}
+		<a href="/blocks/edit?id={{ id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Edit Block"}"><img src="/apps/admin/css/admin/edit.png" /></a><a href="/admin/versions?type=Block&id={{ id }}" title="{"Versions"}"><img src="/apps/admin/css/admin/versions.png" /></a><a href="/blocks/delete?id={{ id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Delete Block"}" onclick="return confirm ('{"Are you sure you want to delete the current block?"}');"><img src="/apps/admin/css/admin/delete.png" /></a>
+	{% end %}
 {% else %}
 	<a href="/blocks/add?id={{ id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Add Block"}"><img src="/apps/admin/css/admin/add.png" /></a>
 {% end %}

@@ -5,15 +5,17 @@ global $user;
 $id = (isset ($this->params[0])) ? $this->params[0] : false;
 if (! $id) {
 	if (User::is_valid () && $user->type == 'admin') {
-		echo $tpl->render ('blocks/editable', (object) array ('id' => $id));
+		echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false));
 	}
 	return;
 }
 
+$lock = new Lock ('Block', $id);
+
 $b = new Block ($id);
 if ($b->error) {
 	if (User::is_valid () && $user->type == 'admin') {
-		echo $tpl->render ('blocks/editable', (object) array ('id' => $id));
+		echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false));
 	}
 	return;
 }
@@ -28,6 +30,8 @@ if ($b->access == 'member' && ! User::require_login ()) {
 if ($b->show_title == 'yes') {
 	printf ('<h3>%s</h3>', $b->title);
 }
+
+$b->locked = $lock->exists ();
 
 if (User::is_valid () && $user->type == 'admin') {
 	echo $tpl->render ('blocks/editable', $b);

@@ -8,6 +8,15 @@ if (! User::require_admin ()) {
 	exit;
 }
 
+$lock = new Lock ('Block', $_GET['id']);
+if ($lock->exists ()) {
+	$page->title = i18n_get ('Editing Locked');
+	echo $tpl->render ('admin/locked', $lock->info ());
+	return;
+} else {
+	$lock->add ();
+}
+
 $b = new Block ($_GET['id']);
 
 $f = new Form ('post', 'blocks/edit');
@@ -22,12 +31,14 @@ if ($f->submit ()) {
 		if (isset ($_GET['return'])) {
 			header ('Location: ' . $_GET['return']);
 			$_POST['id'] = $_GET['id'];
+			$lock->remove ();
 			$this->hook ('blocks/edit', $_POST);
 			exit;
 		}
 		$page->title = i18n_get ('Block Saved');
 		echo '<p><a href="/blocks/admin">' . i18n_get ('Continue') . '</a></p>';
 		$_POST['id'] = $_GET['id'];
+		$lock->remove ();
 		$this->hook ('blocks/edit', $_POST);
 		return;
 	}

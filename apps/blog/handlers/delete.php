@@ -7,6 +7,13 @@ if (! User::require_admin ()) {
 	exit;
 }
 
+$lock = new Lock ('Blog', $_GET['id']);
+if ($lock->exists ()) {
+	$page->title = i18n_get ('Editing Locked');
+	echo $tpl->render ('admin/locked', $lock->info ());
+	return;
+}
+
 require_once ('apps/blog/lib/Filters.php');
 
 $p = new blog\Post ($_GET['id']);
