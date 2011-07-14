@@ -12,12 +12,22 @@ if (! preg_match ('/^layouts\/[a-z0-9_-]+\.html$/i', $_GET['file'])) {
 	exit;
 }
 
+$lock = new Lock ('Designer', $_GET['file']);
+if ($lock->exists ()) {
+	$page->title = i18n_get ('Editing Locked');
+	echo $tpl->render ('admin/locked', $lock->info ());
+	return;
+} else {
+	$lock->add ();
+}
+
 $f = new Form ('post', 'designer/editlayout');
 if ($f->submit ()) {
 	if (@file_put_contents ($_GET['file'], $_POST['body'])) {
 		$page->title = i18n_get ('Layout Saved');
 		echo '<p><a href="/designer">' . i18n_get ('Continue') . '</a></p>';
 		@chmod ($_GET['file'], 0777);
+		$lock->remove ();
 		return;
 	}
 	$page->title = 'Saving Layout Failed';

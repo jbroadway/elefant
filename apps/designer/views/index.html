@@ -21,8 +21,12 @@
 		<td>{{ loop_value|filemtime|gmdate ('F j, Y - g:ia', %s) }}</td>
 		<td>{{ loop_value|filesize|format_filesize }}</td>
 		<td>
+			{% if locks[$data->loop_value] %}
+			{"Editing Locked"}
+			{% else %}
 			<a href="/designer/edit/layout?file={{ loop_value }}">{"Edit"}</a> |
 			<a href="/designer/delete?file={{ loop_value }}" onclick="return confirm ('{"Are you sure you want to permanently delete this layout file?"}');">{"Delete"}</a>
+			{% end %}
 		</td>
 	</tr>
 {% end %}
@@ -48,8 +52,12 @@
 		<td>{{ loop_value|filemtime|gmdate ('F j, Y - g:ia', %s) }}</td>
 		<td>{{ loop_value|filesize|format_filesize }}</td>
 		<td>
+			{% if locks[$data->loop_value] %}
+			{"Editing Locked"}
+			{% else %}
 			<a href="/designer/edit/stylesheet?file={{ loop_value }}">{"Edit"}</a> |
 			<a href="/designer/delete?file={{ loop_value }}" onclick="return confirm ('{"Are you sure you want to permanently delete this stylesheet file?"}');">{"Delete"}</a>
+			{% end %}
 		</td>
 	</tr>
 {% end %}

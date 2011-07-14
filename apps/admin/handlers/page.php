@@ -34,6 +34,8 @@ echo $tpl->run_includes ($wp->body);
 global $user;
 
 if (User::is_valid () && $user->type == 'admin') {
+	$lock = new Lock ('Webpage', $id);
+	$page->locked = $lock->exists ();
 	$page->template = 'admin/editable';
 }
 

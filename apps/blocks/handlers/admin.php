@@ -10,10 +10,16 @@ if (! User::require_admin ()) {
 $limit = 20;
 $_GET['offset'] = (isset ($_GET['offset'])) ? $_GET['offset'] : 0;
 
+$lock = new Lock ();
+
 $blocks = Block::query ('id, title, access')
 	->order ('id asc')
 	->fetch_orig ($limit, $_GET['offset']);
 $count = Block::query ()->count ();
+
+foreach ($blocks as $k => $b) {
+	$blocks[$k]->locked = $lock->exists ('Block', $b->id);
+}
 
 $page->title = i18n_get ('Blocks');
 echo $tpl->render ('blocks/admin', array (
