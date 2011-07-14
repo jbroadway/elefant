@@ -32,5 +32,9 @@
 <input type="checkbox" name="autopost_tw" id="autopost_tw" value="yes" {% if autopost_tw %}checked{% end %} /> <label for="autopost_tw">Twitter</label>
 </p>
 </div>
-<p><input type="submit" value="Save Blog Post" class="autosave-clear" /></p>
+<p>
+	<input type="submit" value="Save Blog Post" class="autosave-clear" />
+	<input type="submit" value="Save &amp; Keep Editing" id="bgsave" />
+	<span id="bgsave-status"></span>
+</p>
 </form>

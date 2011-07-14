@@ -59,10 +59,10 @@ if ($f->submit ()) {
 			}
 		}
 		
+		require_once ('apps/blog/lib/Filters.php');
+		
 		// autopost
 		if ($autopost) {
-			require_once ('apps/blog/lib/Filters.php');
-
 			if ($autopost_pom) {
 				$pom = new Pingomatic;
 				$pom->post ($appconf['Blog']['title'], 'http://' . $_SERVER['HTTP_HOST'] . '/blog');

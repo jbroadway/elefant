@@ -13,6 +13,7 @@
 <link rel="stylesheet" type="text/css" href="/apps/blog/css/jquery.tagit.css" />
 <script type="text/javascript" src="/apps/blog/js/autocomplete.js"></script>
 <script type="text/javascript" src="/apps/blog/js/tag-it.js"></script>
+<script type="text/javascript" src="/js/jquery.bgsave.js"></script>
 <script type="text/javascript" src="/js/jquery.verify_values.js"></script>
 <script type="text/javascript">
 var tagit_available_tags = [];
@@ -68,6 +69,13 @@ $(function () {
 	{% end %}
 
 	$('#edit-form').autosave ();
+	$('#edit-form').bgsave ({
+		url: '/blog/bgsave?id=',
+		id: '{{ id }}',
+		msg_saving: '{"Saving..."}',
+		msg_saved: '{"Saved!"}',
+		msg_failed: '{"Failed to save..."}'
+	});
 });
 function webpage_show_extra_options (link) {
 	var eo = $('#extra-options');

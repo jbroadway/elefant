@@ -1,6 +1,7 @@
 <script type="text/javascript" src="/js/json2.js"></script>
 <script type="text/javascript" src="/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="/js/jquery.autosave.js"></script>
+<script type="text/javascript" src="/js/jquery.bgsave.js"></script>
 <script type="text/javascript" src="/js/jquery.verify_values.js"></script>
 <script type="text/javascript">
 $(function () {
@@ -23,6 +24,13 @@ $(function () {
 	{% end %}
 
 	$('#edit-form').autosave ();
+	$('#edit-form').bgsave ({
+		url: '/blocks/bgsave?id=',
+		id: '{{ id }}',
+		msg_saving: '{"Saving..."}',
+		msg_saved: '{"Saved!"}',
+		msg_failed: '{"Failed to save..."}'
+	});
 });
 function webpage_show_extra_options (link) {
 	var eo = $('#extra-options');
