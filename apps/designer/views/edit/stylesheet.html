@@ -4,7 +4,12 @@
 
 <form method="POST" id="edit-form">
 <p><textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea></p>
-<p><input type="submit" value="Save Stylesheet" class="autosave-clear" /><span class="notice" id="body-notice">&nbsp; You must enter body content.</span></p>
+<p>
+	<input type="submit" value="Save Stylesheet" class="autosave-clear" />
+	<input type="submit" value="Save &amp; Keep Editing" id="bgsave" />
+	<span id="bgsave-status"></span>
+	<span class="notice" id="body-notice">&nbsp; You must enter body content.</span>
+</p>
 </form>
 
 <link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/lib/codemirror.css" />
@@ -24,6 +29,7 @@
 <script type="text/javascript" src="/js/json2.js"></script>
 <script type="text/javascript" src="/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="/js/jquery.autosave.js"></script>
+<script type="text/javascript" src="/js/jquery.bgsave.js"></script>
 <script type="text/javascript" src="/js/jquery.verify_values.js"></script>
 <script type="text/javascript">
 var _codemirror;
@@ -63,5 +69,12 @@ $(function () {
 	{% end %}
 
 	$('#edit-form').autosave ();
+	$('#edit-form').bgsave ({
+		url: '/designer/bgsave?file=',
+		id: '{{ file }}',
+		msg_saving: '{"Saving..."}',
+		msg_saved: '{"Saved!"}',
+		msg_failed: '{"Failed to save..."}'
+	});
 });
 </script>

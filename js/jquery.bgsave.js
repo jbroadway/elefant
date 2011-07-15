@@ -48,8 +48,22 @@
 					params = {};
 				
 				for (i = 0; i < opts.form.elements.length; i++) {
-					if (opts.form.elements[i].name) {
-						params[opts.form.elements[i].name] = $(opts.form.elements[i]).val ();
+					if (! opts.form.elements[i].name) {
+						// Unnamed fields can be ignored (submit buttons)
+						continue;
+					}
+					if (opts.form.elements[i].getAttribute ('id') == 'code-body') {
+						// Get the contents from codemirror editor
+						params[opts.form.elements[i].name] = _codemirror.getValue ();
+					} else if ($(opts.form.elements[i]).is (':radio') || $(opts.form.elements[i]).is (':checkbox')) {
+						if (opts.form.elements[i].checked) {
+							params[opts.form.elements[i].name] = true;
+						} else {
+							params[opts.form.elements[i].name] = false;
+						}
+					} else {
+						// Get the contents from the field itself
+						params[opts.form.elements[i].name] = opts.form.elements[i].value;
 					}
 				}
 				

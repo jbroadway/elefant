@@ -37,6 +37,7 @@ if ($f->submit ()) {
 }
 
 $o = new StdClass;
+$o->file = $_GET['file'];
 $o->body = @file_get_contents ($_GET['file']);
 
 $o->failed = $f->failed;
