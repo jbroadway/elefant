@@ -75,7 +75,7 @@ mistakes/luck and do it even better this time.
 `conf`, `cache`, `css`, `files`, `install`, and `layouts` recursively
 to `0777` via FTP.
 
-    chmod -R 777 conf cache css files install layouts
+    `chmod -R 777 conf cache css files install layouts`
 
 4. Go to `/install/` on your site to run the web-based installer. This will
 guide you through the rest of the process.
