@@ -119,6 +119,7 @@ would be good to have.
 * css - global CSS files
 * files - files uploaded through the admin area
 * index.php - the front-end controller, or request router
+* install - the web-based installer
 * js - global Javascript files
 * layouts - design layouts
 * lib - main libraries
