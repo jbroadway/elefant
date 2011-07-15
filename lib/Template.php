@@ -257,7 +257,7 @@ class Template {
 				} else {
 					$data = array ();
 				}
-				$out .= $GLOBALS['controller']->run ($url['path'], $data);
+				$out .= $GLOBALS['controller']->run ($url['host'] . $url['path'], $data);
 			} else {
 				$out .= $part;
 			}
