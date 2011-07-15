@@ -12,8 +12,9 @@
 	<br />
 <textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea></p>
 <p>
-	<input type="submit" value="Save Layout" class="autosave-clear" />
-	<input type="submit" value="Save &amp; Keep Editing" id="bgsave" />
+	<input type="submit" value="Save Layout" class="autosave-clear" />&nbsp;
+	<input type="submit" value="Save &amp; Keep Editing" id="bgsave" />&nbsp;
+	<a href="/admin/cancel?type=Designer&id={{ file|urlencode }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return confirm ('Are you sure you want to cancel and lose any changes?')">Cancel</a>&nbsp;
 	<span id="bgsave-status"></span>
 	<span class="notice" id="body-notice">&nbsp; You must enter body content.</span>
 </p>

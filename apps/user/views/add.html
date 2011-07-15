@@ -12,7 +12,10 @@
 	<option value="admin"{% if type == 'admin' %} selected{% end %}>{"Admin"}</option>
 	<option value="member"{% if type == 'member' %} selected{% end %}>{"Member"}</option>
 </select></p>
-<p><input type="submit" value="Add User" /></p>
+<p>
+	<input type="submit" value="Add User" />&nbsp;
+	<a href="javascript:history.go(-1)" onclick="return confirm ('Are you sure you want to cancel and lose any changes?')">Cancel</a>
+</p>
 </form>
 
 <script type="text/javascript" src="/js/jquery.verify_values.js"></script>

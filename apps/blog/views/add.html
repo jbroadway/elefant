@@ -32,5 +32,8 @@
 <input type="checkbox" name="autopost_tw" id="autopost_tw" value="yes" {% if autopost_tw %}checked{% end %} /> <label for="autopost_tw">Twitter</label>
 </p>
 </div>
-<p><input type="submit" value="Add Blog Post" class="autosave-clear" /></p>
+<p>
+	<input type="submit" value="Add Blog Post" class="autosave-clear" />&nbsp;
+	<a href="javascript:history.go(-1)" onclick="return confirm ('Are you sure you want to cancel and lose any changes?')">Cancel</a>
+</p>
 </form>
