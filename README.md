@@ -67,9 +67,7 @@ mistakes/luck and do it even better this time.
 
 ## Getting Started
 
-1. Download the latest from GitHub:
-
-http://github.com/jbroadway/elefant
+1. Download the latest from GitHub: http://github.com/jbroadway/elefant
 
 2. Unzip into a site root (no sub-folders, use sub-domains instead).
 
