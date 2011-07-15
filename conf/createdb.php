@@ -70,4 +70,8 @@ if (db_shift ('select count() from user') == 0) {
 	echo "Database created.\n";
 }
 
+// disable the installer
+@umask (0000);
+@touch ('install/installed');
+
 ?>

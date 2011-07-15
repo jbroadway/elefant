@@ -28,7 +28,7 @@ h1 {
 	padding-bottom: 10px;
 	padding-right: 7px;
 	font-size: 21px;
-	text-align: right;
+	padding-left: 150px;
 }
 
 	h1>span {
@@ -43,7 +43,6 @@ h2 {
 
 .notice {
 	color: #8A5AB5;
-	display: none;
 }
 
 #wrapper {

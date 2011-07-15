@@ -1,0 +1,16 @@
+[Database]
+
+; Database settings go here. Driver must be a valid PDO driver.
+
+{% if driver == 'sqlite' %}
+driver = sqlite
+file = "conf/site.db"
+{% else %}
+driver = {{ driver }}
+host = "{{ host }}:{{ port }}"
+name = {{ name }}
+user = {{ user }}
+pass = "{{ pass }}"
+{% end %}
+
+[Hooks]

@@ -21,10 +21,32 @@
 
 	<div id="body"><div id="content">
 
-<p>...</p>
+<h3>Testing Requirements</h3>
+
+{% if passed %}
+<p>Server requirements have been verified.</p>
+
+<p>Click "Next" to continue.</p>
+{% else %}
+<p>One or more server requirements failed:</p>
+
+<ul>
+{% foreach req %}
+	{% if loop_value < 1 %}
+	<li>{{ loop_index|none }}</li>
+	{% end %}
+{% end %}
+</ul>
+
+<p>Please correct the problem and try again.</p>
+{% end %}
 
 	</div></div>
+	{% if passed %}
 	<a class="next" href="/install/?step=database">Next: Database</a>
+	{% else %}
+	<a class="next" href="/install/?step=requirements">Try Again</a>
+	{% end %}
 </div>
 </body>
 </html>

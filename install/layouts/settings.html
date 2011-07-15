@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Elefant Installer</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<script>
+		function verify_password (f) {
+			if (f.elements.pass.value != f.elements.verify.value) {
+				document.getElementById ('vnotice').style.display = 'inline';
+				return false;
+			}
+			document.getElementById ('vnotice').style.display = 'none';
+			return true;
+		}
+	</script>
+</head>
+<body>
+<div id="wrapper">
+	<h1><span>Elefant</span> Installer</h1>
+	
+	<div id="steps">
+		<ul>
+			<li>Introduction</li>
+			<li>License</li>
+			<li>Requirements</li>
+			<li>Database</li>
+			<li class="active">Settings</li>
+			<li>Finished</li>
+		</ul>
+	</div>
+
+	<div id="body"><div id="content">
+
+{% if error %}
+<h3>Error:</h3>
+<p class="notice">{{ error }}</p>
+{% else %}
+<h3>Site Settings</h3>
+{% end %}
+
+{% if ready %}
+<p>Settings saved and admin user created.</p>
+
+<p>Click "Next" to continue.</p>
+{% else %}
+<form method="POST" action="/install/?step=settings" onsubmit="return verify_password (this)">
+
+<p>Site Name:<br />
+<input type="text" name="site_name" value="{{ $_POST.site_name }}" size="30" /></p>
+<p>Your Name:<br />
+<input type="text" name="your_name" value="{{ $_POST.your_name }}" size="30" /></p>
+<p>Admin Email:<br />
+<input type="text" name="email_from" value="{{ $_POST.email_from }}" size="30" /></p>
+<p>Admin Password:<br />
+<input type="password" name="pass" value="{{ $_POST.pass }}" size="20" /></p>
+<p>Verify Password:<br />
+<input type="password" name="verify" value="{{ $_POST.verify }}" size="20" onblur="verify_password (this.form)" />
+<span class="notice" id="vnotice" style="display: none">Password does not match.</span></p>
+
+<p><input type="submit" value="Save Settings" /></p>
+</form>
+{% end %}
+
+	</div></div>
+	{% if ready %}
+	<a class="next" href="/install/?step=finished">Next: Finished</a>
+	{% end %}
+</div>
+</body>
+</html>
