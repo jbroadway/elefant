@@ -16,15 +16,14 @@ function admin_embed_sort ($a, $b) {
 	return ($a['label'] < $b['label']) ? -1 : 1;
 }
 
-uasort ($embeds, 'admin_embed_sort');
-
 foreach ($embeds as $k => $e) {
+	$embeds[$k]['handler'] = $k;
 	$embeds[$k]['fields'] = array ();
 	foreach ($e as $field => $opts) {
 		if ($field == 'label' || ! is_array ($opts)) {
 			continue;
 		}
-		$embeds[$k]['fields'][$field] = array ();
+		$embeds[$k]['fields'][$field] = array ('name' => $field);
 		unset ($embeds[$k][$field]);
 		foreach ($opts as $opt => $val) {
 			if ($opt == 'require') {
@@ -37,6 +36,8 @@ foreach ($embeds as $k => $e) {
 		}
 	}
 }
+
+usort ($embeds, 'admin_embed_sort');
 
 echo json_encode ($embeds);
 

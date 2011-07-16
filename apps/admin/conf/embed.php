@@ -6,7 +6,7 @@ label = Redirect Link
 
 to[label] = Link
 to[type] = text
-to[default] = "http://"
+to[initial] = "http://"
 
 [admin/menu]
 

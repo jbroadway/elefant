@@ -7,6 +7,7 @@
 <script type="text/javascript" src="/js/wysiwyg/controls/wysiwyg.link2.js"></script>
 <script type="text/javascript" src="/js/wysiwyg/controls/wysiwyg.table.js"></script>
 <script type="text/javascript" src="/js/wysiwyg/plugins/wysiwyg.fileManager.js"></script>
+<script type="text/javascript" src="/js/wysiwyg/plugins/wysiwyg.embed.js"></script>
 <script type="text/javascript">
 $(function () {
 	$('#webpage-body').wysiwyg ({
@@ -36,9 +37,12 @@ $(function () {
 			},
 			'dynamic': {
 				visible: true,
+				tooltip: 'Dynamic Objects',
 				exec: function () {
-					$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! app/handler !}</span></p>');
-					$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
+					$.wysiwyg.embed.init (function (embed_code) {
+						$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! ' + embed_code + ' !}</span></p>');
+						$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
+					});
 				}
 			}
 		},

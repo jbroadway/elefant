@@ -87,6 +87,26 @@ table tr td {
 		background-position: 50% 50%;
 	}
 
+.wysiwyg-embed-object-list {
+	width: 38%;
+	float: left;
+	border-right: 1px solid #ccc;
+	padding-left: 0px;
+	margin-left: 0px;
+	margin-right: 10px;
+}
+
+.wysiwyg-embed-object-list li {
+	list-style-type: square;
+	margin-left: 10px;
+	padding-left: 0px;
+}
+
+.wysiwyg-embed-object-form {
+	width: 58%;
+	float: left;
+}
+
 #wrapper {
 	padding-top: 40px;
 }
