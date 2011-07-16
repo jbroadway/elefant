@@ -3,6 +3,11 @@
 $page->template = false;
 header ('Content-Type: application/json');
 
+if (! User::require_admin ()) {
+	echo json_encode (array ());
+	return;
+}
+
 $files = glob ('apps/*/conf/embed.php');
 $embeds = array ();
 foreach ($files as $file) {
