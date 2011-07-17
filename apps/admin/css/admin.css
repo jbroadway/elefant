@@ -87,19 +87,53 @@ table tr td {
 		background-position: 50% 50%;
 	}
 
-.wysiwyg-embed-object-list {
+.wysiwyg-embed-objects {
 	width: 38%;
 	float: left;
 	border-right: 1px solid #ccc;
+	margin-right: 10px;
+}
+
+.wysiwyg-embed-object-list {
 	padding-left: 0px;
 	margin-left: 0px;
-	margin-right: 10px;
 }
 
 .wysiwyg-embed-object-list li {
 	list-style-type: square;
 	margin-left: 10px;
 	padding-left: 0px;
+}
+
+.wysiwyg-embed-objects .simplePagerNav {
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 0px;
+}
+
+.wysiwyg-embed-objects .simplePagerNav li {
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 0px;
+	display: inline
+}
+
+.wysiwyg-embed-objects .simplePagerNav li a {
+	display: block;
+	float: left;
+	padding: 3px 6px 3px 6px;
+	background: #eee;
+	color: #333;
+	text-decoration: none;
+}
+
+.wysiwyg-embed-objects .simplePagerNav li.currentPage a {
+	display: block;
+	float: left;
+	padding: 3px 6px 3px 6px;
+	background: #8A5AB5;
+	color: #fff;
+	text-decoration: none;
 }
 
 .wysiwyg-embed-object-form {

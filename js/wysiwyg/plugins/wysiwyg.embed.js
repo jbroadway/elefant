@@ -35,7 +35,7 @@
 			var self = this;
 			self.loaded = true;
 			
-			var uiHtml = '<div id="wysiwyg-embed-content"><ul class="wysiwyg-embed-object-list"></ul><div class="wysiwyg-embed-object-form"></div><br clear="both" /></div>';
+			var uiHtml = '<div id="wysiwyg-embed-content"><div class="wysiwyg-embed-objects"><ul class="wysiwyg-embed-object-list"></ul></div><div class="wysiwyg-embed-object-form"></div><br clear="both" /></div>';
 			
 			if ($.wysiwyg.dialog) {
 				var embedUI = new $.wysiwyg.dialog(_embed_list, {
@@ -52,6 +52,8 @@
 							uiHtml += '<li><a href="javascript:void(0)" class="wysiwyg-embed-object" data-handler="' + i + '">' + _embed_list[i].label + '</a></li>';
 						}
 						$('.wysiwyg-embed-object-list').html (uiHtml);
+						// enable pager for list
+						$('.wysiwyg-embed-object-list').quickPager ();
 						$('.wysiwyg-embed-object-form').html ('Select an object on the left.');
 						$('.wysiwyg-embed-object').click (function () {
 							var i = 0,
