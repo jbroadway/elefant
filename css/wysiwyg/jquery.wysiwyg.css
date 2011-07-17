@@ -93,5 +93,5 @@ background-color:white; padding:0px; margin:0; display:block; width: 100%; }
 .wysiwyg-dialog-content form.wysiwyg .form-row .form-row-value { display:block; float:left; width:55%; }
 .wysiwyg-dialog-content form.wysiwyg .form-row input.width-auto { width:auto; }
 .wysiwyg-dialog-content form.wysiwyg input.width-small { width:50px; min-width:50px; max-width:50px; }
-.wysiwyg-dialog-content form.wysiwyg input, .wysiwyg-dialog form.wysiwyg select { padding:2px; width:100%; margin:2px; }
+.wysiwyg-dialog-content form.wysiwyg input, .wysiwyg-dialog form.wysiwyg select { padding:2px; width:95%; margin:2px; }
 .wysiwyg-dialog-content form.wysiwyg input[type=submit], .wysiwyg-dialog form.wysiwyg input[type=reset] { padding:2px 7px; width:auto; }
