@@ -35,13 +35,13 @@
 				reset: "Cancel"
 			};
 
-			formLinkHtml = '<form class="wysiwyg"><fieldset><!-- legend>{legend}</legend -->' +
+			formLinkHtml = '<form class="wysiwyg"><!-- <fieldset>legend>{legend}</legend -->' +
 				'<label>{select}: <select name="innerlink" id="innerlink"><option value="">- SELECT -</option></select></label>' +
-				'<br /><label>{url}: <input type="text" name="linkhref" value="" size="30" /></label>' +
+				'<br /><br /><label>{url}: <input type="text" name="linkhref" value="" size="30" /></label>' +
 				//'<label>{title}: <input type="text" name="linktitle" value=""/></label>' +
 				//'<label>{target}: <input type="text" name="linktarget" value=""/></label>' +
-				'<br /><br /><input type="submit" class="button" value="{submit}"/> ' +
-				'<input type="reset" value="{reset}"/></fieldset></form>';
+				'<br /><br /><input type="submit" class="button" value="{submit}" id="link-dialog-submit" /> ' +
+				'<!-- <input type="reset" value="{reset}"/></fieldset> --></form>';
 
 			for (key in dialogReplacements) {
 				if ($.wysiwyg.i18n) {
@@ -70,112 +70,101 @@
 				//a.title = a.self.title ? a.self.title : "";
 				//a.target = a.self.target ? a.self.target : "";
 			}
+			
+			elements = $(formLinkHtml);
+			elements.find("input[name=linkhref]").val(a.href);
 
-			if ($.fn.dialog) {
-				elements = $(formLinkHtml);
-				elements.find("input[name=linkhref]").val(a.href);
-				//elements.find("input[name=linktitle]").val(a.title);
-				//elements.find("input[name=linktarget]").val(a.target);
-
-				if ($.browser.msie) {
-					try {
-						dialog = elements.appendTo(Wysiwyg.editorDoc.body);
-					} catch (err) {
-						dialog = elements.appendTo("body");
-					}
-				} else {
-					dialog = elements.appendTo("body");
+			$.getJSON ('/admin/wysiwyg/links', function (res) {
+				var link, s = $('#innerlink');
+				for (var i = 0; i < res.length; i++) {
+					link = res[i];
+					s.append ('<option value="' + link.url + '">' + link.title + '</option>');
 				}
-				$.getJSON ('/admin/wysiwyg/links', function (res) {
-					var link, s = $('#innerlink');
-					for (var i = 0; i < res.length; i++) {
-						link = res[i];
-						s.append ('<option value="' + link.url + '">' + link.title + '</option>');
-					}
-				});
+			});
 
-				dialog.dialog({
-					title: dialogReplacements.legend,
-					modal: true,
-					open: function (ev, ui) {
-						$("input:submit", dialog).click(function (e) {
-							e.preventDefault();
+			dialog = new $.wysiwyg.dialog (Wysiwyg, {
+				title: dialogReplacements.legend,
+				content: formLinkHtml,
+				open: function (ev, ui) {
+					$("#link-dialog-submit").click(function (e) {
+						e.preventDefault();
 
-							var url = $('input[name="linkhref"]', dialog).val(),
-								inner = $('select[name="innerlink"]').val (),
-								//title = $('input[name="linktitle"]', dialog).val(),
-								//target = $('input[name="linktarget"]', dialog).val(),
-								baseUrl,
-								img;
-							
-							url = (inner.length > 0) ? inner : url;
+						var url = $('input[name="linkhref"]').val(),
+							inner = $('select[name="innerlink"]').val (),
+							//title = $('input[name="linktitle"]', dialog).val(),
+							//target = $('input[name="linktarget"]', dialog).val(),
+							baseUrl,
+							img;
+						
+						url = (inner.length > 0) ? inner : url;
 
-							if (Wysiwyg.options.controlLink.forceRelativeUrls) {
-								baseUrl = window.location.protocol + "//" + window.location.hostname;
-								if (0 === url.indexOf(baseUrl)) {
-									url = url.substr(baseUrl.length);
+						if (Wysiwyg.options.controlLink.forceRelativeUrls) {
+							baseUrl = window.location.protocol + "//" + window.location.hostname;
+							if (0 === url.indexOf(baseUrl)) {
+								url = url.substr(baseUrl.length);
+							}
+						}
+
+						if (a.self) {
+							if ("string" === typeof (url)) {
+								if (url.length > 0) {
+									// to preserve all link attributes
+									$(a.self).attr("href", url).attr("title", title).attr("target", target);
+								} else {
+									$(a.self).replaceWith(a.self.innerHTML);
 								}
 							}
+						} else {
+							if ($.browser.msie) {
+								Wysiwyg.ui.returnRange();
+							}
 
-							if (a.self) {
+							//Do new link element
+							selection = Wysiwyg.getRangeText();
+							img = Wysiwyg.dom.getElement("img");
+
+							if ((selection && selection.length > 0) || img) {
+								if ($.browser.msie) {
+									Wysiwyg.ui.focus();
+								}
+
 								if ("string" === typeof (url)) {
 									if (url.length > 0) {
-										// to preserve all link attributes
-										$(a.self).attr("href", url).attr("title", title).attr("target", target);
+										Wysiwyg.editorDoc.execCommand("createLink", false, url);
 									} else {
-										$(a.self).replaceWith(a.self.innerHTML);
+										Wysiwyg.editorDoc.execCommand("unlink", false, null);
 									}
 								}
-							} else {
-								if ($.browser.msie) {
-									Wysiwyg.ui.returnRange();
-								}
 
-								//Do new link element
-								selection = Wysiwyg.getRangeText();
-								img = Wysiwyg.dom.getElement("img");
+								a.self = Wysiwyg.dom.getElement("a");
 
-								if ((selection && selection.length > 0) || img) {
-									if ($.browser.msie) {
-										Wysiwyg.ui.focus();
-									}
+								$(a.self).attr("href", url);//.attr("title", title);
 
-									if ("string" === typeof (url)) {
-										if (url.length > 0) {
-											Wysiwyg.editorDoc.execCommand("createLink", false, url);
-										} else {
-											Wysiwyg.editorDoc.execCommand("unlink", false, null);
-										}
-									}
-
-									a.self = Wysiwyg.dom.getElement("a");
-
-									$(a.self).attr("href", url);//.attr("title", title);
-
-									/**
-									 * @url https://github.com/akzhan/jwysiwyg/issues/16
-									 */
-									//$(a.self).attr("target", target);
-								} else if (Wysiwyg.options.messages.nonSelection) {
-									window.alert(Wysiwyg.options.messages.nonSelection);
-								}
+								/**
+								 * @url https://github.com/akzhan/jwysiwyg/issues/16
+								 */
+								//$(a.self).attr("target", target);
+							} else if (Wysiwyg.options.messages.nonSelection) {
+								window.alert(Wysiwyg.options.messages.nonSelection);
 							}
+						}
 
-							Wysiwyg.saveContent();
+						Wysiwyg.saveContent();
 
-							$(dialog).dialog("close");
-						});
-						$("input:reset", dialog).click(function (e) {
-							e.preventDefault();
-							$(dialog).dialog("close");
-						});
-					},
-					close: function (ev, ui) {
-						dialog.dialog("destroy");
-						dialog.remove();
-					}
-				});
-			} else {
+						dialog.close ();
+					});
+					$("input:reset", dialog).click(function (e) {
+						e.preventDefault();
+						dialog.close ();
+					});
+				},
+				close: function (ev, ui) {
+					dialog = null;
+				}
+			});
+			dialog.open ();
+
+			/*} else {
 				if (a.self) {
 					url = window.prompt("URL", a.href);
 
@@ -226,7 +215,7 @@
 				}
 
 				Wysiwyg.saveContent();
-			}
+			}*/
 
 			$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");
 		}
