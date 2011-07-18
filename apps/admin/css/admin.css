@@ -36,6 +36,17 @@ table tr td {
 	border-bottom: 1px solid #ccc;
 }
 
+tt {
+	background: #fff;
+	margin-left: 2px;
+	margin-right: 2px;
+	padding: 2px;
+	border: 1px solid #ccc;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
 .notice {
 	color: #8A5AB5;
 	display: none;
