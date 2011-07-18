@@ -100,6 +100,15 @@ table tr td {
 	white-space: nowrap;
 }
 
+input[type=text], input[type=password], textarea {
+	font-size: 12px;
+	border: 1px solid #999;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    padding: 2px 4px;
+    text-shadow: 0 1px 0 #fff;
+}
 
 input[type=submit] {
     font-size: 12px;
