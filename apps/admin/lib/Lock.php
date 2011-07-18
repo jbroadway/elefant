@@ -54,7 +54,7 @@ class Lock {
 		$key = ($key) ? $key : $this->key;
 		
 		if (db_execute (
-			'insert into lock
+			'insert into `lock`
 				(user, resource, resource_id, expires, created, modified)
 			values
 				(?, ?, ?, ?, ?, ?)',
@@ -81,7 +81,7 @@ class Lock {
 		$key = ($key) ? $key : $this->key;
 
 		return db_shift (
-			'select id from lock where user != ? and resource = ? and resource_id = ? and expires > ?',
+			'select id from `lock` where user != ? and resource = ? and resource_id = ? and expires > ?',
 			$user->id,
 			$resource,
 			$key,
@@ -96,7 +96,7 @@ class Lock {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
-		return db_single ('select * from lock where resource = ? and resource_id = ?', $resource, $key);
+		return db_single ('select * from `lock` where resource = ? and resource_id = ?', $resource, $key);
 	}
 
 	/**
@@ -109,7 +109,7 @@ class Lock {
 		$key = ($key) ? $key : $this->key;
 
 		if (db_execute (
-			'update lock set modified = ?, expires = ? where resource = ? and resource_id = ?',
+			'update `lock` set modified = ?, expires = ? where resource = ? and resource_id = ?',
 			gmdate ('Y-m-d H:i:s'),
 			gmdate ('Y-m-d H:i:s', time () + $this->timeout),
 			$resource,
@@ -128,7 +128,7 @@ class Lock {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
-		return db_execute ('delete from lock where resource = ? and resource_id = ?', $resource, $key);
+		return db_execute ('delete from `lock` where resource = ? and resource_id = ?', $resource, $key);
 	}
 
 	/**
@@ -136,14 +136,14 @@ class Lock {
 	 */
 	function clear () {
 		global $user;
-		return db_execute ('delete from lock where user = ?', $user->id);
+		return db_execute ('delete from `lock` where user = ?', $user->id);
 	}
 
 	/**
 	 * Clear all locks.
 	 */
 	function clear_all () {
-		return db_execute ('delete from lock');
+		return db_execute ('delete from `lock`');
 	}
 }
 
