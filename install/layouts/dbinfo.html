@@ -7,9 +7,13 @@ driver = sqlite
 file = "conf/site.db"
 {% else %}
 driver = {{ driver }}
+
 host = "{{ host }}:{{ port }}"
+
 name = {{ name }}
+
 user = {{ user }}
+
 pass = "{{ pass }}"
 {% end %}
 
