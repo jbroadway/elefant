@@ -87,6 +87,43 @@ table tr td {
 		background-position: 50% 50%;
 	}
 
+.embedded {
+	padding: 5px;
+	background: #ddd;
+	border: 1px solid #bbb;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#cccccc');
+	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ccc));
+	background: -moz-linear-gradient(top,  #eee,  #ccc);
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+	border-radius: 9px;
+	white-space: nowrap;
+}
+
+
+input[type=submit] {
+    font-size: 12px;
+	border: 1px solid #ddd;
+    background: #e5e5e5;
+    background: -webkit-gradient(linear,0% 40%,0% 70%,from(#eee),to(#e5e5e5));
+    background: -moz-linear-gradient(linear,0% 40%,0% 70%,from(#eee),to(#e5e5e5));
+    border: solid 1px #ccc;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    color: #555;
+    padding: 5px 10px;
+    text-shadow: 0 1px 0 #fff;
+}
+
+input[type=submit]:hover {
+	color: #333;
+	border: 1px solid #999;
+    -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
 .wysiwyg-embed-objects {
 	width: 38%;
 	float: left;
