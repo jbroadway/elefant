@@ -41,6 +41,7 @@
 				var embedUI = new $.wysiwyg.dialog(_embed_list, {
 					title: 'Dynamic Objects',
 					content: uiHtml,
+					width: 550,
 					close: function (e, dialog) {
 						self.dialog = null;
 					},
