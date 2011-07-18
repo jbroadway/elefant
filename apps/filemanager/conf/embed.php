@@ -2,7 +2,7 @@
 
 [filemanager/slideshow]
 
-label = Slideshow
+label = "Images: Slideshow"
 
 path[label] = Folder
 path[type] = select

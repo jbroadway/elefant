@@ -2,7 +2,7 @@
 
 [admin/forward]
 
-label = Redirect Link
+label = "Pages: Redirect Link"
 
 to[label] = Link
 to[type] = text
@@ -10,6 +10,6 @@ to[initial] = "http://"
 
 [admin/menu]
 
-label = Menu Links
+label = "Pages: Menu Links"
 
 ; */ ?>
