@@ -37,7 +37,8 @@ table tr td {
 }
 
 tt {
-	background: #fff;
+	color: #000;
+	background: #f5f5f5;
 	margin-left: 2px;
 	margin-right: 2px;
 	padding: 2px;
