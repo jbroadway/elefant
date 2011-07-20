@@ -101,3 +101,8 @@ create table `lock` (
 
 create index lock_resource on lock (resource, resource_id, expires);
 create index lock_user on lock (user);
+
+create table apps (
+	name char(48) not null primary key,
+	version char(16) not null
+);

@@ -282,6 +282,33 @@ class Controller {
 		array_unshift ($this->params, $param);
 		return '.php';
 	}
+
+	/**
+	 * Check if an app and version have been installed. Returns true if
+	 * installed, false if not, and current installed version if an upgrade
+	 * should be performed.
+	 */
+	function installed ($app, $version) {
+		$v = db_shift ('select version from apps where name = ?', $app);
+		if (! $v) {
+			return false;
+		}
+		if (version_compare ($version, $v) == 0) {
+			return true;
+		}
+		return $v;
+	}
+
+	/**
+	 * Mark an app and version as installed.
+	 */
+	function mark_installed ($app, $version) {
+		$v = db_shift ('select version from apps where name = ?', $app);
+		if ($v) {
+			return db_execute ('update apps set version = ? where name = ?', $version, $app);
+		}
+		return db_execute ('insert into apps (name, version) values (?, ?)', $app, $version);
+	}
 }
 
 ?>

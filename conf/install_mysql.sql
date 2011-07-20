@@ -93,3 +93,8 @@ create table `lock` (
 	index (user),
 	index (resource, resource_id, expires)
 );
+
+create table apps (
+	name char(48) not null primary key,
+	version char(16) not null
+);

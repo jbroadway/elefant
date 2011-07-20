@@ -14,9 +14,9 @@ body {
 	position: fixed;
 	margin: 0px;
 	padding: 0px 10px 0px 10px;
-	font-size: 18px;
+	font-size: 18px !important;
 	font-weight: bold;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Helvetica, Arial, sans-serif !important;
 }
 
 	#admin-bar>a {
@@ -41,7 +41,7 @@ body {
 
 #admin-links {
 	float: right;
-	font-size: 12px;
+	font-size: 12px !important;
 	margin-right: 20px;
 }
 
@@ -122,6 +122,10 @@ body {
 		background: rgba(0,0,0,.7);
 		border-bottom: 1px solid rgba(255,255,255,.35);
 	}
+
+		#admin-tools-list li a.not-installed, #admin-tools-list li a.needs-upgrade {
+			background: rgba(138,90,181,.95);
+		}
 
 	#admin-tools-list li a:hover {
 		text-decoration: none;
