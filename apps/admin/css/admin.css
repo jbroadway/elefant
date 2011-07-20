@@ -16,6 +16,10 @@ h1, h2 {
 	color: #222;
 }
 
+table {
+	empty-cells: show;
+}
+
 table tr:hover {
 	background: #eee;
 }
@@ -119,6 +123,10 @@ input[type=text], input[type=password], textarea {
     -moz-border-radius: 2px;
     padding: 2px 4px;
     text-shadow: 0 1px 0 #fff;
+}
+
+input[disabled] {
+	background: #eee;
 }
 
 input[type=submit] {
