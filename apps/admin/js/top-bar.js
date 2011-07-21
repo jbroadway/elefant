@@ -1,5 +1,5 @@
 $(function () {
-	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><span><em>Elefant</em>Admin</span></a></div>');
+	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img src="/apps/admin/css/admin/elefant_logo.png" alt="Elefant CMS" /></a></div>');
 	$.get ('/admin/head/links', function (res) {
 		$('#admin-links').append (res);
 		$('#admin-tools').hover (function () {
