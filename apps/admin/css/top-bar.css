@@ -6,7 +6,7 @@ body {
 	position: absolute;
 	top: 0;
 	left: 0;
-	height: 30px;
+	height: 32px;
 	width: 100%;
 	z-index: 100000;
 	background: rgba(0,0,0,.75);
@@ -19,24 +19,9 @@ body {
 	font-family: Helvetica, Arial, sans-serif;
 }
 
-	#admin-bar>a {
-		text-decoration: none;
-		color: #fff;
-	}
-
-	#admin-bar>a>span {
-		padding-top: 3px;
-		text-shadow: #000 0px 1px 0px;
-	}
-
-	#admin-bar>a:hover>span {
-		text-decoration: none;
-		color: #fff;
-	}
-
-	#admin-bar>a>span>em {
-		color: #B763DC;
-		font-style: italic;
+	#admin-bar img {
+		margin-top: 0px;
+		border: 0px none;
 	}
 
 #admin-links {
@@ -50,7 +35,7 @@ body {
 		float: left;
 		margin: 0;
 		height: 25px;
-		padding: 5px 8px 0px 8px;
+		padding: 7px 8px 0px 8px;
 		font-weight: normal;
 		color: #f5f5f5;
 		position: relative;
@@ -82,7 +67,7 @@ body {
 		float: left;
 		margin: 0;
 		height: 25px;
-		padding: 5px 8px 0px 8px;
+		padding: 7px 8px 0px 8px;
 		font-weight: normal;
 		color: #f5f5f5;
 		text-decoration: none;
@@ -98,7 +83,7 @@ body {
 		display: none;
 		position: absolute;
 		left: 0;
-		top: 30px;
+		top: 32px;
 		margin: 0;
 		padding: 0;
 		float: left;
