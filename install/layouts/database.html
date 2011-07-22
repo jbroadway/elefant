@@ -52,6 +52,8 @@
 <form method="POST" action="/install/?step=database">
 <input type="hidden" name="file" value="../conf/site.db" />
 
+<p>SQLite users can simply click "Connect &amp; Create Schema". MySQL users please select your driver and enter your server details to continue.</p>
+
 <p>Driver:<br />
 <select name="driver" onchange="toggle (this.options[this.selectedIndex].value)">
 	<option value="sqlite">SQLite</option>
