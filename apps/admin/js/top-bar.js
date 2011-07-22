@@ -28,4 +28,24 @@ $(function () {
 			this.title = this.tip;
 		}
 	);
+
+	var jgrowl_interval = function () {
+		var notice = $.cookie ('elefant_notification'),
+			msglist = [],
+			i = 0;
+
+		if (notice !== null) {
+			msglist = notice.split ('|');
+			for (i = 0; i < msglist.length; i++) {
+				if (msglist[i].length > 0) {
+					$.jGrowl (msglist[i].replace (/\+/g, ' '));
+				}
+			}
+			// clear notices
+			$.cookie ('elefant_notification', null);
+		}
+		setTimeout (jgrowl_interval, 5000);
+	}
+
+	jgrowl_interval ();
 });
