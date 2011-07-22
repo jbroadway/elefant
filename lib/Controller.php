@@ -284,6 +284,29 @@ class Controller {
 	}
 
 	/**
+	 * Add a notification to the `elefant_notification` cookie, which is
+	 * monitored by `admin/head` and will be displayed using jGrowl. Handy
+	 * for setting confirmation messages and other notices for the current
+	 * user to display on a subsequent screen.
+	 */
+	function add_notification ($msg) {
+		if (isset ($_COOKIE['elefant_notification'])) {
+			$msg = $_COOKIE['elefant_notification'] . '|' . $msg;
+		}
+		return setcookie ('elefant_notification', $msg, time () + 900, '/');
+	}
+
+	/**
+	 * Redirect the current request and exit.
+	 */
+	function redirect ($url, $exit = true) {
+		header ('Location: ' . $url);
+		if ($exit) {
+			exit;
+		}
+	}
+
+	/**
 	 * Check if an app and version have been installed. Returns true if
 	 * installed, false if not, and current installed version if an upgrade
 	 * should be performed.
