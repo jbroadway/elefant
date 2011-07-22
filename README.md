@@ -1,6 +1,6 @@
 # Elefant
 
-Elefant is an MVC framework in PHP re-imagined, with a complete but
+[Elefant](http://www.elefantcms.com/) is an MVC framework in PHP re-imagined, with a complete but
 refreshingly simple CMS included. Elefant is based on 12 years of programming
 in PHP and running a monolithic CMS project [www.sitellite.org](http://www.sitellite.org/)
 that despite its growing 12 years of cruft, did get a few key things right
