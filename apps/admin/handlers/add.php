@@ -14,10 +14,10 @@ if ($f->submit ()) {
 	$wp->put ();
 	Versions::add ($wp);
 	if (! $wp->error) {
-		header ('Location: /' . $_POST['id']);
+		$this->add_notification (i18n_get ('Page created.'));
 		$_POST['page'] = $_POST['id'];
 		$this->hook ('admin/add', $_POST);
-		exit;
+		$this->redirect ('/' . $_POST['id']);
 	}
 	$page->title = 'An Error Occurred';
 	echo 'Error Message: ' . $wp->error;

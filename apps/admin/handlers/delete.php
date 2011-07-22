@@ -22,9 +22,8 @@ if (! $wp->remove ()) {
 	return;
 }
 
+$this->add_notification (i18n_get ('Page deleted.'));
 $this->hook ('admin/delete', $_GET);
-$page->title = 'Page Deleted';
-echo '<p>The page has been deleted.</p>';
-echo '<p><a href="/">Continue</a></p>';
+$this->redirect ('/');
 
 ?>

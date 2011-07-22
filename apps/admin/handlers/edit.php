@@ -34,11 +34,11 @@ if ($f->submit ()) {
 	$wp->put ();
 	if (! $wp->error) {
 		Versions::add ($wp);
-		header ('Location: /' . $_POST['id']);
+		$this->add_notification (i18n_get ('Page saved.'));
 		$_POST['page'] = $_GET['page'];
 		$lock->remove ();
 		$this->hook ('admin/edit', $_POST);
-		exit;
+		$this->redirect ('/' . $_POST['id']);
 	}
 	$page->title = 'An Error Occurred';
 	echo 'Error Message: ' . $wp->error;
