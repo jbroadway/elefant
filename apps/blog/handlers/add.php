@@ -18,8 +18,7 @@ if ($f->submit ()) {
 	$p->put ();
 	Versions::add ($p);
 	if (! $p->error) {
-		$page->title = i18n_get ('Blog Post Added');
-		echo '<p><a href="/blog/admin">' . i18n_get ('Continue') . '</a></p>';
+		$this->add_notification (i18n_get ('Blog post added.'));
 
 		// add tags
 		if ($_POST['published'] == 'yes' && ! empty ($_POST['tags'])) {
@@ -56,7 +55,7 @@ if ($f->submit ()) {
 
 		$_POST['page'] = 'blog/post/' . $p->id . '/' . blog_filter_title ($p->title);
 		$this->hook ('blog/add', $_POST);
-		return;
+		$this->redirect ('/blog/admin');
 	}
 	$page->title = 'An Error Occurred';
 	echo 'Error Message: ' . $u->error;

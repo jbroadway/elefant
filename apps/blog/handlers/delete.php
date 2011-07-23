@@ -30,7 +30,7 @@ db_execute ('delete from blog_post_tag where post_id = ?', $_GET['id']);
 
 $_GET['page'] = 'blog/post/' . $_GET['id'] . '/' . blog_filter_title ($title);
 $this->hook ('blog/delete', $_GET);
-$page->title = 'Blog Post Deleted';
-echo '<p><a href="/blog/admin">Continue</a></p>';
+$this->add_notification (i18n_get ('Blog post deleted.'));
+$this->redirect ('/blog/admin');
 
 ?>

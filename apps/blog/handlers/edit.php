@@ -41,8 +41,7 @@ if ($f->submit ()) {
 	$p->put ();
 	Versions::add ($p);
 	if (! $p->error) {
-		$page->title = i18n_get ('Blog Post Saved');
-		echo '<p><a href="/blog/admin">' . i18n_get ('Continue') . '</a></p>';
+		$this->add_notification (i18n_get ('Blog post saved.'));
 
 		// update tags
 		if ($_POST['published'] == 'yes') {
@@ -81,7 +80,7 @@ if ($f->submit ()) {
 		$_POST['page'] = 'blog/post/' . $p->id . '/' . blog_filter_title ($p->title);
 		$lock->remove ();
 		$this->hook ('blog/edit', $_POST);
-		return;
+		$this->redirect ('/blog/admin');
 	}
 	$page->title = 'An Error Occurred';
 	echo 'Error Message: ' . $u->error;
