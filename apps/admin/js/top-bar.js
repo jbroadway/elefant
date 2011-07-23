@@ -34,6 +34,8 @@ $(function () {
 			msglist = [],
 			i = 0;
 
+		$.cookie ('elefant_notification', null);
+
 		if (notice !== null) {
 			msglist = notice.split ('|');
 			for (i = 0; i < msglist.length; i++) {
@@ -41,9 +43,8 @@ $(function () {
 					$.jGrowl (msglist[i].replace (/\+/g, ' '));
 				}
 			}
-			// clear notices
-			$.cookie ('elefant_notification', null);
 		}
+		// clear notices
 		setTimeout (jgrowl_interval, 5000);
 	}
 
