@@ -14,15 +14,12 @@ if ($f->submit ()) {
 	$b->put ();
 	Versions::add ($b);
 	if (! $b->error) {
-		if (isset ($_GET['return'])) {
-			header ('Location: ' . $_GET['return']);
-			$this->hook ('blocks/add', $_POST);
-			exit;
-		}
-		$page->title = i18n_get ('Block Added');
-		echo '<p><a href="/blocks/admin">' . i18n_get ('Continue') . '</a></p>';
+		$this->add_notification ('Block added.');
 		$this->hook ('blocks/add', $_POST);
-		return;
+		if (isset ($_GET['return'])) {
+			$this->redirect ($_GET['return']);
+		}
+		$this->redirect ('/blocks/admin');
 	}
 	$page->title = 'An Error Occurred';
 	echo 'Error Message: ' . $wp->error;
