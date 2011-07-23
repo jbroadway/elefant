@@ -1,3 +1,11 @@
+jQuery.add_notification = function (msg) {
+	var notices = $.cookie ('elefant_notification');
+	if (notices !== null) {
+		msg = notices + '|' + msg;
+	}
+	$.cookie ('elefant_notification', msg, {path: '/'});
+};
+
 $(function () {
 	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img src="/apps/admin/css/admin/elefant_logo.png" alt="Elefant CMS" /></a></div>');
 	$.get ('/admin/head/links', function (res) {
@@ -34,7 +42,7 @@ $(function () {
 			msglist = [],
 			i = 0;
 
-		$.cookie ('elefant_notification', null);
+		$.cookie ('elefant_notification', null, {path: '/'});
 
 		if (notice !== null) {
 			msglist = notice.split ('|');
@@ -45,7 +53,7 @@ $(function () {
 			}
 		}
 		// clear notices
-		setTimeout (jgrowl_interval, 5000);
+		setTimeout (jgrowl_interval, 1000);
 	}
 
 	jgrowl_interval ();

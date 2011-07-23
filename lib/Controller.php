@@ -293,7 +293,7 @@ class Controller {
 		if (isset ($_COOKIE['elefant_notification'])) {
 			$msg = $_COOKIE['elefant_notification'] . '|' . $msg;
 		}
-		return setcookie ('elefant_notification', $msg);
+		return setcookie ('elefant_notification', $msg, 0, '/');
 	}
 
 	/**
