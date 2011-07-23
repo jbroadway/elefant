@@ -32,7 +32,7 @@ if (! FileManager::verify_folder ($_POST['path'], $root)) {
 
 @chmod ($root . $_POST['path'] . '/' . $_FILES['file']['name'], 0777);
 
-header ('Location: /filemanager?path=' . $_POST['path']);
-exit;
+$this->add_notification ('File saved.');
+$this->redirect ('/filemanager?path=' . $_POST['path']);
 
 ?>

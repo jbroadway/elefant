@@ -12,6 +12,7 @@ $root = getcwd () . '/files/';
 $webroot = '/files/';
 
 $error = false;
+$msg = '';
 
 $cmd = array_shift ($this->params);
 $file = join ('/', $this->params);
@@ -31,6 +32,7 @@ switch ($cmd) {
 		} else {
 			@chmod ($root . $file, 0777);
 			$out = $file;
+			$msg = i18n_get ('Folder created.');
 		}
 		break;
 	case 'rm':
@@ -42,6 +44,7 @@ switch ($cmd) {
 			$error = 'Unable to delete ' . $file;
 		} else {
 			$out = $file;
+			$msg = i18n_get ('File deleted.');
 		}
 		break;
 	case 'mv':
@@ -55,6 +58,7 @@ switch ($cmd) {
 					$error = 'Unable to rename ' . $file;
 				} else {
 					$out = $new;
+					$msg = i18n_get ('Folder renamed.');
 				}
 			}
 		} elseif (FileManager::verify_file ($file, $root)) {
@@ -67,6 +71,7 @@ switch ($cmd) {
 					$error = 'Unable to rename ' . $file;
 				} else {
 					$out = $new;
+					$msg = i18n_get ('File renamed.');
 				}
 			}
 		} else {
@@ -110,6 +115,7 @@ if ($error) {
 	$res->error = $error;
 } else {
 	$res->success = true;
+	$res->msg = $msg;
 	$res->data = $out;
 }
 
