@@ -276,7 +276,7 @@ class Template {
 	 * Sanitize a value for safe output, helping to prevent XSS attacks.
 	 */
 	function sanitize ($val, $charset = 'UTF-8') {
-		return htmlspecialchars ($val, ENT_QUOTES, $charset);
+		return htmlspecialchars ($val, ENT_QUOTES | ENT_IGNORE, $charset);
 	}
 
 	/**
