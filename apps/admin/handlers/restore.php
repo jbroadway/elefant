@@ -27,12 +27,10 @@ if ($obj->error) {
 }
 Versions::add ($obj);
 
-$page->title = i18n_get ('Item Restored');
-echo '<p>The item has been restored.</p>';
+$this->add_notification ('Item restored.');
 if ($ver->class == 'Webpage') {
-	echo '<p><a href="/' . $obj->id . '">Continue</a></p>';
-} else {
-	echo '<p><a href="/">Continue</a></p>';
+	$this->redirect ('/' . $obj->id);
 }
+$this->redirect ('/');
 
 ?>
