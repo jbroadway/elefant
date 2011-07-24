@@ -66,7 +66,7 @@ var autosave_interval = null,
 			// Handler to clear the cookie (used on submit)
 			$('.autosave-clear').click (function () {
 				var opts = options;
-				$.cookie (opts.cookie_name, null);
+				$.cookie (opts.cookie_name, null, {path: '/'});
 			});
 
 			// Handler to restore data from the cookie
