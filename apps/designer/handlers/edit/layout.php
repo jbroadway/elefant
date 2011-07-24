@@ -24,11 +24,10 @@ if ($lock->exists ()) {
 $f = new Form ('post', 'designer/editlayout');
 if ($f->submit ()) {
 	if (@file_put_contents ($_GET['file'], $_POST['body'])) {
-		$page->title = i18n_get ('Layout Saved');
-		echo '<p><a href="/designer">' . i18n_get ('Continue') . '</a></p>';
+		$this->add_notification (i18n_get ('Layout saved.'));
 		@chmod ($_GET['file'], 0777);
 		$lock->remove ();
-		return;
+		$this->redirect ('/designer');
 	}
 	$page->title = 'Saving Layout Failed';
 	echo '<p>Check that your permissions are correct and try again.</p>';

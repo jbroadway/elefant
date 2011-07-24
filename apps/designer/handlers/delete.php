@@ -3,8 +3,7 @@
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {
-	header ('Location: /admin');
-	exit;
+	$this->redirect ('/admin');
 }
 
 if (! preg_match ('/^(css|layouts)\/[a-z0-9_-]+\.(css|html)$/i', $_GET['file'])) {
@@ -26,7 +25,7 @@ if (! @unlink ($_GET['file'])) {
 	return;
 }
 
-$page->title = 'File Deleted';
-echo '<p><a href="/designer">Continue</a></p>';
+$this->add_notification (i18n_get ('File deleted.'));
+$this->redirect ('/designer');
 
 ?>

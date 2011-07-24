@@ -10,10 +10,9 @@ if (! User::require_admin ()) {
 $f = new Form ('post', 'designer/addlayout');
 if ($f->submit ()) {
 	if (@file_put_contents ('layouts/' . $_POST['name'] . '.html', $_POST['body'])) {
-		$page->title = i18n_get ('Layout Added');
-		echo '<p><a href="/designer">' . i18n_get ('Continue') . '</a></p>';
+		$this->add_notification (i18n_get ('Layout added.'));
 		@chmod ('layouts/' . $_POST['name'] . '.html', 0777);
-		return;
+		$this->redirect ('/designer');
 	}
 	$page->title = 'Saving Layout Failed';
 	echo '<p>Check that your permissions are correct and try again.</p>';
