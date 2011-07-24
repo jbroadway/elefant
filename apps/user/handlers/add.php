@@ -20,10 +20,9 @@ if ($f->submit ()) {
 	$u->put ();
 	Versions::add ($u);
 	if (! $u->error) {
-		$page->title = i18n_get ('User Added');
-		echo '<p><a href="/user/admin">' . i18n_get ('Continue') . '</a></p>';
+		$this->add_notification (i18n_get ('User added.'));
 		$this->hook ('user/add', $_POST);
-		return;
+		$this->redirect ('/user/admin');
 	}
 	$page->title = 'An Error Occurred';
 	echo 'Error Message: ' . $u->error;

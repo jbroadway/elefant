@@ -16,7 +16,7 @@ if (! $u->remove ()) {
 }
 
 $this->hook ('user/delete', $_GET);
-$page->title = 'User Deleted';
-echo '<p><a href="/user/admin">Continue</a></p>';
+$this->add_notification (i18n_get ('User deleted.'));
+$this->redirect ('/user/admin');
 
 ?>
