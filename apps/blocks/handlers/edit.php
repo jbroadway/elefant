@@ -4,8 +4,7 @@ $page->layout = 'admin';
 $page->template = 'admin/base';
 
 if (! User::require_admin ()) {
-	header ('Location: /admin');
-	exit;
+	$this->redirect ('/admin');
 }
 
 $lock = new Lock ('Block', $_GET['id']);

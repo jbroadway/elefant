@@ -3,8 +3,7 @@
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {
-	header ('Location: /admin');
-	exit;
+	$this->redirect ('/admin');
 }
 
 if (! preg_match ('/^layouts\/[a-z0-9_-]+\.html$/i', $_GET['file'])) {

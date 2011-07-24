@@ -3,8 +3,7 @@
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {
-	header ('Location: /admin');
-	exit;
+	$this->redirect ('/admin');
 }
 
 $f = new Form ('post', 'designer/addlayout');

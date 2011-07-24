@@ -1,8 +1,7 @@
 <?php
 
 if (! User::require_admin ()) {
-	header ('Location: /admin');
-	exit;
+	$this->redirect ('/admin');
 }
 
 $lock = new Lock ($_GET['type'], $_GET['id']);

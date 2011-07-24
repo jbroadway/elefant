@@ -4,8 +4,7 @@ $page->template = false;
 header ('Content-Type: application/json');
 
 if (! User::require_admin ()) {
-	header ('Location: /admin');
-	exit;
+	$this->redirect ('/admin');
 }
 
 $root = getcwd () . '/files/';
