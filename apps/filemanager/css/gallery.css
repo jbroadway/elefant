@@ -1,0 +1,18 @@
+#gallery div {
+	width: 140px;
+	height: 105px;
+	overflow: hidden;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
+#gallery div img {
+	min-width: 140px;
+	min-height: 105px;
+	height: 105px;
+	border: 0px;
+}

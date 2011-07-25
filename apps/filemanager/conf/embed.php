@@ -9,4 +9,13 @@ path[type] = select
 path[require] = "apps/filemanager/lib/Functions.php"
 path[callback] = "filemanager_list_folders"
 
+[filemanager/gallery]
+
+label = "Images: Gallery"
+
+path[label] = Folder
+path[type] = select
+path[require] = "apps/filemanager/lib/Functions.php"
+path[callback] = "filemanager_list_folders"
+
 ; */ ?>
