@@ -87,9 +87,18 @@
 											uiHtml += '<option value="' + obj.fields[i].values[o] + '">' + obj.fields[i].values[o] + '</option>';
 										}
 									}
-									uiHtml += '</select></p>';
+									if (obj.fields[i].message) {
+										uiHtml += '</select><span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span></p>';
+									} else {
+										uiHtml += '</select></p>';
+									}
 								} else {
-									uiHtml += '<p>' + obj.fields[i].label + ':<br /><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" size="30" /></p>';
+									uiHtml += '<p>' + obj.fields[i].label + ':<br /><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" size="30" />';
+									if (obj.fields[i].message) {
+										uiHtml += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span></p>';
+									} else {
+										uiHtml += '</p>';
+									}
 								}
 							}
 
@@ -99,9 +108,32 @@
 							$('.wysiwyg-embed-object-form-submit').click (function (evt) {
 								evt.preventDefault ();
 								var i = 0,
+									fields = obj.fields,
 									form = $(this)[0].form,
 									out = form.elements.handler.value,
+									key_list = ['name', 'label', 'type', 'initial', 'message', 'require', 'callback', 'values'],
 									sep = '?';
+
+								// validate form
+								for (var i in fields) {
+									var rules = [];
+									for (var r in fields[i]) {
+										var in_key_list = false;
+										for (var k = 0; k < key_list.length; k++) {
+											if (r == key_list[k]) {
+												in_key_list = true;
+												break;
+											}
+										}
+										if (! in_key_list) {
+											// it's a rule!
+											if (! $(form.elements[i]).verify_value ({form:form, type:r, validator: fields[i][r]})) {
+												$('#' + i + '-msg').show ();
+												return false;
+											}
+										}
+									}
+								}
 
 								for (i = 0; i < form.elements.length; i++) {
 									if (form.elements[i].name == 'handler' || ! form.elements[i].name) {
