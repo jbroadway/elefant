@@ -33,6 +33,7 @@ if ($f->submit ()) {
 		}
 	}
 	$d->close ();
+	sort ($pg->layouts);
 
 	$pg->failed = $f->failed;
 	$pg = $f->merge_values ($pg);
