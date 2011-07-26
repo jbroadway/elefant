@@ -43,4 +43,14 @@ url[not empty] = 1
 url[regex] = "|^http://.+$|"
 url[message] = Please enter a valid URL.
 
+[social/google/plusone]
+
+label = "Google: +1 Button"
+
+url[label] = Link
+url[type] = text
+url[not empty] = 1
+url[regex] = "|^http://.+$|"
+url[message] = Please enter a valid URL.
+
 ; */ ?>
