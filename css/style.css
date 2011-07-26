@@ -99,6 +99,14 @@ a:hover {
 		color: #777;
 	}
 
+	iframe.twitter-share-button {
+		margin-bottom: -2px;
+	}
+	
+	#___plusone_0 iframe {
+		margin-bottom: -2px;
+	}
+
 .index-body #slideshow img {
 	width: 940px;
 }

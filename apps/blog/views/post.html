@@ -15,7 +15,8 @@
 <hr />
 <div class="blog-comments">
 <a href="{{ url }}">{{ controller.run ('social/facebook/commentcount', $data)|none }} comments</a>&nbsp;
-{{ controller.run ('social/twitter/tweet', $data)|none }}
 {{ controller.run ('social/facebook/like', $data)|none }}
+{{ controller.run ('social/twitter/tweet', $data)|none }}
+{{ controller.run ('social/google/plusone', $data)|none }}
 </div>
 </div>
