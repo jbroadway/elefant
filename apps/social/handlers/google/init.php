@@ -4,6 +4,6 @@ if ($controller->called['social/google/init'] > 1) {
 	return;
 }
 
-echo $tpl->render ('social/google/init');
+$page->tail .= $tpl->render ('social/google/init');
 
 ?>
