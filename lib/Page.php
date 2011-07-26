@@ -25,6 +25,7 @@
  */
 class Page {
 	var $head = '';
+	var $tail = '';
 	var $title = '';
 	var $body = '';
 	var $template = '';
