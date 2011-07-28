@@ -62,7 +62,7 @@ switch ($_GET['step']) {
 		$data = array (
 			'req' => array (
 				'PHP version must be 5.3+' => PHP_VERSION > '5.3',
-				'.htaccess file is missing from the site root. Please save the following file to your server:</p><p><a href="https://raw.github.com/jbroadway/elefant/master/.htaccess" target="_blank">https://raw.github.com/jbroadway/elefant/master/.htaccess</a>' => ($apache && @file_exists ('../.htaccess')),
+				'.htaccess file is missing from the site root. Please save the following file to your server:</p><p><a href="https://raw.github.com/jbroadway/elefant/master/.htaccess" target="_blank">https://raw.github.com/jbroadway/elefant/master/.htaccess</a>' => (! $apache || ($apache && @file_exists ('../.htaccess'))),
 				'cache folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => is_writeable ('../cache'),
 				'conf folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => is_writeable ('../conf'),
 				'css folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => is_writeable ('../css'),
