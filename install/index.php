@@ -58,10 +58,11 @@ $data = array ();
 switch ($_GET['step']) {
 	case 'requirements':
 		// check permissions
+		$apache = ($_SERVER['SERVER_SOFTWARE'] == 'Apache') ? true : (strpos (php_sapi_name (), 'apache') === 0) ? true : false;
 		$data = array (
 			'req' => array (
 				'PHP version must be 5.3+' => PHP_VERSION > '5.3',
-				'.htaccess file is missing from the site root. Please save the following file to your server:</p><p><a href="https://raw.github.com/jbroadway/elefant/master/.htaccess" target="_blank">https://raw.github.com/jbroadway/elefant/master/.htaccess</a>' => (strpos (php_sapi_name (), 'apache') === false || (strpos (php_sapi_name (), 'apache') === 0 && @file_exists ('../.htaccess'))),
+				'.htaccess file is missing from the site root. Please save the following file to your server:</p><p><a href="https://raw.github.com/jbroadway/elefant/master/.htaccess" target="_blank">https://raw.github.com/jbroadway/elefant/master/.htaccess</a>' => ($apache && @file_exists ('../.htaccess')),
 				'cache folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => is_writeable ('../cache'),
 				'conf folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => is_writeable ('../conf'),
 				'css folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => is_writeable ('../css'),
