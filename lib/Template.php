@@ -220,6 +220,8 @@ class Template {
 
 	/**
 	 * Replace `{! app/handler?param=value !}` with calls to `Controller::run()`.
+	 * You can also substitute sub-expressions for values using `[]` tags, like
+	 * this: `{! app/handler?param=[varname] !}`
 	 */
 	function replace_includes ($val) {
 		$url = parse_url ($val);
@@ -231,7 +233,16 @@ class Template {
 		$arr = '';
 		$sep = '';
 		foreach ($data as $k => $v) {
-			$arr .= sprintf ('%s\'%s\' => \'%s\'', $sep, $k, $v);
+			if (strpos ($v, '[') === 0 && $v[strlen ($v) - 1] == ']') {
+				$v = str_replace (
+					array ('<?php echo ', '; ?>'),
+					array ('', ''),
+					$this->replace_vars (substr ($v, 1, strlen ($v) - 2))
+				);
+				$arr .= sprintf ('%s\'%s\' => %s', $sep, $k, $v);
+			} else {
+				$arr .= sprintf ('%s\'%s\' => \'%s\'', $sep, $k, $v);
+			}
 			$sep = ', ';
 		}
 		return sprintf (
