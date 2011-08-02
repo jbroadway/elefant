@@ -12,7 +12,7 @@
  *         // handle form
  *     } else {
  *         $page->failed = $form->failed;
- *         $page->head = '<script src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
+ *         $page->head = '<script src="/js/jquery-1.6.2.min.js"></script>
  *             <script src="/js/jquery.verify_values.js"></script>
  *             <script>
  *             $(function () {
