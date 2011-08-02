@@ -30,6 +30,12 @@ $(function () {
 						} else if (file.match (/\.swf$/i)) {
 							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! filemanager/swf?file=' + file + ' !}</span></p>');
 							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
+						} else if (file.match (/\.mp4$/i)) {
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! filemanager/video?file=' + file + ' !}</span></p>');
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
+						} else if (file.match (/\.mp3$/i)) {
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! filemanager/audio?file=' + file + ' !}</span></p>');
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
 						} else {
 							$('#webpage-body').wysiwyg ('createLink', file);
 						}
