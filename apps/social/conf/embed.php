@@ -63,4 +63,29 @@ url[not empty] = 1
 url[regex] = "|^http://.+$|"
 url[message] = Please enter a valid URL.
 
+[social/google/maps]
+
+label = "Google: Map"
+
+address[label] = Address
+address[type] = text
+address[not empty] = 1
+address[message] = Please enter an address.
+
+city[label] = City
+city[type] = text
+city[not empty] = 1
+city[message] = Please enter a city.
+
+state[label] = State/Province
+state[type] = text
+
+country[label] = Country
+country[type] = text
+country[not empty] = 1
+country[message] = Please enter a country
+
+zip[label] = Zip/Postal Code
+zip[type] = text
+
 ; */ ?>

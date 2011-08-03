@@ -1,0 +1,25 @@
+<script type="text/javascript">
+var map_{{map_id}};
+$(function () {
+	var georeq = {address: '{{address}}, {{city}}, {{state}}, {{country}} {{zip}}'},
+		geocoder = new google.maps.Geocoder (),
+		map_opts = {
+			zoom: 13,
+			center: new google.maps.LatLng (-34.397, 150.644),
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+	console.log (georeq.address);
+	map_{{map_id}} = new google.maps.Map (document.getElementById ("map-{{map_id}}"), map_opts);
+
+	geocoder.geocode (georeq, function (results, status) {
+		if (status == google.maps.GeocoderStatus.OK) {
+			map_{{map_id}}.setCenter (results[0].geometry.location);
+			var marker = new google.maps.Marker ({
+				map: map_{{map_id}},
+				position: results[0].geometry.location
+			});
+		}
+	});
+});
+</script>
+<div id="map-{{map_id}}" class="googlemap" style="width:480px; height:350px"></div>
