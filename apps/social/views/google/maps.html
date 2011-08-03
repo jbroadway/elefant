@@ -8,7 +8,6 @@ $(function () {
 			center: new google.maps.LatLng (-34.397, 150.644),
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
-	console.log (georeq.address);
 	map_{{map_id}} = new google.maps.Map (document.getElementById ("map-{{map_id}}"), map_opts);
 
 	geocoder.geocode (georeq, function (results, status) {
