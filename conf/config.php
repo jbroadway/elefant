@@ -3,7 +3,7 @@
 [General]
 
 ; The name of your website.
-site_name = Your Site Name
+site_name = "Your Site Name"
 
 ; Default outbound email address.
 email_from = "you@example.com"
@@ -20,6 +20,10 @@ timezone = GMT
 ; any other handler.
 
 default_handler = "admin/page"
+
+; Default layout template (aka theme) to use for page rendering.
+
+default_layout = "default"
 
 ; Handler for errors, to be called by other handlers via
 ; $controller->error() with 'code', 'title' and an optional
@@ -47,12 +51,6 @@ negotiation_method = url
 
 driver = sqlite
 file = "conf/site.db"
-
-;driver = mysql
-;host = "host:port"
-;name = dbname
-;user = username
-;pass = "password"
 
 [Hooks]
 

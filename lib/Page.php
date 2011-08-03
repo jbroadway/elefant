@@ -44,6 +44,9 @@ class Page {
 		if ($this->layout === '') {
 			$this->layout = 'default';
 		}
+		if ($this->layout === 'default') {
+			$this->layout = conf('General', 'default_layout');
+		}
 		if ($this->template === false) {
 			return $this->body;
 		} elseif (! empty ($this->template)) {
