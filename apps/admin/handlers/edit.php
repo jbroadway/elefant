@@ -50,7 +50,7 @@ if ($f->submit ()) {
 		}
 	}
 	$d->close ();
-	sort ($pg->layouts);
+	sort ($wp->layouts);
 
 	$wp->failed = $f->failed;
 	$wp = $f->merge_values ($wp);
