@@ -53,4 +53,14 @@ url[not empty] = 1
 url[regex] = "|^http://.+$|"
 url[message] = Please enter a valid URL.
 
+[social/google/youtube]
+
+label = "Google: YouTube Video"
+
+url[label] = Link
+url[type] = text
+url[not empty] = 1
+url[regex] = "|^http://.+$|"
+url[message] = Please enter a valid URL.
+
 ; */ ?>
