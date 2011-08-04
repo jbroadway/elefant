@@ -31,6 +31,7 @@ class Page {
 	var $template = '';
 	var $layout = 'default';
 	var $scripts = array ();
+	var $is_being_rendered = false;
 
 	/**
 	 * Render the page in its template and layout.
@@ -70,13 +71,21 @@ class Page {
 	}
 
 	/**
-	 * Add a script to the header. Tracks duplicate additions so scripts will only
-	 * be added once.
+	 * Add a script to the head or tail of a page, or echo immediately if the template
+	 * rendering has already begun. Tracks duplicate additions so scripts will only
+	 * be added once. This makes it a good replacement for adding script include tags
+	 * to view templates.
 	 */
-	function add_script ($script) {
+	function add_script ($script, $add_to = 'head') {
 		if (! in_array ($script, $this->scripts)) {
 			$this->scripts[] = $script;
-			$this->head .= $script;
+			if ($this->is_being_rendered) {
+				echo $script;
+			} elseif ($add_to == 'head') {
+				$this->head .= $script;
+			} elseif ($add_to == 'tail') {
+				$this->tail .= $script;
+			}
 		}
 	}
 }
