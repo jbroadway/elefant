@@ -140,6 +140,7 @@ class Template {
 		if (is_array ($data)) {
 			$data = (object) $data;
 		}
+		$data->is_being_rendered = true;
 
 		if (strstr ($template, '/')) {
 			list ($app, $file) = preg_split ('/\//', $template, 2);
