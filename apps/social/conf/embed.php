@@ -53,9 +53,9 @@ url[not empty] = 1
 url[regex] = "|^http://.+$|"
 url[message] = Please enter a valid URL.
 
-[social/google/youtube]
+[social/video/youtube]
 
-label = "Google: YouTube Video"
+label = "Video: YouTube"
 
 url[label] = Link
 url[type] = text
@@ -83,9 +83,19 @@ state[type] = text
 country[label] = Country
 country[type] = text
 country[not empty] = 1
-country[message] = Please enter a country
+country[message] = Please enter a country.
 
 zip[label] = Zip/Postal Code
 zip[type] = text
+
+[social/video/vimeo]
+
+label = "Video: Vimeo"
+
+url[label] = Link
+url[type] = text
+url[not empty] = 1
+url[regex] = "|^http://.+$|"
+url[message] = Please enter a valid URL.
 
 ; */ ?>
