@@ -17,7 +17,7 @@ $b = new Block ($_GET['id']);
 
 if (! $b->remove ()) {
 	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $wp->error;
+	echo 'Error Message: ' . $b->error;
 	return;
 }
 

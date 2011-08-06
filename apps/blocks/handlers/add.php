@@ -21,7 +21,7 @@ if ($f->submit ()) {
 		$this->redirect ('/blocks/admin');
 	}
 	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $wp->error;
+	echo 'Error Message: ' . $b->error;
 } else {
 	$b = new Block;
 	$b->id = $_GET['id'];
