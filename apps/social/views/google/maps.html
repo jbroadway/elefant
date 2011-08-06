@@ -1,5 +1,7 @@
 <script type="text/javascript">
 var map_{{map_id}};
+var my_maps = (my_maps) ? my_maps : [];
+var my_markers = (my_markers) ? my_markers : [];
 $(function () {
 	var georeq = {address: '{{address}}, {{city}}, {{state}}, {{country}} {{zip}}'},
 		geocoder = new google.maps.Geocoder (),
@@ -9,6 +11,7 @@ $(function () {
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 	map_{{map_id}} = new google.maps.Map (document.getElementById ("map-{{map_id}}"), map_opts);
+	my_maps.push (map_{{map_id}});
 
 	geocoder.geocode (georeq, function (results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
@@ -17,6 +20,7 @@ $(function () {
 				map: map_{{map_id}},
 				position: results[0].geometry.location
 			});
+			my_markers.push (marker);
 		}
 	});
 });
