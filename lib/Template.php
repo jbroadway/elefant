@@ -227,7 +227,7 @@ class Template {
 	function replace_includes ($val) {
 		$url = parse_url ($val);
 		if (isset ($url['query'])) {
-			parse_str (html_entities_decode ($url['query'], ENT_COMPAT, 'UTF-8'), $data);
+			parse_str (html_entity_decode ($url['query'], ENT_COMPAT, 'UTF-8'), $data);
 		} else {
 			$data = array ();
 		}
