@@ -20,6 +20,21 @@ if ($f->submit ()) {
 }
 
 $o = new StdClass;
+$o->body = '<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ window_title }}</title>
+	{! admin/head !}
+	{{ head|none }}
+</head>
+<body>
+{% if title %}<h1>{{ title }}</h1>{% end %}
+
+{{ body|none }}
+
+{{ tail|none }}
+</body>
+</html>';
 
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);

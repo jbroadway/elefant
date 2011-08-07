@@ -3,6 +3,14 @@
 {% end %}
 
 <form method="POST" id="edit-form">
+<p style="text-align: right; margin-bottom: -10px; margin-top: -20px">
+	<span class="notice" id="body-notice">&nbsp; You must enter body content.</span>
+	<span id="bgsave-status"></span>
+	<input type="submit" value="Save Layout" class="autosave-clear" />&nbsp;
+	<input type="submit" value="Save &amp; Keep Editing" id="bgsave" />&nbsp;
+	<a href="/admin/cancel?type=Designer&id={{ file|urlencode }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return confirm ('Are you sure you want to cancel and lose any changes?')">Cancel</a>
+</p>
+
 <p>Insert tag:&nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '{ var }}', _codemirror.getCursor (true)); return false">{<span></span>{ var }}</a> &nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '% foreach %}\n', _codemirror.getCursor (true)); _codemirror.replaceRange ('\n{' + '% end %}', _codemirror.getCursor (false)); return false">{<span></span>% foreach %}</a> &nbsp;
@@ -10,14 +18,9 @@
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '! app/handler !}', _codemirror.getCursor (true)); return false">{<span></span>! handler !}</a> &nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{&quot; text &quot;}', _codemirror.getCursor (true)); return false">{<span></span>" text "}</a>
 	<br />
-<textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea></p>
-<p>
-	<input type="submit" value="Save Layout" class="autosave-clear" />&nbsp;
-	<input type="submit" value="Save &amp; Keep Editing" id="bgsave" />&nbsp;
-	<a href="/admin/cancel?type=Designer&id={{ file|urlencode }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return confirm ('Are you sure you want to cancel and lose any changes?')">Cancel</a>&nbsp;
-	<span id="bgsave-status"></span>
-	<span class="notice" id="body-notice">&nbsp; You must enter body content.</span>
-</p>
+<textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea>
+<br />Preview:<br />
+<iframe src="/designer/preview?layout={{ $_GET.file }}" id="preview" frameborder="0" width="1022" height="300" style="border: 1px solid #ccc"></iframe></p>
 </form>
 
 <link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/lib/codemirror.css" />
@@ -28,12 +31,19 @@
 <script type="text/javascript" src="/apps/designer/js/codemirror/mode/javascript/javascript.js"></script>
 <script type="text/javascript" src="/apps/designer/js/codemirror/mode/htmlmixed/htmlmixed.js"></script>
 <style>
+#body {
+	width: 1024px;
+	margin-left: -32px;
+}
+#footer {
+	display: none;
+}
 .CodeMirror {
 	border: 1px solid #ccc;
 	background: #fff;
 }
 .CodeMirror-scroll {
-	height: 500px;
+	height: 240px;
 }
 </style>
 
@@ -43,7 +53,7 @@
 <script type="text/javascript" src="/js/jquery.bgsave.js"></script>
 <script type="text/javascript" src="/js/jquery.verify_values.js"></script>
 <script type="text/javascript">
-var _codemirror;
+var _codemirror, filemanager_interval, filemanager_last_preview = '';
 
 $(function () {
 	_codemirror = CodeMirror.fromTextArea(
@@ -87,5 +97,16 @@ $(function () {
 		msg_saved: '{"Saved!"}',
 		msg_failed: '{"Failed to save..."}'
 	});
+
+	filemanager_last_preview = _codemirror.getValue ();
+	filemanager_interval = setInterval (function () {
+		var layout = _codemirror.getValue ();
+		if (layout != filemanager_last_preview) {
+			filemanager_last_preview = layout;
+			$.post ('/designer/preview', {layout: layout}, function (res) {
+				document.getElementById ('preview').contentDocument.body.innerHTML = res;
+			});
+		}
+	}, 2000);
 });
 </script>
