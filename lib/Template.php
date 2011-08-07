@@ -170,6 +170,29 @@ class Template {
 	}
 
 	/**
+	 * Render a template string for preview purposes. Generates a temporary
+	 * cached version but unlinks it immediately after use.
+	 */
+	function render_preview ($template, $data = array ()) {
+		if (is_array ($data)) {
+			$data = (object) $data;
+		}
+		$data->is_being_rendered = true;
+
+		$cache_file = 'cache/_preview_' . md5 ($template) . '.php';
+		$out = $this->parse_template ($template);
+		if (! file_put_contents ($cache_file, $out)) {
+			die ('Failed to generate cached template: ' . $cache_file);
+		}
+
+		ob_start ();
+		require ($cache_file);
+		$out = ob_get_clean ();
+		unlink ($cache_file);
+		return $out;
+	}
+
+	/**
 	 * Replace values from template as string.
 	 */
 	function parse_template ($val) {
