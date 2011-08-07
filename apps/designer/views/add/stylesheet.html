@@ -3,14 +3,21 @@
 {% end %}
 
 <form method="POST" id="add-form">
-<p>Name (ex: <tt>css/<strong>name</strong>.css</tt>):<br /><input type="text" name="name" size="40" value="{{ name }}" />
-<span class="notice" id="name-notice">Your name must be alphanumeric and not a duplicate of an existing stylesheet.</span></p>
-<p><textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea></p>
-<p>
+<p style="float: right">
+	<span class="notice" id="body-notice">&nbsp; You must enter body content.</span>
 	<input type="submit" value="Create Stylesheet" class="autosave-clear" />&nbsp;
 	<a href="javascript:history.go(-1)" onclick="return confirm ('Are you sure you want to cancel and lose any changes?')">Cancel</a>
-	<span class="notice" id="body-notice">&nbsp; You must enter body content.</span>
 </p>
+
+<p>Name (ex: <tt>css/<strong>name</strong>.css</tt>): <input type="text" name="name" size="40" value="{{ name }}" />
+<span class="notice" id="name-notice"><br />Your name must be alphanumeric and not a duplicate of an existing stylesheet.</span></p>
+<p><textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea>
+<br />Preview with layout: <select name="layout" id="layout">
+{% foreach layouts %}
+	<option value="{{ loop_value }}"{% if loop_value == 'default' %} selected{% end %}>{{ loop_value }}</option>
+{% end %}
+</select><br />
+<iframe src="/designer/csspreview?layout=default" id="preview" frameborder="0" width="1022" height="300" style="border: 1px solid #ccc"></iframe></p>
 </form>
 
 <link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/lib/codemirror.css" />
@@ -18,12 +25,19 @@
 <script type="text/javascript" src="/apps/designer/js/codemirror/lib/codemirror.js"></script>
 <script type="text/javascript" src="/apps/designer/js/codemirror/mode/css/css.js"></script>
 <style>
+#body {
+	width: 1024px;
+	margin-left: -32px;
+}
+#footer {
+	display: none;
+}
 .CodeMirror {
 	border: 1px solid #ccc;
 	background: #fff;
 }
 .CodeMirror-scroll {
-	height: 460px;
+	height: 240px;
 }
 </style>
 
@@ -32,7 +46,7 @@
 <script type="text/javascript" src="/js/jquery.autosave.js"></script>
 <script type="text/javascript" src="/js/jquery.verify_values.js"></script>
 <script type="text/javascript">
-var _codemirror;
+var _codemirror, filemanager_interval, filemanager_last_preview = '';
 
 $(function () {
 	_codemirror = CodeMirror.fromTextArea(
@@ -69,5 +83,18 @@ $(function () {
 	{% end %}
 
 	$('#add-form').autosave ();
+
+	filemanager_last_preview = _codemirror.getValue ();
+	filemanager_interval = setInterval (function () {
+		var css = _codemirror.getValue (),
+			layout = $('#layout').val ();
+
+		if (css != filemanager_last_preview) {
+			filemanager_last_preview = layout;
+			$.post ('/designer/csspreview', {layout: layout, css: css}, function (res) {
+				document.getElementById ('preview').contentDocument.body.innerHTML = res;
+			});
+		}
+	}, 2000);
 });
 </script>
