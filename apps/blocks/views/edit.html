@@ -1,6 +1,4 @@
-{% if isset ($_COOKIE['autosave-' . preg_replace ('/[^a-z0-9-]/', '', $_SERVER['REQUEST_URI'])]) %}
 <p class="autosave-notice">Auto-saved data found for this form. <a href="#" class="autosave-restore">Click here to restore.</a></p>
-{% end %}
 
 <form method="POST" id="edit-form">
 <p>Block title:<br /><input type="text" name="title" size="50" value="{{ title }}" onblur="webpage_add_title_to_id (this.form)" />

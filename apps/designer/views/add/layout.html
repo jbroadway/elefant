@@ -1,6 +1,4 @@
-{% if isset ($_COOKIE['autosave-' . preg_replace ('/[^a-z0-9-]/', '', $_SERVER['REQUEST_URI'])]) %}
 <p class="autosave-notice">Auto-saved data found for this form. <a href="#" class="autosave-restore">Click here to restore.</a></p>
-{% end %}
 
 <form method="POST" id="add-form">
 <p style="float: right">
@@ -49,7 +47,7 @@
 </style>
 
 <script type="text/javascript" src="/js/json2.js"></script>
-<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/js/jstorage.js"></script>
 <script type="text/javascript" src="/js/jquery.autosave.js"></script>
 <script type="text/javascript" src="/js/jquery.verify_values.js"></script>
 <script type="text/javascript">
