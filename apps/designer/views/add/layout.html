@@ -10,7 +10,7 @@
 </p>
 
 <p>Name (ex: <tt>layouts/<strong>name</strong>.html</tt>): <input type="text" name="name" size="40" value="{{ name }}" />
-<span class="notice" id="name-notice">Your name must be alphanumeric and not a duplicate of an existing layout.</span></p>
+<span class="notice" id="name-notice"><br />Your name must be alphanumeric and not a duplicate of an existing layout.</span></p>
 <p>Insert tag:&nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '{ var }}', _codemirror.getCursor (true)); return false">{<span></span>{ var }}</a> &nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '% foreach %}\n', _codemirror.getCursor (true)); _codemirror.replaceRange ('\n{' + '% end %}', _codemirror.getCursor (false)); return false">{<span></span>% foreach %}</a> &nbsp;
