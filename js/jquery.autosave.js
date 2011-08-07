@@ -1,6 +1,6 @@
 /**
  * Use this jQuery plugin to auto-save and restore form data via
- * a cookie to protect against browser crashes and other accidental
+ * jStorage to protect against browser crashes and other accidental
  * interruptions.
  *
  * Usage:
@@ -9,7 +9,7 @@
  *
  *   <script src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
  *   <script src="/js/json2.js"></script>
- *   <script src="/js/jquery.cookie.js"></script>
+ *   <script src="/js/jstorage.js"></script>
  *   <script src="/js/jquery.autosave.js"></script>
  *
  * 2. Initialize the form:
@@ -20,17 +20,15 @@
  *     });
  *   </script>
  *
- * 3. Add a restore option if the cookie is detected on page load
+ * 3. Add a restore option if the saved data is detected on page load
  * (using an Elefant template as an example):
  *
- *   {% if isset ($_COOKIE['autosave-' . preg_replace ('/[^a-z0-9-]/', '', $_SERVER['REQUEST_URI'])]) %}
  *   <p class="autosave-notice">Auto-saved data found for this form. <a href="#" class="autosave-restore">Click here to restore.</a></p>
- *   {% end %}
  *
  * 4. Add class="autosave-clear" to the submit button so saving the form
- * clears the cookie.
+ * clears the data.
  *
- * The cookie name is determined as follows:
+ * The stored key name is determined as follows:
  *
  *   "autosave-" + (pathname + parameters).replace (/[^a-z0-9-]/g, '')
  *
@@ -38,7 +36,7 @@
  *
  *   /admin/edit?page=index
  *
- * The cookie name will be:
+ * The key name will be:
  *
  *   autosave-admineditpageindex
  *
@@ -62,18 +60,26 @@ var autosave_interval = null,
 
 			// Set the cookie name based on the current request uri
 			options.cookie_name = 'autosave-' + (window.location.pathname + window.location.search).replace (/[^a-zA-Z0-9-]+/g, '');
-			
+
+			if ($.jStorage.get (options.cookie_name)) {
+				$('.autosave-notice').show ();
+			} else {
+				$('.autosave-notice').hide ();
+			}
+
 			// Handler to clear the cookie (used on submit)
 			$('.autosave-clear').click (function () {
 				var opts = options;
-				$.cookie (opts.cookie_name, null, {path: '/'});
+				//$.cookie (opts.cookie_name, null, {path: '/'});
+				$.jStorage.deleteKey (opts.cookie_name);
 			});
 
 			// Handler to restore data from the cookie
 			$('.autosave-restore').click (function () {
 				var i = 0,
 					opts = options,
-					vals = $.parseJSON (lzw_decode ($.cookie (opts.cookie_name)));
+					//vals = $.parseJSON (lzw_decode ($.cookie (opts.cookie_name)));
+					vals = $.parseJSON (lzw_decode ($.jStorage.get (opts.cookie_name)));
 
 				for (i = 0; i < vals.length; i++) {
 					try {
@@ -106,7 +112,8 @@ var autosave_interval = null,
 				}
 
 				// Clear the cookie
-				$.cookie (opts.cookie_name, null, {path: '/'});
+				//$.cookie (opts.cookie_name, null, {path: '/'});
+				$.jStorage.deleteKey (opts.cookie_name);
 
 				// Hide the restore notice
 				$('.autosave-notice').slideUp ('slow');
@@ -168,7 +175,9 @@ var autosave_interval = null,
 				}
 				
 				var _json = JSON.stringify (vals);
-				$.cookie (opts.cookie_name, lzw_encode (_json), { expires: 1, path: '/' });
+				//$.cookie (opts.cookie_name, lzw_encode (_json), { expires: 1, path: '/' });
+				$.jStorage.set (opts.cookie_name, lzw_encode (_json));
+				//console.log ($.jStorage.get (opts.cookie_name).length);
 			}, options.interval);
 		}
 	});
