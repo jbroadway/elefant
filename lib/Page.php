@@ -32,6 +32,7 @@ class Page {
 	var $layout = 'default';
 	var $scripts = array ();
 	var $is_being_rendered = false;
+	var $preview = false;
 
 	/**
 	 * Render the page in its template and layout.
@@ -54,6 +55,9 @@ class Page {
 			$this->body = $tpl->render ($this->template, $this);
 		}
 		if ($this->layout) {
+			if ($this->preview) {
+				return $tpl->render_preview ($this->layout, $this);
+			}
 			return $tpl->render ($this->layout, $this);
 		}
 		return $this->body;
