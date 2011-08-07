@@ -168,7 +168,7 @@ var autosave_interval = null,
 				}
 				
 				var _json = JSON.stringify (vals);
-				$.cookie (opts.cookie_name, lzw_encode (JSON.stringify (vals)), { expires: 1, path: '/' });
+				$.cookie (opts.cookie_name, lzw_encode (_json), { expires: 1, path: '/' });
 			}, options.interval);
 		}
 	});
