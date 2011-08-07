@@ -22,6 +22,10 @@ foreach ($out['stylesheets'] as $name) {
 	$out['locks'][$name] = $lock->exists ('Designer', $name);
 }
 
+function basename_html ($f) {
+	return basename ($f, '.html');
+}
+
 $page->title = i18n_get ('Designer');
 echo $tpl->render ('designer/index', $out);
 

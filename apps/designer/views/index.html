@@ -11,19 +11,24 @@
 <table width="100%">
 	<tr>
 		<th width="40%">{"Layout"}</th>
-		<th width="25%">{"Last Modified"}</th>
+		<th width="20%">{"Last Modified"}</th>
 		<th width="20%">{"File Size"}</th>
-		<th width="15%">&nbsp;</th>
+		<th width="20%">&nbsp;</th>
 	</tr>
 {% foreach layouts %}
 	<tr>
 		<td><a href="/{{ loop_value }}" target="_blank">{{ loop_value }}</a></td>
 		<td>{{ loop_value|filemtime|gmdate ('F j, Y - g:ia', %s) }}</td>
 		<td>{{ loop_value|filesize|format_filesize }}</td>
-		<td>
+		<td style="text-align: right">
 			{% if locks[$data->loop_value] %}
 			{"Editing Locked"}
 			{% else %}
+				{% if conf ('General', 'default_layout') == basename_html ($data->loop_value) %}
+					<strong>Default</strong> |
+				{% else %}
+					<a href="/designer/makedefault?layout={{ loop_value|basename_html }}">{"Make default"}</a> |
+				{% end %}
 			<a href="/designer/edit/layout?file={{ loop_value }}">{"Edit"}</a> |
 			<a href="/designer/delete?file={{ loop_value }}" onclick="return confirm ('{"Are you sure you want to permanently delete this layout file?"}');">{"Delete"}</a>
 			{% end %}
