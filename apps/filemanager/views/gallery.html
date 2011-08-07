@@ -9,6 +9,6 @@ $(function () {
 
 <div id="gallery">
 {% foreach files %}
-	<div><a href="/{{ loop_value }}" rel="gallery-{{ gallery }}" class="gallery"><img src="/{{ loop_value }}" alt="" /></a></div>
+	<div><a href="/{{ loop_value }}" rel="gallery-{{ gallery }}" class="gallery"><img src="/{{ loop_value|filemanager_get_thumbnail }}" alt="" /></a></div>
 {% end %}
 </div>

@@ -1,5 +1,7 @@
 <?php
 
+require_once ('apps/filemanager/lib/Functions.php');
+
 if (isset ($data['path'])) {
 	$path = trim ($data['path'], '/');
 } elseif (isset ($_GET['path'])) {
