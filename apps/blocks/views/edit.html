@@ -26,7 +26,7 @@
 <p>
 	<input type="submit" value="Save Block" class="autosave-clear" />&nbsp;
 	<input type="submit" value="Save &amp; Keep Editing" id="bgsave" />&nbsp;
-	<a href="/admin/cancel?type=Block&id={{ id }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return confirm ('Are you sure you want to cancel and lose any changes?')">Cancel</a>&nbsp;
+	<a href="/admin/cancel?type=Block&id={{ id }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('Are you sure you want to cancel and lose any changes?')">Cancel</a>&nbsp;
 	<span id="bgsave-status"></span>
 </p>
 </form>

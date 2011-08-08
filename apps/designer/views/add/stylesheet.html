@@ -6,7 +6,7 @@
 <p style="float: right">
 	<span class="notice" id="body-notice">&nbsp; You must enter body content.</span>
 	<input type="submit" value="Create Stylesheet" class="autosave-clear" />&nbsp;
-	<a href="javascript:history.go(-1)" onclick="return confirm ('Are you sure you want to cancel and lose any changes?')">Cancel</a>
+	<a href="javascript:history.go(-1)" onclick="return $.cancel_autosave ('Are you sure you want to cancel and lose any changes?')">Cancel</a>
 </p>
 
 <p>Name (ex: <tt>css/<strong>name</strong>.css</tt>): <input type="text" name="name" size="40" value="{{ name }}" />
