@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Elefant Admin - {{ window_title }}</title>
+	<title>Elefant CMS - {{ window_title }}</title>
 	<link rel="stylesheet" type="text/css" href="/apps/admin/css/reset.css" />
 	<link rel="stylesheet" type="text/css" href="/apps/admin/css/text.css" />
 	<link rel="stylesheet" type="text/css" href="/apps/admin/css/960.css" />
@@ -12,7 +12,7 @@
 <body>
 <div id="wrapper" class="container_12">
 	<div id="body" class="grid_12">
-	{% if title != '' %}<h2>{{ title }}</h2>{% end %}
+	{% if title != '' %}<h2>{{ title|none }}</h2>{% end %}
 	{{ body|none }}
 	</div>
 	<div class="clear"></div>
@@ -21,7 +21,7 @@
 			&nbsp;
 		</div>
 		<div class="grid_6 omega copyright">
-			Powered by <a href="http://www.elefantcms.com/">Elefant</a>
+			Powered by <a href="http://www.elefantcms.com/">Elefant CMS</a>
 		</div>
 	</div>
 	<div class="clear"></div>
