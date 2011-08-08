@@ -45,10 +45,15 @@ $(function () {
 			'dynamic': {
 				visible: true,
 				tooltip: 'Dynamic Objects',
+				tags: ['span'],
 				exec: function () {
-					$.wysiwyg.embed.init (function (embed_code) {
-						$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! ' + embed_code + ' !}</span></p>');
-						$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
+					$.wysiwyg.embed.init (this, function (existing, embed_code) {
+						if (! existing) {
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! ' + embed_code + ' !}</span></p>');
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
+						} else {
+							$(existing).replaceWith ('<span class="embedded">{' + '! ' + embed_code + ' !}</span>');
+						}
 					});
 				}
 			}

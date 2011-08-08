@@ -15,11 +15,11 @@
 		embedList: [],
 		selected: null,
 		ready: true,
-		init: function (callback) {
+		init: function (Wysiwyg, callback) {
 			$.get (this.ajaxHandler, function (res) {
 				this.embedList = res;
 				var embedder = new embedObj(this.embedList);
-				embedder.load (callback);
+				embedder.load (Wysiwyg, callback);
 			});
 		}
 	};
@@ -31,11 +31,16 @@
 		this.embed_list = _embed_list;
 		this.dialog = null;
 		
-		this.load = function (callback) {
+		this.load = function (Wysiwyg, callback) {
 			var self = this;
 			self.loaded = true;
 			
 			var uiHtml = '<div id="wysiwyg-embed-content"><div class="wysiwyg-embed-objects"><ul class="wysiwyg-embed-object-list"></ul></div><div class="wysiwyg-embed-object-form"></div><br clear="both" /></div>';
+
+			self.embed_element = Wysiwyg.dom.getElement ('span');
+			if (self.embed_element && ! $(self.embed_element).hasClass ('embedded')) {
+				self.embed_element = null;
+			}
 			
 			if ($.wysiwyg.dialog) {
 				var embedUI = new $.wysiwyg.dialog(_embed_list, {
@@ -65,7 +70,7 @@
 								uiHtml = '';
 
 							if (obj.fields.length === 0) {
-								callback (obj.handler);
+								callback (self.embed_element, obj.handler);
 								embedUI.close ();
 								return false;
 							}
@@ -143,7 +148,7 @@
 									sep = '&';
 								}
 
-								callback (out);
+								callback (self.embed_element, out);
 								embedUI.close ();
 								return false;
 							});
