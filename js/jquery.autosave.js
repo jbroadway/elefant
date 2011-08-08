@@ -45,6 +45,12 @@ var autosave_interval = null,
 	autosave_focused = false;
 
 (function ($) {
+	if ($.jStorage.get ('autosave-' + (window.location.pathname + window.location.search).replace (/[^a-zA-Z0-9-]+/g, ''))) {
+		$('.autosave-notice').show ();
+	} else {
+		$('.autosave-notice').hide ();
+	}
+
 	$.fn.extend ({
 		autosave: function (options) {
 			var defaults = {
@@ -60,12 +66,6 @@ var autosave_interval = null,
 
 			// Set the cookie name based on the current request uri
 			options.cookie_name = 'autosave-' + (window.location.pathname + window.location.search).replace (/[^a-zA-Z0-9-]+/g, '');
-
-			if ($.jStorage.get (options.cookie_name)) {
-				$('.autosave-notice').show ();
-			} else {
-				$('.autosave-notice').hide ();
-			}
 
 			// Handler to clear the cookie (used on submit)
 			$('.autosave-clear').click (function () {
