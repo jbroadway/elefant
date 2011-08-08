@@ -58,6 +58,7 @@ tt {
 }
 
 .autosave-notice {
+	display: none;
 	border: 1px solid #fcd9a1;
 	background: #faf7e5;
 	padding: 3px 3px 3px 7px;

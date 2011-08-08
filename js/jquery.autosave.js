@@ -28,6 +28,10 @@
  * 4. Add class="autosave-clear" to the submit button so saving the form
  * clears the data.
  *
+ * 5. To add a cancel link, add the following onclick handler:
+ *
+ *   onclick="return $.cancel_autosave ('Are you sure you want to cancel?')"
+ *
  * The stored key name is determined as follows:
  *
  *   "autosave-" + (pathname + parameters).replace (/[^a-z0-9-]/g, '')
@@ -42,19 +46,27 @@
  *
  */
 var autosave_interval = null,
-	autosave_focused = false;
+	autosave_focused = false,
+	autosave_key_name = 'autosave-' + (window.location.pathname + window.location.search).replace (/[^a-zA-Z0-9-]+/g, '');
 
 (function ($) {
-	if ($.jStorage.get ('autosave-' + (window.location.pathname + window.location.search).replace (/[^a-zA-Z0-9-]+/g, ''))) {
-		$('.autosave-notice').show ();
-	} else {
-		$('.autosave-notice').hide ();
+	if ($.jStorage.get (autosave_key_name)) {
+		setTimeout (function () {
+			$('.autosave-notice').show ();
+		}, 100);
+	}
+
+	$.cancel_autosave = function (msg) {
+		if (confirm (msg)) {
+			$.jStorage.deleteKey (autosave_key_name);
+			return true;
+		}
+		return false;
 	}
 
 	$.fn.extend ({
 		autosave: function (options) {
 			var defaults = {
-				cookie_name: 'autosave',
 				interval: 10000,
 				form: null,
 			};
@@ -64,22 +76,16 @@ var autosave_interval = null,
 			// Get the form object
 			options.form = this[0];
 
-			// Set the cookie name based on the current request uri
-			options.cookie_name = 'autosave-' + (window.location.pathname + window.location.search).replace (/[^a-zA-Z0-9-]+/g, '');
-
-			// Handler to clear the cookie (used on submit)
+			// Handler to clear the key (used on submit)
 			$('.autosave-clear').click (function () {
-				var opts = options;
-				//$.cookie (opts.cookie_name, null, {path: '/'});
-				$.jStorage.deleteKey (opts.cookie_name);
+				$.jStorage.deleteKey (autosave_key_name);
 			});
 
-			// Handler to restore data from the cookie
+			// Handler to restore data from the key
 			$('.autosave-restore').click (function () {
 				var i = 0,
 					opts = options,
-					//vals = $.parseJSON (lzw_decode ($.cookie (opts.cookie_name)));
-					vals = $.parseJSON (lzw_decode ($.jStorage.get (opts.cookie_name)));
+					vals = $.parseJSON (lzw_decode ($.jStorage.get (autosave_key_name)));
 
 				for (i = 0; i < vals.length; i++) {
 					try {
@@ -111,9 +117,8 @@ var autosave_interval = null,
 					} catch (e) {}
 				}
 
-				// Clear the cookie
-				//$.cookie (opts.cookie_name, null, {path: '/'});
-				$.jStorage.deleteKey (opts.cookie_name);
+				// Clear the key
+				$.jStorage.deleteKey (autosave_key_name);
 
 				// Hide the restore notice
 				$('.autosave-notice').slideUp ('slow');
@@ -132,7 +137,7 @@ var autosave_interval = null,
 				return;
 			}
 
-			// Set an interval to save the form data to the cookie
+			// Set an interval to save the form data
 			autosave_interval = setInterval (function () {
 				if (autosave_focused === false) {
 					return;
@@ -175,9 +180,7 @@ var autosave_interval = null,
 				}
 				
 				var _json = JSON.stringify (vals);
-				//$.cookie (opts.cookie_name, lzw_encode (_json), { expires: 1, path: '/' });
-				$.jStorage.set (opts.cookie_name, lzw_encode (_json));
-				//console.log ($.jStorage.get (opts.cookie_name).length);
+				$.jStorage.set (autosave_key_name, lzw_encode (_json));
 			}, options.interval);
 		}
 	});
