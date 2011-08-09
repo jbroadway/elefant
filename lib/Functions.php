@@ -3,7 +3,7 @@
 /**
  * Autoloader for classes. Checks in lib and models folders.
  */
-function __autoload ($class) {
+function elefant_autoloader ($class) {
 	if (strpos ($class, '\\') !== false) {
 		list ($app, $class) = explode ('\\', $class, 2);
 		if (@file_exists ('apps/' . $app . '/lib/' . $class . '.php')) {
@@ -25,6 +25,7 @@ function __autoload ($class) {
 	}
 	return false;
 }
+spl_autoload_register ('elefant_autoloader');
 
 /**
  * Wraps a `print_r()` or `var_dump()` of the given `$value` with a set of `<pre></pre>`
