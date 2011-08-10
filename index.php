@@ -19,6 +19,7 @@ if (get_magic_quotes_gpc ()) {
 $conf = parse_ini_file ('conf/config.php', true);
 date_default_timezone_set($conf['General']['timezone']);
 
+require_once ('lib/Autoloader.php');
 require_once ('lib/Functions.php');
 require_once ('lib/Database.php');
 require_once ('lib/Page.php');
