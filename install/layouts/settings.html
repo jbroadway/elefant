@@ -3,6 +3,8 @@
 <head>
 	<title>Elefant Installer</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<script src="/js/jquery-1.6.2.min.js"></script>
+	<script src="/js/jquery.password_strength.js"></script>
 	<script>
 		function verify_password (f) {
 			if (f.elements.pass.value != f.elements.verify.value) {
@@ -12,6 +14,11 @@
 			document.getElementById ('vnotice').style.display = 'none';
 			return true;
 		}
+		$(function () {
+			$('#pass').password_strength ({
+				container: '#password-strength'
+			});
+		});
 	</script>
 </head>
 <body>
@@ -52,7 +59,7 @@
 <p>Admin Email:<br />
 <input type="text" name="email_from" value="{{ $_POST.email_from }}" size="30" /></p>
 <p>Admin Password:<br />
-<input type="password" name="pass" value="{{ $_POST.pass }}" size="20" /></p>
+<input type="password" name="pass" id="pass" value="{{ $_POST.pass }}" size="20" />&nbsp;<span id="password-strength"></span></p>
 <p>Verify Password:<br />
 <input type="password" name="verify" value="{{ $_POST.verify }}" size="20" onblur="verify_password (this.form)" />
 <span class="notice" id="vnotice" style="display: none">Password does not match.</span></p>
