@@ -85,7 +85,7 @@ class Versions extends Model {
 	 * Get recent versions of an object, or of objects of a specific
 	 * class.
 	 */
-	function history ($obj, $limit = 10, $offset = 0) {
+	static function history ($obj, $limit = 10, $offset = 0) {
 		if ($limit === true) {
 			if (is_string ($obj)) {
 				return count (Versions::query ()
@@ -140,7 +140,7 @@ class Versions extends Model {
 	/**
 	 * Get a list of classes that have objects stored.
 	 */
-	function get_classes () {
+	static function get_classes () {
 		return db_shift_array (
 			'select distinct class from versions order by class asc'
 		);

@@ -39,7 +39,7 @@ class User extends Model {
 	/**
 	 * Generates a random salt and encrypts a password using MD5.
 	 */
-	function encrypt_pass ($plain) {
+	static function encrypt_pass ($plain) {
 		$base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 		$salt = '$1$';
 		for ($i = 0; $i < 9; $i++) {
@@ -85,7 +85,7 @@ class User extends Model {
 	 * for you, and creates the global $user object if a session is
 	 * valid, since we have the data already.
 	 */
-	function method ($callback) {
+	static function method ($callback) {
 		@session_set_cookie_params (time () + 2592000);
 		@session_start ();
 		if (isset ($_POST['username']) && isset ($_POST['password'])) {
@@ -111,7 +111,7 @@ class User extends Model {
 	 *     // unauthorized
 	 *   }
 	 */
-	function require_login () {
+	static function require_login () {
 		return simple_auth (array ('User', 'verifier'), array ('User', 'method'));
 	}
 
@@ -122,7 +122,7 @@ class User extends Model {
 	 *     // unauthorized
 	 *   }
 	 */
-	function require_admin () {
+	static function require_admin () {
 		global $user;
 		if (is_object ($user)) {
 			if ($user->session_id == $_SESSION['session_id']) {
@@ -143,7 +143,7 @@ class User extends Model {
 	/**
 	 * Check if a user is valid.
 	 */
-	function is_valid () {
+	static function is_valid () {
 		global $user;
 		if (is_object ($user) && $user->session_id == $_SESSION['session_id']) {
 			return true;

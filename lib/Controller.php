@@ -222,7 +222,8 @@ class Controller {
 	 */
 	function route ($uri) {
 		global $conf;
-		$this->app = array_shift (explode ('/', $conf['General']['default_handler']));
+		$exp = explode ('/', $conf['General']['default_handler']);
+		$this->app = array_shift ($exp);
 		$this->params = array ();
 
 		// Remove queries and hash from uri
