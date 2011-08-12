@@ -15,7 +15,7 @@
 <h1>Elefant Cheat Sheet</h1>
 </div>
 <div class="grid_6 omega link">
-<a href="http://jbroadway.github.com/elefant/elefant_cheatsheet.pdf">Download as a PDF</a>
+<!-- a href="http://jbroadway.github.com/elefant/elefant_cheatsheet.pdf">Download as a PDF</a -->
 </div>
 
 <div class="clear"></div>
@@ -27,21 +27,21 @@
 		<div class="block">
 		<h2>Getting Started</h2>
 		<table>
-		<tr><td colspan="2"><span>These are the steps to get a basic Elefant installation up and running.</span></td></tr>
+		<tr><td colspan="2"><span>These are the steps to get Elefant up and running.</span></td></tr>
 		<tr>
 			<td><code>git clone http://github.com/jbroadway/elefant.git</code></td>
+		</tr>
+		<tr>
+			<td><span>Point a virtualhost to the new <code>elefant</code> folder</span></td>
 		</tr>
 		<tr>
 			<td><code>cd elefant</code></td>
 		</tr>
 		<tr>
-			<td><code>vi conf/config.php</code></td>
+			<td><code>chmod -R 777 cache conf css files install layouts</code></td>
 		</tr>
 		<tr>
-			<td><code>chmod -R 777 cache conf</code></td>
-		</tr>
-		<tr>
-			<td><code>php conf/createdb.php</code></td>
+			<td><code>php conf/createdb.php</code> <span>or</span> <code>example.com/install/</code> <span>via web</span></td>
 		</tr>
 		</table>
 		</div>
@@ -56,6 +56,10 @@
 		<tr>
 			<td><code>php conf/createdb.php</code></td>
 			<td><span>Initialize an SQLite database</span></td>
+		</tr>
+		<tr>
+			<td><code>php conf/translations.php lang</code></td>
+			<td><span>Generate a translation file</span></td>
 		</tr>
 		<tr>
 			<td><code>phpunit tests/Form.php</code></td>
@@ -88,8 +92,16 @@
 			<td><span>Stylesheets</span></td>
 		</tr>
 		<tr>
+			<td><code>files</code></td>
+			<td><span>Uploaded files</span></td>
+		</tr>
+		<tr>
 			<td><code>index.php</code></td>
 			<td><span>Front controller</span></td>
+		</tr>
+		<tr>
+			<td><code>install</code></td>
+			<td><span>Web installer</span></td>
 		</tr>
 		<tr>
 			<td><code>js</code></td>
@@ -202,6 +214,10 @@
 		<td><span>I18n object</span></td>
 	</tr>
 	<tr>
+		<td><code>$memcache</code></td>
+		<td><span>Memcache object</span></td>
+	</tr>
+	<tr>
 		<td><code>$page</code></td>
 		<td><span>Page object</span></td>
 	</tr>
@@ -236,6 +252,30 @@
 	<tr>
 		<td><code>-&gt;route($uri)</code></td>
 		<td><span>Resolves a handler from URI to filename.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;redirect($uri)</code></td>
+		<td><span>Redirect the current request to <code>$uri</code> and exit.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;add_notification($msg)</code></td>
+		<td><span>Add a notification to display on the next admin page.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;hook($type, $data)</code></td>
+		<td><span>Run any handlers for a hook type.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;error($code=404, $title, $msg)</code></td>
+		<td><span>Trigger the default error handler.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;installed($app, $version)</code></td>
+		<td><span>Check if an app is installed.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;mark_installed($app, $version)</code></td>
+		<td><span>Mark an app as installed.</span></td>
 	</tr>
 	</table>
 	</div>
@@ -404,6 +444,10 @@ $m->put();</code></pre></td>
 		<td><span>Update the object.</span></td>
 	</tr>
 	<tr>
+		<td><pre><code>$obj = $m->orig ();</code></pre></td>
+		<td><span>Return the original (non-Model) object.</span></td>
+	</tr>
+	<tr>
 		<td><code>$m->remove()</code></td>
 		<td><span>Delete the object.</span></td>
 	</tr>
@@ -413,6 +457,21 @@ $m->put();</code></pre></td>
   ->order('name asc')
   ->fetch(20, 0);</code></pre></td>
 		<td><span>Build a custom query and fetch the results.<br /><tt>$res</tt> is an array of <tt>Mytable</tt> objects.</span></td>
+	</tr>
+	<tr>
+		<td colspan="2"><span>Additional fetch methods:</span></td>
+	</tr>
+	<tr>
+		<td><code>->fetch_assoc()</code></td>
+		<td><span>Fetch a key/value pair of two fields.</span></td>
+	</tr>
+	<tr>
+		<td><code>->fetch_field()</code></td>
+		<td><span>Fetch an array of one fields.</span></td>
+	</tr>
+	<tr>
+		<td><code>->fetch_orig()</code></td>
+		<td><span>Fetch the original (non-Model) objects.</span></td>
 	</tr>
 	</table>
 	</div>
@@ -425,12 +484,20 @@ $m->put();</code></pre></td>
 		<td><span>Renders the page with its view and layout templates.</span></td>
 	</tr>
 	<tr>
+		<td><code>-&gt;add_script($script, $to = 'head')</code></td>
+		<td><span>Add script to <code>$head</code> or <code>$tail</code>.</span></td>
+	</tr>
+	<tr>
 		<td><code>$body = ''</code></td>
 		<td><span>Body content.</span></td>
 	</tr>
 	<tr>
 		<td><code>$head = ''</code></td>
 		<td><span>Extra HTML headers.</span></td>
+	</tr>
+	<tr>
+		<td><code>$tail = ''</code></td>
+		<td><span>Extra HTML footer.</span></td>
 	</tr>
 	<tr>
 		<td><code>$layout = 'default'</code></td>
@@ -453,6 +520,14 @@ $m->put();</code></pre></td>
 	<tr>
 		<td><code>-&gt;render($template, $data)</code></td>
 		<td><span>Render a template file.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;run_includes($template)</code></td>
+		<td><span>Run and include handlers in a string.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;sanitize($value)</code></td>
+		<td><span>Sanitize a string for safe output. Prevents XSS.</span></td>
 	</tr>
 	<tr>
 		<td><code>$charset = 'UTF-8'</code></td>
@@ -482,6 +557,10 @@ $m->put();</code></pre></td>
 {% end %}</code></pre></td>
 		<td><span>In-template conditional logic.</span></td>
 	</tr>
+	<tr>
+		<td><code>{! app/handler?param=value !}</code></td>
+		<td><span>Call a handler from a template.</span></td>
+	</tr>
 	</table>
 	</div>
 
@@ -498,6 +577,10 @@ $m->put();</code></pre></td>
 	<tr>
 		<td><code>User::require_login()</code></td>
 		<td><span>Requires a user to be logged in.</span></td>
+	</tr>
+	<tr>
+		<td><code>User::require_admin()</code></td>
+		<td><span>Requires an admin user to be logged in.</span></td>
 	</tr>
 	<tr>
 		<td><code>User::is_valid()</code></td>
