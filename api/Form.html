@@ -2,61 +2,541 @@
 
 <html>
 <head>
-  <title><?=$title?></title>
+  <title>Form.php</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="layout.css" />
   <style>
-    <?=preg_replace('/\s\s+/', ' ',$style)?>
+    /*--------------------- Layout and Typography ----------------------------*/
+body { font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif; font-size: 15px; line-height: 22px; color: #252519; margin: 0; padding: 0;
+}
+a { color: #261a3b;
+} a:visited { color: #261a3b; }
+p { margin: 0 0 15px 0;
+}
+h1, h2, h3, h4, h5, h6 { margin: 40px 0 15px 0;
+} h3, h4, h5, h6 { margin-top: 20px; }
+#container { position: relative;
+}
+#background { position: fixed; top: 0; left: 575px; right: 0; bottom: 0; background: #f5f5ff; border-left: 1px solid #e5e5ee; z-index: -1;
+}
+#jump_to, #jump_page { background: white; -webkit-box-shadow: 0 0 25px #777; -moz-box-shadow: 0 0 25px #777; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; font: 10px Arial; text-transform: uppercase; cursor: pointer; text-align: right;
+}
+#jump_to, #jump_wrapper { position: fixed; right: 0; top: 0; padding: 5px 10px;
+} #jump_wrapper { padding: 0; display: none; } #jump_to:hover #jump_wrapper { display: block; } #jump_page { padding: 5px 0 3px; margin: 0 0 25px 25px; overflow:hidden; } #jump_page .source { display: block; padding: 5px 10px; text-decoration: none; border-top: 1px solid #eee; float:left; min-width:180px; text-align:left; text-transform:none; font-size:11px; } #jump_page .source:hover { background: #f5f5ff; } #jump_page .source:first-child { }
+table td { border: 0; outline: 0;
+} td.docs, th.docs { max-width: 450px; min-width: 450px; min-height: 5px; padding: 10px 25px 1px 50px; overflow-x: hidden; vertical-align: top; text-align: left; } .docs pre { margin: 15px 0 15px; padding-left: 15px; } .docs p tt, .docs p code { background: #f8f8ff; border: 1px solid #dedede; font-size: 12px; padding: 0 0.2em; } .pilwrap { position: relative; } .pilcrow { font: 12px Arial; text-decoration: none; color: #454545; position: absolute; top: 3px; left: -20px; padding: 1px 2px; opacity: 0; -webkit-transition: opacity 0.2s linear; } td.docs:hover .pilcrow { opacity: 1; } td.code, th.code { padding: 14px 15px 16px 25px; width: 100%; vertical-align: top; background: #f5f5ff; border-left: 1px solid #e5e5ee; } pre, tt, code { font-size: 12px; line-height: 18px; font-family: Monaco, Consolas, "Lucida Console", monospace; margin: 0; padding: 0; } /*---------------------- Syntax Highlighting -----------------------------*/
+td.linenos { background-color: #f0f0f0; padding-right: 10px; }
+span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
+body .hll { background-color: #ffffcc }
+body .c { color: #408080; font-style: italic } /* Comment */
+body .err { border: 1px solid #FF0000 } /* Error */
+body .k { color: #954121 } /* Keyword */
+body .o { color: #666666 } /* Operator */
+body .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+body .cp { color: #BC7A00 } /* Comment.Preproc */
+body .c1 { color: #408080; font-style: italic } /* Comment.Single */
+body .cs { color: #408080; font-style: italic } /* Comment.Special */
+body .gd { color: #A00000 } /* Generic.Deleted */
+body .ge { font-style: italic } /* Generic.Emph */
+body .gr { color: #FF0000 } /* Generic.Error */
+body .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+body .gi { color: #00A000 } /* Generic.Inserted */
+body .go { color: #808080 } /* Generic.Output */
+body .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+body .gs { font-weight: bold } /* Generic.Strong */
+body .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+body .gt { color: #0040D0 } /* Generic.Traceback */
+body .kc { color: #954121 } /* Keyword.Constant */
+body .kd { color: #954121; font-weight: bold } /* Keyword.Declaration */
+body .kn { color: #954121; font-weight: bold } /* Keyword.Namespace */
+body .kp { color: #954121 } /* Keyword.Pseudo */
+body .kr { color: #954121; font-weight: bold } /* Keyword.Reserved */
+body .kt { color: #B00040 } /* Keyword.Type */
+body .m { color: #666666 } /* Literal.Number */
+body .s { color: #219161 } /* Literal.String */
+body .na { color: #7D9029 } /* Name.Attribute */
+body .nb { color: #954121 } /* Name.Builtin */
+body .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+body .no { color: #880000 } /* Name.Constant */
+body .nd { color: #AA22FF } /* Name.Decorator */
+body .ni { color: #999999; font-weight: bold } /* Name.Entity */
+body .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+body .nf { color: #0000FF } /* Name.Function */
+body .nl { color: #A0A000 } /* Name.Label */
+body .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+body .nt { color: #954121; font-weight: bold } /* Name.Tag */
+body .nv { color: #19469D } /* Name.Variable */
+body .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+body .w { color: #bbbbbb } /* Text.Whitespace */
+body .mf { color: #666666 } /* Literal.Number.Float */
+body .mh { color: #666666 } /* Literal.Number.Hex */
+body .mi { color: #666666 } /* Literal.Number.Integer */
+body .mo { color: #666666 } /* Literal.Number.Oct */
+body .sb { color: #219161 } /* Literal.String.Backtick */
+body .sc { color: #219161 } /* Literal.String.Char */
+body .sd { color: #219161; font-style: italic } /* Literal.String.Doc */
+body .s2 { color: #219161 } /* Literal.String.Double */
+body .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+body .sh { color: #219161 } /* Literal.String.Heredoc */
+body .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+body .sx { color: #954121 } /* Literal.String.Other */
+body .sr { color: #BB6688 } /* Literal.String.Regex */
+body .s1 { color: #219161 } /* Literal.String.Single */
+body .ss { color: #19469D } /* Literal.String.Symbol */
+body .bp { color: #954121 } /* Name.Builtin.Pseudo */
+body .vc { color: #19469D } /* Name.Variable.Class */
+body .vg { color: #19469D } /* Name.Variable.Global */
+body .vi { color: #19469D } /* Name.Variable.Instance */
+body .il { color: #666666 } /* Literal.Number.Integer.Long */ /********** PHP Comment Additions ********/
+td.docs .docparam {color:#DB251A;font-weight:bold;}
   </style>
 </head>
 <body>
   <div id="container">
     <div id="background"></div>
-    <?if(count($sources)):?>
-      <div id="jump_to">
+          <div id="jump_to">
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
-            <?foreach($sources as $source):?>
-              <?if(substr_count($path, "/")===0):?>
-                <a class="source" href="./<?=$source["url"]?>">
-              <?else:?>
-              <a class="source" href="<?=str_repeat("../",substr_count($path, "/"))?><?=$source["url"]?>">
-              <?endif?>
-                <?=$source["name"]?>
-              </a>
-            <?endforeach?>
-          </div>
+                                          <a class="source" href="./ActiveResource.html">
+                              ActiveResource.php              </a>
+                                          <a class="source" href="./Autoloader.html">
+                              Autoloader.php              </a>
+                                          <a class="source" href="./Cache.html">
+                              Cache.php              </a>
+                                          <a class="source" href="./Controller.html">
+                              Controller.php              </a>
+                                          <a class="source" href="./Database.html">
+                              Database.php              </a>
+                                          <a class="source" href="./Form.html">
+                              Form.php              </a>
+                                          <a class="source" href="./Functions.html">
+                              Functions.php              </a>
+                                          <a class="source" href="./I18n.html">
+                              I18n.php              </a>
+                                          <a class="source" href="./Model.html">
+                              Model.php              </a>
+                                          <a class="source" href="./Page.html">
+                              Page.php              </a>
+                                          <a class="source" href="./Template.html">
+                              Template.php              </a>
+                      </div>
         </div>
       </div>
-    <?endif?>
-    <table cellpadding="0" cellspacing="0">
+        <table cellpadding="0" cellspacing="0">
       <thead>
         <tr>
           <th class="docs">
             <h1>
-              <?=$title?>
-            </h1>
+              Form.php            </h1>
           </th>
           <th class="code">
           </th>
         </tr>
       </thead>
       <tbody>
-        <?foreach((array)$sections["docs"] as $count=>$section):?>
-          <tr id="section-<?=$count?>">
+                  <tr id="section-0">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-<?=$count?>">&#182;</a>
+                <a class="pilcrow" href="#section-0">&#182;</a>
               </div>
-              <?=$sections["docs"][$count]?>
+              <p>Convenience functions for validating form submissions and input data.
+ The input validation can be useful not just for form submissions,
+ but it's packaged here to keep things tidy.</p>
+
+<p>Usage:</p>
+
+<pre><code> $form = new Form ('post', 'apps/myapp/forms/verify.php');
+ if ($form-&gt;submit ()) {
+      handle form
+ } else {
+     $page-&gt;failed = $form-&gt;failed;
+     $page-&gt;head = '&lt;script src="/js/jquery-1.6.2.min.js"&gt;&lt;/script&gt;
+         &lt;script src="/js/jquery.verify_values.js"&gt;&lt;/script&gt;
+         &lt;script&gt;
+         $(function () {
+             $.verify_values ({
+                 element: "#myapp-form",
+                 handler: "myapp/verify",
+                 callback: function (failed) {
+                      highlight the failed elements
+                 }
+             });
+         });
+         &lt;/script&gt;';
+     $page-&gt;template = 'myapp/form';
+ }
+</code></pre>
             </td>
             <td class="code">
-              <?=$sections["code"][$count]?>
-            </td>
+              <div class="highlight"><pre><span class="k">class</span> <span class="nc">Form</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-        <?endforeach?>
-      </tbody>
+                  <tr id="section-1">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>Fields that failed validation.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$failed</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-2">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>The required request method.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$method</span> <span class="o">=</span> <span class="s1">&#39;post&#39;</span><span class="p">;</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-3">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Validation rules.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$rules</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-4">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Whether to verify the referrer or not.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$verify_referrer</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-5">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>The reason <code>submit()</code> failed to pass.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$error</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+
+ <span class="k">function</span> <span class="nf">__construct</span> <span class="p">(</span><span class="nv">$required_method</span> <span class="o">=</span> <span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="nv">$form_rules</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">method</span> <span class="o">=</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nv">$required_method</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$form_rules</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$form_rules</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$form</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nv">$form_rules</span><span class="p">);</span>
+    <span class="nv">$form_rules</span> <span class="o">=</span> <span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/forms/&#39;</span> <span class="o">.</span> <span class="nv">$form</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$form_rules</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span> <span class="o">=</span> <span class="nb">parse_ini_file</span> <span class="p">(</span><span class="nv">$form_rules</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+   <span class="p">}</span>
+  <span class="p">}</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-6">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Check if the form is okay to submit. Verifies the request method,
+ the referrer, and the input data.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">submit</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nv">$values</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">method</span> <span class="o">==</span> <span class="s1">&#39;post&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="nv">$_POST</span> <span class="o">:</span> <span class="nv">$_GET</span><span class="p">;</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">verify_request_method</span> <span class="p">())</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="s1">&#39;Request method must be &#39;</span> <span class="o">.</span> <span class="nb">strtoupper</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">);</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">verify_referrer</span> <span class="o">&amp;&amp;</span> <span class="o">!</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">verify_referrer</span> <span class="p">())</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="s1">&#39;Referrer must match the host name.&#39;</span><span class="p">;</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">failed</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">verify_values</span> <span class="p">(</span><span class="nv">$values</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">failed</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="s1">&#39;Validation error.&#39;</span><span class="p">;</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-7">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Merge the values from <code>$_GET</code> or <code>$_POST</code> onto a data array or
+ object for re-rendering a form with the latest data entered.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">merge_values</span> <span class="p">(</span><span class="nv">$obj</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$values</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">method</span> <span class="o">==</span> <span class="s1">&#39;post&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="nv">$_POST</span> <span class="o">:</span> <span class="nv">$_GET</span><span class="p">;</span>
+  
+  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$values</span> <span class="k">as</span> <span class="nv">$k</span> <span class="o">=&gt;</span> <span class="nv">$v</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">is_object</span> <span class="p">(</span><span class="nv">$obj</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nv">$obj</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$k</span><span class="p">}</span> <span class="o">=</span> <span class="nv">$v</span><span class="p">;</span>
+   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nv">$obj</span><span class="p">[</span><span class="nv">$k</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$v</span><span class="p">;</span>
+   <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="nv">$obj</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-8">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Verify the request method is the one specified.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">verify_request_method</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">strtolower</span> <span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-9">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Verify the referrer came from this site. No remote form submissions,
+ since those are almost certainly abusive.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">verify_referrer</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span> <span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_REFERER&#39;</span><span class="p">],</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_HOST&#39;</span><span class="p">])</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-10">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Verifies the specified value, useful for input validation.
+ Pass the value, a type of validation, and a validator.
+ Types include:</p>
+
+<ul>
+<li><code>skip_if_empty</code> - a special verifier that tells <code>verify_values()</code> to skip
+               validation on the field if it's been left blank.</li>
+<li><code>regex</code> - calls <code>preg_match($validator, $value)</code></li>
+<li><code>type</code> - calls <code>is_$validator($value)</code></li>
+<li><code>callback</code> - calls <code>call_user_func($validator, $value)</code></li>
+<li><code>email</code> - a valid email address</li>
+<li><code>range</code> - number within a range e.g., <code>123-456</code></li>
+<li><code>length</code> - string of length, $verifier examples: <code>6, 6+, 6-12, 12-</code></li>
+<li><code>gt</code> - greater than</li>
+<li><code>gte</code> - greater than or equal to</li>
+<li><code>lt</code> - less than</li>
+<li><code>lte</code> - less than or equal to</li>
+<li><code>empty</code> - value is empty</li>
+<li><code>not empty</code> - value is not empty</li>
+<li><code>contains</code> - <code>stristr($value, $validator)</code></li>
+<li><code>equals</code> - equality test</li>
+<li><code>date</code> - date value (<code>YYYY-MM-DD</code>)</li>
+<li><code>time</code> - time value (<code>HH:MM:SS</code>)</li>
+<li><code>datetime</code> - date and time value (<code>YYYY-MM-DD HH:MM:SS</code>)</li>
+<li><code>header</code> - verifies there are no newlines so spammers can't pass headers to <code>mail()</code></li>
+<li><code>unique</code> - verifies it's unique to a table and column in the database,
+        <code>$verifier</code> should be <code>'table_name.column_name'</code></li>
+<li><code>exists</code> - verifies that a file exists in the specified directory,
+        <code>$verifier</code> should be a directory path with no trailing /,
+        or optionally a file path with <code>%s</code> in it for the form value.</li>
+<li><p><code>matches</code> - Matches another variable, e.g., <code>"$_POST['name']"</code>, must be a
+         global or superglobal.</p>
+
+<p>Functions must accept only the value of the variable and return
+a boolean value.</p>
+
+<p>You can also specify 'not' in front of any rule to check for its
+opposite, for example "not empty".</p></li>
+</ul>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">verify_value</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$type</span><span class="p">,</span> <span class="nv">$validator</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/^not (.+)$/i&#39;</span><span class="p">,</span> <span class="nv">$type</span><span class="p">,</span> <span class="nv">$regs</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="o">!</span> <span class="nx">Form</span><span class="o">::</span><span class="na">verify_value</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$regs</span><span class="p">[</span><span class="m">1</span><span class="p">],</span> <span class="nv">$validator</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">switch</span> <span class="p">(</span><span class="nv">$type</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">case</span> <span class="s1">&#39;matches&#39;</span><span class="o">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/\$(_[a-z]+|GLOBALS)\[[\&#39;&quot;]?([a-z0-9_-]+)[\&#39;&quot;]?\]/i&#39;</span><span class="p">,</span> <span class="nv">$validator</span><span class="p">,</span> <span class="nv">$regs</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-11">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Can't dynamically reference superglobals, so instead...</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>     <span class="k">switch</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="m">1</span><span class="p">])</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="s1">&#39;_POST&#39;</span><span class="o">:</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">==</span> <span class="nv">$_POST</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+      <span class="k">case</span> <span class="s1">&#39;_GET&#39;</span><span class="o">:</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">==</span> <span class="nv">$_GET</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+      <span class="k">case</span> <span class="s1">&#39;_REQUEST&#39;</span><span class="o">:</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">==</span> <span class="nv">$_REQUEST</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+      <span class="k">case</span> <span class="s1">&#39;_SERVER&#39;</span><span class="o">:</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">==</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+      <span class="k">case</span> <span class="s1">&#39;_FILES&#39;</span><span class="o">:</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">==</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+      <span class="k">case</span> <span class="s1">&#39;_COOKIE&#39;</span><span class="o">:</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">==</span> <span class="nv">$_COOKIE</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+      <span class="k">case</span> <span class="s1">&#39;_SESSION&#39;</span><span class="o">:</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">==</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+      <span class="k">case</span> <span class="s1">&#39;_ENV&#39;</span><span class="o">:</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">==</span> <span class="nv">$_ENV</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+      <span class="k">case</span> <span class="s1">&#39;GLOBALS&#39;</span><span class="o">:</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">==</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+     <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+   <span class="k">case</span> <span class="s1">&#39;regex&#39;</span><span class="o">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="nb">preg_match</span> <span class="p">(</span><span class="nv">$validator</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+   <span class="k">case</span> <span class="s1">&#39;type&#39;</span><span class="o">:</span>
+    <span class="k">return</span> <span class="nb">call_user_func</span> <span class="p">(</span><span class="s1">&#39;is_&#39;</span> <span class="o">.</span> <span class="nv">$validator</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+   <span class="k">case</span> <span class="s1">&#39;callback&#39;</span><span class="o">:</span>
+    <span class="k">return</span> <span class="nb">call_user_func</span> <span class="p">(</span><span class="nv">$validator</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+   <span class="k">case</span> <span class="s1">&#39;range&#39;</span><span class="o">:</span>
+    <span class="k">list</span> <span class="p">(</span><span class="nv">$min</span><span class="p">,</span> <span class="nv">$max</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="nv">$validator</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">((</span><span class="nv">$min</span> <span class="o">&lt;=</span> <span class="nv">$value</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">&lt;=</span> <span class="nv">$max</span><span class="p">));</span>
+   <span class="k">case</span> <span class="s1">&#39;empty&#39;</span><span class="o">:</span>
+    <span class="k">return</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+   <span class="k">case</span> <span class="s1">&#39;length&#39;</span><span class="o">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/^([0-9]+)([+-]?)([0-9]*)$/&#39;</span><span class="p">,</span> <span class="nv">$validator</span><span class="p">,</span> <span class="nv">$regs</span><span class="p">))</span> <span class="p">{</span>
+     <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="m">3</span><span class="p">]))</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nv">$regs</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="o">||</span> <span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nv">$regs</span><span class="p">[</span><span class="m">3</span><span class="p">])</span> <span class="p">{</span>
+       <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+      <span class="p">}</span>
+     <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;+&#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nv">$regs</span><span class="p">[</span><span class="m">1</span><span class="p">])</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+     <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nv">$regs</span><span class="p">[</span><span class="m">1</span><span class="p">])</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+     <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="k">empty</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">!=</span> <span class="nv">$regs</span><span class="p">[</span><span class="m">1</span><span class="p">])</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+     <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+   <span class="k">case</span> <span class="s1">&#39;contains&#39;</span><span class="o">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="nb">stristr</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$validator</span><span class="p">);</span>
+   <span class="k">case</span> <span class="s1">&#39;equals&#39;</span><span class="o">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">==</span> <span class="nv">$validator</span><span class="p">);</span>
+   <span class="k">case</span> <span class="s1">&#39;gt&#39;</span><span class="o">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">&gt;</span> <span class="nv">$validator</span><span class="p">);</span>
+   <span class="k">case</span> <span class="s1">&#39;gte&#39;</span><span class="o">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">&gt;=</span> <span class="nv">$validator</span><span class="p">);</span>
+   <span class="k">case</span> <span class="s1">&#39;lt&#39;</span><span class="o">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">&lt;</span> <span class="nv">$validator</span><span class="p">);</span>
+   <span class="k">case</span> <span class="s1">&#39;lte&#39;</span><span class="o">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">&lt;=</span> <span class="nv">$validator</span><span class="p">);</span>
+   <span class="k">case</span> <span class="s1">&#39;email&#39;</span><span class="o">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="s1">&#39;.@&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/\.$/&#39;</span><span class="p">,</span> <span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
+     <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="o">!</span> <span class="nb">preg_match</span> <span class="p">(</span><span class="s2">&quot;/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+\.([a-zA-Z0-9\._-]+)+$/&quot;</span> <span class="p">,</span> <span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
+     <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+   <span class="k">case</span> <span class="s1">&#39;header&#39;</span><span class="o">:</span>
+    <span class="k">return</span> <span class="o">!</span> <span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/[\r\n]/s&#39;</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+   <span class="k">case</span> <span class="s1">&#39;date&#39;</span><span class="o">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/&#39;</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+   <span class="k">case</span> <span class="s1">&#39;time&#39;</span><span class="o">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/^[0-9]{2}:[0-9]{2}:[0-9]{2}$/&#39;</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+   <span class="k">case</span> <span class="s1">&#39;datetime&#39;</span><span class="o">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/&#39;</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+   <span class="k">case</span> <span class="s1">&#39;unique&#39;</span><span class="o">:</span>
+    <span class="k">list</span> <span class="p">(</span><span class="nv">$table</span><span class="p">,</span> <span class="nv">$column</span><span class="p">)</span> <span class="o">=</span> <span class="nb">preg_split</span> <span class="p">(</span><span class="s1">&#39;/[\.:\/]/&#39;</span><span class="p">,</span> <span class="nv">$validator</span><span class="p">);</span>
+    <span class="nv">$res</span> <span class="o">=</span> <span class="nx">db_shift</span> <span class="p">(</span><span class="s1">&#39;select &#39;</span> <span class="o">.</span> <span class="nv">$column</span> <span class="o">.</span> <span class="s1">&#39; from &#39;</span> <span class="o">.</span> <span class="nv">$table</span> <span class="o">.</span> <span class="s1">&#39; where &#39;</span> <span class="o">.</span> <span class="nv">$column</span> <span class="o">.</span> <span class="s1">&#39; = ?&#39;</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$res</span> <span class="o">==</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+   <span class="k">case</span> <span class="s1">&#39;exists&#39;</span><span class="o">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span> <span class="p">(</span><span class="nv">$validator</span><span class="p">,</span> <span class="s1">&#39;%s&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">return</span> <span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nb">sprintf</span> <span class="p">(</span><span class="nv">$validator</span><span class="p">,</span> <span class="nv">$value</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$validator</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$value</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-12">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>If tests fail, be safe and fail by default</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-13">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Validate a list of values, such as <code>$_GET</code> or <code>$_POST</code> data against
+ a list of validation rules. If the rules are a string, it will
+ look for a file and parse it using <code>parse_ini_file()</code> for the rules.
+ The format is as follows:</p>
+
+<pre><code> [field1]
+ email = 1
+
+ [field2]
+ type = string
+ regex = "/^[a-z]+$/i"
+
+ [field3]
+ skip_if_empty = 1
+ unique = "table.column"
+</code></pre>
+
+<p>Returns an array of failed fields. If the array is empty, everything
+ passed.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">verify_values</span> <span class="p">(</span><span class="nv">$values</span><span class="p">,</span> <span class="nv">$validations</span> <span class="o">=</span> <span class="k">array</span> <span class="p">())</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">is_string</span> <span class="p">(</span><span class="nv">$validations</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$validations</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$validations</span> <span class="o">=</span> <span class="nb">parse_ini_file</span> <span class="p">(</span><span class="nv">$validations</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nv">$failed</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
+  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$validations</span> <span class="k">as</span> <span class="nv">$name</span> <span class="o">=&gt;</span> <span class="nv">$validators</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">foreach</span> <span class="p">(</span><span class="nv">$validators</span> <span class="k">as</span> <span class="nv">$type</span> <span class="o">=&gt;</span> <span class="nv">$validator</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$type</span> <span class="o">==</span> <span class="s1">&#39;skip_if_empty&#39;</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">if</span> <span class="p">(</span><span class="k">empty</span> <span class="p">(</span><span class="nv">$values</span><span class="p">[</span><span class="nv">$name</span><span class="p">]))</span> <span class="p">{</span>
+      <span class="k">break</span><span class="p">;</span>
+     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">continue</span><span class="p">;</span>
+     <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">Form</span><span class="o">::</span><span class="na">verify_value</span> <span class="p">(</span><span class="nv">$values</span><span class="p">[</span><span class="nv">$name</span><span class="p">],</span> <span class="nv">$type</span><span class="p">,</span> <span class="nv">$validator</span><span class="p">))</span> <span class="p">{</span>
+     <span class="nv">$failed</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$name</span><span class="p">;</span>
+     <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+   <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$failed</span><span class="p">;</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div></pre></div>            </td>
+          </tr>
+              </tbody>
     </table>
   </div>
 </body>

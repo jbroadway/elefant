@@ -2,61 +2,475 @@
 
 <html>
 <head>
-  <title><?=$title?></title>
+  <title>Database.php</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="layout.css" />
   <style>
-    <?=preg_replace('/\s\s+/', ' ',$style)?>
+    /*--------------------- Layout and Typography ----------------------------*/
+body { font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif; font-size: 15px; line-height: 22px; color: #252519; margin: 0; padding: 0;
+}
+a { color: #261a3b;
+} a:visited { color: #261a3b; }
+p { margin: 0 0 15px 0;
+}
+h1, h2, h3, h4, h5, h6 { margin: 40px 0 15px 0;
+} h3, h4, h5, h6 { margin-top: 20px; }
+#container { position: relative;
+}
+#background { position: fixed; top: 0; left: 575px; right: 0; bottom: 0; background: #f5f5ff; border-left: 1px solid #e5e5ee; z-index: -1;
+}
+#jump_to, #jump_page { background: white; -webkit-box-shadow: 0 0 25px #777; -moz-box-shadow: 0 0 25px #777; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; font: 10px Arial; text-transform: uppercase; cursor: pointer; text-align: right;
+}
+#jump_to, #jump_wrapper { position: fixed; right: 0; top: 0; padding: 5px 10px;
+} #jump_wrapper { padding: 0; display: none; } #jump_to:hover #jump_wrapper { display: block; } #jump_page { padding: 5px 0 3px; margin: 0 0 25px 25px; overflow:hidden; } #jump_page .source { display: block; padding: 5px 10px; text-decoration: none; border-top: 1px solid #eee; float:left; min-width:180px; text-align:left; text-transform:none; font-size:11px; } #jump_page .source:hover { background: #f5f5ff; } #jump_page .source:first-child { }
+table td { border: 0; outline: 0;
+} td.docs, th.docs { max-width: 450px; min-width: 450px; min-height: 5px; padding: 10px 25px 1px 50px; overflow-x: hidden; vertical-align: top; text-align: left; } .docs pre { margin: 15px 0 15px; padding-left: 15px; } .docs p tt, .docs p code { background: #f8f8ff; border: 1px solid #dedede; font-size: 12px; padding: 0 0.2em; } .pilwrap { position: relative; } .pilcrow { font: 12px Arial; text-decoration: none; color: #454545; position: absolute; top: 3px; left: -20px; padding: 1px 2px; opacity: 0; -webkit-transition: opacity 0.2s linear; } td.docs:hover .pilcrow { opacity: 1; } td.code, th.code { padding: 14px 15px 16px 25px; width: 100%; vertical-align: top; background: #f5f5ff; border-left: 1px solid #e5e5ee; } pre, tt, code { font-size: 12px; line-height: 18px; font-family: Monaco, Consolas, "Lucida Console", monospace; margin: 0; padding: 0; } /*---------------------- Syntax Highlighting -----------------------------*/
+td.linenos { background-color: #f0f0f0; padding-right: 10px; }
+span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
+body .hll { background-color: #ffffcc }
+body .c { color: #408080; font-style: italic } /* Comment */
+body .err { border: 1px solid #FF0000 } /* Error */
+body .k { color: #954121 } /* Keyword */
+body .o { color: #666666 } /* Operator */
+body .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+body .cp { color: #BC7A00 } /* Comment.Preproc */
+body .c1 { color: #408080; font-style: italic } /* Comment.Single */
+body .cs { color: #408080; font-style: italic } /* Comment.Special */
+body .gd { color: #A00000 } /* Generic.Deleted */
+body .ge { font-style: italic } /* Generic.Emph */
+body .gr { color: #FF0000 } /* Generic.Error */
+body .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+body .gi { color: #00A000 } /* Generic.Inserted */
+body .go { color: #808080 } /* Generic.Output */
+body .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+body .gs { font-weight: bold } /* Generic.Strong */
+body .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+body .gt { color: #0040D0 } /* Generic.Traceback */
+body .kc { color: #954121 } /* Keyword.Constant */
+body .kd { color: #954121; font-weight: bold } /* Keyword.Declaration */
+body .kn { color: #954121; font-weight: bold } /* Keyword.Namespace */
+body .kp { color: #954121 } /* Keyword.Pseudo */
+body .kr { color: #954121; font-weight: bold } /* Keyword.Reserved */
+body .kt { color: #B00040 } /* Keyword.Type */
+body .m { color: #666666 } /* Literal.Number */
+body .s { color: #219161 } /* Literal.String */
+body .na { color: #7D9029 } /* Name.Attribute */
+body .nb { color: #954121 } /* Name.Builtin */
+body .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+body .no { color: #880000 } /* Name.Constant */
+body .nd { color: #AA22FF } /* Name.Decorator */
+body .ni { color: #999999; font-weight: bold } /* Name.Entity */
+body .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+body .nf { color: #0000FF } /* Name.Function */
+body .nl { color: #A0A000 } /* Name.Label */
+body .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+body .nt { color: #954121; font-weight: bold } /* Name.Tag */
+body .nv { color: #19469D } /* Name.Variable */
+body .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+body .w { color: #bbbbbb } /* Text.Whitespace */
+body .mf { color: #666666 } /* Literal.Number.Float */
+body .mh { color: #666666 } /* Literal.Number.Hex */
+body .mi { color: #666666 } /* Literal.Number.Integer */
+body .mo { color: #666666 } /* Literal.Number.Oct */
+body .sb { color: #219161 } /* Literal.String.Backtick */
+body .sc { color: #219161 } /* Literal.String.Char */
+body .sd { color: #219161; font-style: italic } /* Literal.String.Doc */
+body .s2 { color: #219161 } /* Literal.String.Double */
+body .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+body .sh { color: #219161 } /* Literal.String.Heredoc */
+body .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+body .sx { color: #954121 } /* Literal.String.Other */
+body .sr { color: #BB6688 } /* Literal.String.Regex */
+body .s1 { color: #219161 } /* Literal.String.Single */
+body .ss { color: #19469D } /* Literal.String.Symbol */
+body .bp { color: #954121 } /* Name.Builtin.Pseudo */
+body .vc { color: #19469D } /* Name.Variable.Class */
+body .vg { color: #19469D } /* Name.Variable.Global */
+body .vi { color: #19469D } /* Name.Variable.Instance */
+body .il { color: #666666 } /* Literal.Number.Integer.Long */ /********** PHP Comment Additions ********/
+td.docs .docparam {color:#DB251A;font-weight:bold;}
   </style>
 </head>
 <body>
   <div id="container">
     <div id="background"></div>
-    <?if(count($sources)):?>
-      <div id="jump_to">
+          <div id="jump_to">
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
-            <?foreach($sources as $source):?>
-              <?if(substr_count($path, "/")===0):?>
-                <a class="source" href="./<?=$source["url"]?>">
-              <?else:?>
-              <a class="source" href="<?=str_repeat("../",substr_count($path, "/"))?><?=$source["url"]?>">
-              <?endif?>
-                <?=$source["name"]?>
-              </a>
-            <?endforeach?>
-          </div>
+                                          <a class="source" href="./ActiveResource.html">
+                              ActiveResource.php              </a>
+                                          <a class="source" href="./Autoloader.html">
+                              Autoloader.php              </a>
+                                          <a class="source" href="./Cache.html">
+                              Cache.php              </a>
+                                          <a class="source" href="./Controller.html">
+                              Controller.php              </a>
+                                          <a class="source" href="./Database.html">
+                              Database.php              </a>
+                                          <a class="source" href="./Form.html">
+                              Form.php              </a>
+                                          <a class="source" href="./Functions.html">
+                              Functions.php              </a>
+                                          <a class="source" href="./I18n.html">
+                              I18n.php              </a>
+                                          <a class="source" href="./Model.html">
+                              Model.php              </a>
+                                          <a class="source" href="./Page.html">
+                              Page.php              </a>
+                                          <a class="source" href="./Template.html">
+                              Template.php              </a>
+                      </div>
         </div>
       </div>
-    <?endif?>
-    <table cellpadding="0" cellspacing="0">
+        <table cellpadding="0" cellspacing="0">
       <thead>
         <tr>
           <th class="docs">
             <h1>
-              <?=$title?>
-            </h1>
+              Database.php            </h1>
           </th>
           <th class="code">
           </th>
         </tr>
       </thead>
       <tbody>
-        <?foreach((array)$sections["docs"] as $count=>$section):?>
-          <tr id="section-<?=$count?>">
+                  <tr id="section-0">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-<?=$count?>">&#182;</a>
+                <a class="pilcrow" href="#section-0">&#182;</a>
               </div>
-              <?=$sections["docs"][$count]?>
+              <p>The database package is just a list of functions that act on
+ a global <code>$db</code> PDO object. These provide direct access to the database
+ through a set of convenience functions, and can help reduce
+ direct-to-database logic down to just one or two lines of code.</p>
+
+<p>For object modelling, see <code>lib/Model.php</code>.</p>
+
+<p>Usage:</p>
+
+<pre><code> if (! db_open (array (
+     'driver' =&gt; 'sqlite', 'file' =&gt; 'conf/site.db'
+ ))) {
+     die (db_error ());
+ }
+
+ db_execute (
+     'insert into sometable values (%s, %s)', 'one', 'two'
+ );
+
+ $id = db_lastid ();
+
+ $res = db_fetch_array ('select * from sometable');
+ foreach ($res as $row) {
+     echo $row-&gt;fieldname;
+ }
+
+ $row = db_single ('select * from sometable where id = %s', $id);
+
+ $fieldname = db_shift (
+     'select fieldname from sometable where id = %s', $id
+ );
+</code></pre>
+
+<p>Note that values inserted in the above way are automatically
+ escaped upon insertion.</p>
             </td>
             <td class="code">
-              <?=$sections["code"][$count]?>
-            </td>
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_open</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">global</span> <span class="nv">$db</span><span class="p">,</span> <span class="nv">$db_err</span><span class="p">;</span>
+ <span class="k">try</span> <span class="p">{</span>
+  <span class="k">switch</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;driver&#39;</span><span class="p">])</span> <span class="p">{</span>
+   <span class="k">case</span> <span class="s1">&#39;sqlite&#39;</span><span class="o">:</span>
+    <span class="nv">$db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PDO</span> <span class="p">(</span><span class="s1">&#39;sqlite:&#39;</span> <span class="o">.</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]);</span>
+    <span class="k">break</span><span class="p">;</span>
+   <span class="k">default</span><span class="o">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">],</span> <span class="s1">&#39;:&#39;</span><span class="p">))</span> <span class="p">{</span>
+     <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="s1">&#39;;port=&#39;</span><span class="p">,</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">]);</span>
+    <span class="p">}</span>
+    <span class="nv">$db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PDO</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;driver&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39;:host=&#39;</span> <span class="o">.</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39;;dbname=&#39;</span> <span class="o">.</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">],</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;pass&#39;</span><span class="p">]);</span>
+  <span class="p">}</span>
+ <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">PDOException</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$db_err</span> <span class="o">=</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span> <span class="p">();</span>
+  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">setAttribute</span> <span class="p">(</span><span class="nx">PDO</span><span class="o">::</span><span class="na">ATTR_ERRMODE</span><span class="p">,</span> <span class="nx">PDO</span><span class="o">::</span><span class="na">ERRMODE_EXCEPTION</span><span class="p">);</span>
+ <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">setAttribute</span> <span class="p">(</span><span class="nx">PDO</span><span class="o">::</span><span class="na">ATTR_DEFAULT_FETCH_MODE</span><span class="p">,</span> <span class="nx">PDO</span><span class="o">::</span><span class="na">FETCH_OBJ</span><span class="p">);</span>
+ <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+<span class="p">}</span></pre></div>            </td>
           </tr>
-        <?endforeach?>
-      </tbody>
+                  <tr id="section-1">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>Get the last error message.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_error</span> <span class="p">()</span> <span class="p">{</span>
+ <span class="k">global</span> <span class="nv">$db_err</span><span class="p">;</span>
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$db_err</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nv">$db_err</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-2">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Normalizes arguments passed as an array, object, or as
+ multiple extra parameters.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_args</span> <span class="p">(</span><span class="nv">$args</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$args</span><span class="p">)</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+ <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$args</span><span class="p">)</span> <span class="o">==</span> <span class="m">1</span> <span class="o">&amp;&amp;</span> <span class="nb">is_object</span> <span class="p">(</span><span class="nv">$args</span><span class="p">[</span><span class="m">0</span><span class="p">]))</span> <span class="p">{</span>
+  <span class="nv">$res</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
+  <span class="k">foreach</span> <span class="p">((</span><span class="k">array</span><span class="p">)</span> <span class="nv">$args</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="k">as</span> <span class="nv">$arg</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$res</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$arg</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
+ <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$args</span><span class="p">)</span> <span class="o">==</span> <span class="m">1</span> <span class="o">&amp;&amp;</span> <span class="nb">is_array</span> <span class="p">(</span><span class="nv">$args</span><span class="p">[</span><span class="m">0</span><span class="p">]))</span> <span class="p">{</span>
+  <span class="nv">$res</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
+  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$args</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="k">as</span> <span class="nv">$arg</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$res</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$arg</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">return</span> <span class="nv">$args</span><span class="p">;</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-3">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Fetch an array of all result objects.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_fetch_array</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">global</span> <span class="nv">$db</span><span class="p">,</span> <span class="nv">$db_err</span><span class="p">,</span> <span class="nv">$db_sql</span><span class="p">,</span> <span class="nv">$db_args</span><span class="p">;</span>
+ <span class="nv">$args</span> <span class="o">=</span> <span class="nb">func_get_args</span> <span class="p">();</span>
+ <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$args</span> <span class="o">=</span> <span class="nx">db_args</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$db_sql</span> <span class="o">=</span> <span class="nv">$sql</span><span class="p">;</span>
+ <span class="nv">$db_args</span> <span class="o">=</span> <span class="nv">$args</span><span class="p">;</span>
+
+ <span class="k">try</span> <span class="p">{</span>
+  <span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">prepare</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
+  <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">fetchAll</span> <span class="p">();</span>
+ <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">PDOException</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$db_err</span> <span class="o">=</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span> <span class="p">();</span>
+  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+ <span class="p">}</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-4">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Execute a statement and return true/false.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_execute</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">global</span> <span class="nv">$db</span><span class="p">,</span> <span class="nv">$db_err</span><span class="p">,</span> <span class="nv">$db_sql</span><span class="p">,</span> <span class="nv">$db_args</span><span class="p">;</span>
+ <span class="nv">$args</span> <span class="o">=</span> <span class="nb">func_get_args</span> <span class="p">();</span>
+ <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$args</span> <span class="o">=</span> <span class="nx">db_args</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$db_sql</span> <span class="o">=</span> <span class="nv">$sql</span><span class="p">;</span>
+ <span class="nv">$db_args</span> <span class="o">=</span> <span class="nv">$args</span><span class="p">;</span>
+
+ <span class="k">try</span> <span class="p">{</span>
+  <span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">prepare</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">PDOException</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$db_err</span> <span class="o">=</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span> <span class="p">();</span>
+  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+ <span class="p">}</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-5">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Fetch a single object.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_single</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">global</span> <span class="nv">$db</span><span class="p">,</span> <span class="nv">$db_err</span><span class="p">,</span> <span class="nv">$db_sql</span><span class="p">,</span> <span class="nv">$db_args</span><span class="p">;</span>
+ <span class="nv">$args</span> <span class="o">=</span> <span class="nb">func_get_args</span> <span class="p">();</span>
+ <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$args</span> <span class="o">=</span> <span class="nx">db_args</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$db_sql</span> <span class="o">=</span> <span class="nv">$sql</span><span class="p">;</span>
+ <span class="nv">$db_args</span> <span class="o">=</span> <span class="nv">$args</span><span class="p">;</span>
+
+ <span class="k">try</span> <span class="p">{</span>
+  <span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">prepare</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
+  <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">fetchObject</span> <span class="p">();</span>
+ <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">PDOException</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$db_err</span> <span class="o">=</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span> <span class="p">();</span>
+  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+ <span class="p">}</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-6">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Fetch the a single value from the first result returned.
+ Useful for <code>count()</code> and other such calculations, and when
+ you only need a single piece of information.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_shift</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">global</span> <span class="nv">$db</span><span class="p">,</span> <span class="nv">$db_err</span><span class="p">,</span> <span class="nv">$db_sql</span><span class="p">,</span> <span class="nv">$db_args</span><span class="p">;</span>
+ <span class="nv">$args</span> <span class="o">=</span> <span class="nb">func_get_args</span> <span class="p">();</span>
+ <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$args</span> <span class="o">=</span> <span class="nx">db_args</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$db_sql</span> <span class="o">=</span> <span class="nv">$sql</span><span class="p">;</span>
+ <span class="nv">$db_args</span> <span class="o">=</span> <span class="nv">$args</span><span class="p">;</span>
+
+ <span class="k">try</span> <span class="p">{</span>
+  <span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">prepare</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
+  <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+  <span class="nv">$res</span> <span class="o">=</span> <span class="p">(</span><span class="k">array</span><span class="p">)</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">fetchObject</span> <span class="p">();</span>
+  <span class="k">return</span> <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+ <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">PDOException</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$db_err</span> <span class="o">=</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span> <span class="p">();</span>
+  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+ <span class="p">}</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-7">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Fetch an array of a single field.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_shift_array</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">global</span> <span class="nv">$db</span><span class="p">,</span> <span class="nv">$db_err</span><span class="p">,</span> <span class="nv">$db_sql</span><span class="p">,</span> <span class="nv">$db_args</span><span class="p">;</span>
+ <span class="nv">$args</span> <span class="o">=</span> <span class="nb">func_get_args</span> <span class="p">();</span>
+ <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$args</span> <span class="o">=</span> <span class="nx">db_args</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$db_sql</span> <span class="o">=</span> <span class="nv">$sql</span><span class="p">;</span>
+ <span class="nv">$db_args</span> <span class="o">=</span> <span class="nv">$args</span><span class="p">;</span>
+
+ <span class="k">try</span> <span class="p">{</span>
+  <span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">prepare</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
+  <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+  <span class="nv">$res</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">fetchAll</span> <span class="p">();</span>
+  <span class="nv">$out</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
+  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$res</span> <span class="k">as</span> <span class="nv">$row</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$row</span> <span class="o">=</span> <span class="p">(</span><span class="k">array</span><span class="p">)</span> <span class="nv">$row</span><span class="p">;</span>
+   <span class="nv">$out</span><span class="p">[]</span> <span class="o">=</span> <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$row</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$out</span><span class="p">;</span>
+ <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">PDOException</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$db_err</span> <span class="o">=</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span> <span class="p">();</span>
+  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+ <span class="p">}</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-8">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Fetch an associative array of two fields, the first
+ being the keys and the second being the values.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_pairs</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">global</span> <span class="nv">$db</span><span class="p">,</span> <span class="nv">$db_err</span><span class="p">,</span> <span class="nv">$db_sql</span><span class="p">,</span> <span class="nv">$db_args</span><span class="p">;</span>
+ <span class="nv">$args</span> <span class="o">=</span> <span class="nb">func_get_args</span> <span class="p">();</span>
+ <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$args</span> <span class="o">=</span> <span class="nx">db_args</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$db_sql</span> <span class="o">=</span> <span class="nv">$sql</span><span class="p">;</span>
+ <span class="nv">$db_args</span> <span class="o">=</span> <span class="nv">$args</span><span class="p">;</span>
+
+ <span class="k">try</span> <span class="p">{</span>
+  <span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">prepare</span> <span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
+  <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+  <span class="nv">$res</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">fetchAll</span> <span class="p">();</span>
+  <span class="nv">$out</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
+  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$res</span> <span class="k">as</span> <span class="nv">$row</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$row</span> <span class="o">=</span> <span class="p">(</span><span class="k">array</span><span class="p">)</span> <span class="nv">$row</span><span class="p">;</span>
+   <span class="nv">$out</span><span class="p">[</span><span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$row</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$row</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$out</span><span class="p">;</span>
+ <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">PDOException</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$db_err</span> <span class="o">=</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span> <span class="p">();</span>
+  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+ <span class="p">}</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-9">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Get the last inserted id value.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_lastid</span> <span class="p">()</span> <span class="p">{</span>
+ <span class="k">global</span> <span class="nv">$db</span><span class="p">;</span>
+ <span class="k">return</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">lastInsertId</span> <span class="p">();</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-10">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Get the last error message directly from PDO.
+ Useful for queries that were done with the global $db
+ object directly.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_last_error</span> <span class="p">()</span> <span class="p">{</span>
+ <span class="k">global</span> <span class="nv">$db</span><span class="p">;</span>
+ <span class="nv">$err</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">errorInfo</span> <span class="p">();</span>
+ <span class="k">return</span> <span class="nv">$err</span><span class="p">[</span><span class="m">2</span><span class="p">];</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-11">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Fetch the last SQL statement.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_last_sql</span> <span class="p">()</span> <span class="p">{</span>
+ <span class="k">return</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;db_sql&#39;</span><span class="p">];</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-12">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Fetch the arguments for the last SQL statement.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_last_args</span> <span class="p">()</span> <span class="p">{</span>
+ <span class="k">return</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;db_args&#39;</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div></pre></div>            </td>
+          </tr>
+              </tbody>
     </table>
   </div>
 </body>
