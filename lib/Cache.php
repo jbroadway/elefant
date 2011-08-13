@@ -8,7 +8,15 @@
 class Cache {
 	var $memory = array ();
 
-	function Cache () {
+	function __construct () {
+	}
+
+	function cache ($key, $timeout, $function) {
+		if (($val = $this->get ($key)) === false) {
+			$val = $function ();
+			$this->set ($key, $val, $timeout);
+		}
+		return $val;
 	}
 
 	function get ($key) {

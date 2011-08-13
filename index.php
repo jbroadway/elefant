@@ -40,9 +40,9 @@ $controller = new Controller ($conf['Hooks']);
 $tpl = new Template ($conf['General']['charset']);
 
 // initialize cache
-if (isset ($conf['Cache']['server']) && extension_loaded ('memcache')) {
-	$memcache = new Memcache;
-	foreach ($conf['Cache']['server'] as $s) {
+if (isset ($conf['Memcache']['server']) && extension_loaded ('memcache')) {
+	$memcache = new MemcacheExt;
+	foreach ($conf['Memcache']['server'] as $s) {
 		list ($server, $port) = explode (':', $s);
 		$memcache->addServer ($server, $port);
 	}
