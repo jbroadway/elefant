@@ -287,6 +287,9 @@ class Template {
 			if (strpos ($part, '{!') === 0) {
 				$part = trim ($part, '{! }');
 				$url = parse_url ($part);
+				if (! isset ($url['host'])) {
+					$url['host'] = '';
+				}
 				if (isset ($url['query'])) {
 					parse_str (html_entity_decode ($url['query'], ENT_COMPAT, 'UTF-8'), $data);
 				} else {
