@@ -80,6 +80,9 @@ class NavigationTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($n->path ('blog'), array ('index', 'blog'));
 		$this->assertEquals ($n->path ('about'), array ('index', 'blog', 'about'));
 
+		// Test sections
+		$this->assertEquals ($n->sections (), array ('index', 'blog'));
+
 		// Remove about and verify.
 		$n->remove ('about');
 		$this->assertFalse (isset ($n->node ('blog')->children));

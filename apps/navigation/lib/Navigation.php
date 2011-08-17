@@ -62,6 +62,24 @@ class Navigation {
 	}
 
 	/**
+	 * Get the section nodes, meaning all nodes that have sub-nodes.
+	 */
+	function sections ($tree = false) {
+		if (! $tree) {
+			$tree = $this->tree;
+		}
+
+		$sections = array ();
+		foreach ($tree as $item) {
+			if (isset ($item->children)) {
+				$sections[] = $item->attr->id;
+				$sections = array_merge ($sections, $this->sections ($item->children));
+			}
+		}
+		return $sections;
+	}
+
+	/**
 	 * Find a specific node in the tree.
 	 */
 	function node ($id, $tree = false) {
@@ -352,12 +370,20 @@ class Navigation {
 	 * Save the tree out to the file.
 	 */
 	function save () {
-		if (! file_put_contents ($this->file, json_encode ($this->tree, JSON_NUMERIC_CHECK))) {
+		if (! file_put_contents ($this->file, json_encode ($this->tree))) {
 			$this->error = 'Failed to save file: ' . $this->file;
 			return false;
 		}
 		return true;
 	}
+}
+
+/**
+ * Alias of Navigation::sections() for embed dialog.
+ */
+function navigation_get_sections () {
+	$n = new Navigation;
+	return $n->sections ();
 }
 
 ?>
