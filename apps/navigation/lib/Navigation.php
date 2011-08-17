@@ -191,6 +191,9 @@ class Navigation {
 					if (count ($ref->children) == 0) {
 						unset ($ref->children);
 						unset ($ref->state);
+					} else {
+						// prevent array from becoming associative on save
+						$ref->children = array_values ($ref->children);
 					}
 					return true;
 				}
@@ -208,6 +211,8 @@ class Navigation {
 					}
 					
 					unset ($this->tree[$key]);
+					// prevent array from becoming associative on save
+					$this->tree = array_values ($this->tree);
 					return true;
 				}
 			}
@@ -347,7 +352,7 @@ class Navigation {
 	 * Save the tree out to the file.
 	 */
 	function save () {
-		if (! file_put_contents ($this->file, json_encode ($this->tree))) {
+		if (! file_put_contents ($this->file, json_encode ($this->tree, JSON_NUMERIC_CHECK))) {
 			$this->error = 'Failed to save file: ' . $this->file;
 			return false;
 		}
