@@ -11,8 +11,4 @@ to[not empty] = 1
 to[regex] = "|^http://.+$|"
 to[message] = Please enter a valid URL.
 
-[admin/menu]
-
-label = "Pages: Menu Links"
-
 ; */ ?>

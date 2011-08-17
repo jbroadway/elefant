@@ -24,7 +24,6 @@ if ($f->submit ()) {
 	$wp->title = $_POST['title'];
 	$wp->menu_title = $_POST['menu_title'];
 	$wp->window_title = $_POST['window_title'];
-	$wp->weight = $_POST['weight'];
 	$wp->access = $_POST['access'];
 	$wp->layout = $_POST['layout'];
 	$wp->description = $_POST['description'];
