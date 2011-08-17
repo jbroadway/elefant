@@ -262,10 +262,9 @@ class Navigation {
 		$node = $this->node ($id);
 		switch ($pos) {
 			case 'before':
-				//$this->add ($node, $ref_parent->attr->id);
-				$this->remove_path ($old_path);
+				$this->remove ($id);
 
-				// re-sort
+				// add sorted
 				if ($ref_parent) {
 					$old_children = $ref_parent->children;
 					$new_children = array ();
@@ -300,10 +299,9 @@ class Navigation {
 
 				break;
 			case 'after':
-				//$this->add ($node, $ref_parent->attr->id);
-				$this->remove_path ($old_path);
+				$this->remove ($id);
 
-				// re-sort
+				// add sorted
 				if ($ref_parent) {
 					$old_children = $ref_parent->children;
 					$new_children = array ();
@@ -338,7 +336,7 @@ class Navigation {
 
 				break;
 			case 'inside':
-				$this->remove_path ($old_path);
+				$this->remove ($id);
 				$this->add ($node, $ref);
 				break;
 		}
