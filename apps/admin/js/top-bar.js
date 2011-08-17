@@ -7,15 +7,21 @@ jQuery.add_notification = function (msg) {
 };
 
 $(function () {
+	var sliding_up = false;
 	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img src="/apps/admin/css/admin/elefant_logo.png" alt="Elefant CMS" /></a></div>');
 	$.get ('/admin/head/links', function (res) {
 		$('#admin-links').append (res);
 		$('#admin-tools').hover (function () {
-			$('#admin-tools-list').slideDown ('fast').show ();
+			if (! sliding_up) {
+				$('#admin-tools-list').slideDown ('fast').show ();
+			}
 			$(this).parent ().hover (
 				function () {},
 				function () {
-					$('#admin-tools-list').slideUp ('slow');
+					sliding_up = true;
+					$('#admin-tools-list').slideUp ('slow', function () {
+						sliding_up = false;
+					});
 				}
 			);
 		})
