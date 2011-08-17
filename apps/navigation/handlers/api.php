@@ -21,8 +21,12 @@ switch ($this->params[0]) {
 	case 'add':
 		$id = $_POST['page'];
 		$parent = $_POST['parent'];
-		if ($nav->add ($id, $parent)) {
-			$out = sprintf ('Page %s added to tree under %s.', $id, $parent);
+		if ($nav->add ($id, $parent) && $nav->save ()) {
+			$out = array (
+				'msg' => sprintf ('Page %s added to tree under %s.', $id, $parent),
+				'page' => $id,
+				'parent' => $parent
+			);
 		} else {
 			$error = $nav->error;
 		}
@@ -31,8 +35,13 @@ switch ($this->params[0]) {
 		$id = $_POST['page'];
 		$ref = $_POST['ref'];
 		$pos = $_POST['pos'];
-		if ($nav->move ($id, $ref, $pos)) {
-			$out = sprintf ('Page %s moved to %s %s.', $id, $pos, $ref);
+		if ($nav->move ($id, $ref, $pos) && $nav->save ()) {
+			$out = array (
+				'msg' => sprintf ('Page %s moved to %s %s.', $id, $pos, $ref),
+				'page' => $id,
+				'ref' => $ref,
+				'pos' => $pos
+			);
 		} else {
 			$error = $nav->error;
 		}

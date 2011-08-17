@@ -1,7 +1,36 @@
 <?php
 
 /**
- * Handles managing the navigation tree as a json object.
+ * Handles managing the navigation tree as a jstree-compatible
+ * json object. Items in the tree have the following structure:
+ *
+ *     {"data":"Title","attr":{"id":"page-id","sort":0}}
+ *
+ * Item that have children will have an additional `children`
+ * property that is an array of other items.
+ *
+ * Usage:
+ *
+ *     $n = new Navigation;
+ *     // $n->tree contains data from conf/navigation.tree
+ *
+ *     $n->add ('index');
+ *     $n->add ('blog', 'index');
+ *
+ *     $node = $n->node ('blog');
+ *     // {"data":"Blog","attr":{"id":"blog","sort":0}}
+ *
+ *     $path = $n->path ('blog');
+ *     // array ('index', 'blog')
+ *
+ *     $n->move ('blog', 'index', 'before');
+ *     $ids = $n->get_all_ids ();
+ *     // array ('blog', 'index')
+ *
+ *     $n->remove ('blog');
+ *
+ *     // save to conf/navigation.json
+ *     $n->save ();
  */
 class Navigation {
 	var $file = 'conf/navigation.json';
@@ -35,7 +64,7 @@ class Navigation {
 	/**
 	 * Find a specific node in the tree.
 	 */
-	function find_ref ($id, $tree = false) {
+	function node ($id, $tree = false) {
 		if (! $tree) {
 			$tree = $this->tree;
 		}
@@ -45,7 +74,7 @@ class Navigation {
 				return $item;
 			}
 			if (isset ($item->children)) {
-				$res = $this->find_ref ($id, $item->children);
+				$res = $this->node ($id, $item->children);
 				if ($res) {
 					return $res;
 				}
@@ -57,7 +86,7 @@ class Navigation {
 	/**
 	 * Find the parent of a specific node in the tree.
 	 */
-	function find_parent ($id, $tree = false) {
+	function parent ($id, $tree = false) {
 		if (! $tree) {
 			$tree = $this->tree;
 		}
@@ -75,7 +104,7 @@ class Navigation {
 						return $item;
 					}
 				}
-				$parent = $this->find_parent ($id, $item->children);
+				$parent = $this->parent ($id, $item->children);
 			}
 		}
 		return $parent;
@@ -84,7 +113,7 @@ class Navigation {
 	/**
 	 * Find the path to a specific node in the tree, including the node itself.
 	 */
-	function find_path ($id, $tree = false) {
+	function path ($id, $tree = false) {
 		if (! $tree) {
 			$tree = $this->tree;
 		}
@@ -93,7 +122,7 @@ class Navigation {
 			if ($item->attr->id == $id) {
 				return array ($id);
 			} elseif (isset ($item->children)) {
-				$res = $this->find_path ($id, $item->children);
+				$res = $this->path ($id, $item->children);
 				if ($res) {
 					return array_merge (array ($item->attr->id), $res);
 				}
@@ -124,7 +153,7 @@ class Navigation {
 
 		// locate $parent and add child
 		if ($parent) {
-			$ref = $this->find_ref ($parent);
+			$ref = $this->node ($parent);
 			if (! isset ($ref->children)) {
 				$ref->children = array ();
 			}
@@ -144,7 +173,7 @@ class Navigation {
 	 * unless you set $recursive to false.
 	 */
 	function remove ($id, $recursive = true) {
-		$ref = $this->find_parent ($id);
+		$ref = $this->parent ($id);
 
 		if ($ref) {
 			foreach ($ref->children as $key => $child) {
@@ -197,7 +226,7 @@ class Navigation {
 		}
 
 		if (count ($path) > 1) {
-			$ref = $this->find_ref ($path[count ($path) - 2]);
+			$ref = $this->node ($path[count ($path) - 2]);
 		}
 
 		if ($ref) {
@@ -228,29 +257,98 @@ class Navigation {
 	 * inside).
 	 */
 	function move ($id, $ref, $pos = 'inside') {
-		$old_path = $this->find_path ($id);
-		$ref_path = $this->find_ref ($ref);
-		$node = $this->find_ref ($id);
+		$old_path = $this->path ($id);
+		$ref_parent = $this->parent ($ref);
+		$node = $this->node ($id);
 		switch ($pos) {
 			case 'before':
-				$this->remove ($old_path);
-				// add to new_path before item
+				//$this->add ($node, $ref_parent->attr->id);
+				$this->remove_path ($old_path);
+
+				// re-sort
+				if ($ref_parent) {
+					$old_children = $ref_parent->children;
+					$new_children = array ();
+					$sort = 0;
+					foreach ($old_children as $child) {
+						if ($child->attr->id == $ref) {
+							$node->attr->sort = $sort;
+							$new_children[] = $node;
+							$sort++;
+						}
+						$child->attr->sort = $sort;
+						$new_children[] = $child;
+						$sort++;
+					}
+					$ref_parent->children = $new_children;
+				} else {
+					$old_children = $this->tree;
+					$new_children = array ();
+					$sort = 0;
+					foreach ($old_children as $child) {
+						if ($child->attr->id == $ref) {
+							$node->attr->sort = $sort;
+							$new_children[] = $node;
+							$sort++;
+						}
+						$child->attr->sort = $sort;
+						$new_children[] = $child;
+						$sort++;
+					}
+					$this->tree = $new_children;
+				}
+
 				break;
 			case 'after':
-				$this->remove ($old_path);
-				// add to new_path after item
+				//$this->add ($node, $ref_parent->attr->id);
+				$this->remove_path ($old_path);
+
+				// re-sort
+				if ($ref_parent) {
+					$old_children = $ref_parent->children;
+					$new_children = array ();
+					$sort = 0;
+					foreach ($old_children as $child) {
+						$child->attr->sort = $sort;
+						$new_children[] = $child;
+						$sort++;
+						if ($child->attr->id == $ref) {
+							$node->attr->sort = $sort;
+							$new_children[] = $node;
+							$sort++;
+						}
+					}
+					$ref_parent->children = $new_children;
+				} else {
+					$old_children = $this->tree;
+					$new_children = array ();
+					$sort = 0;
+					foreach ($old_children as $child) {
+						$child->attr->sort = $sort;
+						$new_children[] = $child;
+						$sort++;
+						if ($child->attr->id == $ref) {
+							$node->attr->sort = $sort;
+							$new_children[] = $node;
+							$sort++;
+						}
+					}
+					$this->tree = $new_children;
+				}
+
 				break;
 			case 'inside':
-				$this->add ($node, $ref);
 				$this->remove_path ($old_path);
+				$this->add ($node, $ref);
 				break;
 		}
+		return true;
 	}
 
 	/**
 	 * Save the tree out to the file.
 	 */
-	function save_tree () {
+	function save () {
 		if (! file_put_contents ($this->file, json_encode ($this->tree))) {
 			$this->error = 'Failed to save file: ' . $this->file;
 			return false;
