@@ -1,0 +1,106 @@
+<script>
+
+$(function () {
+	var $navigation = $('#navigation');
+	$navigation.bind ('move_node.jstree', function (evt, data) {
+		if (data.rslt.p == 'inside') {
+			$navigation.jstree ('open_node', data.rslt.r[0]);
+		}
+		$.post ('/navigation/api/move', {page: data.rslt.o[0].id, ref: data.rslt.r[0].id, pos: data.rslt.p}, function (res) {
+			//console.log (res.data);
+			return true;
+		});
+	}).jstree ({
+		plugins: ['themes', 'json_data', 'sort', 'dnd'],
+		themes: {
+			theme: 'classic',
+			dots: false,
+			icons: false
+		},
+		json_data: {
+			ajax: {
+				url: '/navigation/json'
+			}
+		},
+		dnd: {
+			'drag_finish': function (data) {
+				var new_node = {
+						attr: {
+							id: $(data.o).attr ('id'),
+							sort: $(data.r).find ('> ul > li').length
+						},
+						data: $(data.o).text ()
+					},
+					last = $(data.r).find ('> ul > li').last ();
+
+				if (last.length > 0) {
+					// add after last
+					$navigation.jstree ('create_node', last, 'after', new_node);
+				} else {
+					// first child
+					$navigation.jstree ('create_node', data.r, 'inside', new_node);
+				}
+				$navigation.jstree ('open_node', data.r);
+
+				// remove from other
+				$(data.o).remove ();
+
+				// save to database
+				$.post ('/navigation/api/add', {page: $(data.o).attr('id'), parent: $(data.r).attr('id')}, function (res) {
+					//console.log (res.data);
+					//todo: error handling
+					return true;
+				});
+			}
+		},
+		sort: function (a, b) {
+			if ($(a).attr ('sort') > $(b).attr ('sort')) {
+				1;
+			}
+			return -1;
+		}
+	});
+});
+
+</script>
+<style>
+
+#pages ul {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+#pages ul li {
+	margin-left: 3px;
+	padding-left: 0;
+	list-style-type: square;
+	list-style-position: inside;
+}
+
+#pages ul li:hover {
+	cursor: pointer;
+}
+
+.jstree-classic.jstree-focused {
+	background: inherit !important;
+}
+
+</style>
+
+<div style="width: 48%; float: left">
+<h4>{"Site tree"}</h4>
+<p>{"Drag and drop pages to organize your navigation."}</p>
+<div id="navigation"></div>
+</div>
+
+<div style="width: 48%; float: right">
+<h4>{"Other pages"}</h4>
+<p>{"Drag these pages to the site tree to include them in your navigation."}</p>
+<div id="pages">
+<ul>
+{% foreach pages %}
+	<li class="jstree-draggable" id="{{ loop_index }}">{{ loop_value }}</li>
+{% end %}
+</ul>
+</div>
+</div>
