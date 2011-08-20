@@ -97,7 +97,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 			$this->assertTrue ($b->fake ());
 		} catch (Exception $e) {
 			$this->assertRegExp (
-				'/Call to undefined method Bar::fake in .+tests\/Model\.php on line [0-9]+/',
+				'/Call to undefined method Bar::fake in .+tests\/ModelTest\.php on line [0-9]+/',
 				$e->getMessage ()
 			);
 		}

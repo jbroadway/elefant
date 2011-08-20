@@ -282,7 +282,7 @@ class NavigationTest extends PHPUnit_Framework_TestCase {
 		 */
 		$n->move ('blog', false);
 		$this->assertEquals ($n->parent ('contact')->attr->id, 'blog');
-		$this->assertEquals ($n->parent ('blog')->attr->id, null);
+		$this->assertEquals ($n->parent ('blog'), null);
 
 		/**
 		 * Move blog to after about under index. New structure:
@@ -321,7 +321,7 @@ class NavigationTest extends PHPUnit_Framework_TestCase {
 		 * - contact
 		 */
 		$n->move ('blog', 'index', 'before');
-		$this->assertEquals ($n->parent ('blog')->attr->id, null);
+		$this->assertEquals ($n->parent ('blog'), null);
 		$this->assertEquals ($n->node ('blog')->attr->sort, 0);
 		$this->assertEquals ($n->node ('index')->attr->sort, 1);
 
@@ -334,7 +334,7 @@ class NavigationTest extends PHPUnit_Framework_TestCase {
 		 * blog
 		 */
 		$n->move ('blog', 'index', 'after');
-		$this->assertEquals ($n->parent ('blog')->attr->id, null);
+		$this->assertEquals ($n->parent ('blog'), null);
 		$this->assertEquals ($n->node ('index')->attr->sort, 0);
 		$this->assertEquals ($n->node ('blog')->attr->sort, 1);
 
@@ -347,7 +347,7 @@ class NavigationTest extends PHPUnit_Framework_TestCase {
 		 * - contact
 		 */
 		$n->move ('index', 'blog', 'after');
-		$this->assertEquals ($n->parent ('blog')->attr->id, null);
+		$this->assertEquals ($n->parent ('blog'), null);
 		$this->assertEquals ($n->node ('blog')->attr->sort, 0);
 		$this->assertEquals ($n->node ('index')->attr->sort, 1);
 		$this->assertEquals (count ($n->node ('index')->children), 2);
@@ -361,7 +361,7 @@ class NavigationTest extends PHPUnit_Framework_TestCase {
 		 * blog
 		 */
 		$n->move ('index', 'blog', 'before');
-		$this->assertEquals ($n->parent ('blog')->attr->id, null);
+		$this->assertEquals ($n->parent ('blog'), null);
 		$this->assertEquals ($n->node ('index')->attr->sort, 0);
 		$this->assertEquals ($n->node ('blog')->attr->sort, 1);
 		$this->assertEquals (count ($n->node ('index')->children), 2);

@@ -4,12 +4,12 @@ require_once ('lib/Database.php');
 require_once ('lib/Model.php');
 require_once ('apps/admin/models/Versions.php');
 
-class Foo extends Model {}
+class Foobar extends Model {}
 
 class VersionsTest extends PHPUnit_Framework_TestCase {
 	function test_versions () {
 		db_open (array ('driver' => 'sqlite', 'file' => ':memory:'));
-		db_execute ('create table foo (id int not null, name char(32) not null)');
+		db_execute ('create table foobar (id int not null, name char(32) not null)');
 		if (! db_execute ('create table versions (
 			id integer primary key,
 			class char(72) not null,
@@ -28,12 +28,12 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 		}
 
 		
-		$foo = new Foo (array ('id' => 1, 'name' => 'Test'));
+		$foo = new Foobar (array ('id' => 1, 'name' => 'Test'));
 		$foo->put ();
 
 		$v = Versions::add ($foo);
 		$this->assertEquals (db_shift ('select count(*) from versions'), 1);
-		$this->assertEquals ($v->class, 'Foo');
+		$this->assertEquals ($v->class, 'Foobar');
 		$this->assertEquals ($v->pkey, 1);
 		$this->assertEquals ($v->user, 0);
 		$foo2 = Versions::restore ($v);
