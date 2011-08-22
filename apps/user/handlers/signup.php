@@ -25,7 +25,7 @@ if ($f->submit ()) {
 				'email' => $_POST['email'],
 				'name' => $_POST['name']
 			)),
-			'From: ' . $conf['General']['site_name'] . ' <' . $conf['General']['email_from'] . '>'
+			'From: ' . conf ('General', 'site_name') . ' <' . conf ('General', 'email_from') . '>'
 		)) {
 			// undo verification since email failed
 			// here we assume they're okay

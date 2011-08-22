@@ -20,7 +20,7 @@ if ($f->submit ()) {
 			'email' => $u->email,
 			'name' => $u->name
 		)),
-		'From: ' . $conf['General']['site_name'] . ' <' . $conf['General']['email_from'] . '>'
+		'From: ' . conf ('General', 'site_name') . ' <' . conf ('General', 'email_from') . '>'
 	)) {
 		@error_log ('Email failed (user/recover): ' . $_POST['email']);
 		$page->title = i18n_get ('An Error Occurred');
