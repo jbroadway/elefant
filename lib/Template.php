@@ -95,6 +95,12 @@
  *
  *     {! app/handler?param=value&another=value2 !}
  *
+ * Or you can precompile them once when the template is compiled so the
+ * output of the handler is hard-coded into the template at compile time
+ * like this:
+ *
+ *     {# app/handler?param=value #}
+ *
  * ## Filters
  *
  * Filtering is supported, and `htmlspecialchars()` is the default
@@ -200,6 +206,7 @@ class Template {
 		$val = preg_replace ('/\{[\'"] ?(.*?) ?[\'"]\}/e', '$this->replace_strings (\'\\1\')', $val);
 		$val = preg_replace ('/\{\% ?(.*?) ?\%\}/e', '$this->replace_blocks (\'\\1\')', $val);
 		$val = preg_replace ('/\{\! ?(.*?) ?\!\}/e', '$this->replace_includes (\'\\1\')', $val);
+		$val = preg_replace ('/\{# ?(.*?) ?#\}/e', '$this->hard_codes (\'\\1\')', $val);
 		return $val;
 	}
 
@@ -274,6 +281,21 @@ class Template {
 			$url['path'],
 			$arr
 		);
+	}
+
+	/**
+	 * Replace `{# app/handler?param=value #}` with the hard-coded output from
+	 * a call to `Controller::run()`. Note that you cannot use sub-expressions
+	 * here like you can with the dynamic `{! app/handler !}` calls.
+	 */
+	function hard_codes ($val) {
+		$url = parse_url ($val);
+		if (isset ($url['query'])) {
+			parse_str (html_entity_decode ($url['query'], ENT_COMPAT, 'UTF-8'), $data);
+		} else {
+			$data = array ();
+		}
+		return $GLOBALS['controller']->run ($url['path'], $data);
 	}
 
 	/**
