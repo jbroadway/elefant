@@ -11,7 +11,8 @@ class Debugger {
 			ob_end_clean ();
 		}
 		printf (
-			"<link rel='stylesheet' href='/apps/admin/css/debugger.css' /><h1>Error: %s</h1>\n",
+			"<link rel='stylesheet' href='/apps/admin/css/debugger.css' /><h1>%s: %s</h1>\n",
+			get_class ($e),
 			$e->getMessage ()
 		);
 		Debugger::show_trace ($e->getTrace ());
