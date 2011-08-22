@@ -200,7 +200,7 @@ class Controller {
 	 * or externally from a browser request.
 	 */
 	function handle ($handler, $internal = true, $data = array ()) {
-		global $controller, $db, $conf, $i18n, $page, $tpl, $memcache;
+		global $controller, $page, $tpl, $memcache;
 		$this->internal = $internal;
 		$data = (array) $data;
 		$this->data = $data;
