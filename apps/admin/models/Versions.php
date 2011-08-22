@@ -42,7 +42,7 @@ class Versions extends Model {
 	/**
 	 * Add a version to the store.
 	 */
-	function add ($obj) {
+	static function add ($obj) {
 		global $user;
 		$v = new Versions (array (
 			'class' => get_class ($obj),
@@ -71,7 +71,7 @@ class Versions extends Model {
 	/**
 	 * Get recent versions by a user or everyone.
 	 */
-	function recent ($user = false, $limit = 10, $offset = 0) {
+	static function recent ($user = false, $limit = 10, $offset = 0) {
 		$v = Versions::query ();
 		if ($user) {
 			$v->where ('user', $user);
@@ -120,7 +120,7 @@ class Versions extends Model {
 	 * on ordinary objects, only Model-based objects and objects returned
 	 * by the recent() and history() methods.
 	 */
-	function diff ($obj1, $obj2) {
+	static function diff ($obj1, $obj2) {
 		if (get_class ($obj1) == 'stdClass') {
 			$obj1 = Versions::restore ($obj1);
 		}
