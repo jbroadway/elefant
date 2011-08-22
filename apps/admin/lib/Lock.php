@@ -134,7 +134,7 @@ class Lock {
 	/**
 	 * Clear all locks held by the current user.
 	 */
-	function clear () {
+	static function clear () {
 		global $user;
 		return db_execute ('delete from `lock` where user = ?', $user->id);
 	}
@@ -142,7 +142,7 @@ class Lock {
 	/**
 	 * Clear all locks.
 	 */
-	function clear_all () {
+	static function clear_all () {
 		return db_execute ('delete from `lock`');
 	}
 }

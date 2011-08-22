@@ -154,7 +154,7 @@ class User extends Model {
 	/**
 	 * Log out and optionally redirect to the specified URL.
 	 */
-	function logout ($redirect_to = false) {
+	static function logout ($redirect_to = false) {
 		global $user;
 		if (! isset ($user)) {
 			User::require_login ();
