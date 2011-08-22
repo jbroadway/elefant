@@ -4,14 +4,14 @@
 <table>
 	<tr>
 		<th>{"Field"}</th>
-		<th width="45%">{{ ts|gmdate ('F j, Y - g:ia', strtotime (%s)) }} <a href="/admin/restore?id={{ $_GET[id] }}">Restore</a></th>
+		<th width="45%">{{ ts|gmdate ('F j, Y - g:ia', strtotime (%s)) }} <a href="/admin/restore?id={{ $_GET['id'] }}">Restore</a></th>
 		<th width="45%">{"Current"}</th>
 	</tr>
 {% foreach fields %}
-	<tr{% if loop_value[diff] %} class="different"{% end %}>
+	<tr{% if loop_value['diff'] %} class="different"{% end %}>
 		<td>{{ loop_index|ucfirst|str_replace ('_', ' ', %s) }}</td>
-		<td>{{ loop_value[old]|none }}</td>
-		<td>{{ loop_value[cur]|none }}</td>
+		<td>{{ loop_value['old']|none }}</td>
+		<td>{{ loop_value['cur']|none }}</td>
 	</tr>
 {% end %}
 </table>
