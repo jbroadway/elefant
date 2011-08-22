@@ -18,6 +18,10 @@ if (get_magic_quotes_gpc ()) {
 // get the global configuration
 $conf = parse_ini_file ('conf/config.php', true);
 date_default_timezone_set($conf['General']['timezone']);
+if ($conf['General']['debug']) {
+	require_once ('lib/Debugger.php');
+	Debugger::start ();
+}
 
 require_once ('conf/version.php');
 require_once ('lib/Autoloader.php');

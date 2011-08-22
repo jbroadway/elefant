@@ -1,0 +1,39 @@
+body {
+	background: #f5f5f5;
+	color: #333;
+	padding: 25px 50px 25px 50px;
+	font: 13px Helvetica, Arial, sans-serif;
+}
+
+h1 {
+	color: #555;
+}
+
+h3 {
+	color: #468;
+}
+
+.file {
+	color: #555;
+}
+
+.line {
+	display: block;
+	float: left;
+	width: 35px;
+	font-weight: bold;
+	color: #f60;
+}
+
+p.code {
+	background: #fff;
+	border: 1px solid #eee;
+	padding: 3px;
+}
+
+.line-number {
+	color: #555;
+	display: block;
+	float: left;
+	width: 35px;
+}

@@ -36,6 +36,11 @@ error_handler = "admin/error"
 
 compress_output = On
 
+; For development, turn debugging on and Elefant will output
+; helpful information on errors.
+
+debug = Off
+
 [I18n]
 
 ; This is the method for determining which language to show the
