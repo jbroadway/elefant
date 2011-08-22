@@ -25,15 +25,16 @@ if ($f->submit ()) {
 	$pg->layout = 'default';
 	$pg->weight = '0';
 
-	$pg->layouts = array ();
+	$layouts = array ();
 	$d = dir (getcwd () . '/layouts');
 	while (false != ($entry = $d->read ())) {
 		if (preg_match ('/^(.*)\.html$/', $entry, $regs)) {
-			$pg->layouts[] = $regs[1];
+			$layouts[] = $regs[1];
 		}
 	}
 	$d->close ();
-	sort ($pg->layouts);
+	sort ($layouts);
+	$pg->layouts = $layouts;
 
 	$pg->failed = $f->failed;
 	$pg = $f->merge_values ($pg);

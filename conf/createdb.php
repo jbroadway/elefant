@@ -62,8 +62,6 @@ if (db_shift ('select count() from user') == 0) {
 	// create versions entries for initial content
 	$wp = new Webpage ('index');
 	Versions::add ($wp);
-	$wp = new Webpage ('blog');
-	Versions::add ($wp);
 	$b = new Block ('members');
 	Versions::add ($b);
 } else {

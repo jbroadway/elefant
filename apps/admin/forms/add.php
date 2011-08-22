@@ -5,6 +5,7 @@
 not empty = 1
 regex = "/^[a-zA0-9_-]+$/"
 unique = "webpage.id"
+not exists = "apps"
 
 [title]
 

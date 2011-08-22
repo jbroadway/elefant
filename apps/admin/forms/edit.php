@@ -4,6 +4,7 @@
 
 not empty = 1
 regex = "/^[a-zA0-9_-]+$/"
+not exists = "apps"
 
 [title]
 

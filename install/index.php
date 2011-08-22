@@ -100,8 +100,6 @@ switch ($_GET['step']) {
 				
 				$wp = new Webpage ('index');
 				Versions::add ($wp);
-				$wp = new Webpage ('blog');
-				Versions::add ($wp);
 				$b = new Block ('members');
 				Versions::add ($b);
 

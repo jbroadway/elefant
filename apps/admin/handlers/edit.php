@@ -41,15 +41,16 @@ if ($f->submit ()) {
 	$page->title = 'An Error Occurred';
 	echo 'Error Message: ' . $wp->error;
 } else {
-	$wp->layouts = array ();
+	$layouts = array ();
 	$d = dir (getcwd () . '/layouts');
 	while (false != ($entry = $d->read ())) {
 		if (preg_match ('/^(.*)\.html$/', $entry, $regs)) {
-			$wp->data['layouts'][] = $regs[1];
+			$layouts[] = $regs[1];
 		}
 	}
 	$d->close ();
-	sort ($wp->layouts);
+	sort ($layouts);
+	$wp->layouts = $layouts;
 
 	$wp->failed = $f->failed;
 	$wp = $f->merge_values ($wp);
