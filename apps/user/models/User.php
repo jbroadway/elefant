@@ -56,7 +56,7 @@ class User extends Model {
 	 * as well, since we have the data (no sense requesting it
 	 * twice).
 	 */
-	function verifier ($user, $pass) {
+	static function verifier ($user, $pass) {
 		$u = db_single (
 			'select * from user where email = ?',
 			$user
