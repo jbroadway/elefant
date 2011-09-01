@@ -264,7 +264,15 @@ class Template {
 		$arr = '';
 		$sep = '';
 		foreach ($data as $k => $v) {
-			if (strpos ($v, '[') === 0 && $v[strlen ($v) - 1] == ']') {
+			if (is_array ($v)) {
+				$arr .= sprintf ('%s\'%s\' => array (', $sep, $k);
+				$sep2 = '';
+				foreach ($v as $a) {
+					$arr .= sprintf ('%s\'%s\'', $sep2, $a);
+					$sep2 = ', ';
+				}
+				$arr .= ')';
+			} elseif (strpos ($v, '[') === 0 && $v[strlen ($v) - 1] == ']') {
 				$v = str_replace (
 					array ('<?php echo ', '; ?>'),
 					array ('', ''),
