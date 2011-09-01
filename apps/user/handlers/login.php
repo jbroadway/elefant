@@ -6,6 +6,9 @@ if (! $this->internal) {
 
 if (! isset ($_POST['redirect'])) {
 	$_POST['redirect'] = $_SERVER['REQUEST_URI'];
+	if ($_POST['redirect'] == '/user/login') {
+		$_POST['redirect'] = '/user';
+	}
 }
 
 if (! User::require_login ()) {
