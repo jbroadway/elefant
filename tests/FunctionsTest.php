@@ -20,6 +20,15 @@ class FunctionsTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ("select * from foo\n", $split[0]);
 		$this->assertEquals ("select * from bar\n", $split[1]);
 	}
+
+	function test_format_filesize () {
+		$this->assertEquals (format_filesize (-25), '-25 b');
+		$this->assertEquals (format_filesize (25), '25 b');
+		$this->assertEquals (format_filesize (2500), '2 KB');
+		$this->assertEquals (format_filesize (2500000), '2.4 MB');
+		$this->assertEquals (format_filesize (25000000), '23.8 MB');
+		$this->assertEquals (format_filesize (2500000000), '2.3 GB');
+	}
 }
 
 ?>

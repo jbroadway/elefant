@@ -3,31 +3,43 @@
 require_once ('lib/Controller.php');
 
 class ControllerTest extends PHPUnit_Framework_TestCase {
-	function test_controller () {
-		$c = new Controller ();
+	function setUp () {
+		$this->c = new Controller ();
 		$GLOBALS['conf'] = parse_ini_file ('conf/config.php', true);
+	}
 
-		$this->assertEquals ($c->route ('/'), 'apps/admin/handlers/page.php');
-		$this->assertEquals ($c->route ('/foo'), 'apps/admin/handlers/page.php');
-		$this->assertEquals ($c->params[0], 'foo');
-		$this->assertEquals ($c->route ('/admin'), 'apps/admin/handlers/index.php');
-		$this->assertEquals ($c->route ('/admin/add'), 'apps/admin/handlers/add.php');
-		$this->assertEquals ($c->route ('/admin/other'), 'apps/admin/handlers/index.php');
-		$this->assertEquals ($c->params[0], 'other');
-		$this->assertEquals ($c->route ('/admin/add/one/two/three'), 'apps/admin/handlers/add.php');
-		$this->assertEquals ($c->params, array ('one', 'two', 'three'));
-		$this->assertEquals ($c->route ('/foo?bar=asdf'), 'apps/admin/handlers/page.php');
-		$this->assertEquals ($c->route ('/not/exists'), 'apps/admin/handlers/page.php');
+	function test_route () {
+		$this->assertEquals ($this->c->route ('/'), 'apps/admin/handlers/page.php');
+		$this->assertEquals ($this->c->route ('/foo'), 'apps/admin/handlers/page.php');
+		$this->assertEquals ($this->c->params[0], 'foo');
+		$this->assertEquals ($this->c->route ('/admin'), 'apps/admin/handlers/index.php');
+		$this->assertEquals ($this->c->route ('/admin/add'), 'apps/admin/handlers/add.php');
+		$this->assertEquals ($this->c->route ('/admin/other'), 'apps/admin/handlers/index.php');
+		$this->assertEquals ($this->c->params[0], 'other');
+		$this->assertEquals ($this->c->route ('/admin/add/one/two/three'), 'apps/admin/handlers/add.php');
+		$this->assertEquals ($this->c->params, array ('one', 'two', 'three'));
+		$this->assertEquals ($this->c->route ('/foo?bar=asdf'), 'apps/admin/handlers/page.php');
+		$this->assertEquals ($this->c->route ('/not/exists'), 'apps/admin/handlers/page.php');
+	}
 
-		$this->assertTrue ($c->clean ('/foo'));
-		$this->assertFalse ($c->clean ('/../foo'));
+	function test_clean () {
+		$this->assertTrue ($this->c->clean ('/foo'));
+		$this->assertFalse ($this->c->clean ('/../foo'));
+	}
 
-		$c->params = array ();
-		$c->add_param ('two');
-		$this->assertEquals ($c->add_param ('one'), '.php');
-		$this->assertEquals ($c->params, array ('one', 'two'));
-		$this->assertTrue ($c->internal);
-		$this->assertTrue ($c->cli);
+	function test_add_param () {
+		$this->c->params = array ();
+		$this->c->add_param ('two');
+		$this->assertEquals ($this->c->add_param ('one'), '.php');
+		$this->assertEquals ($this->c->params, array ('one', 'two'));
+	}
+
+	function test_internal () {
+		$this->assertTrue ($this->c->internal);
+	}
+
+	function test_cli () {
+		$this->assertTrue ($this->c->cli);
 	}
 }
 

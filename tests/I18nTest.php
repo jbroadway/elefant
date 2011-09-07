@@ -3,24 +3,43 @@
 require_once ('lib/I18n.php');
 
 class I18nTest extends PHPUnit_Framework_TestCase {
-	function test_i81n () {
+	protected $backupGlobalsBlacklist = array ('i18n');
+
+	function setUp () {
 		global $i18n;
 		$_SERVER['REQUEST_URI'] = '/en/pagename';
 		$i18n = new I18n ('lang', array ('negotiation_method' => 'url'));
+	}
+
+	function test_parameters () {
+		global $i18n;
 
 		$this->assertEquals ($i18n->language, 'en');
 		$this->assertEquals ($i18n->charset, 'UTF-8');
 		$this->assertTrue ($i18n->url_includes_lang);
 		$this->assertEquals ($i18n->new_request_uri, '/pagename');
 		$this->assertEquals ($i18n->prefix, '/en');
+	}
+
+	function test_get () {
+		global $i18n;
 
 		$i18n->lang_hash['en'] = array (
 			'Hello' => 'Bonjour',
-			'Hello %s' => 'Bonjour %s'
 		);
 		$this->assertEquals (i18n_get ('Hello'), 'Bonjour');
-		$this->assertEquals (i18n_getf ('Hello %s', 'world'), 'Bonjour world');
+	}
 
+	function test_getf () {
+		global $i18n;
+
+		$i18n->lang_hash['en'] = array (
+			'Hello %s' => 'Bonjour %s'
+		);
+		$this->assertEquals (i18n_getf ('Hello %s', 'world'), 'Bonjour world');
+	}
+
+	function test_negotiation_methods () {
 		$_SERVER['HTTP_HOST'] = 'en.example.com';
 		$i18n = new I18n ('lang', array ('negotiation_method' => 'subdomain'));
 
