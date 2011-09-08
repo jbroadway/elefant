@@ -1,1 +1,1 @@
-<a href="http://twitter.com/share" class="twitter-share-button" data-url="{{ url }}" data-text="{{ title }}" data-count="horizontal">Tweet</a>
+<a href="http://twitter.com/share" class="twitter-share-button" data-url="{{ url }}" data-text="{{ title }}" {% if via != '' %}data-via="{{ via }}" {% end %} data-count="horizontal">Tweet</a>

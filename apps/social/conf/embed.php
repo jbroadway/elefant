@@ -43,6 +43,9 @@ url[not empty] = 1
 url[regex] = "|^http://.+$|"
 url[message] = Please enter a valid URL.
 
+via[label] = Twitter ID
+via[type] = text
+
 [social/google/plusone]
 
 label = "Google: +1 Button"
