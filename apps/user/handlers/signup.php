@@ -19,7 +19,7 @@ if ($f->submit ()) {
 	if (! $u->error) {
 		if (! @mail (
 			$_POST['name'] . ' <' . $_POST['email'] . '>',
-			'Email verification',
+			'Please confirm your email address',
 			$tpl->render ('user/email/verification', array (
 				'verifier' => $verifier,
 				'email' => $_POST['email'],
