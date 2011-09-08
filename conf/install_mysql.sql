@@ -39,6 +39,11 @@ create table user (
 	index(session_id)
 );
 
+create table user_openid (
+	token char(128) primary key,
+	user_id int not null
+);
+
 create table versions (
 	id int not null auto_increment primary key,
 	class char(72) not null,
