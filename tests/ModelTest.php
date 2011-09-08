@@ -15,33 +15,54 @@ class Bar extends Model {
 }
 
 class ModelTest extends PHPUnit_Framework_TestCase {
-	function test_model () {
+	protected $backupGlobalsBlacklist = array ('db', 'db_err', 'db_sql', 'db_args');
+	protected static $q;
+
+	static function setUpBeforeClass () {
 		db_open (array ('driver' => 'sqlite', 'file' => ':memory:'));
 		db_execute ('create table qwerty ( foo char(12), bar char(12) )');
 
-		$q = new Qwerty ();
+		self::$q = new Qwerty ();
+	}
 
-		$q->foo = 'asdf';
-		$q->bar = 'qwerty';
-		$this->assertTrue ($q->is_new);
-		$this->assertEquals ($q->foo, 'asdf');
-		$this->assertTrue ($q->put ());
+	static function tearDownAfterClass () {
+		unset ($GLOBALS['db']);
+	}
+
+	function test_construct () {
+
+		self::$q->foo = 'asdf';
+		self::$q->bar = 'qwerty';
+		$this->assertTrue (self::$q->is_new);
+		$this->assertEquals (self::$q->foo, 'asdf');
+		$this->assertTrue (self::$q->put ());
 		$this->assertEquals (db_shift ('select count() from qwerty'), 1);
-		$this->assertFalse ($q->is_new);
+		$this->assertFalse (self::$q->is_new);
+	}
 
+	function test_orig () {
 		// orig()
 		$orig = new StdClass;
 		$orig->foo = 'asdf';
 		$orig->bar = 'qwerty';
-		$this->assertEquals ($q->orig (), $orig);
+		$this->assertEquals (self::$q->orig (), $orig);
+	}
 
+	function test_fetch_orig () {
 		// fetch_orig()
-		$res = array_shift ($q->query ()->fetch_orig ());
+		$orig = new StdClass;
+		$orig->foo = 'asdf';
+		$orig->bar = 'qwerty';
+		$res = array_shift (self::$q->query ()->fetch_orig ());
 		$this->assertEquals ($res, $orig);
+	}
 
+	function test_count () {
 		// count()
-		$this->assertEquals ($q->query ()->count (), 1);
+		$this->assertEquals (self::$q->query ()->count (), 1);
+	}
 
+	function test_single () {
 		// single()
 		$single = Qwerty::query ()->single ();
 		$this->assertEquals ($single->foo, 'asdf');
@@ -50,34 +71,46 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$single = Qwerty::query ('bar')->single ();
 		$this->assertEquals ($single->foo, null);
 		$this->assertEquals ($single->bar, 'qwerty');
+	}
 
+	function test_put () {
 		// put()
-		$q->bar = 'foobar';
-		$this->assertTrue ($q->put ());
+		self::$q->bar = 'foobar';
+		$this->assertTrue (self::$q->put ());
 		$this->assertEquals (db_shift ('select bar from qwerty where foo = ?', 'asdf'), 'foobar');
+	}
 
+	function test_get () {
 		// get()
-		$n = $q->get ('asdf');
-		$this->assertEquals ($n, $q);
+		$n = self::$q->get ('asdf');
+		$this->assertEquals ($n, self::$q);
 		$this->assertEquals ($n->bar, 'foobar');
+	}
 
+	function test_fetch_assoc () {
 		// fetch_assoc()
-		$res = $q->query ()->fetch_assoc ('foo', 'bar');
+		$res = self::$q->query ()->fetch_assoc ('foo', 'bar');
 		$this->assertEquals ($res, array ('asdf' => 'foobar'));
+	}
 
+	function test_fetch_field () {
 		// fetch_field()
-		$res = $q->query ()->fetch_field ('bar');
+		$res = self::$q->query ()->fetch_field ('bar');
 		$this->assertEquals ($res, array ('foobar'));
+	}
 
+	function test_remove () {
 		// should be the same since they're both
 		// Qwerty objects with the same database row
-		$res = array_shift ($q->query ()->where ('foo', 'asdf')->order ('foo asc')->fetch ());
-		$this->assertEquals ($res, $q);
+		$res = array_shift (self::$q->query ()->where ('foo', 'asdf')->order ('foo asc')->fetch ());
+		$this->assertEquals ($res, self::$q);
 
 		// remove()
 		$this->assertTrue ($res->remove ());
 		$this->assertEquals (db_shift ('select count() from qwerty'), 0);
+	}
 
+	function test_references () {
 		// references
 		db_execute ('create table foo(id int, name char(12))');
 		db_execute ('create table bar(id int, name char(12), foo int)');

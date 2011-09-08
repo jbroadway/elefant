@@ -24,6 +24,11 @@ class LockTest extends PHPUnit_Framework_TestCase {
 		self::$lock = new Lock ('test', 'one');
 	}
 
+	static function tearDownAfterClass () {
+		unset ($GLOBALS['db']);
+		unset ($GLOBALS['user']);
+	}
+
 	function test_add () {
 		// Add the lock and return id=1
 		$this->assertEquals (self::$lock->add (), 1);

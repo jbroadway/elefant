@@ -7,7 +7,9 @@ require_once ('apps/admin/models/Versions.php');
 class Foobar extends Model {}
 
 class VersionsTest extends PHPUnit_Framework_TestCase {
-	function test_versions () {
+	protected $backupGlobalsBlacklist = array ('db', 'db_err', 'db_sql', 'db_args', 'user');
+
+	static function setUpBeforeClass () {
 		db_open (array ('driver' => 'sqlite', 'file' => ':memory:'));
 		db_execute ('create table foobar (id int not null, name char(32) not null)');
 		if (! db_execute ('create table versions (
@@ -26,8 +28,14 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 		if (! db_execute ('create index versions_user on versions (user, ts)')) {
 			die ('Failed to create versions_user index');
 		}
+	}
 
-		
+	static function tearDownAfterClass () {
+		unset ($GLOBALS['db']);
+		unset ($GLOBALS['user']);
+	}
+
+	function test_versions () {
 		$foo = new Foobar (array ('id' => 1, 'name' => 'Test'));
 		$foo->put ();
 

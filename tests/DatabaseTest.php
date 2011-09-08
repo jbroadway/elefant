@@ -19,6 +19,10 @@ class DatabaseTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 
+	static function tearDownAfterClass () {
+		unset ($GLOBALS['db']);
+	}
+
 	function test_open () {
 		$this->assertFalse (db_open ($this->bad_conf));
 		$this->assertEquals ('could not find driver', db_error ());
