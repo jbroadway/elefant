@@ -19,6 +19,17 @@ login_methods[] = google
 ;login_methods[] = twitter
 ;login_methods[] = facebook
 
+[Custom Handlers]
+
+; You can override some of the built-in handlers with your own
+; by changing them here.
+
+user/index = user/index
+user/signup = user/signup
+user/update = user/update
+user/login = user/login
+user/logout = user/logout
+
 [Facebook]
 
 ; To enable Facebook login support, register your site at
