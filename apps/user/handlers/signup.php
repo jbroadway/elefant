@@ -1,5 +1,10 @@
 <?php
 
+if ($appconf['Custom Handlers']['user/signup'] != 'user/signup') {
+	echo $this->run ($appconf['Custom Handlers']['user/signup'], $data);
+	return;
+}
+
 $f = new Form ('post', 'user/signup');
 if ($f->submit ()) {
 	$date = gmdate ('Y-m-d H:i:s');

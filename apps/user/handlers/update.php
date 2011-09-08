@@ -1,5 +1,10 @@
 <?php
 
+if ($appconf['Custom Handlers']['user/update'] != 'user/update') {
+	echo $this->run ($appconf['Custom Handlers']['user/update'], $data);
+	return;
+}
+
 if (! User::require_login ()) {
 	$page->title = i18n_get ('Members');
 	echo $this->run ('user/login');
