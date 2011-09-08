@@ -1,6 +1,23 @@
 {% if ! User::is_valid () %}
 <h3>Members</h3>
 {! user/login !}
+	{% if ! empty ($data->login_methods) %}
+	<div class="social-login">
+		{"Sign in with"}:<br />
+	{% if in_array ('google', $data->login_methods) %}
+		<a href="/user/login/google?redirect={{ $_SERVER.REQUEST_URI }}"><img src="/apps/user/pix/google.png" alt="Google" /></a>
+	{% end %}
+	{% if in_array ('facebook', $data->login_methods) %}
+		<a href="/user/login/facebook?redirect={{ $_SERVER.REQUEST_URI }}"><img src="/apps/user/pix/facebook.png" alt="Facebook" /></a>
+	{% end %}
+	{% if in_array ('twitter', $data->login_methods) %}
+		<a href="/user/login/twitter?redirect={{ $_SERVER.REQUEST_URI }}"><img src="/apps/user/pix/twitter.png" alt="Twitter" /></a>
+	{% end %}
+	{% if in_array ('openid', $data->login_methods) %}
+		<a href="/user/login/openid?redirect={{ $_SERVER.REQUEST_URI }}"><img src="/apps/user/pix/openid.png" alt="OpenID" /></a>
+	{% end %}
+	</div>
+	{% end %}
 {% else %}
 <h3>{{ user.name }}</h3>
 <p><a href="/user">{"View profile"}</a><br />
