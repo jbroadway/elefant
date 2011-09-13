@@ -125,6 +125,12 @@ class Controller {
 	var $called = array ();
 
 	/**
+	 * Cached PUT data from get_put_data() so it only reads it the first
+	 * time.
+	 */
+	var $put_data = null;
+
+	/**
 	 * When a handler is loaded, if there is a `conf/config.php` for that
 	 * app, its contents will be loaded into `$appconf['appname']` once
 	 * the first time it is called, and accessible thereafter by any
@@ -305,6 +311,22 @@ class Controller {
 		if ($exit) {
 			exit;
 		}
+	}
+
+	/**
+	 * Get the stdin stream for PUT requests.
+	 */
+	function get_put_data () {
+		if ($this->put_data === null) {
+			$stdin = fopen ('php://input', 'r');
+			$out = '';
+			while ($data = fread ($stdin, 1024)) {
+				$out .= $data;
+			}
+			fclose ($stdin);
+			$this->put_data = $out;
+		}
+		return $this->put_data;
 	}
 
 	/**
