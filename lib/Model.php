@@ -40,6 +40,29 @@
  *     foreach ($res as $row) {
  *         $row->remove ();
  *     }
+ *
+ * Also supports validation of values via:
+ *
+ *     class MyTable extends Model {
+ *         var $verify = array (
+ *             'email' => array (
+ *                 'email' => 1,
+ *                 'contains' => '@ourdomain.com'
+ *             ),
+ *             'name' => array (
+ *                 'not empty' => 1
+ *             )
+ *         );
+ *     }
+ *
+ * Or specified as an INI file:
+ *
+ *     class MyTable extends Model {
+ *         var $verify = 'apps/myapp/forms/mytable.php';
+ *     }
+ *
+ * See Form::verify_values for more info on validation rules
+ * and file formats.
  */
 class Model {
 	var $table = '';
@@ -54,6 +77,7 @@ class Model {
 	var $query_group = '';
 	var $query_filters = array ();
 	var $query_params = array ();
+	var $verify = array ();
 
 	/**
 	 * If `$vals` is false, we're creating a new object from scratch.
@@ -117,9 +141,18 @@ class Model {
 	}
 
 	/**
-	 * Save the object to the database.
+	 * Save the object to the database. If $verify is set, it will
+	 * validate the data against any rules in the array, or in the
+	 * specified INI file if $verify is a string matching a file name.
 	 */
 	function put() {
+		$f = new Form;
+		$failed = $f->verify_values ($this->data, $this->verify);
+		if (! empty ($failed)) {
+			$this->error = 'Validation failed for: ' . join (', ', $failed);
+			return false;
+		}
+
 		if ($this->is_new) {
 			// Insert
 			$ins = array ();

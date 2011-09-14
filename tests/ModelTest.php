@@ -2,6 +2,7 @@
 
 require_once ('lib/Database.php');
 require_once ('lib/Model.php');
+require_once ('lib/Form.php');
 
 class Qwerty extends Model {
 	var $key = 'foo';
@@ -133,6 +134,23 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 				$e->getMessage ()
 			);
 		}
+	}
+
+	function test_verify () {
+		$f = new Foo (array ('id' => 1, 'name' => 'Joe'));
+
+		$f->verify = array (
+			'id' => array (
+				'type' => 'numeric',
+				'skip_if_empty' => 1
+			),
+			'name' => array (
+				'email' => 1
+			)
+		);
+
+		$f->put ();
+		$this->assertEquals ($f->error, 'Validation failed for: name');
 	}
 }
 
