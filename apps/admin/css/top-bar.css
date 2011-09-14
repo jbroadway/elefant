@@ -28,6 +28,8 @@ body {
 	float: right;
 	font-size: 12px !important;
 	margin-right: 20px;
+	/* preload for tooltop-top */
+	background: url(/apps/admin/css/admin/tooltip-top.png) no-repeat -999px -999px;
 }
 
 	#admin-links>span {
