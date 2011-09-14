@@ -75,7 +75,7 @@ class Model {
 				$this->is_new = true;
 			}
 		} elseif ($vals != false) {
-			$res = db_single ('select * from ' . $this->table . ' where ' . $this->key . ' = ?', $vals);
+			$res = db_single ('select * from `' . $this->table . '` where `' . $this->key . '` = ?', $vals);
 			if (! $res) {
 				$this->error = 'No object by that ID.';
 			} else {
@@ -127,7 +127,7 @@ class Model {
 			for ($i = 0; $i < $len; $i++) {
 				$ins[] = '?';
 			}
-			if (! db_execute ('insert into ' . $this->table . ' (' . join (', ', array_keys ($this->data)) . ') values (' . join (', ', $ins) . ')', $this->data)) {
+			if (! db_execute ('insert into `' . $this->table . '` (' . join (', ', Model::backticks (array_keys ($this->data))) . ') values (' . join (', ', $ins) . ')', $this->data)) {
 				$this->error = db_error ();
 				return false;
 			}
@@ -144,7 +144,7 @@ class Model {
 		$par = array ();
 		$sep = '';
 		foreach ($this->data as $key => $val) {
-			$ins .= $sep . $key . ' = ?';
+			$ins .= $sep . Model::backticks ($key) . ' = ?';
 			$par[] = $val;
 			$sep = ', ';
 		}
@@ -154,7 +154,7 @@ class Model {
 			$par[] = $this->data[$this->key];
 			$this->keyval = $this->data[$this->key];
 		}
-		if (! db_execute ('update ' . $this->table . ' set ' . $ins . ' where ' . $this->key . ' = ?', $par)) {
+		if (! db_execute ('update `' . $this->table . '` set ' . $ins . ' where `' . $this->key . '` = ?', $par)) {
 			$this->error = db_error ();
 			return false;
 		}
@@ -171,7 +171,7 @@ class Model {
 			$this->error = 'No id specified.';
 			return false;
 		}
-		if (! db_execute ('delete from ' . $this->table . ' where ' . $this->key . ' = ?', $id)) {
+		if (! db_execute ('delete from `' . $this->table . '` where `' . $this->key . '` = ?', $id)) {
 			$this->error = db_error ();
 			return false;
 		}
@@ -184,7 +184,7 @@ class Model {
 	static function get ($id) {
 		$class = get_called_class ();
 		$q = new $class;
-		$res = (array) db_single ('select * from ' . $q->table . ' where ' . $q->key . ' = ?', $id);
+		$res = (array) db_single ('select * from `' . $q->table . '` where `' . $q->key . '` = ?', $id);
 		if (! $res) {
 			$q->error = 'No object by that ID.';
 			$q->data = array ();
@@ -236,7 +236,7 @@ class Model {
 		if (! $val) {
 			array_push ($this->query_filters, $key);
 		} else {
-			array_push ($this->query_filters, $key . ' = ?');
+			array_push ($this->query_filters, Model::backticks ($key) . ' = ?');
 			array_push ($this->query_params, $val);
 		}
 		return $this;
@@ -247,9 +247,9 @@ class Model {
 	 */
 	function fetch ($limit = false, $offset = 0) {
 		if (is_array ($this->query_fields)) {
-			$this->query_fields = join (', ', $this->query_fields);
+			$this->query_fields = join (', ', Model::backticks ($this->query_fields));
 		}
-		$sql = 'select ' . $this->query_fields . ' from ' . $this->table;
+		$sql = 'select ' . $this->query_fields . ' from ' . Model::backticks ($this->table);
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ' . join (' and ', $this->query_filters);
 		}
@@ -279,9 +279,9 @@ class Model {
 	 */
 	function single () {
 		if (is_array ($this->query_fields)) {
-			$this->query_fields = join (', ', $this->query_fields);
+			$this->query_fields = join (', ', Model::backticks ($this->query_fields));
 		}
-		$sql = 'select ' . $this->query_fields . ' from ' . $this->table;
+		$sql = 'select ' . $this->query_fields . ' from ' . Model::backticks ($this->table);
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ' . join (' and ', $this->query_filters);
 		}
@@ -305,7 +305,7 @@ class Model {
 	 * Fetch the number of results for a query.
 	 */
 	function count ($limit = false, $offset = 0) {
-		$sql = 'select count() from ' . $this->table;
+		$sql = 'select count() from ' . Model::backticks ($this->table);
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ' . join (' and ', $this->query_filters);
 		}
@@ -328,9 +328,9 @@ class Model {
 	 */
 	function fetch_orig ($limit = false, $offset = 0) {
 		if (is_array ($this->query_fields)) {
-			$this->query_fields = join (', ', $this->query_fields);
+			$this->query_fields = join (', ', Model::backticks ($this->query_fields));
 		}
-		$sql = 'select ' . $this->query_fields . ' from ' . $this->table;
+		$sql = 'select ' . $this->query_fields . ' from ' . Model::backticks ($this->table);
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ' . join (' and ', $this->query_filters);
 		}
@@ -385,6 +385,21 @@ class Model {
 	 */
 	function orig () {
 		return (object) $this->data;
+	}
+
+	/**
+	 * Add backticks to a name or list of names to prevent clashing with
+	 * reserved words in SQL.
+	 */
+	static function backticks ($item) {
+		if (is_array ($item)) {
+			foreach ($item as $k => $v) {
+				$item[$k] = '`' . $v . '`';
+			}
+		} else {
+			$item = '`' . $item . '`';
+		}
+		return $item;
 	}
 }
 

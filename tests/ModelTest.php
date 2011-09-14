@@ -30,7 +30,6 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_construct () {
-
 		self::$q->foo = 'asdf';
 		self::$q->bar = 'qwerty';
 		$this->assertTrue (self::$q->is_new);
