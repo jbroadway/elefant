@@ -19,10 +19,43 @@ if (isset ($_SESSION['access_token'])) {
 	$code = $twauth->request ('GET', $twauth->url ('1/account/verify_credentials'));
 
 	if ($code == 200) {
+		// we have a user
 		$resp = json_decode ($twauth->response['response']);
-		// we have $resp->screen_name;
-		echo $resp->screen_name;
-		return;
+		$uid = User_OpenID::get_user_id ('tw:' . $resp->screen_name);
+		if ($uid) {
+			$u = new User ($uid);
+		}
+
+		if ($u) {
+			// already have an account, log them in
+			$u->session_id = md5 (uniqid (mt_rand (), 1));
+			$u->expires = gmdate ('Y-m-d H:i:s', time () + 2592000);
+			$try = 0;
+			while (! $u->put ()) {
+				$u->session_id = md5 (uniqid (mt_rand (), 1));
+				$try++;
+				if ($try == 5) {
+					$this->redirect ($_GET['redirect']);
+				}
+			}
+			$_SESSION['session_id'] = $u->session_id;
+
+			// save token
+			$oid = new User_OpenID (array (
+				'token' => 'tw:' . $resp->screen_name,
+				'user_id' => $u->id
+			));
+			$oid->put ();
+			
+			$this->redirect ($_GET['redirect']);
+		} else {
+			// signup form to create a linked account, prefill name
+			$_POST['name'] = $resp->name;
+			$_POST['redirect'] = $_GET['redirect'];
+			$_POST['token'] = 'tw:' . $resp->screen_name;
+			echo $this->run ('user/login/newuser');
+			return;
+		}
 	} else {
 		// error
 		@error_log ('3. ' . $twauth->response['response']);
