@@ -42,6 +42,11 @@ create table user (
 create index user_email_password on user (email, password);
 create index user_session_id on user (session_id);
 
+create table user_openid (
+	token char(128) primary key,
+	user_id int not null
+);
+
 create table versions (
 	id integer primary key,
 	class char(72) not null,

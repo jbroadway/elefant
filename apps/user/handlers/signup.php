@@ -1,5 +1,10 @@
 <?php
 
+if ($appconf['Custom Handlers']['user/signup'] != 'user/signup') {
+	echo $this->run ($appconf['Custom Handlers']['user/signup'], $data);
+	return;
+}
+
 $f = new Form ('post', 'user/signup');
 if ($f->submit ()) {
 	$date = gmdate ('Y-m-d H:i:s');
@@ -19,7 +24,7 @@ if ($f->submit ()) {
 	if (! $u->error) {
 		if (! @mail (
 			$_POST['name'] . ' <' . $_POST['email'] . '>',
-			'Email verification',
+			'Please confirm your email address',
 			$tpl->render ('user/email/verification', array (
 				'verifier' => $verifier,
 				'email' => $_POST['email'],

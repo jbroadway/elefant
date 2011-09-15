@@ -1,5 +1,10 @@
 <?php
 
+if ($appconf['Custom Handlers']['user/login'] != 'user/login') {
+	echo $this->run ($appconf['Custom Handlers']['user/login'], $data);
+	return;
+}
+
 if (! $this->internal) {
 	$page->title = i18n_get ('Members');
 }
