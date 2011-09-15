@@ -36,10 +36,8 @@ $graph_url = 'https://graph.facebook.com/me?access_token=' . $params['access_tok
 
 $user = json_decode (file_get_contents ($graph_url));
 
-info ($user);
-return;
-
 $token = 'fb:' . $user->id . ':' . $params['access_token'];
+$_SESSION['session_fb'] = $token;
 
 $uid = User_OpenID::get_user_id ($token);
 if ($uid) {
