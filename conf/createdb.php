@@ -23,8 +23,14 @@ require_once ('apps/blocks/models/Block.php');
 $conf = parse_ini_file ('conf/config.php', true);
 date_default_timezone_set($conf['General']['timezone']);
 
-if (! db_open ($conf['Database'])) {
-	die (db_error ());
+// connect to the database
+foreach (array_keys ($conf['Database']) as $key) {
+	if ($key == 'master') {
+		$conf['Database'][$key]['master'] = true;
+	}
+	if (! db_open ($conf['Database'][$key])) {
+		die (db_error ());
+	}
 }
 
 // import the database schema
