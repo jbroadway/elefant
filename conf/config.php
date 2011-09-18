@@ -54,8 +54,8 @@ negotiation_method = url
 
 ; Database settings go here. Driver must be a valid PDO driver.
 
-driver = sqlite
-file = "conf/site.db"
+master[driver] = sqlite
+master[file] = "conf/site.db"
 
 [Hooks]
 
