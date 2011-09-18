@@ -13,6 +13,7 @@ if (basename (getcwd ()) == 'conf') {
 	chdir ('..');
 }
 require_once ('lib/Functions.php');
+require_once ('lib/Form.php');
 require_once ('lib/Database.php');
 require_once ('lib/Model.php');
 require_once ('apps/admin/models/Webpage.php');
@@ -34,7 +35,7 @@ foreach (array_keys ($conf['Database']) as $key) {
 }
 
 // import the database schema
-$sqldata = sql_split (file_get_contents ('conf/install_' . $conf['Database']['driver'] . '.sql'));
+$sqldata = sql_split (file_get_contents ('conf/install_' . $conf['Database']['master']['driver'] . '.sql'));
 
 foreach ($sqldata as $sql) {
 	if (! db_execute ($sql)) {
