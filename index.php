@@ -55,8 +55,13 @@ if (isset ($conf['Memcache']['server']) && extension_loaded ('memcache')) {
 }
 
 // connect to the database
-if (! db_open ($conf['Database'])) {
-	die (db_error ());
+foreach (array_keys ($conf['Database']) as $key) {
+	if ($key == 'master') {
+		$conf['Database'][$key]['master'] = true;
+	}
+	if (! db_open ($conf['Database'][$key])) {
+		die (db_error ());
+	}
 }
 
 // handle the request
