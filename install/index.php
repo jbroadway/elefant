@@ -138,11 +138,11 @@ switch ($_GET['step']) {
 			} else {
 				// create the admin user now
 				$conf_ini = parse_ini_file ('../conf/config.php', true);
-				if (isset ($conf_ini['Database']['file'])) {
-					$conf_ini['Database']['file'] = '../' . $conf_ini['Database']['file'];
+				$conf_ini['Database']['master']['master'] = true;
+				if (isset ($conf_ini['Database']['master']['file'])) {
+					$conf_ini['Database']['master']['file'] = '../' . $conf_ini['Database']['master']['file'];
 				}
-
-				if (! db_open ($conf_ini['Database'])) {
+				if (! db_open ($conf_ini['Database']['master'])) {
 					$data['error'] = db_error ();
 				} else {
 					$date = gmdate ('Y-m-d H:i:s');
