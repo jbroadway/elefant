@@ -330,6 +330,14 @@ class Controller {
 	}
 
 	/**
+	 * Get the request method. If X-HTTP-Method-Override header is set,
+	 * it will return that instead of the actual request method.
+	 */
+	function request_method () {
+		return isset ($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']) ? $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] : $_SERVER['REQUEST_METHOD'];
+	}
+
+	/**
 	 * Check if an app and version have been installed. Returns true if
 	 * installed, false if not, and current installed version if an upgrade
 	 * should be performed.
