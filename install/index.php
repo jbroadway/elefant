@@ -32,6 +32,7 @@ if (get_magic_quotes_gpc ()) {
 date_default_timezone_set('GMT');
 
 require_once ('../lib/Functions.php');
+require_once ('../lib/Form.php');
 require_once ('../lib/Database.php');
 require_once ('../lib/Template.php');
 require_once ('../lib/Model.php');

@@ -13,6 +13,7 @@ if (basename (getcwd ()) == 'conf') {
 	chdir ('..');
 }
 require_once ('lib/Functions.php');
+require_once ('lib/Form.php');
 require_once ('lib/Database.php');
 require_once ('lib/Model.php');
 require_once ('apps/admin/models/Webpage.php');
