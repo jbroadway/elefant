@@ -338,7 +338,7 @@ class Model {
 	 * Fetch the number of results for a query.
 	 */
 	function count ($limit = false, $offset = 0) {
-		$sql = 'select count() from ' . Model::backticks ($this->table);
+		$sql = 'select count(*) from ' . Model::backticks ($this->table);
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ' . join (' and ', $this->query_filters);
 		}
