@@ -30,8 +30,8 @@ if ($f->submit ()) {
 		return;
 	}
 	@error_log ('Error updating profile (#' . $u->id . '): ' . $u->error);
-	$page->title = 'An Error Occurred';
-	echo '<p>Please try again later.</p>';
+	$page->title = i18n_get ('An Error Occurred');
+	echo '<p>' . i18n_get ('Please try again later.') . '</p>';
 	echo '<p><a href="/user">' . i18n_get ('Back') . '</a></p>';
 } else {
 	$u->password = '';

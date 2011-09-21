@@ -24,7 +24,7 @@ if ($f->submit ()) {
 	if (! $u->error) {
 		if (! @mail (
 			$_POST['name'] . ' <' . $_POST['email'] . '>',
-			'Please confirm your email address',
+			i18n_get ('Please confirm your email address'),
 			$tpl->render ('user/email/verification', array (
 				'verifier' => $verifier,
 				'email' => $_POST['email'],
@@ -45,8 +45,8 @@ if ($f->submit ()) {
 		exit;
 	}
 	@error_log ('Error creating profile: ' . $u->error);
-	$page->title = 'An Error Occurred';
-	echo '<p>Please try again later.</p>';
+	$page->title = i18n_get ('An Error Occurred');
+	echo '<p>' . i18n_get ('Please try again later.') . '</p>';
 	echo '<p><a href="/">' . i18n_get ('Back') . '</a></p>';
 } else {
 	$u = new User;

@@ -9,8 +9,8 @@ if (! User::require_admin ()) {
 $u = new User ($_GET['id']);
 
 if (! $u->remove ()) {
-	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $u->error;
+	$page->title = i18n_get ('An Error Occurred');
+	echo i18n_get ('Error Message') . ': ' . $u->error;
 	return;
 }
 

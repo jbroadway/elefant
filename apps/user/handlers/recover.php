@@ -14,7 +14,7 @@ if ($f->submit ()) {
 
 	if (! @mail (
 		$u->name . ' <' . $u->email . '>',
-		'Password recovery',
+		i18n_get ('Password recovery'),
 		$tpl->render ('user/email/recover', array (
 			'recover' => $data['recover'],
 			'email' => $u->email,
@@ -24,7 +24,7 @@ if ($f->submit ()) {
 	)) {
 		@error_log ('Email failed (user/recover): ' . $_POST['email']);
 		$page->title = i18n_get ('An Error Occurred');
-		echo '<p>Please try again later.</p>';
+		echo '<p>' . i18n_get ('Please try again later.') . '</p>';
 		echo '<p><a href="/">' . i18n_get ('Back') . '</a></p>';
 		return;
 	}
