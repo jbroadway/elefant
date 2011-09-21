@@ -22,7 +22,7 @@ $(function () {
 			'fileManager': {
 				visible: true,
 				groupIndex: 12,
-				tooltip: 'File Manager',
+				tooltip: '{"File Manager"}',
 				exec: function () {
 					$.wysiwyg.fileManager.init (function (file) {
 						if (file.match (/\.(jpg|png|gif)$/i)) {
@@ -44,7 +44,7 @@ $(function () {
 			},
 			'dynamic': {
 				visible: true,
-				tooltip: 'Dynamic Objects',
+				tooltip: '{"Dynamic Objects"}',
 				tags: ['span'],
 				exec: function () {
 					$.wysiwyg.embed.init (this, function (existing, embed_code) {

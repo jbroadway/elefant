@@ -47,7 +47,7 @@
 			<td>{{ loop_value->ts|gmdate ('F j, Y - g:ia', strtotime (%s)) }}</td>
 			<td>{{ loop_value->user|admin_filter_user_name }}</td>
 		{% if loop_index == 0 %}
-			<td><strong>Current version</strong></td>
+			<td><strong>{"Current version"}</strong></td>
 		{% else %}
 			<td><a href="/admin/compare?id={{ loop_value->id }}">{"Compare to current"}</a></td>
 		{% end %}
