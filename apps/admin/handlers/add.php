@@ -18,8 +18,8 @@ if ($f->submit ()) {
 		$this->hook ('admin/add', $_POST);
 		$this->redirect ('/' . $_POST['id']);
 	}
-	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $wp->error;
+	$page->title = i18n_get ('An Error Occurred');
+	echo i18n_get ('Error Message') . ': ' . $wp->error;
 } else {
 	$pg = new Page;
 	$pg->layout = 'default';
@@ -38,7 +38,7 @@ if ($f->submit ()) {
 
 	$pg->failed = $f->failed;
 	$pg = $f->merge_values ($pg);
-	$page->title = 'Add Page';
+	$page->title = i18n_get ('Add Page');
 	$page->head = $tpl->render ('admin/add/head', $pg)
 				. $tpl->render ('admin/wysiwyg');
 	echo $tpl->render ('admin/add', $pg);

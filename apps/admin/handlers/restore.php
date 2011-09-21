@@ -20,8 +20,8 @@ if ($lock->exists ()) {
 $obj = $ver->restore ();
 $obj->put ();
 if ($obj->error) {
-	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $obj->error;
+	$page->title = i18n_get ('An Error Occurred');
+	echo i18n_get ('Error Message') . ': ' . $obj->error;
 	return;
 }
 Versions::add ($obj);

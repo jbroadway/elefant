@@ -38,8 +38,8 @@ if ($f->submit ()) {
 		$this->hook ('admin/edit', $_POST);
 		$this->redirect ('/' . $_POST['id']);
 	}
-	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $wp->error;
+	$page->title = i18n_get ('An Error Occurred');
+	echo i18n_get ('Error Message') . ': ' . $wp->error;
 } else {
 	$layouts = array ();
 	$d = dir (getcwd () . '/layouts');
@@ -54,7 +54,7 @@ if ($f->submit ()) {
 
 	$wp->failed = $f->failed;
 	$wp = $f->merge_values ($wp);
-	$page->title = 'Edit Page: ' . $wp->title;
+	$page->title = i18n_get ('Edit Page') . ': ' . $wp->title;
 	$page->head = $tpl->render ('admin/edit/head', $wp)
 				. $tpl->render ('admin/wysiwyg');
 	echo $tpl->render ('admin/edit', $wp);
