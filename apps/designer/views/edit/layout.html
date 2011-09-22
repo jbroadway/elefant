@@ -87,6 +87,13 @@ $(function () {
 	$('#{{ loop_value }}-notice').show ();
 	{% end %}
 
+	// increase editor and preview height if window is tall enough
+	if ($(window).height () > 768) {
+		var height_diff = $(window).height () - 768;
+		$('.CodeMirror-scroll').height ($('.CodeMirror-scroll').height () + Math.floor (height_diff / 2));
+		$('#preview').height ($('#preview').height () + Math.floor (height_diff / 2));
+	}
+
 	$('#edit-form').autosave ();
 	$('#edit-form').bgsave ({
 		url: '/designer/bgsave?file=',
