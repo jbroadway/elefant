@@ -207,3 +207,7 @@ inline comments I use the double-slash.
 Q. Do you know you spelt Elephant wrong?
 
 A. This was my attempt at being hip and cool. No good?
+
+Q. Isn't Elefant a bit of an oxymoron for a slim framework?
+
+A. Why, yes. Yes it is.
