@@ -4,7 +4,7 @@ if (! User::require_admin ()) {
 	$this->redirect ('/admin');
 }
 
-$page->title = 'Navigation';
+$page->title = i18n_get ('Navigation');
 $page->layout = 'admin';
 $page->add_script ('<script src="/apps/navigation/js/jquery.jstree.js"></script>');
 
