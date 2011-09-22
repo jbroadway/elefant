@@ -1,15 +1,15 @@
-<p class="autosave-notice">Auto-saved data found for this form. <a href="#" class="autosave-restore">Click here to restore.</a></p>
+<p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
 
 <form method="POST" id="add-form">
 <p style="float: right">
-	<span class="notice" id="body-notice">&nbsp; You must enter body content.</span>
-	<input type="submit" value="Create Layout" class="autosave-clear" />&nbsp;
-	<a href="javascript:history.go(-1)" onclick="return $.cancel_autosave ('Are you sure you want to cancel and lose any changes?')">Cancel</a>
+	<span class="notice" id="body-notice">&nbsp; {"You must enter body content."}</span>
+	<input type="submit" value="{"Create Layout"}" class="autosave-clear" />&nbsp;
+	<a href="javascript:history.go(-1)" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
 </p>
 
-<p>Name (ex: <tt>layouts/<strong>name</strong>.html</tt>): <input type="text" name="name" size="40" value="{{ name }}" />
-<span class="notice" id="name-notice"><br />Your name must be alphanumeric and not a duplicate of an existing layout.</span></p>
-<p>Insert tag:&nbsp;
+<p>{"Name"} (ex: <tt>layouts/<strong>name</strong>.html</tt>): <input type="text" name="name" size="40" value="{{ name }}" />
+<span class="notice" id="name-notice"><br />{"Your name must be alphanumeric and not a duplicate of an existing layout."}</span></p>
+<p>{"Insert tag"}:&nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '{ var }}', _codemirror.getCursor (true)); return false">{<span></span>{ var }}</a> &nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '% foreach %}\n', _codemirror.getCursor (true)); _codemirror.replaceRange ('\n{' + '% end %}', _codemirror.getCursor (false)); return false">{<span></span>% foreach %}</a> &nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '% if %}', _codemirror.getCursor (true)); _codemirror.replaceRange ('{' + '% end %}', _codemirror.getCursor (false)); return false">{<span></span>% if %}</a> &nbsp;
@@ -17,7 +17,7 @@
 	<a href="#" onclick="_codemirror.replaceRange ('{&quot; text &quot;}', _codemirror.getCursor (true)); return false">{<span></span>" text "}</a>
 	<br />
 <textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea>
-<br />Preview:<br />
+<br />{"Preview"}:<br />
 <iframe src="/designer/preview" id="preview" frameborder="0" width="1022" height="300" style="border: 1px solid #ccc"></iframe></p>
 </p>
 </form>

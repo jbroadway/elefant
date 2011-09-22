@@ -19,9 +19,9 @@ if ($lock->exists ()) {
 }
 
 if (! @unlink ($_GET['file'])) {
-	$page->title = 'Unable to Delete File';
-	echo '<p>Check that your permissions are correct and try again.</p>';
-	echo '<p><a href="/designer">Continue</a></p>';
+	$page->title = i18n_get ('Unable to Delete File');
+	echo '<p>' . i18n_get ('Check that your permissions are correct and try again.') . '</p>';
+	echo '<p><a href="/designer">' . i18n_get ('Continue') . '</a></p>';
 	return;
 }
 

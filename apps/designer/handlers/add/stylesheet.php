@@ -13,8 +13,8 @@ if ($f->submit ()) {
 		@chmod ('layouts/' . $_POST['name'] . '.html', 0777);
 		$this->redirect ('/designer');
 	}
-	$page->title = 'Saving Stylesheet Failed';
-	echo '<p>Check that your permissions are correct and try again.</p>';
+	$page->title = i18n_get ('Saving Stylesheet Failed');
+	echo '<p>' . i18n_get ('Check that your permissions are correct and try again.') . '</p>';
 } else {
 	$page->title = i18n_get ('New Stylesheet');
 }

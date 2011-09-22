@@ -28,8 +28,8 @@ if ($f->submit ()) {
 		$lock->remove ();
 		$this->redirect ('/designer');
 	}
-	$page->title = 'Saving Layout Failed';
-	echo '<p>Check that your permissions are correct and try again.</p>';
+	$page->title = i18n_get ('Saving Layout Failed');
+	echo '<p>' . i18n_get ('Check that your permissions are correct and try again.') . '</p>';
 } else {
 	$page->title = i18n_get ('Edit Layout') . ': ' . $_GET['file'];
 }
