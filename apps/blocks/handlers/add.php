@@ -20,8 +20,8 @@ if ($f->submit ()) {
 		}
 		$this->redirect ('/blocks/admin');
 	}
-	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $b->error;
+	$page->title = i18n_get ('An Error Occurred');
+	echo i18n_get ('Error Message') . ': ' . $b->error;
 } else {
 	$b = new Block;
 	$b->id = $_GET['id'];
@@ -30,7 +30,7 @@ if ($f->submit ()) {
 
 	$b->failed = $f->failed;
 	$b = $f->merge_values ($b);
-	$page->title = 'Add Block';
+	$page->title = i18n_get ('Add Block');
 	$page->head = $tpl->render ('blocks/add/head', $b)
 				. $tpl->render ('admin/wysiwyg');
 	echo $tpl->render ('blocks/add', $b);
