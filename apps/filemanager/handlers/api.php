@@ -21,13 +21,13 @@ switch ($cmd) {
 		$newdir = array_pop (explode ('/', $file));
 		$path = preg_replace ('/\/?' . preg_quote ($newdir) . '$/', '', $file);
 		if (! FileManager::verify_folder ($path, $root)) {
-			$error = 'Invalid location';
+			$error = i18n_get ('Invalid location');
 		} elseif (! FileManager::verify_folder_name ($newdir)) {
-			$error = 'Invalid folder name';
+			$error = i18n_get ('Invalid folder name');
 		} elseif (@is_dir ($root . $file)) {
-			$error = 'Folder already exists ' . $file;
+			$error = i18n_get ('Folder already exists') . ' ' . $file;
 		} elseif (! mkdir ($root . $file)) {
-			$error = 'Unable to create folder ' . $file;
+			$error = i18n_get ('Unable to create folder') . ' ' . $file;
 		} else {
 			@chmod ($root . $file, 0777);
 			$out = $file;
@@ -36,11 +36,11 @@ switch ($cmd) {
 		break;
 	case 'rm':
 		if (FileManager::verify_folder ($file, $root)) {
-			$error = 'Unable to delete folders';
+			$error = i18n_get ('Unable to delete folders');
 		} elseif (! FileManager::verify_file ($file, $root)) {
-			$error = 'File not found';
+			$error = i18n_get ('File not found');
 		} elseif (! unlink ($root . $file)) {
-			$error = 'Unable to delete ' . $file;
+			$error = i18n_get ('Unable to delete') . ' ' . $file;
 		} else {
 			$out = $file;
 			$msg = i18n_get ('File deleted.');
@@ -49,12 +49,12 @@ switch ($cmd) {
 	case 'mv':
 		if (FileManager::verify_folder ($file, $root)) {
 			if (! FileManager::verify_folder_name ($_GET['rename'])) {
-				$error = 'Invalid folder name';
+				$error = i18n_get ('Invalid folder name');
 			} else {
 				$old = array_pop (explode ('/', $file));
 				$new = preg_replace ('/' . preg_quote ($old) . '$/', $_GET['rename'], $file);
 				if (! rename ($root . $file, $root . $new)) {
-					$error = 'Unable to rename ' . $file;
+					$error = i18n_get ('Unable to rename') . ' ' . $file;
 				} else {
 					$out = $new;
 					$msg = i18n_get ('Folder renamed.');
@@ -62,24 +62,24 @@ switch ($cmd) {
 			}
 		} elseif (FileManager::verify_file ($file, $root)) {
 			if (! FileManager::verify_file_name ($_GET['rename'])) {
-				$error = 'Invalid file name';
+				$error = i18n_get ('Invalid file name');
 			} else {
 				$old = array_pop (explode ('/', $file));
 				$new = preg_replace ('/' . preg_quote ($old) . '$/', $_GET['rename'], $file);
 				if (! rename ($root . $file, $root . $new)) {
-					$error = 'Unable to rename ' . $file;
+					$error = i18n_get ('Unable to rename') . ' ' . $file;
 				} else {
 					$out = $new;
 					$msg = i18n_get ('File renamed.');
 				}
 			}
 		} else {
-			$error = 'File not found';
+			$error = i18n_get ('File not found');
 		}
 		break;
 	case 'ls':
 		if (! FileManager::verify_folder ($file, $root)) {
-			$error = 'Invalid folder name';
+			$error = i18n_get ('Invalid folder name');
 		} else {
 			$d = dir ($root . $file);
 			$out = array ('dirs' => array (), 'files' => array ());
