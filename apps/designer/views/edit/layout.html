@@ -1,15 +1,15 @@
-<p class="autosave-notice">Auto-saved data found for this form. <a href="#" class="autosave-restore">Click here to restore.</a></p>
+<p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
 
 <form method="POST" id="edit-form">
 <p style="text-align: right; margin-bottom: -10px; margin-top: -20px">
-	<span class="notice" id="body-notice">&nbsp; You must enter body content.</span>
+	<span class="notice" id="body-notice">&nbsp; {"You must enter body content."}</span>
 	<span id="bgsave-status"></span>
-	<input type="submit" value="Save Layout" class="autosave-clear" />&nbsp;
-	<input type="submit" value="Save &amp; Keep Editing" id="bgsave" />&nbsp;
-	<a href="/admin/cancel?type=Designer&id={{ file|urlencode }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('Are you sure you want to cancel and lose any changes?')">Cancel</a>
+	<input type="submit" value="{"Save Layout"}" class="autosave-clear" />&nbsp;
+	<input type="submit" value="{"Save &amp; Keep Editing"}" id="bgsave" />&nbsp;
+	<a href="/admin/cancel?type=Designer&id={{ file|urlencode }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
 </p>
 
-<p>Insert tag:&nbsp;
+<p>{"Insert tag"}:&nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '{ var }}', _codemirror.getCursor (true)); return false">{<span></span>{ var }}</a> &nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '% foreach %}\n', _codemirror.getCursor (true)); _codemirror.replaceRange ('\n{' + '% end %}', _codemirror.getCursor (false)); return false">{<span></span>% foreach %}</a> &nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '% if %}', _codemirror.getCursor (true)); _codemirror.replaceRange ('{' + '% end %}', _codemirror.getCursor (false)); return false">{<span></span>% if %}</a> &nbsp;
@@ -17,7 +17,7 @@
 	<a href="#" onclick="_codemirror.replaceRange ('{&quot; text &quot;}', _codemirror.getCursor (true)); return false">{<span></span>" text "}</a>
 	<br />
 <textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea>
-<br />Preview:<br />
+<br />{"Preview"}:<br />
 <iframe src="/designer/preview?layout={{ $_GET.file }}" id="preview" frameborder="0" width="1022" height="300" style="border: 1px solid #ccc"></iframe></p>
 </form>
 
@@ -86,6 +86,13 @@ $(function () {
 	{% foreach failed %}
 	$('#{{ loop_value }}-notice').show ();
 	{% end %}
+
+	// increase editor and preview height if window is tall enough
+	if ($(window).height () > 768) {
+		var height_diff = $(window).height () - 768;
+		$('.CodeMirror-scroll').height ($('.CodeMirror-scroll').height () + Math.floor (height_diff / 2));
+		$('#preview').height ($('#preview').height () + Math.floor (height_diff / 2));
+	}
 
 	$('#edit-form').autosave ();
 	$('#edit-form').bgsave ({

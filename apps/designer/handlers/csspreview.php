@@ -1,6 +1,6 @@
 <?php
 
-$page->title = 'Page title';
+$page->title = i18n_get ('Page title');
 $page->preview = true;
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -14,6 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$page->layout = str_replace ('</head>', '<style>' . $_POST['css'] . '</style></head>', $page->layout);
 }
 
-echo '<p>This is a preview of how your layout will look.</p>';
+echo '<p>' . i18n_get ('This is a preview of how your layout will look.') . '</p>';
 
 ?>

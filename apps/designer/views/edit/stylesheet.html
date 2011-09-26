@@ -1,16 +1,16 @@
-<p class="autosave-notice">Auto-saved data found for this form. <a href="#" class="autosave-restore">Click here to restore.</a></p>
+<p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
 
 <form method="POST" id="edit-form">
 <p style="text-align: right; margin-bottom: 10px; margin-top: -20px">
 	<span id="bgsave-status"></span>
-	<span class="notice" id="body-notice">&nbsp; You must enter body content.</span>
-	<input type="submit" value="Save Stylesheet" class="autosave-clear" />&nbsp;
-	<input type="submit" value="Save &amp; Keep Editing" id="bgsave" />&nbsp;
-	<a href="/admin/cancel?type=Designer&id={{ file|urlencode }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('Are you sure you want to cancel and lose any changes?')">Cancel</a>
+	<span class="notice" id="body-notice">&nbsp; {"You must enter body content."}</span>
+	<input type="submit" value="{"Save Stylesheet"}" class="autosave-clear" />&nbsp;
+	<input type="submit" value="{"Save &amp; Keep Editing"}" id="bgsave" />&nbsp;
+	<a href="/admin/cancel?type=Designer&id={{ file|urlencode }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
 </p>
 
 <p><textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea>
-<br />Preview with layout: <select name="layout" id="layout">
+<br />{"Preview with layout"}: <select name="layout" id="layout">
 {% foreach layouts %}
 	<option value="{{ loop_value }}"{% if loop_value == 'default' %} selected{% end %}>{{ loop_value }}</option>
 {% end %}
@@ -80,6 +80,13 @@ $(function () {
 	{% foreach failed %}
 	$('#{{ loop_value }}-notice').show ();
 	{% end %}
+
+	// increase editor and preview height if window is tall enough
+	if ($(window).height () > 768) {
+		var height_diff = $(window).height () - 768;
+		$('.CodeMirror-scroll').height ($('.CodeMirror-scroll').height () + Math.floor (height_diff / 2));
+		$('#preview').height ($('#preview').height () + Math.floor (height_diff / 2));
+	}
 
 	$('#edit-form').autosave ();
 	$('#edit-form').bgsave ({
