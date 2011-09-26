@@ -201,6 +201,24 @@ class Controller {
 	}
 
 	/**
+	 * Takes a list of names as arguments and returns an associative
+	 * array of the handler parameters using the names as keys. Note
+	 * that it will return false if the number of names is different
+	 * than the number of parameters. Handy for using named parameters
+	 * via:
+	 *
+	 *     extract ($this->params ('id', 'title'));
+	 *
+	 * Note that you can also achieve the same thing via:
+	 *
+	 *     list ($id, $title) = $this->params;
+	 */
+	function params () {
+		$keys = func_get_args ();
+		return array_combine ($keys, $this->params);
+	}
+
+	/**
 	 * Execute the request handler. $internal determines whether the
 	 * request originated internally from another handler or template,
 	 * or externally from a browser request.
