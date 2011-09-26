@@ -1,11 +1,29 @@
 <?php
 
+/**
+ * This is the debugging handler. It converts errors into ErrorException
+ * exceptions, and handles exceptions by printing a trace including
+ * highlighted source code.
+ *
+ * Usage:
+ *
+ *     if ($conf['General']['debug']) {
+ *         require_once ('lib/Debugger.php');
+ *         Debugger::start ();
+ *     }
+ */
 class Debugger {
+	/**
+	 * Set the error and exception handlers.
+	 */
 	static function start () {
 		set_error_handler (array ('Debugger', 'handle_error'));
 		set_exception_handler (array ('Debugger', 'handle_exception'));
 	}
 
+	/**
+	 * Handles exceptions.
+	 */
 	static function handle_exception ($e) {
 		while (ob_get_level () > 0) {
 			ob_end_clean ();
@@ -18,6 +36,9 @@ class Debugger {
 		Debugger::show_trace ($e->getTrace ());
 	}
 
+	/**
+	 * Shows the trace output.
+	 */
 	static function show_trace ($trace) {
 		$start = 0;
 		if (! isset ($trace[0]['line'])) {
@@ -38,6 +59,9 @@ class Debugger {
 		}
 	}
 
+	/**
+	 * Converts errors to ErrorException exceptions.
+	 */
 	static function handle_error ($errno, $errstr, $errfile, $errline) {
 		if ($errno == 8) {
 			return;
@@ -45,6 +69,9 @@ class Debugger {
 		throw new ErrorException ($errstr, 0, $errno, $errfile, $errline);
 	}
 
+	/**
+	 * Shows a step in the trace.
+	 */
 	static function show_trace_step ($trace) {
 		if (! isset ($trace['line'])) {
 			$trace['line'] = $trace['args'][3];
@@ -76,6 +103,9 @@ class Debugger {
 		echo "\n";
 	}
 
+	/**
+	 * Joins arguments for displaying the relevant code in a trace step.
+	 */
 	static function join_arguments ($args) {
 		if (! is_array ($args)) {
 			return '';
@@ -106,6 +136,9 @@ class Debugger {
 		return $out;
 	}
 
+	/**
+	 * Get the code for a step in the trace.
+	 */
 	static function get_code ($file, $line) {
 		$lines = file ($file);
 		$count = count ($lines);
@@ -118,6 +151,9 @@ class Debugger {
 		return $out;
 	}
 
+	/**
+	 * Highlight code for a trace step.
+	 */
 	static function highlight ($line) {
 		if (strpos ($line, '<?php') !== false) {
 			return highlight_string ($line, true);
@@ -129,6 +165,9 @@ class Debugger {
 		);
 	}
 
+	/**
+	 * Show the context of a trace step.
+	 */
 	static function show_context ($context) {
 		echo '<h2>Error Context</h2>';
 		foreach ($context as $name => $value) {
@@ -143,6 +182,9 @@ class Debugger {
 		}
 	}
 
+	/**
+	 * Show a variable for the debug output.
+	 */
 	static function show_variable ($value, $tabs = 0) {
 		if (is_numeric ($value)) {
 			echo $value;
@@ -206,6 +248,9 @@ class Debugger {
 		}
 	}
 
+	/**
+	 * Checks if an array is associative.
+	 */
 	static function is_assoc ($array) {
 		if (! is_array ($array) || empty ($array)) {
 			return false;
