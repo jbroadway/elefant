@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * This is the command line installer for Elefant. Adjust your folder
+ * permissions then run this to install the database tables and create
+ * your initial admin user account.
+ *
+ * It will output your default admin username/password when the script
+ * completes.
+ *
+ * Usage:
+ *
+ *     Usage: php conf/createdb.php
+ */
+
 function encrypt_pass ($plain) {
 	$base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 	$salt = '$1$';

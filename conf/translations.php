@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * This script builds a translation file for a specified language
+ * by grabbing all the translatable text from source code files,
+ * view templates, and layouts. You will find the output in a new
+ * file named `lang/{{lang}}.php` where `{{lang}}` is the language
+ * you specified when running the script. You can then use this
+ * file to add translations for that language.
+ *
+ * Usage:
+ *
+ *     Usage: php conf/translations.php lang
+ */
+
 if (! $argv[1]) {
 	echo "Usage: php conf/translations.php lang\n";
 	exit;

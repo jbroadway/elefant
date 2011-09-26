@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * This script generates the scaffolding for a new Elefant
+ * app in the apps folder. This includes the folder structure
+ * of an app, as well as a default config.php, default index
+ * and admin handlers, and a default index view template.
+ *
+ * Usage:
+ *
+ *     Usage: php conf/make.php appname
+ */
+
 if (php_sapi_name () !== 'cli') {
 	die ("For use on the command line only.\n");
 }
