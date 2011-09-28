@@ -75,7 +75,7 @@ class Debugger {
 			$start++;
 		}
 
-		for ($i = $start; $i < count ($trace); $i++) {
+		for ($i = $start, $count = count ($trace); $i < $count; $i++) {
 			echo Debugger::show_trace_step ($trace[$i]);
 		}
 		if (isset ($trace[0]['args']) && is_array ($trace[0]['args'][4])) {
