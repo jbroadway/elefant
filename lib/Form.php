@@ -255,9 +255,6 @@ class Form {
 	 * data, and has not expired (2 hour limit).
 	 */
 	function verify_csrf () {
-		@session_set_cookie_params (time () + 2592000);
-		@session_start ();
-
 		if (! isset ($_SESSION['csrf_token']) || ! isset ($_SESSION['csrf_expires'])) {
 			// No token in session
 			return false;
