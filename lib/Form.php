@@ -262,6 +262,11 @@ class Form {
 
 		$values = ($this->method == 'post') ? $_POST : $_GET;
 
+		if (! isset ($values[$this->csrf_field_name])) {
+			// No token provided
+			return false;
+		}
+
 		if ($_SESSION['csrf_token'] != $values[$this->csrf_field_name]) {
 			// Token doesn't match
 			return false;
