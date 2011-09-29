@@ -25,20 +25,38 @@
  */
 
 /**
- * Convenience functions for validating form submissions and input data.
+ * This is a simple form handling class. Provides validation of the form
+ * referrer, request method, cross-site request forgery (CSRF) prevention,
+ * and numerous convenience functions for validating form submissions and
+ * input data. Also integrates with the `/js/jquery.verify_values.js`
+ * jQuery plugin to provide matching client-side validation based on the
+ * same set of rules.
+ *
  * The input validation can be useful not just for form submissions,
  * but it's packaged here to keep things tidy.
  *
  * Usage:
  *
  *     $form = new Form ('post', 'apps/myapp/forms/verify.php');
+ *
  *     if ($form->submit ()) {
  *         // handle form
+ *         info ($_POST);
+ *
  *     } else {
- *         $page->failed = $form->failed;
- *         $page->head = '<script src="/js/jquery-1.6.2.min.js"></script>
- *             <script src="/js/jquery.verify_values.js"></script>
- *             <script>
+ *         // set some default values
+ *         $obj = new StdClass;
+ *         $obj->foo = 'bar';
+ *
+ *         // merge with user input
+ *         $obj = $f->merge_values ($obj);
+ *
+ *         // get failed fields
+ *         $obj->failed = $form->failed;
+ *
+ *         // add scripts for client-side validation
+ *         $page->add_script ('<script src="/js/jquery.verify_values.js"></script>');
+ *         $page->add_script ('<script>
  *             $(function () {
  *                 $.verify_values ({
  *                     element: "#myapp-form",
@@ -48,8 +66,10 @@
  *                     }
  *                 });
  *             });
- *             </script>';
- *         $page->template = 'myapp/form';
+ *             </script>');
+ *
+ *         // output your form template
+ *         echo $tpl->render ('myapp/form', $obj);
  *     }
  */
 class Form {
@@ -74,13 +94,30 @@ class Form {
 	var $verify_referrer = true;
 
 	/**
+	 * Whether to verify with a CSRF token or not.
+	 */
+	var $verify_csrf = true;
+
+	/**
+	 * Token generated for CSRF prevention.
+	 */
+	var $csrf_token;
+
+	/**
+	 * The name of the token form field.
+	 */
+	var $csrf_field_name = '_token_';
+
+	/**
 	 * The reason `submit()` failed to pass.
 	 */
 	var $error = false;
 
 	function __construct ($required_method = 'post', $form_rules = false) {
+		// Normalize the request method to lowercase
 		$this->method = strtolower ($required_method);
 
+		// Fetch any form validation rules
 		if (! empty ($form_rules)) {
 			if (! @file_exists ($form_rules)) {
 				list ($app, $form) = explode ('/', $form_rules);
@@ -98,14 +135,22 @@ class Form {
 	 */
 	function submit () {
 		$values = ($this->method == 'post') ? $_POST : $_GET;
+
+		$this->initialize_csrf ();
 		
 		if (! $this->verify_request_method ()) {
+			// form hasn't been submitted yet, or request method doesn't match
 			$this->error = 'Request method must be ' . strtoupper ($this->method);
 			return false;
 		}
 		
 		if ($this->verify_referrer && ! $this->verify_referrer ()) {
 			$this->error = 'Referrer must match the host name.';
+			return false;
+		}
+
+		if ($this->verify_csrf && ! $this->verify_csrf ()) {
+			$this->error = 'Cross-site request forgery detected.';
 			return false;
 		}
 
@@ -151,6 +196,81 @@ class Form {
 	 */
 	function verify_referrer () {
 		if (strpos ($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST']) === false) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Initialize the CSRF token.
+	 */
+	function initialize_csrf () {
+		if ($this->verify_csrf) {
+			// Start a session
+			@session_set_cookie_params (time () + 2592000);
+			@session_start ();
+
+			if (isset ($_SESSION['csrf_token']) && $_SESSION['csrf_expires'] > time ()) {
+				// Get an existing token
+				$this->csrf_token = $_SESSION['csrf_token'];
+
+				// Reset the timer on the request so it doesn't expire on the
+				// user if time is running short
+				$_SESSION['csrf_expires'] = time () + 7200;
+			} else {
+				// Generate a random token
+				$this->csrf_token = md5 (uniqid (rand (), true));
+
+				// Set the token and expiry time (2 hours)
+				$_SESSION['csrf_token'] = $this->csrf_token;
+				$_SESSION['csrf_expires'] = time () + 7200;
+			}
+
+			// Append the CSRF token Javascript if there is a page object
+			if (isset ($GLOBALS['page'])) {
+				$GLOBALS['page']->add_script (
+					$this->generate_csrf_script (),
+					'tail'
+				);
+			}
+		}
+	}
+
+	/**
+	 * Generate the script that will append the token to forms in the page.
+	 * You do not need to call this directly as long as you have `{{ tail|none }}`
+	 * in your layout template, since `initialize_csrf()` will automatically
+	 * add this to the tail if it can.
+	 */
+	function generate_csrf_script () {
+		return sprintf (
+			'<script>$(function(){$("form").append("<input type=\'hidden\' name=\'%s\' value=\'%s\'/>");});</script>',
+			$this->csrf_field_name,
+			$this->csrf_token
+		);
+	}
+
+	/**
+	 * Verify the CSRF token is present, matches the stored value in the session
+	 * data, and has not expired (2 hour limit).
+	 */
+	function verify_csrf () {
+		@session_set_cookie_params (time () + 2592000);
+		@session_start ();
+
+		if (! isset ($_SESSION['csrf_token']) || ! isset ($_SESSION['csrf_expires'])) {
+			// No token in session
+			return false;
+		}
+
+		$values = ($this->method == 'post') ? $_POST : $_GET;
+
+		if ($_SESSION['csrf_token'] != $values[$this->csrf_field_name]) {
+			// Token doesn't match
+			return false;
+		}
+		if ($_SESSION['csrf_expires'] < time ()) {
+			// Timed out
 			return false;
 		}
 		return true;
