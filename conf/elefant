@@ -1,0 +1,278 @@
+#!/usr/bin/php
+<?php
+
+/**
+ * Elefant CMS - http://www.elefantcms.com/
+ *
+ * Copyright (c) 2011 Johnny Broadway
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
+ * This is the Elefant command line utility. It can run the Elefant
+ * install routines, create the scaffolding for new apps or the index
+ * for new translation files, or encrypt a password for you.
+ *
+ * Usage:
+ *
+ *     $ cd /path/to/my/site
+ *     $ elefant COMMAND
+ */
+
+ini_set ('error_reporting', 247);
+
+$help = <<<HELP
+
+== Elefant framework command line utility ==
+
+Usage:
+
+  $ cd /path/to/my/site
+  $ elefant COMMAND
+
+Commands:
+
+  install                          Run the command line installer
+  build-app <appname>              Build the scaffolding for an app
+  build-translation <lang>         Build a translation index
+  generate-password <length(8)>    Generate a random password
+  encrypt-password <password>      Encrypt a password for the db
+
+
+HELP;
+
+if (! @file_exists ('conf/config.php')) {
+	echo "** Error: Must be run from the root of an Elefant website.\n";
+	die;
+}
+
+/**
+ * Takes a plain text password and return the encrypted version.
+ */
+function encrypt_password ($plain) {
+	$base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	$salt = '$1$';
+	for ($i = 0; $i < 9; $i++) {
+		$salt .= $base[rand (0, 61)];
+	}
+	return crypt ($plain, $salt . '$');
+}
+
+/**
+ * Takes a length and returns a random string of characters of that
+ * length for use in passwords. String may contain any number, lower
+ * or uppercase letters, or common symbols.
+ */
+function generate_password ($length) {
+	$list = '123467890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_-+=~:;|<>[]{}?"\'';
+	$pass = '';
+	while (strlen ($pass) < $length) {
+		$pass .= substr ($list, mt_rand (0, strlen ($list)), 1);
+	}
+	return $pass;
+}
+
+if (count ($argv) > 1) {
+	switch ($argv[1]) {
+		case 'install':
+			if (@file_exists ('install/installed')) {
+				echo "** Error: Installer has already been run.\n";
+				die;
+			}
+			
+			require_once ('lib/Functions.php');
+			require_once ('lib/Form.php');
+			require_once ('lib/Database.php');
+			require_once ('lib/Model.php');
+			require_once ('apps/admin/models/Webpage.php');
+			require_once ('apps/admin/models/Versions.php');
+			require_once ('apps/user/models/User.php');
+			require_once ('apps/blocks/models/Block.php');
+			
+			$conf = parse_ini_file ('conf/config.php', true);
+			date_default_timezone_set($conf['General']['timezone']);
+			
+			if (! db_open ($conf['Database'])) {
+				echo "** Error: Could not connect to the database. Please check the\n";
+				echo "          settings in conf/config.php and try again.\n";
+				echo "\n";
+				echo "          db_error ()\n";
+				die;
+			}
+			
+			// import the database schema
+			$sqldata = sql_split (file_get_contents ('conf/install_' . $conf['Database']['driver'] . '.sql'));
+			
+			foreach ($sqldata as $sql) {
+				if (! db_execute ($sql)) {
+					echo 'Error: ' . db_error () . "\n";
+				}
+			}
+			
+			// create first admin user
+			if (db_shift ('select count() from user') == 0) {
+				$pass = generate_password (8);
+				$date = gmdate ('Y-m-d H:i:s');
+				if (! db_execute (
+					'insert into user (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, "Admin User", "admin", ?, ?, ?)',
+					$conf['General']['email_from'],
+					encrypt_password ($pass),
+					$date,
+					$date,
+					$date,
+					json_encode (array ())
+				)) {
+					echo 'Error: ' . db_error () . "\n";
+				}
+				
+				$user = new User (1);
+			
+				// respond with the root password
+				echo "Database created. Your initial admin account is:\n";
+				echo 'Username: ' . $conf['General']['email_from'] . "\n";
+				echo 'Password: ' . $pass . "\n";
+			
+				// create versions entries for initial content
+				$wp = new Webpage ('index');
+				Versions::add ($wp);
+				$b = new Block ('members');
+				Versions::add ($b);
+			} else {
+				echo "Database created.\n";
+			}
+			
+			// disable the installer
+			@umask (0000);
+			@touch ('install/installed');
+			echo "Done.\n";
+			break;
+
+		case 'build-app':
+			if (! isset ($argv[2])) {
+				echo "Usage: elefant build-app <appname>\n";
+				die;
+			}
+
+			mkdir ('apps/' . $argv[2] . '/conf', 0755, true);
+			mkdir ('apps/' . $argv[2] . '/forms', 0755, true);
+			mkdir ('apps/' . $argv[2] . '/handlers', 0755, true);
+			mkdir ('apps/' . $argv[2] . '/lib', 0755, true);
+			mkdir ('apps/' . $argv[2] . '/models', 0755, true);
+			mkdir ('apps/' . $argv[2] . '/views', 0755, true);
+			
+			file_put_contents ('apps/' . $argv[2] . '/handlers/index.php', sprintf (
+				"<?php\n\n\$page->title = '%s home';\n\$page->template = '%s/index';\n\n?>",
+				ucfirst ($argv[2]),
+				$argv[2]
+			));
+			file_put_contents ('apps/' . $argv[2] . '/handlers/admin.php', sprintf (
+				"<?php\n\nif (! User::require_admin ()) {\n\t\$this->redirect ('/admin');\n}\n\n\$page->title = '%s admin';\n\$page->layout = 'admin';\n\n?>",
+				ucfirst ($argv[2])
+			));
+			file_put_contents ('apps/' . $argv[2] . '/views/index.html', '<p>{{ body|none }}</p>');
+			file_put_contents ('apps/' . $argv[2] . '/conf/config.php', sprintf (
+				"; <?php\n\n[Admin]\n\nhandler = %s/admin\nname = %s\n\n; */ ?>",
+				$argv[2],
+				ucfirst ($argv[2])
+			));
+			
+			printf ("App created in apps/%s/\n", $argv[2]);
+			break;
+
+		case 'build-translation':
+			if (! isset ($argv[2])) {
+				echo "Usage: elefant build-translation <lang>\n";
+				die;
+			}
+
+			$sources = array ('layouts/*.html', 'apps/*/views/*.html', 'apps/*/handlers/*.php');
+			$list = array ();
+			
+			foreach ($sources as $source) {
+				printf ("Parsing %s...\n", $source);
+				$files = glob ($source);
+				foreach ($files as $file) {
+					$data = file_get_contents ($file);
+					if (preg_match ('/\.html/', $file)) {
+						// parse for {""} syntax
+						preg_match_all ('/\{[\'"] ?(.*?) ?[\'"]\}/', $data, $matches);
+						foreach ($matches[1] as $str) {
+							$list[$str] = $str;
+						}
+					} else {
+						// parse for i18n_getf?() syntax
+						preg_match_all ('/i18n_getf? ?\([\'"](.*?)[\'"]\)/', $data, $matches);
+						foreach ($matches[1] as $str) {
+							$list[$str] = $str;
+						}
+					}
+				}
+			}
+			asort ($list);
+			
+			if (@file_exists ('lang/' . $argv[2] . '.php')) {
+				printf ("File lang/%s.php already exists, saving backup to lang/%s.bak\n", $argv[2], $argv[2]);
+				copy ('lang/' . $argv[2] . '.php', 'lang/' . $argv[2] . '.bak');
+			}
+			
+			$out = sprintf ("<?php\n\n\$this->lang_hash['%s'] = array (\n", $argv[2]);
+			foreach ($list as $k => $v) {
+				$v = str_replace ('\'', '\\\'', $v);
+				$out .= sprintf ("\t'%s' => '%s',\n", $v, $v);
+			}
+			$out = substr ($out, 0, -2);
+			$out .= "\n);\n\n?>";
+			
+			file_put_contents ('lang/' . $argv[2] . '.php', $out);
+			printf ("Translation list saved to lang/%s.php\n", $argv[2]);
+			break;
+
+		case 'encrypt-password':
+			if (! isset ($argv[2])) {
+				echo "Usage: elefant encrypt-password <password>\n";
+				die;
+			}
+			echo encrypt_password ($argv[2]) . "\n";
+			break;
+
+		case 'generate-password':
+			if (isset ($argv[2])) {
+				if (! is_numeric ($argv[2])) {
+					echo "Usage: elefant generate-password <length|8>\n";
+					die;
+				}
+				$length = $argv[2];
+			} else {
+				$length = 8;
+			}
+			echo generate_password ($length) . "\n";
+			break;
+
+		default:
+			echo "** Error: Unknown option: ${argv[1]}\n";
+			die;
+			break;
+	}
+
+} else {
+	echo $help;
+}
+
+?>
