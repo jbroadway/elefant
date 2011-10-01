@@ -3,10 +3,15 @@
 require_once ('lib/Database.php');
 
 class DatabaseTest extends PHPUnit_Framework_TestCase {
-	protected $backupGlobalsBlacklist = array ('db', 'db_err', 'db_sql', 'db_args');
+	protected $backupGlobalsBlacklist = array ('db_list', 'db_err', 'db_sql', 'db_args');
+
+	static function setUpBeforeClass () {
+		$GLOBALS['db_list'] = array ();
+	}
 
 	function setUp () {
 		$this->bad_conf = array (
+			'master' => true,
 			'driver' => 'fake_driver',
 			'host' => '127.0.0.1',
 			'name' => 'fake_db',
@@ -14,13 +19,14 @@ class DatabaseTest extends PHPUnit_Framework_TestCase {
 			'pass' => 'fake'
 		);
 		$this->conf = array (
+			'master' => true,
 			'driver' => 'sqlite',
 			'file' => ':memory:'
 		);
 	}
 
 	static function tearDownAfterClass () {
-		unset ($GLOBALS['db']);
+		unset ($GLOBALS['db_list']);
 	}
 
 	function test_open () {

@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Elefant CMS - http://www.elefantcms.com/
- *
- * Copyright (c) 2011 Johnny Broadway
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-/**
  * The database package is just a list of functions that act on
  * a global `$db` PDO object. These provide direct access to the database
  * through a set of convenience functions, and can help reduce
@@ -61,25 +37,58 @@
  * escaped upon insertion.
  */
 function db_open ($conf) {
-	global $db, $db_err;
+	global $db_list, $db_err;
+	if (! $db_list) {
+		$db_list = array ();
+	}
+	$id = ($conf['master']) ? 'master' : 'slave_' . count ($db_list);
 	try {
 		switch ($conf['driver']) {
 			case 'sqlite':
-				$db = new PDO ('sqlite:' . $conf['file']);
+				$db_list[$id] = new PDO ('sqlite:' . $conf['file']);
 				break;
 			default:
 				if (strstr ($conf['host'], ':')) {
 					$conf['host'] = str_replace (':', ';port=', $conf['host']);
 				}
-				$db = new PDO ($conf['driver'] . ':host=' . $conf['host'] . ';dbname=' . $conf['name'], $conf['user'], $conf['pass']);
+				$db_list[$id] = new PDO ($conf['driver'] . ':host=' . $conf['host'] . ';dbname=' . $conf['name'], $conf['user'], $conf['pass']);
 		}
 	} catch (PDOException $e) {
 		$db_err = $e->getMessage ();
 		return false;
 	}
-	$db->setAttribute (PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$db->setAttribute (PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+	$db_list[$id]->setAttribute (PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$db_list[$id]->setAttribute (PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 	return true;
+}
+
+/**
+ * Get a database connection. If `$master` is `1`, it will return the
+ * master connection, `-1` and it will return a random connection from
+ * only the slaves, `0` and it will return a random connection which
+ * could be any of the slaves or the master.
+ */
+function db_get_conn ($master = 0) {
+	global $db_list, $db_last_conn;
+	if ($master === 1 && isset ($db_list['master'])) {
+		$db_last_conn = 'master';
+		return $db_list['master'];
+	} elseif ($master === -1) {
+		$keys = array_keys ($db_list);
+		if (isset ($db_list['master'])) {
+			foreach ($keys as $k => $v) {
+				if ($v === 'master') {
+					unset ($keys[$k]);
+					break;
+				}
+			}
+		}
+		$db_last_conn = $keys[array_rand ($keys)];
+		return $db_list[$db_last_conn];
+	}
+	$keys = array_keys ($db_list);
+	$db_last_conn = $keys[array_rand ($keys)];
+	return $db_list[$db_last_conn];
 }
 
 /**
@@ -120,7 +129,8 @@ function db_args ($args) {
  * Fetch an array of all result objects.
  */
 function db_fetch_array ($sql) {
-	global $db, $db_err, $db_sql, $db_args;
+	global $db_err, $db_sql, $db_args;
+	$db = db_get_conn ();
 	$args = func_get_args ();
 	array_shift ($args);
 	$args = db_args ($args);
@@ -141,7 +151,8 @@ function db_fetch_array ($sql) {
  * Execute a statement and return true/false.
  */
 function db_execute ($sql) {
-	global $db, $db_err, $db_sql, $db_args;
+	global $db_err, $db_sql, $db_args;
+	$db = db_get_conn (1);
 	$args = func_get_args ();
 	array_shift ($args);
 	$args = db_args ($args);
@@ -161,7 +172,8 @@ function db_execute ($sql) {
  * Fetch a single object.
  */
 function db_single ($sql) {
-	global $db, $db_err, $db_sql, $db_args;
+	global $db_err, $db_sql, $db_args;
+	$db = db_get_conn ();
 	$args = func_get_args ();
 	array_shift ($args);
 	$args = db_args ($args);
@@ -184,7 +196,8 @@ function db_single ($sql) {
  * you only need a single piece of information.
  */
 function db_shift ($sql) {
-	global $db, $db_err, $db_sql, $db_args;
+	global $db_err, $db_sql, $db_args;
+	$db = db_get_conn ();
 	$args = func_get_args ();
 	array_shift ($args);
 	$args = db_args ($args);
@@ -206,7 +219,8 @@ function db_shift ($sql) {
  * Fetch an array of a single field.
  */
 function db_shift_array ($sql) {
-	global $db, $db_err, $db_sql, $db_args;
+	global $db_err, $db_sql, $db_args;
+	$db = db_get_conn ();
 	$args = func_get_args ();
 	array_shift ($args);
 	$args = db_args ($args);
@@ -234,7 +248,8 @@ function db_shift_array ($sql) {
  * being the keys and the second being the values.
  */
 function db_pairs ($sql) {
-	global $db, $db_err, $db_sql, $db_args;
+	global $db_err, $db_sql, $db_args;
+	$db = db_get_conn ();
 	$args = func_get_args ();
 	array_shift ($args);
 	$args = db_args ($args);
@@ -261,8 +276,8 @@ function db_pairs ($sql) {
  * Get the last inserted id value.
  */
 function db_lastid () {
-	global $db;
-	return $db->lastInsertId ();
+	global $db_list, $db_last_conn;
+	return $db_list[$db_last_conn]->lastInsertId ();
 }
 
 /**
@@ -271,8 +286,8 @@ function db_lastid () {
  * object directly.
  */
 function db_last_error () {
-	global $db;
-	$err = $db->errorInfo ();
+	global $db_list, $db_last_conn;
+	$err = $db_list[$db_last_conn]->errorInfo ();
 	return $err[2];
 }
 

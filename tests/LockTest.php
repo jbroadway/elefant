@@ -3,12 +3,14 @@
 require_once ('lib/Database.php');
 require_once ('apps/admin/lib/Lock.php');
 
+$GLOBALS['db_list'] = array ();
+
 class LockTest extends PHPUnit_Framework_TestCase {
-	protected $backupGlobalsBlacklist = array ('db', 'db_err', 'db_sql', 'db_args', 'user');
+	protected $backupGlobalsBlacklist = array ('db_list', 'db_err', 'db_sql', 'db_args', 'user');
 	protected static $lock;
 
 	static function setUpBeforeClass () {
-		db_open (array ('driver' => 'sqlite', 'file' => ':memory:'));
+		db_open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		db_execute ('create table `lock` (
 			id integer primary key,
 			user int not null,
@@ -25,7 +27,7 @@ class LockTest extends PHPUnit_Framework_TestCase {
 	}
 
 	static function tearDownAfterClass () {
-		unset ($GLOBALS['db']);
+		unset ($GLOBALS['db_list']);
 		unset ($GLOBALS['user']);
 	}
 
