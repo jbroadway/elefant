@@ -108,12 +108,16 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               Controller.php              </a>
                                           <a class="source" href="./Database.html">
                               Database.php              </a>
+                                          <a class="source" href="./Debugger.html">
+                              Debugger.php              </a>
                                           <a class="source" href="./Form.html">
                               Form.php              </a>
                                           <a class="source" href="./Functions.html">
                               Functions.php              </a>
                                           <a class="source" href="./I18n.html">
                               I18n.php              </a>
+                                          <a class="source" href="./MemcacheExt.html">
+                              MemcacheExt.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
                                           <a class="source" href="./Page.html">
@@ -139,6 +143,36 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-0">&#182;</a>
+              </div>
+              <p>Elefant CMS - http:www.elefantcms.com/</p>
+
+<p>Copyright (c) 2011 Johnny Broadway</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre></pre></div>            </td>
+          </tr>
+                  <tr id="section-1">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
               <p>Basic document object used to contain the elements sent to
  the template for rendering. You can add any values you want
@@ -176,10 +210,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="k">var</span> <span class="nv">$is_being_rendered</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
  <span class="k">var</span> <span class="nv">$preview</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span></pre></div>            </td>
           </tr>
-                  <tr id="section-1">
+                  <tr id="section-2">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-1">&#182;</a>
+                <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
               <p>Render the page in its template and layout.</p>
             </td>
@@ -210,10 +244,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">body</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-2">
+                  <tr id="section-3">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-2">&#182;</a>
+                <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <p>Returns title for menu<em>title or window</em>title if they're empty.</p>
             </td>
@@ -226,10 +260,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="p">}</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-3">
+                  <tr id="section-4">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>Add a script to the head or tail of a page, or echo immediately if the template
  rendering has already begun. Tracks duplicate additions so scripts will only

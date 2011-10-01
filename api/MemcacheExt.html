@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>Cache.php</title>
+  <title>MemcacheExt.php</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="layout.css" />
   <style>
@@ -132,7 +132,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         <tr>
           <th class="docs">
             <h1>
-              Cache.php            </h1>
+              MemcacheExt.php            </h1>
           </th>
           <th class="code">
           </th>
@@ -174,65 +174,22 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>This is an empty class that immitates Memcache so a global
- object can exist and hard-coded caching will work even when
- Memcache isn't installed.</p>
+              <p>Extends Memcache with a method that takes a key, timeout, and a
+ function that will be called to produce the value if it is not
+ found in the cache.</p>
+
+<p>Based on Zane Ashby's idea posted here:</p>
+
+<p>http:demonastery.org/72/tiny-memcached-wrapper/</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre><span class="k">class</span> <span class="nc">Cache</span> <span class="p">{</span>
- <span class="k">var</span> <span class="nv">$memory</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
-
- <span class="k">function</span> <span class="nf">__construct</span> <span class="p">()</span> <span class="p">{</span>
- <span class="p">}</span>
-
+              <div class="highlight"><pre><span class="k">class</span> <span class="nc">MemcacheExt</span> <span class="k">extends</span> <span class="nx">Memcache</span> <span class="p">{</span>
  <span class="k">function</span> <span class="nf">cache</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">,</span> <span class="nv">$function</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">((</span><span class="nv">$val</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span> <span class="p">(</span><span class="nv">$key</span><span class="p">))</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$val</span> <span class="o">=</span> <span class="nv">$function</span> <span class="p">();</span>
-   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nv">$val</span><span class="p">;</span>
- <span class="p">}</span>
-
- <span class="k">function</span> <span class="nf">get</span> <span class="p">(</span><span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">memory</span><span class="p">[</span><span class="nv">$key</span><span class="p">]))</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">memory</span><span class="p">[</span><span class="nv">$key</span><span class="p">];</span>
-  <span class="p">}</span>
-  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
- <span class="p">}</span>
-
- <span class="k">function</span> <span class="nf">add</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">memory</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$val</span><span class="p">;</span>
-  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
- <span class="p">}</span>
-
- <span class="k">function</span> <span class="nf">replace</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">memory</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$val</span><span class="p">;</span>
-  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
- <span class="p">}</span>
-
- <span class="k">function</span> <span class="nf">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="nv">$timeout</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">memory</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$val</span><span class="p">;</span>
-  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
- <span class="p">}</span>
-
- <span class="k">function</span> <span class="nf">increment</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">memory</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">+=</span> <span class="nv">$value</span><span class="p">;</span>
-  <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">memory</span><span class="p">[</span><span class="nv">$key</span><span class="p">];</span>
- <span class="p">}</span>
-
- <span class="k">function</span> <span class="nf">decrement</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">memory</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">-=</span> <span class="nv">$value</span><span class="p">;</span>
-  <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">memory</span><span class="p">[</span><span class="nv">$key</span><span class="p">];</span>
- <span class="p">}</span>
-
- <span class="k">function</span> <span class="nf">flush</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">memory</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
-  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
- <span class="p">}</span>
-
- <span class="k">function</span> <span class="nf">delete</span> <span class="p">(</span><span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nb">unset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">memory</span><span class="p">[</span><span class="nv">$key</span><span class="p">]);</span>
-  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
  <span class="p">}</span>
 <span class="p">}</span>
 

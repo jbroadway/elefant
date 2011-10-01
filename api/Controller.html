@@ -108,12 +108,16 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               Controller.php              </a>
                                           <a class="source" href="./Database.html">
                               Database.php              </a>
+                                          <a class="source" href="./Debugger.html">
+                              Debugger.php              </a>
                                           <a class="source" href="./Form.html">
                               Form.php              </a>
                                           <a class="source" href="./Functions.html">
                               Functions.php              </a>
                                           <a class="source" href="./I18n.html">
                               I18n.php              </a>
+                                          <a class="source" href="./MemcacheExt.html">
+                              MemcacheExt.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
                                           <a class="source" href="./Page.html">
@@ -139,6 +143,36 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-0">&#182;</a>
+              </div>
+              <p>Elefant CMS - http:www.elefantcms.com/</p>
+
+<p>Copyright (c) 2011 Johnny Broadway</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre></pre></div>            </td>
+          </tr>
+                  <tr id="section-1">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
               <p>Basic routing controller. Maps <code>$_SERVER['REQUEST_URI']</code> to files in
  a <code>apps/{appname}/handlers/</code> folder, defaulting to
@@ -235,50 +269,50 @@ interesting with the id:</p>
             <td class="code">
               <div class="highlight"><pre><span class="k">class</span> <span class="nc">Controller</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-1">
+                  <tr id="section-2">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-1">&#182;</a>
+                <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
               <p>Extra parameters from the end of the URL.</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$params</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
           </tr>
-                  <tr id="section-2">
+                  <tr id="section-3">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-2">&#182;</a>
+                <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <p>Whether the request originated internally or externally.</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$internal</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span></pre></div>            </td>
           </tr>
-                  <tr id="section-3">
+                  <tr id="section-4">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>Data sent from another handler to the current one.</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
           </tr>
-                  <tr id="section-4">
+                  <tr id="section-5">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>Set to true if the request came from the command line.</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$cli</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span></pre></div>            </td>
           </tr>
-                  <tr id="section-5">
+                  <tr id="section-6">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>A list of handlers defined to be called for each type of hook.
  Similar to the idea of webhooks, this provides a means of triggering
@@ -288,10 +322,10 @@ interesting with the id:</p>
             <td class="code">
               <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$hooks</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
           </tr>
-                  <tr id="section-6">
+                  <tr id="section-7">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>Keeps track of the number of times each handler has been called in
  this request. You can check <code>$controller-&gt;called['handler']</code> for
@@ -301,10 +335,21 @@ interesting with the id:</p>
             <td class="code">
               <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$called</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
           </tr>
-                  <tr id="section-7">
+                  <tr id="section-8">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Cached PUT data from get<em>put</em>data() so it only reads it the first
+ time.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$put_data</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-9">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>When a handler is loaded, if there is a <code>conf/config.php</code> for that
  app, its contents will be loaded into <code>$appconf['appname']</code> once
@@ -321,10 +366,10 @@ interesting with the id:</p>
   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">hooks</span> <span class="o">=</span> <span class="nv">$hooks</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-8">
+                  <tr id="section-10">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Run an internal request from one handler to another.</p>
             </td>
@@ -343,10 +388,10 @@ interesting with the id:</p>
   <span class="k">return</span> <span class="nv">$c</span><span class="o">-&gt;</span><span class="na">handle</span> <span class="p">(</span><span class="nv">$handler</span><span class="p">,</span> <span class="k">true</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-9">
+                  <tr id="section-11">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>Trigger the default error handler. Note that you must echo the
  output from your handler before returning, for example:</p>
@@ -364,20 +409,20 @@ interesting with the id:</p>
               <div class="highlight"><pre> <span class="k">function</span> <span class="nf">error</span> <span class="p">(</span><span class="nv">$code</span> <span class="o">=</span> <span class="m">404</span><span class="p">,</span> <span class="nv">$title</span> <span class="o">=</span> <span class="s1">&#39;Page not found&#39;</span><span class="p">,</span> <span class="nv">$message</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">global</span> <span class="nv">$conf</span><span class="p">;</span></pre></div>            </td>
           </tr>
-                  <tr id="section-10">
+                  <tr id="section-12">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Erase any existing output up to this point</p>
             </td>
             <td class="code">
               <div class="highlight"><pre>  <span class="nb">ob_clean</span> <span class="p">();</span></pre></div>            </td>
           </tr>
-                  <tr id="section-11">
+                  <tr id="section-13">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>Call the error handler</p>
             </td>
@@ -389,10 +434,10 @@ interesting with the id:</p>
   <span class="p">));</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-12">
+                  <tr id="section-14">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Run any handlers for the specified hook type. Note that the
  output for hooks is ignored.</p>
@@ -407,10 +452,35 @@ interesting with the id:</p>
   <span class="p">}</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-13">
+                  <tr id="section-15">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Takes a list of names as arguments and returns an associative
+ array of the handler parameters using the names as keys. Note
+ that it will return false if the number of names is different
+ than the number of parameters. Handy for using named parameters
+ via:</p>
+
+<pre><code> extract ($this-&gt;params ('id', 'title'));
+</code></pre>
+
+<p>Note that you can also achieve the same thing via:</p>
+
+<pre><code> list ($id, $title) = $this-&gt;params;
+</code></pre>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">params</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nv">$keys</span> <span class="o">=</span> <span class="nb">func_get_args</span> <span class="p">();</span>
+  <span class="k">return</span> <span class="nb">array_combine</span> <span class="p">(</span><span class="nv">$keys</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">params</span><span class="p">);</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-16">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>Execute the request handler. $internal determines whether the
  request originated internally from another handler or template,
@@ -418,7 +488,7 @@ interesting with the id:</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">function</span> <span class="nf">handle</span> <span class="p">(</span><span class="nv">$handler</span><span class="p">,</span> <span class="nv">$internal</span> <span class="o">=</span> <span class="k">true</span><span class="p">,</span> <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span> <span class="p">())</span> <span class="p">{</span>
-  <span class="k">global</span> <span class="nv">$controller</span><span class="p">,</span> <span class="nv">$db</span><span class="p">,</span> <span class="nv">$conf</span><span class="p">,</span> <span class="nv">$i18n</span><span class="p">,</span> <span class="nv">$page</span><span class="p">,</span> <span class="nv">$tpl</span><span class="p">,</span> <span class="nv">$memcache</span><span class="p">;</span>
+  <span class="k">global</span> <span class="nv">$controller</span><span class="p">,</span> <span class="nv">$page</span><span class="p">,</span> <span class="nv">$tpl</span><span class="p">,</span> <span class="nv">$memcache</span><span class="p">;</span>
   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">internal</span> <span class="o">=</span> <span class="nv">$internal</span><span class="p">;</span>
   <span class="nv">$data</span> <span class="o">=</span> <span class="p">(</span><span class="k">array</span><span class="p">)</span> <span class="nv">$data</span><span class="p">;</span>
   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">=</span> <span class="nv">$data</span><span class="p">;</span>
@@ -435,10 +505,10 @@ interesting with the id:</p>
   <span class="k">return</span> <span class="nb">ob_get_clean</span> <span class="p">();</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-14">
+                  <tr id="section-17">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>Route a request URI to a file.</p>
             </td>
@@ -449,10 +519,10 @@ interesting with the id:</p>
   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">app</span> <span class="o">=</span> <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$exp</span><span class="p">);</span>
   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">params</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
           </tr>
-                  <tr id="section-15">
+                  <tr id="section-18">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Remove queries and hash from uri</p>
             </td>
@@ -463,30 +533,30 @@ interesting with the id:</p>
    <span class="nv">$uri</span> <span class="o">=</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;General&#39;</span><span class="p">][</span><span class="s1">&#39;default_handler&#39;</span><span class="p">];</span>
   <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-16">
+                  <tr id="section-19">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Remove leading /</p>
             </td>
             <td class="code">
               <div class="highlight"><pre>  <span class="nv">$uri</span> <span class="o">=</span> <span class="nb">ltrim</span> <span class="p">(</span><span class="nv">$uri</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">);</span></pre></div>            </td>
           </tr>
-                  <tr id="section-17">
+                  <tr id="section-20">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>If no / and doesn't match an app's name with an index.php</p>
             </td>
             <td class="code">
               <div class="highlight"><pre></pre></div>            </td>
           </tr>
-                  <tr id="section-18">
+                  <tr id="section-21">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>handler, then use the default handler.</p>
             </td>
@@ -519,10 +589,10 @@ interesting with the id:</p>
   <span class="k">return</span> <span class="nv">$route</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-19">
+                  <tr id="section-22">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Is this URL clean of any directory manipulation attempts?</p>
             </td>
@@ -534,10 +604,10 @@ interesting with the id:</p>
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-20">
+                  <tr id="section-23">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Adds to the start, since <code>route()</code> parse them off the end of the URI.</p>
             </td>
@@ -547,10 +617,10 @@ interesting with the id:</p>
   <span class="k">return</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-21">
+                  <tr id="section-24">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Add a notification to the <code>elefant_notification</code> cookie, which is
  monitored by <code>admin/head</code> and will be displayed using jGrowl. Handy
@@ -565,10 +635,10 @@ interesting with the id:</p>
   <span class="k">return</span> <span class="nb">setcookie</span> <span class="p">(</span><span class="s1">&#39;elefant_notification&#39;</span><span class="p">,</span> <span class="nv">$msg</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-22">
+                  <tr id="section-25">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Redirect the current request and exit.</p>
             </td>
@@ -580,10 +650,89 @@ interesting with the id:</p>
   <span class="p">}</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-23">
+                  <tr id="section-26">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>Get the stdin stream for PUT requests.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">get_put_data</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">put_data</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$stdin</span> <span class="o">=</span> <span class="nb">fopen</span> <span class="p">(</span><span class="s1">&#39;php://input&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">);</span>
+   <span class="nv">$out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+   <span class="k">while</span> <span class="p">(</span><span class="nv">$data</span> <span class="o">=</span> <span class="nb">fread</span> <span class="p">(</span><span class="nv">$stdin</span><span class="p">,</span> <span class="m">1024</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nv">$out</span> <span class="o">.=</span> <span class="nv">$data</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="nb">fclose</span> <span class="p">(</span><span class="nv">$stdin</span><span class="p">);</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">put_data</span> <span class="o">=</span> <span class="nv">$out</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">put_data</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-27">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>Get the request method. If X-HTTP-Method-Override header is set,
+ it will return that instead of the actual request method.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">request_method</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_X_HTTP_METHOD_OVERRIDE&#39;</span><span class="p">])</span> <span class="o">?</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_X_HTTP_METHOD_OVERRIDE&#39;</span><span class="p">]</span> <span class="o">:</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">];</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-28">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>Returns whether the current request is made over HTTPS or not.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">is_https</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTPS&#39;</span><span class="p">])</span> <span class="o">||</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTPS&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="s1">&#39;on&#39;</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-29">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>Forces the current request to be over HTTPS instead of HTTP
+ via redirect if necessary.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">force_https</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">is_https</span> <span class="p">())</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">redirect</span> <span class="p">(</span><span class="s1">&#39;https://&#39;</span> <span class="o">.</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_HOST&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_URI&#39;</span><span class="p">]);</span>
+  <span class="p">}</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-30">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Forces the current request to be over HTTP instead of HTTPS
+ via redirect if necessary.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">force_http</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">is_https</span> <span class="p">())</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">redirect</span> <span class="p">(</span><span class="s1">&#39;http://&#39;</span> <span class="o">.</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_HOST&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_URI&#39;</span><span class="p">]);</span>
+  <span class="p">}</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-31">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>Check if an app and version have been installed. Returns true if
  installed, false if not, and current installed version if an upgrade
@@ -601,10 +750,10 @@ interesting with the id:</p>
   <span class="k">return</span> <span class="nv">$v</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-24">
+                  <tr id="section-32">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>Mark an app and version as installed.</p>
             </td>
