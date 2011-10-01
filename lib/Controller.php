@@ -380,6 +380,36 @@ class Controller {
 	}
 
 	/**
+	 * Returns whether the current request is made over HTTPS or not.
+	 */
+	function is_https () {
+		if (! isset ($_SERVER['HTTPS']) || strtolower ($_SERVER['HTTPS']) != 'on') {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Forces the current request to be over HTTPS instead of HTTP
+	 * via redirect if necessary.
+	 */
+	function force_https () {
+		if (! $this->is_https ()) {
+			$this->redirect ('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+		}
+	}
+
+	/**
+	 * Forces the current request to be over HTTP instead of HTTPS
+	 * via redirect if necessary.
+	 */
+	function force_http () {
+		if ($this->is_https ()) {
+			$this->redirect ('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+		}
+	}
+
+	/**
 	 * Check if an app and version have been installed. Returns true if
 	 * installed, false if not, and current installed version if an upgrade
 	 * should be performed.

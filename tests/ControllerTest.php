@@ -41,6 +41,12 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 	function test_cli () {
 		$this->assertTrue ($this->c->cli);
 	}
+
+	function test_is_https () {
+		$this->assertFalse ($this->c->is_https ());
+		$_SERVER['HTTPS'] = 'on';
+		$this->assertTrue ($this->c->is_https ());
+	}
 }
 
 ?>
