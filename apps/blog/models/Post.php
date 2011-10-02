@@ -88,7 +88,7 @@ class Post extends \Model {
 	 * Get a list of tags and the number of posts they've been used on.
 	 */
 	static function tags () {
-		return db_pairs ('select tag_id, count() as posts from blog_post_tag group by tag_id order by tag_id asc');
+		return db_pairs ('select tag_id, count(*) as posts from blog_post_tag group by tag_id order by tag_id asc');
 	}
 }
 
