@@ -1,7 +1,6 @@
 <?php
 
 $page->layout = 'admin';
-$page->template = 'admin/base';
 
 if (! User::require_admin ()) {
 	$this->redirect ('/admin');
@@ -19,6 +18,7 @@ if ($lock->exists ()) {
 $b = new Block ($_GET['id']);
 
 $f = new Form ('post', 'blocks/edit');
+$f->verify_csrf = false;
 if ($f->submit ()) {
 	$b->title = $_POST['title'];
 	$b->body = $_POST['body'];

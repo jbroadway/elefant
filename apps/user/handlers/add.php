@@ -7,6 +7,7 @@ if (! User::require_admin ()) {
 }
 
 $f = new Form ('post', 'user/add');
+$f->verify_csrf = false;
 if ($f->submit ()) {
 	$_POST['password'] = User::encrypt_pass ($_POST['password']);
 	$now = gmdate ('Y-m-d H:i:s');
@@ -14,7 +15,7 @@ if ($f->submit ()) {
 	$_POST['signed_up'] = $now;
 	$_POST['updated'] = $now;
 	$_POST['userdata'] = json_encode (array ());
-	unset ($_POST['verify']);
+	unset ($_POST['verify_pass']);
 	$u = new User ($_POST);
 	$u->put ();
 	Versions::add ($u);

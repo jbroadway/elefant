@@ -1,6 +1,6 @@
 <?php
 
-$page->template = false;
+$page->layout = false;
 
 $menu = Webpage::query ('id, title, menu_title')
 		->where ('access', 'public')

@@ -7,6 +7,7 @@ if (! User::require_admin ()) {
 }
 
 $f = new Form ('post', 'blog/add');
+$f->verify_csrf = false;
 if ($f->submit ()) {
 	$autopost_pom = ($_POST['autopost_pom'] == 'yes') ? true : false;
 	$autopost_tw = ($_POST['autopost_tw'] == 'yes') ? true : false;

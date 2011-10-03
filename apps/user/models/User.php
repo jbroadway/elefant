@@ -42,7 +42,8 @@
  *
  *   // Send unauth users to myapp/login view
  *   if (! User::require_login ()) {
- *     $page->template = 'myapp/login';
+ *     $page->title = i18n_get ('Members');
+ *     echo $this->run ('user/login');
  *     return;
  *   }
  *

@@ -8,7 +8,6 @@ $page->menu_title = (! empty ($_POST['menu_title'])) ? $_POST['menu_title'] : $_
 $page->window_title = (! empty ($_POST['window_title'])) ? $_POST['window_title'] : $_POST['title'];
 $page->description = $_POST['description'];
 $page->keywords = $_POST['keywords'];
-$page->template = 'admin/base';
 $page->layout = $_POST['layout'];
 $page->head = '';
 

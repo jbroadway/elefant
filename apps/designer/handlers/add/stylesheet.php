@@ -7,6 +7,7 @@ if (! User::require_admin ()) {
 }
 
 $f = new Form ('post', 'designer/addstylesheet');
+$f->verify_csrf = false;
 if ($f->submit ()) {
 	if (@file_put_contents ('css/' . $_POST['name'] . '.css', $_POST['body'])) {
 		$this->add_notification (i18n_get ('Stylesheet added.'));

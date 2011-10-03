@@ -1,1 +1,1 @@
-<?php $page->template = 'social/index'; ?>
+<?php echo $tpl->render ('social/index', array ()); ?>

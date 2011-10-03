@@ -12,7 +12,7 @@ $rules = file_get_contents ('apps/' . $this->params[0] . '/forms/' . $this->para
 $rules = preg_replace ('/\$_(GET|POST|REQUEST)\[\'?(.+?)\'?\]/', '\2', $rules);
 $rules = parse_ini_string ($rules, true);
 
-$page->template = false;
+$page->layout = false;
 header ('Content-Type: application/json');
 echo json_encode ($rules);
 

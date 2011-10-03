@@ -28,11 +28,11 @@ foreach ($posts as $post) {
 
 $page->title = i18n_getf ('Tagged: %s', $tpl->sanitize ($page->tag));
 
-$page->template = 'blog/tag';
-
 $page->add_script (sprintf (
 	'<link rel="alternate" type="application/rss+xml" href="http://%s/blog/rss" />',
 	$_SERVER['HTTP_HOST']
 ));
+
+echo $tpl->render ('blog/tag', $page);
 
 ?>

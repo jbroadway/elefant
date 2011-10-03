@@ -12,7 +12,6 @@ if (! empty ($this->data['message'])) {
 	echo $this->data['message'];
 }
 
-$page->template = 'admin/base';
 $page->layout = 'error';
 
 ?>

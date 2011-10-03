@@ -1,6 +1,6 @@
 <?php
 
-$page->template = false;
+$page->layout = false;
 
 header ('Content-Type: application/json');
 

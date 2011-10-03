@@ -18,6 +18,7 @@ if ($lock->exists ()) {
 $p = new blog\Post ($_GET['id']);
 
 $f = new Form ('post', 'blog/edit');
+$f->verify_csrf = false;
 if ($f->submit ()) {
 	$autopost_pom = ($_POST['autopost_pom'] == 'yes') ? true : false;
 	$autopost_tw = ($_POST['autopost_tw'] == 'yes') ? true : false;

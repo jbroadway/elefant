@@ -26,36 +26,74 @@
 
 /**
  * Basic document object used to contain the elements sent to
- * the template for rendering. You can add any values you want
- * to the object to shape your page output.
+ * the layout template for rendering. You can add any values
+ * you want to the object to shape your page output.
  *
- * The template property sets which template should be rendered
- * for the current request. The default is empty, which simply
- * outputs the page body, which is then passed to
- * layouts/default.html to render the overall layout, unless you
- * also specify:
+ * The layout property sets which template should be used to
+ * render the design of the page, unless you specify:
  *
  *     $page->layout = false;
  *
- * To skip a template altogether for things like JSON, use:
- *
- *     $page->template = false;
- *
- * This will skip both the template and the layout and simply
- * return the page body to the user.
+ * This will skip the layout and simply return the page body
+ * to the user.
  *
  * The convention is to use the body property for the main body
  * content.
  */
 class Page {
+	/**
+	 * Data to place in the `<head>` of the document. To use,
+	 * add the following tag to your layouts:
+	 *
+	 *     {{ head|none }}
+	 */
 	var $head = '';
+
+	/**
+	 * Data to place just before the closing `</body>` tag.
+	 * To use, add the following tag to your layouts:
+	 *
+	 *     {{ tail|none }}
+	 */
 	var $tail = '';
+
+	/**
+	 * The title of the page. To use, add something like this
+	 * to your layouts:
+	 *
+	 *     {% if title %}<h1>{{ title }}</h1>{% end %}
+	 */
 	var $title = '';
+
+	/**
+	 * The main body of the page. To use, add the following tag
+	 * to your layouts:
+	 *
+	 *     {{ body|none }}
+	 */
 	var $body = '';
-	var $template = '';
+
+	/**
+	 * The layout template to use to render the page.
+	 */
 	var $layout = 'default';
+
+	/**
+	 * A list of scripts that have been added to the page via
+	 * `add_script()`.
+	 */
 	var $scripts = array ();
+
+	/**
+	 * This is set to true when the template is currently rendering
+	 * the page.
+	 */
 	var $is_being_rendered = false;
+
+	/**
+	 * This is set to true when Elefant is rendering a preview
+	 * request.
+	 */
 	var $preview = false;
 
 	/**
@@ -73,18 +111,13 @@ class Page {
 		if ($this->layout === 'default') {
 			$this->layout = conf('General', 'default_layout');
 		}
-		if ($this->template === false) {
+		if ($this->layout === false) {
 			return $this->body;
-		} elseif (! empty ($this->template)) {
-			$this->body = $tpl->render ($this->template, $this);
 		}
-		if ($this->layout) {
-			if ($this->preview) {
-				return $tpl->render_preview ($this->layout, $this);
-			}
-			return $tpl->render ($this->layout, $this);
+		if ($this->preview) {
+			return $tpl->render_preview ($this->layout, $this);
 		}
-		return $this->body;
+		return $tpl->render ($this->layout, $this);
 	}
 
 	/**

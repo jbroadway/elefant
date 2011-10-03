@@ -7,7 +7,7 @@ function admin_head_links_sort ($a, $b) {
 	return ($a['name'] < $b['name']) ? -1 : 1;
 }
 
-$page->template = false;
+$page->layout = false;
 
 if (! User::require_admin ()) {
 	return;

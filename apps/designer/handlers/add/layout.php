@@ -7,6 +7,7 @@ if (! User::require_admin ()) {
 }
 
 $f = new Form ('post', 'designer/addlayout');
+$f->verify_csrf = false;
 if ($f->submit ()) {
 	if (@file_put_contents ('layouts/' . $_POST['name'] . '.html', $_POST['body'])) {
 		$this->add_notification (i18n_get ('Layout added.'));

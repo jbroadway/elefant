@@ -1,7 +1,6 @@
 <?php
 
 $page->layout = 'admin';
-$page->template = '';
 
 if (! User::require_admin ()) {
 	$this->redirect ('/admin');

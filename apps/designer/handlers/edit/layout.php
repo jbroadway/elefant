@@ -21,6 +21,7 @@ if ($lock->exists ()) {
 }
 
 $f = new Form ('post', 'designer/editlayout');
+$f->verify_csrf = false;
 if ($f->submit ()) {
 	if (@file_put_contents ($_GET['file'], $_POST['body'])) {
 		$this->add_notification (i18n_get ('Layout saved.'));

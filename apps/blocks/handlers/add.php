@@ -1,13 +1,13 @@
 <?php
 
 $page->layout = 'admin';
-$page->template = 'admin/base';
 
 if (! User::require_admin ()) {
 	$this->redirect ('/admin');
 }
 
 $f = new Form ('post', 'blocks/add');
+$f->verify_csrf = false;
 if ($f->submit ()) {
 	$b = new Block ($_POST);
 	$b->put ();

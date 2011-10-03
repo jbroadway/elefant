@@ -28,11 +28,11 @@ foreach ($posts as $post) {
 
 $page->title = i18n_getf ('Posts by %s', $tpl->sanitize ($page->author));
 
-$page->template = 'blog/by';
-
 $page->add_script (sprintf (
 	'<link rel="alternate" type="application/rss+xml" href="http://%s/blog/rss" />',
 	$_SERVER['HTTP_HOST']
 ));
+
+echo $tpl->render ('blog/by', $page);
 
 ?>
