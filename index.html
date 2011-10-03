@@ -41,7 +41,7 @@
 			<td><code>chmod -R 777 cache conf css files install layouts</code></td>
 		</tr>
 		<tr>
-			<td><code>php conf/createdb.php</code> <span>or</span> <code>example.com/install/</code> <span>via web</span></td>
+			<td><code>./conf/elefant install</code> <span>or</span> <code>example.com/install/</code> <span>via web</span></td>
 		</tr>
 		</table>
 		</div>
@@ -50,20 +50,20 @@
 		<h2>Utilities</h2>
 		<table>
 		<tr>
-			<td><code>php conf/make.php appname</code></td>
+			<td><code>./conf/elefant build-app appname</code></td>
 			<td><span>Create an app skeleton</span></td>
 		</tr>
 		<tr>
-			<td><code>php conf/createdb.php</code></td>
-			<td><span>Initialize an SQLite database</span></td>
+			<td><code>./conf/elefant install</code></td>
+			<td><span>Command line installer</span></td>
 		</tr>
 		<tr>
-			<td><code>php conf/translations.php lang</code></td>
-			<td><span>Generate a translation file</span></td>
+			<td><code>./conf/elefant</code></td>
+			<td><span>List all commands</span></td>
 		</tr>
 		<tr>
-			<td><code>phpunit tests/Form.php</code></td>
-			<td><span>Run one of the unit test sets</span></td>
+			<td><code>phpunit tests</code></td>
+			<td><span>Run the unit test suite</span></td>
 		</tr>
 		</table>
 		</div>
@@ -206,10 +206,6 @@
 		<td><span>Controller object</span></td>
 	</tr>
 	<tr>
-		<td><code>$db</code></td>
-		<td><span>PDO object</span></td>
-	</tr>
-	<tr>
 		<td><code>$i18n</code></td>
 		<td><span>I18n object</span></td>
 	</tr>
@@ -242,24 +238,32 @@
 	<h3>Controller</h3>
 	<table>
 	<tr>
-		<td><code>-&gt;run($uri)</code></td>
+		<td><code>-&gt;run($uri, $data=array())</code></td>
 		<td><span>Resolves and returns the output of a handler.</span></td>
-	</tr>
-	<tr>
-		<td><code>-&gt;handle($handler)</code></td>
-		<td><span>Returns the output of a handler.</span></td>
-	</tr>
-	<tr>
-		<td><code>-&gt;route($uri)</code></td>
-		<td><span>Resolves a handler from URI to filename.</span></td>
 	</tr>
 	<tr>
 		<td><code>-&gt;redirect($uri)</code></td>
 		<td><span>Redirect the current request to <code>$uri</code> and exit.</span></td>
 	</tr>
 	<tr>
-		<td><code>-&gt;add_notification($msg)</code></td>
-		<td><span>Add a notification to display on the next admin page.</span></td>
+		<td><code>-&gt;request_method()</code></td>
+		<td><span>Returns the request method.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;is_https()</code></td>
+		<td><span>Check if using HTTPS.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;force_https()</code></td>
+		<td><span>Redirect to HTTPS if using HTTP.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;force_http()</code></td>
+		<td><span>Redirect to HTTP if using HTTPS.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;get_put_data()</code></td>
+		<td><span>Gets input for PUT requests.</span></td>
 	</tr>
 	<tr>
 		<td><code>-&gt;hook($type, $data)</code></td>
@@ -270,12 +274,8 @@
 		<td><span>Trigger the default error handler.</span></td>
 	</tr>
 	<tr>
-		<td><code>-&gt;installed($app, $version)</code></td>
-		<td><span>Check if an app is installed.</span></td>
-	</tr>
-	<tr>
-		<td><code>-&gt;mark_installed($app, $version)</code></td>
-		<td><span>Mark an app as installed.</span></td>
+		<td><code>-&gt;add_notification($msg)</code></td>
+		<td><span>Add a notification to display on the next admin page.</span></td>
 	</tr>
 	</table>
 	</div>
@@ -340,27 +340,27 @@
 		<td><span>Validate a data value, in or out of the context of a form.</span></td>
 	</tr>
 	<tr>
-		<td><code>Form::merge_values($obj)</code></td>
+		<td><code>$f->merge_values($obj)</code></td>
 		<td><span>Merge <tt>$_GET</tt> or <tt>$_POST</tt> values onto an object for pre-filling a re-rendered form.</span></td>
 	</tr>
 	<tr>
-		<td><code>$failed = array()</code></td>
+		<td><code>$->failed = array()</code></td>
 		<td><span>Fields that failed validation.</span></td>
 	</tr>
 	<tr>
-		<td><code>$method = 'post'</code></td>
+		<td><code>$f->method = 'post'</code></td>
 		<td><span>Required request method.</span></td>
 	</tr>
 	<tr>
-		<td><code>$rules = array()</code></td>
+		<td><code>$f->rules = array()</code></td>
 		<td><span>Validation rules.</span></td>
 	</tr>
 	<tr>
-		<td><code>$verify_referrer = true</code></td>
-		<td><span>Whether to verify the referrer.</span></td>
+		<td><code>$f->verify_csrf = true</code></td>
+		<td><span>Whether to prevent CSRF attacks.</span></td>
 	</tr>
 	<tr>
-		<td><code>$error = false</code></td>
+		<td><code>$f->error = false</code></td>
 		<td><span>The reason submit() failed to pass.</span></td>
 	</tr>
 	</table>
@@ -501,11 +501,7 @@ $m->put();</code></pre></td>
 	</tr>
 	<tr>
 		<td><code>$layout = 'default'</code></td>
-		<td><span>Design template.</span></td>
-	</tr>
-	<tr>
-		<td><code>$template = ''</code></td>
-		<td><span>View template.</span></td>
+		<td><span>Layout template.</span></td>
 	</tr>
 	<tr>
 		<td><code>$title = ''</code></td>
@@ -560,6 +556,10 @@ $m->put();</code></pre></td>
 	<tr>
 		<td><code>{! app/handler?param=value !}</code></td>
 		<td><span>Call a handler from a template.</span></td>
+	</tr>
+	<tr>
+		<td><code>{# app/handler?param=value #}</code></td>
+		<td><span>Hard-code handler output in a template.</span></td>
 	</tr>
 	</table>
 	</div>
