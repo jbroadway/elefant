@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+http://pear.php.net/dtd/tasks-1.0.xsd
+http://pear.php.net/dtd/package-2.0
+http://pear.php.net/dtd/package-2.0.xsd">
+ <name>Elefant</name>
+ <channel>pear.php.net</channel>
+ <summary>Elefant CMS command line utility.</summary>
+ <description>This is a command line utility for the Elefant CMS.
+ </description>
+ <lead>
+  <name>Johnny Broadway</name>
+  <user>jbroadway</user>
+  <email>johnny@johnnybroadway.com</email>
+  <active>yes</active>
+ </lead>
+ <date>2011-10-03</date>
+ <version>
+  <release>1.0.0</release>
+  <api>1.0.0</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/mit-license.php">MIT</license>
+ <notes>
+Initial release.
+ </notes>
+ <contents>
+  <dir name="/">
+   <file baseinstalldir="/" name="elefant" role="script" />
+  </dir> <!-- / -->
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.3.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease />
+</package>
