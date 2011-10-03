@@ -195,7 +195,7 @@ if (count ($argv) > 1) {
 			mkdir ('apps/' . $argv[2] . '/views', 0755, true);
 			
 			file_put_contents ('apps/' . $argv[2] . '/handlers/index.php', sprintf (
-				"<?php\n\n\$page->title = '%s home';\n\$page->template = '%s/index';\n\n?>",
+				"<?php\n\n\$page->title = '%s home';\necho \$tpl->render ('%s/index', array ());\n\n?>",
 				ucfirst ($argv[2]),
 				$argv[2]
 			));
