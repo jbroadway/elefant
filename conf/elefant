@@ -109,6 +109,9 @@ if (count ($argv) > 1) {
 			$conf = parse_ini_file ('conf/config.php', true);
 			date_default_timezone_set($conf['General']['timezone']);
 			
+			// set the necessary folder permissions
+			system ('chmod -R 777 cache conf css files install layouts');
+			
 			// connect to the database
 			$connected = false;
 			foreach (array_keys ($conf['Database']) as $key) {
