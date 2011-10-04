@@ -318,10 +318,7 @@ class Controller {
 	 * Is this URL clean of any directory manipulation attempts?
 	 */
 	function clean ($url) {
-		if (strstr ($url, '..')) {
-			return false;
-		}
-		return true;
+		return ! strstr ($url, '..');
 	}
 
 	/**
