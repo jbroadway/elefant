@@ -47,9 +47,17 @@ foreach ($res as $file) {
 }
 uasort ($tools, 'admin_head_links_sort');
 
-echo $tpl->render ('admin/head/links', array (
-	'user' => $user->name,
-	'tools' => $tools
-));
+$out = array (
+	'name' => Product::name (),
+	'logo' => Product::logo_toolbar (),
+	'links' => $tpl->render ('admin/head/links', array (
+		'user' => $user->name,
+		'tools' => $tools
+	))
+);
+
+$page->layout = false;
+header ('Content-Type: application/json');
+echo json_encode ($out);
 
 ?>

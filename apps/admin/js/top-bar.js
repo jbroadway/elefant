@@ -8,9 +8,10 @@ jQuery.add_notification = function (msg) {
 
 $(function () {
 	var sliding_up = false;
-	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img src="/apps/admin/css/admin/elefant_logo.png" alt="Elefant CMS" /></a></div>');
+	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img id="admin-logo" src="/apps/admin/css/admin/spacer.png" alt="" /></a></div>');
 	$.get ('/admin/head/links', function (res) {
-		$('#admin-links').append (res);
+		$('#admin-logo').attr ('src', res.logo).attr ('alt', res.name);
+		$('#admin-links').append (res.links);
 		$('#admin-tools').hover (function () {
 			if (! sliding_up) {
 				$('#admin-tools-list').slideDown ('fast').show ();
