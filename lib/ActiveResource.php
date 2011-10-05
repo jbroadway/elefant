@@ -181,6 +181,7 @@ class ActiveResource {
 		$word = preg_replace ('/sises$/', 'ses', $word);
 		$word = preg_replace ('/([^aeiouy]|qu)ys$/', '\1ies', $word);
 		$word = preg_replace ('/(?:([^f])fe|([lr])f)s$/', '\1\2ves', $word);
+		$word = preg_replace ('/ieses$/', 'ies', $word);
 		if (isset ($this->pleural_corrections[$word])) {
 			return $this->pleural_corrections[$word];
 		}
@@ -455,7 +456,7 @@ class ActiveResource {
 		}
 
 		if ($this->request_format == 'xml') {
-			curl_setopt ($ch, CURLOPT_HTTPHEADER, array ("Content-Type: text/xml", "Length: " . strlen ($params)));
+			curl_setopt ($ch, CURLOPT_HTTPHEADER, array ("Expect:", "Content-Type: text/xml", "Length: " . strlen ($params)));
 		}
 		switch ($method) {
 			case 'POST':
