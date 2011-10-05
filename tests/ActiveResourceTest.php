@@ -13,7 +13,7 @@ class ActiveResourceTest extends PHPUnit_Framework_TestCase {
 		$t->foo = 'asdf';
 		$this->assertEquals ($t->foo, 'asdf');
 		$this->assertEquals ($t->_data, array ('foo' => 'asdf'));
-		$this->assertEquals ($t->element_name, 'tests');
+		$this->assertEquals ($t->element_name_plural, 'tests');
 	}
 
 	function test_build_xml () {
