@@ -12,6 +12,6 @@ foreach ($n->tree as $item) {
 }
 echo '</ul>';
 
-$this->cache = true;
+//$this->cache = true;
 
 ?>
