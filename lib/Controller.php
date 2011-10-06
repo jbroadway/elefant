@@ -155,12 +155,46 @@ class Controller {
 	var $put_data = null;
 
 	/**
+	 * The app that is being called. Set by `route()`.
+	 */
+	var $app;
+
+	/**
+	 * The uri that was last called, as parsed by `route()`. This will have
+	 * preceding slashes trimmed, and if it resolves to a default like
+	 * `app -> app/index`, then it will have the `/index` added.
+	 */
+	var $uri;
+
+	/**
 	 * When a handler is loaded, if there is a `conf/config.php` for that
 	 * app, its contents will be loaded into `$appconf['appname']` once
 	 * the first time it is called, and accessible thereafter by any
 	 * handler in that app directly via $appconf.
 	 */
 	var $appconf = array ();
+
+	/**
+	 * Whether the current handler's output should be cached automatically
+	 * when it returns. Set to `true` to cache indefinitely, and a number
+	 * to set a timeout in seconds. The cache key will be the app and handler
+	 * name, with slashes converted to underscores, e.g., `myapp_handler`.
+	 *
+	 * Usage:
+	 *
+	 *     // cache indefinitely
+	 *     $this->cache = true;
+	 *
+	 *     // cache for 5 minutes
+	 *     $this->cache = 300;
+	 *
+	 * To clear a cached handler before its time, which you would have to
+	 * do from a separate handler since the original won't be called while
+	 * cached, you can use:
+	 *
+	 *     $memcache->delete ('myapp_handler');
+	 */
+	var $cache = false;
 
 	function __construct ($hooks = array ()) {
 		if (defined ('STDIN')) {
@@ -249,6 +283,12 @@ class Controller {
 	 */
 	function handle ($handler, $internal = true, $data = array ()) {
 		global $controller, $page, $tpl, $memcache;
+		
+		$out = $memcache->get (str_replace ('/', '_', $this->uri));
+		if ($out) {
+			return $out;
+		}
+
 		$this->internal = $internal;
 		$data = (array) $data;
 		$this->data = $data;
@@ -262,7 +302,15 @@ class Controller {
 		$appconf = $controller->appconf[$this->app];
 		ob_start ();
 		require ($handler);
-		return ob_get_clean ();
+		$out = ob_get_clean ();
+		if ($this->cache !== false) {
+			$timeout = is_numeric ($this->cache) ? $this->cache : 0;
+			$res = $memcache->replace (str_replace ('/', '_', $this->uri), $out, 0, $timeout);
+			if ($res === false) {
+				$memcache->set (str_replace ('/', '_', $this->uri), $out, 0, $timeout);
+			}
+		}
+		return $out;
 	}
 
 	/**
@@ -302,8 +350,11 @@ class Controller {
 			if ($route == 'apps/' . $app . '/handlers.php') {
 				if (@file_exists ('apps/' . $app . '/handlers/index.php')) {
 					$this->app = $app;
+					$this->uri = $app . '/index';
 					return 'apps/' . $app . '/handlers/index.php';
 				}
+				$this->app = $app;
+				$this->uri = $conf['General']['default_handler'];
 				return vsprintf (
 					'apps/%s/handlers/%s.php',
 					explode ('/', $conf['General']['default_handler'])
@@ -311,6 +362,7 @@ class Controller {
 			}
 		}
 		$this->app = $app;
+		$this->uri = $uri;
 		return $route;
 	}
 
