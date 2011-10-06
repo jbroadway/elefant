@@ -51,6 +51,11 @@ switch ($this->params[0]) {
 		break;
 }
 
+if (! $error) {
+	require_once ('apps/navigation/lib/Functions.php');
+	navigation_clear_cache ();
+}
+
 $res = new StdClass;
 if ($error) {
 	$res->success = false;

@@ -16,4 +16,6 @@ function navigation_print_level ($tree) {
 
 navigation_print_level ($n->tree);
 
+$this->cache = true;
+
 ?>
