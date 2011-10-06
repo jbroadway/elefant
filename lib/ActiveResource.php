@@ -66,9 +66,14 @@ class ActiveResource {
 	var $password = null;
 	
 	/**
-	 * The remote collection, e.g., person or things
+	 * The remote collection, e.g., person or thing
 	 */
 	var $element_name = false;
+
+	/**
+	 * Pleural form of the element name, e.g., people or things
+	 */
+	var $element_name_plural = '';
 
 	/**
 	 * The data of the current object, accessed via the anonymous get/set methods.
@@ -152,7 +157,8 @@ class ActiveResource {
 	function __construct ($data = array ()) {
 		$this->_data = $data;
 		// Allow class-defined element name or use class name if not defined
-		$this->element_name = ($this->element_name ? $this->pluralize ($this->element_name) : $this->pluralize (strtolower (get_class ($this))));
+		$this->element_name = $this->element_name ? $this->element_name : strtolower (get_class ($this));
+		$this->element_name_plural = $this->pluralize ($this->element_name);
 
 		// Detect for namespaces, and take just the class name
 		if (stripos($this->element_name, '\\'))
@@ -181,6 +187,7 @@ class ActiveResource {
 		$word = preg_replace ('/sises$/', 'ses', $word);
 		$word = preg_replace ('/([^aeiouy]|qu)ys$/', '\1ies', $word);
 		$word = preg_replace ('/(?:([^f])fe|([lr])f)s$/', '\1\2ves', $word);
+		$word = preg_replace ('/ieses$/', 'ies', $word);
 		if (isset ($this->pleural_corrections[$word])) {
 			return $this->pleural_corrections[$word];
 		}
@@ -202,9 +209,9 @@ class ActiveResource {
 	 */
 	function save () {
 		if (isset ($this->_data['id'])) {
-			return $this->_send_and_receive ($this->site . $this->element_name . '/' . $this->_data['id'] . '.xml', 'PUT', $this->_data); // Update
+			return $this->_send_and_receive ($this->site . $this->element_name_plural . '/' . $this->_data['id'] . '.xml', 'PUT', $this->_data); // update
 		}
-		return $this->_send_and_receive ($this->site . $this->element_name . '.xml', 'POST', $this->_data); // Create
+		return $this->_send_and_receive ($this->site . $this->element_name_plural . '.xml', 'POST', $this->_data); // Create
 	}
 
 	/**
@@ -213,7 +220,7 @@ class ActiveResource {
 	 *     DELETE /collection/id.xml
 	 */
 	function destroy () {
-		return $this->_send_and_receive ($this->site . $this->element_name . '/' . $this->_data['id'] . '.xml', 'DELETE');
+		return $this->_send_and_receive ($this->site . $this->element_name_plural . '/' . $this->_data['id'] . '.xml', 'DELETE');
 	}
 
 	/**
@@ -227,13 +234,13 @@ class ActiveResource {
 			$id = $this->_data['id'];
 		}
 		if ($id == 'all') {
-			$url = $this->site . $this->element_name . '.xml';
+			$url = $this->site . $this->element_name_plural . '.xml';
 			if (count ($options) > 0) {
 				$url .= '?' . http_build_query ($options);
 			}
 			return $this->_send_and_receive ($url, 'GET');
 		}
-		return $this->_send_and_receive ($this->site . $this->element_name . '/' . $id . '.xml', 'GET');
+		return $this->_send_and_receive ($this->site . $this->element_name_plural . '/' . $id . '.xml', 'GET');
 	}
 
 	/**
@@ -243,7 +250,7 @@ class ActiveResource {
 	 *     GET /collection/id/method.xml?attr=value
 	 */
 	function get ($method, $options = array ()) {
-		$req = $this->site . $this->element_name;
+		$req = $this->site . $this->element_name_plural;
         if ($this->_data['id']) { 
           $req .= '/' . $this->_data['id'];
         }
@@ -260,7 +267,7 @@ class ActiveResource {
 	 *     POST /collection/id/method.xml
 	 */
 	function post ($method, $options = array ()) {
-		$req = $this->site . $this->element_name;
+		$req = $this->site . $this->element_name_plural;
         if ($this->_data['id']) {
           $req .= '/' . $this->_data['id'];
         }
@@ -274,7 +281,7 @@ class ActiveResource {
 	 *     PUT /collection/id/method.xml
 	 */
 	function put ($method, $options = array ()) {
-		$req = $this->site . $this->element_name;
+		$req = $this->site . $this->element_name_plural;
         if ($this->_data['id']) { 
           $req .= '/' . $this->_data['id'];
         }
@@ -320,17 +327,148 @@ class ActiveResource {
 	}
 
 	/**
-	 * Converts entities to unicode entities (ie. `<` becomes `&#60;`).
-	 * From php.net/htmlentities comments, user "webwurst at web dot de"
+	 * Returns the unicode value of the string
+	 *
+	 * @param string $c The source string
+	 * @param integer $i The index to get the char from (passed by reference for use in a loop)
+	 * @return integer The value of the char at $c[$i]
+	 * @author kerry at shetline dot com
+	 * @author Dom Hastings - modified to suit my needs
+	 * @see http://www.php.net/manual/en/function.ord.php#78032
 	 */
-	function _xml_entities ($string) {
-		$trans = get_html_translation_table (HTML_ENTITIES);
-	
-		foreach ($trans as $key => $value) {
-			$trans[$key] = '&#' . ord ($key) . ';';
+	function _unicode_ord(&$c, &$i = 0) {
+		// get the character length
+		$l = strlen($c);
+		// copy the offset
+		$index = $i;
+		
+		// check it's a valid offset
+		if ($index >= $l) {
+			return false;
 		}
-	
-		return strtr ($string, $trans);
+		
+		// check the value
+		$o = ord($c[$index]);
+		
+		// if it's ascii
+		if ($o <= 0x7F) {
+			return $o;
+		
+		// not sure what it is...
+		} elseif ($o < 0xC2) {
+			return false;
+		
+		// if it's a two-byte character	
+		} elseif ($o <= 0xDF && $index < $l - 1) {
+			$i += 1;
+			return ($o & 0x1F) <<	6 | (ord($c[$index + 1]) & 0x3F);
+		
+		// three-byte
+		} elseif ($o <= 0xEF && $index < $l - 2) {
+			$i += 2;
+			return ($o & 0x0F) << 12 | (ord($c[$index + 1]) & 0x3F) << 6 | (ord($c[$index + 2]) & 0x3F);
+			
+		// four-byte
+		} elseif ($o <= 0xF4 && $index < $l - 3) {
+			$i += 3;
+			return ($o & 0x0F) << 18 | (ord($c[$index + 1]) & 0x3F) << 12 | (ord($c[$index + 2]) & 0x3F) << 6 | (ord($c[$index + 3]) & 0x3F);
+			
+		// not sure what it is...
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Makes the specified string XML-safe
+	 *
+	 * @param string $s
+	 * @param boolean $hex Whether or not to make hexadecimal entities (as opposed to decimal)
+	 * @return string The XML-safe result
+	 * @author Dom Hastings
+	 * @see http://www.w3.org/TR/REC-xml/#sec-predefined-ent
+	 */
+	function _xml_entities ($s, $hex = true) {
+		// if the string is empty
+		if (empty($s)) {
+			// just return it
+			return $s;
+		}
+		
+		// create the return string
+		$r = '';
+		// get the length
+		$l = strlen($s);
+		
+		// iterate the string
+		for ($i = 0; $i < $l; $i++) {
+			// get the value of the character
+			$o = $this->_unicode_ord($s, $i);
+			
+			// valid cahracters
+			$v = (
+				// \t \n <vertical tab> <form feed> \r
+				($o >= 9 && $o <= 13) || 
+				// <space> !
+				($o == 32) || ($o == 33) || 
+				// # $ %
+				($o >= 35 && $o <= 37) || 
+				// ( ) * + , - . /
+				($o >= 40 && $o <= 47) || 
+				// numbers
+				($o >= 48 && $o <= 57) ||
+				// : ;
+				($o == 58) || ($o == 59) ||
+				// = ?
+				($o == 61) || ($o == 63) ||
+				// @
+				($o == 64) ||
+				// uppercase
+				($o >= 65 && $o <= 90) ||
+				// [ \ ] ^ _ `
+				($o >= 91 && $o <= 96) || 
+				// lowercase
+				($o >= 97 && $o <= 122) || 
+				// { | } ~
+				($o >= 123 && $o <= 126)
+			);
+			
+			// if it's valid, just keep it
+			if ($v) {
+				$r .= $s[$i];
+			
+			// &
+			} elseif ($o == 38) {
+				$r .= '&amp;';
+			
+			// <
+			} elseif ($o == 60) {
+				$r .= '&lt;';
+			
+			// >
+			} elseif ($o == 62) {
+				$r .= '&gt;';
+			
+			// '
+			} elseif ($o == 39) {
+				$r .= '&apos;';
+			
+			// "
+			} elseif ($o == 34) {
+				$r .= '&quot;';
+			
+			// unknown, add it as a reference
+			} elseif ($o > 0) {
+				if ($hex) {
+					$r .= '&#x'.strtoupper(dechex($o)).';';
+					
+				} else {
+					$r .= '&#'.$o.';';
+				}
+			}
+		}
+		
+		return $r;
 	}
 
 	/**
@@ -338,7 +476,7 @@ class ActiveResource {
 	 */
 	function _send_and_receive ($url, $method, $data = array ()) {
 		$params = '';
-		$el = substr ($this->element_name, 0, -1);
+		$el = $this->element_name; // Singular this time
 		if ($this->request_format == 'url') {
 			foreach ($data as $k => $v) {
 				if ($k != 'id' && $k != 'created-at' && $k != 'updated-at') {
@@ -394,7 +532,7 @@ class ActiveResource {
 		// Parse XML response
 		$xml = new SimpleXMLElement ($res);
 
-		if ($xml->getName () == $this->element_name) {
+		if ($xml->getName () == $this->element_name_plural) {
 			// Multiple
 			$res = array ();
 			$cls = get_class ($this);
@@ -455,7 +593,7 @@ class ActiveResource {
 		}
 
 		if ($this->request_format == 'xml') {
-			curl_setopt ($ch, CURLOPT_HTTPHEADER, array ("Content-Type: text/xml", "Length: " . strlen ($params)));
+			curl_setopt ($ch, CURLOPT_HTTPHEADER, array ("Expect:", "Content-Type: text/xml", "Length: " . strlen ($params)));
 		}
 		switch ($method) {
 			case 'POST':
