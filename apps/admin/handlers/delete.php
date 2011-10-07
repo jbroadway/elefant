@@ -21,6 +21,7 @@ if (! $wp->remove ()) {
 	return;
 }
 
+$memcache->delete ('_admin_page_' . $_GET['page']);
 $this->add_notification (i18n_get ('Page deleted.'));
 $this->hook ('admin/delete', $_GET);
 $this->redirect ('/');
