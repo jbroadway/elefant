@@ -41,7 +41,7 @@ function navigation_print_context ($tree, $path) {
  */
 function navigation_clear_cache () {
 	global $memcache;
-	//$memcache->delete ('navigation_top');
+	$memcache->delete ('_navigation_top');
 	$memcache->delete ('navigation_map');
 }
 
