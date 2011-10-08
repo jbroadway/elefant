@@ -97,11 +97,10 @@ class Page {
 	var $preview = false;
 
 	/**
-	 * Render the page in its template and layout.
+	 * Render the page in its template and layout. Uses a Template
+	 * object for rendering.
 	 */
-	function render () {
-		global $tpl;
-
+	function render ($tpl) {
 		$this->menu_title = (! empty ($this->menu_title)) ? $this->menu_title : $this->title;
 		$this->window_title = (! empty ($this->window_title)) ? $this->window_title : $this->title;
 
