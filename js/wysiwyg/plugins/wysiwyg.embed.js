@@ -97,6 +97,13 @@
 									} else {
 										uiHtml += '</select></p>';
 									}
+								} else if (obj.fields[i].type == 'textarea') {
+									uiHtml += '<p>' + obj.fields[i].label + ':<br /><textarea name="' + obj.fields[i].name + '" cols="36" rows="6">' + obj.fields[i].initial + '</textarea>';
+									if (obj.fields[i].message) {
+										uiHtml += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span></p>';
+									} else {
+										uiHtml += '</p>';
+									}
 								} else {
 									uiHtml += '<p>' + obj.fields[i].label + ':<br /><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" size="30" />';
 									if (obj.fields[i].message) {
