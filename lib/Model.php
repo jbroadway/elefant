@@ -89,18 +89,71 @@
  * and file formats.
  */
 class Model {
+	/**
+	 * The database table to map to.
+	 */
 	var $table = '';
+
+	/**
+	 * The primary key field name.
+	 */
 	var $key = 'id';
+
+	/**
+	 * The primary key value of the current object.
+	 */
 	var $keyval = false;
+
+	/**
+	 * The properties of the current object are stored in this array.
+	 */
 	var $data = array ();
+
+	/**
+	 * Settings about fields such as relations to other tables.
+	 */
 	var $fields = array ();
+
+	/**
+	 * The error message if an error occurred, or false if there
+	 * was no error.
+	 */
 	var $error = false;
+
+	/**
+	 * Keeps track of whether the current object is new and needs
+	 * to be inserted or updated on save.
+	 */
 	var $is_new = false;
+
+	/**
+	 * Fields to return for the current query.
+	 */
 	var $query_fields = '*';
+	
+	/**
+	 * The `order by` clause for the current query.
+	 */
 	var $query_order = '';
+
+	/**
+	 * The `group by` clause for the current query.
+	 */
 	var $query_group = '';
+
+	/**
+	 * A list of `where` clauses for the current query.
+	 */
 	var $query_filters = array ();
+
+	/**
+	 * A list of parameter values for the current query.
+	 */
 	var $query_params = array ();
+
+	/**
+	 * A list of validation rules to apply to ensure data is valid on save.
+	 */
 	var $verify = array ();
 
 	/**
@@ -135,6 +188,9 @@ class Model {
 		}
 	}
 
+	/**
+	 * Custom caller to handle references to related models.
+	 */
 	function __call($name, $arguments) {
 		if (isset ($this->data[$name]) && isset ($this->fields[$name]) && isset ($this->fields[$name]['ref'])) {
 			if (isset ($this->{'_ref_' . $name})) {
@@ -156,10 +212,16 @@ class Model {
 		);
 	}
 
+	/**
+	 * Custom getter that uses `$this->data` array.
+	 */
 	function __get ($key) {
 		return (isset ($this->data[$key])) ? $this->data[$key] : null;
 	}
 
+	/**
+	 * Custom setter that saves to `$this->data` array.
+	 */
 	function __set ($key, $val) {
 		$this->data[$key] = $val;
 	}
