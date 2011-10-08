@@ -155,11 +155,26 @@
  *     i18n_get('Text here')
  */
 class Template {
+	/**
+	 * The character encoding.
+	 */
 	var $charset = 'UTF-8';
-	var $quotes = ENT_QUOTES;
 
-	function __construct ($charset = 'UTF-8') {
+	/**
+	 * The cache location.
+	 */
+	var $cache_folder = 'cache';
+
+	/**
+	 * The controller object used to run includes.
+	 */
+	var $controller = null;
+
+	function __construct ($charset = 'UTF-8', $controller = false) {
 		$this->charset = $charset;
+		if ($controller) {
+			$this->controller = $controller;
+		}
 	}
 
 	/**
@@ -172,6 +187,10 @@ class Template {
 		}
 		$data->is_being_rendered = true;
 
+		// Resolve the template to a file name, in one of:
+		// `apps/appname/views/filename.html`
+		// `layouts/filename.html`
+		// `layouts/default.html`
 		if (strstr ($template, '/')) {
 			list ($app, $file) = preg_split ('/\//', $template, 2);
 			$file = 'apps/' . $app . '/views/' . $file . '.html';
@@ -183,7 +202,9 @@ class Template {
 		} else {
 			$file = 'layouts/default.html';
 		}
-		$cache = 'cache/' . str_replace ('/', '-', $template) . '.php';
+
+		// The cache file is named based on the original
+		$cache = $this->cache_folder . '/' . str_replace ('/', '-', $template) . '.php';
 
 		if (! file_exists ($cache) || filemtime ($file) > filemtime ($cache)) {
 			// Regenerate cached file
@@ -209,12 +230,14 @@ class Template {
 		}
 		$data->is_being_rendered = true;
 
-		$cache_file = 'cache/_preview_' . md5 ($template) . '.php';
+		// Parse and save to a temporary file
+		$cache_file = $this->cache_folder . '/_preview_' . md5 ($template) . '.php';
 		$out = $this->parse_template ($template);
 		if (! file_put_contents ($cache_file, $out)) {
 			die ('Failed to generate cached template: ' . $cache_file);
 		}
 
+		// Include the temp file, then delete it, and return the output
 		ob_start ();
 		require ($cache_file);
 		$out = ob_get_clean ();
@@ -223,7 +246,10 @@ class Template {
 	}
 
 	/**
-	 * Replace values from template as string.
+	 * Replace values from template as string into PHP code equivalents.
+	 * Note that this method never receives the original data sent to the
+	 * template, so it can't accidentally embed user data into the PHP
+	 * code, eliminating the possibility of exposing a security hole.
 	 */
 	function parse_template ($val) {
 		$val = preg_replace ('/\{\{ ?(.*?) ?\}\}/e', '$this->replace_vars (\'\\1\')', $val);
@@ -235,28 +261,38 @@ class Template {
 	}
 
 	/**
-	 * Replace variables.
+	 * Replace variables of the form:
+	 *
+	 *     {{ some_var }}
 	 */
 	function replace_vars ($val) {
+		// Get any filters
 		$filters = explode ('|', $val);
 		$val = array_shift ($filters);
 
+		// Change `$_GLOBAL.value` into `$_GLOBAL['value']`
 		if (strstr ($val, '$_')) {
 			if (strstr ($val, '.')) {
 				$val = preg_replace ('/\.([a-zA-Z0-9_]+)/', '[\'\1\']', $val, 1);
 			}
+
+		// Change `object.value` into `$GLOBALS['object']->value`
 		} elseif (strstr ($val, '.')) {
 			$val = '$GLOBALS[\'' . preg_replace ('/\./', '\']->', $val, 1);
+
+		// Ordinary request for `$data->value`
 		} elseif (! strstr ($val, '::') && ! strstr ($val, '(')) {
 			$val = '$data->' . $val;
 		}
 
+		// Apply default filter or none
 		if (count ($filters) == 0) {
 			return '<?php echo Template::sanitize (' . $val . ', \'' . $this->charset . '\'); ?>';
 		} else if ($filters[0] == 'none') {
 			return '<?php echo ' . $val . '; ?>';
 		}
 
+		// Apply specified filters
 		$filters = array_reverse ($filters);
 		$out = '<?php echo ';
 		$end = '; ?>';
@@ -270,6 +306,7 @@ class Template {
 				$end = ')' . $end;
 			}
 		}
+
 		return $out . $val . $end;
 	}
 
@@ -309,7 +346,7 @@ class Template {
 			$sep = ', ';
 		}
 		return sprintf (
-			'<?php echo $GLOBALS[\'controller\']->run (\'%s\', array (%s)); ?>',
+			'<?php echo $this->controller->run (\'%s\', array (%s)); ?>',
 			$url['path'],
 			$arr
 		);
@@ -327,12 +364,13 @@ class Template {
 		} else {
 			$data = array ();
 		}
-		return $GLOBALS['controller']->run ($url['path'], $data);
+		return $this->controller->run ($url['path'], $data);
 	}
 
 	/**
 	 * Run any includes and include their output in the return value. Primarily
-	 * for page body in the admin app.
+	 * for page body in the admin app. This only evaluates `{! app/handler !}`
+	 * style tags.
 	 */
 	function run_includes ($val) {
 		$parts = preg_split ('/(\{\! ?.*? ?\!\})/e', $val, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -349,7 +387,7 @@ class Template {
 				} else {
 					$data = array ();
 				}
-				$out .= $GLOBALS['controller']->run ($url['host'] . $url['path'], $data);
+				$out .= $this->controller->run ($url['host'] . $url['path'], $data);
 			} else {
 				$out .= $part;
 			}
@@ -359,6 +397,11 @@ class Template {
 
 	/**
 	 * Replace strings with calls to `i18n_get()` for multilingual sites.
+	 * Translatable strings take the following form using either double
+	 * or single quotes:
+	 *
+	 *     {" some text here "}
+	 *     {' some text here '}
 	 */
 	function replace_strings ($val) {
 		return '<?php echo i18n_get (\'' . str_replace ('\'', '\\\'', $val) . '\'); ?>';
@@ -372,7 +415,21 @@ class Template {
 	}
 
 	/**
-	 * Replace foreach and if blocks.
+	 * Replace foreach and if blocks. Handles the following forms:
+	 *
+	 *     {% foreach some_list %}
+	 *     {% endforeach %}
+	 *
+	 *     {% if statement %}
+	 *     {% elseif statement %}
+	 *     {% else %}
+	 *     {% endif %}
+	 *
+	 * You can also use `{% end %}` as an alias for both `{% endforeach %}`
+	 * or `{% endif %}`.
+	 *
+	 * The current loop index is available via `{{ loop_index }}` and
+	 * the current loop value is available via `{{ loop_value }}`.
 	 */
 	function replace_blocks ($val) {
 		if ($val == 'end' || $val == 'endif' || $val == 'endforeach') {

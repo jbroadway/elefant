@@ -65,7 +65,7 @@ if (defined ('STDIN')) {
 $i18n = new I18n ('lang', $conf['I18n']);
 $page = new Page;
 $controller = new Controller ($conf['Hooks']);
-$tpl = new Template ($conf['General']['charset']);
+$tpl = new Template ($conf['General']['charset'], $controller);
 
 // initialize cache
 if (isset ($conf['Memcache']['server']) && extension_loaded ('memcache')) {
@@ -97,7 +97,7 @@ if ($i18n->url_includes_lang) {
 $page->body = $controller->handle ($handler, false);
 
 // render and send the output
-$out = $page->render ();
+$out = $page->render ($tpl);
 if ($conf['General']['compress_output'] && extension_loaded ('zlib')) {
 	ob_start ('ob_gzhandler');
 }
