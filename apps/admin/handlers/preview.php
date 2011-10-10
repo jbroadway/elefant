@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Creates a preview of a web page based on POST data sent to it.
+ * POST data must match values available to the Page object.
+ */
+
 $wp = new Webpage ($_POST);
 
 $page->id = $_POST['id'];

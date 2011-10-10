@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Outputs an admin login form at /admin if the
+ * user isn't logged in as an admin. If they are,
+ * it simply forwards to / where they should see
+ * the admin toolbar and edit buttons.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {

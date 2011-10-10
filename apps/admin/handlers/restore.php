@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Restores a previous version of a Model object, replacing the
+ * current version, and adding a new version to the history
+ * as well.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {

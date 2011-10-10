@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Forwards a user to the specified URL location.
+ * Works as a dynamic object to be embedded
+ * into the WYSIWYG editor.
+ */
+
 global $user;
 if (User::is_valid () && $user->type == 'admin') {
 	$to = isset ($data['to']) ? $data['to'] : $_GET['to'];

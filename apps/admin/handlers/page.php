@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Renders a web page from the webpage table.
+ * This is the default handler in Elefant,
+ * allowing it to work as a web page-serving
+ * CMS by default.
+ */
+
 global $user;
 
 // determine page id

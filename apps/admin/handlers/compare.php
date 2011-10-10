@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Compares a previous version of a Model object to the
+ * current version, allowing you to restore the previous
+ * version if desired.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {

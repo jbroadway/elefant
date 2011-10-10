@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Show version history of an object, with the ability
+ * to compare to the current version.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {

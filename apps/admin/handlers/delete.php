@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Deletes a web page.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {
