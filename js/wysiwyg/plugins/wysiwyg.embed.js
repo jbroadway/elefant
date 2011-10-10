@@ -123,8 +123,8 @@
 									fields = obj.fields,
 									form = $(this)[0].form,
 									out = form.elements.handler.value,
-									key_list = ['name', 'label', 'type', 'initial', 'message', 'require', 'callback', 'values'],
-									sep = '?';
+									key_list = ['name', 'label', 'type', 'initial', 'message', 'require', 'callback', 'values', 'filter'],
+									filters = false;
 
 								// validate form
 								for (var i in fields) {
@@ -147,16 +147,33 @@
 									}
 								}
 
-								for (i = 0; i < form.elements.length; i++) {
+								// are there any filters?
+								for (var i in fields) {
+									if (fields[i].hasOwnProperty ('filter')) {
+										filters = true;
+										break;
+									}
+								}
+
+								// build an array of valid data from the fields
+								var unfiltered = {};
+								for (var i = 0; i < form.elements.length; i++) {
 									if (form.elements[i].name == 'handler' || ! form.elements[i].name) {
 										continue;
 									}
-									out += sep + form.elements[i].name + '=' + escape (form.elements[i].value);
-									sep = '&';
+									unfiltered[form.elements[i].name] = form.elements[i].value;
 								}
 
-								callback (self.embed_element, out);
-								embedUI.close ();
+								if (filters) {
+									// apply filters server-side then submit the form with the returned values
+									$.post ('/admin/embed/filters', {handler: out, data: unfiltered}, function (res) {
+										submit_form (embedUI, self.embed_element, callback, out, res.data);
+									});
+								} else {
+									// no filters, submit the form now
+									submit_form (embedUI, self.embed_element, callback, out, unfiltered);
+								}
+
 								return false;
 							});
 						});
@@ -167,5 +184,27 @@
 				embedUI.open ();
 			}
 		};
+	};
+
+	/**
+	 * Inserts the data into the content and closes the dialog window.
+	 *
+	 * Parameters:
+	 *
+	 * - The UI object to be closed when finished
+	 * - The span element to embed into
+	 * - The callback function to call
+	 * - The initial string containing the handler name
+	 * - The array of field names and values
+	 */
+	function submit_form (ui, embed_element, callback, out, data) {
+		var i, sep = '?';
+		for (i in data) {
+			out += sep + i + '=' + escape (data[i]);
+			sep = '&';
+		}
+		callback (embed_element, out);
+		ui.close ();
+		return false;
 	}
 })(jQuery);

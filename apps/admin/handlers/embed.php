@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Returns a JSON-encoded list of all dynamically embeddable
+ * objects to the WYSIWYG editor. Parses `conf/embed.php` files
+ * from each app to build this list. Also applies any callbacks
+ * found to grab a list of values for select box inputs.
+ */
+
 $page->layout = false;
 header ('Content-Type: application/json');
 

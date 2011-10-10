@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * Apply filters for dynamic embed data.
+ * Called by js/wysiwyg/plugins/wysiwyg.embed.js
+ */
+
+$page->layout = false;
+header ('Content-Type: application/json');
+
+if (! User::require_admin ()) {
+	echo json_encode ((object) array ('success' => false, 'error' => 'Must be logged in', 'data' => $_POST['data']));
+	return;
+}
+
+list ($app, $extra) = explode ('/', $_POST['handler']);
+
+$rules = parse_ini_file ('apps/' . $app . '/conf/embed.php', true);
+
+if (! isset ($rules[$_POST['handler']])) {
+	echo json_encode ((object) array ('success' => false, 'error' => 'No embed data', 'data' => $_POST['data']));
+	return;
+}
+
+// apply filters
+$out = array ();
+foreach ($_POST['data'] as $key => $value) {
+	if (! isset ($rules[$_POST['handler']][$key]['filter'])) {
+		// no filter
+		$out[$key] = $value;
+	} else {
+		if (isset ($rules[$_POST['handler']][$key]['require'])) {
+			require_once ($rules[$_POST['handler']][$key]['require']);
+		}
+		$out[$key] = $rules[$_POST['handler']][$key]['filter'] ($value);
+	}
+}
+
+echo json_encode ((object) array ('success' => true, 'data' => $out));
+
+?>
