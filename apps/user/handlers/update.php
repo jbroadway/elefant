@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Enables a user to update their profile information.
+ */
+
 if ($appconf['Custom Handlers']['user/update'] != 'user/update') {
 	if (! $appconf['Custom Handlers']['user/update']) {
 		echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Default user profile view. If not logged in, will show a log in form.
+ */
+
 if ($appconf['Custom Handlers']['user/index'] != 'user/index') {
 	if (! $appconf['Custom Handlers']['user/index']) {
 		echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Google social login handler.
+ */
+
 $openid = new LightOpenID ($_SERVER['HTTP_HOST']);
 
 // handle the openid request

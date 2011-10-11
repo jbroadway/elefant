@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * New user form for registering social login users.
+ */
+
 $f = new Form ('post', 'user/login/newuser');
 if ($f->submit ()) {
 	$date = gmdate ('Y-m-d H:i:s');

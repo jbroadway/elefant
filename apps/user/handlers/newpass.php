@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Form to reset your password, accessed through a link from an email.
+ */
+
 $verified = false;
 
 $u = User::query ()

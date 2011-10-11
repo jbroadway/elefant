@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * User edit form.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {

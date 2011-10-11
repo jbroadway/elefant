@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Admin user list.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {

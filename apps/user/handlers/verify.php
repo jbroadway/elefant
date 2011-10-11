@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Verifies a user's email address based on a verifier key sent to it.
+ */
+
 $row = User::query ()
 	->where ('email', $_GET['email'])
 	->single ();

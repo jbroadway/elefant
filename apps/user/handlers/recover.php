@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Password recovery form for users who forgot their passwords.
+ */
+
 $f = new Form ('post', 'user/recover');
 if ($f->submit ()) {
 	$u = User::query ()

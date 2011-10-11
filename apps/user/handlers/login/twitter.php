@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Twitter social login handler.
+ */
+
 $twauth = new tmhOAuth (array (
 	'consumer_key' => $appconf['Twitter']['consumer_key'],
 	'consumer_secret' => $appconf['Twitter']['consumer_secret']

@@ -1,4 +1,8 @@
-<?php 
+<?php
+
+/**
+ * Facebook social login handler.
+ */
 
 $app_id = $appconf['Facebook']['application_id'];
 $app_secret = $appconf['Facebook']['application_secret'];
