@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Provides the JSON API for the file browser in the WYSIWYG editor.
+ */
+
 $page->layout = false;
 header ('Content-Type: application/json');
 

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Provides the JSON API for the admin file manager/browser.
+ */
+
 $page->layout = false;
 header ('Content-Type: application/json');
 

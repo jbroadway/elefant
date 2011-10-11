@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * The admin file manager/browser handler.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {

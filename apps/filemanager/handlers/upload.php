@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Upload handler for the file manager.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {
