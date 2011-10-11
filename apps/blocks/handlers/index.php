@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Renders the specified content block. Use in layout templates like this:
+ *
+ *     {! blocks/my-block-id !}
+ */
+
 global $user;
 
 $id = (isset ($this->params[0])) ? $this->params[0] : false;

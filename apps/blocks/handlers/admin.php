@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Lists all content blocks for editing.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {

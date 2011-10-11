@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Block edit form.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {

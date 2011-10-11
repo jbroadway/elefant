@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Saves edits in the background for the `Save & Keep Editing` button
+ * in the edit form.
+ */
+
 $page->layout = false;
 header ('Content-Type: application/json');
 
