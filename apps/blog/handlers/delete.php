@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Blog post delete handler.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {

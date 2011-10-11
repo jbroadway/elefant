@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Displays a single blog post.
+ */
+
 $page->layout = $appconf['Blog']['post_layout'];
 
 require_once ('apps/blog/lib/Filters.php');

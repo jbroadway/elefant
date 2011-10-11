@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Displays a list of blog posts by author.
+ */
+
 $page->layout = $appconf['Blog']['layout'];
 
 require_once ('apps/blog/lib/Filters.php');

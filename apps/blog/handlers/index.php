@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Displays the main blog page.
+ */
+
 $page->layout = $appconf['Blog']['layout'];
 
 require_once ('apps/blog/lib/Filters.php');

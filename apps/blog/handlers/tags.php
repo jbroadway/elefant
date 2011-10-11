@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Renders a tag cloud, with more frequently used tags appearing larger.
+ */
+
 if (! $this->internal) {
 	$page->layout = $appconf['Blog']['layout'];
 	$page->title = i18n_get ('Tags');

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Renders the RSS feed for the blog.
+ */
+
 require_once ('apps/blog/lib/Filters.php');
 
 $page->layout = false;

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Admin page where you can edit posts and create new ones.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Blog post edit form.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {
