@@ -51,8 +51,11 @@ function info ($value, $full = false) {
  * without calling `global $conf` first. Useful in templates
  * as well.
  */
-function conf ($section, $value) {
-	return $GLOBALS['conf'][$section][$value];
+function conf ($section, $value = false) {
+	if ($value) {
+		return $GLOBALS['conf'][$section][$value];
+	}
+	return $GLOBALS['conf'][$section];
 }
 
 /**
