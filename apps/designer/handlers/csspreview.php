@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Live preview handler for stylesheet forms.
+ */
+
 $page->title = i18n_get ('Page title');
 $page->preview = true;
 

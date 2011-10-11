@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Edit stylesheet form.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Changes the default layout template.
+ */
+
 if (! User::require_admin ()) {
 	$this->redirect ('/admin');
 }

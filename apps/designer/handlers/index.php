@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Displays a list of layout templates and stylesheets in two tabs.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {

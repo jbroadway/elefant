@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Delete handler.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {

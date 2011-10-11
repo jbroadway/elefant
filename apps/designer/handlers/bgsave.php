@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Background save handler for `Save & Keep Editing` form options.
+ */
+
 $page->layout = false;
 header ('Content-Type: application/json');
 

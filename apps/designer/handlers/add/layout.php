@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Add layout template form.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {
