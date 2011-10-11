@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Embeds a twitter Follow button into the current page. Used by
+ * the WYSIWYG editor's dynamic objects menu.
+ */
+
 if (! isset ($controller->called['social/twitter/init'])) {
 	echo $controller->run ('social/twitter/init');
 }

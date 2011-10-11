@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Embeds a Google +1 button.
+ */
+
 if (! isset ($controller->called['social/google/init'])) {
 	echo $controller->run ('social/google/init');
 }

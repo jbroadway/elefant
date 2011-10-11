@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Initializes the google API for the other google handlers.
+ */
+
 if ($controller->called['social/google/init'] > 1) {
 	return;
 }
