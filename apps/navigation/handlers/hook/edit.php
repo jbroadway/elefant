@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Updates the name of a page in the navigation. Called via a hook from
+ * the page edit form.
+ */
+
 if (! $this->internal) {
 	die ('Must be called by another handler');
 }

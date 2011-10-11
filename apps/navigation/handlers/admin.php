@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Provides the navigation editing capabilities for admins to add pages
+ * and reorganize them in the site tree.
+ */
+
 if (! User::require_admin ()) {
 	$this->redirect ('/admin');
 }

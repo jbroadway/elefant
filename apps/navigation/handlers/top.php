@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Displays the top-level navigation as a bulleted list,
+ * with `class="current"` added to the current page's
+ * `<li>` element for custom styling.
+ */
+
 $res = $memcache->get ('_navigation_top');
 if ($res) {
 	echo str_replace (

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Removes a page from the navigation. Called via a hook from
+ * the page delete handler.
+ */
+
 if (! $this->internal) {
 	die ('Must be called by another handler');
 }

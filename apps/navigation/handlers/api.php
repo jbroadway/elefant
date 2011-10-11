@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Provides the underlying API for the drag and drop capabilities
+ * in the navigation editor.
+ */
+
 $page->layout = false;
 header ('Content-Type: application/json');
 
