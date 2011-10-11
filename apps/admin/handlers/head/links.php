@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Returns a list of admin tools links to the admin header
+ * linking to all the admin handlers for each app that
+ * exposes them.
+ */
+
 function admin_head_links_sort ($a, $b) {
 	if ($a['name'] == $b['name']) {
 		return 0;
