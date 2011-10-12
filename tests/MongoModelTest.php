@@ -22,6 +22,10 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 	}
 
 	static function tearDownAfterClass () {
+		$t = new Test ();
+		foreach ($t->fetch () as $row) {
+			$row->remove ();
+		}
 		unset ($GLOBALS['conf']);
 	}
 
@@ -65,6 +69,20 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 
 		$t = Test::get (self::$id);
 		$this->assertEquals ('No object by that ID.', $t->error);
+	}
+
+	function test_fetch () {
+		$t = new Test (array ('foo' => 'bar'));
+		$t->put ();
+		$t = new Test (array ('foo' => 'asdf'));
+		$t->put ();
+
+		$res = Test::query ()
+			->where ('foo', 'bar')
+			->fetch ();
+		$this->assertEquals (1, count ($res));
+		$row = array_shift ($res);
+		$this->assertEquals ('bar', $row->foo);
 	}
 }
 

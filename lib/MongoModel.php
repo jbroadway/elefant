@@ -415,32 +415,34 @@ class MongoModel {
 
 	/**
 	 * Fetch as an array of model objects.
-	 * NOTE: NOT YET IMPLEMENTED.
 	 */
 	function fetch ($limit = false, $offset = 0) {
 		if (is_array ($this->query_fields)) {
-			$this->query_fields = join (', ', Model::backticks ($this->query_fields));
+			$cur = $this->collection->find ($this->query_filters, $this->query_fields);
+		} else {
+			$cur = $this->collection->find ($this->query_filters);
 		}
-		$sql = 'select ' . $this->query_fields . ' from ' . Model::backticks ($this->table);
-		if (count ($this->query_filters) > 0) {
-			$sql .= ' where ' . join (' and ', $this->query_filters);
+
+		if (count ($this->query_order) > 0) {
+			$cur = $cur->sort ($this->query_order);
 		}
-		if (! empty ($this->query_group)) {
-			$sql .= ' group by ' . $this->query_group;
-		}
-		if (! empty ($this->query_order)) {
-			$sql .= ' order by ' . $this->query_order;
-		}
+
 		if ($limit) {
-			$sql .= ' limit ' . $limit . ' offset ' . $offset;
+			$cur = $cur->limit ($limit);
 		}
-		$res = db_fetch_array ($sql, $this->query_params);
-		if (! $res) {
-			$this->error = db_error ();
-			return $res;
+
+		if ($offset > 0) {
+			$cur = $cur->skip ($offset);
+		}
+
+		if (! $cur) {
+			$err = $this->db->lastError ();
+			$this->error = $err['err'];
+			return $cur;
 		}
 		$class = get_class ($this);
-		foreach ($res as $key => $row) {
+		$res = array ();
+		foreach ($cur as $key => $row) {
 			$res[$key] = new $class ((array) $row, false);
 		}
 		return $res;
