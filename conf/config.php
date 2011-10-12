@@ -57,6 +57,16 @@ negotiation_method = url
 master[driver] = sqlite
 master[file] = "conf/site.db"
 
+[Mongo]
+
+; Settings to connect to MongoDB. Must have PHP Mongo extension
+; installed via `pecl install mongo`.
+
+;host = localhost27017
+;user = username
+;pass = password
+;set_name = my_replica_set
+
 [Hooks]
 
 ; This is a list of hooks in the system and associated handlers
