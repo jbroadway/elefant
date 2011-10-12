@@ -156,7 +156,7 @@ class MongoModel {
 	/**
 	 * The `group by` clause for the current query.
 	 */
-	var $query_group = array ();
+	var $query_group = false;
 
 	/**
 	 * A list of `where` clauses for the current query.
@@ -382,9 +382,9 @@ class MongoModel {
 	function order ($order) {
 		$list = preg_split ('/, ?/', $order);
 		foreach ($list as $ord) {
-			if (preg_match ('/([a-z0-9_]+ desc$/i', $ord, $regs)) {
+			if (preg_match ('/([a-z0-9_]+) desc$/i', $ord, $regs)) {
 				$this->query_order[$regs[1]] = -1;
-			} elseif (preg_match ('/([a-z0-9_]+ asc$/i', $ord, $regs)) {
+			} elseif (preg_match ('/([a-z0-9_]+) asc$/i', $ord, $regs)) {
 				$this->query_order[$regs[1]] = 1;
 			} else {
 				$this->query_order[$ord] = 1;
@@ -394,12 +394,66 @@ class MongoModel {
 	}
 
 	/**
-	 * Group the query by the specific clauses.
-	 * NOTE: NOT YET IMPLEMENTED.
+	 * Group the query by the specific clauses and immediately return
+	 * the results as a data structure. The `group()` function in MongoDB
+	 * works much differently than `GROUP BY` in SQL databases. For
+	 * more info, see:
+	 *
+	 * http://www.php.net/manual/en/mongocollection.group.php
+	 *
+	 * Unlike the `group()` method in SQL-based models, this method
+	 * returns the results immediately. For example:
+	 *
+	 * Data structure:
+	 *
+	 *     { category: 1, name: "John" }
+	 *     { category: 1, name: "Steve" }
+	 *     { category: 2, name: "Adam" }
+	 *
+	 * Query:
+	 *
+	 *     $res = MyModel::query ()->group (
+	 *         array ('category' => 1),                               // keys
+	 *         array ('items' => array ()),                           // initial
+	 *         'function (obj, prev) { prev.items.push (obj.name); }' // reduce
+	 *     );
+	 *
+	 * Results:
+	 *
+	 *     {
+	 *       retval: [
+	 *         {
+	 *           category: 1,
+	 *           items: [
+	 *             name: "John",
+	 *             name: "Steve"
+	 *           ]
+	 *         },
+	 *         {
+	 *           category: 2,
+	 *           items: [
+	 *             name: "Adam"
+	 *           ]
+	 *         }
+	 *       ],
+	 *       count: 3,
+	 *       keys: 2,
+	 *       ok: 1
+	 *     }
 	 */
-	function group ($group) {
-		$this->query_group = $group;
-		return $this;
+	function group ($keys, $initial, $reduce, $options = array ()) {
+		$cur = $this->collection->group (
+			$keys,
+			$initial,
+			$reduce,
+			$options
+		);
+
+		if (! $cur) {
+			$err = $this->db->lastError ();
+			$this->error = $err['err'];
+		}
+		return $cur;
 	}
 
 	/**
@@ -450,79 +504,94 @@ class MongoModel {
 
 	/**
 	 * Fetch a single result as a model object.
-	 * NOTE: NOT YET IMPLEMENTED.
 	 */
 	function single () {
 		if (is_array ($this->query_fields)) {
-			$this->query_fields = join (', ', Model::backticks ($this->query_fields));
+			$cur = $this->collection->find ($this->query_filters, $this->query_fields);
+		} else {
+			$cur = $this->collection->find ($this->query_filters);
 		}
-		$sql = 'select ' . $this->query_fields . ' from ' . Model::backticks ($this->table);
-		if (count ($this->query_filters) > 0) {
-			$sql .= ' where ' . join (' and ', $this->query_filters);
+
+		if (count ($this->query_order) > 0) {
+			$cur = $cur->sort ($this->query_order);
 		}
-		if (! empty ($this->query_group)) {
-			$sql .= ' group by ' . $this->query_group;
-		}
-		if (! empty ($this->query_order)) {
-			$sql .= ' order by ' . $this->query_order;
-		}
-		$res = db_single ($sql, $this->query_params);
-		if (! $res) {
-			$this->error = db_error ();
-			return $res;
+
+		$cur = $cur->limit (1);
+
+		if (! $cur) {
+			$err = $this->db->lastError ();
+			$this->error = $err['err'];
+			return $cur;
 		}
 		$class = get_class ($this);
-		$res = new $class ((array) $res, false);
-		return $res;
+		foreach ($cur as $obj) {
+			return new $class ((array) $obj, false);
+		}
 	}
 
 	/**
 	 * Fetch the number of results for a query.
-	 * NOTE: NOT YET IMPLEMENTED.
 	 */
 	function count ($limit = false, $offset = 0) {
-		$sql = 'select count(*) from ' . Model::backticks ($this->table);
-		if (count ($this->query_filters) > 0) {
-			$sql .= ' where ' . join (' and ', $this->query_filters);
+		if (is_array ($this->query_fields)) {
+			$cur = $this->collection->find ($this->query_filters, $this->query_fields);
+		} else {
+			$cur = $this->collection->find ($this->query_filters);
 		}
-		if (! empty ($this->query_group)) {
-			$sql .= ' group by ' . $this->query_group;
+
+		if (count ($this->query_order) > 0) {
+			$cur = $cur->sort ($this->query_order);
 		}
-		if (! empty ($this->query_order)) {
-			$sql .= ' order by ' . $this->query_order;
+
+		if ($limit) {
+			$cur = $cur->limit ($limit);
 		}
-		$res = db_shift ($sql, $this->query_params);
-		if ($res === false) {
-			$this->error = db_error ();
+
+		if ($offset > 0) {
+			$cur = $cur->skip ($offset);
 		}
-		return $res;
+
+		$count = $cur->count ();
+
+		if (! $count) {
+			$err = $this->db->lastError ();
+			$this->error = $err['err'];
+		}
+		return $count;
 	}
 
 	/**
 	 * Fetch as an array of the original objects as returned from
 	 * the database.
-	 * NOTE: NOT YET IMPLEMENTED.
 	 */
 	function fetch_orig ($limit = false, $offset = 0) {
 		if (is_array ($this->query_fields)) {
-			$this->query_fields = join (', ', Model::backticks ($this->query_fields));
+			$cur = $this->collection->find ($this->query_filters, $this->query_fields);
+		} else {
+			$cur = $this->collection->find ($this->query_filters);
 		}
-		$sql = 'select ' . $this->query_fields . ' from ' . Model::backticks ($this->table);
-		if (count ($this->query_filters) > 0) {
-			$sql .= ' where ' . join (' and ', $this->query_filters);
+
+		if (count ($this->query_order) > 0) {
+			$cur = $cur->sort ($this->query_order);
 		}
-		if (! empty ($this->query_group)) {
-			$sql .= ' group by ' . $this->query_group;
-		}
-		if (! empty ($this->query_order)) {
-			$sql .= ' order by ' . $this->query_order;
-		}
+
 		if ($limit) {
-			$sql .= ' limit ' . $limit . ' offset ' . $offset;
+			$cur = $cur->limit ($limit);
 		}
-		$res = db_fetch_array ($sql, $this->query_params);
-		if (! $res) {
-			$this->error = db_error ();
+
+		if ($offset > 0) {
+			$cur = $cur->skip ($offset);
+		}
+
+		if (! $cur) {
+			$err = $this->db->lastError ();
+			$this->error = $err['err'];
+			return $cur;
+		}
+		$res = array ();
+		foreach ($cur as $key => $row) {
+			$row['_id'] = $this->keyval ($row['_id']);
+			$res[$key] = (object) $row;
 		}
 		return $res;
 	}
@@ -531,7 +600,7 @@ class MongoModel {
 	 * Fetch as an associative array of the specified key/value fields.
 	 */
 	function fetch_assoc ($key, $value, $limit = false, $offset = 0) {
-		$tmp = $this->fetch ($limit, $offset);
+		$tmp = $this->fetch_orig ($limit, $offset);
 		if (! $tmp) {
 			return $tmp;
 		}
@@ -546,7 +615,7 @@ class MongoModel {
 	 * Fetch as an array of the specified field name.
 	 */
 	function fetch_field ($value, $limit = false, $offset = 0) {
-		$tmp = $this->fetch ($limit, $offset);
+		$tmp = $this->fetch_orig ($limit, $offset);
 		if (! $tmp) {
 			return $tmp;
 		}
@@ -561,7 +630,9 @@ class MongoModel {
 	 * Return the original data as an object.
 	 */
 	function orig () {
-		return (object) $this->data;
+		$orig = (object) $this->data;
+		$orig->_id = $this->keyval ($orig->_id);
+		return $orig;
 	}
 }
 
