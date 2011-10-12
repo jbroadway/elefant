@@ -25,18 +25,32 @@
  */
 
 /**
+ * This is the default user authentication source for Elefant. Provides the
+ * basic `User::require_login()` and `User::require_admin()` methods, as
+ * well as `User::is_valid()` and `User::logout()`. If a user is logged in,
+ * the first call to any validation method will create a global `$user`
+ * object to store the user data.
+ *
+ * It uses a global singleton so the user data can be available to any part
+ * of the application, and it makes sense to do so because there is only one
+ * active user account per request. It's also much nicer to type `$user`
+ * than `User::$user` throughout your code.
+ *
+ * Note that this class extends Model, so all of the Model methods are
+ * available for querying the user list, and for user management, as well.
+ *
  * Fields:
  *
- * id
- * email
- * password
- * session_id
- * expires
- * name
- * type
- * signed_up
- * updated
- * userdata
+ * - id
+ * - email
+ * - password
+ * - session_id
+ * - expires
+ * - name
+ * - type
+ * - signed_up
+ * - updated
+ * - userdata
  *
  * Basic usage of additional methods:
  *
