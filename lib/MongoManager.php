@@ -61,32 +61,34 @@
  */
 class MongoManager {
 	/**
+	 * The Mongo connection object.
+	 */
+	static $conn = false;
+
+	/**
 	 * Get the Mongo database connection object. Uses your
 	 * settings from `conf/config.php` for the connection
 	 * info (`host`, `name`, `user`, `pass`, and `set_name`).
 	 * The host and database name are required, but authentication
 	 * (`user` and `pass`) settings and replica set name
-	 * (`set_name`) are optional. Saves the connection to the
-	 * global `$mongomanager_connection` variable.
+	 * (`set_name`) are optional.
 	 */
 	static function get_connection () {
-		global $mongomanager_connection;
-
 		$conf = conf ('Mongo');
 
-		if (! $mongomanager_connection) {
+		if (! self::$conn) {
 			if (isset ($conf['user'])) {
 				$connstr = 'mongodb://' . $conf['user'] . ':' . $conf['pass'] . '@' . $conf['host'];
 			} else {
 				$connstr = $conf['host'];
 			}
-			if ($conf['set_name']) {
-				$mongomanager_connection = new Mongo ($connstr, array ('replicaSet' => $conf['set_name']));
+			if (isset ($conf['set_name'])) {
+				self::$conn = new Mongo ($connstr, array ('replicaSet' => $conf['set_name']));
 			} else {
-				$mongomanager_connection = new Mongo ($connstr);
+				self::$conn = new Mongo ($connstr);
 			}
 		}
-		return $mongomanager_connection;
+		return self::$conn;
 	}
 
 	/**

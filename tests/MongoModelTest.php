@@ -10,7 +10,7 @@ class Test extends MongoModel {
 }
 
 class MongoModelTest extends PHPUnit_Framework_TestCase {
-	protected $backupGlobalsBlacklist = array ('mongo_connection', 'conf');
+	protected $backupGlobalsBlacklist = array ('conf');
 
 	protected static $id = null;
 
@@ -22,7 +22,6 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 	}
 
 	static function tearDownAfterClass () {
-		unset ($GLOBALS['mongo_connection']);
 		unset ($GLOBALS['conf']);
 	}
 
