@@ -25,7 +25,17 @@
  */
 
 /**
- * Autoloader for classes. Checks in lib and models folders.
+ * Autoloader for classes. Checks in the following order:
+ *
+ * 1. If `\` is found, using namespaces:
+ * 1.1. Look for `apps/{{app}}/lib/{{class}}.php`
+ * 1.2. Look for `apps/{{app}}/models/{{class}}.php`
+ * 1.3. PSR-0 fallback, look in `lib/vendors/`
+ * 2. Look for `lib/{{class}}.php`
+ * 3. Glob for `{{models,lib}}/{{class}}.php` in all apps
+ * 4. Return false
+ *
+ * For PSR-0 compatible frameworks, put them in `lib/vendors/`.
  */
 function elefant_autoloader ($class) {
 	if (strpos ($class, '\\') !== false) {
@@ -36,6 +46,17 @@ function elefant_autoloader ($class) {
 		} elseif (@file_exists ('apps/' . $app . '/models/' . $class . '.php')) {
 			require_once ('apps/' . $app . '/models/' . $class . '.php');
 			return true;
+		}
+
+		// fall back to PSR-0
+		if (! empty ($app)) {
+			$file = 'lib/vendor/' . ltrim ($app, '\\') . '/' . str_replace ('\\', '/', $class) . '.php';
+		} else {
+			$file = 'lib/vendor/' . str_replace ('\\', '/', ltrim ($class, '\\')) . '.php';
+		}
+		$file = str_replace ('_', '/', $file);
+		if (@file_exists ($file)) {
+			require_once ($file);
 		}
 	} elseif (file_exists ('lib/' . $class . '.php')) {
 		require_once ('lib/' . $class . '.php');
