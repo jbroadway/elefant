@@ -9,17 +9,17 @@ Elefant is a fast, lean tool for building everything from simple websites to com
 
 Elefant compiles templates into secure PHP code, so rendering is as fast as possible.
 
-**[Dead simple, concise template tags](https://github.com/jbroadway/elefant/wiki/Templates)**
+**Dead simple, concise template tags**
 
-Familiar syntax to other template languages, with some added conveniences for dynamic embeds and internationalization.
+[Familiar syntax](https://github.com/jbroadway/elefant/wiki/Templates) to other template languages, with some added conveniences for dynamic embeds and internationalization.
 
 **Clean, easy to use site editor for your users**
 
 Elefant comes out of the box with a [full-featured CMS](https://github.com/jbroadway/elefant/wiki/The-page-editor) for your users.
 
-**[Syntax highlighted template and CSS editor](https://github.com/jbroadway/elefant/wiki/Setting-up-your-custom-designs)**
+**Syntax highlighted template and CSS editor**
 
-Sophisticated in-browser editing with highlights and references at your finger tips.
+Sophisticated [in-browser editing](https://github.com/jbroadway/elefant/wiki/Setting-up-your-custom-designs) with highlights and references at your finger tips.
 
 **Live preview while editing templates and CSS**
 
@@ -51,9 +51,9 @@ Elefant uses [less memory per request](https://github.com/jbroadway/elefant/wiki
 
 Debug mode prints full traces with highlighted source code and variable state to help you fix bugs faster.
 
-**[Minimalist MVC/Model2 architecture](https://github.com/jbroadway/elefant/wiki/Elefant-architecture)**
+**Minimalist MVC/Model2 architecture**
 
-Elefant takes a unique but proven approach that helps minimize boilerplate without sacrificing code organization as your project grows.
+Elefant takes a [unique but proven approach](https://github.com/jbroadway/elefant/wiki/Elefant-architecture) that helps minimize boilerplate without sacrificing code organization as your project grows.
 
 **Shared apps to save you time**
 
@@ -63,9 +63,9 @@ From blogs to user management, events to search, Elefant saves you time not rein
 
 Elefant's core framework is covered by [extensive unit tests](https://github.com/jbroadway/elefant/tree/master/tests), ensuring a stable base to build on.
 
-**[Internationalization](https://github.com/jbroadway/elefant/wiki/Internationalization)**
+**Internationalization**
 
-Elefant apps are automatically i18n aware, with built-in multilingual capabilities and locale awareness.
+Elefant apps are automatically [i18n aware](https://github.com/jbroadway/elefant/wiki/Internationalization), with built-in multilingual capabilities and locale awareness.
 
 ## More developer goodness
 
