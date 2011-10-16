@@ -78,7 +78,8 @@ As such, Elefant takes into consideration all the little details to help you wor
 * [Installation instructions](https://github.com/jbroadway/elefant/wiki/Getting-started)
 * [Installing on PHP Fog](https://github.com/jbroadway/elefant/wiki/Installing-Elefant-on-PHP-Fog)
 * [Installing on DotCloud](https://github.com/jbroadway/elefant/wiki/Installing-Elefant-on-DotCloud)
-* [Requirements](https://github.com/jbroadway/elefant/wiki/Requirements)
+* [Requirements and compatible hosts](https://github.com/jbroadway/elefant/wiki/Requirements)
+* [Support forum](http://www.elefantcms.com/forum/)
 
 ## FAQ
 
