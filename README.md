@@ -72,14 +72,14 @@ Elefant apps are automatically [i18n aware](https://github.com/jbroadway/elefant
 Elefant builds on over 12 years of PHP experience, and aims to simplify rapid PHP development again.
 As such, Elefant takes into consideration all the little details to help you work faster and better:
 
-* Really simple, automatic URL routing w/ friendly URLs
-* Minimal but secure and fast ORM (based on PDO)
+* Really simple, [automatic URL routing](https://github.com/jbroadway/elefant/wiki/Page-routing-and-handler-basics) w/ friendly URLs
+* [Minimal but secure and fast ORM](https://github.com/jbroadway/elefant/wiki/Database-API-and-models) (based on PDO)
 * Output filtering is turned *on by default*
-* Tight memcache integration
+* Tight [memcache integration](https://github.com/jbroadway/elefant/wiki/Memcache)
 * Matching server- and client-side input validation
-* Dead-simple form handling
-* Customizable user authentication
-* CLI tool for common tasks
+* Dead-simple [form handling](https://github.com/jbroadway/elefant/wiki/Forms-and-input-validation)
+* Customizable [user authentication](https://github.com/jbroadway/elefant/wiki/Custom-user-authentication)
+* [CLI tool](https://github.com/jbroadway/elefant/wiki/Command-line-usage) for common tasks
 * As little scaffolding as possible
 * Gzip output compression
 * [Assetic](http://github.com/jbroadway/assetic) integration
