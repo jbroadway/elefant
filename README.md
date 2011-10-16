@@ -6,50 +6,65 @@ Elefant is a fast, lean tool for building everything from simple websites to com
 ## Built for designers
 
 **Compiled, ultra-fast templates**
+
 Elefant compiles templates into secure PHP code, so rendering is as fast as possible.
 
 **[Dead simple, concise template tags](https://github.com/jbroadway/elefant/wiki/Templates)**
+
 Familiar syntax to other template languages, with some added conveniences for dynamic embeds and internationalization.
 
 **Clean, easy to use site editor for your users**
+
 Elefant comes out of the box with a [full-featured CMS](https://github.com/jbroadway/elefant/wiki/The-page-editor) for your users.
 
 **[Syntax highlighted template and CSS editor](https://github.com/jbroadway/elefant/wiki/Setting-up-your-custom-designs)**
+
 Sophisticated in-browser editing with highlights and references at your finger tips.
 
 **Live preview while editing templates and CSS**
+
 Preview in real time as you make changes. Or if you prefer, edit files directly with your editor of choice.
 
 **Integrates with 960 grid system and jQuery**
+
 Or any other CSS grid system, giving you complete control over your designs.
 
 ## Built for developers
 
 **Quickly built custom apps**
+
 With all the tools you need, and a very low learning curve, Elefant gets you writing code quickly.
 
 **Extensively documented**
+
 Including full [API reference](https://github.com/jbroadway/elefant/wiki/API-reference), [cheat sheets](https://github.com/jbroadway/elefant/wiki/Cheat-sheet), [tutorials, and much more](https://github.com/jbroadway/elefant/wiki).
 
 **Strong security by default**
+
 [Flexible input validation](https://github.com/jbroadway/elefant/wiki/Forms-and-input-validation) and automatic prevention of XSS, SQL injection, CSRF, and other types of attacks.
 
 **Very fast and low memory**
+
 Elefant uses [less memory per request](https://github.com/jbroadway/elefant/wiki/Performance) than any of the major frameworks, so you can serve more visitors with the same resources.
 
 **Good debugging tools**
+
 Debug mode prints full traces with highlighted source code and variable state to help you fix bugs faster.
 
 **[Minimalist MVC/Model2 architecture](https://github.com/jbroadway/elefant/wiki/Elefant-architecture)**
+
 Elefant takes a unique but proven approach that helps minimize boilerplate without sacrificing code organization as your project grows.
 
 **Shared apps to save you time**
+
 From blogs to user management, events to search, Elefant saves you time not reinventing the wheel with [high quality shared apps](http://www.elefantcms.com/shared-apps).
 
 **Thoroughly unit-tested**
+
 Elefant's core framework is covered by [extensive unit tests](https://github.com/jbroadway/elefant/tree/master/tests), ensuring a stable base to build on.
 
 **[Internationalization](https://github.com/jbroadway/elefant/wiki/Internationalization)**
+
 Elefant apps are automatically i18n aware, with built-in multilingual capabilities and locale awareness.
 
 ## More developer goodness
@@ -66,10 +81,8 @@ As such, Elefant takes into consideration all the little details to help you wor
 * Customizable user authentication
 * CLI tool for common tasks
 * As little scaffolding as possible
-* Reusable apps for common CMS tasks (admin, users, blog, filemanager, search)
 * Gzip output compression
-* [Speed](https://github.com/jbroadway/elefant/wiki/Performance). Less cruft, faster pages.
-* [Assetic](http://github.com/jbroadway/assetic) integration for compiling your JavaScript/CoffeeScript, and CSS/SASS/LESS files.
+* [Assetic](http://github.com/jbroadway/assetic) integration
 
 ## Try it out
 
