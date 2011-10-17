@@ -15,8 +15,13 @@ $lock = new Lock ();
 $out = array (
 	'layouts' => glob ('layouts/*.html'),
 	'stylesheets' => glob ('css/*.css'),
+	'stylesheets2' => glob ('layouts/*/*.css'),
 	'locks' => array ()
 );
+
+foreach ($out['stylesheets2'] as $name) {
+	$out['stylesheets'][] = $name;
+}
 
 foreach ($out['layouts'] as $name) {
 	$out['locks'][$name] = $lock->exists ('Designer', $name);

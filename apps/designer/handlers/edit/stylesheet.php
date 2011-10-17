@@ -10,7 +10,7 @@ if (! User::require_admin ()) {
 	$this->redirect ('/admin');
 }
 
-if (! preg_match ('/^css\/[a-z0-9_-]+\.css$/i', $_GET['file'])) {
+if (! preg_match ('/^(css|layouts\/[a-z0-9_-]+)\/[a-z0-9\._-]+\.css$/i', $_GET['file'])) {
 	header ('Location: /designer');
 	exit;
 }

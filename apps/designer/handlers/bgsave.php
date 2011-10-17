@@ -17,7 +17,7 @@ if (! User::require_admin ()) {
 
 $error = false;
 
-if (! preg_match ('/^(layouts|css)\/[a-z0-9_-]+\.(html|css)$/i', $_GET['file'])) {
+if (! preg_match ('/^(css|layouts|layouts\/[a-z0-9_-]+)\/[a-z0-9_-]+\.(html|css)$/i', $_GET['file'])) {
 	header ('Location: /designer');
 	exit;
 }
