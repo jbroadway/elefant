@@ -5,7 +5,7 @@ require_once ('lib/MongoManager.php');
 require_once ('lib/MongoModel.php');
 require_once ('lib/Form.php');
 
-class Test extends MongoModel {
+class MTest extends MongoModel {
 	var $name = 'foo';
 }
 
@@ -22,7 +22,7 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 	}
 
 	static function tearDownAfterClass () {
-		$t = new Test ();
+		$t = new MTest ();
 		foreach ($t->fetch () as $row) {
 			$row->remove ();
 		}
@@ -30,14 +30,14 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_construct () {
-		$t = new Test ();
+		$t = new MTest ();
 		$this->assertInstanceOf ('MongoCollection', $t->collection);
 		$this->assertTrue ($t->is_new);
 		$this->assertEquals ('foo', $t->name);
 	}
 
 	function test_put () {
-		$t = new Test (array ('foo' => 'bar'));
+		$t = new MTest (array ('foo' => 'bar'));
 		$t->put ();
 		$this->assertFalse ($t->error);
 		$this->assertNotEmpty ($t->keyval);
@@ -47,44 +47,44 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_get () {
-		$t = new Test (self::$id);
+		$t = new MTest (self::$id);
 		$this->assertEquals ('bar', $t->data['foo']);
 
-		$t = Test::get (self::$id);
+		$t = MTest::get (self::$id);
 		$this->assertEquals ('bar', $t->data['foo']);
 
-		$t = Test::get ($t->keyval ());
+		$t = MTest::get ($t->keyval ());
 		$this->assertEquals ('bar', $t->data['foo']);
 	}
 
 	function test_keyval () {
-		$t = new Test (self::$id);
+		$t = new MTest (self::$id);
 		$this->assertEquals (new MongoId ($t->keyval ()), $t->keyval);
 	}
 
 	function test_orig () {
-		$t = new Test (self::$id);
+		$t = new MTest (self::$id);
 		$o = $t->orig ();
 		$this->assertNotEmpty ($o->_id);
 		$this->assertEquals ('bar', $o->foo);
 	}
 
 	function test_remove () {
-		$t = new Test (self::$id);
+		$t = new MTest (self::$id);
 		$this->assertEquals ('bar', $t->data['foo']);
 		$this->assertTrue ($t->remove ());
 
-		$t = Test::get (self::$id);
+		$t = MTest::get (self::$id);
 		$this->assertEquals ('No object by that ID.', $t->error);
 	}
 
 	function test_fetch () {
-		$t = new Test (array ('foo' => 'bar'));
+		$t = new MTest (array ('foo' => 'bar'));
 		$t->put ();
-		$t = new Test (array ('foo' => 'asdf'));
+		$t = new MTest (array ('foo' => 'asdf'));
 		$t->put ();
 
-		$res = Test::query ()
+		$res = MTest::query ()
 			->where ('foo', 'bar')
 			->fetch ();
 
@@ -95,12 +95,12 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_fetch_orig () {
-		$t = new Test (array ('foo' => 'qwerty'));
+		$t = new MTest (array ('foo' => 'qwerty'));
 		$t->put ();
-		$t = new Test (array ('foo' => '1234'));
+		$t = new MTest (array ('foo' => '1234'));
 		$t->put ();
 
-		$res = Test::query ()
+		$res = MTest::query ()
 			->where ('foo', 'qwerty')
 			->fetch_orig ();
 
@@ -111,7 +111,7 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_fetch_assoc () {
-		$res = Test::query ()
+		$res = MTest::query ()
 			->order ('foo asc')
 			->fetch_assoc ('_id', 'foo');
 
@@ -123,7 +123,7 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_fetch_field () {
-		$res = Test::query ()
+		$res = MTest::query ()
 			->order ('foo asc')
 			->fetch_field ('foo');
 
@@ -135,14 +135,14 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_count () {
-		$res = Test::query ()
+		$res = MTest::query ()
 			->count ();
 
 		$this->assertEquals (4, $res);
 	}
 
 	function test_single () {
-		$res = Test::query ()
+		$res = MTest::query ()
 			->order ('foo desc')
 			->single ();
 
@@ -150,21 +150,21 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_group () {
-		$res = Test::query ()
+		$res = MTest::query ()
 			->fetch (2);
 		foreach ($res as $row) {
 			$row->category = 'one';
 			$row->put ();
 		}
 
-		$res = Test::query ()
+		$res = MTest::query ()
 			->fetch (2, 2);
 		foreach ($res as $row) {
 			$row->category = 'two';
 			$row->put ();
 		}
 
-		$res = Test::query ()
+		$res = MTest::query ()
 			->group (
 				array ('category' => 1),
 				array ('items' => array ()),
