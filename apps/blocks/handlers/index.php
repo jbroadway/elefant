@@ -20,7 +20,7 @@
 
 global $user;
 
-$id = (isset ($this->params[0])) ? $this->params[0] : (isset ($data['id'])) ? $data['id'] : false;
+$id = (isset ($this->params[0])) ? $this->params[0] : (isset ($data['id']) ? $data['id'] : false);
 if (! $id) {
 	if (User::is_valid () && $user->type == 'admin') {
 		echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false));
