@@ -60,13 +60,16 @@
  *     $page->body = $controller->handle ($handler);
  *
  * In this way, there is less scaffolding code for individual controllers,
- * they can simply begin executing in the global namespace just like an
- * ordinary PHP script, and the output is simply echoed like an ordinary
- * PHP script too.
+ * they can simply begin executing just like an ordinary PHP script, and
+ * the output is simply echoed like an ordinary PHP script too.
  *
  * The remaining elements of the URL are accessible in the array
  * `$this->params`, so for `/user/123` handled by `handlers/user.php`,
  * you could get the value `'123'` via `$this->params[0]`.
+ *
+ * To use named parameters, you simply say:
+ *
+ *     list ($id, $title) = $this->params;
  *
  * You can also call one handler from within another and get its results
  * like this:
