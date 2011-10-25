@@ -95,7 +95,7 @@ switch ($_GET['step']) {
 				'install folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => is_writeable ('../install'),
 				'layouts folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => is_writeable ('../layouts'),
 				'PHP PDO extension is missing.' => extension_loaded ('pdo'),
-				'Apache mod_rewrite extension must be installed.' => (php_sapi_name () != 'apache2handler' || in_array ('mod_rewrite', apache_get_modules ()))
+				'Apache mod_rewrite extension must be installed.' => (php_sapi_name () != 'apache2handler' || ! function_exists ('apache_get_modules') || in_array ('mod_rewrite', apache_get_modules ()))
 			),
 			'passed' => 0
 		);
