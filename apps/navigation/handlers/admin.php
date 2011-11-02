@@ -18,19 +18,8 @@ $nav = new Navigation;
 $ids = $nav->get_all_ids ();
 
 // build other page list
-$pages = array ();
-$res = db_fetch_array ('select id, title, menu_title from webpage where access = "public"');
-foreach ($res as $p) {
-	if (in_array ($p->id, $ids)) {
-		// skip if in tree
-		continue;
-	}
-	if (! empty ($p->menu_title)) {
-		$pages[$p->id] = $p->menu_title;
-	} else {
-		$pages[$p->id] = $p->title;
-	}
-}
+require_once ('apps/navigation/lib/Functions.php');
+$pages = navigation_get_other_pages ($ids);
 
 echo $tpl->render ('navigation/admin', array (
 	'pages' => $pages

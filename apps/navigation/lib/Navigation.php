@@ -383,6 +383,7 @@ class Navigation {
 
 				break;
 			case 'inside':
+			case 'last':
 				$this->remove ($id);
 				$this->add ($node, $ref);
 				break;

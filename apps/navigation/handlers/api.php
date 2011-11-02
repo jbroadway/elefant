@@ -51,6 +51,20 @@ switch ($this->params[0]) {
 			$error = $nav->error;
 		}
 		break;
+	case 'remove':
+		$id = $_POST['page'];
+		if ($nav->remove ($id) && $nav->save ()) {
+			require_once ('apps/navigation/lib/Functions.php');
+			$ids = $nav->get_all_ids ();
+			$out = array (
+				'msg' => sprintf ('Page %s removed.', $id),
+				'page' => $id,
+				'other' => navigation_get_other_pages ($ids)
+			);
+		} else {
+			$error = $nav->error;
+		}
+		break;
 	default:
 		$error = 'Unknown method';
 		break;
