@@ -154,19 +154,27 @@ class Navigation {
 
 	/**
 	 * Find the path to a specific node in the tree, including the node itself.
+	 * If titles is true, it will return an associative array with the keys being
+	 * page ids and the values being page titles. If not, it will return an array
+	 * of ids only.
 	 */
-	function path ($id, $tree = false) {
+	function path ($id, $titles = false, $tree = false) {
 		if (! $tree) {
-			$tree = $this->tree;
+			if (is_array ($titles)) {
+				$tree = $titles;
+				$titles = false;
+			} else {
+				$tree = $this->tree;
+			}
 		}
 
 		foreach ($tree as $item) {
 			if ($item->attr->id == $id) {
-				return array ($id);
+				return $titles ? array ($item->attr->id => $item->data) : array ($id);
 			} elseif (isset ($item->children)) {
-				$res = $this->path ($id, $item->children);
+				$res = $this->path ($id, $titles, $item->children);
 				if ($res) {
-					return array_merge (array ($item->attr->id), $res);
+					return $titles ? array_merge (array ($item->attr->id => $item->data), $res) : array_merge (array ($item->attr->id), $res);
 				}
 			}
 		}

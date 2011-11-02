@@ -79,6 +79,9 @@ class NavigationTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($n->path ('index'), array ('index'));
 		$this->assertEquals ($n->path ('blog'), array ('index', 'blog'));
 		$this->assertEquals ($n->path ('about'), array ('index', 'blog', 'about'));
+		
+		// Test paths with titles
+		$this->assertEquals ($n->path ('blog', true), array ('index' => 'Home', 'blog' => 'Blog'));
 
 		// Test sections
 		$this->assertEquals ($n->sections (), array ('index', 'blog'));
