@@ -78,8 +78,8 @@ function filemanager_list_folders ($path = '') {
  * This makes first requests to a gallery page expensive, but
  * subsequent requests much faster.
  */
-function filemanager_get_thumbnail ($file) {
-	$cache_file = 'cache/thumbs/' . md5 ($file) . '.jpg';
+function filemanager_get_thumbnail ($file, $width = 140, $height = 105) {
+	$cache_file = 'cache/thumbs/' . md5 ($file) . '-' . $width . 'x' . $height . '.jpg';
 	if (@file_exists ($cache_file) && @filemtime ($cache_file) > @filemtime ($file)) {
 		return $cache_file;
 	}
@@ -99,8 +99,6 @@ function filemanager_get_thumbnail ($file) {
 		}
 
 		list ($w, $h) = getimagesize ($file);
-		$width = 140;
-		$height = 105;
 		if ($h > $w) {
 			// cropping the height
 			$hoffset = ($h - $w) / 2;
