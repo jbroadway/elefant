@@ -62,14 +62,16 @@ function filemanager_list_folders ($path = '') {
 
 /**
  * If it can, it creates a cached thumbnail of the specified
- * image file (JPG only at this time), saved to `cache/thumbs`
- * with the name `md5($file)` plus `.jpg`. If it can't create
+ * image file, saved to `cache/thumbs` with the name
+ * `md5($file)` plus `-WIDTHxHEIGHT.jpg`. If it can't create
  * the thumbnail, the original will be returned with one of
  * the following messages added to it as a hashmark:
  *
- *     #not-a-jpg
  *     #gd-missing
  *     #libjpg-missing
+ *     #libpng-missing
+ *     #libgif-missing
+ *     #unsupported-format
  *
  * If the cached version already exists, and its modification time
  * is newer than the original, then the cached version is returned
@@ -87,38 +89,53 @@ function filemanager_get_thumbnail ($file, $width = 140, $height = 105) {
 	$info = pathinfo ($file);
 	$ext = strtolower ($info['extension']);
 
-	if ($ext != 'jpg' && $ext != 'jpeg') {
-		return $file . '#not-a-jpg';
-	}
 	if (! extension_loaded ('gd')) {
 		return $file . '#gd-missing';
 	}
-	if (@imagetypes () & IMG_JPG) {
-		if (! @is_dir ('cache/thumbs')) {
-			mkdir ('cache/thumbs');
-		}
-
-		list ($w, $h) = getimagesize ($file);
-		if ($h > $w) {
-			// cropping the height
-			$hoffset = ($h - $w) / 2;
-			$woffset = 0;
-			$h -= $hoffset * 2;
+	if ($ext == 'jpg' || $ext == 'jpeg') {
+		if (@imagetypes () & IMG_JPG) {
+			$orig = @imagecreatefromjpeg ($file);
 		} else {
-			// cropping the width
-			$woffset = ($w - $h) / 2;
-			$hoffset = 0;
-			$w -= $woffset * 2;
+			return $file . '#libjpg-missing';
 		}
-		$jpg = @imagecreatefromjpeg ($file);
-		$new = @imagecreatetruecolor ($width, $height);
-		@imagecopyresampled ($new, $jpg, 0, 0, $woffset, $hoffset, $width, $height, $w, $h);
-		@imagejpeg ($new, $cache_file);
-		@imagedestroy ($jpg);
-		@imagedestroy ($new);
-		return $cache_file;
+	} elseif ($ext == 'png') {
+		if (@imagetypes () & IMG_PNG) {
+			$orig = @imagecreatefrompng ($file);
+		} else {
+			return $file . '#libpng-missing';
+		}
+	} elseif ($ext == 'gif') {
+		if (@imagetypes () & IMG_GIF) {
+			$orig = @imagecreatefromgif ($file);
+		} else {
+			return $file . '#libgif-missing';
+		}
+	} else {
+		return $file . '#unsupported-format';
 	}
-	return $file . '#libjpg-missing';
+
+	if (! @is_dir ('cache/thumbs')) {
+		mkdir ('cache/thumbs');
+	}
+
+	list ($w, $h) = getimagesize ($file);
+	if ($h > $w) {
+		// cropping the height
+		$hoffset = ($h - $w) / 2;
+		$woffset = 0;
+		$h -= $hoffset * 2;
+	} else {
+		// cropping the width
+		$woffset = ($w - $h) / 2;
+		$hoffset = 0;
+		$w -= $woffset * 2;
+	}
+	$new = @imagecreatetruecolor ($width, $height);
+	@imagecopyresampled ($new, $orig, 0, 0, $woffset, $hoffset, $width, $height, $w, $h);
+	@imagejpeg ($new, $cache_file);
+	@imagedestroy ($orig);
+	@imagedestroy ($new);
+	return $cache_file;
 }
 
 ?>
