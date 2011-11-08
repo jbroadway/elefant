@@ -38,79 +38,79 @@ class I18n {
 	 * The language code, corresponding to the name of the language
 	 * file.
 	 */
-	var $language;
+	public $language;
 
 	/**
 	 * The locale code, corresponding to the name of the country
 	 * to localize numbers and dates for.
 	 */
-	var $locale;
+	public $locale;
 
 	/**
 	 * The location of the language files.
 	 */
-	var $directory = 'lang';
+	public $directory = 'lang';
 
 	/**
 	 * The language hash, a key/value list.
 	 */
-	var $lang_hash = array ();
+	public $lang_hash = array ();
 
 	/**
 	 * The charset of the current language, which can be used to tell
 	 * the browser, or any language-aware PHP functions, which to use.
 	 */
-	var $charset = 'UTF-8';
+	public $charset = 'UTF-8';
 
 	/**
 	 * The full name of language in use (ie. 'English' for 'en').
 	 */
-	var $fullname = '';
+	public $fullname = '';
 
 	/**
 	 * Contains fallback text replacements.
 	 */
-	var $fallbacks = array ();
+	public $fallbacks = array ();
 
 	/**
 	 * 2-D list of available languages, retrieved from `getLanguages()`.
 	 */
-	var $languages = array ();
+	public $languages = array ();
 
 	/**
 	 * The name of the language cookie for `$negotiation=cookie`.
 	 */
-	var $cookieName = 'lang';
+	public $cookieName = 'lang';
 
 	/**
 	 * Tells the controller that the first level of the URL is the language
 	 * and not the page ID when `$negotiation=url`.
 	 */
-	var $url_includes_lang = false;
+	public $url_includes_lang = false;
 
 	/**
 	 * If `$url_includes_lang` is true, this will include the request with
 	 * the language stripped out.
 	 */
-	var $new_request_uri = '';
+	public $new_request_uri = '';
 
 	/**
 	 * If `$url_includes_lang` is true, this will include the stripped out
 	 * part of the URL. Otherwise it will be empty. This is useful for
 	 * including language URL prefixes in views via `{{ i18n.prefix }}`.
 	 */
-	var $prefix = '';
+	public $prefix = '';
 
 	/**
 	 * The negotiation method used to determine the current language.
 	 */
-	var $negotiation = 'url';
+	public $negotiation = 'url';
 
 	/**
 	 * If an error occurs during any portion of this class, this
 	 * will contain the message.
 	 */
-	var $error;
+	public $error;
 
 	/**
 	 * Includes the appropriate language file in the provided `$directory`.
@@ -118,7 +118,7 @@ class I18n {
 	 * `$negotiationMethod` determines the method whereby the language of
 	 * choice is determined. See the `negotiate()` method for more info on this.
 	 */
-	function __construct ($directory = 'lang', $conf = array ()) {
+	public function __construct ($directory = 'lang', $conf = array ()) {
 		$this->directory = $directory;
 		if (isset ($conf['negotiation_method'])) {
 			$this->negotiation = $conf['negotiation_method'];
@@ -145,7 +145,7 @@ class I18n {
 		$this->setLocale ();
 		$this->getIndex ();
 
-		if (extension_loaded('mbstring')) {
+		if (extension_loaded ('mbstring')) {
 			mb_internal_encoding ($this->charset);
 		}
 	}
@@ -153,7 +153,7 @@ class I18n {
 	/**
 	 * Calls `setlocale()` based on the current language.
 	 */
-	function setLocale () {
+	public function setLocale () {
 		$params = array (LC_TIME); // | LC_MONETARY | LC_CTYPE | LC_COLLATE);
 		if (! empty ($this->languages[$this->language]['locale'])) {
 			$params[] = $this->languages[$this->language]['code'] . '_' . strtoupper ($this->languages[$this->language]['locale']) . '.' . str_replace ('ISO-', 'ISO', $this->charset);
@@ -166,7 +166,7 @@ class I18n {
 	/**
 	 * Includes the language index.
 	 */
-	function getIndex () {
+	public function getIndex () {
 		if ((! empty ($this->language)) && (@file_exists ($this->directory . '/' . $this->language . '.php'))) {
 			include_once ($this->directory . '/' . $this->language . '.php');
 		}
@@ -185,7 +185,7 @@ class I18n {
 	 * or the original string if not found.  This is the method used in I18n
 	 * to return translated text.
 	 */
-	function get ($original = '') {
+	public function get ($original = '') {
 		if (empty ($original)) {
 			return '';
 		}
@@ -209,7 +209,7 @@ class I18n {
 	 * simply say `getf($original, $array)` instead of `getf($original, $array[0],
 	 * $array[1], $array[2])`.
 	 */
-	function getf () {
+	public function getf () {
 		$args = func_get_args ();
 
 		$original = array_shift ($args);
@@ -237,7 +237,7 @@ class I18n {
 	 * different available language.  Keys in each section include
 	 * 'name', 'code', 'locale', 'charset', 'fallback', and 'default'.
 	 */
-	function getLanguages () {
+	public function getLanguages () {
 		if (@file_exists ($this->directory . '/languages.php')) {
 			return parse_ini_file ($this->directory . '/languages.php', true);
 		} else {
@@ -257,12 +257,12 @@ class I18n {
 	 * to determine the language (e.g., `/fr/` or `/en/`).
 	 * Default is `'url'`.
 	 */
-	function negotiate ($method = false) {
+	public function negotiate ($method = false) {
 		if (! $method) {
 			$method = $this->negotiation;
 		}
 
-		if ($method == 'http') {
+		if ($method === 'http') {
 			$accepted = array ();
 			$keys = explode (',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
 
@@ -276,7 +276,7 @@ class I18n {
 				if ($pos = strpos ($lang, '-')) {
 					list ($lang, $cn) = explode ('-', $lang);
 
-					if ($lang == 'i') {
+					if ($lang === 'i') {
 						$lang = $cn;
 						unset ($cn);
 					}
@@ -313,7 +313,7 @@ class I18n {
 				}
 			}
 
-		} elseif ($method == 'cookie') {
+		} elseif ($method === 'cookie') {
 			if (
 				isset ($_COOKIE[$this->cookieName]) &&
 				isset ($this->languages[$_COOKIE[$this->cookieName]])
@@ -321,7 +321,7 @@ class I18n {
 				return $_COOKIE[$this->cookieName];
 			}
 
-		} elseif ($method == 'url') {
+		} elseif ($method === 'url') {
 			if (preg_match ('/^\/(' . join ('|', array_keys ($this->languages)) . ')\//', $_SERVER['REQUEST_URI'], $matches)) {
 				$this->url_includes_lang = true;
 				$this->new_request_uri = preg_replace ('/^\/' . $matches[1] . '/', '', $_SERVER['REQUEST_URI']);
@@ -329,7 +329,7 @@ class I18n {
 				return $matches[1];
 			}
 
-		} elseif ($method == 'subdomain') {
+		} elseif ($method === 'subdomain') {
 			if (preg_match ('/^(' . join ('|', array_keys ($this->languages)) . ')\./', $_SERVER['HTTP_HOST'], $matches)) {
 				return $matches[1];
 			}

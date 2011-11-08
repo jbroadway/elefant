@@ -76,44 +76,44 @@ class Form {
 	/**
 	 * Fields that failed validation.
 	 */
-	var $failed = array ();
+	public $failed = array ();
 
 	/**
 	 * The required request method.
 	 */
-	var $method = 'post';
+	public $method = 'post';
 
 	/**
 	 * Validation rules.
 	 */
-	var $rules = array ();
+	public $rules = array ();
 
 	/**
 	 * Whether to verify the referrer or not.
 	 */
-	var $verify_referrer = true;
+	public $verify_referrer = true;
 
 	/**
 	 * Whether to verify with a CSRF token or not.
 	 */
-	var $verify_csrf = true;
+	public $verify_csrf = true;
 
 	/**
 	 * Token generated for CSRF prevention.
 	 */
-	var $csrf_token;
+	public $csrf_token;
 
 	/**
 	 * The name of the token form field.
 	 */
-	var $csrf_field_name = '_token_';
+	public $csrf_field_name = '_token_';
 
 	/**
 	 * The reason `submit()` failed to pass.
 	 */
-	var $error = false;
+	public $error = false;
 
-	function __construct ($required_method = 'post', $form_rules = false) {
+	public function __construct ($required_method = 'post', $form_rules = false) {
 		// Normalize the request method to lowercase
 		$this->method = strtolower ($required_method);
 
@@ -133,8 +133,8 @@ class Form {
 	 * Check if the form is okay to submit. Verifies the request method,
 	 * the referrer, and the input data.
 	 */
-	function submit () {
-		$values = ($this->method == 'post') ? $_POST : $_GET;
+	public function submit () {
+		$values = ($this->method === 'post') ? $_POST : $_GET;
 
 		$this->initialize_csrf ();
 		
@@ -166,8 +166,8 @@ class Form {
 	 * Merge the values from `$_GET` or `$_POST` onto a data array or
 	 * object for re-rendering a form with the latest data entered.
 	 */
-	function merge_values ($obj) {
-		$values = ($this->method == 'post') ? $_POST : $_GET;
+	public function merge_values ($obj) {
+		$values = ($this->method === 'post') ? $_POST : $_GET;
 		
 		foreach ($values as $k => $v) {
 			if (is_object ($obj)) {
@@ -183,8 +183,8 @@ class Form {
 	/**
 	 * Verify the request method is the one specified.
 	 */
-	function verify_request_method () {
-		if (strtolower ($_SERVER['REQUEST_METHOD']) != $this->method) {
+	public function verify_request_method () {
+		if (strtolower ($_SERVER['REQUEST_METHOD']) !== $this->method) {
 			return false;
 		}
 		return true;
@@ -194,7 +194,7 @@ class Form {
 	 * Verify the referrer came from this site. No remote form submissions,
 	 * since those are almost certainly abusive.
 	 */
-	function verify_referrer () {
+	public function verify_referrer () {
 		if (strpos ($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST']) === false) {
 			return false;
 		}
@@ -204,7 +204,7 @@ class Form {
 	/**
 	 * Initialize the CSRF token.
 	 */
-	function initialize_csrf () {
+	public function initialize_csrf () {
 		if ($this->verify_csrf) {
 			// Start a session
 			@session_set_cookie_params (time () + 2592000);
@@ -260,14 +260,14 @@ class Form {
 			return false;
 		}
 
-		$values = ($this->method == 'post') ? $_POST : $_GET;
+		$values = ($this->method === 'post') ? $_POST : $_GET;
 
 		if (! isset ($values[$this->csrf_field_name])) {
 			// No token provided
 			return false;
 		}
 
-		if ($_SESSION['csrf_token'] != $values[$this->csrf_field_name]) {
+		if ($_SESSION['csrf_token'] !== $values[$this->csrf_field_name]) {
 			// Token doesn't match
 			return false;
 		}
@@ -327,23 +327,23 @@ class Form {
 					// Can't dynamically reference superglobals, so instead...
 					switch ($regs[1]) {
 						case '_POST':
-							return ($value == $_POST[$regs[2]]);
+							return ($value === $_POST[$regs[2]]);
 						case '_GET':
-							return ($value == $_GET[$regs[2]]);
+							return ($value === $_GET[$regs[2]]);
 						case '_REQUEST':
-							return ($value == $_REQUEST[$regs[2]]);
+							return ($value === $_REQUEST[$regs[2]]);
 						case '_SERVER':
-							return ($value == $_SERVER[$regs[2]]);
+							return ($value === $_SERVER[$regs[2]]);
 						case '_FILES':
-							return ($value == $_FILES[$regs[2]]);
+							return ($value === $_FILES[$regs[2]]);
 						case '_COOKIE':
-							return ($value == $_COOKIE[$regs[2]]);
+							return ($value === $_COOKIE[$regs[2]]);
 						case '_SESSION':
-							return ($value == $_SESSION[$regs[2]]);
+							return ($value === $_SESSION[$regs[2]]);
 						case '_ENV':
-							return ($value == $_ENV[$regs[2]]);
+							return ($value === $_ENV[$regs[2]]);
 						case 'GLOBALS':
-							return ($value == $GLOBALS[$regs[2]]);
+							return ($value === $GLOBALS[$regs[2]]);
 					}
 				}
 				return false;
@@ -364,9 +364,9 @@ class Form {
 						if (strlen ($value) < $regs[1] || strlen ($value) > $regs[3]) {
 							return false;
 						}
-					} elseif ($regs[2] == '+' && strlen ($value) < $regs[1]) {
+					} elseif ($regs[2] === '+' && strlen ($value) < $regs[1]) {
 						return false;
-					} elseif ($regs[2] == '-' && strlen ($value) > $regs[1]) {
+					} elseif ($regs[2] === '-' && strlen ($value) > $regs[1]) {
 						return false;
 					} elseif (empty ($regs[2]) && strlen ($value) != $regs[1]) {
 						return false;

@@ -63,7 +63,7 @@ class MongoManager {
 	/**
 	 * The Mongo connection object.
 	 */
-	static $conn = false;
+	public static $conn = false;
 
 	/**
 	 * Get the Mongo database connection object. Uses your
@@ -73,7 +73,7 @@ class MongoManager {
 	 * (`user` and `pass`) settings and replica set name
 	 * (`set_name`) are optional.
 	 */
-	static function get_connection () {
+	public static function get_connection () {
 		$conf = conf ('Mongo');
 
 		if (! self::$conn) {
@@ -94,7 +94,7 @@ class MongoManager {
 	/**
 	 * Get the MongoDB database object.
 	 */
-	static function get_database () {
+	public static function get_database () {
 		return MongoManager::get_connection ()->{conf ('Mongo', 'name')};
 	}
 }

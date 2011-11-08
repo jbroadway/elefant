@@ -13,7 +13,7 @@ class Product {
     /**
      * Returns the parsed INI data from `conf/product.php`.
      */
-	static function get_info () {
+	public static function get_info () {
 		if (! isset ($GLOBALS['elefant_product_info'])) {
 			$GLOBALS['elefant_product_info'] = parse_ini_file ('conf/product.php');
 		}
@@ -23,7 +23,7 @@ class Product {
 	/**
 	 * Returns the `name` value.
 	 */
-	static function name () {
+	public static function name () {
 		$info = Product::get_info ();
 		return $info['name'];
 	}
@@ -31,7 +31,7 @@ class Product {
 	/**
 	 * Returns the `website` value.
 	 */
-	static function website () {
+	public static function website () {
 		$info = Product::get_info ();
 		return $info['website'];
 	}
@@ -39,7 +39,7 @@ class Product {
 	/**
 	 * Returns the `logo_login` value.
 	 */
-	static function logo_login () {
+	public static function logo_login () {
 		$info = Product::get_info ();
 		return $info['logo_login'];
 	}
@@ -47,7 +47,7 @@ class Product {
 	/**
 	 * Returns the `logo_toolbar` value.
 	 */
-	static function logo_toolbar () {
+	public static function logo_toolbar () {
 		$info = Product::get_info ();
 		return $info['logo_toolbar'];
 	}
@@ -55,7 +55,7 @@ class Product {
 	/**
 	 * Returns the `stylesheet` value.
 	 */
-	static function stylesheet () {
+	public static function stylesheet () {
 		$info = Product::get_info ();
 		return $info['stylesheet'];
 	}

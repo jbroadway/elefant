@@ -118,22 +118,22 @@ class Controller {
 	/**
 	 * Extra parameters from the end of the URL.
 	 */
-	var $params = array ();
+	public $params = array ();
 	
 	/**
 	 * Whether the request originated internally or externally.
 	 */
-	var $internal = true;
+	public $internal = true;
 	
 	/**
 	 * Data sent from another handler to the current one.
 	 */
-	var $data = array ();
+	public $data = array ();
 
 	/**
 	 * Set to true if the request came from the command line.
 	 */
-	var $cli = false;
+	public $cli = false;
 
 	/**
 	 * A list of handlers defined to be called for each type of hook.
@@ -141,7 +141,7 @@ class Controller {
 	 * handlers from each other without hard-coding the specific handlers in
 	 * the triggering code. See `conf/config.php`'s `[Hooks]` section for examples.
 	 */
-	var $hooks = array ();
+	public $hooks = array ();
 
 	/**
 	 * Keeps track of the number of times each handler has been called in
@@ -149,25 +149,25 @@ class Controller {
 	 * the number, but make sure you use $controller and not $this in
 	 * handlers to make sure it refers to the global controller.
 	 */
-	var $called = array ();
+	public $called = array ();
 
 	/**
 	 * Cached PUT data from get_put_data() so it only reads it the first
 	 * time.
 	 */
-	var $put_data = null;
+	public $put_data = null;
 
 	/**
 	 * The app that is being called. Set by `route()`.
 	 */
-	var $app;
+	public $app;
 
 	/**
 	 * The uri that was last called, as parsed by `route()`. This will have
 	 * preceding slashes trimmed, and if it resolves to a default like
 	 * `app -> app/index`, then it will have the `/index` added.
 	 */
-	var $uri;
+	public $uri;
 
 	/**
 	 * When a handler is loaded, if there is a `conf/config.php` for that
@@ -175,7 +175,7 @@ class Controller {
 	 * the first time it is called, and accessible thereafter by any
 	 * handler in that app directly via $appconf.
 	 */
-	var $appconf = array ();
+	public $appconf = array ();
 
 	/**
 	 * Whether the current handler's output should be cached automatically
@@ -197,9 +197,9 @@ class Controller {
 	 *
 	 *     $memcache->delete ('myapp_handler');
 	 */
-	var $cache = false;
+	public $cache = false;
 
-	function __construct ($hooks = array ()) {
+	public function __construct ($hooks = array ()) {
 		if (defined ('STDIN')) {
 			$this->cli = true;
 		}
@@ -209,7 +209,7 @@ class Controller {
 	/**
 	 * Run an internal request from one handler to another.
 	 */
-	function run ($uri, $data = array ()) {
+	public function run ($uri, $data = array ()) {
 		global $controller;
 		$c = new Controller;
 		$handler = $c->route ($uri);
@@ -234,14 +234,12 @@ class Controller {
 	 *
 	 *     return $this->error ();
 	 */
-	function error ($code = 404, $title = 'Page not found', $message = '') {
-		global $conf;
-
+	public function error ($code = 404, $title = 'Page not found', $message = '') {
 		// Erase any existing output up to this point
 		ob_clean ();
 
 		// Call the error handler
-		return $this->run ($conf['General']['error_handler'], array (
+		return $this->run (conf ('General', 'error_handler'), array (
 			'code' => $code,
 			'title' => $title,
 			'message' => $message
@@ -252,7 +250,7 @@ class Controller {
 	 * Run any handlers for the specified hook type. Note that the
 	 * output for hooks is ignored.
 	 */
-	function hook ($type, $data = array ()) {
+	public function hook ($type, $data = array ()) {
 		if (! isset ($this->hooks[$type])) {
 			return false;
 		}
@@ -274,7 +272,7 @@ class Controller {
 	 *
 	 *     list ($id, $title) = $this->params;
 	 */
-	function params () {
+	public function params () {
 		$keys = func_get_args ();
 		return array_combine ($keys, $this->params);
 	}
@@ -284,7 +282,7 @@ class Controller {
 	 * request originated internally from another handler or template,
 	 * or externally from a browser request.
 	 */
-	function handle ($handler, $internal = true, $data = array ()) {
+	public function handle ($handler, $internal = true, $data = array ()) {
 		global $controller, $page, $tpl, $memcache;
 		
 		$out = $memcache->get (str_replace ('/', '_', $this->uri));
@@ -319,17 +317,16 @@ class Controller {
 	/**
 	 * Route a request URI to a file.
 	 */
-	function route ($uri) {
-		global $conf;
-		$exp = explode ('/', $conf['General']['default_handler']);
+	public function route ($uri) {
+		$exp = explode ('/', conf ('General', 'default_handler'));
 		$this->app = array_shift ($exp);
 		$this->params = array ();
 
 		// Remove queries and hash from uri
 		$uri = preg_replace ('/(\?|#).*$/', '', $uri);
 
-		if (! $this->clean ($uri) || $uri == '/') {
-			$uri = $conf['General']['default_handler'];
+		if (! $this->clean ($uri) || $uri === '/') {
+			$uri = conf ('General', 'default_handler');
 		}
 
 		// Remove leading /
@@ -342,7 +339,7 @@ class Controller {
 				$uri .= '/index';
 			} else {
 				$this->add_param ($uri);
-				$uri = $conf['General']['default_handler'];
+				$uri = conf ('General', 'default_handler');
 			}
 		}
 
@@ -350,17 +347,17 @@ class Controller {
 		$route = 'apps/' . $app . '/handlers/' . $handler . '.php';
 		while (! @file_exists ($route)) {
 			$route = preg_replace ('/\/([^\/]*)\.php$/e', '$this->add_param (\'\\1\')', $route);
-			if ($route == 'apps/' . $app . '/handlers.php') {
+			if ($route === 'apps/' . $app . '/handlers.php') {
 				if (@file_exists ('apps/' . $app . '/handlers/index.php')) {
 					$this->app = $app;
 					$this->uri = $app . '/index';
 					return 'apps/' . $app . '/handlers/index.php';
 				}
 				$this->app = $app;
-				$this->uri = $conf['General']['default_handler'];
+				$this->uri = conf ('General', 'default_handler');
 				return vsprintf (
 					'apps/%s/handlers/%s.php',
-					explode ('/', $conf['General']['default_handler'])
+					explode ('/', conf ('General', 'default_handler'))
 				);
 			}
 		}
@@ -372,14 +369,14 @@ class Controller {
 	/**
 	 * Is this URL clean of any directory manipulation attempts?
 	 */
-	function clean ($url) {
+	public function clean ($url) {
 		return ! strstr ($url, '..');
 	}
 
 	/**
 	 * Adds to the start, since `route()` parse them off the end of the URI.
 	 */
-	function add_param ($param) {
+	public function add_param ($param) {
 		array_unshift ($this->params, $param);
 		return '.php';
 	}
@@ -390,7 +387,7 @@ class Controller {
 	 * for setting confirmation messages and other notices for the current
 	 * user to display on a subsequent screen.
 	 */
-	function add_notification ($msg) {
+	public function add_notification ($msg) {
 		if (isset ($_COOKIE['elefant_notification'])) {
 			$msg = $_COOKIE['elefant_notification'] . '|' . $msg;
 		}
@@ -400,7 +397,7 @@ class Controller {
 	/**
 	 * Redirect the current request and exit.
 	 */
-	function redirect ($url, $exit = true) {
+	public function redirect ($url, $exit = true) {
 		header ('Location: ' . $url);
 		if ($exit) {
 			exit;
@@ -410,7 +407,7 @@ class Controller {
 	/**
 	 * Get the stdin stream for PUT requests.
 	 */
-	function get_put_data () {
+	public function get_put_data () {
 		if ($this->put_data === null) {
 			$stdin = fopen ('php://input', 'r');
 			$out = '';
@@ -427,15 +424,15 @@ class Controller {
 	 * Get the request method. If X-HTTP-Method-Override header is set,
 	 * it will return that instead of the actual request method.
 	 */
-	function request_method () {
+	public function request_method () {
 		return isset ($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']) ? $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] : $_SERVER['REQUEST_METHOD'];
 	}
 
 	/**
 	 * Returns whether the current request is made over HTTPS or not.
 	 */
-	function is_https () {
-		if (! isset ($_SERVER['HTTPS']) || strtolower ($_SERVER['HTTPS']) != 'on') {
+	public function is_https () {
+		if (! isset ($_SERVER['HTTPS']) || strtolower ($_SERVER['HTTPS']) !== 'on') {
 			return false;
 		}
 		return true;
@@ -445,7 +442,7 @@ class Controller {
 	 * Forces the current request to be over HTTPS instead of HTTP
 	 * via redirect if necessary.
 	 */
-	function force_https () {
+	public function force_https () {
 		if (! $this->is_https ()) {
 			$this->redirect ('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 		}
@@ -455,7 +452,7 @@ class Controller {
 	 * Forces the current request to be over HTTP instead of HTTPS
 	 * via redirect if necessary.
 	 */
-	function force_http () {
+	public function force_http () {
 		if ($this->is_https ()) {
 			$this->redirect ('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 		}
@@ -466,12 +463,12 @@ class Controller {
 	 * installed, false if not, and current installed version if an upgrade
 	 * should be performed.
 	 */
-	function installed ($app, $version) {
+	public function installed ($app, $version) {
 		$v = db_shift ('select version from apps where name = ?', $app);
 		if (! $v) {
 			return false;
 		}
-		if (version_compare ($version, $v) == 0) {
+		if (version_compare ($version, $v) === 0) {
 			return true;
 		}
 		return $v;
@@ -480,7 +477,7 @@ class Controller {
 	/**
 	 * Mark an app and version as installed.
 	 */
-	function mark_installed ($app, $version) {
+	public function mark_installed ($app, $version) {
 		$v = db_shift ('select version from apps where name = ?', $app);
 		if ($v) {
 			return db_execute ('update apps set version = ? where name = ?', $version, $app);

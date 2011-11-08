@@ -34,7 +34,11 @@
  * http://demonastery.org/72/tiny-memcached-wrapper/
  */
 class MemcacheExt extends Memcache {
-	function cache ($key, $timeout, $function) {
+	/**
+	 * Takes a callback function that generates the value 
+	 * if it's not found in the cache.
+	 */
+	public function cache ($key, $timeout, $function) {
 		if (($val = $this->get ($key)) === false) {
 			$val = $function ();
 			$this->set ($key, $val, 0, $timeout);

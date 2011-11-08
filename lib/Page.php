@@ -47,7 +47,7 @@ class Page {
 	 *
 	 *     {{ head|none }}
 	 */
-	var $head = '';
+	public $head = '';
 
 	/**
 	 * Data to place just before the closing `</body>` tag.
@@ -55,7 +55,7 @@ class Page {
 	 *
 	 *     {{ tail|none }}
 	 */
-	var $tail = '';
+	public $tail = '';
 
 	/**
 	 * The title of the page. To use, add something like this
@@ -63,7 +63,18 @@ class Page {
 	 *
 	 *     {% if title %}<h1>{{ title }}</h1>{% end %}
 	 */
-	var $title = '';
+	public $title = '';
+
+	/**
+	 * An optional separate title to be used in navigation.
+	 */
+	public $menu_title = '';
+
+	/**
+	 * An optional separate title to be used in the page's
+	 * `<title>` tag.
+	 */
+	public $window_title = '';
 
 	/**
 	 * The main body of the page. To use, add the following tag
@@ -71,36 +82,36 @@ class Page {
 	 *
 	 *     {{ body|none }}
 	 */
-	var $body = '';
+	public $body = '';
 
 	/**
 	 * The layout template to use to render the page.
 	 */
-	var $layout = 'default';
+	public $layout = 'default';
 
 	/**
 	 * A list of scripts that have been added to the page via
 	 * `add_script()`.
 	 */
-	var $scripts = array ();
+	public $scripts = array ();
 
 	/**
 	 * This is set to true when the template is currently rendering
 	 * the page.
 	 */
-	var $is_being_rendered = false;
+	public $is_being_rendered = false;
 
 	/**
 	 * This is set to true when Elefant is rendering a preview
 	 * request.
 	 */
-	var $preview = false;
+	public $preview = false;
 
 	/**
 	 * Render the page in its template and layout. Uses a Template
 	 * object for rendering.
 	 */
-	function render ($tpl) {
+	public function render ($tpl) {
 		$this->menu_title = (! empty ($this->menu_title)) ? $this->menu_title : $this->title;
 		$this->window_title = (! empty ($this->window_title)) ? $this->window_title : $this->title;
 
@@ -122,10 +133,10 @@ class Page {
 	/**
 	 * Returns title for menu_title or window_title if they're empty.
 	 */
-	function __get ($key) {
-		if ($key == 'menu_title') {
+	public function __get ($key) {
+		if ($key === 'menu_title') {
 			return (! empty ($this->menu_title)) ? $this->menu_title : $this->title;
-		} elseif ($key == 'window_title') {
+		} elseif ($key === 'window_title') {
 			return (! empty ($this->window_title)) ? $this->window_title : $this->title;
 		}
 	}
@@ -136,14 +147,14 @@ class Page {
 	 * be added once. This makes it a good replacement for adding script include tags
 	 * to view templates.
 	 */
-	function add_script ($script, $add_to = 'head') {
+	public function add_script ($script, $add_to = 'head') {
 		if (! in_array ($script, $this->scripts)) {
 			$this->scripts[] = $script;
 			if ($this->is_being_rendered) {
 				echo $script;
-			} elseif ($add_to == 'head') {
+			} elseif ($add_to === 'head') {
 				$this->head .= $script;
-			} elseif ($add_to == 'tail') {
+			} elseif ($add_to === 'tail') {
 				$this->tail .= $script;
 			}
 		}

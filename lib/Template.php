@@ -158,19 +158,19 @@ class Template {
 	/**
 	 * The character encoding.
 	 */
-	var $charset = 'UTF-8';
+	public $charset = 'UTF-8';
 
 	/**
 	 * The cache location.
 	 */
-	var $cache_folder = 'cache';
+	public $cache_folder = 'cache';
 
 	/**
 	 * The controller object used to run includes.
 	 */
-	var $controller = null;
+	public $controller = null;
 
-	function __construct ($charset = 'UTF-8', $controller = false) {
+	public function __construct ($charset = 'UTF-8', $controller = false) {
 		$this->charset = $charset;
 		if ($controller) {
 			$this->controller = $controller;
@@ -181,7 +181,7 @@ class Template {
 	 * Render a template with the given data. Generate the PHP template if
 	 * necessary.
 	 */
-	function render ($template, $data = array ()) {
+	public function render ($template, $data = array ()) {
 		if (is_array ($data)) {
 			$data = (object) $data;
 		}
@@ -224,7 +224,7 @@ class Template {
 	 * Render a template string for preview purposes. Generates a temporary
 	 * cached version but unlinks it immediately after use.
 	 */
-	function render_preview ($template, $data = array ()) {
+	public function render_preview ($template, $data = array ()) {
 		if (is_array ($data)) {
 			$data = (object) $data;
 		}
@@ -251,7 +251,7 @@ class Template {
 	 * template, so it can't accidentally embed user data into the PHP
 	 * code, eliminating the possibility of exposing a security hole.
 	 */
-	function parse_template ($val) {
+	public function parse_template ($val) {
 		$val = preg_replace ('/\{\{ ?(.*?) ?\}\}/e', '$this->replace_vars (\'\\1\')', $val);
 		$val = preg_replace ('/\{[\'"] ?(.*?) ?[\'"]\}/e', '$this->replace_strings (\'\\1\')', $val);
 		$val = preg_replace ('/\{\% ?(.*?) ?\%\}/e', '$this->replace_blocks (\'\\1\')', $val);
@@ -265,7 +265,7 @@ class Template {
 	 *
 	 *     {{ some_var }}
 	 */
-	function replace_vars ($val) {
+	public function replace_vars ($val) {
 		// Get any filters
 		$filters = explode ('|', $val);
 		$val = array_shift ($filters);
@@ -286,9 +286,9 @@ class Template {
 		}
 
 		// Apply default filter or none
-		if (count ($filters) == 0) {
+		if (count ($filters) === 0) {
 			return '<?php echo Template::sanitize (' . $val . ', \'' . $this->charset . '\'); ?>';
-		} else if ($filters[0] == 'none') {
+		} else if ($filters[0] === 'none') {
 			return '<?php echo ' . $val . '; ?>';
 		}
 
@@ -315,7 +315,7 @@ class Template {
 	 * You can also substitute sub-expressions for values using `[]` tags, like
 	 * this: `{! app/handler?param=[varname] !}`
 	 */
-	function replace_includes ($val) {
+	public function replace_includes ($val) {
 		$url = parse_url ($val);
 		if (isset ($url['query'])) {
 			parse_str (html_entity_decode ($url['query'], ENT_COMPAT, 'UTF-8'), $data);
@@ -333,7 +333,7 @@ class Template {
 					$sep2 = ', ';
 				}
 				$arr .= ')';
-			} elseif (strpos ($v, '[') === 0 && $v[strlen ($v) - 1] == ']') {
+			} elseif (strpos ($v, '[') === 0 && $v[strlen ($v) - 1] === ']') {
 				$v = str_replace (
 					array ('<?php echo ', '; ?>'),
 					array ('', ''),
@@ -357,7 +357,7 @@ class Template {
 	 * a call to `Controller::run()`. Note that you cannot use sub-expressions
 	 * here like you can with the dynamic `{! app/handler !}` calls.
 	 */
-	function hard_codes ($val) {
+	public function hard_codes ($val) {
 		$url = parse_url ($val);
 		if (isset ($url['query'])) {
 			parse_str (html_entity_decode ($url['query'], ENT_COMPAT, 'UTF-8'), $data);
@@ -372,7 +372,7 @@ class Template {
 	 * for page body in the admin app. This only evaluates `{! app/handler !}`
 	 * style tags.
 	 */
-	function run_includes ($val) {
+	public function run_includes ($val) {
 		$parts = preg_split ('/(\{\! ?.*? ?\!\})/e', $val, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$out = '';
 		foreach ($parts as $part) {
@@ -403,14 +403,14 @@ class Template {
 	 *     {" some text here "}
 	 *     {' some text here '}
 	 */
-	function replace_strings ($val) {
+	public function replace_strings ($val) {
 		return '<?php echo i18n_get (\'' . str_replace ('\'', '\\\'', $val) . '\'); ?>';
 	}
 
 	/**
 	 * Sanitize a value for safe output, helping to prevent XSS attacks.
 	 */
-	static function sanitize ($val, $charset = 'UTF-8') {
+	public static function sanitize ($val, $charset = 'UTF-8') {
 		return htmlspecialchars ($val, ENT_QUOTES | ENT_IGNORE, $charset);
 	}
 
@@ -431,8 +431,8 @@ class Template {
 	 * The current loop index is available via `{{ loop_index }}` and
 	 * the current loop value is available via `{{ loop_value }}`.
 	 */
-	function replace_blocks ($val) {
-		if ($val == 'end' || $val == 'endif' || $val == 'endforeach') {
+	public function replace_blocks ($val) {
+		if ($val === 'end' || $val === 'endif' || $val === 'endforeach') {
 			return '<?php } ?>';
 		}
 		
@@ -451,13 +451,13 @@ class Template {
 		} elseif (! strstr ($extra, '::') && ! strstr ($extra, '(')) {
 			$extra = '$data->' . $extra;
 		}
-		if ($block == 'foreach') {
+		if ($block === 'foreach') {
 			return '<?php foreach (' . $extra . ' as $data->loop_index => $data->loop_value) { ?>';
-		} elseif ($block == 'if') {
+		} elseif ($block === 'if') {
 			return '<?php if (' . $extra . ') { ?>';
-		} elseif ($block == 'elseif') {
+		} elseif ($block === 'elseif') {
 			return '<?php } elseif (' . $extra . ') { ?>';
-		} elseif ($block == 'else') {
+		} elseif ($block === 'else') {
 			return '<?php } else { ?>';
 		}
 		die ('Invalid template block: ' . $val);

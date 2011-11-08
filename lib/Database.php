@@ -131,15 +131,15 @@ function db_error () {
  * multiple extra parameters.
  */
 function db_args ($args) {
-	if (count ($args) == 0) {
+	if (count ($args) === 0) {
 		return null;
-	} elseif (count ($args) == 1 && is_object ($args[0])) {
+	} elseif (count ($args) === 1 && is_object ($args[0])) {
 		$res = array ();
 		foreach ((array) $args[0] as $arg) {
 			$res[] = $arg;
 		}
 		return $res;
-	} elseif (count ($args) == 1 && is_array ($args[0])) {
+	} elseif (count ($args) === 1 && is_array ($args[0])) {
 		$res = array ();
 		foreach ($args[0] as $arg) {
 			$res[] = $arg;

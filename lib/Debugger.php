@@ -40,7 +40,7 @@ class Debugger {
 	/**
 	 * Set the error and exception handlers.
 	 */
-	static function start () {
+	public static function start () {
 		set_error_handler (array ('Debugger', 'handle_error'));
 		set_exception_handler (array ('Debugger', 'handle_exception'));
 	}
@@ -48,7 +48,7 @@ class Debugger {
 	/**
 	 * Handles exceptions.
 	 */
-	static function handle_exception ($e) {
+	public static function handle_exception ($e) {
 		while (ob_get_level () > 0) {
 			ob_end_clean ();
 		}
@@ -63,7 +63,7 @@ class Debugger {
 	/**
 	 * Shows the trace output.
 	 */
-	static function show_trace ($trace) {
+	public static function show_trace ($trace) {
 		$start = 0;
 		if (! isset ($trace[0]['line'])) {
 			$trace[0]['line'] = $trace[0]['args'][3];
@@ -71,7 +71,7 @@ class Debugger {
 		if (! isset ($trace[0]['file'])) {
 			$trace[0]['file'] = $trace[0]['args'][2];
 		}
-		if ($trace[0]['file'] == $trace[1]['file'] && $trace[0]['line'] == $trace[1]['line']) {
+		if ($trace[0]['file'] === $trace[1]['file'] && $trace[0]['line'] === $trace[1]['line']) {
 			$start++;
 		}
 
@@ -86,8 +86,8 @@ class Debugger {
 	/**
 	 * Converts errors to ErrorException exceptions.
 	 */
-	static function handle_error ($errno, $errstr, $errfile, $errline) {
-		if ($errno == 8) {
+	public static function handle_error ($errno, $errstr, $errfile, $errline) {
+		if ($errno === 8) {
 			return;
 		}
 		throw new ErrorException ($errstr, 0, $errno, $errfile, $errline);
@@ -96,7 +96,7 @@ class Debugger {
 	/**
 	 * Shows a step in the trace.
 	 */
-	static function show_trace_step ($trace) {
+	public static function show_trace_step ($trace) {
 		if (! isset ($trace['line'])) {
 			$trace['line'] = $trace['args'][3];
 		}
@@ -130,7 +130,7 @@ class Debugger {
 	/**
 	 * Joins arguments for displaying the relevant code in a trace step.
 	 */
-	static function join_arguments ($args) {
+	public static function join_arguments ($args) {
 		if (! is_array ($args)) {
 			return '';
 		}
@@ -163,7 +163,7 @@ class Debugger {
 	/**
 	 * Get the code for a step in the trace.
 	 */
-	static function get_code ($file, $line) {
+	public static function get_code ($file, $line) {
 		$lines = file ($file);
 		$count = count ($lines);
 		$out = '';
@@ -178,7 +178,7 @@ class Debugger {
 	/**
 	 * Highlight code for a trace step.
 	 */
-	static function highlight ($line) {
+	public static function highlight ($line) {
 		if (strpos ($line, '<?php') !== false) {
 			return highlight_string ($line, true);
 		}
@@ -192,7 +192,7 @@ class Debugger {
 	/**
 	 * Show the context of a trace step.
 	 */
-	static function show_context ($context) {
+	public static function show_context ($context) {
 		echo '<h2>Error Context</h2>';
 		foreach ($context as $name => $value) {
 			echo '<p class="code"><span class="code">';
@@ -209,7 +209,7 @@ class Debugger {
 	/**
 	 * Show a variable for the debug output.
 	 */
-	static function show_variable ($value, $tabs = 0) {
+	public static function show_variable ($value, $tabs = 0) {
 		if (is_numeric ($value)) {
 			echo $value;
 		} elseif (is_bool ($value)) {
@@ -255,7 +255,7 @@ class Debugger {
 			echo ")";
 		} elseif (is_object ($value)) {
 			$vars = get_object_vars ($value);
-			if (count ($vars) == 0) {
+			if (count ($vars) === 0) {
 				echo get_class ($value) . ' ()';
 				return;
 			}
@@ -275,7 +275,7 @@ class Debugger {
 	/**
 	 * Checks if an array is associative.
 	 */
-	static function is_assoc ($array) {
+	public static function is_assoc ($array) {
 		if (! is_array ($array) || empty ($array)) {
 			return false;
 		}

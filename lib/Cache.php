@@ -30,12 +30,22 @@
  * Memcache isn't installed.
  */
 class Cache {
-	var $memory = array ();
+	/**
+	 * Internal cache.
+	 */
+	public $memory = array ();
 
-	function __construct () {
+	/**
+	 * Constructor method.
+	 */
+	public function __construct () {
+		// Nothing to do
 	}
 
-	function cache ($key, $timeout, $function) {
+	/**
+	 * Emulates `Memcache::cache`.
+	 */
+	public function cache ($key, $timeout, $function) {
 		if (($val = $this->get ($key)) === false) {
 			$val = $function ();
 			$this->set ($key, $val, $timeout);
@@ -43,44 +53,68 @@ class Cache {
 		return $val;
 	}
 
-	function get ($key) {
+	/**
+	 * Emulates `Memcache::get`.
+	 */
+	public function get ($key) {
 		if (isset ($this->memory[$key])) {
 			return $this->memory[$key];
 		}
 		return false;
 	}
 
-	function add ($key, $val) {
+	/**
+	 * Emulates `Memcache::add`.
+	 */
+	public function add ($key, $val) {
 		$this->memory[$key] = $val;
 		return true;
 	}
 
-	function replace ($key, $val) {
+	/**
+	 * Emulates `Memcache::replace`.
+	 */
+	public function replace ($key, $val) {
 		$this->memory[$key] = $val;
 		return true;
 	}
 
-	function set ($key, $val, $timeout = false) {
+	/**
+	 * Emulates `Memcache::set`.
+	 */
+	public function set ($key, $val, $timeout = false) {
 		$this->memory[$key] = $val;
 		return true;
 	}
 
-	function increment ($key, $value = 1) {
+	/**
+	 * Emulates `Memcache::increment`.
+	 */
+	public function increment ($key, $value = 1) {
 		$this->memory[$key] += $value;
 		return $this->memory[$key];
 	}
 
-	function decrement ($key, $value = 1) {
+	/**
+	 * Emulates `Memcache::decrement`.
+	 */
+	public function decrement ($key, $value = 1) {
 		$this->memory[$key] -= $value;
 		return $this->memory[$key];
 	}
 
-	function flush () {
+	/**
+	 * Emulates `Memcache::flush`.
+	 */
+	public function flush () {
 		$this->memory = array ();
 		return true;
 	}
 
-	function delete ($key) {
+	/**
+	 * Emulates `Memcache::delete`.
+	 */
+	public function delete ($key) {
 		unset ($this->memory[$key]);
 		return true;
 	}
