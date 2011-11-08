@@ -62,7 +62,7 @@ if ($f->submit ()) {
 		$this->redirect ('/blog/admin');
 	}
 	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $u->error;
+	echo 'Error Message: ' . $p->error;
 } else {
 	$p = new blog\Post;
 	$p->author = $GLOBALS['user']->name;
