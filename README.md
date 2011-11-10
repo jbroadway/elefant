@@ -7,7 +7,7 @@ Elefant is a fast, lean tool for building everything from simple websites to com
 
 **Compiled, ultra-fast templates**
 
-Elefant compiles templates into secure PHP code, so rendering is as fast as possible.
+Elefant compiles your templates into secure PHP code, so rendering is as fast as possible.
 
 **Dead simple, concise template tags**
 
@@ -15,7 +15,7 @@ Elefant compiles templates into secure PHP code, so rendering is as fast as poss
 
 **Clean, easy to use site editor for your users**
 
-Elefant comes out of the box with a [full-featured CMS](https://github.com/jbroadway/elefant/wiki/The-page-editor) for your users.
+Elefant comes out of the box with a [full-featured CMS](https://github.com/jbroadway/elefant/wiki/The-page-editor) for your users. You can even [white label it](https://github.com/jbroadway/elefant/wiki/White-labelling-the-CMS).
 
 **Syntax highlighted template and CSS editor**
 
