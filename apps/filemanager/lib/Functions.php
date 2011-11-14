@@ -119,17 +119,13 @@ function filemanager_get_thumbnail ($file, $width = 140, $height = 105) {
 	}
 
 	list ($w, $h) = getimagesize ($file);
-	if ($h > $w) {
-		// cropping the height
-		$hoffset = ($h - $w) / 2;
-		$woffset = 0;
-		$h -= $hoffset * 2;
-	} else {
-		// cropping the width
-		$woffset = ($w - $h) / 2;
-		$hoffset = 0;
-		$w -= $woffset * 2;
-	}
+
+	$ratio = max ($width / $w, $height / $h);
+	$woffset = ($w - $width / $ratio) / 2;
+	$hoffset = ($h - $height / $ratio) / 2;
+	$h = $height / $ratio;
+	$w = $width / $ratio;
+
 	$new = @imagecreatetruecolor ($width, $height);
 	@imagecopyresampled ($new, $orig, 0, 0, $woffset, $hoffset, $width, $height, $w, $h);
 	@imagejpeg ($new, $cache_file);
