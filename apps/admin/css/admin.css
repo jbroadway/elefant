@@ -117,7 +117,7 @@ tt {
 	white-space: nowrap;
 }
 
-input[type=text], input[type=password], textarea {
+input[type=text], input[type=password], input[type=email], textarea {
 	font-size: 12px;
 	border: 1px solid #999;
     border-radius: 2px;
