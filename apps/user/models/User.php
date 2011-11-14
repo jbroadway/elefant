@@ -209,6 +209,10 @@ class User extends Model {
 		}
 	}
 
+	/**
+	 * Dynamic getter for user properties. If you get `userdata`, will also
+	 * automatically unserialize it into an array for you.
+	 */
 	function __get ($key) {
 		if ($key == 'userdata') {
 			if ($this->_userdata === false) {
@@ -219,6 +223,10 @@ class User extends Model {
 		return parent::__get ($key);
 	}
 
+	/**
+	 * Dynamic setter for user properties. If you set `userdata` it will also
+	 * automatically serialize it into JSON for storage.
+	 */
 	function __set ($key, $val) {
 		if ($key == 'userdata') {
 			$this->_userdata = $val;
