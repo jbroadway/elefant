@@ -9,7 +9,7 @@ if ($appconf['Custom Handlers']['blog/post'] != 'blog/post') {
 		echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));
 		return;
 	}
-	echo $this->run ($appconf['Custom Handlers']['blog/post'], $data);
+	echo $this->run ($appconf['Custom Handlers']['blog/post'] . '/' . $this->params[0], $data);
 	return;
 }
 
