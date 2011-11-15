@@ -264,6 +264,15 @@ class Template {
 	 * Replace variables of the form:
 	 *
 	 *     {{ some_var }}
+	 *
+	 * Also applies filters, which can take the following forms:
+	 *
+	 *     {{ some_var }}							# defaults to Template::sanitize()
+	 *     {{ some_var|none }}						# no filter
+	 *     {{ some_var|strtoupper }}				# filters are php functions
+	 *     {{ some_var|strrev|strtolower }}			# filters can be chained
+	 *     {{ some_var|my_function }}				# calling a custom function
+	 *     {{ some_var|date (%s, "F j, Y") }}		# use %s for multiple-parameter functions
 	 */
 	public function replace_vars ($val) {
 		// Get any filters
