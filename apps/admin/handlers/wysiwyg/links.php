@@ -24,7 +24,7 @@ foreach ($menu as $pg) {
 	$mt = (! empty ($pg->menu_title)) ? $pg->menu_title : $pg->title;
 	$out[] = array ('url' => '/' . $pg->id, 'title' => $mt);
 }
-uasort ($out, 'admin_links_sort');
+usort ($out, 'admin_links_sort');
 
 echo json_encode ($out);
 
