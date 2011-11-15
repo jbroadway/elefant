@@ -4,6 +4,15 @@
  * Displays a single blog post.
  */
 
+if ($appconf['Custom Handlers']['blog/post'] != 'blog/post') {
+	if (! $appconf['Custom Handlers']['blog/post']) {
+		echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));
+		return;
+	}
+	echo $this->run ($appconf['Custom Handlers']['blog/post'], $data);
+	return;
+}
+
 $page->layout = $appconf['Blog']['post_layout'];
 
 require_once ('apps/blog/lib/Filters.php');
