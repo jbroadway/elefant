@@ -37,13 +37,16 @@
  *   }
  */
 class Api extends Model {
-	var $key = 'token';
+	/**
+	 * The auth token for the request.
+	 */
+	public $key = 'token';
 
 	/**
 	 * Verifies a token/key combo against the database.
 	 * Used by require_auth().
 	 */
-	static function verifier ($token, $key) {
+	public static function verifier ($token, $key) {
 		$u = db_single (
 			'select * from api where token = ? and api_key = ?',
 			$token,
@@ -60,7 +63,7 @@ class Api extends Model {
 	/**
 	 * Custom handler for simple_auth(). Used by require_auth().
 	 */
-	static function method ($callback) {
+	public static function method ($callback) {
 		if (isset ($_SERVER['PHP_AUTH_USER']) && isset ($_SERVER['PHP_AUTH_PW'])) {
 			return call_user_func ($callback, $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
 		}
@@ -70,7 +73,7 @@ class Api extends Model {
 	/**
 	 * Authorize a request using HTTP basic using their API token and key.
 	 */
-	static function require_auth () {
+	public static function require_auth () {
 		return simple_auth (array ('Api', 'verifier'), array ('Api', 'method'));
 	}
 
@@ -81,7 +84,7 @@ class Api extends Model {
 	 * replacing the old values and making them no longer valid for
 	 * API access.
 	 */
-	static function create_token ($user_id) {
+	public static function create_token ($user_id) {
 		$a = Api::query ()
 			->where ('user_id', $user_id)
 			->fetch ();

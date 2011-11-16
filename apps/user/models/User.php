@@ -73,12 +73,15 @@
  *   User::logout ('/');
  */
 class User extends Model {
-	var $_userdata = false;
+	/**
+	 * Stores additional user properties defined via the `$user->userdata` array.
+	 */
+	private $_userdata = false;
 
 	/**
 	 * Generates a random salt and encrypts a password using MD5.
 	 */
-	static function encrypt_pass ($plain) {
+	public static function encrypt_pass ($plain) {
 		$base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 		$salt = '$1$';
 		for ($i = 0; $i < 9; $i++) {
@@ -95,7 +98,7 @@ class User extends Model {
 	 * as well, since we have the data (no sense requesting it
 	 * twice).
 	 */
-	static function verifier ($user, $pass) {
+	public static function verifier ($user, $pass) {
 		$u = db_single (
 			'select * from user where email = ?',
 			$user
@@ -124,7 +127,7 @@ class User extends Model {
 	 * for you, and creates the global $user object if a session is
 	 * valid, since we have the data already.
 	 */
-	static function method ($callback) {
+	public static function method ($callback) {
 		@session_set_cookie_params (time () + 2592000);
 		@session_start ();
 		if (isset ($_POST['username']) && isset ($_POST['password'])) {
@@ -150,7 +153,7 @@ class User extends Model {
 	 *     // unauthorized
 	 *   }
 	 */
-	static function require_login () {
+	public static function require_login () {
 		return simple_auth (array ('User', 'verifier'), array ('User', 'method'));
 	}
 
@@ -161,7 +164,7 @@ class User extends Model {
 	 *     // unauthorized
 	 *   }
 	 */
-	static function require_admin () {
+	public static function require_admin () {
 		global $user;
 		if (is_object ($user)) {
 			if ($user->session_id == $_SESSION['session_id']) {
@@ -182,7 +185,7 @@ class User extends Model {
 	/**
 	 * Check if a user is valid.
 	 */
-	static function is_valid () {
+	public static function is_valid () {
 		global $user;
 		if (is_object ($user) && $user->session_id == $_SESSION['session_id']) {
 			return true;
@@ -193,7 +196,7 @@ class User extends Model {
 	/**
 	 * Log out and optionally redirect to the specified URL.
 	 */
-	static function logout ($redirect_to = false) {
+	public static function logout ($redirect_to = false) {
 		global $user;
 		if (! isset ($user)) {
 			User::require_login ();
@@ -213,7 +216,7 @@ class User extends Model {
 	 * Dynamic getter for user properties. If you get `userdata`, will also
 	 * automatically unserialize it into an array for you.
 	 */
-	function __get ($key) {
+	public function __get ($key) {
 		if ($key == 'userdata') {
 			if ($this->_userdata === false) {
 				$this->_userdata = (array) json_decode ($this->data['userdata']);
@@ -227,7 +230,7 @@ class User extends Model {
 	 * Dynamic setter for user properties. If you set `userdata` it will also
 	 * automatically serialize it into JSON for storage.
 	 */
-	function __set ($key, $val) {
+	public function __set ($key, $val) {
 		if ($key == 'userdata') {
 			$this->_userdata = $val;
 			$this->data[$key] = json_encode ($val);

@@ -29,13 +29,20 @@
  * (http://bit.ly/) URL shortener service.
  */
 class Bitly {
-	var $login = 'elefantcms';
-	var $apiKey = 'R_270d116ab462af1aaf7e5442e162ca62';
+	/**
+	 * The Bit.ly login ID.
+	 */
+	public $login = 'elefantcms';
+
+	/**
+	 * The Bit.ly API key.
+	 */
+	public $apiKey = 'R_270d116ab462af1aaf7e5442e162ca62';
 
 	/**
 	 * Perform the shortening request and return the shortened URL.
 	 */
-	function shorten ($url) {
+	public function shorten ($url) {
 		$post = sprintf (
 			'http://api.bit.ly/v3/shorten?longUrl=%s&login=%s&apiKey=%s&format=json',
 			urlencode ($url),

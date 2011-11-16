@@ -66,7 +66,7 @@ class Versions extends Model {
 	/**
 	 * Add a version to the store.
 	 */
-	static function add ($obj) {
+	public static function add ($obj) {
 		global $user;
 		$v = new Versions (array (
 			'class' => get_class ($obj),
@@ -83,7 +83,7 @@ class Versions extends Model {
 	 * Recreate an object from the stored version. Takes any
 	 * result from recent() or history().
 	 */
-	function restore ($vobj = false) {
+	public function restore ($vobj = false) {
 		if (! $vobj) {
 			$vobj = $this;
 		}
@@ -95,7 +95,7 @@ class Versions extends Model {
 	/**
 	 * Get recent versions by a user or everyone.
 	 */
-	static function recent ($user = false, $limit = 10, $offset = 0) {
+	public static function recent ($user = false, $limit = 10, $offset = 0) {
 		$v = Versions::query ();
 		if ($user) {
 			$v->where ('user', $user);
@@ -109,7 +109,7 @@ class Versions extends Model {
 	 * Get recent versions of an object, or of objects of a specific
 	 * class.
 	 */
-	static function history ($obj, $limit = 10, $offset = 0) {
+	public static function history ($obj, $limit = 10, $offset = 0) {
 		if ($limit === true) {
 			if (is_string ($obj)) {
 				return count (Versions::query ()
@@ -144,7 +144,7 @@ class Versions extends Model {
 	 * on ordinary objects, only Model-based objects and objects returned
 	 * by the recent() and history() methods.
 	 */
-	static function diff ($obj1, $obj2) {
+	public static function diff ($obj1, $obj2) {
 		if (get_class ($obj1) == 'stdClass') {
 			$obj1 = Versions::restore ($obj1);
 		}
@@ -164,7 +164,7 @@ class Versions extends Model {
 	/**
 	 * Get a list of classes that have objects stored.
 	 */
-	static function get_classes () {
+	public static function get_classes () {
 		return db_shift_array (
 			'select distinct class from versions order by class asc'
 		);

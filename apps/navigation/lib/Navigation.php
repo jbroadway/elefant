@@ -57,12 +57,26 @@
  *     $n->save ();
  */
 class Navigation {
-	var $file = 'conf/navigation.json';
-	var $tree = array ();
-	var $_ref = false;
-	var $error = false;
+	/**
+	 * The file that contained the JSON navigation structure.
+	 */
+	public $file = 'conf/navigation.json';
 
-	function __construct ($file = 'conf/navigation.json') {
+	/**
+	 * The navigation tree structure.
+	 */
+	public $tree = array ();
+
+	/**
+	 * The error message if an error occurs, or false if no errors.
+	 */
+	public $error = false;
+
+	/**
+	 * Constructor method. Decodes the navigation tree from the specified
+	 * file in JSON format.
+	 */
+	public function __construct ($file = 'conf/navigation.json') {
 		$this->file = $file;
 		$this->tree = json_decode (file_get_contents ($file));
 	}
@@ -70,7 +84,7 @@ class Navigation {
 	/**
 	 * Get all page ids from the tree.
 	 */
-	function get_all_ids ($tree = false) {
+	public function get_all_ids ($tree = false) {
 		if (! $tree) {
 			$tree = $this->tree;
 		}
@@ -88,7 +102,7 @@ class Navigation {
 	/**
 	 * Get the section nodes, meaning all nodes that have sub-nodes.
 	 */
-	function sections ($tree = false) {
+	public function sections ($tree = false) {
 		if (! $tree) {
 			$tree = $this->tree;
 		}
@@ -106,7 +120,7 @@ class Navigation {
 	/**
 	 * Find a specific node in the tree.
 	 */
-	function node ($id, $tree = false) {
+	public function node ($id, $tree = false) {
 		if (! $tree) {
 			$tree = $this->tree;
 		}
@@ -128,7 +142,7 @@ class Navigation {
 	/**
 	 * Find the parent of a specific node in the tree.
 	 */
-	function parent ($id, $tree = false) {
+	public function parent ($id, $tree = false) {
 		if (! $tree) {
 			$tree = $this->tree;
 		}
@@ -158,7 +172,7 @@ class Navigation {
 	 * page ids and the values being page titles. If not, it will return an array
 	 * of ids only.
 	 */
-	function path ($id, $titles = false, $tree = false) {
+	public function path ($id, $titles = false, $tree = false) {
 		if (! $tree) {
 			if (is_array ($titles)) {
 				$tree = $titles;
@@ -186,7 +200,7 @@ class Navigation {
 	 * Add a page to the tree under the specified parent.
 	 * $id can be a page ID or a node object.
 	 */
-	function add ($id, $parent = false) {
+	public function add ($id, $parent = false) {
 		if (is_object ($id)) {
 			$new_page = $id;
 		} else {
@@ -222,7 +236,7 @@ class Navigation {
 	 * Remove a page from the tree. Removes all children as well
 	 * unless you set $recursive to false.
 	 */
-	function remove ($id, $recursive = true) {
+	public function remove ($id, $recursive = true) {
 		$ref = $this->parent ($id);
 
 		if ($ref) {
@@ -274,7 +288,7 @@ class Navigation {
 	 * Remove a specific path from the tree recursively. Used
 	 * primarily by move().
 	 */
-	function remove_path ($path) {
+	public function remove_path ($path) {
 		$id = $path[count ($path) - 1];
 		if (! $id) {
 			return false;
@@ -311,7 +325,7 @@ class Navigation {
 	 * $pos can be one of: after, before, inside (default is
 	 * inside).
 	 */
-	function move ($id, $ref, $pos = 'inside') {
+	public function move ($id, $ref, $pos = 'inside') {
 		$old_path = $this->path ($id);
 		$ref_parent = $this->parent ($ref);
 		$node = $this->node ($id);
@@ -402,7 +416,7 @@ class Navigation {
 	/**
 	 * Save the tree out to the file.
 	 */
-	function save () {
+	public function save () {
 		if (! file_put_contents ($this->file, json_encode ($this->tree))) {
 			$this->error = 'Failed to save file: ' . $this->file;
 			return false;

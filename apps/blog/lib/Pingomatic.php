@@ -30,7 +30,14 @@
  * post for them to index.
  */
 class Pingomatic {
-	var $host = 'rpc.pingomatic.com';
+	/**
+	 * Ping-o-matic host name.
+	 */
+	public $host = 'rpc.pingomatic.com';
+
+	/**
+	 * Request template.
+	 */
 	var $body = '<?xml version="1.0"?>
 <methodCall>
 	<methodName>weblogUpdates.ping</methodName>
@@ -44,7 +51,7 @@ class Pingomatic {
 	 * Performs the post request with the specified blog name
 	 * and URL.
 	 */
-	function post ($name, $url) {
+	public function post ($name, $url) {
 		require_once ('conf/version.php');
 		$body = sprintf ($this->body, $name, $url);
 		$len = strlen ($body);

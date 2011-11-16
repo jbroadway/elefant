@@ -62,12 +62,12 @@ class Diff {
 	 * defined in the constants DIFF_LINE and DIFF_SPACE, which split
 	 * by newline character and by blank space, respectively.
 	 */
-	var $splitMode;
+	public $splitMode;
 
 	/**
 	 * Constructor method.
 	 */
-	function __construct ($splitMode = DIFF_LINE) {
+	public function __construct ($splitMode = DIFF_LINE) {
 		$this->splitMode = $splitMode;
 	}
 
@@ -76,7 +76,7 @@ class Diff {
 	 * the strings added, removed, and that are shared between
 	 * the two original strings.
 	 */
-	function compare ($str1, $str2) {
+	public function compare ($str1, $str2) {
 		// returns 3 arrays: added, removed, and the intersect of str1 and str2
 		$a = preg_split ($this->splitMode, $str1, -1);
 		$b = preg_split ($this->splitMode, $str2, -1);
@@ -96,7 +96,7 @@ class Diff {
 	 * string to add, remove, or keep as-is.  The parameters $a,
 	 * $r, and $i stand for "add", "remove", and "intersect".
 	 */
-	function format ($a, $r = false, $i = false) {
+	public function format ($a, $r = false, $i = false) {
 		if ($r === false) {
 			$r = $a[1];
 			$i = $a[2];

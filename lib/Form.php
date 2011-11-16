@@ -254,7 +254,7 @@ class Form {
 	 * Verify the CSRF token is present, matches the stored value in the session
 	 * data, and has not expired (2 hour limit).
 	 */
-	function verify_csrf () {
+	public function verify_csrf () {
 		if (! isset ($_SESSION['csrf_token']) || ! isset ($_SESSION['csrf_expires'])) {
 			// No token in session
 			return false;
@@ -317,7 +317,7 @@ class Form {
 	 * You can also specify 'not' in front of any rule to check for its
 	 * opposite, for example "not empty".
 	 */
-	function verify_value ($value, $type, $validator = false) {
+	public function verify_value ($value, $type, $validator = false) {
 		if (preg_match ('/^not (.+)$/i', $type, $regs)) {
 			return ! Form::verify_value ($value, $regs[1], $validator);
 		}
@@ -439,7 +439,7 @@ class Form {
 	 * Returns an array of failed fields. If the array is empty, everything
 	 * passed.
 	 */
-	function verify_values ($values, $validations = array ()) {
+	public function verify_values ($values, $validations = array ()) {
 		if (is_string ($validations) && @file_exists ($validations)) {
 			$validations = parse_ini_file ($validations, true);
 		}

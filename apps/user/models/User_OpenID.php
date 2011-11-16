@@ -33,7 +33,7 @@
  * user_id
  */
 class User_OpenID extends Model {
-	var $key = 'token';
+	public $key = 'token';
 
 	/**
 	 * Returns a user ID from a token in a single line, or
@@ -43,7 +43,7 @@ class User_OpenID extends Model {
 	 *
 	 *     $user_id = User_OpenID::get_user_id ($token);
 	 */
-	static function get_user_id ($token) {
+	public static function get_user_id ($token) {
 		$u = new User_OpenID ($token);
 		if (! $u->error) {
 			return $u->user_id;

@@ -55,15 +55,30 @@
  * modified
  */
 class Lock {
-	var $timeout = 2400; // 40 minutes
-	var $error = false;
-	var $resource = false;
-	var $key = false;
+	/**
+	 * The lock timeout. Defaults to 40 minutes.
+	 */
+	public $timeout = 2400;
+
+	/**
+	 * The error message if an error occurs, or false if no errors.
+	 */
+	public $error = false;
+
+	/**
+	 * The type of resource being locked.
+	 */
+	public $resource = false;
+
+	/**
+	 * The unique ID of the resource being locked.
+	 */
+	public $key = false;
 
 	/**
 	 * Constructor.
 	 */
-	function __construct ($resource = false, $key = false) {
+	public function __construct ($resource = false, $key = false) {
 		$this->resource = $resource;
 		$this->key = $key;
 	}
@@ -71,7 +86,7 @@ class Lock {
 	/**
 	 * Create a lock on the specified object.
 	 */
-	function add ($resource = false, $key = false) {
+	public function add ($resource = false, $key = false) {
 		global $user;
 		
 		$resource = ($resource) ? $resource : $this->resource;
@@ -98,7 +113,7 @@ class Lock {
 	/**
 	 * Check whether a lock is held on an object by someone other than the current user.
 	 */
-	function exists ($resource = false, $key = false) {
+	public function exists ($resource = false, $key = false) {
 		global $user;
 
 		$resource = ($resource) ? $resource : $this->resource;
@@ -116,7 +131,7 @@ class Lock {
 	/**
 	 * Get the info about a lock.
 	 */
-	function info ($resource = false, $key = false) {
+	public function info ($resource = false, $key = false) {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
@@ -126,7 +141,7 @@ class Lock {
 	/**
 	 * Update the expiry and modification time of an existing lock.
 	 */
-	function update ($resource = false, $key = false) {
+	public function update ($resource = false, $key = false) {
 		global $user;
 
 		$resource = ($resource) ? $resource : $this->resource;
@@ -148,7 +163,7 @@ class Lock {
 	/**
 	 * Remove a specific lock.
 	 */
-	function remove ($resource = false, $key = false) {
+	public function remove ($resource = false, $key = false) {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
@@ -158,7 +173,7 @@ class Lock {
 	/**
 	 * Clear all locks held by the current user.
 	 */
-	static function clear () {
+	public static function clear () {
 		global $user;
 		return db_execute ('delete from `lock` where user = ?', $user->id);
 	}
@@ -166,7 +181,7 @@ class Lock {
 	/**
 	 * Clear all locks.
 	 */
-	static function clear_all () {
+	public static function clear_all () {
 		return db_execute ('delete from `lock`');
 	}
 }

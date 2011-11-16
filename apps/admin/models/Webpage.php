@@ -45,7 +45,7 @@ class Webpage extends Model {
 	 * Override the getter for head to include the description
 	 * and keywords fields as meta tags.
 	 */
-	function __get ($key) {
+	public function __get ($key) {
 		if ($key == 'head') {
 			$head = '';
 			if (isset ($this->data['description'])) {

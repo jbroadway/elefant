@@ -40,12 +40,15 @@ namespace blog;
  * tags
  */
 class Post extends \Model {
-	var $table = 'blog_post';
+	/**
+	 * Table name.
+	 */
+	public $table = 'blog_post';
 
 	/**
 	 * Get the most recently published posts.
 	 */
-	static function latest ($limit = 10, $offset = 0) {
+	public static function latest ($limit = 10, $offset = 0) {
 		$p = new Post;
 		return $p->query ()->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
 	}
@@ -53,7 +56,7 @@ class Post extends \Model {
 	/**
 	 * Get posts by the specified author.
 	 */
-	static function by ($author, $limit = 10, $offset = 0) {
+	public static function by ($author, $limit = 10, $offset = 0) {
 		$p = new Post;
 		return $p->query ()->where ('published', 'yes')->where ('author', $author)->order ('ts desc')->fetch_orig ($limit, $offset);
 	}
@@ -61,7 +64,7 @@ class Post extends \Model {
 	/**
 	 * Get the latest headlines only.
 	 */
-	static function headlines ($limit = 10) {
+	public static function headlines ($limit = 10) {
 		$p = new Post;
 		return $p->query ()->where ('published', 'yes')->order ('ts desc')->fetch_assoc ('id', 'title', $limit);
 	}
@@ -69,7 +72,7 @@ class Post extends \Model {
 	/**
 	 * Get posts by a certain tag.
 	 */
-	static function tagged ($tag, $limit = 10, $offset = 0) {
+	public static function tagged ($tag, $limit = 10, $offset = 0) {
 		$p = new Post;
 		$ids = db_shift_array ('select post_id from blog_post_tag where tag_id = ?', $tag);
 		return $p->query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
@@ -78,7 +81,7 @@ class Post extends \Model {
 	/**
 	 * Count posts by a certain tag.
 	 */
-	static function count_by_tag ($tag, $limit = 10, $offset = 0) {
+	public static function count_by_tag ($tag, $limit = 10, $offset = 0) {
 		$p = new Post;
 		$ids = db_shift_array ('select post_id from blog_post_tag where tag_id = ?', $tag);
 		return $p->query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->count ();
@@ -87,7 +90,7 @@ class Post extends \Model {
 	/**
 	 * Get a list of tags and the number of posts they've been used on.
 	 */
-	static function tags () {
+	public static function tags () {
 		return db_pairs ('select tag_id, count(*) as posts from blog_post_tag group by tag_id order by tag_id asc');
 	}
 }

@@ -32,7 +32,7 @@ class FileManager {
 	 * Verify that the specified folder is valid, and exists
 	 * inside a certain root folder.
 	 */
-	static function verify_folder ($path, $root = false) {
+	public static function verify_folder ($path, $root = false) {
 		$root = ($root) ? rtrim ($root) : getcwd () . '/files';
 		$path = trim ($path, '/');
 		if (strpos ($path, '..') !== false) {
@@ -48,7 +48,7 @@ class FileManager {
 	 * Verify that the specified file is valid, and exists
 	 * inside a certain root folder.
 	 */
-	static function verify_file ($path, $root = false) {
+	public static function verify_file ($path, $root = false) {
 		$root = ($root) ? rtrim ($root) : getcwd () . '/files';
 		$path = trim ($path, '/');
 		if (strpos ($path, '..') !== false) {
@@ -64,7 +64,7 @@ class FileManager {
 	 * Verify that a folder name contains only a-z, A-Z, 0-9,
 	 * underscores, and dashes.
 	 */
-	static function verify_folder_name ($name) {
+	public static function verify_folder_name ($name) {
 		if (! preg_match ('/^[a-zA-Z0-9_-]+$/', $name)) {
 			return false;
 		}
@@ -75,7 +75,7 @@ class FileManager {
 	 * Verify that a file name contains only a-z, A-Z, 0-9,
 	 * underscores, and dashes, and a dot.
 	 */
-	static function verify_file_name ($name) {
+	public static function verify_file_name ($name) {
 		if (! preg_match ('/^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$/', $name)) {
 			return false;
 		}
@@ -85,7 +85,7 @@ class FileManager {
 	/**
 	 * Helper for sorting files by name. For use with `usort()`.
 	 */
-	static function fsort ($a, $b) {
+	public static function fsort ($a, $b) {
 		return strcmp ($a['name'], $b['name']);
 	}
 }
