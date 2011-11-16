@@ -22,7 +22,8 @@ $file = join ('/', $this->params);
 
 switch ($cmd) {
 	case 'mkdir':
-		$newdir = array_pop (explode ('/', $file));
+		$parts = explode ('/', $file);
+		$newdir = array_pop ($parts);
 		$path = preg_replace ('/\/?' . preg_quote ($newdir) . '$/', '', $file);
 		if (! FileManager::verify_folder ($path, $root)) {
 			$error = i18n_get ('Invalid location');
@@ -55,7 +56,8 @@ switch ($cmd) {
 			if (! FileManager::verify_folder_name ($_GET['rename'])) {
 				$error = i18n_get ('Invalid folder name');
 			} else {
-				$old = array_pop (explode ('/', $file));
+				$parts = explode ('/', $file);
+				$old = array_pop ($parts);
 				$new = preg_replace ('/' . preg_quote ($old) . '$/', $_GET['rename'], $file);
 				if (! rename ($root . $file, $root . $new)) {
 					$error = i18n_get ('Unable to rename') . ' ' . $file;
@@ -68,7 +70,8 @@ switch ($cmd) {
 			if (! FileManager::verify_file_name ($_GET['rename'])) {
 				$error = i18n_get ('Invalid file name');
 			} else {
-				$old = array_pop (explode ('/', $file));
+				$parts = explode ('/', $file);
+				$old = array_pop ($parts);
 				$new = preg_replace ('/' . preg_quote ($old) . '$/', $_GET['rename'], $file);
 				if (! rename ($root . $file, $root . $new)) {
 					$error = i18n_get ('Unable to rename') . ' ' . $file;
