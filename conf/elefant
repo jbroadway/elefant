@@ -50,6 +50,7 @@ Usage:
 Commands:
 
   install                          Run the command line installer
+  backup <path>                    Save a backup of the site and db
   export-db <file>                 Export the db to a file or STDOUT
   build-app <appname>              Build the scaffolding for an app
   build-translation <lang>         Build a translation index
@@ -121,7 +122,7 @@ if (count ($argv) > 1) {
 			require_once ('apps/blocks/models/Block.php');
 			
 			$conf = parse_ini_file ('conf/config.php', true);
-			date_default_timezone_set($conf['General']['timezone']);
+			date_default_timezone_set ($conf['General']['timezone']);
 			
 			// set the necessary folder permissions
 			system ('chmod -R 777 cache conf css files install layouts');
@@ -342,6 +343,48 @@ if (count ($argv) > 1) {
 					die;
 					break;
 			}
+			break;
+
+
+
+		/**
+		 * Create a backup of the site and database as a tarball
+		 * and move it to the specified folder.
+		 */
+		case 'backup':
+			if (! isset ($argv[2])) {
+				echo "Usage: elefant backup <path>\n";
+				die;
+			}
+			if (! @is_dir ($argv[2])) {
+				echo "** Error: Specified path is not a folder.\n";
+				die;
+			}
+			if (! @is_writeable ($argv[2])) {
+				echo "** Error: Specified folder is not writeable.\n";
+				die;
+			}
+
+			// add trailing slash
+			$path = (preg_match ('/\/$/', $argv[2])) ? $argv[2] : $argv[2] . '/';
+
+			date_default_timezone_set ('GMT');
+			$ts = gmdate ('Y-m-d-H-i-s');
+
+			if (! @is_dir ('.backups')) {
+				mkdir ('.backups');
+				file_put_contents ('.backups/.htaccess', "Order allow,deny\nDeny from all\n");
+			}
+			mkdir ('.backups/backup-' . $ts);
+			exec ('./conf/elefant backup-db .backups/backup-' . $ts . '/db.sql');
+			copy ('.htaccess', '.backups/backup-' . $ts . '/.htaccess');
+			exec ('cp -R * .backups/backup-' . $ts . '/');
+			chdir ('.backups');
+			exec ('tar -cf backup-' . $ts . '.tar backup-' . $ts);
+			exec ('gzip backup-' . $ts . '.tar');
+			chdir ('..');
+			exec ('mv .backups/backup-' . $ts . '.tar.gz ' . $path);
+			exec ('rm -Rf .backups/backup-' . $ts);
 			break;
 
 
