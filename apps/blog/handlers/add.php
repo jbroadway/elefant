@@ -57,6 +57,9 @@ if ($f->submit ()) {
 			}
 		}
 
+		// reset blog rss cache
+		$memcache->delete ('blog_rss');
+
 		$_POST['page'] = 'blog/post/' . $p->id . '/' . blog_filter_title ($p->title);
 		$this->hook ('blog/add', $_POST);
 		$this->redirect ('/blog/admin');

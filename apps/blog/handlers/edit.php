@@ -81,6 +81,9 @@ if ($f->submit ()) {
 			}
 		}
 
+		// reset blog rss cache
+		$memcache->delete ('blog_rss');
+
 		$_POST['page'] = 'blog/post/' . $p->id . '/' . blog_filter_title ($p->title);
 		$lock->remove ();
 		$this->hook ('blog/edit', $_POST);

@@ -29,6 +29,9 @@ if (! $p->remove ()) {
 	return;
 }
 
+// reset blog rss cache
+$memcache->delete ('blog_rss');
+
 db_execute ('delete from blog_post_tag where post_id = ?', $_GET['id']);
 
 $_GET['page'] = 'blog/post/' . $_GET['id'] . '/' . blog_filter_title ($title);
