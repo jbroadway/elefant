@@ -50,6 +50,7 @@ Usage:
 Commands:
 
   install                          Run the command line installer
+  export-db <file>                 Export the db to a file or STDOUT
   build-app <appname>              Build the scaffolding for an app
   build-translation <lang>         Build a translation index
   generate-password <length(8)>    Generate a random password
@@ -91,6 +92,19 @@ function generate_password ($length) {
 
 if (count ($argv) > 1) {
 	switch ($argv[1]) {
+
+
+
+		/**
+		 * This is the command line install routine.
+		 * Its job is to create the database schema
+		 * based on the settings in conf/config.php,
+		 * and to create an initial admin user account.
+		 * It will output the password generated for
+		 * that account at the end, and mark itself
+		 * as done so as to prevent it or the web
+		 * installer from being run a second time.
+		 */
 		case 'install':
 			if (@file_exists ('install/installed')) {
 				echo "** Error: Installer has already been run.\n";
@@ -181,6 +195,14 @@ if (count ($argv) > 1) {
 			echo "Done.\n";
 			break;
 
+
+
+		/**
+		 * This command builds the scaffolding for a new
+		 * app in the apps folder. This includes the basic
+		 * directory structure as well as some sample
+		 * files (config, handlers, views).
+		 */
 		case 'build-app':
 			if (! isset ($argv[2])) {
 				echo "Usage: elefant build-app <appname>\n";
@@ -213,6 +235,13 @@ if (count ($argv) > 1) {
 			printf ("App created in apps/%s/\n", $argv[2]);
 			break;
 
+
+
+		/**
+		 * This command indexes the entire site (handlers, views, layouts)
+		 * and extracts any translatable text, building a fresh index
+		 * file for the specified language in the lang folder.
+		 */
 		case 'build-translation':
 			if (! isset ($argv[2])) {
 				echo "Usage: elefant build-translation <lang>\n";
@@ -261,6 +290,66 @@ if (count ($argv) > 1) {
 			printf ("Translation list saved to lang/%s.php\n", $argv[2]);
 			break;
 
+
+
+		/**
+		 * This command exports a backup of the database into
+		 * the specified file using the database's associated
+		 * command line export utility. Note that the utility
+		 * must be in your path for this to work.
+		 */
+		case 'export-db':
+			$conf = parse_ini_file ('conf/config.php', true);
+			switch ($conf['Database']['master']['driver']) {
+				case 'sqlite':
+					if (isset ($argv[2])) {
+						exec ('sqlite3 ' . $conf['Database']['master']['file'] . ' .dump > ' . $argv[2]);
+					} else {
+						passthru ('sqlite3 ' . $conf['Database']['master']['file'] . ' .dump');
+					}
+					break;
+
+				case 'mysql':
+					// get port number
+					list ($host, $port) = (strpos ($conf['Database']['master']['host'], ':') !== false)
+						? explode (':', $conf['Database']['master']['host'])
+						: array ($conf['Database']['master']['host'], 3306);
+
+					if (isset ($argv[2])) {
+						exec (sprintf (
+							'mysqldump --password="%s" -u %s -h %s -P %d %s > %s',
+							 escapeshellcmd ($conf['Database']['master']['pass']),
+							 $conf['Database']['master']['user'],
+							 $host,
+							 $port,
+							 $conf['Database']['master']['name'],
+							 $argv[2]
+						));
+					} else {
+						passthru (sprintf (
+							'mysqldump --password="%s" -u %s -h %s -P %d %s',
+							 escapeshellcmd ($conf['Database']['master']['pass']),
+							 $conf['Database']['master']['user'],
+							 $host,
+							 $port,
+							 $conf['Database']['master']['name']
+						));
+					}
+					break;
+
+				default:
+					echo "** Error: Unable to determine database driver from site config.\n";
+					die;
+					break;
+			}
+			break;
+
+
+
+		/**
+		 * Encrypts the specified password in a compatible format
+		 * for storage in the Elefant user table.
+		 */
 		case 'encrypt-password':
 			if (! isset ($argv[2])) {
 				echo "Usage: elefant encrypt-password <password>\n";
@@ -269,6 +358,13 @@ if (count ($argv) > 1) {
 			echo encrypt_password ($argv[2]) . "\n";
 			break;
 
+
+
+		/**
+		 * Generates a random password of the specified length
+		 * (default is 8 characters), using random lower- and
+		 * upper-case letters, numbers, and symbols.
+		 */
 		case 'generate-password':
 			if (isset ($argv[2])) {
 				if (! is_numeric ($argv[2])) {
@@ -282,6 +378,11 @@ if (count ($argv) > 1) {
 			echo generate_password ($length) . "\n";
 			break;
 
+
+
+		/**
+		 * Unknown command error handler.
+		 */
 		default:
 			echo "** Error: Unknown option: ${argv[1]}\n";
 			die;
