@@ -44,6 +44,14 @@ $(function () {
 		}
 	);
 
+	// check for and display elefant updates if available
+	var major_minor = $.elefant_version.replace (/\.[0-9]+$/, '');
+	$.getJSON ('http://www.elefantcms.com/updates/check.php?v=' + major_minor + '&callback=?', function (res) {
+		if (res.latest > $.elefant_version) {
+			$('#admin-bar>a').append ('<a href="http://www.elefantcms.com/download" target="_blank" id="admin-update-available">Update Available: ' + res.latest + '</a>');
+		}
+	});
+
 	var jgrowl_interval = function () {
 		var notice = $.cookie ('elefant_notification'),
 			msglist = [],

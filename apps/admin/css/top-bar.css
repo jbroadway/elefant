@@ -119,6 +119,23 @@ body {
 		background: rgba(0,0,0,.8);
 	}
 
+	#admin-update-available {
+		color: #fff;
+		font-size: 12px;
+		font-weight: normal;
+		text-decoration: underline;
+		text-align: center;
+		display: block;
+		width: 200px;
+		margin: auto;
+		margin-top: -24px;
+		z-index: 100001;
+	}
+
+	#admin-update-available:hover {
+		color: #A753CC;
+	}
+
 .admin-options {
 	margin: 0;
 	padding: 0;
