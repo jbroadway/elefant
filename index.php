@@ -40,7 +40,8 @@ if (get_magic_quotes_gpc ()) {
 }
 
 // get the global configuration
-$conf = parse_ini_file ('conf/config.php', true);
+define ('ELEFANT_ENV', getenv ('ELEFANT_ENV') ? getenv ('ELEFANT_ENV') : 'config');
+$conf = parse_ini_file ('conf/' . ELEFANT_ENV . '.php', true);
 date_default_timezone_set($conf['General']['timezone']);
 if ($conf['General']['debug']) {
 	require_once ('lib/Debugger.php');
