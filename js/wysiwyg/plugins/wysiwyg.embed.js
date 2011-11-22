@@ -86,10 +86,18 @@
 								if (obj.fields[i].type == 'select') {
 									uiHtml += '<p>' + obj.fields[i].label + ':<br /><select name="' + obj.fields[i].name + '">';
 									for (var o in obj.fields[i].values) {
-										if (obj.fields[i].initial == obj.fields[i].values[o]) {
-											uiHtml += '<option value="' + obj.fields[i].values[o] + '" selected>' + obj.fields[i].values[o] + '</option>';
+										if (obj.fields[i].values[0].hasOwnProperty ('key') && obj.fields[i].values[0].hasOwnProperty ('value')) {
+											if (obj.fields[i].initial == o.key) {
+												uiHtml += '<option value="' + obj.fields[i].values[0].key + '" selected>' + obj.fields[i].values[0].value + '</option>';
+											} else {
+												uiHtml += '<option value="' + obj.fields[i].values[0].key + '">' + obj.fields[i].values[0].value + '</option>';
+											}
 										} else {
-											uiHtml += '<option value="' + obj.fields[i].values[o] + '">' + obj.fields[i].values[o] + '</option>';
+											if (obj.fields[i].initial == obj.fields[i].values[o]) {
+												uiHtml += '<option value="' + obj.fields[i].values[o] + '" selected>' + obj.fields[i].values[o] + '</option>';
+											} else {
+												uiHtml += '<option value="' + obj.fields[i].values[o] + '">' + obj.fields[i].values[o] + '</option>';
+											}
 										}
 									}
 									if (obj.fields[i].message) {
