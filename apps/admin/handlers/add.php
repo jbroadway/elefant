@@ -12,7 +12,6 @@ if (! User::require_admin ()) {
 
 $f = new Form ('post', 'admin/add');
 $f->verify_csrf = false;
-$f->verify_csrf = false;
 if ($f->submit ()) {
 	$wp = new Webpage ($_POST);
 	$wp->put ();
