@@ -63,7 +63,13 @@
 									continue;
 								}
 							}
-							if (! $(evt.target.elements[n]).verify_value ({form: evt.target, type: t, validator: opts.rules[n][t]})) {
+
+							// switch for checkboxes with name[] format
+							var field = (typeof evt.target.elements[n + '[]'] !== 'undefined')
+								? evt.target.elements[n + '[]']
+								: evt.target.elements[n];
+
+							if (! $(field).verify_value ({form: evt.target, type: t, validator: opts.rules[n][t]})) {
 								failed.push (n);
 								break;
 							}
@@ -84,6 +90,28 @@
 			var value = $(this).attr ('value'),
 				type = options.type,
 				validator = options.validator;
+
+			// handle radio and checkbox buttons
+			if ($(this).attr ('type') == 'radio') {
+				value = '';
+				for (var i = 0; i < this.length; i++) {
+					var attr = $(this[i]).attr ('checked');
+					if (typeof attr !== 'undefined' && attr !== false) {
+						value = $(this[i]).attr ('value');
+						break;
+					}
+				}
+			} else if ($(this).attr ('type') == 'checkbox') {
+				value = '';
+				var sep = '';
+				for (var i = 0; i < this.length; i++) {
+					var attr = $(this[i]).attr ('checked');
+					if (typeof attr !== 'undefined' && attr !== false) {
+						value += sep + $(this[i]).attr ('value');
+						sep = ', ';
+					}
+				}
+			}
 			
 			if (type.match (/^(not )?(type|callback|header|unique|exists)$/)) {
 				return true;
