@@ -175,6 +175,8 @@
 					break;
 				case 'range':
 					range = validator.split ('-');
+					range[0] -= 0;
+					range[1] -= 0;
 					if (range[0] > value || range[1] < value) {
 						return _false;
 					}
