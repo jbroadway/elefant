@@ -68,13 +68,13 @@ class Page {
 	/**
 	 * An optional separate title to be used in navigation.
 	 */
-	public $menu_title = '';
+	public $_menu_title = '';
 
 	/**
 	 * An optional separate title to be used in the page's
 	 * `<title>` tag.
 	 */
-	public $window_title = '';
+	public $_window_title = '';
 
 	/**
 	 * The main body of the page. To use, add the following tag
@@ -112,8 +112,8 @@ class Page {
 	 * object for rendering.
 	 */
 	public function render ($tpl) {
-		$this->menu_title = (! empty ($this->menu_title)) ? $this->menu_title : $this->title;
-		$this->window_title = (! empty ($this->window_title)) ? $this->window_title : $this->title;
+		$this->_menu_title = (! empty ($this->_menu_title)) ? $this->_menu_title : $this->title;
+		$this->_window_title = (! empty ($this->_window_title)) ? $this->_window_title : $this->title;
 
 		if ($this->layout === '') {
 			$this->layout = 'default';
@@ -135,9 +135,9 @@ class Page {
 	 */
 	public function __get ($key) {
 		if ($key === 'menu_title') {
-			return (! empty ($this->menu_title)) ? $this->menu_title : $this->title;
+			return (! empty ($this->_menu_title)) ? $this->_menu_title : $this->title;
 		} elseif ($key === 'window_title') {
-			return (! empty ($this->window_title)) ? $this->window_title : $this->title;
+			return (! empty ($this->_window_title)) ? $this->_window_title : $this->title;
 		}
 	}
 
@@ -148,6 +148,7 @@ class Page {
 	 * to view templates.
 	 */
 	public function add_script ($script, $add_to = 'head') {
+		$script = Page::wrap_script ($script);
 		if (! in_array ($script, $this->scripts)) {
 			$this->scripts[] = $script;
 			if ($this->is_being_rendered) {
@@ -158,6 +159,21 @@ class Page {
 				$this->tail .= $script;
 			}
 		}
+	}
+
+	/**
+	 * Wrap scripts that are simply URLs in the correct HTML tags,
+	 * including `<link>` tags for CSS files. Will pass through
+	 * on scripts that are already HTML.
+	 */
+	public static function wrap_script ($script) {
+		if (strpos ($script, '<') === 0) {
+			return $script;
+		}
+		if (preg_match ('/\.css$/i', $script)) {
+			return '<link rel="stylesheet" href="' . $script . "\" />\n";
+		}
+		return '<script src="' . $script . "\"></script>\n";
 	}
 }
 
