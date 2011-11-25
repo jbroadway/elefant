@@ -40,7 +40,6 @@ if ($f->submit ()) {
 	$u->email = '';
 	$u = $f->merge_values ($u);
 	$u->failed = $f->failed;
-	$page->add_script ('<script src="/js/jquery-1.6.2.min.js"></script>');
 	$page->title = i18n_get ('Forgot your password?');
 	echo $tpl->render ('user/recover', $u);
 }
