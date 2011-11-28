@@ -18,7 +18,7 @@ $error = false;
 $msg = '';
 
 $cmd = array_shift ($this->params);
-$file = join ('/', $this->params);
+$file = urldecode (join ('/', $this->params));
 
 switch ($cmd) {
 	case 'mkdir':

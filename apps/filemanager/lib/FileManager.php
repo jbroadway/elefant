@@ -65,7 +65,7 @@ class FileManager {
 	 * underscores, and dashes.
 	 */
 	public static function verify_folder_name ($name) {
-		if (! preg_match ('/^[a-zA-Z0-9_-]+$/', $name)) {
+		if (! preg_match ('/^[a-zA-Z0-9 _-]+$/', $name)) {
 			return false;
 		}
 		return true;
@@ -76,7 +76,7 @@ class FileManager {
 	 * underscores, and dashes, and a dot.
 	 */
 	public static function verify_file_name ($name) {
-		if (! preg_match ('/^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$/', $name)) {
+		if (! preg_match ('/^[a-zA-Z0-9 _-]+\.[a-zA-Z0-9_-]+$/', $name)) {
 			return false;
 		}
 		return true;
