@@ -1,4 +1,5 @@
 <form method="POST" action="/admin">
+<input type="hidden" name="redirect" value="{{ $_POST.redirect }}" />
 <p>{"Email"}:<br />
 <input type="email" name="username" value="{{ $_POST.username }}" /></p>
 <p>{"Password"}:<br />

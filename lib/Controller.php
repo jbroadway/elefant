@@ -459,6 +459,24 @@ class Controller {
 	}
 
 	/**
+	 * Require the user to be logged in to proceed with the request.
+	 */
+	public function require_login ($redirect = '/user/login') {
+		if (! User::require_login ()) {
+			$this->redirect ($redirect . '?redirect=' . urlencode ($_SERVER['REQUEST_URI']));
+		}
+	}
+
+	/**
+	 * Require the user to be an administrator to proceed with the request.
+	 */
+	public function require_admin ($redirect = '/admin') {
+		if (! User::require_admin ()) {
+			$this->redirect ($redirect . '?redirect=' . urlencode ($_SERVER['REQUEST_URI']));
+		}
+	}
+
+	/**
 	 * Check if an app and version have been installed. Returns true if
 	 * installed, false if not, and current installed version if an upgrade
 	 * should be performed.

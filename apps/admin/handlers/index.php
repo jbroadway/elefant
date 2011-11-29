@@ -9,6 +9,10 @@
 
 $page->layout = 'admin';
 
+if (isset ($_GET['redirect'])) {
+	$_POST['redirect'] = $_GET['redirect'];
+}
+
 if (! User::require_admin ()) {
 	$page->title = sprintf (
 		'<img src="%s" alt="%s" style="margin-left: -7px" />',
@@ -25,7 +29,15 @@ if (! User::require_admin ()) {
 	return;
 }
 
-header ('Location: /');
+if (! isset ($_POST['redirect'])) {
+	$_POST['redirect'] = '/';
+}
+
+if (! Form::verify_value ($_POST['redirect'], 'header')) {
+	$_POST['redirect'] = '/';
+}
+
+header ('Location: ' . $_POST['redirect']);
 exit;
 
 ?>
