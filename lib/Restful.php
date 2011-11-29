@@ -78,7 +78,16 @@
  *   `$this->get_put_data (true)` to automatically JSON decode it.
  */
 class Restful {
+	/**
+	 * The controller object.
+	 */
 	public $controller = null;
+
+	/**
+	 * Whether `wrap()` should alter the output data to add
+	 * a `{"success":true,"data":"..."}` structure around it.
+	 */
+	public $wrap = true;
 
 	/**
 	 * Get and optionally JSON decode the PUT requests data.
@@ -92,14 +101,29 @@ class Restful {
 	}
 
 	/**
+	 * Get and optionally JSON decode the raw POST data.
+	 */
+	public function get_raw_post_data ($decode = false) {
+		$data = $this->controller->get_raw_post_data ();
+		if ($decode) {
+			return json_decode ($data);
+		}
+		return $data;
+	}
+
+	/**
 	 * Wrap the specified data in a `{success:true,data:data}` structure
 	 * and echo it.
 	 */
 	public function wrap ($data) {
-		$res = new StdClass;
-		$res->success = true;
-		$res->data = $data;
-		echo json_encode ($res);
+		if ($this->wrap) {
+			$res = new StdClass;
+			$res->success = true;
+			$res->data = $data;
+			echo json_encode ($res);
+		} else {
+			echo json_encode ($data);
+		}
 		return true;
 	}
 

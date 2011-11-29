@@ -421,6 +421,13 @@ class Controller {
 	}
 
 	/**
+	 * Get the raw POST data.
+	 */
+	public function get_raw_post_data () {
+		return $GLOBALS['HTTP_RAW_POST_DATA'];
+	}
+
+	/**
 	 * Get the request method. If X-HTTP-Method-Override header is set,
 	 * it will return that instead of the actual request method.
 	 */
