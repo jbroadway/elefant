@@ -429,6 +429,44 @@ class Controller {
 	}
 
 	/**
+	 * Use an object's methods to handle RESTful requests for the current handler.
+	 */
+	public function restful ($obj) {
+		// Disable page layout and set JSON header.
+		global $page;
+		$page->layout = false;
+		header ('Content-Type: application/json');
+
+		// Verify an action has been specified.
+		if (! isset ($this->params[0])) {
+			return $obj->error ('No action specified');
+		}
+
+		// Method names are the request method plus the first parameter
+		// after the handler name, e.g. GET /myapp/api/action_name would
+		// call get_action_name().
+		$method = strtolower ($this->request_method ()) . '_' . $this->params[0];
+
+		// Verify the method exists.
+		if (! method_exists ($obj, $method)) {
+			return $obj->error ('Invalid action name');
+		}
+
+		// Assign the controller to the object.
+		$obj->controller = $this;
+
+		// Call the method with the extra URL parameters.
+		$params = $this->params;
+		array_shift ($params);
+		$res = call_user_func_array (array ($obj, $method), $params);
+
+		// If an error hasn't been output already, encode the response.
+		if ($res !== null) {
+			return $obj->wrap ($res);
+		}
+	}
+
+	/**
 	 * Returns whether the current request is made over HTTPS or not.
 	 */
 	public function is_https () {
