@@ -178,6 +178,13 @@ class Controller {
 	public $appconf = array ();
 
 	/**
+	 * This will be set the first time chunked() is called, so the controller
+	 * knows it's already started sending the response with
+	 * `Transfer-Encoding: chunked`.
+	 */
+	public $chunked = false;
+
+	/**
 	 * Whether the current handler's output should be cached automatically
 	 * when it returns. Set to `true` to cache indefinitely, and a number
 	 * to set a timeout in seconds. The cache key will be the app and handler
@@ -304,6 +311,12 @@ class Controller {
 		ob_start ();
 		require ($handler);
 		$out = ob_get_clean ();
+
+		if ($this->chunked) {
+			$this->flush ($out);
+			$this->flush (null);
+		}
+
 		if ($this->cache !== false) {
 			$timeout = is_numeric ($this->cache) ? $this->cache : 0;
 			$res = $memcache->replace (str_replace ('/', '_', $this->uri), $out, 0, $timeout);
@@ -311,7 +324,7 @@ class Controller {
 				$memcache->set (str_replace ('/', '_', $this->uri), $out, 0, $timeout);
 			}
 		}
-		return $out;
+		return '';
 	}
 
 	/**
@@ -470,6 +483,49 @@ class Controller {
 		// If an error hasn't been output already, encode the response.
 		if ($res !== null) {
 			return $obj->wrap ($res);
+		}
+	}
+
+	/**
+	 * Changes the response to use `Transfer-Encoding: chunked` and sends
+	 * the current buffer to the client. Call this each time you want the
+	 * script to send the next chunk of data to the client.
+	 *
+	 * Note that this will cause render() to call `flush(null)` at the end,
+	 * which will not return your output to be included in a page layout.
+	 * It will also flush and exit prior to setting a controller-level
+	 * cache of your output.
+	 */
+	function flush ($out = false) {
+		if (! $this->chunked) {
+			header ('Transfer-Encoding: chunked');
+			$this->chunked = true;
+		}
+		if ($out === null) {
+			// Send an empty chunk and exit
+			if (ob_get_level () > 0) {
+				// Flush any existing data first
+				$this->flush ();
+			}
+			echo "0\r\n\r\n";
+			flush ();
+			exit;
+		} elseif ($out !== false) {
+			// Send the data passed to flush()
+			if (strlen ($out) > 0) {
+				printf ("%X\r\n", strlen ($out));
+				echo $out . "\r\n";
+				flush ();
+			}
+		} else {
+			// Send the current output buffer contents
+			$out = ob_get_clean ();
+			if (strlen ($out) > 0) {
+				printf ("%X\r\n", strlen ($out));
+				echo $out . "\r\n";
+				flush ();
+			}
+			ob_start ();
 		}
 	}
 
