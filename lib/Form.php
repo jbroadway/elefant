@@ -317,7 +317,7 @@ class Form {
 	 * You can also specify 'not' in front of any rule to check for its
 	 * opposite, for example "not empty".
 	 */
-	public function verify_value ($value, $type, $validator = false) {
+	public static function verify_value ($value, $type, $validator = false) {
 		if (preg_match ('/^not (.+)$/i', $type, $regs)) {
 			return ! Form::verify_value ($value, $regs[1], $validator);
 		}
