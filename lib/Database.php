@@ -116,6 +116,13 @@ function db_get_conn ($master = 0) {
 }
 
 /**
+ * Returns a count of active database connections.
+ */
+function db_conn_count () {
+	return count ($GLOBALS['db_list']);
+}
+
+/**
  * Get the last error message.
  */
 function db_error () {

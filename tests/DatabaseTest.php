@@ -23,6 +23,10 @@ class DatabaseTest extends PHPUnit_Framework_TestCase {
 			'driver' => 'sqlite',
 			'file' => ':memory:'
 		);
+		$this->conf2 = array (
+			'driver' => 'sqlite',
+			'file' => ':memory:'
+		);
 	}
 
 	static function tearDownAfterClass () {
@@ -30,9 +34,19 @@ class DatabaseTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_open () {
+		// test a bad connection
 		$this->assertFalse (db_open ($this->bad_conf));
 		$this->assertEquals ('could not find driver', db_error ());
+		$this->assertEquals (0, db_conn_count ());
+
+		// test a master connection
 		$this->assertTrue (db_open ($this->conf));
+		$this->assertEquals (1, db_conn_count ());
+
+		// test a second connection
+		$this->assertTrue (db_open ($this->conf2));
+		$this->assertEquals (2, db_conn_count ());
+		unset ($GLOBALS['db_list']['slave_1']);
 	}
 
 	function test_args () {
