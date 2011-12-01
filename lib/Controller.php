@@ -206,6 +206,9 @@ class Controller {
 	 */
 	public $cache = false;
 
+	/**
+	 * Constructor method.
+	 */
 	public function __construct ($hooks = array ()) {
 		if (defined ('STDIN')) {
 			$this->cli = true;
@@ -324,7 +327,7 @@ class Controller {
 				$memcache->set (str_replace ('/', '_', $this->uri), $out, 0, $timeout);
 			}
 		}
-		return '';
+		return $out;
 	}
 
 	/**
