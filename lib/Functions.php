@@ -25,6 +25,20 @@
  */
 
 /**
+ * This is a collection of utility functions that are too small to merit their
+ * own class, or even their own file, so they're aggregated here. They include:
+ *
+ * - `info()` - Dumps a formatted data structure for quick debugging.
+ * - `conf()` - Retrieves a value from the global configuration.
+ * - `simple_auth()` - Provides a means of implementing custom auth schemes
+ *   (includes built-in HTTP Basic support).
+ * - `sql_split()` - Parses SQL data, removes comments, and splits it into
+ *   individual queries.
+ * - `format_filesize()` - Formats a byte value into more readable output.
+ * - `detect()` - Simpel browser and browser type (e.g., mobile) detection.
+ */
+
+/**
  * Wraps a `print_r()` or `var_dump()` of the given `$value` with a set of `<pre></pre>`
  * tags around it, and echoes it.
  */
