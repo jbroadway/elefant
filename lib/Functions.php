@@ -145,4 +145,80 @@ function format_filesize ($size = 0) {
 	}
 }
 
+/**
+ * Very basic browser detection. `$browser` can be one of:
+ *
+ * - msie, ie
+ * - firefox, ff, moz
+ * - chrome
+ * - safari
+ * - webkit
+ * - opera
+ * - opera mini
+ * - opera mobi
+ * - ios
+ * - iphone
+ * - ipad
+ * - android
+ * - iemobile
+ * - webos
+ * - blackberry
+ * - googlebot
+ * - bot
+ * - mobile
+ * - tablet
+ *
+ * Notes:
+ *
+ * - `mobile` and `tablet` matches are not exhaustive, they only list the common
+ *   platforms.
+ *
+ * - iPad and iPod are both reported as mobile devices in the user agent string,
+ *   so this reports that to be true as well.
+ *
+ * - Android reports as true for both mobile and tablet.
+ *
+ * - Some matches might be seen as false-positives, such as Chrome matching Safari.
+ *   In these cases, look at other detection options. For example with Chrome, the
+ *   rendering engine is Webkit, so better to simply use that.
+ *
+ * - No version detection. For IE version-specific needs, use conditional comments
+ *   in your HTML, or use a string like `msie 10`.
+ *
+ * - Other lowercase strings that are not listed above can be used as well,
+ *   for example `wap`, or `smartphone`.
+ */
+function detect ($browser) {
+	$ua = strtolower ($_SERVER['HTTP_USER_AGENT']);
+	$ver = '';
+
+	// Normalize names
+	$browser = ($browser === 'ie') ? 'msie' : $browser;
+	$browser = ($browser === 'ff') ? 'firefox' : $browser;
+	$browser = ($browser === 'moz') ? 'firefox' : $browser;
+
+	if ($browser === 'mobile') {
+		if (! preg_match ('/(iphone|ipod|android|opera mini|opera mobi|symb|phone|webos|blackberry|mobile)/', $ua)) {
+			// No common mobile platform
+			return false;
+		}
+		return true;
+	} elseif ($browser === 'tablet') {
+		if (! preg_match ('/(ipad|android|tablet)/', $ua)) {
+			// Not iPad, Android, or tablet
+			return false;
+		}
+		return true;
+	} elseif ($browser === 'ios') {
+		if (! preg_match ('/(ipad|iphone|ipod)/', $ua)) {
+			// Not iOS
+			return false;
+		}
+		return true;
+	} elseif (strpos ($ua, $browser) === false) {
+		return false;
+	}
+	return true;
+}
+
 ?>
