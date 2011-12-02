@@ -289,6 +289,7 @@ class Form {
 	 * - `type` - calls `is_$validator($value)`
 	 * - `callback` - calls `call_user_func($validator, $value)`
 	 * - `email` - a valid email address
+	 * - `url` - a valid url
 	 * - `range` - number within a range e.g., `123-456`
 	 * - `length` - string of length, $verifier examples: `6, 6+, 6-12, 12-`
 	 * - `gt` - greater than
@@ -347,17 +348,23 @@ class Form {
 					}
 				}
 				return false;
+
 			case 'regex':
 				return (bool) preg_match ($validator, $value);
+
 			case 'type':
 				return call_user_func ('is_' . $validator, $value);
+
 			case 'callback':
 				return call_user_func ($validator, $value);
+
 			case 'range':
 				list ($min, $max) = explode ('-', $validator);
 				return (($min <= $value) && ($value <= $max));
+
 			case 'empty':
 				return empty ($value);
+
 			case 'length':
 				if (preg_match ('/^([0-9]+)([+-]?)([0-9]*)$/', $validator, $regs)) {
 					if (! empty ($regs[3])) {
@@ -373,35 +380,59 @@ class Form {
 					}
 				}
 				return true;
+
 			case 'contains':
 				return (bool) stristr ($value, $validator);
+
 			case 'equals':
 				return ($value == $validator);
+
 			case 'gt':
 				return ($value > $validator);
+
 			case 'gte':
 				return ($value >= $validator);
+
 			case 'lt':
 				return ($value < $validator);
+
 			case 'lte':
 				return ($value <= $validator);
+
 			case 'email':
-				if (strpos ($value, '.@') !== false) {
+				if (! filter_var ($value, FILTER_VALIDATE_EMAIL)) {
 					return false;
-				} elseif (preg_match ('/\.$/', $value)) {
-					return false;
-				} elseif (! preg_match ("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+\.([a-zA-Z0-9\._-]+)+$/" , $value)) {
+				}
+
+				// also verify that the domain isn't just 'localhost'
+				// which would allow garbage in
+				list ($one, $two) = explode ('@', $value);
+				if (strpos ($two, '.') === false) {
 					return false;
 				}
 				return true;
+
+			case 'url':
+				if (! filter_var ($value, FILTER_VALIDATE_URL)) {
+					return false;
+				}
+				if (strpos ($value, '.') === false) {
+					return false;
+				}
+				return true;
+
 			case 'header':
 				return ! (bool) preg_match ('/[\r\n]/s', $value);
+
 			case 'date':
 				return (bool) preg_match ('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $value);
+
 			case 'time':
 				return (bool) preg_match ('/^[0-9]{2}:[0-9]{2}:[0-9]{2}$/', $value);
+
 			case 'datetime':
 				return (bool) preg_match ('/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', $value);
+
 			case 'unique':
 				list ($table, $column) = preg_split ('/[\.:\/]/', $validator);
 				$res = db_shift ('select ' . $column . ' from ' . $table . ' where ' . $column . ' = ?', $value);
@@ -409,6 +440,7 @@ class Form {
 					return false;
 				}
 				return true;
+
 			case 'exists':
 				if (strpos ($validator, '%s') !== false) {
 					return @file_exists (sprintf ($validator, $value));

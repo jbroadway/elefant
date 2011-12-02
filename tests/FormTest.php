@@ -32,6 +32,8 @@ class FormTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse (Form::verify_value ('asdf', 'empty'));
 		$this->assertTrue (Form::verify_value ('foo@bar.com', 'email'));
 		$this->assertFalse (Form::verify_value ('@foo@bar.com', 'email'));
+		$this->assertFalse (Form::verify_value ('foo@bar', 'email'));
+		$this->assertTrue (Form::verify_value ('foo+spam@foo.bar.org', 'email'));
 		$this->assertTrue (Form::verify_value ("asdf", 'header'));
 		$this->assertFalse (Form::verify_value ("asdf\nasdf", 'header'));
 		$this->assertTrue (Form::verify_value ('2010-01-01', 'date'));
@@ -65,6 +67,9 @@ class FormTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse (Form::verify_value ('bar', 'matches', '$_POST["test"]'));
 		$this->assertFalse (Form::verify_value ('foo', 'not matches', '$_POST["test"]'));
 		$this->assertTrue (Form::verify_value ('bar', 'not matches', '$_POST["test"]'));
+		$this->assertTrue (Form::verify_value ('http://foo.com/bar', 'url'));
+		$this->assertFalse (Form::verify_value ('foobar', 'url'));
+		$this->assertFalse (Form::verify_value ('http:/fooobar', 'url'));
 	}
 
 	function test_verify_values () {
