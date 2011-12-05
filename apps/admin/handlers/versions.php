@@ -17,7 +17,7 @@ $_GET['type'] = (isset ($_GET['type'])) ? $_GET['type'] : 'Webpage';
 
 $classes = Versions::get_classes ();
 
-if (isset ($_GET['type']) && preg_match ('/^[A-Z][a-z0-9_]+$/', $_GET['type'])) {
+if (isset ($_GET['type'])) {
 	$class = $_GET['type'];
 	if (isset ($_GET['id']) && ! empty ($_GET['id'])) {
 		$obj = new $class ($_GET['id']);
