@@ -217,9 +217,15 @@
 						return _false;
 					} else if (value.match (/\.$/)) {
 						return _false;
-					} else if (! value.match (/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+\.([a-zA-Z0-9\._-]+)+$/)) {
+					} else if (! value.match (/^([a-zA-Z0-9])+([a-zA-Z0-9\+\._-])*@([a-zA-Z0-9_-])+\.([a-zA-Z0-9\._-]+)+$/)) {
 						return _false;
 					}
+					break;
+				case 'url':
+					if (! value.match (/^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/)) {
+						return _false;
+					}
+					break;
 				// not implemented: type, callback, header, unique, exists
 			}
 			
