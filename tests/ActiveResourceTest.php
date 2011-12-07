@@ -18,13 +18,44 @@ class ActiveResourceTest extends PHPUnit_Framework_TestCase {
 
 	function test_build_xml () {
 		$t = new Test;
-		
+
+		// value only		
 		$this->assertEquals ($t->_build_xml (0, 'foo'), 'foo');
+
+		// no initial tag
 		$this->assertEquals ($t->_build_xml (0, array ('foo' => 'bar')), "<foo>bar</foo>\n");
+
+		// tag and value
 		$this->assertEquals ($t->_build_xml ('foo', 'bar'), "<foo>bar</foo>\n");
+
+		// sub-tags
 		$this->assertEquals ($t->_build_xml ('foo', array ('bar' => 'asdf')), "<foo><bar>asdf</bar>\n</foo>\n");
+
+		// attributes
 		$this->assertEquals ($t->_build_xml ('foo', array ('@bar' => 'asdf')), "<foo bar=\"asdf\"></foo>\n");
 
+		// attributes and content
+		$this->assertEquals ($t->_build_xml ('foo', array ('@bar' => 'asdf', 'bar')), "<foo bar=\"asdf\">bar</foo>\n");
+
+		// repeating tags
+		$this->assertEquals (
+			$t->_build_xml ('foo', array (array ('bar'), array ('bar'))),
+			"<foo>bar</foo>\n<foo>bar</foo>\n"
+		);
+
+		// repeating tags with attributes
+		$this->assertEquals (
+			$t->_build_xml ('foo', array (array ('@id' => 'one', 'bar'), array ('@id' => 'two', 'bar'))),
+			"<foo id=\"one\">bar</foo>\n<foo id=\"two\">bar</foo>\n"
+		);
+
+		// repeating tags with attributes and sub-tags
+		$this->assertEquals (
+			$t->_build_xml ('foo', array (array ('@id' => 'one', 'bar' => 'asdf'), array ('@id' => 'two', 'bar' => 'qwerty'))),
+			"<foo id=\"one\"><bar>asdf</bar>\n</foo>\n<foo id=\"two\"><bar>qwerty</bar>\n</foo>\n"
+		);
+
+		// starting from a SimpleXMLElement
 		$xml = new SimpleXMLElement ('<foo><bar asdf="qwerty" />what</foo>');
 		$this->assertEquals ($t->_build_xml (0, $xml), "<foo><bar asdf=\"qwerty\"/>what</foo>\n");
 	}

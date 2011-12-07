@@ -306,6 +306,17 @@ class ActiveResource {
 		}
 		if (is_array ($v)) {
 			foreach ($v as $key => $value) {
+				// handle attributes of repeating tags
+				if (is_numeric ($key) && is_array ($value)) {
+					foreach ($value as $sub_key => $sub_value) {
+						if (strpos ($sub_key, '@') === 0) {
+							$attrs .= ' ' . substr ($sub_key, 1) . '="' . $this->_xml_entities ($sub_value) . '"';
+							unset ($value[$sub_key]);
+							continue;
+						}
+					}
+				}
+
 				if (strpos ($key, '@') === 0) {
 					$attrs .= ' ' . substr ($key, 1) . '="' . $this->_xml_entities ($value) . '"';
 					continue;
@@ -313,7 +324,12 @@ class ActiveResource {
 				$res .= $this->_build_xml ($key, $value);
 				$keys = array_keys ($v);
 				if (is_numeric ($key) && $key !== array_pop ($keys)) {
-					$res .= '</' . $k . ">\n<" . $k . '>';
+					// reset attributes on repeating tags
+					if (is_array ($value)) {
+						$res = str_replace ('<' . $k . '{{attributes}}>', '<' . $k . $attrs . '>', $res);
+						$attrs = '';
+					}
+					$res .= '</' . $k . ">\n<" . $k . '{{attributes}}>';
 				}
 			}
 		} else {
