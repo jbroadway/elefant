@@ -87,7 +87,6 @@ switch ($_GET['step']) {
 		} else {
 			$data['subdir'] = false;
 		}
-		$data['subdir'] = true;
 
 		break;
 
