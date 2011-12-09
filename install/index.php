@@ -81,6 +81,16 @@ $data = array ();
 
 // handle the request
 switch ($_GET['step']) {
+	case 'introduction':
+		if ($_SERVER['REQUEST_URI'] !== '/install/' && $_SERVER['REQUEST_URI'] !== '/install/index.php') {
+			$data['subdir'] = true;
+		} else {
+			$data['subdir'] = false;
+		}
+
+		break;
+
+
 	case 'requirements':
 		// check permissions
 		$apache = ($_SERVER['SERVER_SOFTWARE'] == 'Apache') ? true : (strpos (php_sapi_name (), 'apache') === 0) ? true : false;
