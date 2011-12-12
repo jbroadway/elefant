@@ -295,31 +295,41 @@ class Controller {
 	public function handle ($handler, $internal = true, $data = array ()) {
 		global $controller, $page, $tpl, $memcache;
 		
+		// Check for a cached copy of this handler's output
 		$out = $memcache->get (str_replace ('/', '_', $this->uri));
 		if ($out) {
 			return $out;
 		}
 
+		// Set the handler data
 		$this->internal = $internal;
 		$data = (array) $data;
 		$this->data = $data;
+
+		// Load the app's configuration settings if available
 		if (! isset ($controller->appconf[$this->app])) {
-			if (@file_exists ('apps/' . $this->app . '/conf/config.php')) {
-				$controller->appconf[$this->app] = parse_ini_file ('apps/' . $this->app . '/conf/config.php', true);
-			} else {
+			try {
+				$controller->appconf[$this->app] = @file_exists ('apps/' . $this->app . '/conf/config.php')
+					? parse_ini_file ('apps/' . $this->app . '/conf/config.php', true)
+					: array ();
+			} catch (Exception $e) {
 				$controller->appconf[$this->app] = array ();
 			}
 		}
 		$appconf = $controller->appconf[$this->app];
+
+		// Run the handler and get its output
 		ob_start ();
 		require ($handler);
 		$out = ob_get_clean ();
 
+		// If this is a chunked request, flush and exit
 		if ($this->chunked) {
 			$this->flush ($out);
 			$this->flush (null);
 		}
 
+		// If the handler is cacheable, cache the results before returning
 		if ($this->cache !== false) {
 			$timeout = is_numeric ($this->cache) ? $this->cache : 0;
 			$res = $memcache->replace (str_replace ('/', '_', $this->uri), $out, 0, $timeout);
@@ -359,6 +369,8 @@ class Controller {
 			}
 		}
 
+		// Determine the handler by cascading through potential file names
+		// until one matches.
 		list ($app, $handler) = preg_split ('/\//', $uri, 2);
 		$route = 'apps/' . $app . '/handlers/' . $handler . '.php';
 		while (! @file_exists ($route)) {
