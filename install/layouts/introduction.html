@@ -20,6 +20,23 @@
 	</div>
 
 	<div id="body"><div id="content">
+		
+		{% if subdir %}
+
+		<h3 class="notice">It looks like you're trying to install Elefant into a sub-folder.</h3>
+
+		<p>Elefant's CMS was designed to run a complete website, and needs to
+		be installed in the root of a site to function correctly.
+		Please move Elefant to the root folder to continue, or use a sub-domain of your
+		site to install it under.</p>
+		
+		<p><a href="https://github.com/jbroadway/elefant/wiki/Setting-up-a-Virtualhost-for-your-site"
+		target="_blank">Click here for instructions on configuring virtual hosts
+		for development.</a></p>
+
+		<p>(Check your host for instructions on setting up sub-domains in production.)</p>
+
+		{% else %}
 
 		<h3>Welcome to the Elefant CMS installer.</h3>
 		
@@ -35,10 +52,15 @@
 		<p>Click "Next" to continue whenever you're ready. Thanks for using
 		Elefant!</p>
 
+		{% end %}
+
 	</div></div>
+	{% if subdir == false %}
 	<a class="next" href="/install/?step=license">Next: License</a>
+	{% end %}
 </div>
 
-<iframe src="http://www.elefantcms.com/counter?s={{ $_SERVER.HTTP_HOST|urlencode }}" style="height: 1px; width: 1px; background: #eee; border: 0px" frameborder="0"></iframe>
+<br clear="both" />
+<iframe src="http://www.elefantcms.com/counter?s={{ $_SERVER.HTTP_HOST|urlencode }}" style="height: 0px; width: 0px; background: #eee; border: 0px" border="0" frameborder="0"></iframe>
 </body>
 </html>
