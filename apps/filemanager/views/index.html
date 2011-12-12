@@ -45,7 +45,7 @@ $(function () {
 <form action="/filemanager/upload" method="post" enctype="multipart/form-data">
 <input type="hidden" name="path" value="{{ path }}" />
 <a href="#" onclick="return $.filemanager ('mkdir', {file: '{{ path }}'})">{"New folder"}</a> |
-{"New file"} ({"max"} {{ ini_get ('upload_max_filesize')}}B): <input type="file" name="file" /><input type="submit" value="{"Upload"}" onclick="if (this.form.elements.file.value == '') { alert ('Please select a file to upload.'); return false; } this.value = 'Uploading...'; this.disabled = true; this.form.submit ()" />
+{"New file"} ({"max"} {{ ini_get ('upload_max_filesize')}}B): <input type="file" name="file" /> <input type="submit" value="{"Upload"}" onclick="if (this.form.elements.file.value == '') { alert ('Please select a file to upload.'); return false; } this.value = 'Uploading...'; this.disabled = true; this.form.submit ()" />
 </form>
 </p>
 
