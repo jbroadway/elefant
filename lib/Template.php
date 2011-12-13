@@ -170,6 +170,9 @@ class Template {
 	 */
 	public $controller = null;
 
+	/**
+	 * Constructor method sets the charset and receives a Controller object.
+	 */
 	public function __construct ($charset = 'UTF-8', $controller = false) {
 		$this->charset = $charset;
 		if ($controller) {
