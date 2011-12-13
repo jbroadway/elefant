@@ -39,7 +39,10 @@
  */
 function elefant_autoloader ($class) {
 	if (strpos ($class, '\\') !== false) {
+		// Namespace is present
 		list ($app, $class) = explode ('\\', $class, 2);
+
+		// Check for app\Class in lib and models folders
 		if (@file_exists ('apps/' . $app . '/lib/' . $class . '.php')) {
 			require_once ('apps/' . $app . '/lib/' . $class . '.php');
 			return true;
@@ -48,7 +51,7 @@ function elefant_autoloader ($class) {
 			return true;
 		}
 
-		// fall back to PSR-0
+		// Fall back to PSR-0
 		if (! empty ($app)) {
 			$file = 'lib/vendor/' . ltrim ($app, '\\') . '/' . str_replace ('\\', '/', $class) . '.php';
 		} else {
@@ -58,10 +61,12 @@ function elefant_autoloader ($class) {
 		if (@file_exists ($file)) {
 			require_once ($file);
 		}
-	} elseif (file_exists ('lib/' . $class . '.php')) {
+	} elseif (@file_exists ('lib/' . $class . '.php')) {
+		// No namespace, check in lib/ first
 		require_once ('lib/' . $class . '.php');
 		return true;
 	} else {
+		// No namespace, check in app lib and models folders
 		$res = glob ('apps/*/{models,lib}/' . $class . '.php', GLOB_BRACE);
 		if (is_array ($res) && count ($res) > 0) {
 			require_once ($res[0]);
