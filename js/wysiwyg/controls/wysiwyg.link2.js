@@ -37,7 +37,8 @@
 
 			formLinkHtml = '<form class="wysiwyg"><!-- <fieldset>legend>{legend}</legend -->' +
 				'<label>{select}: <select name="innerlink" id="innerlink"><option value="">- SELECT -</option></select></label>' +
-				'<br /><br /><label>{url}: <input type="text" name="linkhref" id="linkhref" value="" size="30" /></label>' +
+				'<br /><br /><label>{url}: <input type="text" name="linkhref" id="linkhref" value="" size="30" style="width: 270px" /></label>' +
+				'<div class="wysiwyg-fileManager" title="Browse..." style="float: left; margin-top: -20px; margin-left: 380px" />' +
 				//'<label>{title}: <input type="text" name="linktitle" value=""/></label>' +
 				//'<label>{target}: <input type="text" name="linktarget" value=""/></label>' +
 				'<br /><br /><input type="submit" class="button" value="{submit}" id="link-dialog-submit" /> ' +
@@ -93,6 +94,13 @@
 				title: dialogReplacements.legend,
 				content: formLinkHtml,
 				open: function (ev, ui) {
+					$('div.wysiwyg-fileManager').bind('click', function () {
+						$.wysiwyg.fileManager.init(function (selected) {
+							$('#linkhref').val(selected);
+							$('#linkhref').trigger('change');
+						});
+					});
+
 					$("#link-dialog-submit").click(function (e) {
 						e.preventDefault();
 
