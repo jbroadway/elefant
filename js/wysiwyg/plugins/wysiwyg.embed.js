@@ -112,10 +112,22 @@
 									} else {
 										uiHtml += '</p>';
 									}
+								} else if (obj.fields[i].type == 'file') {
+									uiHtml += '<p>' + obj.fields[i].label + ':<br /><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" size="30" />';
+									if ($.wysiwyg.fileManager && $.wysiwyg.fileManager.ready) {
+										// Add the File Manager icon:
+										uiHtml += ' <div class="wysiwyg-fileManager" id="' + obj.fields[i].name + '-fileManager" title="Browse..." style="float: left; margin-top: -40px; margin-left: 200px" />';
+									}
+									if (obj.fields[i].message) {
+										uiHtml += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span></p>';
+									} else {
+										uiHtml += '</p>';
+									}
 								} else {
 									uiHtml += '<p>' + obj.fields[i].label + ':<br /><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" size="30" />';
 									if (obj.fields[i].message) {
 										uiHtml += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span></p>';
+										
 									} else {
 										uiHtml += '</p>';
 									}
@@ -125,6 +137,21 @@
 							uiHtml += '<p><input type="submit" class="wysiwyg-embed-object-form-submit" value="Embed" /></p>';
 							uiHtml += '</form>';
 							f.html (uiHtml);
+
+							// File Manager (select file):
+							if ($.wysiwyg.fileManager) {
+								for (var i in obj.fields) {
+									if (obj.fields[i].type == 'file') {
+										$('#' + obj.fields[i].name + '-fileManager').bind('click', function () {
+											$.wysiwyg.fileManager.init(function (selected) {
+												dialog.find('input[name=' + obj.fields[i].name + ']').val(selected);
+												dialog.find('input[name=' + obj.fields[i].name + ']').trigger('change');
+											});
+										});
+									}
+								}
+							}
+
 							$('.wysiwyg-embed-object-form-submit').click (function (evt) {
 								evt.preventDefault ();
 								var i = 0,
