@@ -141,15 +141,14 @@ class Controller {
 	 * handlers from each other without hard-coding the specific handlers in
 	 * the triggering code. See `conf/config.php`'s `[Hooks]` section for examples.
 	 */
-	public $hooks = array ();
+	public static $hooks = array ();
 
 	/**
 	 * Keeps track of the number of times each handler has been called in
-	 * this request. You can check `$controller->called['handler']` for
-	 * the number, but make sure you use $controller and not $this in
-	 * handlers to make sure it refers to the global controller.
+	 * this request. You can check `self::$called['handler']` for the
+	 * number.
 	 */
-	public $called = array ();
+	public static $called = array ();
 
 	/**
 	 * Cached PUT data from get_put_data() so it only reads it the first
@@ -175,7 +174,7 @@ class Controller {
 	 * the first time it is called, and accessible thereafter by any
 	 * handler in that app directly via $appconf.
 	 */
-	public $appconf = array ();
+	public static $appconf = array ();
 
 	/**
 	 * This will be set the first time chunked() is called, so the controller
@@ -213,21 +212,20 @@ class Controller {
 		if (defined ('STDIN')) {
 			$this->cli = true;
 		}
-		$this->hooks = $hooks;
+		self::$hooks = $hooks;
 	}
 
 	/**
 	 * Run an internal request from one handler to another.
 	 */
 	public function run ($uri, $data = array ()) {
-		global $controller;
 		$c = new Controller;
 		$handler = $c->route ($uri);
 
-		if (! isset ($controller->called[$uri])) {
-			$controller->called[$uri] = 1;
+		if (! isset (self::$called[$uri])) {
+			self::$called[$uri] = 1;
 		} else {
-			$controller->called[$uri]++;
+			self::$called[$uri]++;
 		}
 
 		return $c->handle ($handler, true, $data);
@@ -261,10 +259,10 @@ class Controller {
 	 * output for hooks is ignored.
 	 */
 	public function hook ($type, $data = array ()) {
-		if (! isset ($this->hooks[$type])) {
+		if (! isset (self::$hooks[$type])) {
 			return false;
 		}
-		foreach ($this->hooks[$type] as $handler) {
+		foreach (self::$hooks[$type] as $handler) {
 			$this->run ($handler, $data);
 		}
 	}
@@ -291,9 +289,24 @@ class Controller {
 	 * Execute the request handler. $internal determines whether the
 	 * request originated internally from another handler or template,
 	 * or externally from a browser request.
+	 *
+	 * Note: We use three globals here. This may raise some flags in
+	 * you as a developer, but hear me out. These are global singletons
+	 * that the front controller creates for us, and I want to be able
+	 * to use them in handlers directly without first instantiating them,
+	 * through a `::getInstance()` call or otherwise. I know it's bad
+	 * form in general, but this is *by design* to save typing in handlers
+	 * and happens for these three objects only.
+	 *
+	 * I also could have simply added them as properties of `$this`, but
+	 * that would add typing too (e.g., `$this->view->render` vs
+	 * `$tpl->render`). I'm opting for conciseness. And as it is, I'm
+	 * deliberately making an ordinary script act like a controller, minus
+	 * the class wrapping it. It's a stylistic decision, and if it's not
+	 * your cup of tea, that's cool. It is mine, however :)
 	 */
 	public function handle ($handler, $internal = true, $data = array ()) {
-		global $controller, $page, $tpl, $memcache;
+		global $page, $tpl, $memcache;
 		
 		// Check for a cached copy of this handler's output
 		$out = $memcache->get (str_replace ('/', '_', $this->uri));
@@ -307,16 +320,16 @@ class Controller {
 		$this->data = $data;
 
 		// Load the app's configuration settings if available
-		if (! isset ($controller->appconf[$this->app])) {
+		if (! isset (self::$appconf[$this->app])) {
 			try {
-				$controller->appconf[$this->app] = @file_exists ('apps/' . $this->app . '/conf/config.php')
+				self::$appconf[$this->app] = @file_exists ('apps/' . $this->app . '/conf/config.php')
 					? parse_ini_file ('apps/' . $this->app . '/conf/config.php', true)
 					: array ();
 			} catch (Exception $e) {
-				$controller->appconf[$this->app] = array ();
+				self::$appconf[$this->app] = array ();
 			}
 		}
-		$appconf = $controller->appconf[$this->app];
+		$appconf = self::$appconf[$this->app];
 
 		// Run the handler and get its output
 		ob_start ();

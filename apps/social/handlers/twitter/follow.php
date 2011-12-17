@@ -5,8 +5,8 @@
  * the WYSIWYG editor's dynamic objects menu.
  */
 
-if (! isset ($controller->called['social/twitter/init'])) {
-	echo $controller->run ('social/twitter/init');
+if (! isset (self::$called['social/twitter/init'])) {
+	echo $this->run ('social/twitter/init');
 }
 
 if (! isset ($data['twitter_id'])) {

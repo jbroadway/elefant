@@ -4,7 +4,7 @@
  * Initializes the twitter API for the other twitter handlers.
  */
 
-if ($controller->called['social/twitter/init'] > 1) {
+if (self::$called['social/twitter/init'] > 1) {
 	return;
 }
 

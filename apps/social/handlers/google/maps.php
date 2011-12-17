@@ -5,7 +5,7 @@
  * the WYSIWYG editor's dynamic objects menu.
  */
 
-if ($controller->called['social/google/maps'] == 1) {
+if (self::$called['social/google/maps'] == 1) {
 	echo '<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>';
 }
 

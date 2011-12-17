@@ -5,7 +5,7 @@
  * filemanager/audio and filemanager/video.
  */
 
-if ($controller->called['filemanager/mediaelement'] > 1) {
+if (self::$called['filemanager/mediaelement'] > 1) {
 	return;
 }
 
