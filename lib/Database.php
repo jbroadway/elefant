@@ -25,12 +25,15 @@
  */
 
 /**
- * The database package is just a list of functions that act on
- * a global `$db` PDO object. These provide direct access to the database
- * through a set of convenience functions, and can help reduce
+ * The database package is a simple set of procedural wrapper functions
+ * that act on a list of PDO connections. These provide direct access to
+ * the database through a set of convenience functions, and can help reduce
  * direct-to-database logic down to just one or two lines of code.
  *
- * For object modelling, see `lib/Model.php`.
+ * In Elefant, you are free to either use the PDO connection(s) directly,
+ * or to use these convenience functions as needed. However, for creating
+ * models and for any real degree of ORM, see `lib/Model.php` which provides
+ * a more complete abstraction.
  *
  * Usage:
  *
