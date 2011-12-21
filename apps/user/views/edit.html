@@ -1,5 +1,5 @@
 <form method="POST" id="add-form">
-<p>{"Name"}:<br /><input type="text" name="name" size="40" value="{{ name }}" />
+<p>{"Name"}:<br /><input type="text" name="name" size="40" value="{{ name|quotes }}" />
 <span class="notice" id="name-notice">{"You must enter a name."}</span></p>
 <p>{"Email"}:<br /><input type="text" name="email" size="40" value="{{ email }}" />
 <span class="notice" id="email-notice">{"You must enter an email address."}</span></p>
