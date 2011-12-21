@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{{ conf('General', 'site_name') }} - {{ window_title }}</title>
+	<title>{{ conf('General', 'site_name') }} - {{ window_title|none }}</title>
 	<link rel="stylesheet" type="text/css" href="/css/reset.css" />
 	<link rel="stylesheet" type="text/css" href="/css/text.css" />
 	<link rel="stylesheet" type="text/css" href="/css/960.css" />
@@ -24,7 +24,7 @@
 
 {! filemanager/slideshow?path=homepage !}
 
-{% if title != '' %}<h2>{{ title }}</h2>{% end %}
+{% if title != '' %}<h2>{{ title|none }}</h2>{% end %}
 {{ body|none }}
 
 	</div>
