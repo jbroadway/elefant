@@ -30,6 +30,15 @@
  */
 
 /**
+ * For compatibility with PHP 5.4's built-in web server, we bypass
+ * the front controller for requests with file extensions and
+ * return false.
+ */
+if (preg_match('/\.[a-zA-Z0-9]+$/', $_SERVER['REQUEST_URI'])) { 
+    return false;
+}
+
+/**
  * Set the default error reporting level to All except Notices,
  * and turn off displaying errors. Error handling/debugging can
  * be done by setting conf[General][debug] to true, causing full
