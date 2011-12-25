@@ -143,7 +143,7 @@ switch ($_GET['step']) {
 					$conf = file_get_contents ('../conf/config.php');
 					// good to replace database settings
 					$dbinfo = $tpl->render ('dbinfo', $_POST);
-					$conf = preg_replace ('/\[Database\].*\[Hooks\]/s', $dbinfo, $conf);
+					$conf = preg_replace ('/\[Database\].*\[Mongo\]/s', $dbinfo, $conf);
 					if (! file_put_contents ('../conf/config.php', $conf)) {
 						$data['error'] = 'Failed to write to conf/config.php';
 					} else {
