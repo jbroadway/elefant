@@ -29,7 +29,7 @@ if (! User::require_admin ()) {
 	return;
 }
 
-if (! isset ($_POST['redirect'])) {
+if (! isset ($_POST['redirect']) || empty ($_POST['redirect'])) {
 	$_POST['redirect'] = '/';
 }
 
