@@ -37,7 +37,6 @@ if (! Form::verify_value ($_POST['redirect'], 'header')) {
 	$_POST['redirect'] = '/';
 }
 
-header ('Location: ' . $_POST['redirect']);
-exit;
+$this->redirect ($_POST['redirect']);
 
 ?>
