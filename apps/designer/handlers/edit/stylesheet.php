@@ -11,8 +11,7 @@ if (! User::require_admin ()) {
 }
 
 if (! preg_match ('/^(css|layouts\/[a-z0-9_-]+)\/[a-z0-9\._-]+\.css$/i', $_GET['file'])) {
-	header ('Location: /designer');
-	exit;
+	$this->redirect ('/designer');
 }
 
 $lock = new Lock ('Designer', $_GET['file']);

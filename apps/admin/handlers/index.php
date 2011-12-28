@@ -29,7 +29,7 @@ if (! User::require_admin ()) {
 	return;
 }
 
-if (! isset ($_POST['redirect'])) {
+if (! isset ($_POST['redirect']) || empty ($_POST['redirect'])) {
 	$_POST['redirect'] = '/';
 }
 
@@ -37,7 +37,6 @@ if (! Form::verify_value ($_POST['redirect'], 'header')) {
 	$_POST['redirect'] = '/';
 }
 
-header ('Location: ' . $_POST['redirect']);
-exit;
+$this->redirect ($_POST['redirect']);
 
 ?>
