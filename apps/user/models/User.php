@@ -100,7 +100,7 @@ class User extends Model {
 	 */
 	public static function verifier ($user, $pass) {
 		$u = db_single (
-			'select * from user where email = ?',
+			'select * from `user` where email = ?',
 			$user
 		);
 		if ($u && crypt ($pass, $u->password) == $u->password) {
@@ -134,7 +134,7 @@ class User extends Model {
 			return call_user_func ($callback, $_POST['username'], $_POST['password']);
 		} elseif (isset ($_SESSION['session_id'])) {
 			$u = db_single (
-				'select * from user where session_id = ? and expires > ?',
+				'select * from `user` where session_id = ? and expires > ?',
 				$_SESSION['session_id'],
 				gmdate ('Y-m-d H:i:s')
 			);

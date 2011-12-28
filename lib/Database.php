@@ -75,6 +75,12 @@ function db_open ($conf) {
 			case 'sqlite':
 				$db_list[$id] = new PDO ('sqlite:' . $conf['file']);
 				break;
+			case 'pgsql':
+				if (strstr ($conf['host'], ':')) {
+					$conf['host'] = str_replace (':', ';port=', $conf['host']);
+				}
+				$db_list[$id] = new PDO ('pgsql:host=' . $conf['host'] . ';dbname=' . $conf['name'] . ';user=' . $conf['user'] . ';password=' . $conf['pass']);
+				break;
 			default:
 				if (strstr ($conf['host'], ':')) {
 					$conf['host'] = str_replace (':', ';port=', $conf['host']);
@@ -161,6 +167,22 @@ function db_args ($args) {
 }
 
 /**
+ * Normalize use of escape characters (`) to the database
+ * that's currently in use.
+ */
+function db_normalize_sql ($db, $sql) {
+	$dbtype = $db->getAttribute (PDO::ATTR_DRIVER_NAME);
+	switch ($dbtype) {
+		case 'pgsql':
+			$sql = str_replace ('`', '"', $sql);
+			break;
+		default:
+			break;
+	}
+	return $sql;
+}
+
+/**
  * Fetch an array of all result objects.
  */
 function db_fetch_array ($sql) {
@@ -169,6 +191,7 @@ function db_fetch_array ($sql) {
 	$args = func_get_args ();
 	array_shift ($args);
 	$args = db_args ($args);
+	$sql = db_normalize_sql ($db, $sql);
 	$db_sql = $sql;
 	$db_args = $args;
 
@@ -191,6 +214,7 @@ function db_execute ($sql) {
 	$args = func_get_args ();
 	array_shift ($args);
 	$args = db_args ($args);
+	$sql = db_normalize_sql ($db, $sql);
 	$db_sql = $sql;
 	$db_args = $args;
 
@@ -212,6 +236,7 @@ function db_single ($sql) {
 	$args = func_get_args ();
 	array_shift ($args);
 	$args = db_args ($args);
+	$sql = db_normalize_sql ($db, $sql);
 	$db_sql = $sql;
 	$db_args = $args;
 
@@ -236,6 +261,7 @@ function db_shift ($sql) {
 	$args = func_get_args ();
 	array_shift ($args);
 	$args = db_args ($args);
+	$sql = db_normalize_sql ($db, $sql);
 	$db_sql = $sql;
 	$db_args = $args;
 
@@ -259,6 +285,7 @@ function db_shift_array ($sql) {
 	$args = func_get_args ();
 	array_shift ($args);
 	$args = db_args ($args);
+	$sql = db_normalize_sql ($db, $sql);
 	$db_sql = $sql;
 	$db_args = $args;
 
@@ -288,6 +315,7 @@ function db_pairs ($sql) {
 	$args = func_get_args ();
 	array_shift ($args);
 	$args = db_args ($args);
+	$sql = db_normalize_sql ($db, $sql);
 	$db_sql = $sql;
 	$db_args = $args;
 

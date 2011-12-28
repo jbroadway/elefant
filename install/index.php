@@ -154,7 +154,6 @@ switch ($_GET['step']) {
 		} else {
 			// set some default values
 			$_POST['host'] = 'localhost';
-			$_POST['port'] = 3306;
 		}
 		break;
 
@@ -182,7 +181,7 @@ switch ($_GET['step']) {
 				} else {
 					$date = gmdate ('Y-m-d H:i:s');
 					if (! db_execute (
-						'insert into user (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, ?, "admin", ?, ?, ?)',
+						"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, ?, 'admin', ?, ?, ?)",
 						$_POST['email_from'],
 						encrypt_pass ($_POST['pass']),
 						$date,

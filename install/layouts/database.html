@@ -5,17 +5,23 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<script>
 		function toggle (show) {
-			if (show == 'sqlite') {
-				document.getElementById ('sqlite').style.display = 'block';
-				document.getElementById ('mysql').style.display = 'none';
-			} else {
+			if (show == 'mysql') {
 				document.getElementById ('sqlite').style.display = 'none';
 				document.getElementById ('mysql').style.display = 'block';
+				document.getElementById ('pgsql').style.display = 'none';
+			} else if (show == 'pgsql') {
+				document.getElementById ('sqlite').style.display = 'none';
+				document.getElementById ('mysql').style.display = 'none';
+				document.getElementById ('pgsql').style.display = 'block';
+			} else {
+				document.getElementById ('sqlite').style.display = 'block';
+				document.getElementById ('mysql').style.display = 'none';
+				document.getElementById ('pgsql').style.display = 'none';
 			}
 		}
-		{% if $_POST.driver == 'mysql' %}
+		{% if $_POST.driver !== 'sqlite' %}
 		window.onload = function () {
-			toggle ('mysql');
+			toggle ('{{ $_POST.driver }}');
 		};
 		{% end %}
 	</script>
@@ -58,6 +64,7 @@
 <select name="driver" onchange="toggle (this.options[this.selectedIndex].value)">
 	<option value="sqlite">SQLite</option>
 	<option value="mysql" {% if $_POST.driver == 'mysql' %}selected{% end %}>MySQL</option>
+	<option value="pgsql" {% if $_POST.driver == 'pgsql' %}selected{% end %}>PostgreSQL</option>
 </select></p>
 
 <div id="sqlite">
@@ -66,9 +73,22 @@
 
 <div id="mysql" style="display: none">
 <p>Server:<br />
-<input type="text" name="host" value="{{ $_POST.host }}" size="30" /></p>
+<input type="text" name="host" value="{{ $_POST.host }}" default="localhost" size="30" /></p>
 <p>Port:<br />
-<input type="text" name="port" value="{{ $_POST.port }}" size="15" /></p>
+<input type="text" name="port" value="{% if empty ($_POST['port']) %}3306{% else %}{{ $_POST.port }}{% end %}" size="15" /></p>
+<p>Database:<br />
+<input type="text" name="name" value="{{ $_POST.name }}" size="25" /></p>
+<p>Username:<br />
+<input type="text" name="user" value="{{ $_POST.user }}" size="25" /></p>
+<p>Password:<br />
+<input type="password" name="pass" value="{{ $_POST.pass }}" size="25" /></p>
+</div>
+
+<div id="pgsql" style="display: none">
+<p>Server:<br />
+<input type="text" name="host" value="{{ $_POST.host }}" default="localhost" size="30" /></p>
+<p>Port:<br />
+<input type="text" name="port" value="{% if empty ($_POST['port']) %}5432{% else %}{{ $_POST.port }}{% end %}" size="15" /></p>
 <p>Database:<br />
 <input type="text" name="name" value="{{ $_POST.name }}" size="25" /></p>
 <p>Username:<br />

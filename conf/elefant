@@ -163,7 +163,7 @@ if (count ($argv) > 1) {
 				$pass = generate_password (8);
 				$date = gmdate ('Y-m-d H:i:s');
 				if (! db_execute (
-					'insert into user (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, "Admin User", "admin", ?, ?, ?)',
+					"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, 'Admin User', 'admin', ?, ?, ?)",
 					$conf['General']['email_from'],
 					encrypt_password ($pass),
 					$date,
