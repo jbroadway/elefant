@@ -207,8 +207,8 @@ class User extends Model {
 		}
 		$_SESSION['session_id'] = null;
 		if ($redirect_to) {
-			header ('Location: ' . $redirect_to);
-			exit;
+			global $controller;
+			$controller->redirect ($redirect_to);
 		}
 	}
 

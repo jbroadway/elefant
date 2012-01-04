@@ -49,8 +49,7 @@ if ($f->submit ()) {
 
 		$_POST['username'] = $_POST['email'];
 		User::require_login ();
-		header ('Location: /user');
-		exit;
+		$this->redirect ('/user');
 	}
 	@error_log ('Error creating profile: ' . $u->error);
 	$page->title = i18n_get ('An Error Occurred');

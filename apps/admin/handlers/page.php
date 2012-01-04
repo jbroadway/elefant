@@ -15,7 +15,7 @@ $id = count ($this->params) ? $this->params[0] : 'index';
 // check if cached
 $res = $memcache->get ('_admin_page_' . $id);
 if ($res) {
-	$page = unserialize ($res);
+	$page = (is_object ($res)) ? $res : unserialize ($res);
 
 	// show admin edit buttons
 	if (User::is_valid () && $user->type == 'admin') {

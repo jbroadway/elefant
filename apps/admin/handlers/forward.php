@@ -19,12 +19,9 @@ if (User::is_valid () && $user->type == 'admin') {
 }
 
 if (isset ($data['to'])) {
-	header ('Location: ' . $data['to']);
+	$this->redirect ($data['to']);
 } elseif (isset ($_GET['to'])) {
-	header ('Location: ' . $_GET['to']);
-} else {
-	return;
+	$this->redirect ($_GET['to']);
 }
-exit;
 
 ?>

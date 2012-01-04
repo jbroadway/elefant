@@ -441,8 +441,18 @@ class Controller {
 	public function redirect ($url, $exit = true) {
 		header ('Location: ' . $url);
 		if ($exit) {
+			$this->quit ();
+		}
+	}
+
+	/**
+	 * Wrapper around exit to work with subfolder installations.
+	 */
+	public function quit () {
+		if (! defined ('SUB_FOLDER')) {
 			exit;
 		}
+		throw new SubfolderException ();
 	}
 
 	/**
@@ -537,7 +547,7 @@ class Controller {
 			}
 			echo "0\r\n\r\n";
 			flush ();
-			exit;
+			$this->quit ();
 		} elseif ($out !== false) {
 			// Send the data passed to flush()
 			if (strlen ($out) > 0) {

@@ -39,8 +39,7 @@ if (! User::require_login ()) {
 	}
 	echo $tpl->render ('user/login', $_POST);
 } elseif (! $this->internal) {
-	header ('Location: ' . $_POST['redirect']);
-	exit;
+	$this->redirect ($_POST['redirect']);
 }
 
 ?>

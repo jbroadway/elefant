@@ -11,8 +11,7 @@ require_once ('apps/blog/lib/Filters.php');
 $page->limit = 10;
 $page->author = urldecode ($this->params[0]);
 if (! $page->author) {
-	header ('Location: /blog');
-	exit;
+	$this->redirect ('/blog');
 }
 $page->num = (count ($this->params) > 1 && is_numeric ($this->params[1])) ? $this->params[1] - 1 : 0;
 $page->offset = $page->num * $page->limit;
