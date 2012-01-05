@@ -84,23 +84,19 @@ function conf ($section, $value = false) {
  * given.
  */
 function simple_auth ($verifier = false, $method = false) {
-	if (! $verifier) {
-		$verifier = 'simple_auth_verifier';
-	}
-	if (! $method) {
-		$method = 'simple_auth_basic';
-	}
+	$verifier = ($verifier) ? $verifier : 'simple_auth_verifier';
+	$method = ($method) ? $method : 'simple_auth_basic';
 	return call_user_func ($method, $verifier);
 }
 
 /**
  * Default verifier for `simple_auth()`. This is meant to serve
  * as an example, and should be overridden with your own
- * implementation.
+ * implementation. Note its use of `conf()` variables that are
+ * likely not set in a default Elefant installation.
  */
 function simple_auth_verifier ($user, $pass) {
-	global $conf;
-	if ($user == $conf['General']['master_username'] && $pass == $conf['General']['master_password']) {
+	if ($user == conf ('General', 'master_username') && $pass == conf ('General', 'master_password')) {
 		return true;
 	}
 	return false;
