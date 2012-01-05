@@ -16,6 +16,7 @@
 </div>
 <div class="grid_6 omega link">
 <!-- a href="http://jbroadway.github.com/elefant/elefant_cheatsheet.pdf">Download as a PDF</a -->
+<a href="http://www.elefantcms.com/">www.elefantcms.com</a>
 </div>
 
 <div class="clear"></div>
@@ -50,20 +51,20 @@
 		<h2>Utilities</h2>
 		<table>
 		<tr>
-			<td><code>./conf/elefant build-app appname</code></td>
-			<td><span>Create an app skeleton</span></td>
+			<td><code>./conf/elefant build-app &lt;name&gt;</code></td>
+			<td><span>Generate app skeleton</span></td>
 		</tr>
 		<tr>
-			<td><code>./conf/elefant install</code></td>
-			<td><span>Command line installer</span></td>
+			<td><code>./conf/elefant backup &lt;path&gt;</code></td>
+			<td><span>Backup your website</span></td>
+		</tr>
+		<tr>
+			<td><code>./conf/elefant export-db &lt;file&gt;</code></td>
+			<td><span>Backup your database</span></td>
 		</tr>
 		<tr>
 			<td><code>./conf/elefant</code></td>
-			<td><span>List all commands</span></td>
-		</tr>
-		<tr>
-			<td><code>phpunit tests</code></td>
-			<td><span>Run the unit test suite</span></td>
+			<td><span>List all available commands</span></td>
 		</tr>
 		</table>
 		</div>
@@ -136,7 +137,7 @@
 	<tr>
 		<td><code>/</code></td>
 		<td><span>&rarr;&nbsp;&nbsp;</span></td>
-		<td><code>$conf['General']['default_handler']</code></td>
+		<td><code>conf('General', 'default_handler')</code></td>
 	</tr>
 	<tr>
 		<td><code>/appname</code></td>
@@ -195,19 +196,14 @@
 	</div>
 	
 	<div class="block">
-	<h2>Global Objects</h2>
+	<h2>Available Objects</h2>
 	<table>
 	<tr>
-		<td><code>$conf</code></td>
-		<td><span>Array of conf/config.php</span></td>
+		<td colspan="2"><span>These are made available inside handlers.</span></td>
 	</tr>
 	<tr>
-		<td><code>$controller</code></td>
+		<td><code>$this</code></td>
 		<td><span>Controller object</span></td>
-	</tr>
-	<tr>
-		<td><code>$i18n</code></td>
-		<td><span>I18n object</span></td>
 	</tr>
 	<tr>
 		<td><code>$memcache</code></td>
@@ -230,7 +226,7 @@
 
 <div class="container_12">
 <h2>Core Classes</h2>
-<p>Useful properties and methods of the core classes.</p>
+<p>Useful properties, methods, and usage patterns of the core classes.</p>
 
 <div class="grid_6 alpha">
 
@@ -242,16 +238,48 @@
 		<td><span>Resolves and returns the output of a handler.</span></td>
 	</tr>
 	<tr>
+		<td><code>-&gt;handle($handler)</code></td>
+		<td><span>Returns the output of a handler by file name.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;restful($obj)</code></td>
+		<td><span>Create a RESTful API from an object.</span></td>
+	</tr>
+	<tr>
 		<td><code>-&gt;redirect($uri)</code></td>
-		<td><span>Redirect the current request to <code>$uri</code> and exit.</span></td>
+		<td><span>Redirect the current request to <code>$uri</code>.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;hook($type, $data)</code></td>
+		<td><span>Run any handlers assigned to a hook type.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;error($code=404, $title, $msg)</code></td>
+		<td><span>Trigger the default error handler.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;params($one, $two, ...)</code></td>
+		<td><span>Retrieve specified request parameters.</span></td>
 	</tr>
 	<tr>
 		<td><code>-&gt;request_method()</code></td>
-		<td><span>Returns the request method.</span></td>
+		<td><span>Get the request method.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;get_put_data()</code></td>
+		<td><span>Get data from a PUT request.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;get_raw_post_data()</code></td>
+		<td><span>Get the raw data from a POST request.</span></td>
+	</tr>
+	<tr>
+		<td><code>-&gt;flush($data)</code></td>
+		<td><span>Flush chunked data to client.</span></td>
 	</tr>
 	<tr>
 		<td><code>-&gt;is_https()</code></td>
-		<td><span>Check if using HTTPS.</span></td>
+		<td><span>Check if using HTTPS</span></td>
 	</tr>
 	<tr>
 		<td><code>-&gt;force_https()</code></td>
@@ -262,26 +290,22 @@
 		<td><span>Redirect to HTTP if using HTTPS.</span></td>
 	</tr>
 	<tr>
-		<td><code>-&gt;get_put_data()</code></td>
-		<td><span>Gets input for PUT requests.</span></td>
+		<td><code>-&gt;require_login()</code></td>
+		<td><span>Require authentication to continue.</span></td>
 	</tr>
 	<tr>
-		<td><code>-&gt;hook($type, $data)</code></td>
-		<td><span>Run any handlers for a hook type.</span></td>
-	</tr>
-	<tr>
-		<td><code>-&gt;error($code=404, $title, $msg)</code></td>
-		<td><span>Trigger the default error handler.</span></td>
+		<td><code>-&gt;require_admin()</code></td>
+		<td><span>Require admin auth to continue.</span></td>
 	</tr>
 	<tr>
 		<td><code>-&gt;add_notification($msg)</code></td>
-		<td><span>Add a notification to display on the next admin page.</span></td>
+		<td><span>Add a notification for the current admin.</span></td>
 	</tr>
 	</table>
 	</div>
 	
 	<div class="block">
-	<h3>Database functions</h3>
+	<h3>Direct-to-database helper functions</h3>
 	<table>
 	<tr>
 		<td colspan="2"><span>All functions except <tt>db_error()</tt> and <tt>db_lastid()</tt> accept <tt>$sql</tt> plus an array or variable number of values for replacement of placeholders, for example:</span><br />
@@ -337,14 +361,14 @@
 	</tr>
 	<tr>
 		<td><code>Form::verify_value($value, $type, $validator)</code></td>
-		<td><span>Validate a data value, in or out of the context of a form.</span></td>
+		<td><span>Validate any data value.</span></td>
 	</tr>
 	<tr>
 		<td><code>$f->merge_values($obj)</code></td>
-		<td><span>Merge <tt>$_GET</tt> or <tt>$_POST</tt> values onto an object for pre-filling a re-rendered form.</span></td>
+		<td><span>Merge <tt>$_GET</tt> or <tt>$_POST</tt> values with an object for pre-filling a re-rendered form.</span></td>
 	</tr>
 	<tr>
-		<td><code>$->failed = array()</code></td>
+		<td><code>$f->failed = array()</code></td>
 		<td><span>Fields that failed validation.</span></td>
 	</tr>
 	<tr>
@@ -370,12 +394,12 @@
 	<h3>I18n</h3>
 	<table>
 	<tr>
-		<td><code>i18n_get($original)</code></td>
-		<td><span>Translate a string into the current user's language.</span></td>
+		<td><code>i18n_get($str)</code></td>
+		<td><span>Translate a string into the current language.</span></td>
 	</tr>
 	<tr>
-		<td><code>i18n_getf($orig, $values)</code></td>
-		<td><span>Like <tt>i18n_get()</tt> with <tt>vsprintf()</tt> post-processing.</span></td>
+		<td><code>i18n_getf($str, $vals)</code></td>
+		<td><span>Like <tt>i18n_get()</tt> with <tt>vsprintf()</tt>.</span></td>
 	</tr>
 	<tr>
 		<td><code>$language</code></td>
@@ -403,7 +427,7 @@
 	</tr>
 	<tr>
 		<td><code>$negotiation</code></td>
-		<td><span>The negotiation method used to determine the current language.</span></td>
+		<td><span>Negotiation method used to determine language.</span></td>
 	</tr>
 	<tr>
 		<td><code>$error</code></td>
@@ -423,7 +447,9 @@
 		<td colspan="2"><span>Usage:</span></td></td>
 	</tr>
 	<tr>
-		<td><code>class Mytable extends Model {}</code></td>
+		<td><pre><code>class Mytable extends Model {
+  /* custom methods */
+}</code></pre></td>
 		<td><span>Create model for <tt>mytable</tt> db table.</span></td>
 	</tr>
 	<tr>
@@ -435,8 +461,12 @@ $m->put();</code></pre></td>
 		<td><span>Insert a new object.</span></td>
 	</tr>
 	<tr>
-		<td><code>$m->id</code></td>
+		<td><code>echo $m->id;</code></td>
 		<td><span>The ID from the inserted object.</span></td>
+	</tr>
+	<tr>
+		<td><code>$m = new Mytable(1);</code></td>
+		<td><span>Fetch object by ID.</span></td>
 	</tr>
 	<tr>
 		<td><pre><code>$m->age = 31;
@@ -481,10 +511,10 @@ $m->put();</code></pre></td>
 	<table>
 	<tr>
 		<td><code>-&gt;render()</code></td>
-		<td><span>Renders the page with its view and layout templates.</span></td>
+		<td><span>Renders the page with its layout templates.</span></td>
 	</tr>
 	<tr>
-		<td><code>-&gt;add_script($script, $to = 'head')</code></td>
+		<td><code>-&gt;add_script($script, $to='head')</code></td>
 		<td><span>Add script to <code>$head</code> or <code>$tail</code>.</span></td>
 	</tr>
 	<tr>
@@ -493,19 +523,27 @@ $m->put();</code></pre></td>
 	</tr>
 	<tr>
 		<td><code>$head = ''</code></td>
-		<td><span>Extra HTML headers.</span></td>
+		<td><span>Extra scripts for <code>&lt;head&gt;</code> section.</span></td>
 	</tr>
 	<tr>
 		<td><code>$tail = ''</code></td>
-		<td><span>Extra HTML footer.</span></td>
+		<td><span>Extra scripts before <code>&lt;/body&gt;<code>.</span></td>
 	</tr>
 	<tr>
 		<td><code>$layout = 'default'</code></td>
-		<td><span>Layout template.</span></td>
+		<td><span>Design template.</span></td>
 	</tr>
 	<tr>
 		<td><code>$title = ''</code></td>
 		<td><span>Page title.</span></td>
+	</tr>
+	<tr>
+		<td><code>$menu_title = ''</code></td>
+		<td><span>Alternate navigation title.</span></td>
+	</tr>
+	<tr>
+		<td><code>$window_title = ''</code></td>
+		<td><span>Alternate browser window title.</span></td>
 	</tr>
 	</table>
 	</div>
@@ -572,15 +610,15 @@ $m->put();</code></pre></td>
 	</tr>
 	<tr>
 		<td><code>User::encrypt_pass($plain)</code></td>
-		<td><span>Generates a random salt and encrypts a string using MD5.</span></td>
+		<td><span>Generates a random salt and encrypts a string.</span></td>
 	</tr>
 	<tr>
 		<td><code>User::require_login()</code></td>
-		<td><span>Requires a user to be logged in.</span></td>
+		<td><span>Checks if a user has been logged in.</span></td>
 	</tr>
 	<tr>
 		<td><code>User::require_admin()</code></td>
-		<td><span>Requires an admin user to be logged in.</span></td>
+		<td><span>Checks if a user has been logged in as an admin.</span></td>
 	</tr>
 	<tr>
 		<td><code>User::is_valid()</code></td>
