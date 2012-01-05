@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>Autoloader.php</title>
+  <title>Product.php</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="layout.css" />
   <style>
@@ -140,7 +140,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         <tr>
           <th class="docs">
             <h1>
-              Autoloader.php            </h1>
+              Product.php            </h1>
           </th>
           <th class="code">
           </th>
@@ -152,129 +152,98 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-0">&#182;</a>
               </div>
-              <p>Elefant CMS - http:www.elefantcms.com/</p>
+              <p>This class parses and returns values from <code>conf/product.php</code> which makes it easy
+ to rebrand the CMS interface with your own name, logo, website link,
+ and stylesheet.</p>
 
-<p>Copyright (c) 2011 Johnny Broadway</p>
+<p>Usage:</p>
 
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:</p>
-
-<p>The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.</p>
-
-<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.</p>
+<pre><code> {{ Product::name() }}
+</code></pre>
             </td>
             <td class="code">
-              <div class="highlight"><pre></pre></div>            </td>
+              <div class="highlight"><pre><span class="k">class</span> <span class="nc">Product</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-1">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>Autoloader for classes. Checks in the following order:</p>
-
-<ol>
-<li>If <code>\</code> is found, using namespaces:
-1.1. Look for <code>apps/{{app}}/lib/{{class}}.php</code>
-1.2. Look for <code>apps/{{app}}/models/{{class}}.php</code>
-1.3. PSR-0 fallback, look in <code>lib/vendors/</code></li>
-<li>Look for <code>lib/{{class}}.php</code></li>
-<li>Glob for <code>{{models,lib}}/{{class}}.php</code> in all apps</li>
-<li><p>Return false</p>
-
-<p>For PSR-0 compatible frameworks, put them in <code>lib/vendors/</code>.</p></li>
-</ol>
+              <p>Returns the parsed INI data from <code>conf/product.php</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre><span class="k">function</span> <span class="nf">elefant_autoloader</span> <span class="p">(</span><span class="nv">$class</span><span class="p">)</span> <span class="p">{</span>
- <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span> <span class="p">(</span><span class="nv">$class</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">get_info</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;elefant_product_info&#39;</span><span class="p">]))</span> <span class="p">{</span>
+   <span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;elefant_product_info&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">parse_ini_file</span> <span class="p">(</span><span class="s1">&#39;conf/product.php&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;elefant_product_info&#39;</span><span class="p">];</span>
+ <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-2">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Namespace is present</p>
+              <p>Returns the <code>name</code> value.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$class</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="nv">$class</span><span class="p">,</span> <span class="m">2</span><span class="p">);</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">name</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nv">$info</span> <span class="o">=</span> <span class="nx">Product</span><span class="o">::</span><span class="na">get_info</span> <span class="p">();</span>
+  <span class="k">return</span> <span class="nv">$info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">];</span>
+ <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-3">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Check for app\Class in lib and models folders</p>
+              <p>Returns the <code>website</code> value.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span>
-   <span class="k">require_once</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">);</span>
-   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
-  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/models/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span>
-   <span class="k">require_once</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/models/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">);</span>
-   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">website</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nv">$info</span> <span class="o">=</span> <span class="nx">Product</span><span class="o">::</span><span class="na">get_info</span> <span class="p">();</span>
+  <span class="k">return</span> <span class="nv">$info</span><span class="p">[</span><span class="s1">&#39;website&#39;</span><span class="p">];</span>
+ <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-4">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Fall back to PSR-0</p>
+              <p>Returns the <code>logo_login</code> value.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$app</span><span class="p">))</span> <span class="p">{</span>
-   <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;lib/vendor/&#39;</span> <span class="o">.</span> <span class="nb">ltrim</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nv">$class</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
-  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-   <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;lib/vendor/&#39;</span> <span class="o">.</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nb">ltrim</span> <span class="p">(</span><span class="nv">$class</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">))</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="nv">$file</span> <span class="o">=</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nv">$file</span><span class="p">);</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$file</span><span class="p">))</span> <span class="p">{</span>
-   <span class="k">require_once</span> <span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
-  <span class="p">}</span>
- <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">logo_login</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nv">$info</span> <span class="o">=</span> <span class="nx">Product</span><span class="o">::</span><span class="na">get_info</span> <span class="p">();</span>
+  <span class="k">return</span> <span class="nv">$info</span><span class="p">[</span><span class="s1">&#39;logo_login&#39;</span><span class="p">];</span>
+ <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-5">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>No namespace, check in lib/ first</p>
+              <p>Returns the <code>logo_toolbar</code> value.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">require_once</span> <span class="p">(</span><span class="s1">&#39;lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">);</span>
-  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
- <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">logo_toolbar</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nv">$info</span> <span class="o">=</span> <span class="nx">Product</span><span class="o">::</span><span class="na">get_info</span> <span class="p">();</span>
+  <span class="k">return</span> <span class="nv">$info</span><span class="p">[</span><span class="s1">&#39;logo_toolbar&#39;</span><span class="p">];</span>
+ <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-6">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>No namespace, check in app lib and models folders</p>
+              <p>Returns the <code>stylesheet</code> value.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="nv">$res</span> <span class="o">=</span> <span class="nb">glob</span> <span class="p">(</span><span class="s1">&#39;apps/*/{models,lib}/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">,</span> <span class="nx">GLOB_BRACE</span><span class="p">);</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$res</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">count</span> <span class="p">(</span><span class="nv">$res</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
-   <span class="k">require_once</span> <span class="p">(</span><span class="nv">$res</span><span class="p">[</span><span class="m">0</span><span class="p">]);</span>
-   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
-  <span class="p">}</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">stylesheet</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nv">$info</span> <span class="o">=</span> <span class="nx">Product</span><span class="o">::</span><span class="na">get_info</span> <span class="p">();</span>
+  <span class="k">return</span> <span class="nv">$info</span><span class="p">[</span><span class="s1">&#39;stylesheet&#39;</span><span class="p">];</span>
  <span class="p">}</span>
- <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
 <span class="p">}</span>
-
-<span class="nx">spl_autoload_register</span> <span class="p">(</span><span class="s1">&#39;elefant_autoloader&#39;</span><span class="p">);</span>
 
 <span class="cp">?&gt;</span><span class="x"></span>
 </pre></div></pre></div>            </td>

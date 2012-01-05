@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>Autoloader.php</title>
+  <title>Restful.php</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="layout.css" />
   <style>
@@ -140,7 +140,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         <tr>
           <th class="docs">
             <h1>
-              Autoloader.php            </h1>
+              Restful.php            </h1>
           </th>
           <th class="code">
           </th>
@@ -182,99 +182,155 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>Autoloader for classes. Checks in the following order:</p>
+              <p>A class that can be extended and passed to <code>Controller::restful()</code>
+ to create RESTful request handlers. Works with GET, POST, PUT, and
+ DELETE request methods, as well as the <code>X-HTTP-Method-Override</code>
+ header if your server can't handle PUT and DELETE requests.</p>
+
+<p>Usage:</p>
 
 <ol>
-<li>If <code>\</code> is found, using namespaces:
-1.1. Look for <code>apps/{{app}}/lib/{{class}}.php</code>
-1.2. Look for <code>apps/{{app}}/models/{{class}}.php</code>
-1.3. PSR-0 fallback, look in <code>lib/vendors/</code></li>
-<li>Look for <code>lib/{{class}}.php</code></li>
-<li>Glob for <code>{{models,lib}}/{{class}}.php</code> in all apps</li>
-<li><p>Return false</p>
+<li><p>Create a Restful-based class and save it to
+the file <code>apps/myapp/lib/API.php</code>:</p>
 
-<p>For PSR-0 compatible frameworks, put them in <code>lib/vendors/</code>.</p></li>
+<p>&lt;?php</p>
+
+<p>namespace myapp;</p>
+
+<p>class API extends \Restful {
+      Accessible via <code>GET /myapp/api/article/123</code>
+     public function get_article ($id) {
+          Return some data
+         return (object) array (
+             'id' => $id,
+             'title' => 'My title'
+         );
+     }</p>
+
+<pre><code>  Accessible via `POST /myapp/api/article`
+ public function post_article () {
+      Return an error
+     return $this-&gt;error ('Error message');
+ }
+</code></pre>
+
+<p>}</p></li>
+<li><p>Create a handler and assign your class as its
+restful handler in the file <code>apps/myapp/handlers/api.php</code>:</p>
+
+<p><?php $this->restful (new myapp\API); ?></p>
+
+<p>Responses come in the following form, depending on success
+or failure:</p>
+
+<p>{"success": true, "data": {"id": 123, "title": "My title"}}</p>
+
+<p>{"success": false, "error": "Error message"}</p>
+
+<p>Additional notes:</p></li>
 </ol>
+
+<ul>
+<li><p>Parameters passed to methods requests are expected to be from
+the extra URL parameters. <code>$_GET</code> and <code>$_POST</code> are available
+separately.</p></li>
+<li><p>PUT data can be accessed via <code>$this-&gt;get_put_data()</code> or via
+<code>$this-&gt;get_put_data (true)</code> to automatically JSON decode it.</p></li>
+</ul>
             </td>
             <td class="code">
-              <div class="highlight"><pre><span class="k">function</span> <span class="nf">elefant_autoloader</span> <span class="p">(</span><span class="nv">$class</span><span class="p">)</span> <span class="p">{</span>
- <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span> <span class="p">(</span><span class="nv">$class</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
+              <div class="highlight"><pre><span class="k">class</span> <span class="nc">Restful</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-2">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Namespace is present</p>
+              <p>The controller object.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$class</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="nv">$class</span><span class="p">,</span> <span class="m">2</span><span class="p">);</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$controller</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-3">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Check for app\Class in lib and models folders</p>
+              <p>Whether <code>wrap()</code> should alter the output data to add
+ a <code>{"success":true,"data":"..."}</code> structure around it.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span>
-   <span class="k">require_once</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">);</span>
-   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
-  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/models/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span>
-   <span class="k">require_once</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/models/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">);</span>
-   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$wrap</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-4">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Fall back to PSR-0</p>
+              <p>Get and optionally JSON decode the PUT requests data.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$app</span><span class="p">))</span> <span class="p">{</span>
-   <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;lib/vendor/&#39;</span> <span class="o">.</span> <span class="nb">ltrim</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nv">$class</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
-  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-   <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;lib/vendor/&#39;</span> <span class="o">.</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nb">ltrim</span> <span class="p">(</span><span class="nv">$class</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">))</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">get_put_data</span> <span class="p">(</span><span class="nv">$decode</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">controller</span><span class="o">-&gt;</span><span class="na">get_put_data</span> <span class="p">();</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$decode</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="nx">json_decode</span> <span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
   <span class="p">}</span>
-  <span class="nv">$file</span> <span class="o">=</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nv">$file</span><span class="p">);</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$file</span><span class="p">))</span> <span class="p">{</span>
-   <span class="k">require_once</span> <span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
-  <span class="p">}</span>
- <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+  <span class="k">return</span> <span class="nv">$data</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-5">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>No namespace, check in lib/ first</p>
+              <p>Get and optionally JSON decode the raw POST data.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">require_once</span> <span class="p">(</span><span class="s1">&#39;lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">);</span>
-  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
- <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">get_raw_post_data</span> <span class="p">(</span><span class="nv">$decode</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">controller</span><span class="o">-&gt;</span><span class="na">get_raw_post_data</span> <span class="p">();</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$decode</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="nx">json_decode</span> <span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$data</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-6">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>No namespace, check in app lib and models folders</p>
+              <p>Wrap the specified data in a <code>{success:true,data:data}</code> structure
+ and echo it.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="nv">$res</span> <span class="o">=</span> <span class="nb">glob</span> <span class="p">(</span><span class="s1">&#39;apps/*/{models,lib}/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">,</span> <span class="nx">GLOB_BRACE</span><span class="p">);</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$res</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">count</span> <span class="p">(</span><span class="nv">$res</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
-   <span class="k">require_once</span> <span class="p">(</span><span class="nv">$res</span><span class="p">[</span><span class="m">0</span><span class="p">]);</span>
-   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">wrap</span> <span class="p">(</span><span class="nv">$data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">wrap</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$res</span> <span class="o">=</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">;</span>
+   <span class="nv">$res</span><span class="o">-&gt;</span><span class="na">success</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+   <span class="nv">$res</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">=</span> <span class="nv">$data</span><span class="p">;</span>
+   <span class="k">echo</span> <span class="nx">json_encode</span> <span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="k">echo</span> <span class="nx">json_encode</span> <span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
   <span class="p">}</span>
+  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-7">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Echo a JSON-encoded error response object and return null.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">error</span> <span class="p">(</span><span class="nv">$message</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$res</span> <span class="o">=</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">;</span>
+  <span class="nv">$res</span><span class="o">-&gt;</span><span class="na">success</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+  <span class="nv">$res</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="nv">$message</span><span class="p">;</span>
+  <span class="k">echo</span> <span class="nx">json_encode</span> <span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+  <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
  <span class="p">}</span>
- <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
 <span class="p">}</span>
-
-<span class="nx">spl_autoload_register</span> <span class="p">(</span><span class="s1">&#39;elefant_autoloader&#39;</span><span class="p">);</span>
 
 <span class="cp">?&gt;</span><span class="x"></span>
 </pre></div></pre></div>            </td>

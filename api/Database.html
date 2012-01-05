@@ -120,8 +120,16 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               MemcacheExt.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
+                                          <a class="source" href="./MongoManager.html">
+                              MongoManager.php              </a>
+                                          <a class="source" href="./MongoModel.html">
+                              MongoModel.php              </a>
                                           <a class="source" href="./Page.html">
                               Page.php              </a>
+                                          <a class="source" href="./Product.html">
+                              Product.php              </a>
+                                          <a class="source" href="./Restful.html">
+                              Restful.php              </a>
                                           <a class="source" href="./Template.html">
                               Template.php              </a>
                       </div>
@@ -144,12 +152,46 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-0">&#182;</a>
               </div>
-              <p>The database package is just a list of functions that act on
- a global <code>$db</code> PDO object. These provide direct access to the database
- through a set of convenience functions, and can help reduce
- direct-to-database logic down to just one or two lines of code.</p>
+              <p>Elefant CMS - http:www.elefantcms.com/</p>
 
-<p>For object modelling, see <code>lib/Model.php</code>.</p>
+<p>Copyright (c) 2011 Johnny Broadway</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre></pre></div>            </td>
+          </tr>
+                  <tr id="section-1">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>The database package is a simple procedural wrapper around one or more
+ PDO objects. While you're always free to use the PDO objects directly
+ (or better, build off the Model class to organize your logic into models),
+ these are simply meant to provide a handful of convenience functions to
+ reduce direct-to-database logic down to just one or two lines of code.</p>
+
+<p>Note: This is not a complete database abstraction layer, simply a set
+ of convenience functions. For creating models, and for any real degree
+ of ORM, see <code>lib/Model.php</code> which provides a more complete abstraction,
+ and a way of organizing your app logic.</p>
 
 <p>Usage:</p>
 
@@ -186,11 +228,17 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$db_list</span><span class="p">)</span> <span class="p">{</span>
   <span class="nv">$db_list</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
  <span class="p">}</span>
- <span class="nv">$id</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;master&#39;</span><span class="p">])</span> <span class="o">?</span> <span class="s1">&#39;master&#39;</span> <span class="o">:</span> <span class="s1">&#39;slave_&#39;</span> <span class="o">.</span> <span class="nb">count</span> <span class="p">(</span><span class="nv">$db_list</span><span class="p">);</span>
+ <span class="nv">$id</span> <span class="o">=</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;master&#39;</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;master&#39;</span><span class="p">])</span> <span class="o">?</span> <span class="s1">&#39;master&#39;</span> <span class="o">:</span> <span class="s1">&#39;slave_&#39;</span> <span class="o">.</span> <span class="nb">count</span> <span class="p">(</span><span class="nv">$db_list</span><span class="p">);</span>
  <span class="k">try</span> <span class="p">{</span>
   <span class="k">switch</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;driver&#39;</span><span class="p">])</span> <span class="p">{</span>
    <span class="k">case</span> <span class="s1">&#39;sqlite&#39;</span><span class="o">:</span>
     <span class="nv">$db_list</span><span class="p">[</span><span class="nv">$id</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PDO</span> <span class="p">(</span><span class="s1">&#39;sqlite:&#39;</span> <span class="o">.</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]);</span>
+    <span class="k">break</span><span class="p">;</span>
+   <span class="k">case</span> <span class="s1">&#39;pgsql&#39;</span><span class="o">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">],</span> <span class="s1">&#39;:&#39;</span><span class="p">))</span> <span class="p">{</span>
+     <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="s1">&#39;;port=&#39;</span><span class="p">,</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">]);</span>
+    <span class="p">}</span>
+    <span class="nv">$db_list</span><span class="p">[</span><span class="nv">$id</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PDO</span> <span class="p">(</span><span class="s1">&#39;pgsql:host=&#39;</span> <span class="o">.</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39;;dbname=&#39;</span> <span class="o">.</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39;;user=&#39;</span> <span class="o">.</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39;;password=&#39;</span> <span class="o">.</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;pass&#39;</span><span class="p">]);</span>
     <span class="k">break</span><span class="p">;</span>
    <span class="k">default</span><span class="o">:</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">],</span> <span class="s1">&#39;:&#39;</span><span class="p">))</span> <span class="p">{</span>
@@ -207,10 +255,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-1">
+                  <tr id="section-2">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-1">&#182;</a>
+                <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
               <p>Get a database connection. If <code>$master</code> is <code>1</code>, it will return the
  master connection, <code>-1</code> and it will return a random connection from
@@ -241,10 +289,22 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="k">return</span> <span class="nv">$db_list</span><span class="p">[</span><span class="nv">$db_last_conn</span><span class="p">];</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-2">
+                  <tr id="section-3">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-2">&#182;</a>
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Returns a count of active database connections.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_conn_count</span> <span class="p">()</span> <span class="p">{</span>
+ <span class="k">return</span> <span class="nb">count</span> <span class="p">(</span><span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;db_list&#39;</span><span class="p">]);</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-4">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>Get the last error message.</p>
             </td>
@@ -257,25 +317,25 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-3">
+                  <tr id="section-5">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>Normalizes arguments passed as an array, object, or as
  multiple extra parameters.</p>
             </td>
             <td class="code">
               <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_args</span> <span class="p">(</span><span class="nv">$args</span><span class="p">)</span> <span class="p">{</span>
- <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$args</span><span class="p">)</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$args</span><span class="p">)</span> <span class="o">===</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
- <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$args</span><span class="p">)</span> <span class="o">==</span> <span class="m">1</span> <span class="o">&amp;&amp;</span> <span class="nb">is_object</span> <span class="p">(</span><span class="nv">$args</span><span class="p">[</span><span class="m">0</span><span class="p">]))</span> <span class="p">{</span>
+ <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$args</span><span class="p">)</span> <span class="o">===</span> <span class="m">1</span> <span class="o">&amp;&amp;</span> <span class="nb">is_object</span> <span class="p">(</span><span class="nv">$args</span><span class="p">[</span><span class="m">0</span><span class="p">]))</span> <span class="p">{</span>
   <span class="nv">$res</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
   <span class="k">foreach</span> <span class="p">((</span><span class="k">array</span><span class="p">)</span> <span class="nv">$args</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="k">as</span> <span class="nv">$arg</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$res</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$arg</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
- <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$args</span><span class="p">)</span> <span class="o">==</span> <span class="m">1</span> <span class="o">&amp;&amp;</span> <span class="nb">is_array</span> <span class="p">(</span><span class="nv">$args</span><span class="p">[</span><span class="m">0</span><span class="p">]))</span> <span class="p">{</span>
+ <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$args</span><span class="p">)</span> <span class="o">===</span> <span class="m">1</span> <span class="o">&amp;&amp;</span> <span class="nb">is_array</span> <span class="p">(</span><span class="nv">$args</span><span class="p">[</span><span class="m">0</span><span class="p">]))</span> <span class="p">{</span>
   <span class="nv">$res</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
   <span class="k">foreach</span> <span class="p">(</span><span class="nv">$args</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="k">as</span> <span class="nv">$arg</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$res</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$arg</span><span class="p">;</span>
@@ -285,10 +345,31 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="k">return</span> <span class="nv">$args</span><span class="p">;</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-4">
+                  <tr id="section-6">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Normalize use of escape characters (`) to the database
+ that's currently in use.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">db_normalize_sql</span> <span class="p">(</span><span class="nv">$db</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">)</span> <span class="p">{</span>
+ <span class="nv">$dbtype</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">getAttribute</span> <span class="p">(</span><span class="nx">PDO</span><span class="o">::</span><span class="na">ATTR_DRIVER_NAME</span><span class="p">);</span>
+ <span class="k">switch</span> <span class="p">(</span><span class="nv">$dbtype</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="s1">&#39;pgsql&#39;</span><span class="o">:</span>
+   <span class="nv">$sql</span> <span class="o">=</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;`&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">);</span>
+   <span class="k">break</span><span class="p">;</span>
+  <span class="k">default</span><span class="o">:</span>
+   <span class="k">break</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">return</span> <span class="nv">$sql</span><span class="p">;</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-7">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>Fetch an array of all result objects.</p>
             </td>
@@ -299,6 +380,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="nv">$args</span> <span class="o">=</span> <span class="nb">func_get_args</span> <span class="p">();</span>
  <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
  <span class="nv">$args</span> <span class="o">=</span> <span class="nx">db_args</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$sql</span> <span class="o">=</span> <span class="nx">db_normalize_sql</span> <span class="p">(</span><span class="nv">$db</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">);</span>
  <span class="nv">$db_sql</span> <span class="o">=</span> <span class="nv">$sql</span><span class="p">;</span>
  <span class="nv">$db_args</span> <span class="o">=</span> <span class="nv">$args</span><span class="p">;</span>
 
@@ -312,10 +394,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="p">}</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-5">
+                  <tr id="section-8">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Execute a statement and return true/false.</p>
             </td>
@@ -326,6 +408,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="nv">$args</span> <span class="o">=</span> <span class="nb">func_get_args</span> <span class="p">();</span>
  <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
  <span class="nv">$args</span> <span class="o">=</span> <span class="nx">db_args</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$sql</span> <span class="o">=</span> <span class="nx">db_normalize_sql</span> <span class="p">(</span><span class="nv">$db</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">);</span>
  <span class="nv">$db_sql</span> <span class="o">=</span> <span class="nv">$sql</span><span class="p">;</span>
  <span class="nv">$db_args</span> <span class="o">=</span> <span class="nv">$args</span><span class="p">;</span>
 
@@ -338,10 +421,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="p">}</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-6">
+                  <tr id="section-9">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>Fetch a single object.</p>
             </td>
@@ -352,6 +435,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="nv">$args</span> <span class="o">=</span> <span class="nb">func_get_args</span> <span class="p">();</span>
  <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
  <span class="nv">$args</span> <span class="o">=</span> <span class="nx">db_args</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$sql</span> <span class="o">=</span> <span class="nx">db_normalize_sql</span> <span class="p">(</span><span class="nv">$db</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">);</span>
  <span class="nv">$db_sql</span> <span class="o">=</span> <span class="nv">$sql</span><span class="p">;</span>
  <span class="nv">$db_args</span> <span class="o">=</span> <span class="nv">$args</span><span class="p">;</span>
 
@@ -365,10 +449,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="p">}</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-7">
+                  <tr id="section-10">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Fetch the a single value from the first result returned.
  Useful for <code>count()</code> and other such calculations, and when
@@ -381,6 +465,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="nv">$args</span> <span class="o">=</span> <span class="nb">func_get_args</span> <span class="p">();</span>
  <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
  <span class="nv">$args</span> <span class="o">=</span> <span class="nx">db_args</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$sql</span> <span class="o">=</span> <span class="nx">db_normalize_sql</span> <span class="p">(</span><span class="nv">$db</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">);</span>
  <span class="nv">$db_sql</span> <span class="o">=</span> <span class="nv">$sql</span><span class="p">;</span>
  <span class="nv">$db_args</span> <span class="o">=</span> <span class="nv">$args</span><span class="p">;</span>
 
@@ -395,10 +480,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="p">}</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-8">
+                  <tr id="section-11">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>Fetch an array of a single field.</p>
             </td>
@@ -409,6 +494,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="nv">$args</span> <span class="o">=</span> <span class="nb">func_get_args</span> <span class="p">();</span>
  <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
  <span class="nv">$args</span> <span class="o">=</span> <span class="nx">db_args</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$sql</span> <span class="o">=</span> <span class="nx">db_normalize_sql</span> <span class="p">(</span><span class="nv">$db</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">);</span>
  <span class="nv">$db_sql</span> <span class="o">=</span> <span class="nv">$sql</span><span class="p">;</span>
  <span class="nv">$db_args</span> <span class="o">=</span> <span class="nv">$args</span><span class="p">;</span>
 
@@ -428,10 +514,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="p">}</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-9">
+                  <tr id="section-12">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Fetch an associative array of two fields, the first
  being the keys and the second being the values.</p>
@@ -443,6 +529,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="nv">$args</span> <span class="o">=</span> <span class="nb">func_get_args</span> <span class="p">();</span>
  <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
  <span class="nv">$args</span> <span class="o">=</span> <span class="nx">db_args</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
+ <span class="nv">$sql</span> <span class="o">=</span> <span class="nx">db_normalize_sql</span> <span class="p">(</span><span class="nv">$db</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">);</span>
  <span class="nv">$db_sql</span> <span class="o">=</span> <span class="nv">$sql</span><span class="p">;</span>
  <span class="nv">$db_args</span> <span class="o">=</span> <span class="nv">$args</span><span class="p">;</span>
 
@@ -462,10 +549,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="p">}</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-10">
+                  <tr id="section-13">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>Get the last inserted id value.</p>
             </td>
@@ -475,10 +562,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="k">return</span> <span class="nv">$db_list</span><span class="p">[</span><span class="nv">$db_last_conn</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">lastInsertId</span> <span class="p">();</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-11">
+                  <tr id="section-14">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Get the last error message directly from PDO.
  Useful for queries that were done with the global $db
@@ -491,10 +578,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="k">return</span> <span class="nv">$err</span><span class="p">[</span><span class="m">2</span><span class="p">];</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-12">
+                  <tr id="section-15">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Fetch the last SQL statement.</p>
             </td>
@@ -503,10 +590,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="k">return</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;db_sql&#39;</span><span class="p">];</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-13">
+                  <tr id="section-16">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>Fetch the arguments for the last SQL statement.</p>
             </td>

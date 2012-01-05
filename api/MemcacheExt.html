@@ -120,8 +120,16 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               MemcacheExt.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
+                                          <a class="source" href="./MongoManager.html">
+                              MongoManager.php              </a>
+                                          <a class="source" href="./MongoModel.html">
+                              MongoModel.php              </a>
                                           <a class="source" href="./Page.html">
                               Page.php              </a>
+                                          <a class="source" href="./Product.html">
+                              Product.php              </a>
+                                          <a class="source" href="./Restful.html">
+                              Restful.php              </a>
                                           <a class="source" href="./Template.html">
                               Template.php              </a>
                       </div>
@@ -183,8 +191,18 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 <p>http:demonastery.org/72/tiny-memcached-wrapper/</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre><span class="k">class</span> <span class="nc">MemcacheExt</span> <span class="k">extends</span> <span class="nx">Memcache</span> <span class="p">{</span>
- <span class="k">function</span> <span class="nf">cache</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">,</span> <span class="nv">$function</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre><span class="k">class</span> <span class="nc">MemcacheExt</span> <span class="k">extends</span> <span class="nx">Memcache</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-2">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Takes a callback function that generates the value 
+ if it's not found in the cache.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">cache</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">,</span> <span class="nv">$function</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">((</span><span class="nv">$val</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span> <span class="p">(</span><span class="nv">$key</span><span class="p">))</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$val</span> <span class="o">=</span> <span class="nv">$function</span> <span class="p">();</span>
    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>

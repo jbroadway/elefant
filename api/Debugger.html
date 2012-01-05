@@ -120,8 +120,16 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               MemcacheExt.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
+                                          <a class="source" href="./MongoManager.html">
+                              MongoManager.php              </a>
+                                          <a class="source" href="./MongoModel.html">
+                              MongoModel.php              </a>
                                           <a class="source" href="./Page.html">
                               Page.php              </a>
+                                          <a class="source" href="./Product.html">
+                              Product.php              </a>
+                                          <a class="source" href="./Restful.html">
+                              Restful.php              </a>
                                           <a class="source" href="./Template.html">
                               Template.php              </a>
                       </div>
@@ -197,7 +205,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Set the error and exception handlers.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">static</span> <span class="k">function</span> <span class="nf">start</span> <span class="p">()</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">start</span> <span class="p">()</span> <span class="p">{</span>
   <span class="nb">set_error_handler</span> <span class="p">(</span><span class="k">array</span> <span class="p">(</span><span class="s1">&#39;Debugger&#39;</span><span class="p">,</span> <span class="s1">&#39;handle_error&#39;</span><span class="p">));</span>
   <span class="nb">set_exception_handler</span> <span class="p">(</span><span class="k">array</span> <span class="p">(</span><span class="s1">&#39;Debugger&#39;</span><span class="p">,</span> <span class="s1">&#39;handle_exception&#39;</span><span class="p">));</span>
  <span class="p">}</span></pre></div>            </td>
@@ -210,7 +218,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Handles exceptions.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">static</span> <span class="k">function</span> <span class="nf">handle_exception</span> <span class="p">(</span><span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">handle_exception</span> <span class="p">(</span><span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">while</span> <span class="p">(</span><span class="nb">ob_get_level</span> <span class="p">()</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
    <span class="nb">ob_end_clean</span> <span class="p">();</span>
   <span class="p">}</span>
@@ -230,7 +238,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Shows the trace output.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">static</span> <span class="k">function</span> <span class="nf">show_trace</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">show_trace</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">)</span> <span class="p">{</span>
   <span class="nv">$start</span> <span class="o">=</span> <span class="m">0</span><span class="p">;</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">]))</span> <span class="p">{</span>
    <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="m">3</span><span class="p">];</span>
@@ -238,7 +246,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">]))</span> <span class="p">{</span>
    <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="m">2</span><span class="p">];</span>
   <span class="p">}</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nv">$trace</span><span class="p">[</span><span class="m">1</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nv">$trace</span><span class="p">[</span><span class="m">1</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">])</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="nv">$trace</span><span class="p">[</span><span class="m">1</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="nv">$trace</span><span class="p">[</span><span class="m">1</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">])</span> <span class="p">{</span>
    <span class="nv">$start</span><span class="o">++</span><span class="p">;</span>
   <span class="p">}</span>
 
@@ -258,8 +266,8 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Converts errors to ErrorException exceptions.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">static</span> <span class="k">function</span> <span class="nf">handle_error</span> <span class="p">(</span><span class="nv">$errno</span><span class="p">,</span> <span class="nv">$errstr</span><span class="p">,</span> <span class="nv">$errfile</span><span class="p">,</span> <span class="nv">$errline</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nv">$errno</span> <span class="o">==</span> <span class="m">8</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">handle_error</span> <span class="p">(</span><span class="nv">$errno</span><span class="p">,</span> <span class="nv">$errstr</span><span class="p">,</span> <span class="nv">$errfile</span><span class="p">,</span> <span class="nv">$errline</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$errno</span> <span class="o">===</span> <span class="m">8</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="k">throw</span> <span class="k">new</span> <span class="nx">ErrorException</span> <span class="p">(</span><span class="nv">$errstr</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$errno</span><span class="p">,</span> <span class="nv">$errfile</span><span class="p">,</span> <span class="nv">$errline</span><span class="p">);</span>
@@ -273,7 +281,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Shows a step in the trace.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">static</span> <span class="k">function</span> <span class="nf">show_trace_step</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">show_trace_step</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="s1">&#39;line&#39;</span><span class="p">]))</span> <span class="p">{</span>
    <span class="nv">$trace</span><span class="p">[</span><span class="s1">&#39;line&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$trace</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="m">3</span><span class="p">];</span>
   <span class="p">}</span>
@@ -312,7 +320,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Joins arguments for displaying the relevant code in a trace step.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">static</span> <span class="k">function</span> <span class="nf">join_arguments</span> <span class="p">(</span><span class="nv">$args</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">join_arguments</span> <span class="p">(</span><span class="nv">$args</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">is_array</span> <span class="p">(</span><span class="nv">$args</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
   <span class="p">}</span>
@@ -358,7 +366,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Get the code for a step in the trace.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">static</span> <span class="k">function</span> <span class="nf">get_code</span> <span class="p">(</span><span class="nv">$file</span><span class="p">,</span> <span class="nv">$line</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">get_code</span> <span class="p">(</span><span class="nv">$file</span><span class="p">,</span> <span class="nv">$line</span><span class="p">)</span> <span class="p">{</span>
   <span class="nv">$lines</span> <span class="o">=</span> <span class="nb">file</span> <span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
   <span class="nv">$count</span> <span class="o">=</span> <span class="nb">count</span> <span class="p">(</span><span class="nv">$lines</span><span class="p">);</span>
   <span class="nv">$out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
@@ -378,7 +386,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Highlight code for a trace step.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">static</span> <span class="k">function</span> <span class="nf">highlight</span> <span class="p">(</span><span class="nv">$line</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">highlight</span> <span class="p">(</span><span class="nv">$line</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span> <span class="p">(</span><span class="nv">$line</span><span class="p">,</span> <span class="s1">&#39;&lt;?php&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="nb">highlight_string</span> <span class="p">(</span><span class="nv">$line</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
   <span class="p">}</span>
@@ -397,7 +405,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Show the context of a trace step.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">static</span> <span class="k">function</span> <span class="nf">show_context</span> <span class="p">(</span><span class="nv">$context</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">show_context</span> <span class="p">(</span><span class="nv">$context</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">echo</span> <span class="s1">&#39;&lt;h2&gt;Error Context&lt;/h2&gt;&#39;</span><span class="p">;</span>
   <span class="k">foreach</span> <span class="p">(</span><span class="nv">$context</span> <span class="k">as</span> <span class="nv">$name</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">echo</span> <span class="s1">&#39;&lt;p class=&quot;code&quot;&gt;&lt;span class=&quot;code&quot;&gt;&#39;</span><span class="p">;</span>
@@ -419,7 +427,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Show a variable for the debug output.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">static</span> <span class="k">function</span> <span class="nf">show_variable</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$tabs</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">show_variable</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$tabs</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">is_numeric</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">echo</span> <span class="nv">$value</span><span class="p">;</span>
   <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_bool</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
@@ -465,7 +473,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
    <span class="k">echo</span> <span class="s2">&quot;)&quot;</span><span class="p">;</span>
   <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_object</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
    <span class="nv">$vars</span> <span class="o">=</span> <span class="nb">get_object_vars</span> <span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
-   <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$vars</span><span class="p">)</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$vars</span><span class="p">)</span> <span class="o">===</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">echo</span> <span class="nb">get_class</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39; ()&#39;</span><span class="p">;</span>
     <span class="k">return</span><span class="p">;</span>
    <span class="p">}</span>
@@ -490,7 +498,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Checks if an array is associative.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">static</span> <span class="k">function</span> <span class="nf">is_assoc</span> <span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">is_assoc</span> <span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">is_array</span> <span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="o">||</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$array</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
   <span class="p">}</span>

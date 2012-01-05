@@ -120,8 +120,16 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               MemcacheExt.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
+                                          <a class="source" href="./MongoManager.html">
+                              MongoManager.php              </a>
+                                          <a class="source" href="./MongoModel.html">
+                              MongoModel.php              </a>
                                           <a class="source" href="./Page.html">
                               Page.php              </a>
+                                          <a class="source" href="./Product.html">
+                              Product.php              </a>
+                                          <a class="source" href="./Restful.html">
+                              Restful.php              </a>
                                           <a class="source" href="./Template.html">
                               Template.php              </a>
                       </div>
@@ -194,7 +202,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  file.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$language</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$language</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-3">
             <td class="docs">
@@ -205,7 +213,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  to localize numbers and dates for.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$locale</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$locale</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-4">
             <td class="docs">
@@ -215,7 +223,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>The location of the language files.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$directory</span> <span class="o">=</span> <span class="s1">&#39;lang&#39;</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$directory</span> <span class="o">=</span> <span class="s1">&#39;lang&#39;</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-5">
             <td class="docs">
@@ -225,7 +233,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>The language hash, a key/value list.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$lang_hash</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$lang_hash</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
           </tr>
                   <tr id="section-6">
             <td class="docs">
@@ -236,7 +244,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  the browser, or any language-aware PHP functions, which to use.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$charset</span> <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$charset</span> <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-7">
             <td class="docs">
@@ -246,7 +254,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>The full name of language in use (ie. 'English' for 'en').</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$fullname</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$fullname</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-8">
             <td class="docs">
@@ -256,7 +264,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Contains fallback text replacements.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$fallbacks</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$fallbacks</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
           </tr>
                   <tr id="section-9">
             <td class="docs">
@@ -266,7 +274,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>2-D list of available languages, retrieved from <code>getLanguages()</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$languages</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$languages</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
           </tr>
                   <tr id="section-10">
             <td class="docs">
@@ -276,7 +284,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>The name of the language cookie for <code>$negotiation=cookie</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$cookieName</span> <span class="o">=</span> <span class="s1">&#39;lang&#39;</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$cookieName</span> <span class="o">=</span> <span class="s1">&#39;lang&#39;</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-11">
             <td class="docs">
@@ -287,7 +295,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  and not the page ID when <code>$negotiation=url</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$url_includes_lang</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$url_includes_lang</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-12">
             <td class="docs">
@@ -298,7 +306,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  the language stripped out.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$new_request_uri</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$new_request_uri</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-13">
             <td class="docs">
@@ -310,7 +318,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  including language URL prefixes in views via <code>{{ i18n.prefix }}</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-14">
             <td class="docs">
@@ -320,7 +328,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>The negotiation method used to determine the current language.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$negotiation</span> <span class="o">=</span> <span class="s1">&#39;url&#39;</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$negotiation</span> <span class="o">=</span> <span class="s1">&#39;url&#39;</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-15">
             <td class="docs">
@@ -331,7 +339,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  will contain the message.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">var</span> <span class="nv">$error</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$error</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-16">
             <td class="docs">
@@ -344,7 +352,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  choice is determined. See the <code>negotiate()</code> method for more info on this.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">__construct</span> <span class="p">(</span><span class="nv">$directory</span> <span class="o">=</span> <span class="s1">&#39;lang&#39;</span><span class="p">,</span> <span class="nv">$conf</span> <span class="o">=</span> <span class="k">array</span> <span class="p">())</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span> <span class="p">(</span><span class="nv">$directory</span> <span class="o">=</span> <span class="s1">&#39;lang&#39;</span><span class="p">,</span> <span class="nv">$conf</span> <span class="o">=</span> <span class="k">array</span> <span class="p">())</span> <span class="p">{</span>
   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">directory</span> <span class="o">=</span> <span class="nv">$directory</span><span class="p">;</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;negotiation_method&#39;</span><span class="p">]))</span> <span class="p">{</span>
    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">negotiation</span> <span class="o">=</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;negotiation_method&#39;</span><span class="p">];</span>
@@ -371,7 +379,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">setLocale</span> <span class="p">();</span>
   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getIndex</span> <span class="p">();</span>
 
-  <span class="k">if</span> <span class="p">(</span><span class="nb">extension_loaded</span><span class="p">(</span><span class="s1">&#39;mbstring&#39;</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">extension_loaded</span> <span class="p">(</span><span class="s1">&#39;mbstring&#39;</span><span class="p">))</span> <span class="p">{</span>
    <span class="nb">mb_internal_encoding</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">charset</span><span class="p">);</span>
   <span class="p">}</span>
  <span class="p">}</span></pre></div>            </td>
@@ -384,7 +392,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Calls <code>setlocale()</code> based on the current language.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">setLocale</span> <span class="p">()</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">setLocale</span> <span class="p">()</span> <span class="p">{</span>
   <span class="nv">$params</span> <span class="o">=</span> <span class="k">array</span> <span class="p">(</span><span class="nx">LC_TIME</span><span class="p">);</span></pre></div>            </td>
           </tr>
                   <tr id="section-18">
@@ -411,7 +419,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Includes the language index.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">getIndex</span> <span class="p">()</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">getIndex</span> <span class="p">()</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">((</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">language</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">directory</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">language</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">)))</span> <span class="p">{</span>
    <span class="k">include_once</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">directory</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">language</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">);</span>
   <span class="p">}</span>
@@ -435,7 +443,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  to return translated text.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">get</span> <span class="p">(</span><span class="nv">$original</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">get</span> <span class="p">(</span><span class="nv">$original</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="k">empty</span> <span class="p">(</span><span class="nv">$original</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
   <span class="p">}</span>
@@ -464,7 +472,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  $array[1], $array[2])</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">getf</span> <span class="p">()</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">getf</span> <span class="p">()</span> <span class="p">{</span>
   <span class="nv">$args</span> <span class="o">=</span> <span class="nb">func_get_args</span> <span class="p">();</span>
 
   <span class="nv">$original</span> <span class="o">=</span> <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$args</span><span class="p">);</span>
@@ -497,7 +505,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  'name', 'code', 'locale', 'charset', 'fallback', and 'default'.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">getLanguages</span> <span class="p">()</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">getLanguages</span> <span class="p">()</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">directory</span> <span class="o">.</span> <span class="s1">&#39;/languages.php&#39;</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">return</span> <span class="nb">parse_ini_file</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">directory</span> <span class="o">.</span> <span class="s1">&#39;/languages.php&#39;</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -522,12 +530,12 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  Default is <code>'url'</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">function</span> <span class="nf">negotiate</span> <span class="p">(</span><span class="nv">$method</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">negotiate</span> <span class="p">(</span><span class="nv">$method</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$method</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$method</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">negotiation</span><span class="p">;</span>
   <span class="p">}</span>
 
-  <span class="k">if</span> <span class="p">(</span><span class="nv">$method</span> <span class="o">==</span> <span class="s1">&#39;http&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$method</span> <span class="o">===</span> <span class="s1">&#39;http&#39;</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$accepted</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
    <span class="nv">$keys</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_ACCEPT_LANGUAGE&#39;</span><span class="p">]);</span>
 
@@ -556,7 +564,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="nv">$pos</span> <span class="o">=</span> <span class="nb">strpos</span> <span class="p">(</span><span class="nv">$lang</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="p">{</span>
      <span class="k">list</span> <span class="p">(</span><span class="nv">$lang</span><span class="p">,</span> <span class="nv">$cn</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="nv">$lang</span><span class="p">);</span>
 
-     <span class="k">if</span> <span class="p">(</span><span class="nv">$lang</span> <span class="o">==</span> <span class="s1">&#39;i&#39;</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">if</span> <span class="p">(</span><span class="nv">$lang</span> <span class="o">===</span> <span class="s1">&#39;i&#39;</span><span class="p">)</span> <span class="p">{</span>
       <span class="nv">$lang</span> <span class="o">=</span> <span class="nv">$cn</span><span class="p">;</span>
       <span class="nb">unset</span> <span class="p">(</span><span class="nv">$cn</span><span class="p">);</span>
      <span class="p">}</span>
@@ -601,7 +609,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
     <span class="p">}</span>
    <span class="p">}</span>
 
-  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$method</span> <span class="o">==</span> <span class="s1">&#39;cookie&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$method</span> <span class="o">===</span> <span class="s1">&#39;cookie&#39;</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span>
     <span class="nb">isset</span> <span class="p">(</span><span class="nv">$_COOKIE</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cookieName</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
     <span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">languages</span><span class="p">[</span><span class="nv">$_COOKIE</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cookieName</span><span class="p">]])</span>
@@ -609,7 +617,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
     <span class="k">return</span> <span class="nv">$_COOKIE</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cookieName</span><span class="p">];</span>
    <span class="p">}</span>
 
-  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$method</span> <span class="o">==</span> <span class="s1">&#39;url&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$method</span> <span class="o">===</span> <span class="s1">&#39;url&#39;</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/^\/(&#39;</span> <span class="o">.</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">,</span> <span class="nb">array_keys</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">languages</span><span class="p">))</span> <span class="o">.</span> <span class="s1">&#39;)\//&#39;</span><span class="p">,</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_URI&#39;</span><span class="p">],</span> <span class="nv">$matches</span><span class="p">))</span> <span class="p">{</span>
     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">url_includes_lang</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">new_request_uri</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/^\/&#39;</span> <span class="o">.</span> <span class="nv">$matches</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_URI&#39;</span><span class="p">]);</span>
@@ -617,7 +625,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
     <span class="k">return</span> <span class="nv">$matches</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
    <span class="p">}</span>
 
-  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$method</span> <span class="o">==</span> <span class="s1">&#39;subdomain&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$method</span> <span class="o">===</span> <span class="s1">&#39;subdomain&#39;</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/^(&#39;</span> <span class="o">.</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">,</span> <span class="nb">array_keys</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">languages</span><span class="p">))</span> <span class="o">.</span> <span class="s1">&#39;)\./&#39;</span><span class="p">,</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_HOST&#39;</span><span class="p">],</span> <span class="nv">$matches</span><span class="p">))</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nv">$matches</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
    <span class="p">}</span>

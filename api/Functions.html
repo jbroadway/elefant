@@ -120,8 +120,16 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               MemcacheExt.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
+                                          <a class="source" href="./MongoManager.html">
+                              MongoManager.php              </a>
+                                          <a class="source" href="./MongoModel.html">
+                              MongoModel.php              </a>
                                           <a class="source" href="./Page.html">
                               Page.php              </a>
+                                          <a class="source" href="./Product.html">
+                              Product.php              </a>
+                                          <a class="source" href="./Restful.html">
+                              Restful.php              </a>
                                           <a class="source" href="./Template.html">
                               Template.php              </a>
                       </div>
@@ -174,6 +182,28 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
+              <p>This is a collection of utility functions that are too small to merit their
+ own class, or even their own file, so they're aggregated here. They include:</p>
+
+<ul>
+<li><code>info()</code> - Dumps a formatted data structure for quick debugging.</li>
+<li><code>conf()</code> - Retrieves a value from the global configuration.</li>
+<li><code>simple_auth()</code> - Provides a means of implementing custom auth schemes
+(includes built-in HTTP Basic support).</li>
+<li><code>sql_split()</code> - Parses SQL data, removes comments, and splits it into
+individual queries.</li>
+<li><code>format_filesize()</code> - Formats a byte value into more readable output.</li>
+<li><code>detect()</code> - Simpel browser and browser type (e.g., mobile) detection.</li>
+</ul>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre></pre></div>            </td>
+          </tr>
+                  <tr id="section-2">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
               <p>Wraps a <code>print_r()</code> or <code>var_dump()</code> of the given <code>$value</code> with a set of <code>&lt;pre&gt;&lt;/pre&gt;</code>
  tags around it, and echoes it.</p>
             </td>
@@ -196,24 +226,27 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="p">}</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-2">
+                  <tr id="section-3">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-2">&#182;</a>
+                <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <p>Get a global configuration value from any namespace,
  without calling <code>global $conf</code> first. Useful in templates
  as well.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre><span class="k">function</span> <span class="nf">conf</span> <span class="p">(</span><span class="nv">$section</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
- <span class="k">return</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;conf&#39;</span><span class="p">][</span><span class="nv">$section</span><span class="p">][</span><span class="nv">$value</span><span class="p">];</span>
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">conf</span> <span class="p">(</span><span class="nv">$section</span><span class="p">,</span> <span class="nv">$value</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;conf&#39;</span><span class="p">][</span><span class="nv">$section</span><span class="p">][</span><span class="nv">$value</span><span class="p">];</span>
+ <span class="p">}</span>
+ <span class="k">return</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;conf&#39;</span><span class="p">][</span><span class="nv">$section</span><span class="p">];</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-3">
+                  <tr id="section-4">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>Implements a simple authentication mechanism based on callbacks.
  You provide a verifier function and a communication method function.
@@ -228,37 +261,33 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             </td>
             <td class="code">
               <div class="highlight"><pre><span class="k">function</span> <span class="nf">simple_auth</span> <span class="p">(</span><span class="nv">$verifier</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$method</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
- <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$verifier</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nv">$verifier</span> <span class="o">=</span> <span class="s1">&#39;simple_auth_verifier&#39;</span><span class="p">;</span>
- <span class="p">}</span>
- <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$method</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nv">$method</span> <span class="o">=</span> <span class="s1">&#39;simple_auth_basic&#39;</span><span class="p">;</span>
- <span class="p">}</span>
+ <span class="nv">$verifier</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$verifier</span><span class="p">)</span> <span class="o">?</span> <span class="nv">$verifier</span> <span class="o">:</span> <span class="s1">&#39;simple_auth_verifier&#39;</span><span class="p">;</span>
+ <span class="nv">$method</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$method</span><span class="p">)</span> <span class="o">?</span> <span class="nv">$method</span> <span class="o">:</span> <span class="s1">&#39;simple_auth_basic&#39;</span><span class="p">;</span>
  <span class="k">return</span> <span class="nb">call_user_func</span> <span class="p">(</span><span class="nv">$method</span><span class="p">,</span> <span class="nv">$verifier</span><span class="p">);</span>
-<span class="p">}</span></pre></div>            </td>
-          </tr>
-                  <tr id="section-4">
-            <td class="docs">
-              <div class="pilwrap">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>Default verifier for <code>simple_auth()</code>. This is meant to serve
- as an example, and should be overridden with your own
- implementation.</p>
-            </td>
-            <td class="code">
-              <div class="highlight"><pre><span class="k">function</span> <span class="nf">simple_auth_verifier</span> <span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="nv">$pass</span><span class="p">)</span> <span class="p">{</span>
- <span class="k">global</span> <span class="nv">$conf</span><span class="p">;</span>
- <span class="k">if</span> <span class="p">(</span><span class="nv">$user</span> <span class="o">==</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;General&#39;</span><span class="p">][</span><span class="s1">&#39;master_username&#39;</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nv">$pass</span> <span class="o">==</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;General&#39;</span><span class="p">][</span><span class="s1">&#39;master_password&#39;</span><span class="p">])</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
- <span class="p">}</span>
- <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-5">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Default verifier for <code>simple_auth()</code>. This is meant to serve
+ as an example, and should be overridden with your own
+ implementation. Note its use of <code>conf()</code> variables that are
+ likely not set in a default Elefant installation.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">simple_auth_verifier</span> <span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="nv">$pass</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$user</span> <span class="o">==</span> <span class="nx">conf</span> <span class="p">(</span><span class="s1">&#39;General&#39;</span><span class="p">,</span> <span class="s1">&#39;master_username&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nv">$pass</span> <span class="o">==</span> <span class="nx">conf</span> <span class="p">(</span><span class="s1">&#39;General&#39;</span><span class="p">,</span> <span class="s1">&#39;master_password&#39;</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-6">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>Default method for <code>simple_auth()</code>. Implements an HTTP basic
  protocol.</p>
@@ -273,10 +302,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-6">
+                  <tr id="section-7">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>Splits an SQL script into distinct queries which can be evaluated or
  manipulated individually.</p>
@@ -302,10 +331,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="k">return</span> <span class="nv">$out</span><span class="p">;</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-7">
+                  <tr id="section-8">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Returns a file size formatted in a more human-friendly format, rounded
  to the nearest GB, MB, KB, or byte.</p>
@@ -321,6 +350,114 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nv">$size</span> <span class="o">.</span> <span class="s2">&quot; b&quot;</span><span class="p">;</span>
  <span class="p">}</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-9">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Very basic browser detection. <code>$browser</code> can be one of:</p>
+
+<ul>
+<li>msie, ie</li>
+<li>firefox, ff, moz</li>
+<li>chrome</li>
+<li>safari</li>
+<li>webkit</li>
+<li>opera</li>
+<li>opera mini</li>
+<li>opera mobi</li>
+<li>ios</li>
+<li>iphone</li>
+<li>ipad</li>
+<li>android</li>
+<li>iemobile</li>
+<li>webos</li>
+<li>blackberry</li>
+<li>googlebot</li>
+<li>bot</li>
+<li>mobile</li>
+<li><p>tablet</p>
+
+<p>Notes:</p></li>
+<li><p><code>mobile</code> and <code>tablet</code> matches are not exhaustive, they only list the common
+platforms.</p></li>
+<li><p>iPad and iPod are both reported as mobile devices in the user agent string,
+so this reports that to be true as well.</p></li>
+<li><p>Android reports as true for both mobile and tablet.</p></li>
+<li><p>Some matches might be seen as false-positives, such as Chrome matching Safari.
+In these cases, look at other detection options. For example with Chrome, the
+rendering engine is Webkit, so better to simply use that.</p></li>
+<li><p>No version detection. For IE version-specific needs, use conditional comments
+in your HTML, or use a string like <code>msie 10</code>.</p></li>
+<li><p>Other lowercase strings that are not listed above can be used as well,
+for example <code>wap</code>, or <code>smartphone</code>.</p></li>
+</ul>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">detect</span> <span class="p">(</span><span class="nv">$browser</span><span class="p">)</span> <span class="p">{</span>
+ <span class="nv">$ua</span> <span class="o">=</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_USER_AGENT&#39;</span><span class="p">]);</span>
+ <span class="nv">$ver</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-10">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Normalize names</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="nv">$browser</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$browser</span> <span class="o">===</span> <span class="s1">&#39;ie&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;msie&#39;</span> <span class="o">:</span> <span class="nv">$browser</span><span class="p">;</span>
+ <span class="nv">$browser</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$browser</span> <span class="o">===</span> <span class="s1">&#39;ff&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;firefox&#39;</span> <span class="o">:</span> <span class="nv">$browser</span><span class="p">;</span>
+ <span class="nv">$browser</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$browser</span> <span class="o">===</span> <span class="s1">&#39;moz&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;firefox&#39;</span> <span class="o">:</span> <span class="nv">$browser</span><span class="p">;</span>
+
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$browser</span> <span class="o">===</span> <span class="s1">&#39;mobile&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/(iphone|ipod|android|opera mini|opera mobi|symb|phone|webos|blackberry|mobile)/&#39;</span><span class="p">,</span> <span class="nv">$ua</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-11">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>No common mobile platform</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+ <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$browser</span> <span class="o">===</span> <span class="s1">&#39;tablet&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/(ipad|android|tablet)/&#39;</span><span class="p">,</span> <span class="nv">$ua</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-12">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Not iPad, Android, or tablet</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+ <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$browser</span> <span class="o">===</span> <span class="s1">&#39;ios&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/(ipad|iphone|ipod)/&#39;</span><span class="p">,</span> <span class="nv">$ua</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-13">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Not iOS</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+ <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">strpos</span> <span class="p">(</span><span class="nv">$ua</span><span class="p">,</span> <span class="nv">$browser</span><span class="p">)</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="cp">?&gt;</span><span class="x"></span>
