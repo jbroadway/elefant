@@ -4,14 +4,10 @@ require_once ('lib/Form.php');
 require_once ('lib/Database.php');
 
 class FormTest extends PHPUnit_Framework_TestCase {
-	protected $backupGlobalsBlacklist = array ('db_list', 'db_err', 'db_sql', 'db_args', 'user');
+	protected $backupGlobalsBlacklist = array ('user');
 
 	static function setUpBeforeClass () {
-		db_open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
-	}
-
-	static function tearDownAfterClass () {
-		unset ($GLOBALS['db_list']);
+		Database::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 	}
 
 	function test_verify_value () {

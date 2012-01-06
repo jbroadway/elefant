@@ -6,11 +6,11 @@ require_once ('apps/admin/lib/Lock.php');
 $GLOBALS['db_list'] = array ();
 
 class LockTest extends PHPUnit_Framework_TestCase {
-	protected $backupGlobalsBlacklist = array ('db_list', 'db_err', 'db_sql', 'db_args', 'user');
+	protected $backupGlobalsBlacklist = array ('user');
 	protected static $lock;
 
 	static function setUpBeforeClass () {
-		db_open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
+		Database::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		db_execute ('create table `lock` (
 			id integer primary key,
 			user int not null,
@@ -27,7 +27,6 @@ class LockTest extends PHPUnit_Framework_TestCase {
 	}
 
 	static function tearDownAfterClass () {
-		unset ($GLOBALS['db_list']);
 		unset ($GLOBALS['user']);
 	}
 

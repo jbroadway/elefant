@@ -129,29 +129,6 @@ if (isset ($conf['Memcache']['server']) && extension_loaded ('memcache')) {
 }
 
 /**
- * Connect to the databases. Will die if the master connect
- * fails, or if all connections fail, but will continue
- * as long as the master connection succeeds since that is
- * require to issue write commands.
- */
-foreach (array_keys ($conf['Database']) as $key) {
-	if ($key == 'master') {
-		$conf['Database'][$key]['master'] = true;
-	}
-	if (! db_open ($conf['Database'][$key])) {
-		if ($conf['Database'][$key]['master'] === true) {
-			// Die immediately if connection to master fails,
-			// since we can't issue any write commands.
-			die (db_error ());
-		}
-	}
-}
-// Die if no connections succeeded.
-if (db_conn_count () === 0) {
-	die (db_error ());
-}
-
-/**
  * Route the request to the appropriate handler and get
  * the handler's response.
  */

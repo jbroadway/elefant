@@ -3,12 +3,6 @@
 require_once ('lib/Database.php');
 
 class DatabaseTest extends PHPUnit_Framework_TestCase {
-	protected $backupGlobalsBlacklist = array ('db_list', 'db_err', 'db_sql', 'db_args');
-
-	static function setUpBeforeClass () {
-		$GLOBALS['db_list'] = array ();
-	}
-
 	function setUp () {
 		$this->bad_conf = array (
 			'master' => true,
@@ -29,32 +23,28 @@ class DatabaseTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 
-	static function tearDownAfterClass () {
-		unset ($GLOBALS['db_list']);
-	}
-
 	function test_open () {
 		// test a bad connection
-		$this->assertFalse (db_open ($this->bad_conf));
+		$this->assertFalse (Database::open ($this->bad_conf));
 		$this->assertEquals ('could not find driver', db_error ());
-		$this->assertEquals (0, db_conn_count ());
+		$this->assertEquals (0, Database::count ());
 
 		// test a master connection
-		$this->assertTrue (db_open ($this->conf));
-		$this->assertEquals (1, db_conn_count ());
+		$this->assertTrue (Database::open ($this->conf));
+		$this->assertEquals (1, Database::count ());
 
 		// test a second connection
-		$this->assertTrue (db_open ($this->conf2));
-		$this->assertEquals (2, db_conn_count ());
-		unset ($GLOBALS['db_list']['slave_1']);
+		$this->assertTrue (Database::open ($this->conf2));
+		$this->assertEquals (2, Database::count ());
+		unset (Database::$connections['slave_1']);
 	}
 
 	function test_args () {
 		$cmp = array ('one', 'two');
 		$obj = (object) $cmp;
-		$this->assertEquals (db_args (array ('one', 'two')), $cmp);
-		$this->assertEquals (db_args (array (array ('one', 'two'))), $cmp);
-		$this->assertEquals (db_args (array ($obj)), $cmp);
+		$this->assertEquals (Database::args (array ('one', 'two')), $cmp);
+		$this->assertEquals (Database::args (array (array ('one', 'two'))), $cmp);
+		$this->assertEquals (Database::args (array ($obj)), $cmp);
 	}
 
 	function test_execute () {

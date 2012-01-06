@@ -8,10 +8,8 @@ require_once ('apps/admin/models/Versions.php');
 class Foobar extends Model {}
 
 class VersionsTest extends PHPUnit_Framework_TestCase {
-	protected $backupGlobalsBlacklist = array ('db_list', 'db_err', 'db_sql', 'db_args', 'user');
-
 	static function setUpBeforeClass () {
-		db_open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
+		Database::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		db_execute ('create table foobar (id int not null, name char(32) not null)');
 		if (! db_execute ('create table versions (
 			id integer primary key,
