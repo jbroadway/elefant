@@ -31,7 +31,7 @@
  *
  * Usage:
  *
- *     if ($conf['General']['debug']) {
+ *     if (conf ('General', 'debug')) {
  *         require_once ('lib/Debugger.php');
  *         Debugger::start ();
  *     }

@@ -65,17 +65,20 @@ if (get_magic_quotes_gpc ()) {
 
 /**
  * Check ELEFANT_ENV environment variable to determine which
- * configuration to load, and load it. Also set the default
+ * configuration to load. Also include the Elefant version,
+ * autoloader, and core functions, and set the default
  * timezone to avoid warnings in date functions.
  */
 define ('ELEFANT_ENV', getenv ('ELEFANT_ENV') ? getenv ('ELEFANT_ENV') : 'config');
-$conf = parse_ini_file ('conf/' . ELEFANT_ENV . '.php', true);
-date_default_timezone_set($conf['General']['timezone']);
+require_once ('conf/version.php');
+require_once ('lib/Autoloader.php');
+require_once ('lib/Functions.php');
+date_default_timezone_set(conf ('General', 'timezone'));
 
 /**
  * Enable the debugger if conf[General][debug] is true.
  */
-if ($conf['General']['debug']) {
+if (conf ('General', 'debug')) {
 	require_once ('lib/Debugger.php');
 	Debugger::start ();
 }
@@ -84,9 +87,6 @@ if ($conf['General']['debug']) {
  * Include the core libraries used by the front controller
  * to dispatch and respond to requests.
  */
-require_once ('conf/version.php');
-require_once ('lib/Autoloader.php');
-require_once ('lib/Functions.php');
 require_once ('lib/Database.php');
 require_once ('lib/Page.php');
 require_once ('lib/I18n.php');
@@ -107,10 +107,10 @@ if (defined ('STDIN')) {
  * (no duplicate execution for things like loading translation
  * files).
  */
-$i18n = new I18n ('lang', $conf['I18n']);
+$i18n = new I18n ('lang', conf ('I18n'));
 $page = new Page;
-$controller = new Controller ($conf['Hooks']);
-$tpl = new Template ($conf['General']['charset'], $controller);
+$controller = new Controller (conf ('Hooks'));
+$tpl = new Template (conf ('General', 'charset'), $controller);
 
 /**
  * Initialize the built-in Memcache support, or provide a
@@ -118,9 +118,9 @@ $tpl = new Template ($conf['General']['charset'], $controller);
  * handlers and in the front controller, whether Memcache
  * is available or not.
  */
-if (isset ($conf['Memcache']['server']) && extension_loaded ('memcache')) {
+if (conf ('Memcache', 'server') && extension_loaded ('memcache')) {
 	$memcache = new MemcacheExt;
-	foreach ($conf['Memcache']['server'] as $s) {
+	foreach (conf ('Memcache', 'server') as $s) {
 		list ($server, $port) = explode (':', $s);
 		$memcache->addServer ($server, $port);
 	}
@@ -144,7 +144,7 @@ $page->body = $controller->handle ($handler, false);
  * compression if conf[General][compress_output] is true.
  */
 $out = $page->render ($tpl);
-if ($conf['General']['compress_output'] && extension_loaded ('zlib')) {
+if (conf ('General', 'compress_output') && extension_loaded ('zlib')) {
 	ob_start ('ob_gzhandler');
 }
 echo $out;

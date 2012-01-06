@@ -61,15 +61,22 @@ function info ($value, $full = false) {
 }
 
 /**
- * Get a global configuration value from any namespace,
- * without calling `global $conf` first. Useful in templates
- * as well.
+ * Get any global configuration section or individual setting value.
+ * Lazy loads the configuration upon first use, and stores it privately
+ * to avoid polluting the global space. Useful in templates as well.
+ * Note: Uses ELEFANT_ENV, defined in the front controller, to determine
+ * which configuration file to load, allowing for alternate dev, staging,
+ * and production configurations in a single codebase.
  */
 function conf ($section, $value = false) {
-	if ($value) {
-		return $GLOBALS['conf'][$section][$value];
+	static $conf;
+	if ($conf === null) {
+		$conf = parse_ini_file ('conf/' . ELEFANT_ENV . '.php', true);
 	}
-	return $GLOBALS['conf'][$section];
+	if ($value) {
+		return $conf[$section][$value];
+	}
+	return $conf[$section];
 }
 
 /**

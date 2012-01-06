@@ -27,24 +27,24 @@
 /**
  * Basic routing controller. Maps `$_SERVER['REQUEST_URI']` to files in
  * a `apps/{appname}/handlers/` folder, defaulting to
- * `$conf['General']['default_handler']` if no others match.
+ * `conf ('General', 'default_handler')` if no others match.
  *
  * Matching is done by reducing the URL folder-by-folder until a file
  * matches. Here are some examples:
  *
- *     / -> $conf[default_handler]
+ *     / -> conf(General, default_handler)
  *
  *     /foo -> apps/foo/handlers/index.php,
- *             $conf[default_handler]
+ *             conf(General, default_handler)
  *
  *     /user/login -> apps/user/handlers/login.php,
  *                    apps/user/handlers/index.php,
- *                    $conf[default_handler]
+ *                    conf(General, default_handler)
  *
  *     /user/info/123 -> apps/user/handlers/info/123.php,
  *                       apps/user/handlers/info.php,
  *                       apps/user/handlers/index.php,
- *                       $conf[default_handler]
+ *                       conf(General, default_handler)
  *
  * The controller simply returns the matching URL so you can include
  * it via the following code:
