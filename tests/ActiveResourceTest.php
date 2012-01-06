@@ -1,6 +1,6 @@
 <?php
 
-require_once ('lib/ActiveResource.php');
+require_once ('lib/vendor/ActiveResource.php');
 
 class Test extends ActiveResource {
 }
