@@ -108,7 +108,7 @@ class Database {
 	 * Open a database connection and add it to the pool. Accepts
 	 * an array of connection info taken from the global conf().
 	 */
-	public function open ($conf) {
+	public static function open ($conf) {
 		if (! self::$connections) {
 			self::$connections = array ();
 		}
@@ -145,7 +145,7 @@ class Database {
 	 * as long as the master connection succeeds since that is
 	 * require to issue write commands.
 	 */
-	public function load_connections () {
+	public static function load_connections () {
 		$list = conf ('Database');
 		foreach ($list as $key => $conf) {
 			if ($key == 'master') {
@@ -171,7 +171,7 @@ class Database {
 	 * only the slaves, `0` and it will return a random connection which
 	 * could be any of the slaves or the master.
 	 */
-	public function get_connection ($master = 0) {
+	public static function get_connection ($master = 0) {
 		if (count (self::$connections) === 0) {
 			self::load_connections ();
 		}
@@ -200,7 +200,7 @@ class Database {
 	/**
 	 * Returns a count of active database connections.
 	 */
-	public function count () {
+	public static function count () {
 		return count (self::$connections);
 	}
 
@@ -208,7 +208,7 @@ class Database {
 	 * Normalizes arguments passed as an array, object, or as
 	 * multiple extra parameters.
 	 */
-	public function args ($args) {
+	public static function args ($args) {
 		if (count ($args) === 0) {
 			return null;
 		} elseif (count ($args) === 1 && is_object ($args[0])) {
@@ -223,7 +223,7 @@ class Database {
 	 * Normalize use of escape characters (`) to the database
 	 * that's currently in use.
 	 */
-	public function normalize_sql ($db, $sql) {
+	public static function normalize_sql ($db, $sql) {
 		$dbtype = $db->getAttribute (PDO::ATTR_DRIVER_NAME);
 		switch ($dbtype) {
 			case 'pgsql':
@@ -235,7 +235,7 @@ class Database {
 		return $sql;
 	}
 
-	public function prepare ($args, $master = 0) {
+	public static function prepare ($args, $master = 0) {
 		$db = self::get_connection ($master);
 		$sql = array_shift ($args);
 		$args = self::args ($args);
