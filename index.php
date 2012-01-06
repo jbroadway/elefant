@@ -129,6 +129,15 @@ if (conf ('Memcache', 'server') && extension_loaded ('memcache')) {
 }
 
 /**
+ * Check for a bootstrap.php file in the root of the site
+ * and if found, use it for additional app-level configurations
+ * (Dependency Injection, custom logging settings, etc.).
+ */
+if (file_exists ('bootstrap.php')) {
+	require_once ('bootstrap.php');
+}
+
+/**
  * Route the request to the appropriate handler and get
  * the handler's response.
  */
