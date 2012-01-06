@@ -65,6 +65,10 @@ function elefant_autoloader ($class) {
 		// No namespace, check in lib/ first
 		require_once ('lib/' . $class . '.php');
 		return true;
+	} elseif (@file_exists ('lib/vendor/' . $class . '.php')) {
+		// No namespace, check in lib/vendor/ next
+		require_once ('lib/vendor/' . $class . '.php');
+		return true;
 	} else {
 		// No namespace, check in app lib and models folders
 		$res = glob ('apps/*/{models,lib}/' . $class . '.php', GLOB_BRACE);
