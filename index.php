@@ -34,7 +34,7 @@
  * the front controller for requests with file extensions and
  * return false.
  */
-if (preg_match ('/\.[a-zA-Z0-9]+$/', parse_url ($_SERVER['REQUEST_URI'], PHP_URL_PATH))) { 
+if (isset ($_SERVER['REQUEST_URI']) && preg_match ('/\.[a-zA-Z0-9]+$/', parse_url ($_SERVER['REQUEST_URI'], PHP_URL_PATH))) { 
     return false;
 }
 
