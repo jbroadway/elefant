@@ -71,7 +71,11 @@ function info ($value, $full = false) {
 function conf ($section, $value = false) {
 	static $conf;
 	if ($conf === null) {
-		$conf = parse_ini_file ('conf/' . ELEFANT_ENV . '.php', true);
+		if (isset ($GLOBALS['conf'])) {
+			$conf = $GLOBALS['conf'];
+		} else {
+			$conf = parse_ini_file ('conf/' . ELEFANT_ENV . '.php', true);
+		}
 	}
 	if ($value) {
 		return $conf[$section][$value];
