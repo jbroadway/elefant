@@ -53,30 +53,20 @@
  *     
  *     require_once ('Analog.php');
  *     
- *     // Default logging to /tmp/log.txt
- *     Analog::log ('Log this error', Analog::ERROR);
- *     
- *     // Create a custom object format
- *     Analog::format (function ($machine, $level, $message) {
- *       return (object) array (
- *             'machine' => $machine,
- *             'date'    => gmdate ('Y-m-d H:i:s'),
- *             'level'   => $level,
- *             'message' => $message
- *         );
- *     });
+ *     // Default logging to /tmp/analog.txt
+ *     Analog::log ('Log this error');
  *     
  *     // Log to a MongoDB log collection
- *     Analog::location (function ($message) {
+ *     Analog::handler (function ($info) {
  *         static $conn = null;
  *         if (! $conn) {
  *             $conn = new Mongo ('localhost:27017');
  *         }
- *         $conn->mydb->log->insert ($message);
+ *         $conn->mydb->log->insert ($info);
  *     });
  *     
- *     // Log an error
- *     Analog::log ('The sky is falling!');
+ *     // Log an alert
+ *     Analog::log ('The sky is falling!', Analog::ALERT);
  *     
  *     // Log some debug info
  *     Analog::log ('Debugging info', Analog::DEBUG);
@@ -100,15 +90,17 @@ class Analog {
 	const DEBUG    = 7; // Debugging messages
 
 	/**
-	 * The default format for log messages (machine, date, level, message).
+	 * The default format for log messages (machine, date, level, message)
+	 * written to a file. To change the order of items in the string,
+	 * use `%1$s` references.
 	 */
 	public static $format = "%s - %s - %d - %s\n";
 
 	/**
-	 * The location to save the log output. See Analog::location()
+	 * The method of saving the log output. See Analog::handler()
 	 * for details on setting this.
 	 */
-	public static $location = '/tmp/log.txt';
+	private static $handler = null;
 
 	/**
 	 * The name of the current machine, defaults to $_SERVER['SERVER_ADDR']
@@ -118,67 +110,53 @@ class Analog {
 	public static $machine = null;
 
 	/**
-	 * Format getter/setter. Usage:
+	 * Handler getter/setter. If no handler is provided, it will set it to
+	 * sys_get_temp_dir() . '/analog.txt' as a default. Usage:
 	 *
-	 *     Analog::format ("%s, %s, %d, %s\n");
-	 *
-	 * Using a closure:
-	 *
-	 *     Analog::format (function ($machine, $level, $message) {
-	 *         return sprintf ("%s [%d] %s\n", gmdate ('Y-m-d H:i:s'), $level, $message);
-	 *     });
-	 */
-	public static function format ($format = false) {
-		if ($format) {
-			self::$format = $format;
-		}
-		return self::$format;
-	}
-
-	/**
-	 * Location getter/setter. Usage:
-	 *
-	 *    Analog::location ('my_log.txt');
+	 *    Analog::handler ('my_log.txt');
 	 *
 	 * Using a closure:
 	 *
-	 *     Analog::location (function ($msg) {
+	 *     Analog::handler (function ($msg) {
 	 *         return error_log ($msg);
 	 *     });
  	 */
-	public static function location ($location = false) {
-		if ($location) {
-			self::$location = $location;
+	public static function handler ($handler = false) {
+		if ($handler) {
+			self::$handler = $handler;
+		} elseif (! self::$handler) {
+			self::$handler = sys_get_temp_dir () . DIRECTORY_SEPARATOR . 'analog.txt';
 		}
-		return self::$location;
+		return self::$handler;
 	}
 
 	/**
-	 * Format the message.
+	 * Get the log info as an associative array.
 	 */
-	public static function format_message ($message, $level = 3) {
-		$format = self::format ();
-
+	private static function get_struct ($message, $level) {
 		if (self::$machine === null) {
 			self::$machine = (isset ($_SERVER['SERVER_ADDR'])) ? $_SERVER['SERVER_ADDR'] : 'localhost';
 		}
 
-		if (is_object ($format) && get_class ($format) === 'Closure') {
-		    return $format (self::$machine, $level, $message);
-		}
-		return sprintf ($format, self::$machine, gmdate ('Y-m-d H:i:s'), $level, $message);
+		return array (
+			'machine' => self::$machine,
+			'date' => gmdate ('Y-m-d H:i:s'),
+			'level' => $level,
+			'message' => $message
+		);
 	}
 
 	/**
 	 * Write a raw message to the log.
 	 */
-	public static function write ($message) {
-		$location = self::location ();
-		if (is_object ($location) && get_class ($location) === 'Closure') {
-			return $location ($message);
+	private static function write ($struct) {
+		$handler = self::handler ();
+
+		if ($handler instanceof Closure) {
+			return $handler ($struct);
 		}
 
-		$f = fopen ($location, 'a');
+		$f = fopen ($handler, 'a+');
 		if (! $f) {
 			throw new LogicException ('Could not open file for writing');
 		}
@@ -187,6 +165,7 @@ class Analog {
 			throw new RuntimeException ('Could not lock file');
 		}
 
+		$message = vsprintf (self::$format, $struct);
 		fwrite ($f, $message);
 		flock ($f, LOCK_UN);
 		fclose ($f);
@@ -201,8 +180,6 @@ class Analog {
 	 *     Analog::log ('Debug info', Analog::DEBUG);
 	 */
 	public static function log ($message, $level = 3) {
-		return self::write (self::format_message ($message, $level));
+		return self::write (self::get_struct ($message, $level));
 	}
 }
-
-?>
