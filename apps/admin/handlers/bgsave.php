@@ -32,6 +32,7 @@ if ($o->error) {
 		$error = $o->error;
 	} else {
 		Versions::add ($o);
+		$memcache->delete ('_admin_page_' . $_GET['id']);
 		$_POST['page'] = $_GET['id'];
 		$this->hook ('admin/edit', $_POST);
 	}
