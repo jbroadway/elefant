@@ -200,6 +200,23 @@ class FunctionsTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse (detect ('tablet'));
 		$this->assertFalse (detect ('mobile'));
 	}
+
+	function test_rmdir_recursive () {
+		mkdir ('rmdir_recursive_test');
+		mkdir ('rmdir_recursive_test/a');
+		mkdir ('rmdir_recursive_test/b');
+		mkdir ('rmdir_recursive_test/b/c');
+		mkdir ('rmdir_recursive_test/b/c/d');
+		mkdir ('rmdir_recursive_test/b/c/d/e');
+		touch ('rmdir_recursive_test/foo.txt');
+		touch ('rmdir_recursive_test/a/foo.txt');
+		touch ('rmdir_recursive_test/a/bar.txt');
+		touch ('rmdir_recursive_test/b/c/foo.txt');
+		touch ('rmdir_recursive_test/b/c/d/e/.foo');
+
+		$this->assertTrue (rmdir_recursive ('rmdir_recursive_test'));
+		$this->assertFalse (file_exists ('rmdir_recursive_test'));
+	}
 }
 
 ?>

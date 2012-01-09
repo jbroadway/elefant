@@ -242,4 +242,17 @@ function detect ($browser) {
 	return true;
 }
 
+/**
+ * Recursively delete a folder and all its contents.
+ * Handles hidden dot-files as well as regular files.
+ */
+function rmdir_recursive ($path) {
+	if (preg_match ('|/\.+$|', $path)) {
+		return;
+	}
+	return is_file ($path)
+		? unlink ($path)
+		: array_map ('rmdir_recursive', glob ($path . '/{,.}*', GLOB_BRACE)) == rmdir ($path);
+}
+
 ?>
