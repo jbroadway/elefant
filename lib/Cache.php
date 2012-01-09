@@ -151,7 +151,11 @@ class Cache {
 	 * Emulates `Memcache::delete`.
 	 */
 	public function delete ($key) {
-		return unlink ($this->dir . '/' . md5 ($key));
+		$file = $this->dir . '/' . md5 ($key);
+		if (file_exists ($file)) {
+			return unlink ($this->dir . '/' . md5 ($key));
+		}
+		return true;
 	}
 }
 
