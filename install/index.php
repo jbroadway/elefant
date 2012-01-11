@@ -119,7 +119,7 @@ switch ($_GET['step']) {
 		$data['error'] = false;
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			// got the settings, test and create schema
-			if (! db_open ($_POST)) {
+			if (! Database::open ($_POST)) {
 				$data['error'] = db_error ();
 			} else {
 				$data['error'] = false;
@@ -176,7 +176,7 @@ switch ($_GET['step']) {
 					$conf_ini['Database']['master']['file'] = '../' . $conf_ini['Database']['master']['file'];
 				}
 
-				if (! db_open ($conf_ini['Database']['master'])) {
+				if (! Database::open ($conf_ini['Database']['master'])) {
 					$data['error'] = db_error ();
 				} else {
 					$date = gmdate ('Y-m-d H:i:s');
