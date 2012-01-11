@@ -98,8 +98,6 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
-                                          <a class="source" href="./ActiveResource.html">
-                              ActiveResource.php              </a>
                                           <a class="source" href="./Autoloader.html">
                               Autoloader.php              </a>
                                           <a class="source" href="./Cache.html">
@@ -231,16 +229,27 @@ individual queries.</li>
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Get a global configuration value from any namespace,
- without calling <code>global $conf</code> first. Useful in templates
- as well.</p>
+              <p>Get any global configuration section or individual setting value.
+ Lazy loads the configuration upon first use, and stores it privately
+ to avoid polluting the global space. Useful in templates as well.
+ Note: Uses ELEFANT_ENV, defined in the front controller, to determine
+ which configuration file to load, allowing for alternate dev, staging,
+ and production configurations in a single codebase.</p>
             </td>
             <td class="code">
               <div class="highlight"><pre><span class="k">function</span> <span class="nf">conf</span> <span class="p">(</span><span class="nv">$section</span><span class="p">,</span> <span class="nv">$value</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
- <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;conf&#39;</span><span class="p">][</span><span class="nv">$section</span><span class="p">][</span><span class="nv">$value</span><span class="p">];</span>
+ <span class="k">static</span> <span class="nv">$conf</span><span class="p">;</span>
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$conf</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;conf&#39;</span><span class="p">]))</span> <span class="p">{</span>
+   <span class="nv">$conf</span> <span class="o">=&amp;</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;conf&#39;</span><span class="p">];</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="nv">$conf</span> <span class="o">=</span> <span class="nb">parse_ini_file</span> <span class="p">(</span><span class="s1">&#39;conf/&#39;</span> <span class="o">.</span> <span class="nx">ELEFANT_ENV</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+  <span class="p">}</span>
  <span class="p">}</span>
- <span class="k">return</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;conf&#39;</span><span class="p">][</span><span class="nv">$section</span><span class="p">];</span>
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nv">$conf</span><span class="p">[</span><span class="nv">$section</span><span class="p">][</span><span class="nv">$value</span><span class="p">];</span>
+ <span class="p">}</span>
+ <span class="k">return</span> <span class="nv">$conf</span><span class="p">[</span><span class="nv">$section</span><span class="p">];</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-4">
@@ -458,6 +467,24 @@ for example <code>wap</code>, or <code>smartphone</code>.</p></li>
   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
  <span class="p">}</span>
  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+<span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-14">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Recursively delete a folder and all its contents.
+ Handles hidden dot-files as well as regular files.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">rmdir_recursive</span> <span class="p">(</span><span class="nv">$path</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;|/\.+$|&#39;</span><span class="p">,</span> <span class="nv">$path</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">return</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">return</span> <span class="nb">is_file</span> <span class="p">(</span><span class="nv">$path</span><span class="p">)</span>
+  <span class="o">?</span> <span class="nb">unlink</span> <span class="p">(</span><span class="nv">$path</span><span class="p">)</span>
+  <span class="o">:</span> <span class="nb">array_map</span> <span class="p">(</span><span class="s1">&#39;rmdir_recursive&#39;</span><span class="p">,</span> <span class="nb">glob</span> <span class="p">(</span><span class="nv">$path</span> <span class="o">.</span> <span class="s1">&#39;/{,.}*&#39;</span><span class="p">,</span> <span class="nx">GLOB_BRACE</span><span class="p">))</span> <span class="o">==</span> <span class="nb">rmdir</span> <span class="p">(</span><span class="nv">$path</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="cp">?&gt;</span><span class="x"></span>

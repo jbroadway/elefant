@@ -98,8 +98,6 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
-                                          <a class="source" href="./ActiveResource.html">
-                              ActiveResource.php              </a>
                                           <a class="source" href="./Autoloader.html">
                               Autoloader.php              </a>
                                           <a class="source" href="./Cache.html">
@@ -255,12 +253,24 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             <td class="code">
               <div class="highlight"><pre>  <span class="k">require_once</span> <span class="p">(</span><span class="s1">&#39;lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">);</span>
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
- <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>            </td>
+ <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;lib/vendor/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-6">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>No namespace, check in lib/vendor/ next</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="k">require_once</span> <span class="p">(</span><span class="s1">&#39;lib/vendor/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">);</span>
+  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+ <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-7">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>No namespace, check in app lib and models folders</p>
             </td>

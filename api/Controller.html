@@ -98,8 +98,6 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
-                                          <a class="source" href="./ActiveResource.html">
-                              ActiveResource.php              </a>
                                           <a class="source" href="./Autoloader.html">
                               Autoloader.php              </a>
                                           <a class="source" href="./Cache.html">
@@ -184,24 +182,24 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               </div>
               <p>Basic routing controller. Maps <code>$_SERVER['REQUEST_URI']</code> to files in
  a <code>apps/{appname}/handlers/</code> folder, defaulting to
- <code>$conf['General']['default_handler']</code> if no others match.</p>
+ <code>conf ('General', 'default_handler')</code> if no others match.</p>
 
 <p>Matching is done by reducing the URL folder-by-folder until a file
  matches. Here are some examples:</p>
 
-<pre><code> / -&gt; $conf[default_handler]
+<pre><code> / -&gt; conf(General, default_handler)
 
  /foo -&gt; apps/foo/handlers/index.php,
-         $conf[default_handler]
+         conf(General, default_handler)
 
  /user/login -&gt; apps/user/handlers/login.php,
                 apps/user/handlers/index.php,
-                $conf[default_handler]
+                conf(General, default_handler)
 
  /user/info/123 -&gt; apps/user/handlers/info/123.php,
                    apps/user/handlers/info.php,
                    apps/user/handlers/index.php,
-                   $conf[default_handler]
+                   conf(General, default_handler)
 </code></pre>
 
 <p>The controller simply returns the matching URL so you can include
