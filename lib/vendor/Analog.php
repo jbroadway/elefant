@@ -153,7 +153,7 @@ class Analog {
 	private static function write ($struct) {
 		$handler = self::handler ();
 
-		if (! $handler instanceof Closure) {
+		if (! $handler instanceof \Closure) {
 			$handler = Analog\Handler\File::init ($handler);
 		}
 		return $handler ($struct);
@@ -170,3 +170,16 @@ class Analog {
 		return self::write (self::get_struct ($message, $level));
 	}
 }
+
+/**
+ * Register a very simple autoloader for the pre-built handlers
+ * based on the current working directory.
+ */
+spl_autoload_register (function ($class) {
+	$file = str_replace ('\\', DIRECTORY_SEPARATOR, ltrim ($class, '\\')) . '.php';
+	if (file_exists (__DIR__ . DIRECTORY_SEPARATOR . $file)) {
+		require_once $file;
+		return true;
+	}
+	return false;
+});
