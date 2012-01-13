@@ -11,15 +11,15 @@ Elefant compiles your templates into secure PHP code, so rendering is as fast as
 
 **Dead simple, concise template tags**
 
-[Familiar syntax](https://github.com/jbroadway/elefant/wiki/Templates) to other template languages, with some added conveniences for dynamic embeds and internationalization.
+[Familiar syntax](http://www.elefantcms.com/wiki/Templates) to other template languages, with some added conveniences for dynamic embeds and internationalization.
 
 **Clean, easy to use site editor for your users**
 
-Elefant comes out of the box with a [full-featured CMS](https://github.com/jbroadway/elefant/wiki/The-page-editor) for your users. You can even [white label it](https://github.com/jbroadway/elefant/wiki/White-labelling-the-CMS).
+Elefant comes out of the box with a [full-featured CMS](http://www.elefantcms.com/wiki/The-page-editor) for your users. You can even [white label it](http://www.elefantcms.com/wiki/White-labelling-the-CMS).
 
 **Syntax highlighted template and CSS editor**
 
-Sophisticated [in-browser editing](https://github.com/jbroadway/elefant/wiki/Setting-up-your-custom-designs) with highlights and references at your finger tips.
+Sophisticated [in-browser editing](http://www.elefantcms.com/wiki/Setting-up-your-custom-designs) with highlights and references at your finger tips.
 
 **Live preview while editing templates and CSS**
 
@@ -37,15 +37,15 @@ With all the tools you need, and a very low learning curve, Elefant gets you wri
 
 **Extensively documented**
 
-Including full [API reference](https://github.com/jbroadway/elefant/wiki/API-reference), [cheat sheets](https://github.com/jbroadway/elefant/wiki/Cheat-sheet), [tutorials, and much more](https://github.com/jbroadway/elefant/wiki).
+Including full [API reference](http://www.elefantcms.com/wiki/API-reference), [cheat sheets](http://www.elefantcms.com/wiki/Cheat-sheet), [tutorials, and much more](https://github.com/jbroadway/elefant/wiki).
 
 **Strong security by default**
 
-[Flexible input validation](https://github.com/jbroadway/elefant/wiki/Forms-and-input-validation) and automatic prevention of XSS, SQL injection, CSRF, and other types of attacks.
+[Flexible input validation](http://www.elefantcms.com/wiki/Forms-and-input-validation) and automatic prevention of XSS, SQL injection, CSRF, and other types of attacks.
 
 **Very fast and low memory**
 
-Elefant uses [less memory per request](https://github.com/jbroadway/elefant/wiki/Performance) than any of the major frameworks, so you can serve more visitors with the same resources.
+Elefant uses [less memory per request](http://www.elefantcms.com/wiki/Performance) than any of the major frameworks, so you can serve more visitors with the same resources.
 
 **Good debugging tools**
 
@@ -53,7 +53,7 @@ Debug mode prints full traces with highlighted source code and variable state to
 
 **Minimalist MVC/Model2 architecture**
 
-Elefant takes a [unique but proven approach](https://github.com/jbroadway/elefant/wiki/Elefant-architecture) that helps minimize boilerplate without sacrificing code organization as your project grows.
+Elefant takes a [unique but proven approach](http://www.elefantcms.com/wiki/Elefant-architecture) that helps minimize boilerplate without sacrificing code organization as your project grows.
 
 **Shared apps to save you time**
 
@@ -65,21 +65,21 @@ Elefant's core framework is covered by [extensive unit tests](https://github.com
 
 **Internationalization**
 
-Elefant apps are automatically [i18n aware](https://github.com/jbroadway/elefant/wiki/Internationalization), with built-in multilingual capabilities and locale awareness.
+Elefant apps are automatically [i18n aware](http://www.elefantcms.com/wiki/Internationalization), with built-in multilingual capabilities and locale awareness.
 
 ## More developer goodness
 
 Elefant builds on over 12 years of PHP experience, and aims to simplify rapid PHP development again.
 As such, Elefant takes into consideration all the little details to help you work faster and better:
 
-* Really simple, [automatic URL routing](https://github.com/jbroadway/elefant/wiki/Page-routing-and-handler-basics) w/ friendly URLs
-* [Minimal but secure and fast ORM](https://github.com/jbroadway/elefant/wiki/Database-API-and-models) (based on PDO)
+* Really simple, [automatic URL routing](http://www.elefantcms.com/wiki/Page-routing-and-handler-basics) w/ friendly URLs
+* [Minimal but secure and fast ORM](http://www.elefantcms.com/wiki/Database-API-and-models) (based on PDO)
 * Output filtering is turned *on by default*
-* Tight [memcache integration](https://github.com/jbroadway/elefant/wiki/Memcache)
+* Tight [memcache integration](http://www.elefantcms.com/wiki/Memcache)
 * Matching server- and client-side input validation
-* Dead-simple [form handling](https://github.com/jbroadway/elefant/wiki/Forms-and-input-validation)
-* Customizable [user authentication](https://github.com/jbroadway/elefant/wiki/Custom-user-authentication)
-* [CLI tool](https://github.com/jbroadway/elefant/wiki/Command-line-usage) for common tasks
+* Dead-simple [form handling](http://www.elefantcms.com/wiki/Forms-and-input-validation)
+* Customizable [user authentication](http://www.elefantcms.com/wiki/Custom-user-authentication)
+* [CLI tool](http://www.elefantcms.com/wiki/Command-line-usage) for common tasks
 * As little scaffolding as possible
 * Gzip output compression
 * [Assetic](http://github.com/jbroadway/assetic) integration
@@ -88,10 +88,10 @@ As such, Elefant takes into consideration all the little details to help you wor
 
 [Download the latest release](http://github.com/jbroadway/elefant/downloads) or try the [online demo](http://www.elefantcms.com/demo).
 
-* [Installation instructions](https://github.com/jbroadway/elefant/wiki/Getting-started)
-* [Installing on PHP Fog](https://github.com/jbroadway/elefant/wiki/Installing-Elefant-on-PHP-Fog)
-* [Installing on DotCloud](https://github.com/jbroadway/elefant/wiki/Installing-Elefant-on-DotCloud)
-* [Requirements and compatible hosts](https://github.com/jbroadway/elefant/wiki/Requirements)
+* [Installation instructions](http://www.elefantcms.com/wiki/Getting-started)
+* [Installing on PHP Fog](http://www.elefantcms.com/wiki/Installing-Elefant-on-PHP-Fog)
+* [Installing on DotCloud](http://www.elefantcms.com/wiki/Installing-Elefant-on-DotCloud)
+* [Requirements and compatible hosts](http://www.elefantcms.com/wiki/Requirements)
 * [Support forum](http://www.elefantcms.com/forum/) and [support chat group](https://convore.com/elefantcms/)
 
 ## FAQ
