@@ -41,7 +41,7 @@ function db_open ($conf) {
 	if (! $db_list) {
 		$db_list = array ();
 	}
-	$id = ($conf['master']) ? 'master' : 'slave_' . count ($db_list);
+	$id = (isset ($conf['master']) && $conf['master']) ? 'master' : 'slave_' . count ($db_list);
 	try {
 		switch ($conf['driver']) {
 			case 'sqlite':
