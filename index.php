@@ -88,6 +88,15 @@ foreach (array_keys ($conf['Database']) as $key) {
 	}
 }
 
+/**
+ * Check for a bootstrap.php file in the root of the site
+ * and if found, use it for additional app-level configurations
+ * (Dependency Injection, custom logging settings, etc.).
+ */
+if (file_exists ('bootstrap.php')) {
+	require_once ('bootstrap.php');
+}
+
 // handle the request
 if ($i18n->url_includes_lang) {
 	$handler = $controller->route ($i18n->new_request_uri);
