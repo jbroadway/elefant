@@ -253,7 +253,7 @@ class Template {
 
 		if (count ($filters) == 0) {
 			return '<?php echo Template::sanitize (' . $val . ', \'' . $this->charset . '\'); ?>';
-		} else if ($filters[0] == 'none') {
+		} elseif ($filters[0] === 'none') {
 			return '<?php echo ' . $val . '; ?>';
 		}
 
@@ -265,6 +265,9 @@ class Template {
 				list ($one, $two) = explode ('%s', $filter);
 				$out .= $one;
 				$end = $two . $end;
+			} elseif ($filter === 'quotes') {
+				$out .= 'Template::quotes (';
+				$end = ')' . $end;
 			} else {
 				$out .= $filter . ' (';
 				$end = ')' . $end;
@@ -369,6 +372,15 @@ class Template {
 	 */
 	static function sanitize ($val, $charset = 'UTF-8') {
 		return htmlspecialchars ($val, ENT_QUOTES | ENT_IGNORE, $charset);
+	}
+
+	/**
+	 * Convert quotes to HTML entities for form input values.
+	 * Note: This should only be done for *trusted* data, as it does
+	 * not prevent XSS attacks.
+	 */
+	public static function quotes ($val) {
+		return str_replace ('"', '&quot;', $val);
 	}
 
 	/**

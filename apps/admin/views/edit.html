@@ -1,7 +1,7 @@
 <p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
 
 <form method="POST" id="edit-form">
-<p>{"Page title"}:<br /><input type="text" name="title" size="50" value="{{ title }}" onblur="webpage_add_title_to_id (this.form)" />
+<p>{"Page title"}:<br /><input type="text" name="title" size="50" value="{{ title|quotes }}" onblur="webpage_add_title_to_id (this.form)" />
 <span class="notice" id="title-notice">{"You must enter a page title."}</span></p>
 <p>{"Page ID"} (ex: <tt>{{ $_SERVER.HTTP_HOST }}/<strong>your-page-id</strong></tt>):<br /><input type="text" name="id" size="35" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
 <span class="notice" id="id-notice">{"Your ID must be a lowercase alphanumeric value. It must also not share the name of an app."}</span></p>
@@ -22,8 +22,8 @@
 	<option value="member"{% if access == 'member' %} selected{% end %}>{"Members"}</option>
 	<option value="private"{% if access == 'member' %} selected{% end %}>{"Private"}</option>
 </select></p>
-<p>{"Alternate menu title"}:<br /><input type="text" name="menu_title" size="40" value="{{ menu_title }}" /></p>
-<p>{"Alternate window title"}:<br /><input type="text" name="window_title" size="40" value="{{ window_title }}" /></p>
+<p>{"Alternate menu title"}:<br /><input type="text" name="menu_title" size="40" value="{{ menu_title|quotes }}" /></p>
+<p>{"Alternate window title"}:<br /><input type="text" name="window_title" size="40" value="{{ window_title|quotes }}" /></p>
 <span class="notice" id="layout-notice">{"The layout you entered doesn't exist."}</span></p>
 <p>{"Description"}:<br /><textarea name="description" cols="60" rows="4">{{ description }}</textarea></p>
 <p>{"Keywords (comma-separated)"}:<br /><textarea name="keywords" cols="60" rows="4">{{ keywords }}</textarea></p>
