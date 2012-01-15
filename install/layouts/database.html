@@ -74,28 +74,28 @@
 
 <div id="mysql" style="display: none">
 <p>Server:<br />
-<input type="text" name="host" value="{{ $_POST.host }}" default="localhost" size="30" /></p>
+<input type="text" name="mysql_host" value="{{ $_POST.mysql_host }}" default="localhost" size="30" /></p>
 <p>Port:<br />
-<input type="text" name="port" value="{% if empty ($_POST['port']) %}3306{% else %}{{ $_POST.port }}{% end %}" size="15" /></p>
+<input type="text" name="mysql_port" value="{{ $_POST.mysql_port }}" default="3306" size="15" /></p>
 <p>Database:<br />
-<input type="text" name="name" value="{{ $_POST.name }}" size="25" /></p>
+<input type="text" name="mysql_name" value="{{ $_POST.mysql_name }}" size="25" /></p>
 <p>Username:<br />
-<input type="text" name="user" value="{{ $_POST.user }}" size="25" /></p>
+<input type="text" name="mysql_user" value="{{ $_POST.mysql_user }}" size="25" /></p>
 <p>Password:<br />
-<input type="password" name="pass" value="{{ $_POST.pass }}" size="25" /></p>
+<input type="password" name="mysql_pass" value="{{ $_POST.mysql_pass }}" size="25" /></p>
 </div>
 
 <div id="pgsql" style="display: none">
 <p>Server:<br />
-<input type="text" name="host" value="{{ $_POST.host }}" default="localhost" size="30" /></p>
+<input type="text" name="pgsql_host" value="{{ $_POST.pgsql_host }}" default="localhost" size="30" /></p>
 <p>Port:<br />
-<input type="text" name="port" value="{% if empty ($_POST['port']) %}5432{% else %}{{ $_POST.port }}{% end %}" size="15" /></p>
+<input type="text" name="pgsql_port" value="{% $_POST.pgsql_port }}" default="5432" size="15" /></p>
 <p>Database:<br />
-<input type="text" name="name" value="{{ $_POST.name }}" size="25" /></p>
+<input type="text" name="pgsql_name" value="{{ $_POST.pgsql_name }}" size="25" /></p>
 <p>Username:<br />
-<input type="text" name="user" value="{{ $_POST.user }}" size="25" /></p>
+<input type="text" name="pgsql_user" value="{{ $_POST.pgsql_user }}" size="25" /></p>
 <p>Password:<br />
-<input type="password" name="pass" value="{{ $_POST.pass }}" size="25" /></p>
+<input type="password" name="pgsql_pass" value="{{ $_POST.pgsql_pass }}" size="25" /></p>
 </div>
 
 <p><input type="submit" value="Connect &amp; Create Schema" /></p>

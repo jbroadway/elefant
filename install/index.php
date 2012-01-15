@@ -119,6 +119,12 @@ switch ($_GET['step']) {
 		$data['error'] = false;
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			// got the settings, test and create schema
+			$_POST['host'] = $_POST[$_POST['driver'] . '_host'];
+			$_POST['port'] = $_POST[$_POST['driver'] . '_port'];
+			$_POST['name'] = $_POST[$_POST['driver'] . '_name'];
+			$_POST['user'] = $_POST[$_POST['driver'] . '_user'];
+			$_POST['pass'] = $_POST[$_POST['driver'] . '_pass'];
+
 			if (! Database::open ($_POST)) {
 				$data['error'] = db_error ();
 			} else {
@@ -153,7 +159,10 @@ switch ($_GET['step']) {
 			}
 		} else {
 			// set some default values
-			$_POST['host'] = 'localhost';
+			$_POST['mysql_host'] = 'localhost';
+			$_POST['pgsql_host'] = 'localhost';
+			$_POST['mysql_port'] = '3306';
+			$_POST['pgsql_port'] = '5432';
 		}
 		break;
 
