@@ -25,9 +25,135 @@
  */
 
 /**
- * Used by the file manager API to verify files and folders.
+ * Provides the JSON API for the admin file manager/browser, as well as functions
+ * to verify files and folders.
  */
-class FileManager {
+class FileManager extends Restful {
+	/**
+	 * The path to the root directory to store files.
+	 */
+	public $root;
+
+	/**
+	 * The web path to the root directory.
+	 */
+	public $webroot = '/files/';
+
+	/**
+	 * Constructor sets $root.
+	 */
+	public function __construct () {
+		$this->root = getcwd () . $this->webroot;
+	}
+
+	/**
+	 * Handle list directory requests (/filemanager/api/ls).
+	 */
+	public function get_ls () {
+		$file = urldecode (join ('/', func_get_args ()));
+
+		if (! self::verify_folder ($file, $this->root)) {
+			return $this->error (i18n_get ('Invalid folder name'));
+		}
+
+		$d = dir ($this->root . $file);
+		$out = array ('dirs' => array (), 'files' => array ());
+		while (false !=  ($entry = $d->read ())) {
+			if (preg_match ('/^\./', $entry)) {
+				continue;
+			} elseif (@is_dir ($this->root . $file . '/' . $entry)) {
+				$out['dirs'][] = array (
+					'name' => $entry,
+					'path' => ltrim ($file . '/' . $entry, '/'),
+					'mtime' => date ('F j, Y - g:ia', filemtime ($this->root . $file . '/' . $entry))
+				);
+			} else {
+				$out['files'][] = array (
+					'name' => $entry,
+					'path' => ltrim ($file . '/' . $entry, '/'),
+					'mtime' => date ('F j, Y - g:ia', filemtime ($this->root . $file . '/' . $entry)),
+					'fsize' => format_filesize (filesize ($this->root . $file . '/' . $entry))
+				);
+			}
+		}
+		$d->close ();
+		usort ($out['dirs'], array ('FileManager', 'fsort'));
+		usort ($out['files'], array ('FileManager', 'fsort'));
+		return $out;
+	}
+
+	/**
+	 * Handle remove file requests (/filemanager/api/rm).
+	 */
+	public function get_rm () {
+		$file = urldecode (join ('/', func_get_args ()));
+
+		if (self::verify_folder ($file, $this->root)) {
+			return $this->error (i18n_get ('Unable to delete folders'));
+		} elseif (! self::verify_file ($file, $this->root)) {
+			return $this->error (i18n_get ('File not found'));
+		} elseif (! unlink ($this->root . $file)) {
+			return $this->error (i18n_get ('Unable to delete') . ' ' . $file);
+		}
+		return array ('msg' => i18n_get ('File deleted.'), 'data' => $file);
+	}
+
+	/**
+	 * Handle rename requests (/filemanager/api/mv).
+	 */
+	public function get_mv () {
+		$file = urldecode (join ('/', func_get_args ()));
+		
+		if (self::verify_folder ($file, $this->root)) {
+			if (! self::verify_folder_name ($_GET['rename'])) {
+				return $this->error (i18n_get ('Invalid folder name'));
+			} else {
+				$parts = explode ('/', $file);
+				$old = array_pop ($parts);
+				$new = preg_replace ('/' . preg_quote ($old) . '$/', $_GET['rename'], $file);
+				if (! rename ($this->root . $file, $this->root . $new)) {
+					return $this->error (i18n_get ('Unable to rename') . ' ' . $file);
+				}
+				return array ('msg' => i18n_get ('Folder renamed.'), 'data' => $new);
+			}
+		} elseif (self::verify_file ($file, $this->root)) {
+			if (! self::verify_file_name ($_GET['rename'])) {
+				return $this->error (i18n_get ('Invalid file name'));
+			} else {
+				$parts = explode ('/', $file);
+				$old = array_pop ($parts);
+				$new = preg_replace ('/' . preg_quote ($old) . '$/', $_GET['rename'], $file);
+				if (! rename ($this->root . $file, $this->root . $new)) {
+					return $this->error (i18n_get ('Unable to rename') . ' ' . $file);
+				}
+				return array ('msg' => i18n_get ('File renamed.'), 'data' => $new);
+			}
+		}
+		return $this->error (i18n_get ('File not found'));
+	}
+
+	/**
+	 * Handle make directory requests (/filemanager/api/mkdir).
+	 */
+	public function get_mkdir () {
+		$file = urldecode (join ('/', func_get_args ()));
+		
+		$parts = explode ('/', $file);
+		$newdir = array_pop ($parts);
+		$path = preg_replace ('/\/?' . preg_quote ($newdir) . '$/', '', $file);
+		if (! self::verify_folder ($path, $this->root)) {
+			return $this->error (i18n_get ('Invalid location'));
+		} elseif (! self::verify_folder_name ($newdir)) {
+			return $this->error (i18n_get ('Invalid folder name'));
+		} elseif (@is_dir ($this->root . $file)) {
+			return $this->error (i18n_get ('Folder already exists') . ' ' . $file);
+		} elseif (! mkdir ($this->root . $file)) {
+			return $this->error (i18n_get ('Unable to create folder') . ' ' . $file);
+		}
+		chmod ($this->root . $file, 0777);
+		return array ('msg' => i18n_get ('Folder created.'), 'data' => $file);
+	}
+
 	/**
 	 * Verify that the specified folder is valid, and exists
 	 * inside a certain root folder.
