@@ -34,8 +34,8 @@
  * the front controller for requests with file extensions and
  * return false.
  */
-if (isset ($_SERVER['REQUEST_URI']) && preg_match ('/\.[a-zA-Z0-9]+$/', parse_url ($_SERVER['REQUEST_URI'], PHP_URL_PATH))) { 
-    return false;
+if (php_sapi_name () === 'cli-server' && isset ($_SERVER['REQUEST_URI']) && preg_match ('/\.[a-zA-Z0-9]+$/', parse_url ($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
+	return false;
 }
 
 /**
