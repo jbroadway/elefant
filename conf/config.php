@@ -62,7 +62,7 @@ master[file] = "conf/site.db"
 ; Settings to connect to MongoDB. Must have PHP Mongo extension
 ; installed via `pecl install mongo`.
 
-;host = localhost27017
+;host = localhost:27017
 ;user = username
 ;pass = password
 ;set_name = my_replica_set
