@@ -67,8 +67,14 @@ function info ($value, $full = false) {
  * Note: Uses ELEFANT_ENV, defined in the front controller, to determine
  * which configuration file to load, allowing for alternate dev, staging,
  * and production configurations in a single codebase.
+ *
+ * To update a value after the initial configuration has been loaded,
+ * pass the new value as a third parameter, e.g.:
+ *
+ *     // Enable debugging
+ *     conf ('General', 'debug', true);
  */
-function conf ($section, $value = false) {
+function conf ($section, $value = false, $update = false) {
 	static $conf;
 	if ($conf === null) {
 		if (isset ($GLOBALS['conf'])) {
@@ -78,6 +84,9 @@ function conf ($section, $value = false) {
 		}
 	}
 	if ($value) {
+		if ($update) {
+			$conf[$section][$value] = $update;
+		}
 		return $conf[$section][$value];
 	}
 	return $conf[$section];
