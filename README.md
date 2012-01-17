@@ -3,6 +3,8 @@
 [Elefant](http://www.elefantcms.com/) is a refreshingly simple PHP content management system and web framework.
 Elefant is a fast, lean tool for building everything from simple websites to complete web applications.
 
+<a href='http://www.pledgie.com/campaigns/16594'><img alt='Click here to lend your support to: Elefant CMS and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16594.png?skin_name=chrome' border='0' /></a>
+
 ## Built for designers
 
 **Compiled, ultra-fast templates**
