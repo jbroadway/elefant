@@ -318,7 +318,7 @@ if (count ($argv) > 1) {
 
 					if (isset ($argv[2])) {
 						exec (sprintf (
-							'mysqldump --password="%s" -u %s -h %s -P %d %s > %s',
+							'mysqldump --password=%s -u %s -h %s -P %d %s > %s',
 							 escapeshellcmd ($conf['Database']['master']['pass']),
 							 $conf['Database']['master']['user'],
 							 $host,
@@ -328,7 +328,7 @@ if (count ($argv) > 1) {
 						));
 					} else {
 						passthru (sprintf (
-							'mysqldump --password="%s" -u %s -h %s -P %d %s',
+							'mysqldump --password=%s -u %s -h %s -P %d %s',
 							 escapeshellcmd ($conf['Database']['master']['pass']),
 							 $conf['Database']['master']['user'],
 							 $host,
@@ -336,6 +336,42 @@ if (count ($argv) > 1) {
 							 $conf['Database']['master']['name']
 						));
 					}
+					break;
+
+				case 'pgsql':
+					// get port number
+					list ($host, $port) = (strpos ($conf['Database']['master']['host'], ':') !== false)
+						? explode (':', $conf['Database']['master']['host'])
+						: array ($conf['Database']['master']['host'], 3306);
+
+					file_put_contents ('conf/.pgpass', sprintf (
+						'%s:%d:%s:%s:%s',
+						$host,
+						$port,
+						$conf['Database']['master']['name'],
+						$conf['Database']['master']['user'],
+						$conf['Database']['master']['pass']
+					));
+					chmod ('conf/.pgpass', 0600);
+					if (isset ($argv[2])) {
+						exec (sprintf (
+							'export PGPASSFILE=conf/.pgpass; pg_dump -U %s -h %s -p %d %s > %s; export PGPASSFILE=~/.pgpass',
+							 $conf['Database']['master']['user'],
+							 $host,
+							 $port,
+							 $conf['Database']['master']['name'],
+							 $argv[2]
+						));
+					} else {
+						passthru (sprintf (
+							'export PGPASSFILE=conf/.pgpass; pg_dump -U %s -h %s -p %d %s; export PGPASSFILE=~/.pgpass',
+							 $conf['Database']['master']['user'],
+							 $host,
+							 $port,
+							 $conf['Database']['master']['name']
+						));
+					}
+					unlink ('conf/.pgpass');
 					break;
 
 				default:
