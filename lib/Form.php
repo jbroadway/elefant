@@ -35,8 +35,27 @@
  * The input validation can be useful not just for form submissions,
  * but it's packaged here to keep things tidy.
  *
- * Usage:
+ * Simplest usage:
  *
+ *     <?php
+ *     
+ *     $form = new Form ('post', $this);
+ *     
+ *     echo $form->handle (function ($form) {
+ *         // Create some data...
+ *         $foo = new MyModel ($_POST);
+ *         $foo->put ();
+ *     
+ *         // Refer them to a thank you page
+ *         $form->controller->redirect ('/thank/you');
+ *     });
+ *     
+ *     ?>
+ *
+ * Long form usage:
+ *
+ *     <?php
+ *     
  *     $form = new Form ('post', 'apps/myapp/forms/verify.php');
  *
  *     if ($form->submit ()) {
@@ -71,6 +90,8 @@
  *         // output your form template
  *         echo $tpl->render ('myapp/form', $obj);
  *     }
+ *     
+ *     ?>
  */
 class Form {
 	/**
@@ -87,6 +108,22 @@ class Form {
 	 * Validation rules.
 	 */
 	public $rules = array ();
+
+	/**
+	 * The original `$form_rules` passed to the constructor, parsed
+	 * down to the `appname/rules` short form.
+	 */
+	private $_rules;
+
+	/**
+	 * A view to render the form with. Used by `handle()`.
+	 */
+	public $view = false;
+
+	/**
+	 * An optional copy of the controller object.
+	 */
+	public $controller = false;
 
 	/**
 	 * Whether to verify the referrer or not.
@@ -113,9 +150,42 @@ class Form {
 	 */
 	public $error = false;
 
-	public function __construct ($required_method = 'post', $form_rules = false) {
+	/**
+	 * Constructor method. Parameters are:
+	 *
+	 * - Required request method (default is 'post')
+	 * - A reference to the form rules file, or a Controller object
+	 * - If param 2 is a file reference, this can be the Controller object
+	 *
+	 * Usage:
+	 *
+	 *     $f = new Form (); // defaults and no Controller or rules set
+	 *     $f = new Form ('post'); // POST requests but no Controller or rules
+	 *     $f = new Form ('post', $this); // POST and Controller set
+	 *     $f = new Form ('post', 'myapp/rules'); // POST and rules set
+	 *     $f = new Form ('post', 'myapp/rules, $this); // Everything set
+	 *
+	 * Note that if the rules are not set but the Controller is passed,
+	 * the rules file will be assumed to match the appname/handlername of
+	 * the currently active handler, and the view will be set to match as
+	 * well. This is the most handy scenario, since if you match your
+	 * rules file, handler, and view names, you can simply say:
+	 *
+	 *     $f = new Form ('post', $this);
+	 *
+	 * And it will set everything up correctly based on `$this->uri` in the
+	 * Controller.
+	 */
+	public function __construct ($required_method = 'post', $form_rules = false, $controller = false) {
 		// Normalize the request method to lowercase
 		$this->method = strtolower ($required_method);
+
+		if ($form_rules instanceof Controller) {
+			$this->controller = $form_rules;
+			$form_rules = $this->controller->uri;
+		} else {
+			$this->controller = $controller;
+		}
 
 		// Fetch any form validation rules
 		if (! empty ($form_rules)) {
@@ -126,7 +196,69 @@ class Form {
 			if (@file_exists ($form_rules)) {
 				$this->rules = parse_ini_file ($form_rules, true);
 			}
+			// Set the view by default based on the form rules (can be changed later)
+			$this->_rules = preg_replace ('|apps/(.+)/forms/(.+)\.php$|', '\1/\2', $form_rules);
+			$this->view = $this->_rules;
 		}
+	}
+
+	/**
+	 * Accepts an anonymous function (aka closure) that handles the
+	 * form submission, and abstracts away the rendering of the form
+	 * based on the provided rules and view, helping eliminate much
+	 * of the boilerplate code of form creation.
+	 *
+	 * Note that `handle()` will also include `/js/jquery.verify_values.js`
+	 * for you, but you need to provide your own initialization code
+	 * to perform the client-side validations. There is a page in the
+	 * public wiki on www.elefantcms.com describing the steps for this.
+	 *
+	 * Also note that if the anonymous function returns false, there
+	 * will be no output and the false status will be passed to the
+	 * handler to catch.
+	 */
+	public function handle ($func) {
+		if (! $this->submit ()) {
+			if (! $this->view) {
+				// No view so we simply return false so the handler
+				// can take over rendering the form
+				return false;
+			}
+
+			// Render the view and return its output
+			global $page, $tpl;
+
+			$o = new StdClass;
+
+			// Determine the default values
+			foreach ($this->rules as $field => $rules) {
+				foreach ($rules as $key => $value) {
+					if ($key === 'default') {
+						$o->{$field} = $value;
+						break;
+					}
+				}
+			}
+
+			// Set some views to go to the template
+			$o = $this->merge_values ($o);
+			$o->_form = str_replace ('/', '-', $this->view);
+			$o->_failed = $this->failed;
+			$o->_rules = $this->_rules;
+			$page->add_script ('/js/jquery.verify_values.js');
+			return $tpl->render ($this->view, $o);
+		}
+
+		// Form can be handled, capture output and return it
+		// If the function returns false, simply pass that
+		// to the handler with no output
+		ob_start ();
+		$res = $func ($this);
+		if ($res === false) {
+			ob_end_clean ();
+			return false;
+		}
+		return ob_get_clean ();
 	}
 
 	/**
@@ -319,6 +451,9 @@ class Form {
 	 * opposite, for example "not empty".
 	 */
 	public static function verify_value ($value, $type, $validator = false) {
+		if ($type === 'default') {
+			return true;
+		}
 		if (preg_match ('/^not (.+)$/i', $type, $regs)) {
 			return ! Form::verify_value ($value, $regs[1], $validator);
 		}
