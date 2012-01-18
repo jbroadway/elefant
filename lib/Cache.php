@@ -77,7 +77,12 @@ class Cache {
 		if (is_array ($val) || is_object ($val)) {
 			$val = serialize ($val);
 		}
-		file_put_contents ($this->dir . '/' . md5 ($key), $val);
+		if (file_exists ($this->dir . '/' . md5 ($key))) {
+			return false;
+		}
+		if (! file_put_contents ($this->dir . '/' . md5 ($key), $val)) {
+			return false;
+		}
 		chmod ($this->dir . '/' . md5 ($key), 0777);
 		return true;
 	}
@@ -89,7 +94,9 @@ class Cache {
 		if (is_array ($val) || is_object ($val)) {
 			$val = serialize ($val);
 		}
-		file_put_contents ($this->dir . '/' . md5 ($key), $val);
+		if (! file_put_contents ($this->dir . '/' . md5 ($key), $val)) {
+			return false;
+		}
 		chmod ($this->dir . '/' . md5 ($key), 0777);
 		return true;
 	}
@@ -101,7 +108,9 @@ class Cache {
 		if (is_array ($val) || is_object ($val)) {
 			$val = serialize ($val);
 		}
-		file_put_contents ($this->dir . '/' . md5 ($key), $val);
+		if (! file_put_contents ($this->dir . '/' . md5 ($key), $val)) {
+			return false;
+		}
 		chmod ($this->dir . '/' . md5 ($key), 0777);
 		return true;
 	}
@@ -116,7 +125,9 @@ class Cache {
 			$val = 0;
 		}
 		$val += $value;
-		file_put_contents ($this->dir . '/' . md5 ($key), $val);
+		if (! file_put_contents ($this->dir . '/' . md5 ($key), $val)) {
+			return false;
+		}
 		chmod ($this->dir . '/' . md5 ($key), 0777);
 		return $val;
 	}
@@ -131,7 +142,9 @@ class Cache {
 			$val = 0;
 		}
 		$val -= $value;
-		file_put_contents ($this->dir . '/' . md5 ($key), $val);
+		if (! file_put_contents ($this->dir . '/' . md5 ($key), $val)) {
+			return false;
+		}
 		chmod ($this->dir . '/' . md5 ($key), 0777);
 		return $val;
 	}
