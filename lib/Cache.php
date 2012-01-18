@@ -46,12 +46,43 @@ class Cache {
 	}
 
 	/**
+	 * Create a timeout file to store the timeout of the cached data.
+	 * Uses a similarly named dot-file to the main file that contains
+	 * only the timeout value.
+	 */
+	private function _set_timeout ($key, $timeout) {
+		if (file_put_contents ($this->dir . '/.' . md5 ($key), $timeout)) {
+			chmod ($this->dir . '/.' . md5 ($key), 0777);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Checks whether a key's timeout has expired. If it has, it
+	 * also deletes the timeout dot-file.
+	 */
+	private function _has_timed_out ($key) {
+		$timeout_file = $this->dir . '/.' . md5 ($key);
+		if (! file_exists ($timeout_file)) {
+			return false;
+		}
+		$timeout = file_get_contents ($timeout_file);
+		$mtime = filemtime ($timeout_file);
+		if ($mtime < time () - $timeout) {
+			unlink ($timeout_file);
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Emulates `Memcache::cache`.
 	 */
 	public function cache ($key, $timeout, $function) {
 		if (($val = $this->get ($key)) === false) {
 			$val = $function ();
-			$this->set ($key, $val, $timeout);
+			$this->set ($key, $val, 0, $timeout);
 		}
 		return $val;
 	}
@@ -61,6 +92,9 @@ class Cache {
 	 */
 	public function get ($key) {
 		if (file_exists ($this->dir . '/' . md5 ($key))) {
+			if ($this->_has_timed_out ($key)) {
+				return false;
+			}
 			$val = file_get_contents ($this->dir . '/' . md5 ($key));
 			if (preg_match ('/^(a|O):[0-9]+:/', $val)) {
 				return unserialize ($val);
@@ -73,7 +107,7 @@ class Cache {
 	/**
 	 * Emulates `Memcache::add`.
 	 */
-	public function add ($key, $val) {
+	public function add ($key, $val, $flags = 0, $timeout = false) {
 		if (is_array ($val) || is_object ($val)) {
 			$val = serialize ($val);
 		}
@@ -84,13 +118,16 @@ class Cache {
 			return false;
 		}
 		chmod ($this->dir . '/' . md5 ($key), 0777);
+		if ($timeout) {
+			$this->_set_timeout ($key, $timeout);
+		}
 		return true;
 	}
 
 	/**
 	 * Emulates `Memcache::replace`.
 	 */
-	public function replace ($key, $val) {
+	public function replace ($key, $val, $flags = 0, $timeout = false) {
 		if (is_array ($val) || is_object ($val)) {
 			$val = serialize ($val);
 		}
@@ -98,13 +135,16 @@ class Cache {
 			return false;
 		}
 		chmod ($this->dir . '/' . md5 ($key), 0777);
+		if ($timeout) {
+			$this->_set_timeout ($key, $timeout);
+		}
 		return true;
 	}
 
 	/**
 	 * Emulates `Memcache::set`.
 	 */
-	public function set ($key, $val, $timeout = false) {
+	public function set ($key, $val, $flags = 0, $timeout = false) {
 		if (is_array ($val) || is_object ($val)) {
 			$val = serialize ($val);
 		}
@@ -112,6 +152,9 @@ class Cache {
 			return false;
 		}
 		chmod ($this->dir . '/' . md5 ($key), 0777);
+		if ($timeout) {
+			$this->_set_timeout ($key, $timeout);
+		}
 		return true;
 	}
 
