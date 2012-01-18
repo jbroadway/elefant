@@ -113,7 +113,7 @@
 				}
 			}
 			
-			if (type.match (/^(not )?(type|callback|header|unique|exists)$/)) {
+			if (type === 'default' || type.match (/^(not )?(type|callback|header|unique|exists)$/)) {
 				return true;
 			}
 			
