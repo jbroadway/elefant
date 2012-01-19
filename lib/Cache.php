@@ -196,8 +196,12 @@ class Cache {
 	 * Emulates `Memcache::flush`.
 	 */
 	public function flush () {
-		$files = glob ($this->dir . '/*');
+		$files = glob ($this->dir . '/{,.}*', GLOB_BRACE);
 		foreach ($files as $file) {
+			if (preg_match ('/\/\.+$/', $file)) {
+				// Skip . and ..
+				continue;
+			}
 			unlink ($file);
 		}
 		return true;
