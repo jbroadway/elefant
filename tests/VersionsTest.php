@@ -8,6 +8,10 @@ require_once ('apps/admin/models/Versions.php');
 class Foobar extends Model {}
 
 class VersionsTest extends PHPUnit_Framework_TestCase {
+	protected static $foo;
+	protected static $foo2;
+	protected static $v;
+
 	static function setUpBeforeClass () {
 		Database::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		db_execute ('create table foobar (id int not null, name char(32) not null)');
@@ -34,35 +38,44 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 		unset ($GLOBALS['user']);
 	}
 
-	function test_versions () {
-		$foo = new Foobar (array ('id' => 1, 'name' => 'Test'));
-		$foo->put ();
+	function test_add () {
+		self::$foo = new Foobar (array ('id' => 1, 'name' => 'Test'));
+		self::$foo->put ();
 
-		$v = Versions::add ($foo);
+		self::$v = Versions::add (self::$foo);
 		$this->assertEquals (db_shift ('select count(*) from versions'), 1);
-		$this->assertEquals ($v->class, 'Foobar');
-		$this->assertEquals ($v->pkey, 1);
-		$this->assertEquals ($v->user, 0);
-		$foo2 = Versions::restore ($v);
-		$this->assertEquals ($foo, $foo2);
+		$this->assertEquals (self::$v->class, 'Foobar');
+		$this->assertEquals (self::$v->pkey, 1);
+		$this->assertEquals (self::$v->user, 0);
+	}
 
+	function test_restore () {
+		self::$foo2 = Versions::restore (self::$v);
+		$this->assertEquals (self::$foo, self::$foo2);
+	}
+
+	function test_diff () {
 		// test diff
-		$foo->name = 'Test2';
-		$foo->put ();
+		self::$foo->name = 'Test2';
+		self::$foo->put ();
 
-		$v = Versions::add ($foo);
+		$v = Versions::add (self::$foo);
 		$this->assertEquals (db_shift ('select count(*) from versions'), 2);
 
-		$modified = Versions::diff ($foo2, $foo);
+		$modified = Versions::diff (self::$foo2, self::$foo);
 		$this->assertEquals ($modified[0], 'name');
+	}
 
+	function test_history () {
 		// test history
-		$history = Versions::history ($foo);
+		$history = Versions::history (self::$foo);
 		$this->assertEquals (count ($history), 2);
 
 		$modified = Versions::diff ($history[0], $history[1]);
 		$this->assertEquals ($modified[0], 'name');
+	}
 
+	function test_recent () {
 		// test recent
 		$recent = Versions::recent ();
 		$this->assertEquals (count ($recent), 1);
