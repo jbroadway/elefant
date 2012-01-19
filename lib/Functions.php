@@ -204,9 +204,9 @@ function format_filesize ($size = 0) {
  *   platforms.
  *
  * - iPad and iPod are both reported as mobile devices in the user agent string,
- *   so this reports that to be true as well.
+ *   but `detect()` corrects for this in the case of the iPad.
  *
- * - Android reports as true for both mobile and tablet.
+ * - Android reports as true for both mobile and tablet currently.
  *
  * - Some matches might be seen as false-positives, such as Chrome matching Safari.
  *   In these cases, look at other detection options. For example with Chrome, the
@@ -230,6 +230,9 @@ function detect ($browser) {
 	if ($browser === 'mobile') {
 		if (! preg_match ('/(iphone|ipod|android|opera mini|opera mobi|symb|phone|webos|blackberry|mobile)/', $ua)) {
 			// No common mobile platform
+			return false;
+		} elseif (strpos ($ua, 'ipad') !== false) {
+			// iPad should be separate from mobile
 			return false;
 		}
 		return true;

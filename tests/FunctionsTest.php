@@ -45,7 +45,7 @@ class FunctionsTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue (detect ('ipad'));
 		$this->assertTrue (detect ('ios'));
 		$this->assertTrue (detect ('webkit'));
-		$this->assertTrue (detect ('mobile'));
+		$this->assertFalse (detect ('mobile'));
 		$this->assertTrue (detect ('tablet'));
 
 		// iPod touch
