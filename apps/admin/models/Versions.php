@@ -88,7 +88,16 @@ class Versions extends Model {
 			$vobj = $this;
 		}
 		$class = $vobj->class;
-		$obj = new $class (json_decode ($vobj->serialized), false);
+		$data = json_decode ($vobj->serialized);
+
+		// determine if it's a deleted item
+		$tmp = new $class;
+		$obj = new $class ($data->{$tmp->key});
+		if ($obj->error) {
+			$obj = new $class ($data);
+		} else {
+			$obj = new $class ($data, false);
+		}
 		return $obj;
 	}
 
