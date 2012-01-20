@@ -26,6 +26,9 @@ switch ($this->params[0]) {
 	case 'add':
 		$id = $_POST['page'];
 		$parent = $_POST['parent'];
+		if ($parent === 'false') {
+			$parent = false;
+		}
 		if ($nav->add ($id, $parent) && $nav->save ()) {
 			$out = array (
 				'msg' => sprintf ('Page %s added to tree under %s.', $id, $parent),

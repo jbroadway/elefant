@@ -47,7 +47,13 @@ $(function () {
 				$(data.o).remove ();
 
 				// save to database
-				$.post ('/navigation/api/add', {page: $(data.o).attr('id'), parent: $(data.r).attr('id')}, function (res) {
+				parent = $(data.r);
+				if (parent.is ('div')) {
+					parent = false;
+				} else {
+					parent = parent.attr ('id');
+				}
+				$.post ('/navigation/api/add', {page: $(data.o).attr('id'), parent: parent}, function (res) {
 					//console.log (res.data.msg);
 					//TODO: error handling
 					return true;
@@ -99,12 +105,16 @@ $(function () {
 	cursor: pointer;
 }
 
+#navigation {
+	min-height: 60px;
+}
+
 #garbage {
 	background: url(/apps/navigation/pix/trash.png);
 	background-repeat: no-repeat;
 	background-position: 0px 16px;
 	padding: 16px 10px 10px 24px;
-	margin-top: 42px;
+	margin-top: 5px;
 	border-top: 1px solid #ccc;
 }
 
