@@ -21,7 +21,7 @@ if ($f->submit ()) {
 	$page->title = i18n_get ('Saving Stylesheet Failed');
 	echo '<p>' . i18n_get ('Check that your permissions are correct and try again.') . '</p>';
 } else {
-	$page->title = i18n_get ('New Stylesheet');
+	$page->window_title = i18n_get ('New Stylesheet');
 }
 
 $o = new StdClass;
@@ -32,7 +32,7 @@ foreach (glob ('layouts/*.html') as $layout) {
 
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);
-echo $tpl->render ('designer/add/editor_s');
+$page->add_script ('/apps/designer/css/add_stylesheet.css');
 echo $tpl->render ('designer/add/stylesheet', $o);
 
 ?>

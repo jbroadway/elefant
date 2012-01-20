@@ -22,22 +22,6 @@
 <link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/theme/default.css" />
 <script type="text/javascript" src="/apps/designer/js/codemirror/lib/codemirror.js"></script>
 <script type="text/javascript" src="/apps/designer/js/codemirror/mode/css/css.js"></script>
-<style>
-#body {
-	width: 1024px;
-	margin-left: -32px;
-}
-#footer {
-	display: none;
-}
-.CodeMirror {
-	border: 1px solid #ccc;
-	background: #fff;
-}
-.CodeMirror-scroll {
-	height: 240px;
-}
-</style>
 
 <script type="text/javascript" src="/js/json2.js"></script>
 <script type="text/javascript" src="/js/jstorage.js"></script>
@@ -68,7 +52,7 @@ $(function () {
 		callback: function (failed) {
 			// highlight the failed elements
 			for (var i = 0; i < failed.length; i++) {
-				$('#' + failed[i] + '-notice').show ();
+				$.add_notification ($('#' + failed[i] + '-notice').text ());
 			}
 		},
 		reset: function (fields) {
@@ -78,7 +62,7 @@ $(function () {
 		}
 	});
 	{% foreach failed %}
-	$('#{{ loop_value }}-notice').show ();
+	$.add_notification ($('#{{ loop_value }}-notice').text ());
 	{% end %}
 
 	// increase editor and preview height if window is tall enough

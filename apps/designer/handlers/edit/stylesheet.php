@@ -48,7 +48,7 @@ foreach (glob ('layouts/*.html') as $layout) {
 
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);
-echo $tpl->render ('designer/edit/editor_s');
+$page->add_script ('/apps/designer/css/edit_stylesheet.css');
 echo $tpl->render ('designer/edit/stylesheet', $o);
 
 ?>

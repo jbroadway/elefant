@@ -21,19 +21,19 @@ if ($f->submit ()) {
 	$page->title = i18n_get ('Saving Layout Failed');
 	echo '<p>' . i18n_get ('Check that your permissions are correct and try again.') . '</p>';
 } else {
-	$page->title = i18n_get ('New Layout');
+	$page->window_title = i18n_get ('New Layout');
 }
 
 $o = new StdClass;
 $o->body = '<!DOCTYPE html>
 <html>
 <head>
-	<title>{{ window_title }}</title>
+	<title>{{ window_title|none }}</title>
 	{! admin/head !}
 	{{ head|none }}
 </head>
 <body>
-{% if title %}<h1>{{ title }}</h1>{% end %}
+{% if title %}<h1>{{ title|none }}</h1>{% end %}
 
 {{ body|none }}
 
@@ -43,7 +43,7 @@ $o->body = '<!DOCTYPE html>
 
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);
-echo $tpl->render ('designer/add/editor');
+$page->add_script ('/apps/designer/css/add_layout.css');
 echo $tpl->render ('designer/add/layout', $o);
 
 ?>

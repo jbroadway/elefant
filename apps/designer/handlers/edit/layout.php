@@ -44,7 +44,7 @@ $o->body = @file_get_contents ($_GET['file']);
 
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);
-echo $tpl->render ('designer/edit/editor');
+$page->add_script ('/apps/designer/css/edit_layout.css');
 echo $tpl->render ('designer/edit/layout', $o);
 
 ?>
