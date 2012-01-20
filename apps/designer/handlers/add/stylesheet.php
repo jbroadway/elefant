@@ -32,6 +32,7 @@ foreach (glob ('layouts/*.html') as $layout) {
 
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);
+echo $tpl->render ('designer/add/editor_s');
 echo $tpl->render ('designer/add/stylesheet', $o);
 
 ?>

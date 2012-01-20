@@ -43,6 +43,7 @@ $o->body = '<!DOCTYPE html>
 
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);
+echo $tpl->render ('designer/add/editor');
 echo $tpl->render ('designer/add/layout', $o);
 
 ?>
