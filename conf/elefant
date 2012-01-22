@@ -249,7 +249,15 @@ if (count ($argv) > 1) {
 				die;
 			}
 
-			$sources = array ('layouts/*.html', 'apps/*/views/*.html', 'apps/*/handlers/*.php');
+			$sources = array (
+				'layouts/*/*.html',
+				'apps/*/views/*.html',
+				'apps/*/views/*/*.html',
+				'apps/*/views/*/*/*.html',
+				'apps/*/handlers/*.php',
+				'apps/*/handlers/*/*.php',
+				'apps/*/handlers/*/*/*.php'
+			);
 			$list = array ();
 			
 			foreach ($sources as $source) {
