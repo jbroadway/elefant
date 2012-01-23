@@ -43,4 +43,15 @@ function blog_filter_date ($ts, $format = 'F j, Y - g:ia') {
 	return gmdate ($format, $t);
 }
 
+function blog_filter_csv_line ($line) {
+	$o = '';
+	foreach ($line as $field) {
+		if (strlen ($field) > 50) {
+			$field = substr ($field, 47) . '...';
+		}
+		$o .= '<td>' . Template::sanitize ($field) . '</td>';
+	}
+	return $o;
+}
+
 ?>

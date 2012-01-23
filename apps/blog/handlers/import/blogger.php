@@ -30,7 +30,7 @@ if ($f->submit ()) {
 				'title' => (string) $entry->title,
 				'author' => (string) $entry->author->name,
 				'ts' => str_replace ('T', ' ', array_shift (explode ('.', $entry->published))),
-				'published' => 'yes',
+				'published' => $_POST['published'],
 				'body' => $entry->content,
 				'tags' => ''
 			);

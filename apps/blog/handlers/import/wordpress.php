@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Implements a blog post importer from a Blogger.com export file.
+ * Implements a blog post importer from a Wordpress export file.
  */
 
 $this->require_admin ();
@@ -26,7 +26,7 @@ if ($f->submit ()) {
 				'title' => (string) $entry->title,
 				'author' => (string) $dc->creator,
 				'ts' => gmdate ('Y-m-d H:i:s', strtotime ($entry->pubDate)),
-				'published' => 'yes',
+				'published' => $_POST['published'],
 				'body' => str_replace ("\n", "<br />\n", (string) $content->encoded),
 				'tags' => ''
 			);
