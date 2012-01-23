@@ -120,6 +120,14 @@ tt {
 		line-height: 16px;
 	}
 
+	.pager-previous {
+		float: left;
+	}
+
+	.pager-next {
+		float: right;
+	}
+
 #extra-options {
 	display: none;
 }
