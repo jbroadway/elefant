@@ -151,6 +151,13 @@ class Form {
 	public $error = false;
 
 	/**
+	 * Whether `handle()` should include the default JavaScript validation
+	 * or just the `/js/jquery.verify_values.js` script so you can write
+	 * your own custom validation display.
+	 */
+	public $js_validation = true;
+
+	/**
 	 * Constructor method. Parameters are:
 	 *
 	 * - Required request method (default is 'post')
@@ -242,10 +249,13 @@ class Form {
 
 			// Set some views to go to the template
 			$o = $this->merge_values ($o);
-			$o->_form = str_replace ('/', '-', $this->view);
+			$o->_form = str_replace ('/', '-', $this->view) . '-form';
 			$o->_failed = $this->failed;
 			$o->_rules = $this->_rules;
 			$page->add_script ('/js/jquery.verify_values.js');
+			if ($this->js_validation) {
+				return $tpl->render ('admin/default-validation', $o) . $tpl->render ($this->view, $o);
+			}
 			return $tpl->render ($this->view, $o);
 		}
 
