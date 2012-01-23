@@ -1,0 +1,13 @@
+<div class="pager pager-more">
+	<div class="pager-more">
+{% if num > 1 %}
+		<span class="pager-previous" style="float: left"><a href="{{ prev_link }}">&laquo; {" Newer results "}</a></span>
+{% end %}
+
+{% if more %}
+		<span class="pager-next" style="float: right"><a href="{{ next_link }}">{" Older results "} &raquo;</a></span>
+{% end %}
+	</div>
+
+	<br clear="both" />
+</div>
