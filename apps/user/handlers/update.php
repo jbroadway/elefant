@@ -19,9 +19,7 @@ if (! User::require_login ()) {
 	return;
 }
 
-global $user;
-
-$u = $user;
+$u = User::$user;
 
 $f = new Form ('post', 'user/update');
 if ($f->submit ()) {

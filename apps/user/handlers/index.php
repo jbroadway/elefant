@@ -19,7 +19,7 @@ if (! $this->params[0]) {
 		echo $this->run ('user/login');
 		return;
 	}
-	global $user;
+	$user = User::$user;
 } else {
 	$user = new User ($this->params[0]);
 }

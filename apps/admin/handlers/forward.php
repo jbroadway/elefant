@@ -6,8 +6,7 @@
  * into the WYSIWYG editor.
  */
 
-global $user;
-if (User::is_valid () && $user->type == 'admin') {
+if (User::is_valid () && User::is ('admin')) {
 	$to = isset ($data['to']) ? $data['to'] : $_GET['to'];
 	printf (
 		'<p>%s:</p><p><a href="%s">%s</a></p>',

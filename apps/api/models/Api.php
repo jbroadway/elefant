@@ -53,7 +53,6 @@ class Api extends Model {
 			$key
 		);
 		if ($u) {
-			global $user;
 			$user = new User ($u->user_id);
 			return true;
 		}

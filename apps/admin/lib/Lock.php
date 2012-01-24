@@ -87,8 +87,6 @@ class Lock {
 	 * Create a lock on the specified object.
 	 */
 	public function add ($resource = false, $key = false) {
-		global $user;
-		
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 		
@@ -97,7 +95,7 @@ class Lock {
 				(user, resource, resource_id, expires, created, modified)
 			values
 				(?, ?, ?, ?, ?, ?)',
-			$user->id,
+			User::val ('id'),
 			$resource,
 			$key,
 			gmdate ('Y-m-d H:i:s', time () + $this->timeout),
@@ -114,14 +112,12 @@ class Lock {
 	 * Check whether a lock is held on an object by someone other than the current user.
 	 */
 	public function exists ($resource = false, $key = false) {
-		global $user;
-
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
 		return db_shift (
 			'select id from `lock` where user != ? and resource = ? and resource_id = ? and expires > ?',
-			$user->id,
+			User::val ('id'),
 			$resource,
 			$key,
 			gmdate ('Y-m-d H:i:s')
@@ -142,8 +138,6 @@ class Lock {
 	 * Update the expiry and modification time of an existing lock.
 	 */
 	public function update ($resource = false, $key = false) {
-		global $user;
-
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
@@ -174,8 +168,7 @@ class Lock {
 	 * Clear all locks held by the current user.
 	 */
 	public static function clear () {
-		global $user;
-		return db_execute ('delete from `lock` where user = ?', $user->id);
+		return db_execute ('delete from `lock` where user = ?', User::val ('id'));
 	}
 
 	/**

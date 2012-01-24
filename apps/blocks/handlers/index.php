@@ -18,11 +18,9 @@
  * `[expr]` style sub-expressions.
  */
 
-global $user;
-
 $id = (isset ($this->params[0])) ? $this->params[0] : (isset ($data['id']) ? $data['id'] : false);
 if (! $id) {
-	if (User::is_valid () && $user->type == 'admin') {
+	if (User::is_valid () && User::is ('admin')) {
 		echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false));
 	}
 	return;
@@ -32,7 +30,7 @@ $lock = new Lock ('Block', $id);
 
 $b = new Block ($id);
 if ($b->error) {
-	if (User::is_valid () && $user->type == 'admin') {
+	if (User::is_valid () && User::is ('admin')) {
 		echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false));
 	}
 	return;
@@ -51,7 +49,7 @@ if ($b->show_title == 'yes') {
 
 $b->locked = $lock->exists ();
 
-if (User::is_valid () && $user->type == 'admin') {
+if (User::is_valid () && User::is ('admin')) {
 	echo $tpl->render ('blocks/editable', $b);
 }
 
