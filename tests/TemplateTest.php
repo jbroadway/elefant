@@ -1,6 +1,6 @@
 <?php
 
-require_once ('lib/Template.php');
+require_once ('lib/Autoloader.php');
 
 class TemplateTest extends PHPUnit_Framework_TestCase {
 	function test_replace_vars () {

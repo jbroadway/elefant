@@ -1,6 +1,6 @@
 <?php
 
-require_once ('lib/Page.php');
+require_once ('lib/Autoloader.php');
 
 class PageTest extends PHPUnit_Framework_TestCase {
 	function test_titles () {

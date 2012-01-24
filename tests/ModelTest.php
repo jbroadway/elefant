@@ -1,8 +1,6 @@
 <?php
 
-require_once ('lib/Database.php');
-require_once ('lib/Model.php');
-require_once ('lib/Form.php');
+require_once ('lib/Autoloader.php');
 
 class Qwerty extends Model {
 	var $key = 'foo';

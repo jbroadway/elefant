@@ -1,9 +1,7 @@
 <?php
 
 require_once ('lib/Functions.php');
-require_once ('lib/MongoManager.php');
-require_once ('lib/MongoModel.php');
-require_once ('lib/Form.php');
+require_once ('lib/Autoloader.php');
 
 class MTest extends MongoModel {
 	var $name = 'foo';

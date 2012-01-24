@@ -1,7 +1,7 @@
 <?php
 
 require_once ('lib/Functions.php');
-require_once ('lib/Controller.php');
+require_once ('lib/Autoloader.php');
 
 class ControllerTest extends PHPUnit_Framework_TestCase {
 	function setUp () {

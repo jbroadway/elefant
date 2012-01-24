@@ -1,9 +1,6 @@
 <?php
 
-require_once ('lib/Database.php');
-require_once ('lib/Form.php');
-require_once ('lib/Model.php');
-require_once ('apps/admin/models/Versions.php');
+require_once ('lib/Autoloader.php');
 
 class Foobar extends Model {}
 
@@ -34,8 +31,7 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 	}
 
 	static function tearDownAfterClass () {
-		unset ($GLOBALS['db_list']);
-		unset ($GLOBALS['user']);
+		User::$user = false;
 	}
 
 	function test_add () {
