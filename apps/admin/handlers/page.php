@@ -7,8 +7,6 @@
  * CMS by default.
  */
 
-global $user;
-
 // determine page id
 $id = count ($this->params) ? $this->params[0] : 'index';
 
@@ -18,7 +16,7 @@ if ($res) {
 	$page = (is_object ($res)) ? $res : unserialize ($res);
 
 	// show admin edit buttons
-	if (User::is_valid () && $user->type == 'admin') {
+	if (User::is_valid () && User::is ('admin')) {
 		$lock = new Lock ('Webpage', $id);
 		$page->locked = $lock->exists ();
 		echo $tpl->render ('admin/editable', $page);
@@ -60,7 +58,7 @@ $page->layout = $wp->layout;
 $page->head = $wp->head;
 
 // show admin edit buttons
-	if (User::is_valid () && $user->type == 'admin') {
+	if (User::is_valid () && User::is ('admin')) {
 	$lock = new Lock ('Webpage', $id);
 	$page->locked = $lock->exists ();
 	echo $tpl->render ('admin/editable', $page);

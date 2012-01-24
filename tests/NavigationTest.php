@@ -1,6 +1,6 @@
 <?php
 
-require_once ('apps/navigation/lib/Navigation.php');
+require_once ('lib/Autoloader.php');
 
 class NavigationTest extends PHPUnit_Framework_TestCase {
 	protected static $n;

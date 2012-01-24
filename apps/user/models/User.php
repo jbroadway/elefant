@@ -28,13 +28,8 @@
  * This is the default user authentication source for Elefant. Provides the
  * basic `User::require_login()` and `User::require_admin()` methods, as
  * well as `User::is_valid()` and `User::logout()`. If a user is logged in,
- * the first call to any validation method will create a global `$user`
- * object to store the user data.
- *
- * It uses a global singleton so the user data can be available to any part
- * of the application, and it makes sense to do so because there is only one
- * active user account per request. It's also much nicer to type `$user`
- * than `User::$user` throughout your code.
+ * the first call to any validation method will initialize the `$user`
+ * property to contain the static User object.
  *
  * Note that this class extends Model, so all of the Model methods are
  * available for querying the user list, and for user management, as well.
@@ -66,6 +61,21 @@
  *     // Not allowed
  *   }
  *
+ *   // Check the user's type
+ *   if (User::is ('member')) {
+ *     // Access granted
+ *   }
+ *
+ *   // Get the name value
+ *   $name = User::val ('name');
+ *
+ *   // Get the actual user object
+ *   info (User::$user);
+ *
+ *   // Update and save a user's name
+ *   User::val ('name', 'Bob Diggity');
+ *   User::save ();
+ *
  *   // Encrypt a password
  *   $encrypted = User::encrypt_pass ($password);
  *
@@ -77,6 +87,11 @@ class User extends Model {
 	 * Stores additional user properties defined via the `$user->userdata` array.
 	 */
 	private $_userdata = false;
+
+	/**
+	 * This is the static User object for the current user.
+	 */
+	public static $user = false;
 
 	/**
 	 * Generates a random salt and encrypts a password using MD5.
@@ -104,19 +119,18 @@ class User extends Model {
 			$user
 		);
 		if ($u && crypt ($pass, $u->password) == $u->password) {
-			global $user;
-			$user = new User ((array) $u, false);
-			$user->session_id = md5 (uniqid (mt_rand (), 1));
-			$user->expires = gmdate ('Y-m-d H:i:s', time () + 2592000); // 1 month
+			self::$user = new User ((array) $u, false);
+			self::$user->session_id = md5 (uniqid (mt_rand (), 1));
+			self::$user->expires = gmdate ('Y-m-d H:i:s', time () + 2592000); // 1 month
 			$try = 0;
-			while (! $user->put ()) {
-				$user->session_id = md5 (uniqid (mt_rand (), 1));
+			while (! self::$user->put ()) {
+				self::$user->session_id = md5 (uniqid (mt_rand (), 1));
 				$try++;
 				if ($try == 5) {
 					return false;
 				}
 			}
-			$_SESSION['session_id'] = $user->session_id;
+			$_SESSION['session_id'] = self::$user->session_id;
 			return true;
 		}
 		return false;
@@ -139,7 +153,7 @@ class User extends Model {
 				gmdate ('Y-m-d H:i:s')
 			);
 			if ($u) {
-				$GLOBALS['user'] = new User ((array) $u, false);
+				self::$user = new User ((array) $u, false);
 				return true;
 			}
 		}
@@ -165,17 +179,16 @@ class User extends Model {
 	 *   }
 	 */
 	public static function require_admin () {
-		global $user;
-		if (is_object ($user)) {
-			if ($user->session_id == $_SESSION['session_id']) {
-				if ($user->type == 'admin') {
+		if (is_object (self::$user)) {
+			if (self::$user->session_id == $_SESSION['session_id']) {
+				if (self::$user->type == 'admin') {
 					return true;
 				}
 				return false;
 			}
 		} else {
 			$res = simple_auth (array ('User', 'verifier'), array ('User', 'method'));
-			if ($res && $user->type == 'admin') {
+			if ($res && self::$user->type == 'admin') {
 				return true;
 			}
 		}
@@ -186,24 +199,46 @@ class User extends Model {
 	 * Check if a user is valid.
 	 */
 	public static function is_valid () {
-		global $user;
-		if (is_object ($user) && $user->session_id == $_SESSION['session_id']) {
+		if (is_object (self::$user) && self::$user->session_id == $_SESSION['session_id']) {
 			return true;
 		}
 		return User::require_login ();
 	}
 
 	/**
+	 * Check if a user is of a certain type.
+	 */
+	public static function is ($type) {
+		return (self::$user->type === $type);
+	}
+
+	/**
+	 * Get or set a specific field's value.
+	 */
+	public static function val ($key, $val = null) {
+		if ($val !== null) {
+			self::$user->{$key} = $val;
+		}
+		return self::$user->{$key};
+	}
+
+	/**
+	 * Save the user's data to the database.
+	 */
+	public static function save () {
+		return self::$user->put ();
+	}
+
+	/**
 	 * Log out and optionally redirect to the specified URL.
 	 */
 	public static function logout ($redirect_to = false) {
-		global $user;
-		if (! isset ($user)) {
+		if (self::$user === false) {
 			User::require_login ();
 		}
-		if (! empty ($user->session_id)) {
-			$user->expires = gmdate ('Y-m-d H:i:s', time () - 100000);
-			$user->put ();
+		if (! empty (self::$user->session_id)) {
+			self::$user->expires = gmdate ('Y-m-d H:i:s', time () - 100000);
+			self::$user->put ();
 		}
 		$_SESSION['session_id'] = null;
 		if ($redirect_to) {

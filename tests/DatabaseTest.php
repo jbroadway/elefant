@@ -1,6 +1,6 @@
 <?php
 
-require_once ('lib/Database.php');
+require_once ('lib/Autoloader.php');
 
 class DatabaseTest extends PHPUnit_Framework_TestCase {
 	function setUp () {

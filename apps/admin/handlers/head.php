@@ -6,11 +6,9 @@
  * may rely on it.
  */
 
-global $user;
-
 echo "<script src=\"/js/jquery-1.7.1.min.js\"></script>\n";
 
-if (User::is_valid () && $user->type == 'admin' && $page->preview == false) {
+if (User::is_valid () && User::is ('admin') && $page->preview == false) {
 	echo $tpl->render ('admin/head');
 }
 

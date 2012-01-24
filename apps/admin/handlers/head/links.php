@@ -18,7 +18,6 @@ $page->layout = false;
 if (! User::require_admin ()) {
 	return;
 }
-global $user;
 
 $tools = array ('admin/pages' => array ('handler' => 'admin/pages', 'name' => i18n_get ('All Pages')));
 $res = glob ('apps/*/conf/config.php');
@@ -57,7 +56,7 @@ $out = array (
 	'name' => Product::name (),
 	'logo' => Product::logo_toolbar (),
 	'links' => $tpl->render ('admin/head/links', array (
-		'user' => $user->name,
+		'user' => User::val ('name'),
 		'tools' => $tools
 	))
 );

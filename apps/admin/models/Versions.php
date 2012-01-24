@@ -36,8 +36,7 @@
  *   $history = Versions::history ($obj);
  *
  *   // get recent changes by current user
- *   global $user;
- *   $recent = Versions::recent ($user);
+ *   $recent = Versions::recent (User::$user);
  *
  *   // compare current version of a web page to previous:
  *
@@ -67,11 +66,10 @@ class Versions extends Model {
 	 * Add a version to the store.
 	 */
 	public static function add ($obj) {
-		global $user;
 		$v = new Versions (array (
 			'class' => get_class ($obj),
 			'pkey' => $obj->{$obj->key},
-			'user' => (! $user) ? 0 : $user->id,
+			'user' => (! $user) ? 0 : User::val ('id'),
 			'ts' => gmdate ('Y-m-d H:i:s'),
 			'serialized' => json_encode ($obj->data)
 		));

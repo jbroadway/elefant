@@ -1,7 +1,6 @@
 <?php
 
-require_once ('lib/Form.php');
-require_once ('lib/Database.php');
+require_once ('lib/Autoloader.php');
 
 class FormTest extends PHPUnit_Framework_TestCase {
 	protected $backupGlobalsBlacklist = array ('user');

@@ -1,12 +1,8 @@
 <?php
 
-require_once ('lib/Database.php');
-require_once ('apps/admin/lib/Lock.php');
-
-$GLOBALS['db_list'] = array ();
+require_once ('lib/Autoloader.php');
 
 class LockTest extends PHPUnit_Framework_TestCase {
-	protected $backupGlobalsBlacklist = array ('user');
 	protected static $lock;
 
 	static function setUpBeforeClass () {
@@ -21,13 +17,13 @@ class LockTest extends PHPUnit_Framework_TestCase {
 			modified datetime not null
 		)');
 
-		$GLOBALS['user'] = (object) array ('id' => 1);
+		User::$user = (object) array ('id' => 1);
 
 		self::$lock = new Lock ('test', 'one');
 	}
 
 	static function tearDownAfterClass () {
-		unset ($GLOBALS['user']);
+		User::$user = false;
 	}
 
 	function test_add () {
@@ -47,7 +43,7 @@ class LockTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (self::$lock->exists (), false);
 
 		// Change users, should find the lock now
-		$GLOBALS['user']->id = 2;
+		User::val ('id', 2);
 		$this->assertEquals (self::$lock->exists (), 1);
 	}
 
