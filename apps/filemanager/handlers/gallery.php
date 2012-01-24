@@ -28,7 +28,7 @@ if (! @is_dir ('files/' . $path)) {
 	return;
 }
 
-$files = glob ('files/' . $path . '/*.{jpg,jpeg,gif,png}', GLOB_BRACE);
+$files = glob ('files/' . $path . '/*.{jpg,jpeg,gif,png,JPG,JPEG,GIF,PNG}', GLOB_BRACE);
 
 echo $tpl->render (
 	'filemanager/gallery',
