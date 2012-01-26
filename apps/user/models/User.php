@@ -82,11 +82,11 @@
  *   // Log out and send them home
  *   User::logout ('/');
  */
-class User extends Model {
+class User extends ExtendedModel {
 	/**
-	 * Stores additional user properties defined via the `$user->userdata` array.
+	 * Tell the ExtendedModel which field should contain the extended properties.
 	 */
-	private $_userdata = false;
+	public $_extended_field = 'userdata';
 
 	/**
 	 * This is the static User object for the current user.
@@ -245,33 +245,6 @@ class User extends Model {
 			global $controller;
 			$controller->redirect ($redirect_to);
 		}
-	}
-
-	/**
-	 * Dynamic getter for user properties. If you get `userdata`, will also
-	 * automatically unserialize it into an array for you.
-	 */
-	public function __get ($key) {
-		if ($key == 'userdata') {
-			if ($this->_userdata === false) {
-				$this->_userdata = (array) json_decode ($this->data['userdata']);
-			}
-			return $this->_userdata;
-		}
-		return parent::__get ($key);
-	}
-
-	/**
-	 * Dynamic setter for user properties. If you set `userdata` it will also
-	 * automatically serialize it into JSON for storage.
-	 */
-	public function __set ($key, $val) {
-		if ($key == 'userdata') {
-			$this->_userdata = $val;
-			$this->data[$key] = json_encode ($val);
-			return;
-		}
-		return parent::__set ($key, $val);
 	}
 }
 
