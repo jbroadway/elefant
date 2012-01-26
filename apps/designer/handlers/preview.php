@@ -4,6 +4,8 @@
  * Live preview handler for layout template forms.
  */
 
+$this->require_admin ();
+
 $page->title = i18n_get ('Page title');
 $page->preview = true;
 

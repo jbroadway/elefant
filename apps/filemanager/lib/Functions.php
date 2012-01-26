@@ -92,19 +92,19 @@ function filemanager_get_thumbnail ($file, $width = 140, $height = 105) {
 	if (! extension_loaded ('gd')) {
 		return $file . '#gd-missing';
 	}
-	if ($ext == 'jpg' || $ext == 'jpeg') {
+	if ($ext === 'jpg' || $ext === 'jpeg') {
 		if (@imagetypes () & IMG_JPG) {
 			$orig = @imagecreatefromjpeg ($file);
 		} else {
 			return $file . '#libjpg-missing';
 		}
-	} elseif ($ext == 'png') {
+	} elseif ($ext === 'png') {
 		if (@imagetypes () & IMG_PNG) {
 			$orig = @imagecreatefrompng ($file);
 		} else {
 			return $file . '#libpng-missing';
 		}
-	} elseif ($ext == 'gif') {
+	} elseif ($ext === 'gif') {
 		if (@imagetypes () & IMG_GIF) {
 			$orig = @imagecreatefromgif ($file);
 		} else {
