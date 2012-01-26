@@ -75,7 +75,8 @@ create table blog_post (
 	author char(32) not null,
 	published char(3) not null,
 	body text not null,
-	tags text not null
+	tags text not null,
+	extra text not null
 );
 
 create index blog_post_ts on blog_post (ts);

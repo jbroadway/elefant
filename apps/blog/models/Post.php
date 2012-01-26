@@ -38,12 +38,19 @@ namespace blog;
  * published
  * body
  * tags
+ * extra
  */
-class Post extends \Model {
+class Post extends \ExtendedModel {
 	/**
 	 * Table name.
 	 */
 	public $table = 'blog_post';
+
+	/**
+	 * The `extra` field can contain an arbitrary number of additional
+	 * user-defined properties.
+	 */
+	public $_extended_field = 'extra';
 
 	/**
 	 * Get the most recently published posts.

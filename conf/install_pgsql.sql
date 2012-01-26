@@ -88,6 +88,7 @@ create table blog_post (
 	published varchar(3) not null,
 	body text not null,
 	tags text not null,
+	extra text not null,
 	check (published in ('yes', 'no'))
 );
 

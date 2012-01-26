@@ -41,5 +41,8 @@ blog/post = blog/post
 
 handler = blog/admin
 name = Blog Posts
+install = blog/upgrade
+upgrade = blog/upgrade
+version = 1.1.3-stable
 
 ; */ ?>
