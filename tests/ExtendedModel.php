@@ -38,6 +38,22 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
 		$extra = self::$o->extra;
 		$this->assertEquals (array ('foo' => 'bar'), $extra);
 	}
+
+	function test_extended () {
+		$extra = self::$o->ext ();
+		$this->assertEquals (array ('foo' => 'bar'), $extra);
+
+		$foo = self::$o->ext ('foo');
+		$this->assertEquals ('bar', $foo);
+
+		self::$o->ext ('foo', 'asdf');
+		$foo = self::$o->ext ('foo');
+		$this->assertEquals ('asdf', $foo);
+
+		$extra = array ('foo' => 'asdf');
+		$this->assertEquals ($extra, self::$o->ext ());
+		$this->assertEquals (json_encode ($extra), self::$o->data['extra']);
+	}
 }
 
 ?>

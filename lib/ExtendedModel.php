@@ -50,9 +50,16 @@
  *   // get its extradata field
  *   $extra = $foo->extradata;
  *
+ *   // or
+ *   $extra = $foo->ext ();
+ *
  *   // add some fields to it
  *   $extra['favorite_food'] = 'pizza';
  *   $extra['favorite_color'] = 'green';
+ *
+ *   // or
+ *   $foo->ext ('favorite_food', 'pizza');
+ *   $foo->ext ('favorite_color', 'green');
  *
  *   // set it and save it
  *   $foo->extradata = $extra;
@@ -63,6 +70,10 @@
  *   $foo = new Foo (1);
  *   $extra = $foo->extra;
  *   echo $extra['favorite_food'];
+ *
+ *   // or
+ *   $foo = new Foo (1);
+ *   echo $foo->ext ('favorite_food');
  */
 class ExtendedModel extends Model {
 	/**
@@ -103,6 +114,24 @@ class ExtendedModel extends Model {
 			return;
 		}
 		return parent::__set ($key, $val);
+	}
+
+	/**
+	 * This method provides an easy getter/setter for the extended field values.
+	 * It works around the fact that accessing the array elements directly from the
+	 * extended field won't trigger the __get() and __set() magic methods.
+	 */
+	public function ext ($key = null, $val = null) {
+		if ($key === null) {
+			return $this->{$this->_extended_field};
+		}
+		if ($val !== null) {
+			$ext = $this->{$this->_extended_field};
+			$ext[$key] = $val;
+			$this->{$this->_extended_field} = $ext;
+		}
+		$ext = $this->{$this->_extended_field};
+		return $ext[$key];
 	}
 }
 
