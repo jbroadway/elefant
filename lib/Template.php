@@ -62,6 +62,14 @@
  * Note that `'endif'` and `'endforeach'` are valid as well as `'end'`,
  * if you prefer, for the sake of clarity.
  *
+ * Here's one more example of how to loop through an array of arrays:
+ *
+ *     {% foreach my_list %}
+ *         {% foreach loop_value %}
+ *             {{ loop_index }}. {{ loop_value }}<br />
+ *         {% end %}
+ *     {% end %}
+ *
  * ## Usage in PHP
  *
  * To call a template, use:
