@@ -70,7 +70,7 @@ if ($f->submit ()) {
 	$p = new blog\Post;
 	$p->author = $GLOBALS['user']->name;
 	$p->ts = gmdate ('Y-m-d H:i:s');
-	$p->yes_no = array ('yes', 'no');
+	$p->yes_no = array ('yes' => i18n_get ('Yes'), 'no' => i18n_get ('No'));
 	$p->autopost_pom = 'yes';
 	$p->autopost_tw = 'yes';
 

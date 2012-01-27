@@ -43,7 +43,7 @@ if ($f->submit ()) {
 	$page->title = i18n_get ('An Error Occurred');
 	echo i18n_get ('Error Message') . ': ' . $b->error;
 } else {
-	$b->yes_no = array ('yes', 'no');
+	$b->yes_no = array ('yes' => i18n_get ('Yes'), 'no' => i18n_get ('No'));
 	$b->failed = $f->failed;
 	$b = $f->merge_values ($b);
 	$page->title = i18n_get ('Edit Block') . ': ' . $b->title;

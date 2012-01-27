@@ -30,7 +30,7 @@ if ($f->submit ()) {
 	$b = new Block;
 	$b->id = $_GET['id'];
 	$b->access = 'public';
-	$b->yes_no = array ('yes', 'no');
+	$b->yes_no = array ('yes' => i18n_get ('Yes'), 'no' => i18n_get ('No'));
 
 	$b->failed = $f->failed;
 	$b = $f->merge_values ($b);

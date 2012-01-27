@@ -92,7 +92,7 @@ if ($f->submit ()) {
 	$page->title = 'An Error Occurred';
 	echo 'Error Message: ' . $p->error;
 } else {
-	$p->yes_no = array ('yes', 'no');
+	$p->yes_no = array ('yes' => i18n_get ('Yes'), 'no' => i18n_get ('No'));
 	$p->autopost_pom = 'yes';
 	$p->autopost_tw = 'yes';
 	$p->tag_list = explode (',', $p->tags);

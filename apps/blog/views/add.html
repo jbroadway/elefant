@@ -15,7 +15,7 @@
 <p>{"Published"}:
 <select name="published">
 {% foreach yes_no %}
-	<option value="{{ loop_value }}"{% if loop_value == $data->published %} selected{% end %}>{{ loop_value|ucfirst }}</option>
+	<option value="{{ loop_index }}"{% if loop_index == $data->published %} selected{% end %}>{{ loop_value|none }}</option>
 {% end %}
 </select></p>
 <p>{"Tags (comma-separated)"}:

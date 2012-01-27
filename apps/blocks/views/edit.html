@@ -19,7 +19,7 @@
 <p>{"Display title"}:<br />
 <select name="show_title">
 {% foreach yes_no %}
-	<option value="{{ loop_value }}"{% if loop_value == $data->show_title %} selected{% end %}>{{ loop_value|ucfirst }}</option>
+	<option value="{{ loop_index }}"{% if loop_index == $data->show_title %} selected{% end %}>{{ loop_value|none }}</option>
 {% end %}
 </select></p>
 </div>
