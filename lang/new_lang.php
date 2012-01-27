@@ -100,6 +100,7 @@ $this->lang_hash['en'] = array (
 	'Email' => '',
 	'Email address' => '',
 	'Error' => '',
+	'Error importing file' => '',
 	'Error Message' => '',
 	'Error message' => '',
 	'Error uploading file.' => '',
