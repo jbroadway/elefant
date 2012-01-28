@@ -69,7 +69,7 @@ class Versions extends Model {
 		$v = new Versions (array (
 			'class' => get_class ($obj),
 			'pkey' => $obj->{$obj->key},
-			'user' => (! $user) ? 0 : User::val ('id'),
+			'user' => (! User::$user) ? 0 : User::val ('id'),
 			'ts' => gmdate ('Y-m-d H:i:s'),
 			'serialized' => json_encode ($obj->data)
 		));

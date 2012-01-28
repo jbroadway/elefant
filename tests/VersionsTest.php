@@ -28,6 +28,7 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 		if (! db_execute ('create index versions_user on versions (user, ts)')) {
 			die ('Failed to create versions_user index');
 		}
+		User::$user = false;
 	}
 
 	static function tearDownAfterClass () {
@@ -45,11 +46,17 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (self::$v->user, 0);
 	}
 
+	/**
+	 * @depends test_add
+	 */
 	function test_restore () {
 		self::$foo2 = Versions::restore (self::$v);
 		$this->assertEquals (self::$foo, self::$foo2);
 	}
 
+	/**
+	 * @depends test_restore
+	 */
 	function test_diff () {
 		// test diff
 		self::$foo->name = 'Test2';
@@ -62,6 +69,9 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($modified[0], 'name');
 	}
 
+	/**
+	 * @depends test_diff
+	 */
 	function test_history () {
 		// test history
 		$history = Versions::history (self::$foo);
@@ -71,6 +81,9 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($modified[0], 'name');
 	}
 
+	/**
+	 * @depends test_history
+	 */
 	function test_recent () {
 		// test recent
 		$recent = Versions::recent ();
