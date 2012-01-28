@@ -630,7 +630,7 @@ class Form {
 						continue;
 					}
 				}
-				if (! Form::verify_value ($values[$name], $type, $validator)) {
+				if (! isset ($values[$name]) || ! Form::verify_value ($values[$name], $type, $validator)) {
 					$failed[] = $name;
 					break;
 				}
