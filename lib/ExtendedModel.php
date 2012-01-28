@@ -37,6 +37,42 @@
  *
  * Usage:
  *
+ * 1. By specifying allowed extended fields in `$verify`
+ *
+ *   <?php
+ *   
+ *   class Foo extends ExtendedModel {
+ *     // store extended data in a field named extradata
+ *     public $_extended_field = 'extradata';
+ *     
+ *     public $verify = array (
+ *       // regular field validations, followed by extended fields:
+ *       'favorite_food' => array (
+ *         'extended' => 1 // mark as extended
+ *       ),
+ *       'favorite_color' => array (
+ *         'extended' => 1, // can also have validation rules:
+ *         'regex' => '/^(red|green|blue|yellow|orange|purple|pink|brown)$/i'
+ *     );
+ *   }
+ *   
+ *   // fetch an item
+ *   $foo = new Foo (1);
+ *   
+ *   // since we've defined the extended fields, we can access them directly
+ *   $foo->favorite_food = 'pizza';
+ *
+ *   // this will fail to save because the validation fails
+ *   $foo->favorite_color = 'black';
+ *   if (! $foo->put ()) {
+ *     echo $foo->error;
+ *   }
+ *   
+ *   ?>
+ *
+ * 2. By accessing the extradata field directly (will automatically serialize
+ * and unserialize for you), or through the `ext()` method:
+ *
  *   <?php
  *   
  *   class Foo extends ExtendedModel {
@@ -74,6 +110,8 @@
  *   // or
  *   $foo = new Foo (1);
  *   echo $foo->ext ('favorite_food');
+ *   
+ *   ?>
  */
 class ExtendedModel extends Model {
 	/**
@@ -88,16 +126,61 @@ class ExtendedModel extends Model {
 	public $_extended = false;
 
 	/**
+	 * Verification rules for extended attributes.
+	 */
+	private $_extended_verify = array ();
+
+	/**
+	 * Need to separate verify list for regular and extended attributes,
+	 * so we override the constructor to do so.
+	 */
+	public function __construct ($vals = false, $is_new = true) {
+		foreach ($this->verify as $k => $v) {
+			if (isset ($v['extended'])) {
+				unset ($v['extended']);
+				$this->_extended_verify[$k] = $v;
+				unset ($this->verify[$k]);
+			}
+		}
+
+		return parent::__construct ($vals, $is_new);
+	}
+
+	/**
+	 * Need to verify extended fields, so we override the put() method.
+	 */
+	public function put () {
+		$f = new Form;
+		$failed = $f->verify_values ($this->ext (), $this->_extended_verify);
+		if (! empty ($failed)) {
+			$this->error = 'Validation failed for extended fields: ' . join (', ', $failed);
+			return false;
+		}
+
+		return parent::put ();
+	}
+
+	/**
 	 * Dynamic getter for user properties. If you get the field specified
 	 * in the child class's `$_extended_field` property, it will automatically
 	 * unserialize it into an array for you.
+	 *
+	 * If an extended property has been defined in the `$verify` list, you can
+	 * also get it directly using the usual `$model->property` syntax.
 	 */
 	public function __get ($key) {
 		if ($key == $this->_extended_field) {
 			if ($this->_extended === false) {
-				$this->_extended = (array) json_decode ($this->data[$this->_extended_field]);
+				if (isset ($this->data[$this->_extended_field])) {
+					$this->_extended = (array) json_decode ($this->data[$this->_extended_field]);
+				} else {
+					$this->data[$this->_extended_field] = json_encode (array ());
+					$this->_extended = array ();
+				}
 			}
 			return $this->_extended;
+		} elseif (isset ($this->_extended_verify[$key])) {
+			return $this->ext ($key);
 		}
 		return parent::__get ($key);
 	}
@@ -106,12 +189,17 @@ class ExtendedModel extends Model {
 	 * Dynamic setter for extended properties field. If you set the field
 	 * specified in the child class's `$_extended_field` property, it will
 	 * automatically serialize it into JSON for storage.
+	 *
+	 * If an extended property has been defined in the `$verify` list, you can
+	 * also set it directly using the usual `$model->property = '...'` syntax.
 	 */
 	public function __set ($key, $val) {
 		if ($key === $this->_extended_field) {
 			$this->_extended = $val;
 			$this->data[$key] = json_encode ($val);
 			return;
+		} elseif (isset ($this->_extended_verify[$key])) {
+			return $this->ext ($key, $val);
 		}
 		return parent::__set ($key, $val);
 	}
