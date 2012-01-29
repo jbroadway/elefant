@@ -12,9 +12,16 @@ if ($this->installed ('blog', $appconf['Admin']['version']) === true) {
 
 $page->title = i18n_get ('Upgrading Blog App');
 
-if (! db_execute ('alter table blog_post add column extra text not null default ""')) {
-	echo '<p>' . i18n_get ('Error') . ': ' . db_error () . '</p>';
-	return;
+$db = Database::get_connection (1);
+$dbtype = $db->getAttribute (PDO::ATTR_DRIVER_NAME);
+switch ($dbtype) {
+	case 'pgsql':
+	case 'mysql':
+		db_execute ('alter table blog_post add column extra text not null default \'\'');
+		break;
+	case 'sqlite':
+		db_execute ('alter table blog_post add column "extra" "text not null"');
+		break;
 }
 echo '<p>' . i18n_get ('Done.') . '</p>';
 
