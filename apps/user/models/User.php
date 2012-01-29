@@ -98,8 +98,8 @@ class User extends ExtendedModel {
 	 */
 	public static function encrypt_pass ($plain) {
 		$base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-		$salt = '$1$';
-		for ($i = 0; $i < 9; $i++) {
+		$salt = '$2a$07$';
+		for ($i = 0; $i < 22; $i++) {
 			$salt .= $base[rand (0, 61)];
 		}
 		return crypt ($plain, $salt . '$');

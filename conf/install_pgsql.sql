@@ -37,7 +37,7 @@ create sequence user_id_seq;
 create table "user" (
 	id integer not null default nextval('user_id_seq') primary key,
 	email varchar(72) unique not null,
-	password varchar(35) not null,
+	password varchar(128) not null,
 	session_id varchar(32) unique,
 	expires timestamp not null,
 	name varchar(72) not null,
@@ -124,5 +124,8 @@ create table apps (
 	name varchar(48) not null primary key,
 	version varchar(16) not null
 );
+
+insert into apps (name, version) values ('blog', '1.1.3-stable');
+insert into apps (name, version) values ('user', '1.1.3-stable');
 
 commit;

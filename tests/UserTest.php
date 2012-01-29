@@ -8,7 +8,7 @@ class UserTest extends PHPUnit_Framework_TestCase {
 		db_execute ('create table user (
 			id integer primary key,
 			email char(72) unique not null,
-			password char(35) not null,
+			password char(128) not null,
 			session_id char(32) unique,
 			expires datetime not null,
 			name char(72) not null,

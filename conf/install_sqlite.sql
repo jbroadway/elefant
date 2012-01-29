@@ -29,7 +29,7 @@ insert into block (id, title, access, body, show_title) values ('members', 'Memb
 create table user (
 	id integer primary key,
 	email char(72) unique not null,
-	password char(35) not null,
+	password char(128) not null,
 	session_id char(32) unique,
 	expires datetime not null,
 	name char(72) not null,
@@ -110,3 +110,6 @@ create table apps (
 	name char(48) not null primary key,
 	version char(16) not null
 );
+
+insert into apps (name, version) values ('blog', '1.1.3-stable');
+insert into apps (name, version) values ('user', '1.1.3-stable');

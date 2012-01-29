@@ -30,8 +30,8 @@ if (@file_exists ('installed')) {
 
 function encrypt_pass ($plain) {
 	$base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	$salt = '$1$';
-	for ($i = 0; $i < 9; $i++) {
+	$salt = '$2a$07$';
+	for ($i = 0; $i < 22; $i++) {
 		$salt .= $base[rand (0, 61)];
 	}
 	return crypt ($plain, $salt . '$');
@@ -60,8 +60,10 @@ require_once ('../lib/Form.php');
 require_once ('../lib/Database.php');
 require_once ('../lib/Template.php');
 require_once ('../lib/Model.php');
+require_once ('../lib/ExtendedModel.php');
 require_once ('../apps/admin/models/Webpage.php');
 require_once ('../apps/blocks/models/Block.php');
+require_once ('../apps/user/models/User.php');
 require_once ('../apps/admin/models/Versions.php');
 
 // create core objects

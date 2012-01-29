@@ -53,5 +53,8 @@ consumer_secret = ""
 
 handler = user/admin
 name = Users
+install = user/upgrade
+upgrade = user/upgrade
+version = 1.1.3-stable
 
 ; */ ?>
