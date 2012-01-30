@@ -66,6 +66,11 @@ class MongoManager {
 	public static $conn = false;
 
 	/**
+	 * The error string if a connection error occurred.
+	 */
+	public static $error = false;
+
+	/**
 	 * Get the Mongo database connection object. Uses your
 	 * settings from `conf/config.php` for the connection
 	 * info (`host`, `name`, `user`, `pass`, and `set_name`).
@@ -82,10 +87,14 @@ class MongoManager {
 			} else {
 				$connstr = $conf['host'];
 			}
-			if (isset ($conf['set_name'])) {
-				self::$conn = new Mongo ($connstr, array ('replicaSet' => $conf['set_name']));
-			} else {
-				self::$conn = new Mongo ($connstr);
+			try {
+				if (isset ($conf['set_name'])) {
+					self::$conn = new Mongo ($connstr, array ('replicaSet' => $conf['set_name']));
+				} else {
+					self::$conn = new Mongo ($connstr);
+				}
+			} catch (Exception $e) {
+				self::$error = $e->getMessage ();
 			}
 		}
 		return self::$conn;

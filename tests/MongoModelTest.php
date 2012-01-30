@@ -79,6 +79,7 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 	function test_fetch () {
 		$t = new MTest (array ('foo' => 'bar'));
 		$t->put ();
+
 		$t = new MTest (array ('foo' => 'asdf'));
 		$t->put ();
 
@@ -95,6 +96,7 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 	function test_fetch_orig () {
 		$t = new MTest (array ('foo' => 'qwerty'));
 		$t->put ();
+
 		$t = new MTest (array ('foo' => '1234'));
 		$t->put ();
 

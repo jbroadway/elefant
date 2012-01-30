@@ -174,7 +174,9 @@ class MongoModel {
 		$this->name = ($this->name === '') ? strtolower (get_class ($this)) : $this->name;
 
 		$this->db = MongoManager::get_database ();
-		$this->collection = $this->db->{$this->name};
+		if ($this->db) {
+			$this->collection = $this->db->{$this->name};
+		}
 
 		if (is_object ($vals)) {
 			if (get_class ($vals) !== 'MongoId') {
@@ -201,6 +203,14 @@ class MongoModel {
 		} else {
 			$this->is_new = true;
 		}
+	}
+
+	/**
+	 * Allows you to inject the database connection into `$db`. Also sets `$collection`.
+	 */
+	public function set_database ($conn) {
+		$this->db = $conn;
+		$this->collection = $this->db->{$this->name};
 	}
 
 	/**
