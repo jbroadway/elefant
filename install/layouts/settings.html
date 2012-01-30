@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Elefant Installer</title>
+	<title>{"Elefant Installer"}</title>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<script src="/js/jquery-1.7.1.min.js"></script>
@@ -24,54 +24,54 @@
 </head>
 <body>
 <div id="wrapper">
-	<h1><span>Elefant</span> Installer</h1>
+	<h1><span>{"Elefant"}</span> {"Installer"}</h1>
 	
 	<div id="steps">
 		<ul>
-			<li>Introduction</li>
-			<li>License</li>
-			<li>Requirements</li>
-			<li>Database</li>
-			<li class="active">Settings</li>
-			<li>Finished</li>
+			<li>{"Introduction"}</li>
+			<li>{"License"}</li>
+			<li>{"Requirements"}</li>
+			<li>{"Database"}</li>
+			<li class="active">{"Settings"}</li>
+			<li>{"Finished"}</li>
 		</ul>
 	</div>
 
 	<div id="body"><div id="content">
 
 {% if error %}
-<h3>Error:</h3>
+<h3>{"Error"}:</h3>
 <p class="notice">{{ error }}</p>
 {% else %}
-<h3>Site Settings</h3>
+<h3>{"Site Settings"}</h3>
 {% end %}
 
 {% if ready %}
-<p>Settings saved and admin user created.</p>
+<p>{"Settings saved and admin user created."}</p>
 
-<p>Click "Next" to continue.</p>
+<p>{"Click 'Next' to continue."}</p>
 {% else %}
 <form method="POST" action="/install/?step=settings" onsubmit="return verify_password (this)">
 
-<p>Site Name:<br />
+<p>{"Site Name"}:<br />
 <input type="text" name="site_name" value="{{ $_POST.site_name|quotes }}" size="30" /></p>
-<p>Your Name:<br />
+<p>{"Your Name"}:<br />
 <input type="text" name="your_name" value="{{ $_POST.your_name|quotes }}" size="30" /></p>
-<p>Admin Email:<br />
+<p>{"Admin Email"}:<br />
 <input type="text" name="email_from" value="{{ $_POST.email_from }}" size="30" /></p>
-<p>Admin Password:<br />
+<p>{"Admin Password"}:<br />
 <input type="password" name="pass" id="pass" value="{{ $_POST.pass }}" size="20" />&nbsp;<span id="password-strength"></span></p>
-<p>Verify Password:<br />
+<p>{"Verify Password"}:<br />
 <input type="password" name="verify" value="{{ $_POST.verify }}" size="20" onblur="verify_password (this.form)" />
-<span class="notice" id="vnotice" style="display: none">Password does not match.</span></p>
+<span class="notice" id="vnotice" style="display: none">{"Password does not match."}</span></p>
 
-<p><input type="submit" value="Save Settings" /></p>
+<p><input type="submit" value="{"Save Settings"}" /></p>
 </form>
 {% end %}
 
 	</div></div>
 	{% if ready %}
-	<a class="next" href="/install/?step=finished">Next: Finished</a>
+	<a class="next" href="/install/?step=finished">{"Next"}: {"Finished"}</a>
 	{% end %}
 </div>
 </body>
