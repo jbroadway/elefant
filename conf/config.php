@@ -48,7 +48,7 @@ debug = Off
 ; (e.g., fr.example.com), http (uses Accept-Language header),
 ; or cookie.
 
-negotiation_method = url
+negotiation_method = http
 
 [Database]
 
