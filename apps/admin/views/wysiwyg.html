@@ -9,10 +9,19 @@
 <script type="text/javascript" src="/js/wysiwyg/plugins/wysiwyg.fileManager.js"></script>
 <script type="text/javascript" src="/js/jquery.quickpager.js"></script>
 <script type="text/javascript" src="/js/wysiwyg/plugins/wysiwyg.embed.js"></script>
+<script type="text/javascript" src="/js/wysiwyg/plugins/wysiwyg.i18n.js"></script>
+<?php if (file_exists ('js/wysiwyg/i18n/lang.' . $GLOBALS['i18n']->language . '.js')) { ?>
+<script type="text/javascript" src="/js/wysiwyg/i18n/lang.{{i18n.language|none}}.js"></script>
+<?php } ?>
 <script type="text/javascript">
 $(function () {
 	$('#webpage-body').wysiwyg ({
 		initialContent: '<p><br /></p>',
+<?php if (file_exists ('js/wysiwyg/i18n/lang.' . $GLOBALS['i18n']->language . '.js')) { ?>
+		plugins: {
+			i18n: { lang: '{{i18n.language|none}}' }
+		},
+<?php } ?>
 		controls: {
 			strikeThrough	:{visible:false},
 			justifyFull		:{visible:false},
