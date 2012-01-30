@@ -257,7 +257,9 @@ if (count ($argv) > 1) {
 				'apps/*/views/*/*/*.html',
 				'apps/*/handlers/*.php',
 				'apps/*/handlers/*/*.php',
-				'apps/*/handlers/*/*/*.php'
+				'apps/*/handlers/*/*/*.php',
+				'install/*.php',
+				'install/layouts/*.html'
 			);
 			$list = array ();
 			
