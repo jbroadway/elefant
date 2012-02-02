@@ -211,22 +211,31 @@ class Debugger {
 	 */
 	public static function show_variable ($value, $tabs = 0) {
 		if (is_numeric ($value)) {
+			// Render a numeric value
 			echo $value;
+
 		} elseif (is_bool ($value)) {
+			// Render a boolean value
 			if ($value) {
 				echo 'true';
 			} else {
 				echo 'false';
 			}
+
 		} elseif (is_string ($value)) {
+			// Render a string value
 			echo '"' . Template::sanitize ($value) . '"';
+
 		} elseif (is_array ($value)) {
+			// Render an array
 			echo 'array (';
 			if (empty ($value)) {
 				echo ")";
 				return;
 			}
+
 			if (Debugger::is_assoc ($value)) {
+				// Associative array
 				$first = true;
 				foreach ($value as $key => $val) {
 					if (! $first) {
@@ -238,7 +247,9 @@ class Debugger {
 					printf ("\"%s\" => ", $key);
 					Debugger::show_variable ($val, $tabs + 1);
 				}
+
 			} else {
+				// Ordinary array
 				$first = true;
 				foreach ($value as $val) {
 					if (! $first) {
@@ -253,7 +264,9 @@ class Debugger {
 			echo "\n";
 			echo str_pad ('', ($tabs) * 4);
 			echo ")";
+
 		} elseif (is_object ($value)) {
+			// Render an object
 			$vars = get_object_vars ($value);
 			if (count ($vars) === 0) {
 				echo get_class ($value) . ' ()';
@@ -267,7 +280,9 @@ class Debugger {
 				echo ";\n";
 			}
 			echo ")";
+
 		} else {
+			// Render unknown values as-is
 			echo $value;
 		}
 	}

@@ -77,7 +77,7 @@ class Cache {
 	}
 
 	/**
-	 * Emulates `Memcache::cache`.
+	 * Emulates `MemcacheExt::cache`.
 	 */
 	public function cache ($key, $timeout, $function) {
 		if (($val = $this->get ($key)) === false) {

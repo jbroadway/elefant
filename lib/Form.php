@@ -188,9 +188,11 @@ class Form {
 		$this->method = strtolower ($required_method);
 
 		if ($form_rules instanceof Controller) {
+			// Controller was passed as the second param
 			$this->controller = $form_rules;
 			$form_rules = $this->controller->uri;
 		} else {
+			// Controller was third param
 			$this->controller = $controller;
 		}
 
