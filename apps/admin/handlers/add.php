@@ -10,6 +10,8 @@ if (! User::require_admin ()) {
 	$this->redirect ('/admin');
 }
 
+require_once ('apps/admin/lib/Functions.php');
+
 $f = new Form ('post', 'admin/add');
 $f->verify_csrf = false;
 if ($f->submit ()) {
@@ -28,18 +30,7 @@ if ($f->submit ()) {
 	$pg = new Page;
 	$pg->layout = 'default';
 	$pg->weight = '0';
-
-	$layouts = array ();
-	$d = dir (getcwd () . '/layouts');
-	while (false != ($entry = $d->read ())) {
-		if (preg_match ('/^(.*)\.html$/', $entry, $regs)) {
-			$layouts[] = $regs[1];
-		}
-	}
-	$d->close ();
-	sort ($layouts);
-	$pg->layouts = $layouts;
-
+	$pg->layouts = admin_get_layouts ();
 	$pg->failed = $f->failed;
 	$pg = $f->merge_values ($pg);
 	$page->title = i18n_get ('Add Page');

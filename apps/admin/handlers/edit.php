@@ -19,6 +19,8 @@ if ($lock->exists ()) {
 	$lock->add ();
 }
 
+require_once ('apps/admin/lib/Functions.php');
+
 $wp = new Webpage ($_GET['page']);
 
 $f = new Form ('post', 'admin/edit');
@@ -46,17 +48,7 @@ if ($f->submit ()) {
 	$page->title = i18n_get ('An Error Occurred');
 	echo i18n_get ('Error Message') . ': ' . $wp->error;
 } else {
-	$layouts = array ();
-	$d = dir (getcwd () . '/layouts');
-	while (false != ($entry = $d->read ())) {
-		if (preg_match ('/^(.*)\.html$/', $entry, $regs)) {
-			$layouts[] = $regs[1];
-		}
-	}
-	$d->close ();
-	sort ($layouts);
-	$wp->layouts = $layouts;
-
+	$wp->layouts = admin_get_layouts ();
 	$wp->failed = $f->failed;
 	$wp = $f->merge_values ($wp);
 	$page->title = i18n_get ('Edit Page') . ': ' . $wp->title;
