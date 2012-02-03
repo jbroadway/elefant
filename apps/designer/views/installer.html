@@ -1,0 +1,12 @@
+<form method="POST" id="{{ _form }}" enctype="multipart/form-data">
+
+<p>{"Zip file"}:<br />
+<input type="file" name="zipfile" /></p>
+
+<p>{"Github repository"} (ex: <tt>https://github.com/user/project.git</tt>):<br />
+<input type="text" size="30" name="github" value="{{ github|quotes }}" />
+<span class="notice" id="github-notice">{" The Github repository appears to be invalid. "}</span></p>
+
+<p><input type="submit" value="{"Install"}" /></p>
+
+</form>
