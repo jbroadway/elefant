@@ -27,4 +27,22 @@ function github_is_valid_url ($url) {
 	return true;
 }
 
+/**
+ * Recursively change the permissions on a folder and all its contents.
+ * Handles hidden dot-files as well as regular files.
+ */
+function chmod_recursive ($path, $mode = false) {
+	if (preg_match ('|/\.+$|', $path)) {
+		return;
+	}
+
+	static $_mode = false;
+	$_mode = ($_mode === false && $mode !== false) ? $mode : $_mode;
+	$mode = $_mode;
+
+	return is_file ($path)
+		? chmod ($path, $mode)
+		: array_map ('chmod_recursive', glob ($path . '/{,.}*', GLOB_BRACE)) == chmod ($path, $mode);
+}
+
 ?>

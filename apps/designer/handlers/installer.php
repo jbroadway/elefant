@@ -15,14 +15,32 @@ require_once ('apps/designer/lib/Functions.php');
 $form = new Form ('post', $this);
 
 echo $form->handle (function ($form) {
-	if (empty ($_POST['github']) && ! is_uploaded_file ($_FILES['zipfile']['tmp_name'])) {
+	if (! empty ($_POST['github'])) {
+		// Import from Github
+		$installer = new GithubInstaller;
+		if (! $installer->install ($_POST['github'])) {
+			$form->failed = array ('github-install');
+			return false;
+		}
+
+		// App/theme successfully installed
+	} elseif (is_uploaded_file ($_FILES['zipfile']['tmp_name'])) {
+		// Import from Zip
+		$installer = new ZipInstaller;
+		$res = $installer->install ($_FILES['zipfile']);
+		if (! $res) {
+			$form->failed = array ('zip-install');
+			return false;
+		}
+
+		// Zip successfully installed
+		global $page, $tpl;
+		$page->title = i18n_get ('Install completed');
+		echo $tpl->render ('designer/zipinstalled', $res);
+	} else {
 		$form->failed = array ('other');
 		return false;
 	}
-
-	// handle install from zip or github repo
-	info ($_POST);
-	info ($_FILES);
 });
 
 ?>
