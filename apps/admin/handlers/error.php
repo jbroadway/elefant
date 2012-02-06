@@ -9,7 +9,7 @@
  * forwards to `/install` to run the web installer.
  */
 
-if ($this->data['code'] == 404 && @file_exists ('install') && ! @file_exists ('install/installed')) {
+if ($this->data['code'] == 404 && @file_exists ('install') && (! @file_exists ('conf/installed') && ! @file_exists ('install/installed'))) {
 	$this->redirect ('install/');
 }
 

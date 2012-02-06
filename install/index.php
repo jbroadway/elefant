@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-if (@file_exists ('installed')) {
+if (file_exists ('../conf/installed') || file_exists ('installed')) {
 	$_GET['step'] = 'finished';
 }
 
@@ -70,6 +70,7 @@ require_once ('../apps/admin/models/Versions.php');
 // create core objects
 $i18n = new I18n ('../lang', array ('negotiation_method' => 'http'));
 $tpl = new Template ('UTF-8');
+$tpl->cache_folder = '../cache';
 
 $steps = array (
 	'introduction',
@@ -106,7 +107,7 @@ switch ($_GET['step']) {
 				i18n_get ('conf folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>') => is_writeable ('../conf'),
 				i18n_get ('css folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>') => is_writeable ('../css'),
 				i18n_get ('files folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>') => is_writeable ('../files'),
-				i18n_get ('install folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>') => is_writeable ('../install'),
+				//i18n_get ('install folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>') => is_writeable ('../install'),
 				i18n_get ('layouts folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>') => is_writeable ('../layouts'),
 				i18n_get ('PHP PDO extension is missing.') => extension_loaded ('pdo'),
 				i18n_get ('Apache mod_rewrite extension must be installed.') => (php_sapi_name () != 'apache2handler' || ! function_exists ('apache_get_modules') || in_array ('mod_rewrite', apache_get_modules ()))
@@ -219,7 +220,7 @@ switch ($_GET['step']) {
 
 	case 'finished':
 		@umask (0000);
-		@touch ('installed');
+		@touch ('../conf/installed');
 		break;
 }
 
