@@ -36,7 +36,7 @@ echo $form->handle (function ($form) {
 		// Zip successfully installed
 		global $page, $tpl;
 		$page->title = i18n_get ('Install completed');
-		echo $tpl->render ('designer/zipinstalled', $res);
+		echo $tpl->render ('designer/installed', $res);
 	} else {
 		$form->failed = array ('other');
 		return false;

@@ -1,0 +1,33 @@
+{% if type === 'app' %}
+
+<p>{"The following app has been installed:"}</p>
+
+<ul>
+	<li>Name: {{ name }}</li>
+	<li>Version: {{ version }}</li>
+	<li>Location: apps/{{ folder }}</li>
+</ul>
+
+<p>
+	<a href="/designer/admin">{"Continue"}</a>
+	&nbsp;|&nbsp;
+	<a href="/designer/installer">{"Install another"}</a>
+</p>
+
+{% else %}
+
+<p>{"The following theme has been installed:"}</p>
+
+<ul>
+	<li>Name: {{ name }}</li>
+	<li>Version: {{ version }}</li>
+	<li>Location: layouts/{{ folder }}</li>
+</ul>
+
+<p>
+	<a href="/designer/admin">{"Continue"}</a>
+	&nbsp;|&nbsp;
+	<a href="/designer/installer">{"Install another"}</a>
+</p>
+
+{% end %}

@@ -14,6 +14,11 @@ class Installer {
 	 * config info.
 	 */
 	public static function verify ($config) {
+		if (! isset ($config->name)) {
+			self::$error = 'No name specified';
+			return false;
+		}
+
 		if (! isset ($config->type)) {
 			self::$error = 'No type specified';
 			return false;
@@ -48,11 +53,34 @@ class Installer {
 			return false;
 		}
 
+		if (isset ($config->requires) && ! self::verify_requires ($config->requires)) {
+			// Site failed to meet minimum requirements (PHP or Elefant version)
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Verifies the site meets any requirements specified by the app or theme.
+	 */
+	public static function verify_requires ($requires) {
+		if (isset ($requires->php) && version_compare (PHP_VERSION, $requires->php) < 0) {
+			self::$error = sprintf ('This install requires PHP %s or newer.', $requires->php);
+			return false;
+		}
+
+		if (isset ($requires->elefant) && version_compare (ELEFANT_VERSION, $requires->elefant) < 0) {
+			self::$error = sprintf ('This install requires Elefant %s or newer.', $requires->elefant);
+			return false;
+		}
+
 		return true;
 	}
 
 	/**
 	 * Override this method to provide the installation details.
+	 * Should return false on failure and the config object on success.
 	 */
 	public static function install ($source) {
 		return false;

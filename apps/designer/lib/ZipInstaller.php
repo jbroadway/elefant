@@ -44,7 +44,7 @@ class ZipInstaller extends Installer {
 			rename ($folder, 'layouts/' . $conf->folder);
 			chmod_recursive ('layouts/' . $conf->folder, 0777);
 		}
-		return true;
+		return $conf;
 	}
 }
 
