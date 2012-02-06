@@ -10,7 +10,7 @@ if (! User::require_admin ()) {
 	$this->redirect ('/admin');
 }
 
-if (! preg_match ('/^(css|layouts)\/[a-z0-9_-]+\.(css|html)$/i', $_GET['file'])) {
+if (! preg_match ('/^(css|layouts)\/[a-z0-9\/_-]+\.(css|html)$/i', $_GET['file'])) {
 	$this->redirect ('/designer');
 }
 

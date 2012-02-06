@@ -14,7 +14,7 @@ not empty = 1
 [layout]
 
 skip_if_empty = 1
-exists = "layouts/%s.html"
+callback = admin_layout_exists
 
 [body]
 

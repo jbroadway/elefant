@@ -201,6 +201,7 @@ class Template {
 		// Resolve the template to a file name, in one of:
 		// `apps/appname/views/filename.html`
 		// `layouts/filename.html`
+		// `layouts/filename/filename.html`
 		// `layouts/default.html`
 		if (strstr ($template, '/')) {
 			list ($app, $file) = preg_split ('/\//', $template, 2);
@@ -210,6 +211,8 @@ class Template {
 			}
 		} elseif (@file_exists ('layouts/' . $template . '.html')) {
 			$file = 'layouts/' . $template . '.html';
+		} elseif (@file_exists ('layouts/' . $template . '/' . $template . '.html')) {
+			$file = 'layouts/' . $template . '/' . $template . '.html';
 		} else {
 			$file = 'layouts/default.html';
 		}
