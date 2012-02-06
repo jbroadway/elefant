@@ -15,9 +15,15 @@
 
 <p class="notice" id="other-notice">{" Please enter a Github link or zip file. "}</p>
 
-<p class="notice" id="github-install-notice">{" Github installation failed. "}</p>
+{% if page.installer_error %}
+<p class="notice" id="github-install-notice">{"Github installation failed"}: {{ page.installer_error }}</p>
 
-<p class="notice" id="zip-install-notice">{" Zip file was invalid or could not be installed. "}</p>
+<p class="notice" id="zip-install-notice">{"Zip file installation failed"}: {{ page.installer_error }}</p>
+{% else %}
+<p class="notice" id="github-install-notice">{"Github installation failed"}.</p>
+
+<p class="notice" id="zip-install-notice">{"Zip file was invalid or could not be installed."}</p>
+{% end %}
 
 <p><input type="submit" value="{"Install"}" /></p>
 

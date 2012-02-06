@@ -13,7 +13,7 @@ class ZipInstaller extends Installer {
 		try {
 			Zipper::unzip ($source['tmp_name']);
 		} catch (Exception $e) {
-			self::$error = 'Unzip failed';
+			self::$error = i18n_get ('Could not unzip the file.');
 			return false;
 		}
 
@@ -21,13 +21,13 @@ class ZipInstaller extends Installer {
 
 		// Get config and verify it
 		if (! file_exists ($folder . '/elefant.json')) {
-			self::$error = 'No config file found';
+			self::$error = i18n_get ('Verification failed: No configuration file found.');
 			return false;
 		}
 
 		$conf = json_decode (file_get_contents ($folder . '/elefant.json'));
 		if ($conf === false) {
-			self::$error = 'Invalid configuration file';
+			self::$error = i18n_get ('Verification failed: Invalid configuration file.');
 			return false;
 		}
 
@@ -38,10 +38,15 @@ class ZipInstaller extends Installer {
 
 		// Move files over
 		if ($conf->type === 'app') {
-			rename ($folder, 'apps/' . $conf->folder);
+			if (! rename ($folder, 'apps/' . $conf->folder)) {
+				self::$error = i18n_get ('Unable to write to apps folder.');
+				return false;
+			}
 			chmod_recursive ('apps/' . $conf->folder, 0777);
 		} else {
-			rename ($folder, 'layouts/' . $conf->folder);
+			if (! rename ($folder, 'layouts/' . $conf->folder)) {
+				self::$error = i18n_get ('Unable to write to layouts folder.');
+			}
 			chmod_recursive ('layouts/' . $conf->folder, 0777);
 		}
 		return $conf;
