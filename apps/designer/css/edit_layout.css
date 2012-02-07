@@ -1,0 +1,49 @@
+#wrapper, #body, #form {
+	height: 100%;
+}
+#wrapper {
+	padding-top: 33px !important;
+}
+#body {
+	width: 1024px;
+	margin-left: -32px;
+}
+#body h2 {
+	font-size: 13px;
+	margin-top: 6px;
+	margin-bottom: 23px;
+}
+form {
+	margin-top: -48px;
+}
+#tags {
+	background: #f1f1f1;
+	margin-top: 12px;
+	border: 1px solid #ccc;
+	border-bottom: 0px;
+	-webkit-border-top-left-radius: 2px;
+	-webkit-border-top-right-radius: 2px;
+	-moz-border-radius-topleft: 2px;
+	-moz-border-radius-topright: 2px;
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	padding-left: 3px;
+}
+.autosave-notice {
+	float: right;
+	margin-right: 303px;
+	margin-top: -46px;
+}
+form br {
+	display: none;
+}
+#footer {
+	display: none;
+}
+.CodeMirror {
+	border: 1px solid #ccc;
+	background: #fff;
+}
+.CodeMirror-scroll {
+	height: 240px;
+}

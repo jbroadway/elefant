@@ -1,36 +1,36 @@
-<p class="autosave-notice">Auto-saved data found for this form. <a href="#" class="autosave-restore">Click here to restore.</a></p>
+<p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
 
 <form method="POST" id="add-form">
-<p>Page title:<br /><input type="text" name="title" size="50" value="{{ title }}" onblur="webpage_add_title_to_id (this.form)" />
-<span class="notice" id="title-notice">You must enter a page title.</span></p>
-<p>Page ID (ex: <tt>{{ $_SERVER.HTTP_HOST }}/<strong>your-page-id</strong></tt>):<br /><input type="text" name="id" size="35" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
-<span class="notice" id="id-notice">Your ID must be a lowercase alphanumeric value and can't already exist. It must also not share the name of an app.</span></p>
-<p>Body: <span class="notice" id="body-notice">You must enter body content.</span><br />
+<p>{"Page title"}:<br /><input type="text" name="title" size="50" value="{{ title }}" onblur="webpage_add_title_to_id (this.form)" />
+<span class="notice" id="title-notice">{"You must enter a page title."}</span></p>
+<p>{"Page ID"} (ex: <tt>{{ $_SERVER.HTTP_HOST }}/<strong>your-page-id</strong></tt>):<br /><input type="text" name="id" size="35" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
+<span class="notice" id="id-notice">{"Your ID must be a lowercase alphanumeric value and can't already exist. It must also not share the name of an app."}</span></p>
+<p>{"Body"}: <span class="notice" id="body-notice">{"You must enter body content."}</span><br />
 <textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 
 <h4><a href="#" onclick="return webpage_show_extra_options (this)" class="extra-options-link"><span class="arrow arrow-off"></span>{"Extra Options"}</a></h4>
 <div id="extra-options">
-<p>Page layout:<br />
+<p>{"Page layout"}:<br />
 <select name="layout">
 {% foreach layouts %}
 	<option value="{{ loop_value }}"{% if loop_value == $data->layout %} selected{% end %}>{{ loop_value|ucfirst }}</option>
 {% end %}
 </select></p>
-<p>Access:<br />
+<p>{"Access"}:<br />
 <select name="access">
 	<option value="public"{% if access == 'public' %} selected{% end %}>{"Public"}</option>
 	<option value="member"{% if access == 'member' %} selected{% end %}>{"Members"}</option>
 	<option value="private"{% if access == 'member' %} selected{% end %}>{"Private"}</option>
 </select></p>
-<p>Alternate menu title:<br /><input type="text" name="menu_title" size="40" value="{{ menu_title }}" /></p>
-<p>Alternate window title:<br /><input type="text" name="window_title" size="40" value="{{ window_title }}" /></p>
-<span class="notice" id="layout-notice">The layout you entered doesn't exist.</span></p>
-<p>Description:<br /><textarea name="description" cols="60" rows="4">{{ description }}</textarea></p>
-<p>Keywords (comma-separated):<br /><textarea name="keywords" cols="60" rows="4">{{ keywords }}</textarea></p>
+<p>{"Alternate menu title"}:<br /><input type="text" name="menu_title" size="40" value="{{ menu_title }}" /></p>
+<p>{"Alternate window title"}:<br /><input type="text" name="window_title" size="40" value="{{ window_title }}" /></p>
+<span class="notice" id="layout-notice">{"The layout you entered doesn't exist."}</span></p>
+<p>{"Description"}:<br /><textarea name="description" cols="60" rows="4">{{ description }}</textarea></p>
+<p>{"Keywords (comma-separated)"}:<br /><textarea name="keywords" cols="60" rows="4">{{ keywords }}</textarea></p>
 </div>
 <p>
-	<input type="submit" value="Add Page" class="autosave-clear" />&nbsp;
-	<input type="submit" value="Preview" onclick="return webpage_preview (this.form)" />&nbsp;
-	<a href="javascript:history.go(-1)" onclick="return $.cancel_autosave ('Are you sure you want to cancel and lose any changes?')">Cancel</a>
+	<input type="submit" value="{"Add Page"}" class="autosave-clear" />&nbsp;
+	<input type="submit" value="{"Preview"}" onclick="return webpage_preview (this.form)" />&nbsp;
+	<a href="javascript:history.go(-1)" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
 </p>
 </form>

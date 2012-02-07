@@ -1,6 +1,30 @@
 <?php
 
 /**
+ * Elefant CMS - http://www.elefantcms.com/
+ *
+ * Copyright (c) 2011 Johnny Broadway
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
  * Keeps a change history of any Model object.
  *
  * Usage:
@@ -12,8 +36,7 @@
  *   $history = Versions::history ($obj);
  *
  *   // get recent changes by current user
- *   global $user;
- *   $recent = Versions::recent ($user);
+ *   $recent = Versions::recent (User::$user);
  *
  *   // compare current version of a web page to previous:
  *
@@ -42,12 +65,11 @@ class Versions extends Model {
 	/**
 	 * Add a version to the store.
 	 */
-	static function add ($obj) {
-		global $user;
+	public static function add ($obj) {
 		$v = new Versions (array (
 			'class' => get_class ($obj),
 			'pkey' => $obj->{$obj->key},
-			'user' => (! $user) ? 0 : $user->id,
+			'user' => (! User::$user) ? 0 : User::val ('id'),
 			'ts' => gmdate ('Y-m-d H:i:s'),
 			'serialized' => json_encode ($obj->data)
 		));
@@ -59,19 +81,28 @@ class Versions extends Model {
 	 * Recreate an object from the stored version. Takes any
 	 * result from recent() or history().
 	 */
-	function restore ($vobj = false) {
+	public function restore ($vobj = false) {
 		if (! $vobj) {
 			$vobj = $this;
 		}
 		$class = $vobj->class;
-		$obj = new $class (json_decode ($vobj->serialized), false);
+		$data = json_decode ($vobj->serialized);
+
+		// determine if it's a deleted item
+		$tmp = new $class;
+		$obj = new $class ($data->{$tmp->key});
+		if ($obj->error) {
+			$obj = new $class ($data);
+		} else {
+			$obj = new $class ($data, false);
+		}
 		return $obj;
 	}
 
 	/**
 	 * Get recent versions by a user or everyone.
 	 */
-	static function recent ($user = false, $limit = 10, $offset = 0) {
+	public static function recent ($user = false, $limit = 10, $offset = 0) {
 		$v = Versions::query ();
 		if ($user) {
 			$v->where ('user', $user);
@@ -85,7 +116,7 @@ class Versions extends Model {
 	 * Get recent versions of an object, or of objects of a specific
 	 * class.
 	 */
-	static function history ($obj, $limit = 10, $offset = 0) {
+	public static function history ($obj, $limit = 10, $offset = 0) {
 		if ($limit === true) {
 			if (is_string ($obj)) {
 				return count (Versions::query ()
@@ -120,7 +151,7 @@ class Versions extends Model {
 	 * on ordinary objects, only Model-based objects and objects returned
 	 * by the recent() and history() methods.
 	 */
-	static function diff ($obj1, $obj2) {
+	public static function diff ($obj1, $obj2) {
 		if (get_class ($obj1) == 'stdClass') {
 			$obj1 = Versions::restore ($obj1);
 		}
@@ -140,7 +171,7 @@ class Versions extends Model {
 	/**
 	 * Get a list of classes that have objects stored.
 	 */
-	static function get_classes () {
+	public static function get_classes () {
 		return db_shift_array (
 			'select distinct class from versions order by class asc'
 		);

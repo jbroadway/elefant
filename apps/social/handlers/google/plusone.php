@@ -1,7 +1,11 @@
 <?php
 
-if (! isset ($controller->called['social/google/init'])) {
-	echo $controller->run ('social/google/init');
+/**
+ * Embeds a Google +1 button.
+ */
+
+if (! isset (self::$called['social/google/init'])) {
+	echo $this->run ('social/google/init');
 }
 
 if (strpos ($data['url'], '/') === 0) {

@@ -1,12 +1,15 @@
 <?php
 
-require_once ('lib/Form.php');
-require_once ('lib/Database.php');
+require_once ('lib/Autoloader.php');
 
 class FormTest extends PHPUnit_Framework_TestCase {
-	function test_verify_value () {
-		db_open (array ('driver' => 'sqlite', 'file' => ':memory:'));
+	protected $backupGlobalsBlacklist = array ('user');
 
+	static function setUpBeforeClass () {
+		Database::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
+	}
+
+	function test_verify_value () {
 		$this->assertTrue (Form::verify_value ('1234', 'regex', '/^[0-9]+$/'));
 		$this->assertFalse (Form::verify_value ('adsf', 'regex', '/^[0-9]+$/'));
 		$this->assertTrue (Form::verify_value ('123', 'type', 'numeric'));
@@ -24,6 +27,8 @@ class FormTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse (Form::verify_value ('asdf', 'empty'));
 		$this->assertTrue (Form::verify_value ('foo@bar.com', 'email'));
 		$this->assertFalse (Form::verify_value ('@foo@bar.com', 'email'));
+		$this->assertFalse (Form::verify_value ('foo@bar', 'email'));
+		$this->assertTrue (Form::verify_value ('foo+spam@foo.bar.org', 'email'));
 		$this->assertTrue (Form::verify_value ("asdf", 'header'));
 		$this->assertFalse (Form::verify_value ("asdf\nasdf", 'header'));
 		$this->assertTrue (Form::verify_value ('2010-01-01', 'date'));
@@ -57,6 +62,9 @@ class FormTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse (Form::verify_value ('bar', 'matches', '$_POST["test"]'));
 		$this->assertFalse (Form::verify_value ('foo', 'not matches', '$_POST["test"]'));
 		$this->assertTrue (Form::verify_value ('bar', 'not matches', '$_POST["test"]'));
+		$this->assertTrue (Form::verify_value ('http://foo.com/bar', 'url'));
+		$this->assertFalse (Form::verify_value ('foobar', 'url'));
+		$this->assertFalse (Form::verify_value ('http:/fooobar', 'url'));
 	}
 
 	function test_verify_values () {
@@ -107,7 +115,13 @@ class FormTest extends PHPUnit_Framework_TestCase {
 		$form = new Form ('post');
 		$this->assertEquals ($form->method, 'post');
 		$this->assertEquals ($form->rules, array ());
+
+		$this->assertFalse ($form->submit ());
+		$this->assertEquals ($form->error, 'Cross-site request forgery detected.');
+
+		$form->verify_csrf = false;
 		$this->assertTrue ($form->submit ());
+
 		$_SERVER['HTTP_REFERER'] = 'http://www.other.com/foo.bar';
 		$this->assertFalse ($form->submit ());
 		$this->assertEquals ($form->error, 'Referrer must match the host name.');
@@ -126,6 +140,46 @@ class FormTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue ($form->verify_referrer ());
 		$_SERVER['HTTP_REFERER'] = 'http://www.other.com/foo.bar';
 		$this->assertFalse ($form->verify_referrer ());
+	}
+
+	function test_initialize_csrf () {
+		$form = new Form ();
+		$form->initialize_csrf ();
+		$this->assertRegExp ('/^[a-zA-Z0-9]+$/', $form->csrf_token);
+		$this->assertEquals ($_SESSION['csrf_token'], $form->csrf_token);
+		$this->assertGreaterThan (time (), $_SESSION['csrf_expires']);
+
+		$token = $form->csrf_token;
+		$form->initialize_csrf ();
+		$this->assertEquals ($token, $form->csrf_token);
+		$this->assertEquals ($_SESSION['csrf_token'], $form->csrf_token);
+		$this->assertGreaterThan (time (), $_SESSION['csrf_expires']);
+	}
+
+	function test_generate_csrf_script () {
+		$form = new Form ();
+		$form->csrf_field_name = 'TOKEN';
+		$form->initialize_csrf ();
+		$token = $form->csrf_token;
+
+		$res = $form->generate_csrf_script ();
+		$this->assertEquals (
+			'<script>$(function(){$("form").append("<input type=\'hidden\' name=\'TOKEN\' value=\'' . $token . '\'/>");});</script>',
+			$res
+		);
+	}
+
+	function test_verify_csrf () {
+		$form = new Form ();
+		$form->initialize_csrf ();
+
+		$this->assertFalse ($form->verify_csrf ());
+
+		$_POST['_token_'] = $form->csrf_token;
+		$this->assertTrue ($form->verify_csrf ());
+
+		$_SESSION['csrf_expires'] = time () - 10;
+		$this->assertFalse ($form->verify_csrf ());
 	}
 }
 

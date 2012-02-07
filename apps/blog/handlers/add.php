@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Blog post add form.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {
@@ -7,6 +11,7 @@ if (! User::require_admin ()) {
 }
 
 $f = new Form ('post', 'blog/add');
+$f->verify_csrf = false;
 if ($f->submit ()) {
 	$autopost_pom = ($_POST['autopost_pom'] == 'yes') ? true : false;
 	$autopost_tw = ($_POST['autopost_tw'] == 'yes') ? true : false;
@@ -52,17 +57,20 @@ if ($f->submit ()) {
 			}
 		}
 
+		// reset blog rss cache
+		$memcache->delete ('blog_rss');
+
 		$_POST['page'] = 'blog/post/' . $p->id . '/' . blog_filter_title ($p->title);
 		$this->hook ('blog/add', $_POST);
 		$this->redirect ('/blog/admin');
 	}
 	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $u->error;
+	echo 'Error Message: ' . $p->error;
 } else {
 	$p = new blog\Post;
 	$p->author = $GLOBALS['user']->name;
 	$p->ts = gmdate ('Y-m-d H:i:s');
-	$p->yes_no = array ('yes', 'no');
+	$p->yes_no = array ('yes' => i18n_get ('Yes'), 'no' => i18n_get ('No'));
 	$p->autopost_pom = 'yes';
 	$p->autopost_tw = 'yes';
 

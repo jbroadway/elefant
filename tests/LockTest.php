@@ -1,14 +1,12 @@
 <?php
 
-require_once ('lib/Database.php');
-require_once ('apps/admin/lib/Lock.php');
+require_once ('lib/Autoloader.php');
 
 class LockTest extends PHPUnit_Framework_TestCase {
-	protected $backupGlobalsBlacklist = array ('db', 'db_err', 'db_sql', 'db_args', 'user');
 	protected static $lock;
 
 	static function setUpBeforeClass () {
-		db_open (array ('driver' => 'sqlite', 'file' => ':memory:'));
+		Database::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		db_execute ('create table `lock` (
 			id integer primary key,
 			user int not null,
@@ -19,14 +17,13 @@ class LockTest extends PHPUnit_Framework_TestCase {
 			modified datetime not null
 		)');
 
-		$GLOBALS['user'] = (object) array ('id' => 1);
+		User::$user = (object) array ('id' => 1);
 
 		self::$lock = new Lock ('test', 'one');
 	}
 
 	static function tearDownAfterClass () {
-		unset ($GLOBALS['db']);
-		unset ($GLOBALS['user']);
+		User::$user = false;
 	}
 
 	function test_add () {
@@ -46,7 +43,7 @@ class LockTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (self::$lock->exists (), false);
 
 		// Change users, should find the lock now
-		$GLOBALS['user']->id = 2;
+		User::val ('id', 2);
 		$this->assertEquals (self::$lock->exists (), 1);
 	}
 

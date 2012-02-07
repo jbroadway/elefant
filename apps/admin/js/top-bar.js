@@ -8,9 +8,10 @@ jQuery.add_notification = function (msg) {
 
 $(function () {
 	var sliding_up = false;
-	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img src="/apps/admin/css/admin/elefant_logo.png" alt="Elefant CMS" /></a></div>');
+	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img id="admin-logo" src="/apps/admin/css/admin/spacer.png" alt="" /></a></div>');
 	$.get ('/admin/head/links', function (res) {
-		$('#admin-links').append (res);
+		$('#admin-logo').attr ('src', res.logo).attr ('alt', res.name);
+		$('#admin-links').append (res.links);
 		$('#admin-tools').hover (function () {
 			if (! sliding_up) {
 				$('#admin-tools-list').slideDown ('fast').show ();
@@ -42,6 +43,17 @@ $(function () {
 			this.title = this.tip;
 		}
 	);
+
+	// check for and display elefant updates if available
+	if (! $.cookie ('elefant_update_checked')) {
+		var major_minor = $.elefant_version.replace (/\.[0-9]+$/, '');
+		$.getJSON ('http://www.elefantcms.com/updates/check.php?v=' + major_minor + '&callback=?', function (res) {
+			if (res.latest > $.elefant_version) {
+				$('#admin-bar>a').append ('<a href="http://www.elefantcms.com/download" target="_blank" id="admin-update-available">Update Available: ' + res.latest + '</a>');
+			}
+		});
+		$.cookie ('elefant_update_checked', 1, { expires: 1, path: '/' });
+	}
 
 	var jgrowl_interval = function () {
 		var notice = $.cookie ('elefant_notification'),

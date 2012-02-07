@@ -63,7 +63,13 @@
 									continue;
 								}
 							}
-							if (! $(evt.target.elements[n]).verify_value ({form: evt.target, type: t, validator: opts.rules[n][t]})) {
+
+							// switch for checkboxes with name[] format
+							var field = (typeof evt.target.elements[n + '[]'] !== 'undefined')
+								? evt.target.elements[n + '[]']
+								: evt.target.elements[n];
+
+							if (! $(field).verify_value ({form: evt.target, type: t, validator: opts.rules[n][t]})) {
 								failed.push (n);
 								break;
 							}
@@ -84,8 +90,30 @@
 			var value = $(this).attr ('value'),
 				type = options.type,
 				validator = options.validator;
+
+			// handle radio and checkbox buttons
+			if ($(this).attr ('type') == 'radio') {
+				value = '';
+				for (var i = 0; i < this.length; i++) {
+					var attr = $(this[i]).attr ('checked');
+					if (typeof attr !== 'undefined' && attr !== false) {
+						value = $(this[i]).attr ('value');
+						break;
+					}
+				}
+			} else if ($(this).attr ('type') == 'checkbox') {
+				value = '';
+				var sep = '';
+				for (var i = 0; i < this.length; i++) {
+					var attr = $(this[i]).attr ('checked');
+					if (typeof attr !== 'undefined' && attr !== false) {
+						value += sep + $(this[i]).attr ('value');
+						sep = ', ';
+					}
+				}
+			}
 			
-			if (type.match (/^(not )?(type|callback|header|unique|exists)$/)) {
+			if (type === 'default' || type.match (/^(not )?(type|callback|header|unique|exists)$/)) {
 				return true;
 			}
 			
@@ -147,6 +175,8 @@
 					break;
 				case 'range':
 					range = validator.split ('-');
+					range[0] -= 0;
+					range[1] -= 0;
 					if (range[0] > value || range[1] < value) {
 						return _false;
 					}
@@ -187,9 +217,15 @@
 						return _false;
 					} else if (value.match (/\.$/)) {
 						return _false;
-					} else if (! value.match (/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+\.([a-zA-Z0-9\._-]+)+$/)) {
+					} else if (! value.match (/^([a-zA-Z0-9])+([a-zA-Z0-9\+\._-])*@([a-zA-Z0-9_-])+\.([a-zA-Z0-9\._-]+)+$/)) {
 						return _false;
 					}
+					break;
+				case 'url':
+					if (! value.match (/^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/)) {
+						return _false;
+					}
+					break;
 				// not implemented: type, callback, header, unique, exists
 			}
 			

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Displays a list of blog posts by author.
+ */
+
 $page->layout = $appconf['Blog']['layout'];
 
 require_once ('apps/blog/lib/Filters.php');
@@ -7,8 +11,7 @@ require_once ('apps/blog/lib/Filters.php');
 $page->limit = 10;
 $page->author = urldecode ($this->params[0]);
 if (! $page->author) {
-	header ('Location: /blog');
-	exit;
+	$this->redirect ('/blog');
 }
 $page->num = (count ($this->params) > 1 && is_numeric ($this->params[1])) ? $this->params[1] - 1 : 0;
 $page->offset = $page->num * $page->limit;
@@ -28,11 +31,11 @@ foreach ($posts as $post) {
 
 $page->title = i18n_getf ('Posts by %s', $tpl->sanitize ($page->author));
 
-$page->template = 'blog/by';
-
 $page->add_script (sprintf (
 	'<link rel="alternate" type="application/rss+xml" href="http://%s/blog/rss" />',
 	$_SERVER['HTTP_HOST']
 ));
+
+echo $tpl->render ('blog/by', $page);
 
 ?>

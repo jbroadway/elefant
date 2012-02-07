@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Form to reset your password, accessed through a link from an email.
+ */
+
 $verified = false;
 
 $u = User::query ()
@@ -26,7 +30,6 @@ if ($data['recover'] == $_GET['recover'] && $data['recover_expires'] > time () +
 		$u = new StdClass;
 		$u = $f->merge_values ($u);
 		$u->failed = $f->failed;
-		$page->add_script ('<script src="/js/jquery-1.6.2.min.js"></script>');
 		$page->title = i18n_get ('Choose a new password');
 		echo $tpl->render ('user/newpass', $u);
 	}

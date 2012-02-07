@@ -1,6 +1,10 @@
 <?php
 
-if ($controller->called['social/facebook/init'] > 1) {
+/**
+ * Initializes the facebook API for the other facebook handlers.
+ */
+
+if (self::$called['social/facebook/init'] > 1) {
 	return;
 }
 

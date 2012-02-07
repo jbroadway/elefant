@@ -1,13 +1,17 @@
 <?php
 
+/**
+ * Block add form.
+ */
+
 $page->layout = 'admin';
-$page->template = 'admin/base';
 
 if (! User::require_admin ()) {
 	$this->redirect ('/admin');
 }
 
 $f = new Form ('post', 'blocks/add');
+$f->verify_csrf = false;
 if ($f->submit ()) {
 	$b = new Block ($_POST);
 	$b->put ();
@@ -20,17 +24,17 @@ if ($f->submit ()) {
 		}
 		$this->redirect ('/blocks/admin');
 	}
-	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $b->error;
+	$page->title = i18n_get ('An Error Occurred');
+	echo i18n_get ('Error Message') . ': ' . $b->error;
 } else {
 	$b = new Block;
 	$b->id = $_GET['id'];
 	$b->access = 'public';
-	$b->yes_no = array ('yes', 'no');
+	$b->yes_no = array ('yes' => i18n_get ('Yes'), 'no' => i18n_get ('No'));
 
 	$b->failed = $f->failed;
 	$b = $f->merge_values ($b);
-	$page->title = 'Add Block';
+	$page->title = i18n_get ('Add Block');
 	$page->head = $tpl->render ('blocks/add/head', $b)
 				. $tpl->render ('admin/wysiwyg');
 	echo $tpl->render ('blocks/add', $b);

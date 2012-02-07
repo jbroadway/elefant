@@ -1,4 +1,8 @@
-<?php 
+<?php
+
+/**
+ * Facebook social login handler.
+ */
 
 $app_id = $appconf['Facebook']['application_id'];
 $app_secret = $appconf['Facebook']['application_secret'];
@@ -13,7 +17,7 @@ if (empty ($code)) {
 		. $app_id . '&redirect_uri=' . urlencode ($my_url) . '&state='
 		. $_SESSION['state'];
 
-	$page->template = false;
+	$page->layout = false;
 	echo '<script>top.location.href="' . $dialog_url . '";</script>';
 	return;
 }

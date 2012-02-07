@@ -1,5 +1,29 @@
 <?php
 
+/**
+ * Elefant CMS - http://www.elefantcms.com/
+ *
+ * Copyright (c) 2011 Johnny Broadway
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 // split by newlines
 define ('DIFF_LINE', "/(\r\n|\n)/s");
 
@@ -38,12 +62,12 @@ class Diff {
 	 * defined in the constants DIFF_LINE and DIFF_SPACE, which split
 	 * by newline character and by blank space, respectively.
 	 */
-	var $splitMode;
+	public $splitMode;
 
 	/**
 	 * Constructor method.
 	 */
-	function __construct ($splitMode = DIFF_LINE) {
+	public function __construct ($splitMode = DIFF_LINE) {
 		$this->splitMode = $splitMode;
 	}
 
@@ -52,7 +76,7 @@ class Diff {
 	 * the strings added, removed, and that are shared between
 	 * the two original strings.
 	 */
-	function compare ($str1, $str2) {
+	public function compare ($str1, $str2) {
 		// returns 3 arrays: added, removed, and the intersect of str1 and str2
 		$a = preg_split ($this->splitMode, $str1, -1);
 		$b = preg_split ($this->splitMode, $str2, -1);
@@ -72,7 +96,7 @@ class Diff {
 	 * string to add, remove, or keep as-is.  The parameters $a,
 	 * $r, and $i stand for "add", "remove", and "intersect".
 	 */
-	function format ($a, $r = false, $i = false) {
+	public function format ($a, $r = false, $i = false) {
 		if ($r === false) {
 			$r = $a[1];
 			$i = $a[2];

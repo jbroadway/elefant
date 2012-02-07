@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Blog post delete handler.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {
@@ -24,6 +28,9 @@ if (! $p->remove ()) {
 	echo 'Error Message: ' . $u->error;
 	return;
 }
+
+// reset blog rss cache
+$memcache->delete ('blog_rss');
 
 db_execute ('delete from blog_post_tag where post_id = ?', $_GET['id']);
 

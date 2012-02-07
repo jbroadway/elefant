@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Renders the specified RSS feed `url` as a list of links.
+ * Caches the feed for 30 minutes between updates.
+ */
+
 $feed = new SimplePie ($data['url']);
 $feed->set_cache_duration (1800);
 $feed->set_item_limit (10);

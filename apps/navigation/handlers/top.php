@@ -1,15 +1,35 @@
 <?php
 
+/**
+ * Displays the top-level navigation as a bulleted list,
+ * with `class="current"` added to the current page's
+ * `<li>` element for custom styling.
+ */
+
+$res = $memcache->get ('_navigation_top');
+if ($res) {
+	echo str_replace (
+		sprintf ('<li><a href="/%s">', $page->id),
+		sprintf ('<li class="current"><a href="/%s">', $page->id),
+		$res
+	);
+	return;
+}
+
 $n = new Navigation;
 
-echo '<ul>';
+$out = '<ul>';
 foreach ($n->tree as $item) {
-	if ($item->attr->id == $page->id) {
-		printf ('<li class="current"><a href="/%s">%s</a></li>', $item->attr->id, $item->data);
-	} else {
-		printf ('<li><a href="/%s">%s</a></li>', $item->attr->id, $item->data);
-	}
+	$out .= sprintf ('<li><a href="/%s">%s</a></li>', $item->attr->id, $item->data);
 }
-echo '</ul>';
+$out .= '</ul>';
+
+$memcache->set ('_navigation_top', $out);
+
+echo str_replace (
+	sprintf ('<li><a href="/%s">', $page->id),
+	sprintf ('<li class="current"><a href="/%s">', $page->id),
+	$out
+);
 
 ?>

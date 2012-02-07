@@ -1,6 +1,30 @@
 <?php
 
 /**
+ * Elefant CMS - http://www.elefantcms.com/
+ *
+ * Copyright (c) 2011 Johnny Broadway
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
  * Basic template renderer. Looks for templates via the pattern
  * `apps/{app}/views/{file}.html` where the template is passed as
  * `'app/file'`. Failing that, it looks for `layouts/{file}.html`
@@ -37,6 +61,14 @@
  *
  * Note that `'endif'` and `'endforeach'` are valid as well as `'end'`,
  * if you prefer, for the sake of clarity.
+ *
+ * Here's one more example of how to loop through an array of arrays:
+ *
+ *     {% foreach my_list %}
+ *         {% foreach loop_value %}
+ *             {{ loop_index }}. {{ loop_value }}<br />
+ *         {% end %}
+ *     {% end %}
  *
  * ## Usage in PHP
  *
@@ -131,23 +163,46 @@
  *     i18n_get('Text here')
  */
 class Template {
-	var $charset = 'UTF-8';
-	var $quotes = ENT_QUOTES;
+	/**
+	 * The character encoding.
+	 */
+	public $charset = 'UTF-8';
 
-	function __construct ($charset = 'UTF-8') {
+	/**
+	 * The cache location.
+	 */
+	public $cache_folder = 'cache';
+
+	/**
+	 * The controller object used to run includes.
+	 */
+	public $controller = null;
+
+	/**
+	 * Constructor method sets the charset and receives a Controller object.
+	 */
+	public function __construct ($charset = 'UTF-8', $controller = false) {
 		$this->charset = $charset;
+		if ($controller) {
+			$this->controller = $controller;
+		}
 	}
 
 	/**
 	 * Render a template with the given data. Generate the PHP template if
 	 * necessary.
 	 */
-	function render ($template, $data = array ()) {
+	public function render ($template, $data = array ()) {
 		if (is_array ($data)) {
 			$data = (object) $data;
 		}
 		$data->is_being_rendered = true;
 
+		// Resolve the template to a file name, in one of:
+		// `apps/appname/views/filename.html`
+		// `layouts/filename.html`
+		// `layouts/filename/filename.html`
+		// `layouts/default.html`
 		if (strstr ($template, '/')) {
 			list ($app, $file) = preg_split ('/\//', $template, 2);
 			$file = 'apps/' . $app . '/views/' . $file . '.html';
@@ -156,10 +211,14 @@ class Template {
 			}
 		} elseif (@file_exists ('layouts/' . $template . '.html')) {
 			$file = 'layouts/' . $template . '.html';
+		} elseif (@file_exists ('layouts/' . $template . '/' . $template . '.html')) {
+			$file = 'layouts/' . $template . '/' . $template . '.html';
 		} else {
 			$file = 'layouts/default.html';
 		}
-		$cache = 'cache/' . str_replace ('/', '-', $template) . '.php';
+
+		// The cache file is named based on the original
+		$cache = $this->cache_folder . '/' . str_replace ('/', '-', $template) . '.php';
 
 		if (! file_exists ($cache) || filemtime ($file) > filemtime ($cache)) {
 			// Regenerate cached file
@@ -179,18 +238,20 @@ class Template {
 	 * Render a template string for preview purposes. Generates a temporary
 	 * cached version but unlinks it immediately after use.
 	 */
-	function render_preview ($template, $data = array ()) {
+	public function render_preview ($template, $data = array ()) {
 		if (is_array ($data)) {
 			$data = (object) $data;
 		}
 		$data->is_being_rendered = true;
 
-		$cache_file = 'cache/_preview_' . md5 ($template) . '.php';
+		// Parse and save to a temporary file
+		$cache_file = $this->cache_folder . '/_preview_' . md5 ($template) . '.php';
 		$out = $this->parse_template ($template);
 		if (! file_put_contents ($cache_file, $out)) {
 			die ('Failed to generate cached template: ' . $cache_file);
 		}
 
+		// Include the temp file, then delete it, and return the output
 		ob_start ();
 		require ($cache_file);
 		$out = ob_get_clean ();
@@ -199,9 +260,12 @@ class Template {
 	}
 
 	/**
-	 * Replace values from template as string.
+	 * Replace values from template as string into PHP code equivalents.
+	 * Note that this method never receives the original data sent to the
+	 * template, so it can't accidentally embed user data into the PHP
+	 * code, eliminating the possibility of exposing a security hole.
 	 */
-	function parse_template ($val) {
+	public function parse_template ($val) {
 		$val = preg_replace ('/\{\{ ?(.*?) ?\}\}/e', '$this->replace_vars (\'\\1\')', $val);
 		$val = preg_replace ('/\{[\'"] ?(.*?) ?[\'"]\}/e', '$this->replace_strings (\'\\1\')', $val);
 		$val = preg_replace ('/\{\% ?(.*?) ?\%\}/e', '$this->replace_blocks (\'\\1\')', $val);
@@ -211,28 +275,47 @@ class Template {
 	}
 
 	/**
-	 * Replace variables.
+	 * Replace variables of the form:
+	 *
+	 *     {{ some_var }}
+	 *
+	 * Also applies filters, which can take the following forms:
+	 *
+	 *     {{ some_var }}							# defaults to Template::sanitize()
+	 *     {{ some_var|none }}						# no filter
+	 *     {{ some_var|strtoupper }}				# filters are php functions
+	 *     {{ some_var|strrev|strtolower }}			# filters can be chained
+	 *     {{ some_var|my_function }}				# calling a custom function
+	 *     {{ some_var|date (%s, "F j, Y") }}		# use %s for multiple-parameter functions
 	 */
-	function replace_vars ($val) {
+	public function replace_vars ($val) {
+		// Get any filters
 		$filters = explode ('|', $val);
 		$val = array_shift ($filters);
 
+		// Change `$_GLOBAL.value` into `$_GLOBAL['value']`
 		if (strstr ($val, '$_')) {
 			if (strstr ($val, '.')) {
 				$val = preg_replace ('/\.([a-zA-Z0-9_]+)/', '[\'\1\']', $val, 1);
 			}
+
+		// Change `object.value` into `$GLOBALS['object']->value`
 		} elseif (strstr ($val, '.')) {
 			$val = '$GLOBALS[\'' . preg_replace ('/\./', '\']->', $val, 1);
+
+		// Ordinary request for `$data->value`
 		} elseif (! strstr ($val, '::') && ! strstr ($val, '(')) {
 			$val = '$data->' . $val;
 		}
 
-		if (count ($filters) == 0) {
+		// Apply default filter or none
+		if (count ($filters) === 0) {
 			return '<?php echo Template::sanitize (' . $val . ', \'' . $this->charset . '\'); ?>';
-		} else if ($filters[0] == 'none') {
+		} elseif ($filters[0] === 'none') {
 			return '<?php echo ' . $val . '; ?>';
 		}
 
+		// Apply specified filters
 		$filters = array_reverse ($filters);
 		$out = '<?php echo ';
 		$end = '; ?>';
@@ -241,11 +324,15 @@ class Template {
 				list ($one, $two) = explode ('%s', $filter);
 				$out .= $one;
 				$end = $two . $end;
+			} elseif ($filter === 'quotes') {
+				$out .= 'Template::quotes (';
+				$end = ')' . $end;
 			} else {
 				$out .= $filter . ' (';
 				$end = ')' . $end;
 			}
 		}
+
 		return $out . $val . $end;
 	}
 
@@ -254,7 +341,7 @@ class Template {
 	 * You can also substitute sub-expressions for values using `[]` tags, like
 	 * this: `{! app/handler?param=[varname] !}`
 	 */
-	function replace_includes ($val) {
+	public function replace_includes ($val) {
 		$url = parse_url ($val);
 		if (isset ($url['query'])) {
 			parse_str (html_entity_decode ($url['query'], ENT_COMPAT, 'UTF-8'), $data);
@@ -272,7 +359,7 @@ class Template {
 					$sep2 = ', ';
 				}
 				$arr .= ')';
-			} elseif (strpos ($v, '[') === 0 && $v[strlen ($v) - 1] == ']') {
+			} elseif (strpos ($v, '[') === 0 && $v[strlen ($v) - 1] === ']') {
 				$v = str_replace (
 					array ('<?php echo ', '; ?>'),
 					array ('', ''),
@@ -285,7 +372,7 @@ class Template {
 			$sep = ', ';
 		}
 		return sprintf (
-			'<?php echo $GLOBALS[\'controller\']->run (\'%s\', array (%s)); ?>',
+			'<?php echo $this->controller->run (\'%s\', array (%s)); ?>',
 			$url['path'],
 			$arr
 		);
@@ -296,21 +383,22 @@ class Template {
 	 * a call to `Controller::run()`. Note that you cannot use sub-expressions
 	 * here like you can with the dynamic `{! app/handler !}` calls.
 	 */
-	function hard_codes ($val) {
+	public function hard_codes ($val) {
 		$url = parse_url ($val);
 		if (isset ($url['query'])) {
 			parse_str (html_entity_decode ($url['query'], ENT_COMPAT, 'UTF-8'), $data);
 		} else {
 			$data = array ();
 		}
-		return $GLOBALS['controller']->run ($url['path'], $data);
+		return $this->controller->run ($url['path'], $data);
 	}
 
 	/**
 	 * Run any includes and include their output in the return value. Primarily
-	 * for page body in the admin app.
+	 * for page body in the admin app. This only evaluates `{! app/handler !}`
+	 * style tags.
 	 */
-	function run_includes ($val) {
+	public function run_includes ($val) {
 		$parts = preg_split ('/(\{\! ?.*? ?\!\})/e', $val, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$out = '';
 		foreach ($parts as $part) {
@@ -325,7 +413,7 @@ class Template {
 				} else {
 					$data = array ();
 				}
-				$out .= $GLOBALS['controller']->run ($url['host'] . $url['path'], $data);
+				$out .= $this->controller->run ($url['host'] . $url['path'], $data);
 			} else {
 				$out .= $part;
 			}
@@ -335,23 +423,51 @@ class Template {
 
 	/**
 	 * Replace strings with calls to `i18n_get()` for multilingual sites.
+	 * Translatable strings take the following form using either double
+	 * or single quotes:
+	 *
+	 *     {" some text here "}
+	 *     {' some text here '}
 	 */
-	function replace_strings ($val) {
+	public function replace_strings ($val) {
 		return '<?php echo i18n_get (\'' . str_replace ('\'', '\\\'', $val) . '\'); ?>';
 	}
 
 	/**
 	 * Sanitize a value for safe output, helping to prevent XSS attacks.
 	 */
-	static function sanitize ($val, $charset = 'UTF-8') {
+	public static function sanitize ($val, $charset = 'UTF-8') {
 		return htmlspecialchars ($val, ENT_QUOTES | ENT_IGNORE, $charset);
 	}
 
 	/**
-	 * Replace foreach and if blocks.
+	 * Convert quotes to HTML entities for form input values.
+	 * Note: This should only be done for *trusted* data, as it does
+	 * not prevent XSS attacks.
 	 */
-	function replace_blocks ($val) {
-		if ($val == 'end' || $val == 'endif' || $val == 'endforeach') {
+	public static function quotes ($val) {
+		return str_replace ('"', '&quot;', $val);
+	}
+
+	/**
+	 * Replace foreach and if blocks. Handles the following forms:
+	 *
+	 *     {% foreach some_list %}
+	 *     {% endforeach %}
+	 *
+	 *     {% if statement %}
+	 *     {% elseif statement %}
+	 *     {% else %}
+	 *     {% endif %}
+	 *
+	 * You can also use `{% end %}` as an alias for both `{% endforeach %}`
+	 * or `{% endif %}`.
+	 *
+	 * The current loop index is available via `{{ loop_index }}` and
+	 * the current loop value is available via `{{ loop_value }}`.
+	 */
+	public function replace_blocks ($val) {
+		if ($val === 'end' || $val === 'endif' || $val === 'endforeach') {
 			return '<?php } ?>';
 		}
 		
@@ -370,13 +486,13 @@ class Template {
 		} elseif (! strstr ($extra, '::') && ! strstr ($extra, '(')) {
 			$extra = '$data->' . $extra;
 		}
-		if ($block == 'foreach') {
+		if ($block === 'foreach') {
 			return '<?php foreach (' . $extra . ' as $data->loop_index => $data->loop_value) { ?>';
-		} elseif ($block == 'if') {
+		} elseif ($block === 'if') {
 			return '<?php if (' . $extra . ') { ?>';
-		} elseif ($block == 'elseif') {
+		} elseif ($block === 'elseif') {
 			return '<?php } elseif (' . $extra . ') { ?>';
-		} elseif ($block == 'else') {
+		} elseif ($block === 'else') {
 			return '<?php } else { ?>';
 		}
 		die ('Invalid template block: ' . $val);

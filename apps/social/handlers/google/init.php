@@ -1,6 +1,10 @@
 <?php
 
-if ($controller->called['social/google/init'] > 1) {
+/**
+ * Initializes the google API for the other google handlers.
+ */
+
+if (self::$called['social/google/init'] > 1) {
 	return;
 }
 

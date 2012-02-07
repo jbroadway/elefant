@@ -119,16 +119,55 @@ body {
 		background: rgba(0,0,0,.8);
 	}
 
+	#admin-update-available {
+		color: #fff;
+		font-size: 12px;
+		font-weight: normal;
+		text-decoration: underline;
+		text-align: center;
+		display: block;
+		width: 200px;
+		margin: auto;
+		margin-top: -24px;
+		z-index: 100001;
+	}
+
+	#admin-update-available:hover {
+		color: #A753CC;
+	}
+
+.admin-options {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	height: 23px;
+}
+
 .admin-options a {
+	display: block;
 	position: relative;
 	margin: 0;
-	padding: 3px 5px 5px 5px;
+	padding: 0;
+	border: 0;
+	height: 23px;
+	float: left;
 	background: rgba(0,0,0,.75);
 }
 
 .admin-options a:hover {
 	background: rgba(0,0,0,.9);
 	text-decoration: none !important;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.admin-options a img {
+	height: 16px;
+	width: 16px;
+	margin: 0;
+	padding: 3px 5px 5px 5px;
+	border: 0;
 }
 
 .admin-tooltip {

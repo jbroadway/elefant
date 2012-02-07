@@ -1,6 +1,30 @@
 <?php
 
 /**
+ * Elefant CMS - http://www.elefantcms.com/
+ *
+ * Copyright (c) 2011 Johnny Broadway
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
  * A simple locking mechanism for ensuring users don't edit the same
  * object at the same time.
  *
@@ -31,15 +55,30 @@
  * modified
  */
 class Lock {
-	var $timeout = 2400; // 40 minutes
-	var $error = false;
-	var $resource = false;
-	var $key = false;
+	/**
+	 * The lock timeout. Defaults to 40 minutes.
+	 */
+	public $timeout = 2400;
+
+	/**
+	 * The error message if an error occurs, or false if no errors.
+	 */
+	public $error = false;
+
+	/**
+	 * The type of resource being locked.
+	 */
+	public $resource = false;
+
+	/**
+	 * The unique ID of the resource being locked.
+	 */
+	public $key = false;
 
 	/**
 	 * Constructor.
 	 */
-	function __construct ($resource = false, $key = false) {
+	public function __construct ($resource = false, $key = false) {
 		$this->resource = $resource;
 		$this->key = $key;
 	}
@@ -47,9 +86,7 @@ class Lock {
 	/**
 	 * Create a lock on the specified object.
 	 */
-	function add ($resource = false, $key = false) {
-		global $user;
-		
+	public function add ($resource = false, $key = false) {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 		
@@ -58,7 +95,7 @@ class Lock {
 				(user, resource, resource_id, expires, created, modified)
 			values
 				(?, ?, ?, ?, ?, ?)',
-			$user->id,
+			User::val ('id'),
 			$resource,
 			$key,
 			gmdate ('Y-m-d H:i:s', time () + $this->timeout),
@@ -74,15 +111,13 @@ class Lock {
 	/**
 	 * Check whether a lock is held on an object by someone other than the current user.
 	 */
-	function exists ($resource = false, $key = false) {
-		global $user;
-
+	public function exists ($resource = false, $key = false) {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
 		return db_shift (
 			'select id from `lock` where user != ? and resource = ? and resource_id = ? and expires > ?',
-			$user->id,
+			User::val ('id'),
 			$resource,
 			$key,
 			gmdate ('Y-m-d H:i:s')
@@ -92,7 +127,7 @@ class Lock {
 	/**
 	 * Get the info about a lock.
 	 */
-	function info ($resource = false, $key = false) {
+	public function info ($resource = false, $key = false) {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
@@ -102,9 +137,7 @@ class Lock {
 	/**
 	 * Update the expiry and modification time of an existing lock.
 	 */
-	function update ($resource = false, $key = false) {
-		global $user;
-
+	public function update ($resource = false, $key = false) {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
@@ -124,7 +157,7 @@ class Lock {
 	/**
 	 * Remove a specific lock.
 	 */
-	function remove ($resource = false, $key = false) {
+	public function remove ($resource = false, $key = false) {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
@@ -134,15 +167,14 @@ class Lock {
 	/**
 	 * Clear all locks held by the current user.
 	 */
-	static function clear () {
-		global $user;
-		return db_execute ('delete from `lock` where user = ?', $user->id);
+	public static function clear () {
+		return db_execute ('delete from `lock` where user = ?', User::val ('id'));
 	}
 
 	/**
 	 * Clear all locks.
 	 */
-	static function clear_all () {
+	public static function clear_all () {
 		return db_execute ('delete from `lock`');
 	}
 }

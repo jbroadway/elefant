@@ -1,12 +1,17 @@
 <?php
 
-$page->template = false;
+/**
+ * Background save function for the `Save & Keep Editing` option
+ * in the page edit form.
+ */
+
+$page->layout = false;
 header ('Content-Type: application/json');
 
 if (! User::require_admin ()) {
 	$res = new StdClass;
 	$res->success = false;
-	$res->error = 'Authorization required.';
+	$res->error = i18n_get ('Authorization required.');
 	echo json_encode ($res);
 	return;
 }
@@ -27,6 +32,7 @@ if ($o->error) {
 		$error = $o->error;
 	} else {
 		Versions::add ($o);
+		$memcache->delete ('_admin_page_' . $_GET['id']);
 		$_POST['page'] = $_GET['id'];
 		$this->hook ('admin/edit', $_POST);
 	}

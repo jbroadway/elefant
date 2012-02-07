@@ -1,7 +1,7 @@
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/base/jquery-ui.css" />
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.css" />
 <link rel="stylesheet" href="/css/wysiwyg/jquery.wysiwyg.css" type="text/css" />
 <link rel="stylesheet" href="/css/files/wysiwyg.fileManager.css" type="text/css" />
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/js/wysiwyg/jquery.wysiwyg.js"></script>
 <script type="text/javascript" src="/js/wysiwyg/controls/wysiwyg.image2.js"></script>
 <script type="text/javascript" src="/js/wysiwyg/controls/wysiwyg.link2.js"></script>
@@ -9,10 +9,19 @@
 <script type="text/javascript" src="/js/wysiwyg/plugins/wysiwyg.fileManager.js"></script>
 <script type="text/javascript" src="/js/jquery.quickpager.js"></script>
 <script type="text/javascript" src="/js/wysiwyg/plugins/wysiwyg.embed.js"></script>
+<script type="text/javascript" src="/js/wysiwyg/plugins/wysiwyg.i18n.js"></script>
+<?php if (file_exists ('js/wysiwyg/i18n/lang.' . $GLOBALS['i18n']->language . '.js')) { ?>
+<script type="text/javascript" src="/js/wysiwyg/i18n/lang.{{i18n.language|none}}.js"></script>
+<?php } ?>
 <script type="text/javascript">
 $(function () {
 	$('#webpage-body').wysiwyg ({
 		initialContent: '<p><br /></p>',
+<?php if (file_exists ('js/wysiwyg/i18n/lang.' . $GLOBALS['i18n']->language . '.js')) { ?>
+		plugins: {
+			i18n: { lang: '{{i18n.language|none}}' }
+		},
+<?php } ?>
 		controls: {
 			strikeThrough	:{visible:false},
 			justifyFull		:{visible:false},
@@ -22,7 +31,7 @@ $(function () {
 			'fileManager': {
 				visible: true,
 				groupIndex: 12,
-				tooltip: 'File Manager',
+				tooltip: '{"File Manager"}',
 				exec: function () {
 					$.wysiwyg.fileManager.init (function (file) {
 						if (file.match (/\.(jpg|png|gif)$/i)) {
@@ -44,7 +53,7 @@ $(function () {
 			},
 			'dynamic': {
 				visible: true,
-				tooltip: 'Dynamic Objects',
+				tooltip: '{"Dynamic Objects"}',
 				tags: ['span'],
 				exec: function () {
 					$.wysiwyg.embed.init (this, function (existing, embed_code) {

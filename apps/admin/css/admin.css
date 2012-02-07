@@ -72,6 +72,62 @@ tt {
 	background: #def;
 }
 
+.pager {
+	margin-bottom: 15px;
+}
+
+	.pager-numbers {
+		float: right;
+	}
+
+	.pager-number {
+		width: 20px;
+		height: 19px;
+		display: block;
+		float: left;
+		text-align: center;
+		margin-left: 3px;
+		margin-right: 3px;
+		-webkit-border-radius: 2px;
+		-moz-border-radius: 2px;
+		border-radius: 2px;
+	}
+
+	.pager-number a {
+		text-decoration: none;
+		display: block;
+		width: 20px;
+		height: 19px;
+		border: 1px solid #ddd;
+		-webkit-border-radius: 2px;
+		-moz-border-radius: 2px;
+		border-radius: 2px;
+	}
+
+	.pager-number a:hover {
+		background: #e5f2ff;
+		border: 1px solid #ccc;
+	}
+
+	.pager-current {
+		background: #8A5AB5;
+		color: #f5f5f5;
+		border: 1px solid #8A5AB5;
+	}
+
+	.pager-first, .pager-last {
+		font-size: 15px;
+		line-height: 16px;
+	}
+
+	.pager-previous {
+		float: left;
+	}
+
+	.pager-next {
+		float: right;
+	}
+
 #extra-options {
 	display: none;
 }
@@ -117,7 +173,7 @@ tt {
 	white-space: nowrap;
 }
 
-input[type=text], input[type=password], textarea {
+input[type=text], input[type=password], input[type=email], textarea {
 	font-size: 12px;
 	border: 1px solid #999;
     border-radius: 2px;

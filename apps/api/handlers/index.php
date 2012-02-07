@@ -1,8 +1,9 @@
 <?php
 
-$page->template = false;
+/**
+ * Default handler, simply forwards to the current version of the API.
+ */
 
-header ('Location: /api/' . $appconf['Api']['current_version']);
-exit;
+$this->redirect ('/api/' . $appconf['Api']['current_version']);
 
 ?>

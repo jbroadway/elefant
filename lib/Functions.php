@@ -1,6 +1,44 @@
 <?php
 
 /**
+ * Elefant CMS - http://www.elefantcms.com/
+ *
+ * Copyright (c) 2011 Johnny Broadway
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
+ * This is a collection of utility functions that are too small to merit their
+ * own class, or even their own file, so they're aggregated here. They include:
+ *
+ * - `info()` - Dumps a formatted data structure for quick debugging.
+ * - `conf()` - Retrieves a value from the global configuration.
+ * - `simple_auth()` - Provides a means of implementing custom auth schemes
+ *   (includes built-in HTTP Basic support).
+ * - `sql_split()` - Parses SQL data, removes comments, and splits it into
+ *   individual queries.
+ * - `format_filesize()` - Formats a byte value into more readable output.
+ * - `detect()` - Simpel browser and browser type (e.g., mobile) detection.
+ */
+
+/**
  * Wraps a `print_r()` or `var_dump()` of the given `$value` with a set of `<pre></pre>`
  * tags around it, and echoes it.
  */
@@ -23,12 +61,35 @@ function info ($value, $full = false) {
 }
 
 /**
- * Get a global configuration value from any namespace,
- * without calling `global $conf` first. Useful in templates
- * as well.
+ * Get any global configuration section or individual setting value.
+ * Lazy loads the configuration upon first use, and stores it privately
+ * to avoid polluting the global space. Useful in templates as well.
+ * Note: Uses ELEFANT_ENV, defined in the front controller, to determine
+ * which configuration file to load, allowing for alternate dev, staging,
+ * and production configurations in a single codebase.
+ *
+ * To update a value after the initial configuration has been loaded,
+ * pass the new value as a third parameter, e.g.:
+ *
+ *     // Enable debugging
+ *     conf ('General', 'debug', true);
  */
-function conf ($section, $value) {
-	return $GLOBALS['conf'][$section][$value];
+function conf ($section, $value = false, $update = false) {
+	static $conf;
+	if ($conf === null) {
+		if (isset ($GLOBALS['conf'])) {
+			$conf =& $GLOBALS['conf'];
+		} else {
+			$conf = parse_ini_file ('conf/' . ELEFANT_ENV . '.php', true);
+		}
+	}
+	if ($value) {
+		if ($update) {
+			$conf[$section][$value] = $update;
+		}
+		return $conf[$section][$value];
+	}
+	return $conf[$section];
 }
 
 /**
@@ -43,23 +104,19 @@ function conf ($section, $value) {
  * given.
  */
 function simple_auth ($verifier = false, $method = false) {
-	if (! $verifier) {
-		$verifier = 'simple_auth_verifier';
-	}
-	if (! $method) {
-		$method = 'simple_auth_basic';
-	}
+	$verifier = ($verifier) ? $verifier : 'simple_auth_verifier';
+	$method = ($method) ? $method : 'simple_auth_basic';
 	return call_user_func ($method, $verifier);
 }
 
 /**
  * Default verifier for `simple_auth()`. This is meant to serve
  * as an example, and should be overridden with your own
- * implementation.
+ * implementation. Note its use of `conf()` variables that are
+ * likely not set in a default Elefant installation.
  */
 function simple_auth_verifier ($user, $pass) {
-	global $conf;
-	if ($user == $conf['General']['master_username'] && $pass == $conf['General']['master_password']) {
+	if ($user == conf ('General', 'master_username') && $pass == conf ('General', 'master_password')) {
 		return true;
 	}
 	return false;
@@ -116,6 +173,98 @@ function format_filesize ($size = 0) {
 	} else {
 		return $size . " b";
 	}
+}
+
+/**
+ * Very basic browser detection. `$browser` can be one of:
+ *
+ * - msie, ie
+ * - firefox, ff, moz
+ * - chrome
+ * - safari
+ * - webkit
+ * - opera
+ * - opera mini
+ * - opera mobi
+ * - ios
+ * - iphone
+ * - ipad
+ * - android
+ * - iemobile
+ * - webos
+ * - blackberry
+ * - googlebot
+ * - bot
+ * - mobile
+ * - tablet
+ *
+ * Notes:
+ *
+ * - `mobile` and `tablet` matches are not exhaustive, they only list the common
+ *   platforms.
+ *
+ * - iPad and iPod are both reported as mobile devices in the user agent string,
+ *   but `detect()` corrects for this in the case of the iPad.
+ *
+ * - Android reports as true for both mobile and tablet currently.
+ *
+ * - Some matches might be seen as false-positives, such as Chrome matching Safari.
+ *   In these cases, look at other detection options. For example with Chrome, the
+ *   rendering engine is Webkit, so better to simply use that.
+ *
+ * - No version detection. For IE version-specific needs, use conditional comments
+ *   in your HTML, or use a string like `msie 10`.
+ *
+ * - Other lowercase strings that are not listed above can be used as well,
+ *   for example `wap`, or `smartphone`.
+ */
+function detect ($browser) {
+	$ua = strtolower ($_SERVER['HTTP_USER_AGENT']);
+	$ver = '';
+
+	// Normalize names
+	$browser = ($browser === 'ie') ? 'msie' : $browser;
+	$browser = ($browser === 'ff') ? 'firefox' : $browser;
+	$browser = ($browser === 'moz') ? 'firefox' : $browser;
+
+	if ($browser === 'mobile') {
+		if (! preg_match ('/(iphone|ipod|android|opera mini|opera mobi|symb|phone|webos|blackberry|mobile)/', $ua)) {
+			// No common mobile platform
+			return false;
+		} elseif (strpos ($ua, 'ipad') !== false) {
+			// iPad should be separate from mobile
+			return false;
+		}
+		return true;
+	} elseif ($browser === 'tablet') {
+		if (! preg_match ('/(ipad|android|tablet)/', $ua)) {
+			// Not iPad, Android, or tablet
+			return false;
+		}
+		return true;
+	} elseif ($browser === 'ios') {
+		if (! preg_match ('/(ipad|iphone|ipod)/', $ua)) {
+			// Not iOS
+			return false;
+		}
+		return true;
+	} elseif (strpos ($ua, $browser) === false) {
+		return false;
+	}
+	return true;
+}
+
+/**
+ * Recursively delete a folder and all its contents.
+ * Handles hidden dot-files as well as regular files.
+ */
+function rmdir_recursive ($path) {
+	if (preg_match ('|/\.+$|', $path)) {
+		return;
+	}
+	return is_file ($path)
+		? unlink ($path)
+		: array_map ('rmdir_recursive', glob ($path . '/{,.}*', GLOB_BRACE)) == rmdir ($path);
 }
 
 ?>

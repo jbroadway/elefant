@@ -3,15 +3,15 @@
 </style>
 
 <form method="POST" id="update-form">
-<p>Your name:<br /><input type="text" name="name" size="40" value="{{ name }}" />
-<span class="notice" id="name-notice">You must enter a name.</span></p>
-<p>Email address:<br /><input type="text" name="email" size="40" value="{{ email }}" />
-<span class="notice" id="email-notice">You must enter an email address.</span></p>
-<p>Change password:<br /><input type="password" name="password" size="20" value="{{ password }}" />
-<span class="notice" id="password-notice">Your password must be at least 6 characters.</span></p>
-<p>Verify new password:<br /><input type="password" name="verify" size="20" value="{{ verify }}" />
-<span class="notice" id="verify-notice">Your password doesn't match.</span></p>
-<p><input type="submit" value="Update Profile" /></p>
+<p>{"Your name"}:<br /><input type="text" name="name" size="40" value="{{ name }}" />
+<span class="notice" id="name-notice">{"You must enter a name."}</span></p>
+<p>{"Email address"}:<br /><input type="text" name="email" size="40" value="{{ email }}" />
+<span class="notice" id="email-notice">{"You must enter an email address."}</span></p>
+<p>{"Change password"}:<br /><input type="password" name="password" size="20" value="{{ password }}" />
+<span class="notice" id="password-notice">{"Your password must be at least 6 characters."}</span></p>
+<p>{"Verify new password"}:<br /><input type="password" name="verify_pass" size="20" value="{{ verify_pass }}" />
+<span class="notice" id="verify_pass-notice">{"Your password doesn't match."}</span></p>
+<p><input type="submit" value="{"Update Profile"}" /></p>
 </form>
 
 <script type="text/javascript" src="/js/jquery.verify_values.js"></script>

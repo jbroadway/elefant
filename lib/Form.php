@@ -1,20 +1,81 @@
 <?php
 
 /**
- * Convenience functions for validating form submissions and input data.
+ * Elefant CMS - http://www.elefantcms.com/
+ *
+ * Copyright (c) 2011 Johnny Broadway
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
+ * This is a simple form handling class. Provides validation of the form
+ * referrer, request method, cross-site request forgery (CSRF) prevention,
+ * and numerous convenience functions for validating form submissions and
+ * input data. Also integrates with the `/js/jquery.verify_values.js`
+ * jQuery plugin to provide matching client-side validation based on the
+ * same set of rules.
+ *
  * The input validation can be useful not just for form submissions,
  * but it's packaged here to keep things tidy.
  *
- * Usage:
+ * Simplest usage:
  *
+ *     <?php
+ *     
+ *     $form = new Form ('post', $this);
+ *     
+ *     echo $form->handle (function ($form) {
+ *         // Create some data...
+ *         $foo = new MyModel ($_POST);
+ *         $foo->put ();
+ *     
+ *         // Refer them to a thank you page
+ *         $form->controller->redirect ('/thank/you');
+ *     });
+ *     
+ *     ?>
+ *
+ * Long form usage:
+ *
+ *     <?php
+ *     
  *     $form = new Form ('post', 'apps/myapp/forms/verify.php');
+ *
  *     if ($form->submit ()) {
  *         // handle form
+ *         info ($_POST);
+ *
  *     } else {
- *         $page->failed = $form->failed;
- *         $page->head = '<script src="/js/jquery-1.6.2.min.js"></script>
- *             <script src="/js/jquery.verify_values.js"></script>
- *             <script>
+ *         // set some default values
+ *         $obj = new StdClass;
+ *         $obj->foo = 'bar';
+ *
+ *         // merge with user input
+ *         $obj = $f->merge_values ($obj);
+ *
+ *         // get failed fields
+ *         $obj->failed = $form->failed;
+ *
+ *         // add scripts for client-side validation
+ *         $page->add_script ('<script src="/js/jquery.verify_values.js"></script>');
+ *         $page->add_script ('<script>
  *             $(function () {
  *                 $.verify_values ({
  *                     element: "#myapp-form",
@@ -24,39 +85,118 @@
  *                     }
  *                 });
  *             });
- *             </script>';
- *         $page->template = 'myapp/form';
+ *             </script>');
+ *
+ *         // output your form template
+ *         echo $tpl->render ('myapp/form', $obj);
  *     }
+ *     
+ *     ?>
  */
 class Form {
 	/**
 	 * Fields that failed validation.
 	 */
-	var $failed = array ();
+	public $failed = array ();
 
 	/**
 	 * The required request method.
 	 */
-	var $method = 'post';
+	public $method = 'post';
 
 	/**
 	 * Validation rules.
 	 */
-	var $rules = array ();
+	public $rules = array ();
+
+	/**
+	 * The original `$form_rules` passed to the constructor, parsed
+	 * down to the `appname/rules` short form.
+	 */
+	private $_rules;
+
+	/**
+	 * A view to render the form with. Used by `handle()`.
+	 */
+	public $view = false;
+
+	/**
+	 * An optional copy of the controller object.
+	 */
+	public $controller = false;
 
 	/**
 	 * Whether to verify the referrer or not.
 	 */
-	var $verify_referrer = true;
+	public $verify_referrer = true;
+
+	/**
+	 * Whether to verify with a CSRF token or not.
+	 */
+	public $verify_csrf = true;
+
+	/**
+	 * Token generated for CSRF prevention.
+	 */
+	public $csrf_token;
+
+	/**
+	 * The name of the token form field.
+	 */
+	public $csrf_field_name = '_token_';
 
 	/**
 	 * The reason `submit()` failed to pass.
 	 */
-	var $error = false;
+	public $error = false;
 
-	function __construct ($required_method = 'post', $form_rules = false) {
+	/**
+	 * Whether `handle()` should include the default JavaScript validation
+	 * or just the `/js/jquery.verify_values.js` script so you can write
+	 * your own custom validation display.
+	 */
+	public $js_validation = true;
+
+	/**
+	 * Constructor method. Parameters are:
+	 *
+	 * - Required request method (default is 'post')
+	 * - A reference to the form rules file, or a Controller object
+	 * - If param 2 is a file reference, this can be the Controller object
+	 *
+	 * Usage:
+	 *
+	 *     $f = new Form (); // defaults and no Controller or rules set
+	 *     $f = new Form ('post'); // POST requests but no Controller or rules
+	 *     $f = new Form ('post', $this); // POST and Controller set
+	 *     $f = new Form ('post', 'myapp/rules'); // POST and rules set
+	 *     $f = new Form ('post', 'myapp/rules, $this); // Everything set
+	 *
+	 * Note that if the rules are not set but the Controller is passed,
+	 * the rules file will be assumed to match the appname/handlername of
+	 * the currently active handler, and the view will be set to match as
+	 * well. This is the most handy scenario, since if you match your
+	 * rules file, handler, and view names, you can simply say:
+	 *
+	 *     $f = new Form ('post', $this);
+	 *
+	 * And it will set everything up correctly based on `$this->uri` in the
+	 * Controller.
+	 */
+	public function __construct ($required_method = 'post', $form_rules = false, $controller = false) {
+		// Normalize the request method to lowercase
 		$this->method = strtolower ($required_method);
 
+		if ($form_rules instanceof Controller) {
+			// Controller was passed as the second param
+			$this->controller = $form_rules;
+			$form_rules = $this->controller->uri;
+		} else {
+			// Controller was third param
+			$this->controller = $controller;
+		}
+
+		// Fetch any form validation rules
 		if (! empty ($form_rules)) {
 			if (! @file_exists ($form_rules)) {
 				list ($app, $form) = explode ('/', $form_rules);
@@ -65,23 +205,96 @@ class Form {
 			if (@file_exists ($form_rules)) {
 				$this->rules = parse_ini_file ($form_rules, true);
 			}
+			// Set the view by default based on the form rules (can be changed later)
+			$this->_rules = preg_replace ('|apps/(.+)/forms/(.+)\.php$|', '\1/\2', $form_rules);
+			$this->view = $this->_rules;
 		}
+	}
+
+	/**
+	 * Accepts an anonymous function (aka closure) that handles the
+	 * form submission, and abstracts away the rendering of the form
+	 * based on the provided rules and view, helping eliminate much
+	 * of the boilerplate code of form creation.
+	 *
+	 * Note that `handle()` will also include `/js/jquery.verify_values.js`
+	 * for you, but you need to provide your own initialization code
+	 * to perform the client-side validations. There is a page in the
+	 * public wiki on www.elefantcms.com describing the steps for this.
+	 *
+	 * Also note that if the anonymous function returns false, there
+	 * will be no output and the false status will be passed to the
+	 * handler to catch.
+	 */
+	public function handle ($func) {
+		if (! $this->submit ()) {
+			if (! $this->view) {
+				// No view so we simply return false so the handler
+				// can take over rendering the form
+				return false;
+			}
+
+			// Render the view and return its output
+			global $page, $tpl;
+
+			$o = new StdClass;
+
+			// Determine the default values
+			foreach ($this->rules as $field => $rules) {
+				foreach ($rules as $key => $value) {
+					if ($key === 'default') {
+						$o->{$field} = $value;
+						break;
+					}
+				}
+			}
+
+			// Set some views to go to the template
+			$o = $this->merge_values ($o);
+			$o->_form = str_replace ('/', '-', $this->view) . '-form';
+			$o->_failed = $this->failed;
+			$o->_rules = $this->_rules;
+			$page->add_script ('/js/jquery.verify_values.js');
+			if ($this->js_validation) {
+				return $tpl->render ('admin/default-validation', $o) . $tpl->render ($this->view, $o);
+			}
+			return $tpl->render ($this->view, $o);
+		}
+
+		// Form can be handled, capture output and return it
+		// If the function returns false, simply pass that
+		// to the handler with no output
+		ob_start ();
+		$res = $func ($this);
+		if ($res === false) {
+			ob_end_clean ();
+			return false;
+		}
+		return ob_get_clean ();
 	}
 
 	/**
 	 * Check if the form is okay to submit. Verifies the request method,
 	 * the referrer, and the input data.
 	 */
-	function submit () {
-		$values = ($this->method == 'post') ? $_POST : $_GET;
+	public function submit () {
+		$values = ($this->method === 'post') ? $_POST : $_GET;
+
+		$this->initialize_csrf ();
 		
 		if (! $this->verify_request_method ()) {
+			// form hasn't been submitted yet, or request method doesn't match
 			$this->error = 'Request method must be ' . strtoupper ($this->method);
 			return false;
 		}
 		
 		if ($this->verify_referrer && ! $this->verify_referrer ()) {
 			$this->error = 'Referrer must match the host name.';
+			return false;
+		}
+
+		if ($this->verify_csrf && ! $this->verify_csrf ()) {
+			$this->error = 'Cross-site request forgery detected.';
 			return false;
 		}
 
@@ -97,8 +310,8 @@ class Form {
 	 * Merge the values from `$_GET` or `$_POST` onto a data array or
 	 * object for re-rendering a form with the latest data entered.
 	 */
-	function merge_values ($obj) {
-		$values = ($this->method == 'post') ? $_POST : $_GET;
+	public function merge_values ($obj) {
+		$values = ($this->method === 'post') ? $_POST : $_GET;
 		
 		foreach ($values as $k => $v) {
 			if (is_object ($obj)) {
@@ -114,8 +327,8 @@ class Form {
 	/**
 	 * Verify the request method is the one specified.
 	 */
-	function verify_request_method () {
-		if (strtolower ($_SERVER['REQUEST_METHOD']) != $this->method) {
+	public function verify_request_method () {
+		if (strtolower ($_SERVER['REQUEST_METHOD']) !== $this->method) {
 			return false;
 		}
 		return true;
@@ -125,8 +338,85 @@ class Form {
 	 * Verify the referrer came from this site. No remote form submissions,
 	 * since those are almost certainly abusive.
 	 */
-	function verify_referrer () {
+	public function verify_referrer () {
 		if (strpos ($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST']) === false) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Initialize the CSRF token.
+	 */
+	public function initialize_csrf () {
+		if ($this->verify_csrf) {
+			// Start a session
+			@session_set_cookie_params (time () + 2592000);
+			@session_start ();
+
+			if (isset ($_SESSION['csrf_token']) && $_SESSION['csrf_expires'] > time ()) {
+				// Get an existing token
+				$this->csrf_token = $_SESSION['csrf_token'];
+
+				// Reset the timer on the request so it doesn't expire on the
+				// user if time is running short
+				$_SESSION['csrf_expires'] = time () + 7200;
+			} else {
+				// Generate a random token
+				$this->csrf_token = md5 (uniqid (rand (), true));
+
+				// Set the token and expiry time (2 hours)
+				$_SESSION['csrf_token'] = $this->csrf_token;
+				$_SESSION['csrf_expires'] = time () + 7200;
+			}
+
+			// Append the CSRF token Javascript if there is a page object
+			if (isset ($GLOBALS['page'])) {
+				$GLOBALS['page']->add_script (
+					$this->generate_csrf_script (),
+					'tail'
+				);
+			}
+		}
+	}
+
+	/**
+	 * Generate the script that will append the token to forms in the page.
+	 * You do not need to call this directly as long as you have `{{ tail|none }}`
+	 * in your layout template, since `initialize_csrf()` will automatically
+	 * add this to the tail if it can.
+	 */
+	function generate_csrf_script () {
+		return sprintf (
+			'<script>$(function(){$("form").append("<input type=\'hidden\' name=\'%s\' value=\'%s\'/>");});</script>',
+			$this->csrf_field_name,
+			$this->csrf_token
+		);
+	}
+
+	/**
+	 * Verify the CSRF token is present, matches the stored value in the session
+	 * data, and has not expired (2 hour limit).
+	 */
+	public function verify_csrf () {
+		if (! isset ($_SESSION['csrf_token']) || ! isset ($_SESSION['csrf_expires'])) {
+			// No token in session
+			return false;
+		}
+
+		$values = ($this->method === 'post') ? $_POST : $_GET;
+
+		if (! isset ($values[$this->csrf_field_name])) {
+			// No token provided
+			return false;
+		}
+
+		if ($_SESSION['csrf_token'] !== $values[$this->csrf_field_name]) {
+			// Token doesn't match
+			return false;
+		}
+		if ($_SESSION['csrf_expires'] < time ()) {
+			// Timed out
 			return false;
 		}
 		return true;
@@ -143,6 +433,7 @@ class Form {
 	 * - `type` - calls `is_$validator($value)`
 	 * - `callback` - calls `call_user_func($validator, $value)`
 	 * - `email` - a valid email address
+	 * - `url` - a valid url
 	 * - `range` - number within a range e.g., `123-456`
 	 * - `length` - string of length, $verifier examples: `6, 6+, 6-12, 12-`
 	 * - `gt` - greater than
@@ -171,7 +462,10 @@ class Form {
 	 * You can also specify 'not' in front of any rule to check for its
 	 * opposite, for example "not empty".
 	 */
-	function verify_value ($value, $type, $validator = false) {
+	public static function verify_value ($value, $type, $validator = false) {
+		if ($type === 'default') {
+			return true;
+		}
 		if (preg_match ('/^not (.+)$/i', $type, $regs)) {
 			return ! Form::verify_value ($value, $regs[1], $validator);
 		}
@@ -181,81 +475,111 @@ class Form {
 					// Can't dynamically reference superglobals, so instead...
 					switch ($regs[1]) {
 						case '_POST':
-							return ($value == $_POST[$regs[2]]);
+							return ($value === $_POST[$regs[2]]);
 						case '_GET':
-							return ($value == $_GET[$regs[2]]);
+							return ($value === $_GET[$regs[2]]);
 						case '_REQUEST':
-							return ($value == $_REQUEST[$regs[2]]);
+							return ($value === $_REQUEST[$regs[2]]);
 						case '_SERVER':
-							return ($value == $_SERVER[$regs[2]]);
+							return ($value === $_SERVER[$regs[2]]);
 						case '_FILES':
-							return ($value == $_FILES[$regs[2]]);
+							return ($value === $_FILES[$regs[2]]);
 						case '_COOKIE':
-							return ($value == $_COOKIE[$regs[2]]);
+							return ($value === $_COOKIE[$regs[2]]);
 						case '_SESSION':
-							return ($value == $_SESSION[$regs[2]]);
+							return ($value === $_SESSION[$regs[2]]);
 						case '_ENV':
-							return ($value == $_ENV[$regs[2]]);
+							return ($value === $_ENV[$regs[2]]);
 						case 'GLOBALS':
-							return ($value == $GLOBALS[$regs[2]]);
+							return ($value === $GLOBALS[$regs[2]]);
 					}
 				}
 				return false;
+
 			case 'regex':
 				return (bool) preg_match ($validator, $value);
+
 			case 'type':
 				return call_user_func ('is_' . $validator, $value);
+
 			case 'callback':
 				return call_user_func ($validator, $value);
+
 			case 'range':
 				list ($min, $max) = explode ('-', $validator);
 				return (($min <= $value) && ($value <= $max));
+
 			case 'empty':
 				return empty ($value);
+
 			case 'length':
 				if (preg_match ('/^([0-9]+)([+-]?)([0-9]*)$/', $validator, $regs)) {
 					if (! empty ($regs[3])) {
 						if (strlen ($value) < $regs[1] || strlen ($value) > $regs[3]) {
 							return false;
 						}
-					} elseif ($regs[2] == '+' && strlen ($value) < $regs[1]) {
+					} elseif ($regs[2] === '+' && strlen ($value) < $regs[1]) {
 						return false;
-					} elseif ($regs[2] == '-' && strlen ($value) > $regs[1]) {
+					} elseif ($regs[2] === '-' && strlen ($value) > $regs[1]) {
 						return false;
 					} elseif (empty ($regs[2]) && strlen ($value) != $regs[1]) {
 						return false;
 					}
 				}
 				return true;
+
 			case 'contains':
 				return (bool) stristr ($value, $validator);
+
 			case 'equals':
 				return ($value == $validator);
+
 			case 'gt':
 				return ($value > $validator);
+
 			case 'gte':
 				return ($value >= $validator);
+
 			case 'lt':
 				return ($value < $validator);
+
 			case 'lte':
 				return ($value <= $validator);
+
 			case 'email':
-				if (strpos ($value, '.@') !== false) {
+				if (! filter_var ($value, FILTER_VALIDATE_EMAIL)) {
 					return false;
-				} elseif (preg_match ('/\.$/', $value)) {
-					return false;
-				} elseif (! preg_match ("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+\.([a-zA-Z0-9\._-]+)+$/" , $value)) {
+				}
+
+				// also verify that the domain isn't just 'localhost'
+				// which would allow garbage in
+				list ($one, $two) = explode ('@', $value);
+				if (strpos ($two, '.') === false) {
 					return false;
 				}
 				return true;
+
+			case 'url':
+				if (! filter_var ($value, FILTER_VALIDATE_URL)) {
+					return false;
+				}
+				if (strpos ($value, '.') === false) {
+					return false;
+				}
+				return true;
+
 			case 'header':
 				return ! (bool) preg_match ('/[\r\n]/s', $value);
+
 			case 'date':
 				return (bool) preg_match ('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $value);
+
 			case 'time':
 				return (bool) preg_match ('/^[0-9]{2}:[0-9]{2}:[0-9]{2}$/', $value);
+
 			case 'datetime':
 				return (bool) preg_match ('/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/', $value);
+
 			case 'unique':
 				list ($table, $column) = preg_split ('/[\.:\/]/', $validator);
 				$res = db_shift ('select ' . $column . ' from ' . $table . ' where ' . $column . ' = ?', $value);
@@ -263,6 +587,7 @@ class Form {
 					return false;
 				}
 				return true;
+
 			case 'exists':
 				if (strpos ($validator, '%s') !== false) {
 					return @file_exists (sprintf ($validator, $value));
@@ -293,7 +618,7 @@ class Form {
 	 * Returns an array of failed fields. If the array is empty, everything
 	 * passed.
 	 */
-	function verify_values ($values, $validations = array ()) {
+	public function verify_values ($values, $validations = array ()) {
 		if (is_string ($validations) && @file_exists ($validations)) {
 			$validations = parse_ini_file ($validations, true);
 		}
@@ -307,7 +632,7 @@ class Form {
 						continue;
 					}
 				}
-				if (! Form::verify_value ($values[$name], $type, $validator)) {
+				if (! isset ($values[$name]) || ! Form::verify_value ($values[$name], $type, $validator)) {
 					$failed[] = $name;
 					break;
 				}

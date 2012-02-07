@@ -1,6 +1,10 @@
 <?php
 
-$page->template = false;
+/**
+ * Background save handler for `Save & Keep Editing` form options.
+ */
+
+$page->layout = false;
 header ('Content-Type: application/json');
 
 if (! User::require_admin ()) {
@@ -13,9 +17,8 @@ if (! User::require_admin ()) {
 
 $error = false;
 
-if (! preg_match ('/^(layouts|css)\/[a-z0-9_-]+\.(html|css)$/i', $_GET['file'])) {
-	header ('Location: /designer');
-	exit;
+if (! preg_match ('/^(css|layouts|layouts\/[a-z0-9_-]+)\/[a-z0-9_-]+\.(html|css)$/i', $_GET['file'])) {
+	$this->redirect ('/designer');
 }
 
 if (! @file_put_contents ($_GET['file'], $_POST['body'])) {

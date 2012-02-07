@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Displays a complete site map as a multi-level
+ * bulleted list.
+ */
+
 $n = new Navigation;
 
 function navigation_print_level ($tree) {
@@ -15,5 +20,7 @@ function navigation_print_level ($tree) {
 }
 
 navigation_print_level ($n->tree);
+
+$this->cache = true;
 
 ?>

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Deletes a web page.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {
@@ -16,11 +20,12 @@ if ($lock->exists ()) {
 $wp = new Webpage ($_GET['page']);
 
 if (! $wp->remove ()) {
-	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $wp->error;
+	$page->title = i18n_get ('An Error Occurred');
+	echo i18n_get ('Error Message') . ': ' . $wp->error;
 	return;
 }
 
+$memcache->delete ('_admin_page_' . $_GET['page']);
 $this->add_notification (i18n_get ('Page deleted.'));
 $this->hook ('admin/delete', $_GET);
 $this->redirect ('/');

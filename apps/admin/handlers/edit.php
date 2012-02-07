@@ -1,7 +1,10 @@
 <?php
 
+/**
+ * The page edit form.
+ */
+
 $page->layout = 'admin';
-$page->template = 'admin/base';
 
 if (! User::require_admin ()) {
 	$this->redirect ('/admin');
@@ -16,9 +19,12 @@ if ($lock->exists ()) {
 	$lock->add ();
 }
 
+require_once ('apps/admin/lib/Functions.php');
+
 $wp = new Webpage ($_GET['page']);
 
 $f = new Form ('post', 'admin/edit');
+$f->verify_csrf = false;
 if ($f->submit ()) {
 	$wp->id = $_POST['id'];
 	$wp->title = $_POST['title'];
@@ -32,29 +38,20 @@ if ($f->submit ()) {
 	$wp->put ();
 	if (! $wp->error) {
 		Versions::add ($wp);
+		$memcache->delete ('_admin_page_' . $_GET['page']);
 		$this->add_notification (i18n_get ('Page saved.'));
 		$_POST['page'] = $_GET['page'];
 		$lock->remove ();
 		$this->hook ('admin/edit', $_POST);
 		$this->redirect ('/' . $_POST['id']);
 	}
-	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $wp->error;
+	$page->title = i18n_get ('An Error Occurred');
+	echo i18n_get ('Error Message') . ': ' . $wp->error;
 } else {
-	$layouts = array ();
-	$d = dir (getcwd () . '/layouts');
-	while (false != ($entry = $d->read ())) {
-		if (preg_match ('/^(.*)\.html$/', $entry, $regs)) {
-			$layouts[] = $regs[1];
-		}
-	}
-	$d->close ();
-	sort ($layouts);
-	$wp->layouts = $layouts;
-
+	$wp->layouts = admin_get_layouts ();
 	$wp->failed = $f->failed;
 	$wp = $f->merge_values ($wp);
-	$page->title = 'Edit Page: ' . $wp->title;
+	$page->title = i18n_get ('Edit Page') . ': ' . $wp->title;
 	$page->head = $tpl->render ('admin/edit/head', $wp)
 				. $tpl->render ('admin/wysiwyg');
 	echo $tpl->render ('admin/edit', $wp);

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Cancel handler for edit forms. Unlocks the object
+ * if there was a lock held on it, then forwards to
+ * the specified return location.
+ */
+
 if (! User::require_admin ()) {
 	$this->redirect ('/admin');
 }
@@ -8,7 +14,6 @@ if (! User::require_admin ()) {
 $lock = new Lock ($_GET['type'], $_GET['id']);
 $lock->remove ();
 
-header ('Location: ' . $_GET['return']);
-exit;
+$this->redirect ($_GET['return']);
 
 ?>

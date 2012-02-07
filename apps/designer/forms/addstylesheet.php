@@ -4,7 +4,7 @@
 
 not empty = 1
 regex = '/^[a-z0-9_-]+$/'
-not exists = "css/%s.html"
+not exists = "css/%s.css"
 
 [body]
 

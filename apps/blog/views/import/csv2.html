@@ -1,0 +1,42 @@
+<p>2. {"Which columns should be imported?"}</p>
+
+<form method="post" action="/blog/import/csv2">
+
+<p>
+<table width="100%">
+	<tr>
+{% foreach headers %}
+		<th>{{ loop_value }}</th>
+{% end %}
+	</tr>
+{% foreach samples %}
+	<tr>
+	{{ loop_value|blog_filter_csv_line }}
+	</tr>
+{% end %}
+	<tr>
+{% foreach headers %}
+		<td>
+<select name="map-{{ loop_index }}">
+	<option value="">{"Import as..."}</option>
+	<option value="title">{"Title"}</option>
+	<option value="date">{"Date"}</option>
+	<option value="author">{"Author"}</option>
+	<option value="content">{"Content"}</option>
+	<option value="tags">{"Tags"}</option>
+</select>
+		</td>
+{% end %}
+	</tr>
+</table>
+</p>
+
+<p>{"Mark imported posts as published?"}<br />
+<select name="published">
+	<option value="yes">{"Yes"}</option>
+	<option value="no">{"No"}</option>
+</select></p>
+
+<p><input type="submit" value="{"Finish importing"}" /></p>
+
+</form>

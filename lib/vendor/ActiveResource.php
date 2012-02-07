@@ -48,82 +48,87 @@ class ActiveResource {
 	/**
 	 * The REST site address, e.g., `http://user:pass@domain:port/`
 	 */
-	var $site = false;
+	public $site = false;
 
 	/**
 	 * Add any extra params to the end of the url eg: API key
 	 */
-	var $extra_params = false;
+	public $extra_params = false;
 
 	/**
 	 * HTTP Basic Authentication user
 	 */
-	var $user = null;
+	public $user = null;
 
 	/**
 	 * HTTP Basic Authentication password
 	 */	
-	var $password = null;
+	public $password = null;
 	
 	/**
-	 * The remote collection, e.g., person or things
+	 * The remote collection, e.g., person or thing
 	 */
-	var $element_name = false;
+	public $element_name = false;
+
+	/**
+	 * Pleural form of the element name, e.g., people or things
+	 */
+	public $element_name_plural = '';
 
 	/**
 	 * The data of the current object, accessed via the anonymous get/set methods.
 	 */
-	var $_data = array ();
+	private $_data = array ();
 
 	/**
 	 * An error message if an error occurred.
 	 */
-	var $error = false;
+	public $error = false;
 
 	/**
 	 * The error number if an error occurred.
 	 */
-	var $errno = false;
+	public $errno = false;
 
 	/**
 	 * The request that was sent to the server.
 	 */
-	var $request_body = '';
+	public $request_body = '';
 
 	/**
 	 * The complete URL that the request was sent to.
 	 */
-	var $request_uri = '';
+	public $request_uri = '';
 
 	/**
 	 * The request method sent to the server.
 	 */
-	var $request_method = '';
+	public $request_method = '';
 
 	/**
 	 * The response code returned from the server.
 	 */
-	var $response_code = false;
+	public $response_code = false;
 
 	/**
 	 * The raw response headers sent from the server.
 	 */
-	var $response_headers = '';
+	public $response_headers = '';
 
 	/**
 	 * The response body sent from the server.
 	 */
-	var $response_body = '';
+	public $response_body = '';
 
 	/**
 	 * The format requests should use to send data (url or xml).
 	 */
-	var $request_format = 'url';
+	public $request_format = 'url';
 
 	/**
 	 * Corrections to improper pleuralizations.
 	 */
-	var $pleural_corrections = array (
+	public $pleural_corrections = array (
 		'persons' => 'people',
 		'peoples' => 'people',
 		'mans' => 'men',
@@ -149,10 +154,11 @@ class ActiveResource {
 	/**
 	 * Constructor method.
 	 */
-	function __construct ($data = array ()) {
+	public function __construct ($data = array ()) {
 		$this->_data = $data;
 		// Allow class-defined element name or use class name if not defined
-		$this->element_name = ($this->element_name ? $this->pluralize ($this->element_name) : $this->pluralize (strtolower (get_class ($this))));
+		$this->element_name = $this->element_name ? $this->element_name : strtolower (get_class ($this));
+		$this->element_name_plural = $this->pluralize ($this->element_name);
 
 		// Detect for namespaces, and take just the class name
 		if (stripos($this->element_name, '\\'))
@@ -173,7 +179,7 @@ class ActiveResource {
 	/**
 	 * Pluralize the element name.
 	 */
-	function pluralize ($word) {
+	public function pluralize ($word) {
 		$word .= 's';
 		$word = preg_replace ('/(x|ch|sh|ss])s$/', '\1es', $word);
 		$word = preg_replace ('/ss$/', 'ses', $word);
@@ -181,6 +187,7 @@ class ActiveResource {
 		$word = preg_replace ('/sises$/', 'ses', $word);
 		$word = preg_replace ('/([^aeiouy]|qu)ys$/', '\1ies', $word);
 		$word = preg_replace ('/(?:([^f])fe|([lr])f)s$/', '\1\2ves', $word);
+		$word = preg_replace ('/ieses$/', 'ies', $word);
 		if (isset ($this->pleural_corrections[$word])) {
 			return $this->pleural_corrections[$word];
 		}
@@ -190,7 +197,7 @@ class ActiveResource {
 	/**
 	 * For backwards-compatibility.
 	 */
-	function pleuralize ($word) {
+	public function pleuralize ($word) {
 		return $this->pluralize ($word);
 	}
 
@@ -200,11 +207,11 @@ class ActiveResource {
 	 *     POST /collection.xml
 	 *     PUT  /collection/id.xml
 	 */
-	function save () {
+	public function save () {
 		if (isset ($this->_data['id'])) {
-			return $this->_send_and_receive ($this->site . $this->element_name . '/' . $this->_data['id'] . '.xml', 'PUT', $this->_data); // Update
+			return $this->_send_and_receive ($this->site . $this->element_name_plural . '/' . $this->_data['id'] . '.xml', 'PUT', $this->_data); // update
 		}
-		return $this->_send_and_receive ($this->site . $this->element_name . '.xml', 'POST', $this->_data); // Create
+		return $this->_send_and_receive ($this->site . $this->element_name_plural . '.xml', 'POST', $this->_data); // Create
 	}
 
 	/**
@@ -212,8 +219,8 @@ class ActiveResource {
 	 *
 	 *     DELETE /collection/id.xml
 	 */
-	function destroy () {
-		return $this->_send_and_receive ($this->site . $this->element_name . '/' . $this->_data['id'] . '.xml', 'DELETE');
+	public function destroy () {
+		return $this->_send_and_receive ($this->site . $this->element_name_plural . '/' . $this->_data['id'] . '.xml', 'DELETE');
 	}
 
 	/**
@@ -222,18 +229,18 @@ class ActiveResource {
 	 *     GET /collection/id.xml
 	 *     GET /collection.xml
 	 */
-	function find ($id = false, $options = array ()) {
+	public function find ($id = false, $options = array ()) {
 		if (! $id) {
 			$id = $this->_data['id'];
 		}
-		if ($id == 'all') {
-			$url = $this->site . $this->element_name . '.xml';
+		if ($id === 'all') {
+			$url = $this->site . $this->element_name_plural . '.xml';
 			if (count ($options) > 0) {
 				$url .= '?' . http_build_query ($options);
 			}
 			return $this->_send_and_receive ($url, 'GET');
 		}
-		return $this->_send_and_receive ($this->site . $this->element_name . '/' . $id . '.xml', 'GET');
+		return $this->_send_and_receive ($this->site . $this->element_name_plural . '/' . $id . '.xml', 'GET');
 	}
 
 	/**
@@ -242,8 +249,8 @@ class ActiveResource {
 	 *     GET /collection/id/method.xml
 	 *     GET /collection/id/method.xml?attr=value
 	 */
-	function get ($method, $options = array ()) {
-		$req = $this->site . $this->element_name;
+	public function get ($method, $options = array ()) {
+		$req = $this->site . $this->element_name_plural;
         if ($this->_data['id']) { 
           $req .= '/' . $this->_data['id'];
         }
@@ -259,8 +266,8 @@ class ActiveResource {
 	 *
 	 *     POST /collection/id/method.xml
 	 */
-	function post ($method, $options = array ()) {
-		$req = $this->site . $this->element_name;
+	public function post ($method, $options = array ()) {
+		$req = $this->site . $this->element_name_plural;
         if ($this->_data['id']) {
           $req .= '/' . $this->_data['id'];
         }
@@ -273,8 +280,8 @@ class ActiveResource {
 	 *
 	 *     PUT /collection/id/method.xml
 	 */
-	function put ($method, $options = array ()) {
-		$req = $this->site . $this->element_name;
+	public function put ($method, $options = array ()) {
+		$req = $this->site . $this->element_name_plural;
         if ($this->_data['id']) { 
           $req .= '/' . $this->_data['id'];
         }
@@ -288,8 +295,8 @@ class ActiveResource {
 	/**
 	 * Simple recursive function to build an XML response.
 	 */
-	function _build_xml ($k, $v) {
-		if (is_object ($v) && strtolower (get_class ($v)) == 'simplexmlelement') {
+	public function _build_xml ($k, $v) {
+		if (is_object ($v) && strtolower (get_class ($v)) === 'simplexmlelement') {
 			return preg_replace ('/<\?xml(.*?)\?>\n*/', '', $v->asXML ());
 		}
 		$res = '';
@@ -299,14 +306,30 @@ class ActiveResource {
 		}
 		if (is_array ($v)) {
 			foreach ($v as $key => $value) {
+				// handle attributes of repeating tags
+				if (is_numeric ($key) && is_array ($value)) {
+					foreach ($value as $sub_key => $sub_value) {
+						if (strpos ($sub_key, '@') === 0) {
+							$attrs .= ' ' . substr ($sub_key, 1) . '="' . $this->_xml_entities ($sub_value) . '"';
+							unset ($value[$sub_key]);
+							continue;
+						}
+					}
+				}
+
 				if (strpos ($key, '@') === 0) {
 					$attrs .= ' ' . substr ($key, 1) . '="' . $this->_xml_entities ($value) . '"';
 					continue;
 				}
 				$res .= $this->_build_xml ($key, $value);
 				$keys = array_keys ($v);
-				if (is_numeric ($key) && $key != array_pop ($keys)) {
-					$res .= '</' . $k . ">\n<" . $k . '>';
+				if (is_numeric ($key) && $key !== array_pop ($keys)) {
+					// reset attributes on repeating tags
+					if (is_array ($value)) {
+						$res = str_replace ('<' . $k . '{{attributes}}>', '<' . $k . $attrs . '>', $res);
+						$attrs = '';
+					}
+					$res .= '</' . $k . ">\n<" . $k . '{{attributes}}>';
 				}
 			}
 		} else {
@@ -320,36 +343,167 @@ class ActiveResource {
 	}
 
 	/**
-	 * Converts entities to unicode entities (ie. `<` becomes `&#60;`).
-	 * From php.net/htmlentities comments, user "webwurst at web dot de"
+	 * Returns the unicode value of the string
+	 *
+	 * @param string $c The source string
+	 * @param integer $i The index to get the char from (passed by reference for use in a loop)
+	 * @return integer The value of the char at $c[$i]
+	 * @author kerry at shetline dot com
+	 * @author Dom Hastings - modified to suit my needs
+	 * @see http://www.php.net/manual/en/function.ord.php#78032
 	 */
-	function _xml_entities ($string) {
-		$trans = get_html_translation_table (HTML_ENTITIES);
-	
-		foreach ($trans as $key => $value) {
-			$trans[$key] = '&#' . ord ($key) . ';';
+	private function _unicode_ord(&$c, &$i = 0) {
+		// get the character length
+		$l = strlen($c);
+		// copy the offset
+		$index = $i;
+		
+		// check it's a valid offset
+		if ($index >= $l) {
+			return false;
 		}
-	
-		return strtr ($string, $trans);
+		
+		// check the value
+		$o = ord($c[$index]);
+		
+		// if it's ascii
+		if ($o <= 0x7F) {
+			return $o;
+		
+		// not sure what it is...
+		} elseif ($o < 0xC2) {
+			return false;
+		
+		// if it's a two-byte character	
+		} elseif ($o <= 0xDF && $index < $l - 1) {
+			$i += 1;
+			return ($o & 0x1F) <<	6 | (ord($c[$index + 1]) & 0x3F);
+		
+		// three-byte
+		} elseif ($o <= 0xEF && $index < $l - 2) {
+			$i += 2;
+			return ($o & 0x0F) << 12 | (ord($c[$index + 1]) & 0x3F) << 6 | (ord($c[$index + 2]) & 0x3F);
+			
+		// four-byte
+		} elseif ($o <= 0xF4 && $index < $l - 3) {
+			$i += 3;
+			return ($o & 0x0F) << 18 | (ord($c[$index + 1]) & 0x3F) << 12 | (ord($c[$index + 2]) & 0x3F) << 6 | (ord($c[$index + 3]) & 0x3F);
+			
+		// not sure what it is...
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Makes the specified string XML-safe
+	 *
+	 * @param string $s
+	 * @param boolean $hex Whether or not to make hexadecimal entities (as opposed to decimal)
+	 * @return string The XML-safe result
+	 * @author Dom Hastings
+	 * @see http://www.w3.org/TR/REC-xml/#sec-predefined-ent
+	 */
+	public function _xml_entities ($s, $hex = true) {
+		// if the string is empty
+		if (empty($s)) {
+			// just return it
+			return $s;
+		}
+		
+		// create the return string
+		$r = '';
+		// get the length
+		$l = strlen($s);
+		
+		// iterate the string
+		for ($i = 0; $i < $l; $i++) {
+			// get the value of the character
+			$o = $this->_unicode_ord($s, $i);
+			
+			// valid cahracters
+			$v = (
+				// \t \n <vertical tab> <form feed> \r
+				($o >= 9 && $o <= 13) || 
+				// <space> !
+				($o === 32) || ($o === 33) || 
+				// # $ %
+				($o >= 35 && $o <= 37) || 
+				// ( ) * + , - . /
+				($o >= 40 && $o <= 47) || 
+				// numbers
+				($o >= 48 && $o <= 57) ||
+				// : ;
+				($o === 58) || ($o === 59) ||
+				// = ?
+				($o === 61) || ($o === 63) ||
+				// @
+				($o === 64) ||
+				// uppercase
+				($o >= 65 && $o <= 90) ||
+				// [ \ ] ^ _ `
+				($o >= 91 && $o <= 96) || 
+				// lowercase
+				($o >= 97 && $o <= 122) || 
+				// { | } ~
+				($o >= 123 && $o <= 126)
+			);
+			
+			// if it's valid, just keep it
+			if ($v) {
+				$r .= $s[$i];
+			
+			// &
+			} elseif ($o === 38) {
+				$r .= '&amp;';
+			
+			// <
+			} elseif ($o === 60) {
+				$r .= '&lt;';
+			
+			// >
+			} elseif ($o === 62) {
+				$r .= '&gt;';
+			
+			// '
+			} elseif ($o === 39) {
+				$r .= '&apos;';
+			
+			// "
+			} elseif ($o === 34) {
+				$r .= '&quot;';
+			
+			// unknown, add it as a reference
+			} elseif ($o > 0) {
+				if ($hex) {
+					$r .= '&#x'.strtoupper(dechex($o)).';';
+					
+				} else {
+					$r .= '&#'.$o.';';
+				}
+			}
+		}
+		
+		return $r;
 	}
 
 	/**
 	 * Build the request, call `_fetch()` and parse the results.
 	 */
-	function _send_and_receive ($url, $method, $data = array ()) {
+	private function _send_and_receive ($url, $method, $data = array ()) {
 		$params = '';
-		$el = substr ($this->element_name, 0, -1);
-		if ($this->request_format == 'url') {
+		$el = $this->element_name; // Singular this time
+		if ($this->request_format === 'url') {
 			foreach ($data as $k => $v) {
-				if ($k != 'id' && $k != 'created-at' && $k != 'updated-at') {
+				if ($k !== 'id' && $k !== 'created-at' && $k !== 'updated-at') {
 					$params .= '&' . $el . '[' . str_replace ('-', '_', $k) . ']=' . rawurlencode ($v);
 				}
 			}
 			$params = substr ($params, 1);
-		} elseif ($this->request_format == 'xml') {
+		} elseif ($this->request_format === 'xml') {
 			$params = '<?xml version="1.0" encoding="UTF-8"?><' . $el . ">\n";
 			foreach ($data as $k => $v) {
-				if ($k != 'id' && $k != 'created-at' && $k != 'updated-at') {
+				if ($k !== 'id' && $k !== 'created-at' && $k !== 'updated-at') {
 					$params .= $this->_build_xml ($k, $v);
 				}
 			}
@@ -385,7 +539,7 @@ class ActiveResource {
 
 			if (! $res) {
 				return $this;
-			} elseif ($res == ' ') {
+			} elseif ($res === ' ') {
 				$this->error = 'Empty reply';
 				return $this;
 			}
@@ -394,7 +548,8 @@ class ActiveResource {
 		// Parse XML response
 		$xml = new SimpleXMLElement ($res);
 
-		if ($xml->getName () == $this->element_name) {
+		// Normalize xml element name in case rails ressource contains an underscore
+		if (str_replace ('-', '_', $xml->getName ()) === $this->element_name_plural) {
 			// Multiple
 			$res = array ();
 			$cls = get_class ($this);
@@ -402,7 +557,7 @@ class ActiveResource {
 				$obj = new $cls;
 				foreach ((array) $child as $k => $v) {
 					$k = str_replace ('-', '_', $k);
-					if (isset ($v['nil']) && $v['nil'] == 'true') {
+					if (isset ($v['nil']) && $v['nil'] === 'true') {
 						continue;
 					} else {
 						$obj->_data[$k] = $v;
@@ -411,7 +566,7 @@ class ActiveResource {
 				$res[] = $obj;
 			}
 			return $res;
-		} elseif ($xml->getName () == 'errors') {
+		} elseif ($xml->getName () === 'errors') {
 			// Parse error message
 			$this->error = $xml->error;
 			$this->errno = $this->response_code;
@@ -420,7 +575,7 @@ class ActiveResource {
 
 		foreach ((array) $xml as $k => $v) {
 			$k = str_replace ('-', '_', $k);
-			if (isset ($v['nil']) && $v['nil'] == 'true') {
+			if (isset ($v['nil']) && $v['nil'] === 'true') {
 				continue;
 			} else {
 				$this->_data[$k] = $v;
@@ -432,7 +587,7 @@ class ActiveResource {
 	/**
 	 * Fetch the specified request via cURL.
 	 */
-	function _fetch ($url, $method, $params) {
+	private function _fetch ($url, $method, $params) {
 		if (! extension_loaded ('curl')) {
 			$this->error = 'cURL extension not loaded.';
 			return false;
@@ -454,8 +609,8 @@ class ActiveResource {
 			curl_setopt ($ch, CURLOPT_USERPWD, $this->user . ":" . $this->password);	
 		}
 
-		if ($this->request_format == 'xml') {
-			curl_setopt ($ch, CURLOPT_HTTPHEADER, array ("Content-Type: text/xml", "Length: " . strlen ($params)));
+		if ($this->request_format === 'xml') {
+			curl_setopt ($ch, CURLOPT_HTTPHEADER, array ("Expect:", "Content-Type: text/xml", "Length: " . strlen ($params)));
 		}
 		switch ($method) {
 			case 'POST':
@@ -477,7 +632,7 @@ class ActiveResource {
 
 		// Check HTTP status code for denied access
 		$http_code = curl_getinfo ($ch, CURLINFO_HTTP_CODE);
-		if ($http_code == 401) {
+		if ($http_code === 401) {
 			$this->errno = $http_code;
 			$this->error = "HTTP Basic: Access denied.";
 			curl_close ($ch);
@@ -497,7 +652,7 @@ class ActiveResource {
 	/**
 	 * Getter for internal object data.
 	 */
-	function __get ($k) {
+	public function __get ($k) {
 		if (isset ($this->_data[$k])) {
 			return $this->_data[$k];
 		}
@@ -507,7 +662,7 @@ class ActiveResource {
 	/**
 	 * Setter for internal object data.
 	 */
-	function __set ($k, $v) {
+	public function __set ($k, $v) {
 		if (isset ($this->_data[$k])) {
 			$this->_data[$k] = $v;
 			return;
@@ -518,7 +673,7 @@ class ActiveResource {
 	/**
 	 * Quick setter for chaining methods.
 	 */
-	function set ($k, $v = false) {
+	public function set ($k, $v = false) {
 		if (! $v && is_array ($k)) {
 			foreach ($k as $key => $value) {
 				$this->_data[$key] = $value;

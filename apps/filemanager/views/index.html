@@ -5,7 +5,7 @@
 		<td><img src="/apps/admin/css/admin/folder.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/filemanager?path=${path}">${name}</a></td>
 		<td>${mtime}</td>
 		<td>&nbsp;</td>
-		<td><a href="#" onclick="return $.filemanager ('mv', {file: '${path}', name: '${name}'})">Rename</a></td>
+		<td><a href="#" onclick="return $.filemanager ('mv', {file: '${path}', name: '${name}'})">{"Rename"}</a></td>
 	</tr>
 </script>
 <script type="text/x-jquery-tmpl" id="tpl_file">
@@ -14,8 +14,8 @@
 		<td>${mtime}</td>
 		<td>${fsize}</td>
 		<td>
-			<a href="#" onclick="return $.filemanager ('mv', {file: '${path}', name: '${name}'})">Rename</a> | 
-			<a href="#" onclick="return $.filemanager ('rm', {file: '${path}'})">Delete</a>
+			<a href="#" onclick="return $.filemanager ('mv', {file: '${path}', name: '${name}'})">{"Rename"}</a> | 
+			<a href="#" onclick="return $.filemanager ('rm', {file: '${path}'})">{"Delete"}</a>
 		</td>
 	</tr>
 </script>
@@ -30,7 +30,7 @@ $(function () {
 {% if path == '' %}
 	Files
 {% else %}
-	<a href="/filemanager">Files</a>
+	<a href="/filemanager">{"Files"}</a>
 	{% foreach parts %}
 		{% if loop_index == $data->lastpath %}
 			/ {{ loop_index }}
@@ -44,18 +44,18 @@ $(function () {
 <p>
 <form action="/filemanager/upload" method="post" enctype="multipart/form-data">
 <input type="hidden" name="path" value="{{ path }}" />
-<a href="#" onclick="return $.filemanager ('mkdir', {file: '{{ path }}'})">New folder</a> |
-New file (max {{ ini_get ('upload_max_filesize')}}B): <input type="file" name="file" /><input type="submit" value="Upload" onclick="if (this.form.elements.file.value == '') { alert ('Please select a file to upload.'); return false; } this.value = 'Uploading...'; this.disabled = true; this.form.submit ()" />
+<a href="#" onclick="return $.filemanager ('mkdir', {file: '{{ path }}'})">{"New folder"}</a> |
+{"New file"} ({"max"} {{ ini_get ('upload_max_filesize')}}B): <input type="file" name="file" /> <input type="submit" value="{"Upload"}" onclick="if (this.form.elements.file.value == '') { alert ('Please select a file to upload.'); return false; } this.value = 'Uploading...'; this.disabled = true; this.form.submit ()" />
 </form>
 </p>
 
 <p>
 <table width="100%">
 	<tr>
-		<th width="50%">{" Name "}</th>
-		<th width="20%">{" Last modified "}</th>
-		<th width="15%">{" File size "}</th>
-		<th width="15%">&nbsp;</th>
+		<th width="55%">{" Name "}</th>
+		<th width="22%">{" Last modified "}</th>
+		<th width="10%">{" File size "}</th>
+		<th width="13%">&nbsp;</th>
 	</tr>
 	<tbody id="file-list"></tbody>
 </table>

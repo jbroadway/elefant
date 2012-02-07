@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * User edit form.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {
@@ -9,6 +13,7 @@ if (! User::require_admin ()) {
 $u = new User ($_GET['id']);
 
 $f = new Form ('post', 'user/edit');
+$f->verify_csrf = false;
 if ($f->submit ()) {
 	$u->name = $_POST['name'];
 	$u->email = $_POST['email'];
@@ -22,8 +27,8 @@ if ($f->submit ()) {
 		$this->hook ('user/edit', $_POST);
 		$this->redirect ('/user/admin');
 	}
-	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $u->error;
+	$page->title = i18n_get ('An Error Occurred');
+	echo i18n_get ('Error Message') . ': ' . $u->error;
 } else {
 	$u->password = '';
 	$u->types = array ('admin', 'member');

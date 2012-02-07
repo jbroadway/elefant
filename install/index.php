@@ -1,13 +1,37 @@
 <?php
 
-if (@file_exists ('installed')) {
+/**
+ * Elefant CMS - http://www.elefantcms.com/
+ *
+ * Copyright (c) 2011 Johnny Broadway
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+if (file_exists ('../conf/installed') || file_exists ('installed')) {
 	$_GET['step'] = 'finished';
 }
 
 function encrypt_pass ($plain) {
 	$base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	$salt = '$1$';
-	for ($i = 0; $i < 9; $i++) {
+	$salt = '$2a$07$';
+	for ($i = 0; $i < 22; $i++) {
 		$salt .= $base[rand (0, 61)];
 	}
 	return crypt ($plain, $salt . '$');
@@ -32,16 +56,21 @@ if (get_magic_quotes_gpc ()) {
 date_default_timezone_set('GMT');
 
 require_once ('../lib/Functions.php');
+require_once ('../lib/I18n.php');
 require_once ('../lib/Form.php');
 require_once ('../lib/Database.php');
 require_once ('../lib/Template.php');
 require_once ('../lib/Model.php');
+require_once ('../lib/ExtendedModel.php');
 require_once ('../apps/admin/models/Webpage.php');
 require_once ('../apps/blocks/models/Block.php');
+require_once ('../apps/user/models/User.php');
 require_once ('../apps/admin/models/Versions.php');
 
 // create core objects
+$i18n = new I18n ('../lang', array ('negotiation_method' => 'http'));
 $tpl = new Template ('UTF-8');
+$tpl->cache_folder = '../cache';
 
 $steps = array (
 	'introduction',
@@ -57,21 +86,31 @@ $data = array ();
 
 // handle the request
 switch ($_GET['step']) {
+	case 'introduction':
+		if ($_SERVER['REQUEST_URI'] !== '/install/' && $_SERVER['REQUEST_URI'] !== '/install/index.php') {
+			$data['subdir'] = true;
+		} else {
+			$data['subdir'] = false;
+		}
+
+		break;
+
+
 	case 'requirements':
 		// check permissions
 		$apache = ($_SERVER['SERVER_SOFTWARE'] == 'Apache') ? true : (strpos (php_sapi_name (), 'apache') === 0) ? true : false;
 		$data = array (
 			'req' => array (
-				'PHP version must be 5.3+' => PHP_VERSION > '5.3',
-				'.htaccess file is missing from the site root. Please save the following file to your server:</p><p><a href="https://raw.github.com/jbroadway/elefant/master/.htaccess" target="_blank">https://raw.github.com/jbroadway/elefant/master/.htaccess</a>' => (! $apache || ($apache && @file_exists ('../.htaccess'))),
-				'cache folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => is_writeable ('../cache'),
-				'conf folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => is_writeable ('../conf'),
-				'css folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => is_writeable ('../css'),
-				'files folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => is_writeable ('../files'),
-				'install folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => is_writeable ('../install'),
-				'layouts folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => is_writeable ('../layouts'),
-				'PHP PDO extension is missing.' => extension_loaded ('pdo'),
-				'Apache mod_rewrite extension must be installed.' => (php_sapi_name () != 'apache2handler' || in_array ('mod_rewrite', apache_get_modules ()))
+				i18n_get ('PHP version must be 5.3+') => PHP_VERSION > '5.3',
+				i18n_get ('.htaccess file is missing from the site root. Please save the following file to your server:') . '</p><p><a href="https://raw.github.com/jbroadway/elefant/master/.htaccess" target="_blank">https://raw.github.com/jbroadway/elefant/master/.htaccess</a>' => (! $apache || ($apache && @file_exists ('../.htaccess'))),
+				i18n_get ('cache folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>') => is_writeable ('../cache'),
+				i18n_get ('conf folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>') => is_writeable ('../conf'),
+				i18n_get ('css folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>') => is_writeable ('../css'),
+				i18n_get ('files folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>') => is_writeable ('../files'),
+				//i18n_get ('install folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>') => is_writeable ('../install'),
+				i18n_get ('layouts folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>') => is_writeable ('../layouts'),
+				i18n_get ('PHP PDO extension is missing.') => extension_loaded ('pdo'),
+				i18n_get ('Apache mod_rewrite extension must be installed.') => (php_sapi_name () != 'apache2handler' || ! function_exists ('apache_get_modules') || in_array ('mod_rewrite', apache_get_modules ()))
 			),
 			'passed' => 0
 		);
@@ -85,7 +124,13 @@ switch ($_GET['step']) {
 		$data['error'] = false;
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			// got the settings, test and create schema
-			if (! db_open ($_POST)) {
+			$_POST['host'] = $_POST[$_POST['driver'] . '_host'];
+			$_POST['port'] = $_POST[$_POST['driver'] . '_port'];
+			$_POST['name'] = $_POST[$_POST['driver'] . '_name'];
+			$_POST['user'] = $_POST[$_POST['driver'] . '_user'];
+			$_POST['pass'] = $_POST[$_POST['driver'] . '_pass'];
+
+			if (! Database::open ($_POST)) {
 				$data['error'] = db_error ();
 			} else {
 				$data['error'] = false;
@@ -109,9 +154,9 @@ switch ($_GET['step']) {
 					$conf = file_get_contents ('../conf/config.php');
 					// good to replace database settings
 					$dbinfo = $tpl->render ('dbinfo', $_POST);
-					$conf = preg_replace ('/\[Database\].*\[Hooks\]/s', $dbinfo, $conf);
+					$conf = preg_replace ('/\[Database\].*\[Mongo\]/s', $dbinfo, $conf);
 					if (! file_put_contents ('../conf/config.php', $conf)) {
-						$data['error'] = 'Failed to write to conf/config.php';
+						$data['error'] = i18n_get ('Failed to write to conf/config.php');
 					} else {
 						$data['ready'] = true;
 					}
@@ -119,8 +164,10 @@ switch ($_GET['step']) {
 			}
 		} else {
 			// set some default values
-			$_POST['host'] = 'localhost';
-			$_POST['port'] = 3306;
+			$_POST['mysql_host'] = 'localhost';
+			$_POST['pgsql_host'] = 'localhost';
+			$_POST['mysql_port'] = '3306';
+			$_POST['pgsql_port'] = '5432';
 		}
 		break;
 
@@ -134,20 +181,21 @@ switch ($_GET['step']) {
 			$conf = preg_replace ('/site_name = .*/', 'site_name = "' . $_POST['site_name'] . '"', $conf);
 			$conf = preg_replace ('/email_from = .*/', 'email_from = "' . $_POST['email_from'] . '"', $conf);
 			if (! file_put_contents ('../conf/config.php', $conf)) {
-				$data['error'] = 'Failed to write to conf/config.php';
+				$data['error'] = i18n_get ('Failed to write to conf/config.php');
 			} else {
 				// create the admin user now
 				$conf_ini = parse_ini_file ('../conf/config.php', true);
-				if (isset ($conf_ini['Database']['file'])) {
-					$conf_ini['Database']['file'] = '../' . $conf_ini['Database']['file'];
+				$conf_ini['Database']['master']['master'] = true;
+				if (isset ($conf_ini['Database']['master']['file'])) {
+					$conf_ini['Database']['master']['file'] = '../' . $conf_ini['Database']['master']['file'];
 				}
 
-				if (! db_open ($conf_ini['Database'])) {
+				if (! Database::open ($conf_ini['Database']['master'])) {
 					$data['error'] = db_error ();
 				} else {
 					$date = gmdate ('Y-m-d H:i:s');
 					if (! db_execute (
-						'insert into user (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, ?, "admin", ?, ?, ?)',
+						"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, ?, 'admin', ?, ?, ?)",
 						$_POST['email_from'],
 						encrypt_pass ($_POST['pass']),
 						$date,
@@ -172,7 +220,7 @@ switch ($_GET['step']) {
 
 	case 'finished':
 		@umask (0000);
-		@touch ('installed');
+		@touch ('../conf/installed');
 		break;
 }
 

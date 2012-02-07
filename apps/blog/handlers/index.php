@@ -1,5 +1,19 @@
 <?php
 
+/**
+ * Displays the main blog page.
+ */
+
+if ($appconf['Custom Handlers']['blog/index'] != 'blog/index') {
+	if (! $appconf['Custom Handlers']['blog/index']) {
+		echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));
+		return;
+	}
+	$extra = (count ($this->params) > 0) ? '/' . $this->params[0] : '';
+	echo $this->run ($appconf['Custom Handlers']['blog/index'] . $extra, $data);
+	return;
+}
+
 $page->layout = $appconf['Blog']['layout'];
 
 require_once ('apps/blog/lib/Filters.php');
@@ -29,11 +43,11 @@ if (! $this->internal) {
 	$page->title = $appconf['Blog']['title'];
 }
 
-$page->template = 'blog/index';
-
 $page->add_script (sprintf (
 	'<link rel="alternate" type="application/rss+xml" href="http://%s/blog/rss" />',
 	$_SERVER['HTTP_HOST']
 ));
+
+echo $tpl->render ('blog/index', $page);
 
 ?>

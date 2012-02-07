@@ -1,6 +1,14 @@
 <?php
 
+/**
+ * Default user sign up form.
+ */
+
 if ($appconf['Custom Handlers']['user/signup'] != 'user/signup') {
+	if (! $appconf['Custom Handlers']['user/signup']) {
+		echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));
+		return;
+	}
 	echo $this->run ($appconf['Custom Handlers']['user/signup'], $data);
 	return;
 }
@@ -24,7 +32,7 @@ if ($f->submit ()) {
 	if (! $u->error) {
 		if (! @mail (
 			$_POST['name'] . ' <' . $_POST['email'] . '>',
-			'Please confirm your email address',
+			i18n_get ('Please confirm your email address'),
 			$tpl->render ('user/email/verification', array (
 				'verifier' => $verifier,
 				'email' => $_POST['email'],
@@ -41,12 +49,11 @@ if ($f->submit ()) {
 
 		$_POST['username'] = $_POST['email'];
 		User::require_login ();
-		header ('Location: /user');
-		exit;
+		$this->redirect ('/user');
 	}
 	@error_log ('Error creating profile: ' . $u->error);
-	$page->title = 'An Error Occurred';
-	echo '<p>Please try again later.</p>';
+	$page->title = i18n_get ('An Error Occurred');
+	echo '<p>' . i18n_get ('Please try again later.') . '</p>';
 	echo '<p><a href="/">' . i18n_get ('Back') . '</a></p>';
 } else {
 	$u = new User;

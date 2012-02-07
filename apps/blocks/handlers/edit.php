@@ -1,7 +1,10 @@
 <?php
 
+/**
+ * Block edit form.
+ */
+
 $page->layout = 'admin';
-$page->template = 'admin/base';
 
 if (! User::require_admin ()) {
 	$this->redirect ('/admin');
@@ -19,6 +22,7 @@ if ($lock->exists ()) {
 $b = new Block ($_GET['id']);
 
 $f = new Form ('post', 'blocks/edit');
+$f->verify_csrf = false;
 if ($f->submit ()) {
 	$b->title = $_POST['title'];
 	$b->body = $_POST['body'];
@@ -36,13 +40,13 @@ if ($f->submit ()) {
 		}
 		$this->redirect ('/blocks/admin');
 	}
-	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $b->error;
+	$page->title = i18n_get ('An Error Occurred');
+	echo i18n_get ('Error Message') . ': ' . $b->error;
 } else {
-	$b->yes_no = array ('yes', 'no');
+	$b->yes_no = array ('yes' => i18n_get ('Yes'), 'no' => i18n_get ('No'));
 	$b->failed = $f->failed;
 	$b = $f->merge_values ($b);
-	$page->title = 'Edit Block: ' . $b->title;
+	$page->title = i18n_get ('Edit Block') . ': ' . $b->title;
 	$page->head = $tpl->render ('blocks/edit/head', $b)
 				. $tpl->render ('admin/wysiwyg');
 	echo $tpl->render ('blocks/edit', $b);

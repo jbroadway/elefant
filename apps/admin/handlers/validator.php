@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Returns a list of validation rules as a JSON object so that
+ * `js/jquery.verify_values.js` can use the same validation rules
+ * client-side that are used by `lib/Form.php` in server-side
+ * validation.
+ */
+
 if (count ($this->params) != 2) {
 	die ('Usage: /admin/validator/app/form');
 } elseif (! preg_match ('/^[a-zA-Z0-9_-]+$/', $this->params[0]) || ! preg_match ('/^[a-zA-Z0-9_-]+$/', $this->params[1])) {
@@ -12,7 +19,7 @@ $rules = file_get_contents ('apps/' . $this->params[0] . '/forms/' . $this->para
 $rules = preg_replace ('/\$_(GET|POST|REQUEST)\[\'?(.+?)\'?\]/', '\2', $rules);
 $rules = parse_ini_string ($rules, true);
 
-$page->template = false;
+$page->layout = false;
 header ('Content-Type: application/json');
 echo json_encode ($rules);
 

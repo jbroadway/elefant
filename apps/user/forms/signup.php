@@ -13,7 +13,7 @@ unique = "user.email"
 
 length = "6+"
 
-[verify]
+[verify_pass]
 
 matches = "$_POST['password']"
 

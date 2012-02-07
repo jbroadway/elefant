@@ -22,7 +22,8 @@ login_methods[] = google
 [Custom Handlers]
 
 ; You can override some of the built-in handlers with your own
-; by changing them here.
+; by changing them here. You can also disable any of them by setting
+; them to Off.
 
 user/index = user/index
 user/signup = user/signup
@@ -52,5 +53,8 @@ consumer_secret = ""
 
 handler = user/admin
 name = Users
+install = user/upgrade
+upgrade = user/upgrade
+version = 1.1.3-stable
 
 ; */ ?>

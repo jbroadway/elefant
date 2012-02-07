@@ -1,0 +1,23 @@
+<style> .notice { display: none; } </style>
+
+<script type="text/javascript">
+$(function () {
+	$('#{{ _form }}').verify_values ({
+		handler: '{{ _rules }}',
+		callback: function (failed) {
+			// highlight the failed elements
+			for (var i = 0; i < failed.length; i++) {
+				$('#' + failed[i] + '-notice').show ();
+			}
+		},
+		reset: function (fields) {
+			for (var i = 0; i < fields.length; i++) {
+				$('#' + fields[i] + '-notice').hide ();
+			}
+		}
+	});
+	{% foreach _failed %}
+	$('#{{ loop_value }}-notice').show ();
+	{% end %}
+});
+</script>

@@ -1,12 +1,54 @@
 <?php
 
+/**
+ * Elefant CMS - http://www.elefantcms.com/
+ *
+ * Copyright (c) 2011 Johnny Broadway
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
+ * This is the debugging handler. It converts errors into ErrorException
+ * exceptions, and handles exceptions by printing a trace including
+ * highlighted source code.
+ *
+ * Usage:
+ *
+ *     if (conf ('General', 'debug')) {
+ *         require_once ('lib/Debugger.php');
+ *         Debugger::start ();
+ *     }
+ */
 class Debugger {
-	static function start () {
+	/**
+	 * Set the error and exception handlers.
+	 */
+	public static function start () {
 		set_error_handler (array ('Debugger', 'handle_error'));
 		set_exception_handler (array ('Debugger', 'handle_exception'));
 	}
 
-	static function handle_exception ($e) {
+	/**
+	 * Handles exceptions.
+	 */
+	public static function handle_exception ($e) {
 		while (ob_get_level () > 0) {
 			ob_end_clean ();
 		}
@@ -18,7 +60,10 @@ class Debugger {
 		Debugger::show_trace ($e->getTrace ());
 	}
 
-	static function show_trace ($trace) {
+	/**
+	 * Shows the trace output.
+	 */
+	public static function show_trace ($trace) {
 		$start = 0;
 		if (! isset ($trace[0]['line'])) {
 			$trace[0]['line'] = $trace[0]['args'][3];
@@ -26,11 +71,11 @@ class Debugger {
 		if (! isset ($trace[0]['file'])) {
 			$trace[0]['file'] = $trace[0]['args'][2];
 		}
-		if ($trace[0]['file'] == $trace[1]['file'] && $trace[0]['line'] == $trace[1]['line']) {
+		if ($trace[0]['file'] === $trace[1]['file'] && $trace[0]['line'] === $trace[1]['line']) {
 			$start++;
 		}
 
-		for ($i = $start; $i < count ($trace); $i++) {
+		for ($i = $start, $count = count ($trace); $i < $count; $i++) {
 			echo Debugger::show_trace_step ($trace[$i]);
 		}
 		if (isset ($trace[0]['args']) && is_array ($trace[0]['args'][4])) {
@@ -38,14 +83,20 @@ class Debugger {
 		}
 	}
 
-	static function handle_error ($errno, $errstr, $errfile, $errline) {
-		if ($errno == 8) {
+	/**
+	 * Converts errors to ErrorException exceptions.
+	 */
+	public static function handle_error ($errno, $errstr, $errfile, $errline) {
+		if ($errno === 8) {
 			return;
 		}
 		throw new ErrorException ($errstr, 0, $errno, $errfile, $errline);
 	}
 
-	static function show_trace_step ($trace) {
+	/**
+	 * Shows a step in the trace.
+	 */
+	public static function show_trace_step ($trace) {
 		if (! isset ($trace['line'])) {
 			$trace['line'] = $trace['args'][3];
 		}
@@ -76,7 +127,10 @@ class Debugger {
 		echo "\n";
 	}
 
-	static function join_arguments ($args) {
+	/**
+	 * Joins arguments for displaying the relevant code in a trace step.
+	 */
+	public static function join_arguments ($args) {
 		if (! is_array ($args)) {
 			return '';
 		}
@@ -106,7 +160,10 @@ class Debugger {
 		return $out;
 	}
 
-	static function get_code ($file, $line) {
+	/**
+	 * Get the code for a step in the trace.
+	 */
+	public static function get_code ($file, $line) {
 		$lines = file ($file);
 		$count = count ($lines);
 		$out = '';
@@ -118,7 +175,10 @@ class Debugger {
 		return $out;
 	}
 
-	static function highlight ($line) {
+	/**
+	 * Highlight code for a trace step.
+	 */
+	public static function highlight ($line) {
 		if (strpos ($line, '<?php') !== false) {
 			return highlight_string ($line, true);
 		}
@@ -129,7 +189,10 @@ class Debugger {
 		);
 	}
 
-	static function show_context ($context) {
+	/**
+	 * Show the context of a trace step.
+	 */
+	public static function show_context ($context) {
 		echo '<h2>Error Context</h2>';
 		foreach ($context as $name => $value) {
 			echo '<p class="code"><span class="code">';
@@ -143,24 +206,36 @@ class Debugger {
 		}
 	}
 
-	static function show_variable ($value, $tabs = 0) {
+	/**
+	 * Show a variable for the debug output.
+	 */
+	public static function show_variable ($value, $tabs = 0) {
 		if (is_numeric ($value)) {
+			// Render a numeric value
 			echo $value;
+
 		} elseif (is_bool ($value)) {
+			// Render a boolean value
 			if ($value) {
 				echo 'true';
 			} else {
 				echo 'false';
 			}
+
 		} elseif (is_string ($value)) {
+			// Render a string value
 			echo '"' . Template::sanitize ($value) . '"';
+
 		} elseif (is_array ($value)) {
+			// Render an array
 			echo 'array (';
 			if (empty ($value)) {
 				echo ")";
 				return;
 			}
+
 			if (Debugger::is_assoc ($value)) {
+				// Associative array
 				$first = true;
 				foreach ($value as $key => $val) {
 					if (! $first) {
@@ -172,7 +247,9 @@ class Debugger {
 					printf ("\"%s\" => ", $key);
 					Debugger::show_variable ($val, $tabs + 1);
 				}
+
 			} else {
+				// Ordinary array
 				$first = true;
 				foreach ($value as $val) {
 					if (! $first) {
@@ -187,9 +264,11 @@ class Debugger {
 			echo "\n";
 			echo str_pad ('', ($tabs) * 4);
 			echo ")";
+
 		} elseif (is_object ($value)) {
+			// Render an object
 			$vars = get_object_vars ($value);
-			if (count ($vars) == 0) {
+			if (count ($vars) === 0) {
 				echo get_class ($value) . ' ()';
 				return;
 			}
@@ -201,12 +280,17 @@ class Debugger {
 				echo ";\n";
 			}
 			echo ")";
+
 		} else {
+			// Render unknown values as-is
 			echo $value;
 		}
 	}
 
-	static function is_assoc ($array) {
+	/**
+	 * Checks if an array is associative.
+	 */
+	public static function is_assoc ($array) {
 		if (! is_array ($array) || empty ($array)) {
 			return false;
 		}

@@ -1,3 +1,16 @@
+<link rel="stylesheet" type="text/css" href="/apps/filemanager/js/fancybox/jquery.fancybox-1.3.4.css" />
+<script src="/apps/filemanager/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<script>
+$(function () {
+	$('.preview').fancybox ({
+		width: 1024,
+		height: '85%',
+		padding: 0,
+		margin: 10
+	});
+});
+</script>
+
 <div id="tabs">
 	<ul>
 		<li><a href="#layouts">{"Layouts"}</a></li>
@@ -17,7 +30,7 @@
 	</tr>
 {% foreach layouts %}
 	<tr>
-		<td><a href="/{{ loop_value }}" target="_blank">{{ loop_value }}</a></td>
+		<td><a href="/designer/preview?layout={{ loop_value }}" class="preview iframe">{{ loop_value }}</a></td>
 		<td>{{ loop_value|filemtime|gmdate ('F j, Y - g:ia', %s) }}</td>
 		<td>{{ loop_value|filesize|format_filesize }}</td>
 		<td style="text-align: right">
@@ -53,7 +66,7 @@
 	</tr>
 {% foreach stylesheets %}
 	<tr>
-		<td><a href="/{{ loop_value }}" target="_blank">{{ loop_value }}</a></td>
+		<td><a href="/{{ loop_value }}" class="preview iframe">{{ loop_value }}</a></td>
 		<td>{{ loop_value|filemtime|gmdate ('F j, Y - g:ia', %s) }}</td>
 		<td>{{ loop_value|filesize|format_filesize }}</td>
 		<td>
@@ -122,7 +135,7 @@
 	}
 
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+<script src="/js/jquery-ui/jquery-ui.min.js"></script>
 <script>
 $(function () {
 	$('#tabs').tabs ();

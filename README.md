@@ -1,209 +1,107 @@
 # Elefant
 
-[Elefant](http://www.elefantcms.com/) is an MVC framework in PHP re-imagined, with a complete but
-refreshingly simple CMS included. Elefant is based on 12 years of programming
-in PHP and running a monolithic CMS project [www.sitellite.org](http://www.sitellite.org/)
-that despite its growing 12 years of cruft, did get a few key things right
-that I haven't seen elsewhere. This is my attempt at taking those things
-and starting fresh.
+[Elefant](http://www.elefantcms.com/) is a refreshingly simple PHP content management system and web framework.
+Elefant is a fast, lean tool for building everything from simple websites to complete web applications.
 
-Elefant doesn't look much like other PHP-based MVC frameworks, but
-I've never been able to stomach the disconnect they have with the language
-itself. PHP isn't the most elegant language, and MVC constructs used in other
-languages feel clunky when translated into it. But if we flip it around and
-play on PHP's strengths, we get something much more natural to code with in
-our little monster of a "hypertext preprocessor" ;)
+<a href='http://www.pledgie.com/campaigns/16594'><img alt='Click here to lend your support to: Elefant CMS and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16594.png?skin_name=chrome' border='0' /></a>
 
-## What's Missing
+## Built for designers
 
-This is a simple framework, but it is very capable and provides everything
-you need in a core MVC framework, including the core CMS features needed
-to get a working website up in minutes. There are lots of things I tried to leave
-out to keep things simple, and some things that I'm sure will appear down
-the road. If something you need is missing and you feel it might fit as
-part of the core framework, feel free to contribute!
+**Compiled, ultra-fast templates**
 
-Elefant apps are self-contained, so you can also make reusable apps and share
-them with others as well.
+Elefant compiles your templates into secure PHP code, so rendering is as fast as possible.
 
-For ideas on missing pieces and the future of Elefant,
-see the [Future page on the wiki](https://github.com/jbroadway/elefant/wiki/Future).
+**Dead simple, concise template tags**
 
-## What's Here
+[Familiar syntax](http://www.elefantcms.com/wiki/Templates) to other template languages, with some added conveniences for dynamic embeds and internationalization.
 
-* Really simple URL routing w/ friendly URLs
-* Secure database abstraction/modeling (based on PDO)
-* Compiled templates with output filtering *on* by default
-* Memcache integration
-* Flexible input validation (server-side and in-browser)
-* Simple form handling
-* Customizable user authentication
-* Internationalization/localization
-* CLI support for background tasks
+**Clean, easy to use site editor for your users**
+
+Elefant comes out of the box with a [full-featured CMS](http://www.elefantcms.com/wiki/The-page-editor) for your users. You can even [white label it](http://www.elefantcms.com/wiki/White-labelling-the-CMS).
+
+**Syntax highlighted template and CSS editor**
+
+Sophisticated [in-browser editing](http://www.elefantcms.com/wiki/Setting-up-your-custom-designs) with highlights and references at your finger tips.
+
+**Live preview while editing templates and CSS**
+
+Preview in real time as you make changes. Or if you prefer, edit files directly with your editor of choice.
+
+**Integrates with 960 grid system and jQuery**
+
+Or any other CSS grid system, giving you complete control over your designs.
+
+## Built for developers
+
+**Quickly built custom apps**
+
+With all the tools you need, and a very low learning curve, Elefant gets you writing code quickly.
+
+**Extensively documented**
+
+Including full [API reference](http://www.elefantcms.com/wiki/API-reference), [cheat sheets](http://www.elefantcms.com/wiki/Cheat-sheet), [tutorials, and much more](https://github.com/jbroadway/elefant/wiki/Developers).
+
+**Strong security by default**
+
+[Flexible input validation](http://www.elefantcms.com/wiki/Forms-and-input-validation) and automatic prevention of XSS, SQL injection, CSRF, and other types of attacks.
+
+**Very fast and low memory**
+
+Elefant uses [less memory per request](http://www.elefantcms.com/wiki/Performance) than any of the major frameworks, so you can serve more visitors with the same resources.
+
+**Good debugging tools**
+
+Debug mode prints full traces with highlighted source code and variable state to help you fix bugs faster.
+
+**Minimalist MVC/Model2 architecture**
+
+Elefant takes a [unique but proven approach](http://www.elefantcms.com/wiki/Elefant-architecture) that helps minimize boilerplate without sacrificing code organization as your project grows.
+
+**Shared apps to save you time**
+
+From blogs to user management, events to search, Elefant saves you time not reinventing the wheel with [high quality shared apps](http://www.elefantcms.com/shared-apps).
+
+**Thoroughly unit-tested**
+
+Elefant's core framework is covered by [extensive unit tests](https://github.com/jbroadway/elefant/tree/master/tests), ensuring a stable base to build on.
+
+**Internationalization**
+
+Elefant apps are automatically [i18n aware](http://www.elefantcms.com/wiki/Internationalization), with built-in multilingual capabilities and locale awareness.
+
+## More developer goodness
+
+Elefant builds on over 12 years of PHP experience, and aims to simplify rapid PHP development again.
+As such, Elefant takes into consideration all the little details to help you work faster and better:
+
+* Really simple, [automatic URL routing](http://www.elefantcms.com/wiki/Page-routing-and-handler-basics) w/ friendly URLs
+* [Minimal but secure and fast ORM](http://www.elefantcms.com/wiki/Database-API-and-models) (based on PDO)
+* Output filtering is turned *on by default*
+* Tight [memcache integration](http://www.elefantcms.com/wiki/Memcache)
+* Matching server- and client-side input validation
+* Dead-simple [form handling](http://www.elefantcms.com/wiki/Forms-and-input-validation)
+* Customizable [user authentication](http://www.elefantcms.com/wiki/Custom-user-authentication)
+* [CLI tool](http://www.elefantcms.com/wiki/Command-line-usage) for common tasks
 * As little scaffolding as possible
-* Reusable apps for common CMS tasks (admin, users, blog, filemanager, search)
-* [High quality developer docs](https://github.com/jbroadway/elefant/wiki)
-* Near 100% unit test coverage
 * Gzip output compression
-* [Speed](https://github.com/jbroadway/elefant/wiki/Performance). Less cruft, faster pages.
+* [Assetic](http://github.com/jbroadway/assetic) integration
 
-Request routing is where Elefant really stands out. A handler is simply a
-PHP script and mapping is automatic. You can write your handlers just like
-you would any other PHP script, starting at the top and using echo when you
-want to output something. At the end, they're handled properly and inserted
-into the right template for you. Just like that.
+## Try it out
 
-## Why?
+[Download the latest release](http://www.elefantcms.com/download) or try the [online demo](http://www.elefantcms.com/demo).
 
-Because after all these years, and after writing a lot of code in a lot of
-different languages, I still don't mind PHP. It's a good tool for getting
-certain jobs done quickly, and for me this helps make it a little easier/less
-painful. Hopefully it helps others do the same.
-
-I also wanted a clean start, not being tied to supporting older versions of
-PHP and a ton of legacy code that users depended on. This means I can choose
-more elegant and efficient ways of solving things, and learn from past
-mistakes/luck and do it even better this time.
-
-## Getting Started
-
-1. Download the latest from GitHub: http://github.com/jbroadway/elefant
-
-2. Unzip into a site root (no sub-folders, use sub-domains instead).
-
-3. Run the following command or change the permissions on folders
-`conf`, `cache`, `css`, `files`, `install`, and `layouts` recursively
-to `0777` via FTP.
-
-    `chmod -R 777 conf cache css files install layouts`
-
-4. Go to `/install/` on your site to run the web-based installer. This will
-guide you through the rest of the process.
-
-### Optional command-line install method
-
-If you're looking to automate installations, a web installer isn't the way
-to go. Here are the steps to run the command line installer instead of step 4
-above:
-
-1. Edit `conf/config.php` and add your database connection info and default
-site info.
-
-2. Run the command `php conf/createdb.php` to create the default database tables
-for the built-in apps. This will output an initial username and password for
-you to use in the admin area.
-
-## Next Steps
-
-1. Now go to your site and see that it worked. You should see a basic website and
-welcome page if all went well.
-
-2. Go to `/admin` and you can log in with the username and password you chose in
-the web installer, or that was generated by the command line installer.
-
-3. Edit `layouts/default.html` and add your site stylings.
-
-4. Create an app using the command `php conf/make.php myapp` and write some
-models/handlers/views. Lather, rinse, repeat.
-
-The GitHub page is the place to go for issues and info. You can also post questions
-and other discussion about Elefant on our [discussion forum](http://www.elefantcms.com/forum/).
-
-## Folder Layout
-
-* .htaccess - rewrites and permissions for Apache
-* apps - your apps go here
-* cache - templates rendered to PHP
-* conf - global configurations
-* css - global CSS files
-* files - files uploaded through the admin area
-* index.php - the front-end controller, or request router
-* install - the web-based installer
-* js - global Javascript files
-* layouts - design layouts
-* lib - main libraries
-* LICENSE - the MIT license info
-* nginx.conf - rewrites and permissions for Nginx
-* README.md - this file
-* tests - unit tests
-
-## Example Code
-
-### 1. A basic handler: hello.php
-
-	<?php echo 'Hello ' . $_REQUEST['name']; ?>
-
-Save this to `apps/hello/handlers/index.php` and you can access it via `/hello` in your
-browser.
-
-### 2. Using URL components in handlers:
-
-	<?php echo 'Hello ' . $this->params[0]; ?>
-
-Now try calling that one via `/hello/world`. Extra values that didn't match the
-handler is part of the `$controller->params` array for you.
-
-### 3. Specifying an alternate template:
-
-	<?php
-	
-	$page->template = 'alternate';
-	
-	echo 'Hello world';
-	
-	?>
-
-I should mention, `$this` in a handler refers to the controller, although not
-necessarily the global one (since handlers can call each other as well).
-
-### 4. Defining extra variables for your template:
-
-	<?php
-	
-	$page->title = 'My Page';
-	$page->sidebar = 'Some sidebar content.';
-	
-	echo 'Regular output is the body content.';
-	
-	?>
-
-Now in your template you can use `{{ title }}` and `{{ sidebar }}` just like
-`{{ body }}` outputs the regular output.
-
-### 5. From one handler to another:
-
-	<?php
-	
-	$page->sidebar = $this->run ('myapp/sidebar');
-	
-	?>
-
-Or from inside a template:
-
-	<?php echo $controller->run ('myapp/sidebar'); ?>
-
-## Code Conventions
-
-I've chosen the following naming conventions for the core libraries:
-
-* Classes start with capitals and use camel case.
-* Methods and functions use underscores (like Ruby :)
-
-I also use tabs instead of spaces, trailing braces instead of giving them
-their own lines, and put a space before open braces and between operators,
-for example:
-
-	function foo_bar ($foo = false) {
-		if (! $foo) {
-			// etc.
-		}
-	}
-
-Other than that, for documentation I use JavaDoc-style commenting and for
-inline comments I use the double-slash.
+* [Installation instructions](http://www.elefantcms.com/wiki/Getting-started)
+* [Installing on PHP Fog](http://www.elefantcms.com/wiki/Installing-Elefant-on-PHP-Fog)
+* [Installing on DotCloud](http://www.elefantcms.com/wiki/Installing-Elefant-on-DotCloud)
+* [Requirements and compatible hosts](http://www.elefantcms.com/wiki/Requirements)
+* [Support forum](http://www.elefantcms.com/forum/) and [support chat group](https://convore.com/elefantcms/)
 
 ## FAQ
 
-Q. Do you know you spelt Elephant wrong?
+**Q. Do you know you spelt Elephant wrong?**
 
 A. This was my attempt at being hip and cool. No good?
+
+**Q. Isn't Elefant a bit of an oxymoron for a slim framework?**
+
+A. Why, yes. Yes it is.

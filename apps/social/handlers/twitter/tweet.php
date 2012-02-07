@@ -1,7 +1,12 @@
 <?php
 
-if (! isset ($controller->called['social/twitter/init'])) {
-	echo $controller->run ('social/twitter/init');
+/**
+ * Embeds a twitter Tweet This button into the current page. Used by
+ * the WYSIWYG editor's dynamic objects menu.
+ */
+
+if (! isset (self::$called['social/twitter/init'])) {
+	echo $this->run ('social/twitter/init');
 }
 
 if (! isset ($data['via']) || empty ($data['via'])) {

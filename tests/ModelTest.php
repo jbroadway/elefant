@@ -1,8 +1,6 @@
 <?php
 
-require_once ('lib/Database.php');
-require_once ('lib/Model.php');
-require_once ('lib/Form.php');
+require_once ('lib/Autoloader.php');
 
 class Qwerty extends Model {
 	var $key = 'foo';
@@ -16,18 +14,13 @@ class Bar extends Model {
 }
 
 class ModelTest extends PHPUnit_Framework_TestCase {
-	protected $backupGlobalsBlacklist = array ('db', 'db_err', 'db_sql', 'db_args');
 	protected static $q;
 
 	static function setUpBeforeClass () {
-		db_open (array ('driver' => 'sqlite', 'file' => ':memory:'));
+		Database::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		db_execute ('create table qwerty ( foo char(12), bar char(12) )');
 
 		self::$q = new Qwerty ();
-	}
-
-	static function tearDownAfterClass () {
-		unset ($GLOBALS['db']);
 	}
 
 	function test_construct () {

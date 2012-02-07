@@ -1,12 +1,11 @@
 <?php
 
-require_once ('lib/Database.php');
+require_once ('lib/Autoloader.php');
 
 class DatabaseTest extends PHPUnit_Framework_TestCase {
-	protected $backupGlobalsBlacklist = array ('db', 'db_err', 'db_sql', 'db_args');
-
 	function setUp () {
 		$this->bad_conf = array (
+			'master' => true,
 			'driver' => 'fake_driver',
 			'host' => '127.0.0.1',
 			'name' => 'fake_db',
@@ -14,27 +13,38 @@ class DatabaseTest extends PHPUnit_Framework_TestCase {
 			'pass' => 'fake'
 		);
 		$this->conf = array (
+			'master' => true,
+			'driver' => 'sqlite',
+			'file' => ':memory:'
+		);
+		$this->conf2 = array (
 			'driver' => 'sqlite',
 			'file' => ':memory:'
 		);
 	}
 
-	static function tearDownAfterClass () {
-		unset ($GLOBALS['db']);
-	}
-
 	function test_open () {
-		$this->assertFalse (db_open ($this->bad_conf));
+		// test a bad connection
+		$this->assertFalse (Database::open ($this->bad_conf));
 		$this->assertEquals ('could not find driver', db_error ());
-		$this->assertTrue (db_open ($this->conf));
+		$this->assertEquals (0, Database::count ());
+
+		// test a master connection
+		$this->assertTrue (Database::open ($this->conf));
+		$this->assertEquals (1, Database::count ());
+
+		// test a second connection
+		$this->assertTrue (Database::open ($this->conf2));
+		$this->assertEquals (2, Database::count ());
+		unset (Database::$connections['slave_1']);
 	}
 
 	function test_args () {
 		$cmp = array ('one', 'two');
 		$obj = (object) $cmp;
-		$this->assertEquals (db_args (array ('one', 'two')), $cmp);
-		$this->assertEquals (db_args (array (array ('one', 'two'))), $cmp);
-		$this->assertEquals (db_args (array ($obj)), $cmp);
+		$this->assertEquals (Database::args (array ('one', 'two')), $cmp);
+		$this->assertEquals (Database::args (array (array ('one', 'two'))), $cmp);
+		$this->assertEquals (Database::args (array ($obj)), $cmp);
 	}
 
 	function test_execute () {

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Displays a single section of the navigation as a
+ * bulleted list, with `class="current"` added to
+ * the current page's `<li>` element for custom styling.
+ */
+
 $n = new Navigation;
 $section = $n->node ($data['section']);
 

@@ -3,18 +3,17 @@
 ; Database settings go here. Driver must be a valid PDO driver.
 
 {% if driver == 'sqlite' %}
-driver = sqlite
-file = "conf/site.db"
+master[driver] = sqlite
+master[file] = "conf/site.db"
 {% else %}
-driver = {{ driver }}
+master[driver] = {{ driver }}
 
-host = "{{ host }}:{{ port }}"
+master[host] = "{{ host }}:{{ port }}"
+master[name] = {{ name }}
 
-name = {{ name }}
+master[user] = {{ user }}
 
-user = {{ user }}
-
-pass = "{{ pass }}"
+master[pass] = "{{ pass }}"
 {% end %}
 
-[Hooks]
+[Mongo]

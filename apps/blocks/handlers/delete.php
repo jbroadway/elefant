@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Block delete handler.
+ */
+
 $page->layout = 'admin';
 
 if (! User::require_admin ()) {
@@ -16,8 +20,8 @@ if ($lock->exists ()) {
 $b = new Block ($_GET['id']);
 
 if (! $b->remove ()) {
-	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $b->error;
+	$page->title = i18n_get ('An Error Occurred');
+	echo i18n_get ('Error Message') . ': ' . $b->error;
 	return;
 }
 

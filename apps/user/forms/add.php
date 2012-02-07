@@ -12,7 +12,7 @@ email = 1
 
 length = "6+"
 
-[verify]
+[verify_pass]
 
 matches = "$_POST['password']"
 

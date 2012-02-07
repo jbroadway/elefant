@@ -1,6 +1,11 @@
 <?php
 
-$page->template = false;
+/**
+ * Provides the underlying API for the drag and drop capabilities
+ * in the navigation editor.
+ */
+
+$page->layout = false;
 header ('Content-Type: application/json');
 
 if (! User::require_admin ()) {
@@ -21,6 +26,9 @@ switch ($this->params[0]) {
 	case 'add':
 		$id = $_POST['page'];
 		$parent = $_POST['parent'];
+		if ($parent === 'false') {
+			$parent = false;
+		}
 		if ($nav->add ($id, $parent) && $nav->save ()) {
 			$out = array (
 				'msg' => sprintf ('Page %s added to tree under %s.', $id, $parent),
@@ -46,9 +54,28 @@ switch ($this->params[0]) {
 			$error = $nav->error;
 		}
 		break;
+	case 'remove':
+		$id = $_POST['page'];
+		if ($nav->remove ($id) && $nav->save ()) {
+			require_once ('apps/navigation/lib/Functions.php');
+			$ids = $nav->get_all_ids ();
+			$out = array (
+				'msg' => sprintf ('Page %s removed.', $id),
+				'page' => $id,
+				'other' => navigation_get_other_pages ($ids)
+			);
+		} else {
+			$error = $nav->error;
+		}
+		break;
 	default:
 		$error = 'Unknown method';
 		break;
+}
+
+if (! $error) {
+	require_once ('apps/navigation/lib/Functions.php');
+	navigation_clear_cache ();
 }
 
 $res = new StdClass;

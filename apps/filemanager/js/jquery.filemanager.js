@@ -16,8 +16,8 @@
 					if (name) {
 						$.get (options.root + cmd + '/' + options.file + '/' + name, function (res) {
 							if (res.success) {
-								$.add_notification (res.msg);
-								window.location = '/filemanager?path=' + res.data;
+								$.add_notification (res.data.msg);
+								window.location = '/filemanager?path=' + res.data.data;
 							} else {
 								$.add_notification (res.error);
 							}
@@ -29,7 +29,7 @@
 					if (name) {
 						$.get (options.root + cmd + '/' + options.file + '?rename=' + name, function (res) {
 							if (res.success) {
-								$.add_notification (res.msg);
+								$.add_notification (res.data.msg);
 								$.filemanager ('ls', {file: filemanager_path});
 							} else {
 								$.add_notification (res.error);
@@ -41,7 +41,7 @@
 					if (confirm ('Are you sure you want to delete this file?')) {
 						$.get (options.root + cmd + '/' + options.file, function (res) {
 							if (res.success) {
-								$.add_notification (res.msg);
+								$.add_notification (res.data.msg);
 								$.filemanager ('ls', {file: filemanager_path});
 							} else {
 								$.add_notification (res.error);

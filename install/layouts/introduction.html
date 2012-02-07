@@ -1,42 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Elefant Installer</title>
+	<title>{"Elefant Installer"}</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 <body>
 <div id="wrapper">
-	<h1><span>Elefant</span> Installer</h1>
+	<h1><span>{"Elefant"}</span> {"Installer"}</h1>
 	
 	<div id="steps">
 		<ul>
-			<li class="active">Introduction</li>
-			<li>License</li>
-			<li>Requirements</li>
-			<li>Database</li>
-			<li>Settings</li>
-			<li>Finished</li>
+			<li class="active">{"Introduction"}</li>
+			<li>{"License"}</li>
+			<li>{"Requirements"}</li>
+			<li>{"Database"}</li>
+			<li>{"Settings"}</li>
+			<li>{"Finished"}</li>
 		</ul>
 	</div>
 
 	<div id="body"><div id="content">
+		
+		{% if subdir %}
 
-		<h3>Welcome to the Elefant CMS installer.</h3>
+		<h3 class="notice">{"It looks like you're trying to install Elefant into a sub-folder."}</h3>
+
+		<p>{"Elefant's CMS was designed to run a complete website, and needs to be installed in the root of a site to function correctly. Please move Elefant to the root folder to continue, or use a sub-domain of your site to install it under."}</p>
 		
-		<p>This installer will guide you
-		through the process of installing and configuring your new website.</p>
+		<p><a href="https://github.com/jbroadway/elefant/wiki/Setting-up-a-Virtualhost-for-your-site"
+		target="_blank">{"Click here for instructions on configuring virtual hosts for development."}</a></p>
+
+		<p>({"Check your host for instructions on setting up sub-domains in production."})</p>
+
+		{% else %}
+
+		<h3>{"Welcome to the Elefant CMS installer."}</h3>
 		
-		<p>If you have any trouble during the install process, please visit
-		the Elefant project at the following link to report it, and we'll do
-		our best to help:</p>
+		<p>{"This installer will guide you through the process of installing and configuring your new website."}</p>
 		
-		<p><a href="http://github.com/jbroadway/elefant">http://github.com/jbroadway/elefant</a></p>
+		<p>{"If you have any trouble during the install process, please visit the Elefant project at the following link to report it, and we'll do our best to help."}</p>
 		
-		<p>Click "Next" to continue whenever you're ready. Thanks for using
-		Elefant!</p>
+		<p><a href="http://www.elefantcms.com/">http://www.elefantcms.com/</a></p>
+		
+		<p>{"Click 'Next' to continue whenever you're ready. Thanks for using Elefant!"}</p>
+
+		{% end %}
 
 	</div></div>
-	<a class="next" href="/install/?step=license">Next: License</a>
+	{% if subdir == false %}
+	<a class="next" href="/install/?step=license">{"Next"}: {"License"}</a>
+	{% end %}
 </div>
+
+<br clear="both" />
+<iframe src="http://www.elefantcms.com/counter?s={{ $_SERVER.HTTP_HOST|urlencode }}" style="height: 0px; width: 0px; background: #eee; border: 0px" border="0" frameborder="0"></iframe>
 </body>
 </html>

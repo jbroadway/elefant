@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Displays the latest blog posts as a bulleted list of links.
+ */
+
 if (! $this->internal) {
 	$page->layout = $appconf['Blog']['layout'];
 	$page->title = i18n_get ('Latest Posts');

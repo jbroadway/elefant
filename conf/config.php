@@ -48,14 +48,24 @@ debug = Off
 ; (e.g., fr.example.com), http (uses Accept-Language header),
 ; or cookie.
 
-negotiation_method = url
+negotiation_method = http
 
 [Database]
 
 ; Database settings go here. Driver must be a valid PDO driver.
 
-driver = sqlite
-file = "conf/site.db"
+master[driver] = sqlite
+master[file] = "conf/site.db"
+
+[Mongo]
+
+; Settings to connect to MongoDB. Must have PHP Mongo extension
+; installed via `pecl install mongo`.
+
+;host = localhost:27017
+;user = username
+;pass = password
+;set_name = my_replica_set
 
 [Hooks]
 

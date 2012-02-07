@@ -1,6 +1,15 @@
 <?php
 
-$page->template = false;
+/**
+ * Provides RESTful CRUD API access to the objects specified in
+ * `apps/api/conf/config.php`. Requests all require providing
+ * an API token and secret key that matches those stored in
+ * the `api` database table. Uses HTTP Basic authentication
+ * to request the credentials. See `apps/api/models/Api.php`
+ * for info on generating access tokens.
+ */
+
+$page->layout = false;
 header ('Content-Type: application/json');
 
 if (! Api::require_auth ()) {

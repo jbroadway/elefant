@@ -1,7 +1,11 @@
 <?php
 
+/**
+ * Show version history of an object, with the ability
+ * to compare to the current version.
+ */
+
 $page->layout = 'admin';
-$page->template = '';
 
 if (! User::require_admin ()) {
 	$this->redirect ('/admin');
@@ -12,11 +16,17 @@ $_GET['offset'] = (isset ($_GET['offset'])) ? $_GET['offset'] : 0;
 $_GET['type'] = (isset ($_GET['type'])) ? $_GET['type'] : 'Webpage';
 
 $classes = Versions::get_classes ();
+$deleted = false;
 
-if (isset ($_GET['type']) && preg_match ('/^[A-Z][a-z0-9_]+$/', $_GET['type'])) {
+if (isset ($_GET['type'])) {
 	$class = $_GET['type'];
 	if (isset ($_GET['id']) && ! empty ($_GET['id'])) {
 		$obj = new $class ($_GET['id']);
+		if ($obj->error) {
+			// deleted item
+			$obj->{$obj->key} = $_GET['id'];
+			$deleted = true;
+		}
 	} else {
 		$obj = $class;
 	}
@@ -49,7 +59,8 @@ echo $tpl->render ('admin/versions', array (
 	'offset' => $_GET['offset'],
 	'more' => ($count > $_GET['offset'] + $limit) ? true : false,
 	'prev' => $_GET['offset'] - $limit,
-	'next' => $_GET['offset'] + $limit
+	'next' => $_GET['offset'] + $limit,
+	'deleted' => $deleted
 ));
 
 ?>

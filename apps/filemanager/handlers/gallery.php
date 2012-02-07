@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Photo gallery embed handler. Creates a gallery of the images
+ * from the specified folder. Used by the WYSIWYG editor's dynamic
+ * objects menu, or manually via:
+ *
+ *     {! filemanager/gallery?path=foldername !}
+ *
+ * The `foldername` is a folder of images inside `/files/`.
+ */
+
 require_once ('apps/filemanager/lib/Functions.php');
 
 if (isset ($data['path'])) {
@@ -18,7 +28,7 @@ if (! @is_dir ('files/' . $path)) {
 	return;
 }
 
-$files = glob ('files/' . $path . '/*.{jpg,jpeg,gif,png}', GLOB_BRACE);
+$files = glob ('files/' . $path . '/*.{jpg,jpeg,gif,png,JPG,JPEG,GIF,PNG}', GLOB_BRACE);
 
 echo $tpl->render (
 	'filemanager/gallery',
