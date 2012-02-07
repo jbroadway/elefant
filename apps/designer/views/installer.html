@@ -1,4 +1,4 @@
-<form method="POST" id="{{ _form }}" enctype="multipart/form-data">
+<form method="POST" id="{{ _form }}" enctype="multipart/form-data" onsubmit="$('#submit').attr ('disabled', 'disabled')">
 <input type="hidden" name="other" />
 
 <p><strong><em>{"Important: Only install apps or themes from trusted sources."}</em></strong></p>
@@ -25,6 +25,9 @@
 <p class="notice" id="zip-install-notice">{"Zip file was invalid or could not be installed."}</p>
 {% end %}
 
-<p><input type="submit" value="{"Install"}" /></p>
+<p>
+	<input type="submit" id="submit" value="{"Install"}" onclick="$('#please-wait').show ()" />
+	<span class="notice" id="please-wait">{"Please wait, this may take a minute..."}</span>
+</p>
 
 </form>

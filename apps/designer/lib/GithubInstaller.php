@@ -42,7 +42,7 @@ class GithubInstaller extends Installer {
 			return false;
 		}
 
-		// Build files from tree
+		// Create new install folder
 		if ($conf->type === 'app') {
 			$dest = 'apps/' . $conf->folder;
 			if (! mkdir ($dest)) {
@@ -57,16 +57,27 @@ class GithubInstaller extends Installer {
 			}
 		}
 
-		foreach ($tree as $item) {
+		// This may take some time for larger apps
+		set_time_limit (120);
+
+		// Build files from tree
+		foreach ($tree as $n => $item) {
 			if ($item->type === 'tree') {
 				mkdir ($dest . '/' . $item->path);
 			} else {
 				$data = $github->get ($item);
-				if (! $data) {
-					self::$error = i18n_get ('Unable to fetch data from Github.');
+				if ($data === false) {
+					self::$error = i18n_get ('Unable to fetch file') . ' ' . $item->path;
+					rmdir_recursive ($dest);
 					return false;
 				}
 				file_put_contents ($dest . '/' . $item->path, $data);
+
+				// Create our own rate-limiting to be nice with Github
+				$data = null;
+				if ($n % 20 === 0) {
+					sleep (1);
+				}
 			}
 		}
 		chmod_recursive ($dest, 0777);
