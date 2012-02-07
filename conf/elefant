@@ -258,6 +258,8 @@ if (count ($argv) > 1) {
 				'apps/*/handlers/*.php',
 				'apps/*/handlers/*/*.php',
 				'apps/*/handlers/*/*/*.php',
+				'apps/*/lib/*.php',
+				'apps/*/models/*.php',
 				'install/*.php',
 				'install/layouts/*.html'
 			);
