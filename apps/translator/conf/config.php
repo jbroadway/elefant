@@ -3,6 +3,6 @@
 [Admin]
 
 handler = translator/index
-name = Translator
+name = Languages
 
 ; */ ?>
