@@ -59,12 +59,12 @@ $o->num = (preg_match ('|' . $url . '|', $_SERVER['REQUEST_URI'], $matches))
 	? (int) $matches[1]
 	: 1;
 
-$o->offset = $o->num * $o->limit; // item offset
+$o->offset = ($o->num - 1) * $o->limit; // item offset
 $o->last = $o->offset + $o->count; // the last item on this screen
 $o->more = ($o->total > $o->last) ? true : false; // is there more
 $o->next = $o->num + 1; // the num for the next screen
 $o->prev = $o->num - 1; // the num for the previous screen
-$o->last_screen = $o->total % $o->limit; // the num of the last screen
+$o->last_screen = ceil ($o->total / $o->limit); // the num of the last screen
 
 $o->next_link = sprintf ($o->url, $o->next);
 $o->prev_link = sprintf ($o->url, $o->prev);
