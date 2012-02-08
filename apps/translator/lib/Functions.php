@@ -23,7 +23,7 @@ function translator_sort_languages ($a, $b) {
 }
 
 function translator_ini_write ($data) {
-	$out = "; <?php /*\n\n";
+	$out = "; <?php /*\n";
 
 	$write_value = function ($value) {
 		if (is_bool ($value)) {
@@ -42,17 +42,16 @@ function translator_ini_write ($data) {
 
 	foreach ($data as $key => $value) {
 		if (is_array ($value)) {
-			$out .= "[$key]\n\n";
+			$out .= "\n[$key]\n\n";
 			foreach ($value as $k => $v) {
-				$out .= str_pad ($k, 24) . '= ' . $write_value ($v) . "\n\n";
+				$out .= str_pad ($k, 24) . '= ' . $write_value ($v) . "\n";
 			}
 		} else {
-			$out .= str_pad ($key, 24) . '= ' . $write_value ($value) . "\n\n";
+			$out .= str_pad ($key, 24) . '= ' . $write_value ($value) . "\n";
 		}
 	}
 
-	return $out . "; */ ?>";
+	return $out . "\n; */ ?>";
 }
 
 ?>
-		
