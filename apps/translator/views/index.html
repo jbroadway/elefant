@@ -7,15 +7,17 @@
 <p>
 <table width="100%">
 	<tr>
-		<th width="40%">{"Language"}</th>
-		<th width="15%">{"Code"}</th>
-		<th width="15%">{"Charset"}</th>
+		<th width="34%">{"Language"}</th>
+		<th width="12%">{"Code"}</th>
+		<th width="12%">{"Fallback"}</th>
+		<th width="12%">{"Charset"}</th>
 		<th width="30%">&nbsp;</th>
 	</tr>
 {% foreach languages %}
 	<tr>
 		<td>{{ loop_value[name] }}</a></td>
 		<td>{{ loop_index }}</td>
+		<td>{% if loop_value[fallback] %}{{ loop_value[fallback] }}{% else %}{"None"}{% end %}</td>
 		<td>{{ loop_value[charset] }}</td>
 		<td style="text-align: right">
 			{% if default == $data->loop_index %}
