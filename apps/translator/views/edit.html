@@ -1,6 +1,70 @@
+<div style="float: right">
+{! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
+</div>
+
 <p><a href="/translator/index">{"Done editing"}</a></p>
 
 <p>
+<table width="100%">
+	<tr>
+		<th width="48%">{"Original text"}</th>
+		<th width="52%">{{ name }}</th>
+	</tr>
+{% foreach items %}
+	<tr id="tr-{{ loop_index|translator_field_id }}">
+		<td class="original" title="{"Source"}: {{ loop_value[src] }}">{{ loop_index }}</td>
+		<td class="translate">
+			<textarea
+				rows="1" style="float:left; width: 85%; height: 100%"
+				data-orig="{{ loop_index|quotes }}"
+				id="{{ loop_index|translator_field_id }}"
+				onblur="$.save_element (this)"
+				{% if empty ($data->loop_value[trans]) %} class="empty"{% end %}
+			>{{ loop_value[trans]|quotes }}</textarea>
+			<span id="saving-{{ loop_index|translator_field_id }}" class="notice" style="float: left; margin-left: 7px">{"Saving..."}</span>
+		</td>
+	</tr>
+{% end %}
+</table>
 </p>
 
 {! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
+
+<script>
+$(function () {
+	$('textarea')[0].focus ();
+	$('textarea').keyup (function (evt) {
+		if ($(this).val ().length > 0) {
+			$(this).removeClass ('empty');
+		} else {
+			$(this).addClass ('empty');
+		}
+	});
+});
+
+$.save_element = function (el) {
+	var id = $(el).attr ('id'),
+		orig = $(el).data ('orig'),
+		val = $(el).val ();
+
+	if (val.length === 0) {
+		$(el).addClass ('empty');
+		return;
+	}
+
+	$(el).removeClass ('empty');
+	$('#saving-' + id).html ('{"Saving..."}').show ();
+	
+	$.post ('/translator/api/save', {orig: orig, value: val}, function (res) {
+		// Todo: error checking
+
+		$('#saving-' + id).html ('{"Saved!"}').delay (1000).fadeOut ();
+	});
+};
+</script>
+
+<style>
+.empty {
+	background: #ffd;
+}
+</style>

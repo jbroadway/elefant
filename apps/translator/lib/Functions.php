@@ -22,6 +22,10 @@ function translator_sort_languages ($a, $b) {
 	return ($a['name'] < $b['name']) ? -1 : 1;
 }
 
+function translator_field_id ($text) {
+	return preg_replace ('/[^a-z0-9_-]+/', '-', strtolower ($text));
+}
+
 function translator_ini_write ($data) {
 	$out = "; <?php /*\n";
 

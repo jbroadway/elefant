@@ -47,7 +47,10 @@ foreach ($sources as $source) {
 			preg_match_all ('/\{[\'"] ?(.*?) ?[\'"]\}/', $data, $matches);
 			foreach ($matches[1] as $str) {
 				if (! isset ($list[$str])) {
-					$list[$str] = '';
+					$list[$str] = array (
+						'orig' => $str,
+						'src' => $file
+					);
 				}
 			}
 		} else {
@@ -55,7 +58,10 @@ foreach ($sources as $source) {
 			preg_match_all ('/i18n_getf? ?\([\'"](.*?)[\'"]\)/', $data, $matches);
 			foreach ($matches[1] as $str) {
 				if (! isset ($list[$str])) {
-					$list[$str] = '';
+					$list[$str] = array (
+						'orig' => $str,
+						'src' => $file
+					);
 				}
 			}
 		}
