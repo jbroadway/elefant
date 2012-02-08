@@ -55,7 +55,7 @@ $.save_element = function (el) {
 	$(el).removeClass ('empty');
 	$('#saving-' + id).html ('{"Saving..."}').show ();
 	
-	$.post ('/translator/api/save', {orig: orig, value: val}, function (res) {
+	$.post ('/translator/api/save', {lang: '{{ lang }}', orig: orig, value: val}, function (res) {
 		// Todo: error checking
 
 		$('#saving-' + id).html ('{"Saved!"}').delay (1000).fadeOut ();

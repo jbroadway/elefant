@@ -23,7 +23,7 @@ $all = unserialize (file_get_contents ('lang/_index.php'));
 $items = array_slice ($all, $offset, $limit);
 
 $tr = new Translator;
-$items = $tr->getTranslations ($lang, $items);
+$items = $tr->translations ($lang, $items);
 
 require_once ('apps/translator/lib/Functions.php');
 
@@ -33,7 +33,8 @@ echo $tpl->render ('translator/edit', array (
 	'items' => $items,
 	'count' => count ($items),
 	'url' => '/translator/edit/' . $lang . '/%d',
-	'name' => $info['name']
+	'name' => $info['name'],
+	'lang' => $lang
 ));
 
 ?>
