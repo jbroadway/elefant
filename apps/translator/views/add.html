@@ -1,0 +1,33 @@
+<form method="post" id="{{ _form }}">
+
+<p>{"Language"}:<br />
+<input type="text" size="30" name="name" value="{{ name|quotes }}" />
+<span class="notice" id="name-notice">{"Please enter the name of the language."}</span></p>
+
+<p>{"Language code"} (ex: `en`, `fr`, `es`):<br />
+<input type="text" size="15" name="code" value="{{ code|quotes }}" />
+<span class="notice" id="code-notice">{"Please enter the language code."}</span></p>
+
+<p>{"Locale"} ({"optional"}, ex: `us`, `ca`, 'gb`):<br />
+<input type="text" size="15" name="locale" value="{{ locale|quotes }}" /></p>
+
+<p>{"Character set"}:<br />
+<input type="text" size="15" name="charset" value="{{ charset|quotes }}" />
+<span class="notice" id="charset-notice">{"Please enter the character set."}</span></p>
+
+<p>{"Fallback"}:<br />
+<select name="fallback">
+	<option value="">{"None"}</option>
+{% foreach i18n.languages %}
+	<option value="{{ loop_index }}">{{ loop_value[name] }}</option>
+{% end %}
+</select>
+</p>
+
+<p>
+	<input type="submit" value="{"Add"}" />
+	&nbsp;
+	<a href="/translator/index" onclick="return confirm ('{"Are you sure you want to cancel?"}')">{"Cancel"}</a>
+</p>
+
+</form>
