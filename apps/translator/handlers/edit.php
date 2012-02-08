@@ -10,7 +10,8 @@ $page->layout = 'admin';
 
 global $i18n;
 
-list ($lang, $num) = $this->params;
+$lang = $this->params[0];
+$num = isset ($this->params[1]) ? $this->params[1] : 1;
 
 $info = $i18n->languages[$lang];
 
