@@ -1,0 +1,33 @@
+<form method="POST" id="{{ _form }}" enctype="multipart/form-data" onsubmit="$('#submit').attr ('disabled', 'disabled')">
+<input type="hidden" name="other" />
+
+<p><strong><em>{"Important: Only install apps or themes from trusted sources."}</em></strong></p>
+
+<p>{"Github link"} (ex: <tt>https://github.com/user/project.git</tt>):<br />
+<input type="text" size="40" name="github" value="{{ github|quotes }}" />
+<span class="notice" id="github-notice">{" The Github link appears to be invalid. "}</span></p>
+
+<p>- {"or"} -</p>
+
+<p>{"Zip file"}:<br />
+<input type="file" name="zipfile" />
+<span class="notice" id="zipfile-notice">{" Please upload a zip file. "}</span></p>
+
+<p class="notice" id="other-notice">{" Please enter a Github link or zip file. "}</p>
+
+{% if page.installer_error %}
+<p class="notice" id="github-install-notice">{"Github installation failed"}: {{ page.installer_error }}</p>
+
+<p class="notice" id="zip-install-notice">{"Zip file installation failed"}: {{ page.installer_error }}</p>
+{% else %}
+<p class="notice" id="github-install-notice">{"Github installation failed"}.</p>
+
+<p class="notice" id="zip-install-notice">{"Zip file was invalid or could not be installed."}</p>
+{% end %}
+
+<p>
+	<input type="submit" id="submit" value="{"Install"}" onclick="$('#please-wait').show ()" />
+	<span class="notice" id="please-wait">{"Please wait, this may take a minute..."}</span>
+</p>
+
+</form>
