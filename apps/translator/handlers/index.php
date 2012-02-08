@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * List of languages.
+ */
+
 $this->require_admin ();
 
 if (! file_exists ('lang/_index.php')) {

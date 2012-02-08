@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Edit the translation strings for a language. Shows 40 per page
+ * and includes highlighting missing strings, references with
+ * source file on hover, and auto-save.
+ */
+
 $this->require_admin ();
 
 if (! file_exists ('lang/_index.php')) {

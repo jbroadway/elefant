@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Build or rebuild the translation index from all the source files
+ * and templates on the site.
+ */
+
 $this->require_admin ();
 
 $page->layout = 'admin';
@@ -18,6 +23,7 @@ if (! isset ($this->params[0])) {
 
 // Build the index
 $sources = array (
+	'layouts/*.html',
 	'layouts/*/*.html',
 	'apps/*/views/*.html',
 	'apps/*/views/*/*.html',

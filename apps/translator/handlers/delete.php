@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Delete a language.
+ */
+
 $this->require_admin ();
 
 global $i18n;

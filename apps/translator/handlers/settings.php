@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Edit the settings for a language, including
+ *
+ * - name
+ * - code
+ * - locale
+ * - charset
+ * - fallback
+ */
+
 $this->require_admin ();
 
 $page->layout = 'admin';

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Add a new language to the list, including its name,
+ * code, locale, character set, and fallback.
+ */
+
 $this->require_admin ();
 
 $page->layout = 'admin';

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Checks if a language exists.
+ */
 function translator_lang_exists ($lang) {
 	global $i18n;
 	
@@ -15,6 +18,9 @@ function translator_lang_exists ($lang) {
 	return true;
 }
 
+/**
+ * Sorts languages by name.
+ */
 function translator_sort_languages ($a, $b) {
 	if ($a['name'] === $b['name']) {
 		return 0;
@@ -22,10 +28,17 @@ function translator_sort_languages ($a, $b) {
 	return ($a['name'] < $b['name']) ? -1 : 1;
 }
 
+/**
+ * Generates an id for the edit page HTML elements
+ * from a translatable string.
+ */
 function translator_field_id ($text) {
 	return preg_replace ('/[^a-z0-9_-]+/', '-', strtolower ($text));
 }
 
+/**
+ * Writes the INI output, for modifying the lang/languages.php file.
+ */
 function translator_ini_write ($data) {
 	$out = "; <?php /*\n";
 
