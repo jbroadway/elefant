@@ -232,55 +232,54 @@ class Form {
 	 * handler to catch.
 	 */
 	public function handle ($func) {
-		if (! $this->submit ()) {
-			if (! $this->view) {
-				// No view so we simply return false so the handler
-				// can take over rendering the form
-				return false;
+		if ($this->submit ()) {
+			// Form can be handled, capture output and return it
+			// If the function returns false, simply pass that
+			// to the handler with no output
+			ob_start ();
+			$res = $func ($this);
+			if ($res !== false) {
+				return ob_get_clean ();
 			}
-
-			// Render the view and return its output
-			global $page, $tpl;
-
-			// Take the initial form data from $this->data or a new StdClass
-			if ($this->data === false) {
-				$o = new StdClass;
-			} else {
-				$o = (object) $this->data;
-			}
-
-			// Determine the default values
-			foreach ($this->rules as $field => $rules) {
-				foreach ($rules as $key => $value) {
-					if ($key === 'default') {
-						$o->{$field} = $value;
-						break;
-					}
-				}
-			}
-
-			// Set some views to go to the template
-			$o = $this->merge_values ($o);
-			$o->_form = str_replace ('/', '-', $this->view) . '-form';
-			$o->_failed = $this->failed;
-			$o->_rules = $this->_rules;
-			$page->add_script ('/js/jquery.verify_values.js');
-			if ($this->js_validation) {
-				return $tpl->render ('admin/default-validation', $o) . $tpl->render ($this->view, $o);
-			}
-			return $tpl->render ($this->view, $o);
+			ob_end_clean ();
 		}
 
-		// Form can be handled, capture output and return it
-		// If the function returns false, simply pass that
-		// to the handler with no output
-		ob_start ();
-		$res = $func ($this);
-		if ($res === false) {
-			ob_end_clean ();
+		if (! $this->view) {
+			// No view so we simply return false so the handler
+			// can take over rendering the form
 			return false;
 		}
-		return ob_get_clean ();
+
+		// Render the view and return its output
+		global $page, $tpl;
+
+		// Take the initial form data from $this->data or a new StdClass
+		if ($this->data === false) {
+			$o = new StdClass;
+		} else {
+			$o = is_object ($this->data) ? $this->data : (object) $this->data;
+		}
+
+		// Determine the default values
+		foreach ($this->rules as $field => $rules) {
+			foreach ($rules as $key => $value) {
+				if ($key === 'default') {
+					$o->{$field} = $value;
+					break;
+				}
+			}
+		}
+
+		// Set some views to go to the template
+		$o = $this->merge_values ($o);
+		$o->_form = str_replace ('/', '-', $this->view) . '-form';
+		$o->_failed = $this->failed;
+		$o->_rules = $this->_rules;
+		$page->add_script ('/js/jquery.verify_values.js');
+		if ($this->js_validation) {
+			return $tpl->render ('admin/default-validation', $o) . $tpl->render ($this->view, $o);
+		}
+		return $tpl->render ($this->view, $o);
 	}
 
 	/**
@@ -439,6 +438,10 @@ class Form {
 	 *
 	 * - `skip_if_empty` - a special verifier that tells `verify_values()` to skip
 	 *                   validation on the field if it's been left blank.
+	 * - `file` - a special verifier that tells `verify_values()` to check if it's
+	 *          a valid uploaded file.
+	 * - `filetype` - a special verifier that tells `verify_values()` to check if the
+	 *              file name contains one of a list of comma-separated extensions.
 	 * - `regex` - calls `preg_match($validator, $value)`
 	 * - `type` - calls `is_$validator($value)`
 	 * - `callback` - calls `call_user_func($validator, $value)`
@@ -635,8 +638,29 @@ class Form {
 		$failed = array ();
 		foreach ($validations as $name => $validators) {
 			foreach ($validators as $type => $validator) {
-				if ($type == 'skip_if_empty') {
-					if (empty ($values[$name])) {
+				if ($type === 'file') {
+					if (! is_uploaded_file ($_FILES[$name]['tmp_name'])) {
+						$failed[] = $name;
+						break;
+					} else {
+						continue;
+					}
+				}
+				if ($type === 'filetype') {
+					$extensions = preg_split ('/, ?', trim (strtolower ($validator)));
+					if ($extensions === false) {
+						$extensions = array ($validator);
+					}
+					$extension = strtolower (pathinfo ($_FILES[$name]['name'], PATHINFO_EXTENSION));
+					if (! in_array ($extension, $extensions)) {
+						$failed[] = $name;
+						break;
+					} else {
+						continue;
+					}
+				}
+				if ($type === 'skip_if_empty') {
+					if (empty ($values[$name]) && (! isset ($_FILES[$name]) || $_FILES[$name]['error'] === 4)) {
 						break;
 					} else {
 						continue;
