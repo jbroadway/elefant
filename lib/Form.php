@@ -121,6 +121,11 @@ class Form {
 	public $view = false;
 
 	/**
+	 * A data object with the initial form values. Used by `handle()`.
+	 */
+	public $data = false;
+
+	/**
 	 * An optional copy of the controller object.
 	 */
 	public $controller = false;
@@ -237,7 +242,12 @@ class Form {
 			// Render the view and return its output
 			global $page, $tpl;
 
-			$o = new StdClass;
+			// Take the initial form data from $this->data or a new StdClass
+			if ($this->data === false) {
+				$o = new StdClass;
+			} else {
+				$o = (object) $this->data;
+			}
 
 			// Determine the default values
 			foreach ($this->rules as $field => $rules) {
