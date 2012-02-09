@@ -46,7 +46,8 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$orig = new StdClass;
 		$orig->foo = 'asdf';
 		$orig->bar = 'qwerty';
-		$res = array_shift (self::$q->query ()->fetch_orig ());
+		$test = self::$q->query ()->fetch_orig ();
+		$res = array_shift ($test);
 		$this->assertEquals ($res, $orig);
 	}
 
@@ -95,7 +96,8 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 	function test_remove () {
 		// should be the same since they're both
 		// Qwerty objects with the same database row
-		$res = array_shift (self::$q->query ()->where ('foo', 'asdf')->order ('foo asc')->fetch ());
+		$test = self::$q->query ()->where ('foo', 'asdf')->order ('foo asc')->fetch ();
+		$res = array_shift ($test);
 		$this->assertEquals ($res, self::$q);
 
 		// remove()

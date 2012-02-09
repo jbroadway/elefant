@@ -52,7 +52,7 @@ class LockTest extends PHPUnit_Framework_TestCase {
 		$info = db_single ('select * from lock');
 
 		// Back to original user id
-		$GLOBALS['user']->id = 1;
+		User::$user = (object) array ('id' => 1);
 
 		// Update the lock after one second delay
 		sleep (1);

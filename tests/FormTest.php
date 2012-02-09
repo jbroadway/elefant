@@ -80,7 +80,8 @@ class FormTest extends PHPUnit_Framework_TestCase {
 				'empty' => 1
 			)
 		);
-		$this->assertEquals (array ('asdf'), Form::verify_values ($values, $validations));
+		$f = new Form;
+		$this->assertEquals (array ('asdf'), $f->verify_values ($values, $validations));
 
 		$validations = array (
 			'foo' => array (
@@ -92,11 +93,11 @@ class FormTest extends PHPUnit_Framework_TestCase {
 			'foo' => '',
 			'asdf' => 'qwerty'
 		);
-		$this->assertEquals (array (), Form::verify_values ($values, $validations));
+		$this->assertEquals (array (), $f->verify_values ($values, $validations));
 		$values['foo'] = 'foobar';
-		$this->assertEquals (array ('foo'), Form::verify_values ($values, $validations));
+		$this->assertEquals (array ('foo'), $f->verify_values ($values, $validations));
 		$values['foo'] = 'asdf';
-		$this->assertEquals (array (), Form::verify_values ($values, $validations));
+		$this->assertEquals (array (), $f->verify_values ($values, $validations));
 	}
 
 	function test_merge_values () {

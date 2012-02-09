@@ -107,9 +107,12 @@ class Diff {
 		$incr = 0;
 
 		$top = array ();
-		$top[] = array_shift (array_reverse (array_keys ($i)));
-		$top[] = array_shift (array_reverse (array_keys ($r)));
-		$top[] = array_shift (array_reverse (array_keys ($a)));
+		$tmp_i = array_reverse (array_keys ($i));
+		$tmp_r = array_reverse (array_keys ($r));
+		$tmp_a = array_reverse (array_keys ($a));
+		$top[] = array_shift ($tmp_i);
+		$top[] = array_shift ($tmp_r);
+		$top[] = array_shift ($tmp_a);
 		rsort ($top);
 		$top = array_shift ($top);
 
