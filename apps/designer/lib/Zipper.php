@@ -14,6 +14,7 @@ class Zipper {
 	
 		if (! is_dir ($to)) {
 			mkdir ($to);
+			chmod ($to, 0777);
 		}
 	
 		if (class_exists ('ZipArchive')) {
@@ -30,7 +31,7 @@ class Zipper {
 			// use PclZip
 			$zip = new PclZip ($file);
 			if ($zip->extract (PCLZIP_OPT_PATH, $to) === 0) {
-				throw new RuntimeException ('Could not extract zip file [clZip].');
+				throw new RuntimeException ('Could not extract zip file [PclZip].');
 			}
 		}
 		return true;
