@@ -55,6 +55,25 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals ($i18n->language, 'en');
 	}
+
+	function test_cascade () {
+		global $i18n;
+
+		$_COOKIE['lang'] = 'fr_ca';
+		$i18n = new I18n ('lang', array ('negotiation_method' => 'cookie'));
+		$i18n->language = 'fr_ca';
+
+		$i18n->lang_hash['fr_ca'] = array (
+			'Home' => 'Maison'
+		);
+
+		$i18n->lang_hash['fr'] = array (
+			'Back' => 'Retournez'
+		);
+
+		$this->assertEquals ('Maison', i18n_get ('Home'));
+		$this->assertEquals ('Retournez', i18n_get ('Back'));
+	}
 }
 
 ?>

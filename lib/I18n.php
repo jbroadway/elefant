@@ -57,6 +57,11 @@ class I18n {
 	public $lang_hash = array ();
 
 	/**
+	 * The language fallback order.
+	 */
+	public $hash_order = array ();
+
+	/**
 	 * The charset of the current language, which can be used to tell
 	 * the browser, or any language-aware PHP functions, which to use.
 	 */
@@ -171,10 +176,12 @@ class I18n {
 			include_once ($this->directory . '/' . $this->language . '.php');
 		}
 
+		$this->hash_order = array ($this->language);
 		$curlang = $this->language;
 
 		while ($this->languages[$curlang]['fallback']) {
 			$curlang = $this->languages[$curlang]['fallback'];
+			$this->hash_order[] = $curlang;
 			include_once ($this->directory . '/' . $curlang . '.php');
 		}
 	}
@@ -190,7 +197,7 @@ class I18n {
 			return '';
 		}
 
-		foreach (array_keys ($this->lang_hash) as $lang) {
+		foreach ($this->hash_order as $lang) {
 			if (! empty ($this->lang_hash[$lang][$original])) {
 				return $this->lang_hash[$lang][$original];
 			}
@@ -302,9 +309,9 @@ class I18n {
 			foreach ($accepted as $lang => $cnlist) {
 				foreach ($cnlist as $cn) {
 					if (! empty ($cn)) {
-						$name = $lang . '-' . $cn;
+						$name = strtolower ($lang . '_' . $cn);
 					} else {
-						$name = $lang;
+						$name = strtolower ($lang);
 					}
 					if (isset ($this->languages[$name])) {
 						// Found
