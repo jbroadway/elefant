@@ -90,7 +90,7 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 		$recent = Versions::recent ();
 		$this->assertEquals (count ($recent), 1);
 
-		$restored = Versions::restore ($recent[0]);
+		$restored = self::$v->restore ($recent[0]);
 		$this->assertEquals ($restored->name, 'Test2');
 	}
 }

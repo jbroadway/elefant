@@ -47,7 +47,8 @@
  *   $history = Versions::history ($w, 1, 1);
  *
  *   // 3. restore the first result's object
- *   $w2 = Versions::restore ($history[0]);
+ *   $v = new Versions;
+ *   $w2 = $v->restore ($history[0]);
  *
  *   // 4. compare the two
  *   $modified_fields = Versions::diff ($w, $w2);
@@ -152,11 +153,13 @@ class Versions extends Model {
 	 * by the recent() and history() methods.
 	 */
 	public static function diff ($obj1, $obj2) {
-		if (get_class ($obj1) == 'stdClass') {
-			$obj1 = Versions::restore ($obj1);
+		if (get_class ($obj1) === 'stdClass') {
+			$v = new Versions;
+			$obj1 = $v->restore ($obj1);
 		}
-		if (get_class ($obj2) == 'stdClass') {
-			$obj2 = Versions::restore ($obj2);
+		if (get_class ($obj2) === 'stdClass') {
+			$v = new Versions;
+			$obj2 = $v->restore ($obj2);
 		}
 
 		$changed = array ();
