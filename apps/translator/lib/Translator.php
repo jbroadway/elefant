@@ -11,7 +11,7 @@ class Translator extends Restful {
 	 */
 	public function translations ($lang, $items) {
 		if (file_exists ('lang/' . $lang . '.php')) {
-			require_once ('lang/' . $lang . '.php');
+			require ('lang/' . $lang . '.php');
 		}
 
 		foreach ($items as $k => $v) {
@@ -58,7 +58,7 @@ class Translator extends Restful {
 		error_log ($_POST['orig']);
 		error_log ($_POST['value']);
 		if (file_exists ('lang/' . $_POST['lang'] . '.php')) {
-			require_once ('lang/' . $_POST['lang'] . '.php');
+			require ('lang/' . $_POST['lang'] . '.php');
 		}
 
 		$this->lang_hash[$_POST['lang']][$_POST['orig']] = $_POST['value'];
