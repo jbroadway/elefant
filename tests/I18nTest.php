@@ -59,9 +59,10 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 	function test_cascade () {
 		global $i18n;
 
-		$_COOKIE['lang'] = 'fr_ca';
-		$i18n = new I18n ('lang', array ('negotiation_method' => 'cookie'));
+		// Setup fr_ca -> fr fallback
+		$i18n = new I18n ();
 		$i18n->language = 'fr_ca';
+		$i18n->hash_order = array ('fr_ca', 'fr');
 
 		$i18n->lang_hash['fr_ca'] = array (
 			'Home' => 'Maison'
