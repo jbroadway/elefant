@@ -25,6 +25,45 @@ class Translator extends Restful {
 	}
 
 	/**
+	 * Get a list of all source files from the translation list.
+	 */
+	public static function get_sources ($items) {
+		$sources = array ();
+		foreach ($items as $k => $v) {
+			$sources[$v['src']] = $v['src'];
+		}
+		asort ($sources);
+		return $sources;
+	}
+
+	/**
+	 * Get all strings in a specific source file.
+	 */
+	public static function get_by_source ($items, $source) {
+		$out = array ();
+		foreach ($items as $k => $v) {
+			if ($v['src'] === $source) {
+				$out[$k] = $v;
+			}
+		}
+		return $out;
+	}
+
+	/**
+	 * Get all strings with a specific text string.
+	 */
+	public static function get_by_search ($items, $contains) {
+		$contains = strtolower ($contains);
+		$out = array ();
+		foreach ($items as $k => $v) {
+			if (strpos (strtolower ($k), $contains) !== false) {
+				$out[$k] = $v;
+			}
+		}
+		return $out;
+	}
+
+	/**
 	 * Write the data back to disk.
 	 */
 	private function write ($lang) {

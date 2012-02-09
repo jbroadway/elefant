@@ -3,12 +3,13 @@
 <select name="source" onchange="this.form.elements['contains'].value = ''; this.form.submit ()">
 	<option value="">- {"Limit to source file"} -</option>
 {% foreach sources %}
-	<option value="{{ loop_value }}">{{ loop_value }}</option>
+	<option value="{{ loop_value }}"{% if loop_value === $data->source %} selected{% end %}>{{ loop_value }}</option>
 {% end %}
 </select>
 &nbsp;- {"or"} -&nbsp;
 <input type="text" name="contains" placeholder="{"Contains text..."}" />
 <input type="submit" value="{"Go"}" />
+<a href="/translator/edit/{{ lang }}">{"Clear"}</a>
 </div>
 </form>
 
@@ -37,8 +38,6 @@
 {% end %}
 </table>
 </p>
-
-{! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
 
 <script>
 $(function () {
