@@ -29,6 +29,9 @@ require_once ('apps/translator/lib/Functions.php');
 echo $form->handle (function ($form) {
 	// Update lang/languages.php
 
+	$_POST['code'] = strtolower ($_POST['code']);
+	$_POST['locale'] = strtolower ($_POST['locale']);
+
 	if (! empty ($_POST['locale'])) {
 		$lang = $_POST['code'] . '_' . $_POST['locale'];
 	} else {
