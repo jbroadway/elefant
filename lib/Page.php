@@ -112,6 +112,10 @@ class Page {
 	 * object for rendering.
 	 */
 	public function render ($tpl) {
+		if ($this->layout === false) {
+			return $this->body;
+		}
+
 		$this->_menu_title = (! empty ($this->_menu_title)) ? $this->_menu_title : $this->title;
 		$this->_window_title = (! empty ($this->_window_title)) ? $this->_window_title : $this->title;
 
@@ -121,9 +125,7 @@ class Page {
 		if ($this->layout === 'default') {
 			$this->layout = conf('General', 'default_layout');
 		}
-		if ($this->layout === false) {
-			return $this->body;
-		}
+
 		if ($this->preview) {
 			return $tpl->render_preview ($this->layout, $this);
 		}
