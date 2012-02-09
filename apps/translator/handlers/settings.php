@@ -49,6 +49,7 @@ echo $form->handle (function ($form) {
 		}
 		$i18n->languages[$lang] = $i18n->languages[$_GET['lang']];
 		unset ($i18n->languages[$_GET['lang']]);
+		rename ('lang/' . $_GET['lang'] . '.php', 'lang/' . $lang . '.php');
 	}
 
 	$i18n->languages[$lang]['name'] = $_POST['name'];
