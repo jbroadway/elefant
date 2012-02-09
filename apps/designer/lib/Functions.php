@@ -16,11 +16,26 @@ function github_parse_url ($url) {
 	return false;
 }
 
+function github_is_zip ($url) {
+	if (preg_match ('/^https?:\/\/.*\.zip$/i', $url)) {
+		return true;
+	}
+	if (preg_match ('/^https?:\/\/github\.com\/.*zipball.*/i', $url)) {
+		return true;
+	}
+	return false;
+}
+
 /**
  * Returns whether the specified URL is a valid Github URL.
+ * Used for validating the input of the app/theme installer.
+ * Also returns true if it's a link to a zip file.
  */
 function github_is_valid_url ($url) {
 	if (github_parse_url ($url) === false) {
+		if (github_is_zip ($url)) {
+			return true;
+		}
 		return false;
 	}
 
