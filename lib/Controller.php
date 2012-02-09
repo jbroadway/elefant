@@ -309,7 +309,8 @@ class Controller {
 		global $page, $tpl, $memcache;
 		
 		// Check for a cached copy of this handler's output
-		$out = $memcache->get (str_replace ('/', '_', $this->uri));
+		$cache_uri = '_c_' . str_replace ('/', '_', $this->uri);
+		$out = $memcache->get ($cache_uri);
 		if ($out) {
 			return $out;
 		}
@@ -345,9 +346,9 @@ class Controller {
 		// If the handler is cacheable, cache the results before returning
 		if ($this->cache !== false) {
 			$timeout = is_numeric ($this->cache) ? $this->cache : 0;
-			$res = $memcache->replace (str_replace ('/', '_', $this->uri), $out, 0, $timeout);
+			$res = $memcache->replace ($cache_uri, $out, 0, $timeout);
 			if ($res === false) {
-				$memcache->set (str_replace ('/', '_', $this->uri), $out, 0, $timeout);
+				$memcache->set ($cache_uri, $out, 0, $timeout);
 			}
 		}
 		return $out;
