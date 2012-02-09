@@ -19,6 +19,12 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 
+	protected function setUp () {
+		if (! extension_loaded ('mongo')) {
+			$this->markTestSkipped ('The Mongo extension is not available');
+		}
+	}
+
 	static function tearDownAfterClass () {
 		$t = new MTest ();
 		foreach ($t->fetch () as $row) {
