@@ -70,7 +70,7 @@ create table blog_post (
 	author char(32) not null,
 	published enum('yes','no') not null,
 	body text not null,
-	tags text not null,,
+	tags text not null,
 	extra text not null,
 	index (ts),
 	index (ts, published)
