@@ -40,7 +40,7 @@ echo $form->handle (function ($form) {
 
 	uasort ($i18n->languages, 'translator_sort_languages');
 
-	if (! file_put_contents ('lang/languages.php', translator_ini_write ($i18n->languages))) {
+	if (! Ini::write ($i18n->languages, 'lang/languages.php')) {
 		return false;
 	}
 

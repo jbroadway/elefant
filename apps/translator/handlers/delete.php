@@ -15,7 +15,7 @@ if (isset ($i18n->languages[$_GET['lang']])) {
 		unlink ('lang/' . $_GET['lang'] . '.php');
 	}
 	unset ($i18n->languages[$_GET['lang']]);
-	file_put_contents ('lang/languages.php', translator_ini_write ($i18n->languages));
+	Ini::write ($i18n->languages, 'lang/languages.php');
 }
 
 $this->add_notification (i18n_get ('Language deleted.'));

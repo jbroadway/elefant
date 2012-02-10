@@ -36,39 +36,4 @@ function translator_field_id ($text) {
 	return preg_replace ('/[^a-z0-9_-]+/', '-', strtolower ($text));
 }
 
-/**
- * Writes the INI output, for modifying the lang/languages.php file.
- */
-function translator_ini_write ($data) {
-	$out = "; <?php /*\n";
-
-	$write_value = function ($value) {
-		if (is_bool ($value)) {
-			return ($value) ? 'On' : 'Off';
-		} elseif ($value === '0' || $value === '') {
-			return 'Off';
-		} elseif ($value === '1') {
-			return 'On';
-		} elseif (preg_match ('/[^a-z0-9\/\.@<> _-]/i', $value)) {
-			return '"' . $value . '"';
-		}
-		return $value;
-	};
-
-	$sections = is_array ($data[array_shift (array_keys ($data))]) ? true : false;
-
-	foreach ($data as $key => $value) {
-		if (is_array ($value)) {
-			$out .= "\n[$key]\n\n";
-			foreach ($value as $k => $v) {
-				$out .= str_pad ($k, 24) . '= ' . $write_value ($v) . "\n";
-			}
-		} else {
-			$out .= str_pad ($key, 24) . '= ' . $write_value ($value) . "\n";
-		}
-	}
-
-	return $out . "\n; */ ?>";
-}
-
 ?>

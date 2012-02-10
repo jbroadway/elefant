@@ -18,7 +18,7 @@ if (isset ($i18n->languages[$_GET['lang']])) {
 			$i18n->languages[$key]['default'] = false;
 		}
 	}
-	file_put_contents ('lang/languages.php', translator_ini_write ($i18n->languages));
+	Ini::write ($i18n->languages, 'lang/languages.php');
 }
 
 $this->add_notification (i18n_get ('Default language updated.'));
