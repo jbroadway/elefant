@@ -53,7 +53,7 @@ class Ini {
 			return $value;
 		};
 	
-		$sections = is_array ($data[array_shift (array_keys ($data))]) ? true : false;
+		$sections = is_array ($data[current (array_keys ($data))]) ? true : false;
 		if (! $sections) {
 			$out .= "\n";
 		}
