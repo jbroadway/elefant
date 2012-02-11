@@ -53,7 +53,6 @@ Commands:
   backup <path>                    Save a backup of the site and db
   export-db <file>                 Export the db to a file or STDOUT
   build-app <appname>              Build the scaffolding for an app
-  build-translation <lang>         Build a translation index
   generate-password <length(8)>    Generate a random password
   encrypt-password <password>      Encrypt a password for the db
 
@@ -235,73 +234,6 @@ if (count ($argv) > 1) {
 			));
 			
 			printf ("App created in apps/%s/\n", $argv[2]);
-			break;
-
-
-
-		/**
-		 * This command indexes the entire site (handlers, views, layouts)
-		 * and extracts any translatable text, building a fresh index
-		 * file for the specified language in the lang folder.
-		 */
-		case 'build-translation':
-			if (! isset ($argv[2])) {
-				echo "Usage: elefant build-translation <lang>\n";
-				die;
-			}
-
-			$sources = array (
-				'layouts/*/*.html',
-				'apps/*/views/*.html',
-				'apps/*/views/*/*.html',
-				'apps/*/views/*/*/*.html',
-				'apps/*/handlers/*.php',
-				'apps/*/handlers/*/*.php',
-				'apps/*/handlers/*/*/*.php',
-				'apps/*/lib/*.php',
-				'apps/*/models/*.php',
-				'install/*.php',
-				'install/layouts/*.html'
-			);
-			$list = array ();
-			
-			foreach ($sources as $source) {
-				printf ("Parsing %s...\n", $source);
-				$files = glob ($source);
-				foreach ($files as $file) {
-					$data = file_get_contents ($file);
-					if (preg_match ('/\.html/', $file)) {
-						// parse for {""} syntax
-						preg_match_all ('/\{[\'"] ?(.*?) ?[\'"]\}/', $data, $matches);
-						foreach ($matches[1] as $str) {
-							$list[$str] = $str;
-						}
-					} else {
-						// parse for i18n_getf?() syntax
-						preg_match_all ('/i18n_getf? ?\([\'"](.*?)[\'"]\)/', $data, $matches);
-						foreach ($matches[1] as $str) {
-							$list[$str] = $str;
-						}
-					}
-				}
-			}
-			asort ($list);
-			
-			if (@file_exists ('lang/' . $argv[2] . '.php')) {
-				printf ("File lang/%s.php already exists, saving backup to lang/%s.bak\n", $argv[2], $argv[2]);
-				copy ('lang/' . $argv[2] . '.php', 'lang/' . $argv[2] . '.bak');
-			}
-			
-			$out = sprintf ("<?php\n\n\$this->lang_hash['%s'] = array (\n", $argv[2]);
-			foreach ($list as $k => $v) {
-				$v = str_replace ('\'', '\\\'', $v);
-				$out .= sprintf ("\t'%s' => '%s',\n", $v, $v);
-			}
-			$out = substr ($out, 0, -2);
-			$out .= "\n);\n\n?>";
-			
-			file_put_contents ('lang/' . $argv[2] . '.php', $out);
-			printf ("Translation list saved to lang/%s.php\n", $argv[2]);
 			break;
 
 
