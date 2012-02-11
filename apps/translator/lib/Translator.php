@@ -75,8 +75,8 @@ class Translator extends Restful {
 			$out .= sprintf (
 				"%s\t'%s' => '%s'",
 				$sep,
-				str_replace ('\'', '\\\'', $k),
-				str_replace ('\'', '\\\'', $v)
+				str_replace ('\'', '\\\'', stripslashes ($k)),
+				str_replace ('\'', '\\\'', stripslashes ($v))
 			);
 			$sep = ",\r";
 		}
