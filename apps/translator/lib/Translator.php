@@ -108,6 +108,32 @@ class Translator extends Restful {
 
 		return $_POST;
 	}
+
+	/**
+	 * Get the percentage that a translation has been completed.
+	 */
+	public function completed ($lang) {
+		static $index_count = null;
+		if ($index_count === null) {
+			$index_count = count (unserialize (file_get_contents ('lang/_index.php')));
+		}
+		if ($index_count === 0) {
+			return 0;
+		}
+
+		if (! is_array ($this->lang_hash[$lang]) && file_exists ('lang/' . $lang . '.php')) {
+			require ('lang/' . $lang . '.php');
+		}
+
+		$count = 0;
+		foreach ($this->lang_hash[$lang] as $k => $v) {
+			if (! empty ($v)) {
+				$count++;
+			}
+		}
+
+		return ($count / $index_count) * 100;
+	}
 }
 
 ?>

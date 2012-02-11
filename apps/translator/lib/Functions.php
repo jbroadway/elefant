@@ -36,4 +36,12 @@ function translator_field_id ($text) {
 	return preg_replace ('/[^a-z0-9_-]+/', '-', strtolower ($text));
 }
 
+/**
+ * Filter wrapper around Translator::completed().
+ */
+function translator_completed ($lang) {
+	$t = new Translator;
+	return $t->completed ($lang);
+}
+
 ?>

@@ -7,10 +7,11 @@
 <p>
 <table width="100%">
 	<tr>
-		<th width="34%">{"Language"}</th>
-		<th width="12%">{"Code"}</th>
-		<th width="12%">{"Fallback"}</th>
-		<th width="12%">{"Charset"}</th>
+		<th width="30%">{"Language"}</th>
+		<th width="10%">{"Code"}</th>
+		<th width="10%">{"Fallback"}</th>
+		<th width="10%">{"Charset"}</th>
+		<th width="10%" style="text-align: right">{"Translated"}</th>
 		<th width="30%">&nbsp;</th>
 	</tr>
 {% foreach languages %}
@@ -19,6 +20,7 @@
 		<td>{{ loop_index }}</td>
 		<td>{% if loop_value[fallback] %}{{ loop_value[fallback] }}{% else %}{"None"}{% end %}</td>
 		<td>{{ loop_value[charset] }}</td>
+		<td style="text-align: right">{{ loop_index|translator_completed|round }}%</td>
 		<td style="text-align: right">
 			{% if default == $data->loop_index %}
 				<strong>Default</strong> |
