@@ -110,9 +110,11 @@ class Translator extends Restful {
 	 * Get the percentage that a translation has been completed.
 	 */
 	public function completed ($lang) {
+		static $index = null;
 		static $index_count = null;
-		if ($index_count === null) {
-			$index_count = count (unserialize (file_get_contents ('lang/_index.php')));
+		if ($index === null) {
+			$index = unserialize (file_get_contents ('lang/_index.php'));
+			$index_count = count ($index);
 		}
 		if ($index_count === 0) {
 			return 0;
@@ -123,8 +125,8 @@ class Translator extends Restful {
 		}
 
 		$count = 0;
-		foreach ($this->lang_hash[$lang] as $k => $v) {
-			if (! empty ($v)) {
+		foreach ($index as $k => $v) {
+			if (isset ($this->lang_hash[$lang][$k]) && ! empty ($this->lang_hash[$lang][$k])) {
 				$count++;
 			}
 		}
