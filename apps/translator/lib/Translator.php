@@ -93,9 +93,6 @@ class Translator extends Restful {
 	 * Handle save requests from edit screen.
 	 */
 	public function post_save () {
-		error_log ($_POST['lang']);
-		error_log ($_POST['orig']);
-		error_log ($_POST['value']);
 		if (file_exists ('lang/' . $_POST['lang'] . '.php')) {
 			require ('lang/' . $_POST['lang'] . '.php');
 		}
