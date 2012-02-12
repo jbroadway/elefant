@@ -17,7 +17,14 @@
 		}
 		$(function () {
 			$('#pass').password_strength ({
-				container: '#password-strength'
+				container: '#password-strength',
+				texts: {
+					1 : '{"Too weak"}',
+					2 : '{"Weak password"}',
+					3 : '{"Normal strength"}',
+					4 : '{"Strong password"}',
+					5 : '{"Very strong password"}'
+				}
 			});
 		});
 	</script>
