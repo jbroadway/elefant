@@ -59,7 +59,7 @@
 <form method="POST" action="/install/?step=database">
 <input type="hidden" name="file" value="../conf/site.db" />
 
-<p>{"SQLite users can simply click 'Connect &amp; Create Schema'. MySQL users please select your driver and enter your server details to continue."}</p>
+<p>{"SQLite users can simply click 'Connect & Create Schema'. MySQL users please select your driver and enter your server details to continue."}</p>
 
 <p>{"Driver"}:<br />
 <select name="driver" onchange="toggle (this.options[this.selectedIndex].value)">
@@ -98,7 +98,7 @@
 <input type="password" name="pgsql_pass" value="{{ $_POST.pgsql_pass }}" size="25" /></p>
 </div>
 
-<p><input type="submit" value="{"Connect &amp; Create Schema"}" /></p>
+<p><input type="submit" value="{"Connect & Create Schema"}" /></p>
 </form>
 {% end %}
 
