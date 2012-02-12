@@ -28,10 +28,9 @@ $sources = Translator::get_sources ($all);
 require_once ('apps/translator/lib/Functions.php');
 
 if (isset ($_GET['contains']) && ! empty ($_GET['contains'])) {
-	$items = Translator::get_by_search ($all, $_GET['contains']);
-
 	$tr = new Translator;
-	$items = $tr->translations ($lang, $items);
+	$all = $tr->translations ($lang, $all);
+	$items = Translator::get_by_search ($all, $_GET['contains']);
 
 	echo $tpl->render ('translator/edit_search', array (
 		'items' => $items,

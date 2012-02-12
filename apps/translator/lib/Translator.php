@@ -56,7 +56,7 @@ class Translator extends Restful {
 		$contains = strtolower ($contains);
 		$out = array ();
 		foreach ($items as $k => $v) {
-			if (strpos (strtolower ($k), $contains) !== false) {
+			if (strpos (strtolower ($k), $contains) !== false || strpos (strtolower ($v['trans']), $contains) !== false) {
 				$out[$k] = $v;
 			}
 		}
