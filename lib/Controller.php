@@ -617,6 +617,18 @@ class Controller {
 	}
 
 	/**
+	 * Require authentication via custom callbacks that are passed to `simple_auth()`.
+	 * If the second callback is missing, the first will be assumed to be an array
+	 * containing the two callbacks.
+	 */
+	public function require_auth ($verifier, $method = false) {
+		if ($method === false) {
+			list ($verifier, $method) = $verifier;
+		}
+		return simple_auth ($verifier, $method);
+	}
+
+	/**
 	 * Check if an app and version have been installed. Returns true if
 	 * installed, false if not, and current installed version if an upgrade
 	 * should be performed.
