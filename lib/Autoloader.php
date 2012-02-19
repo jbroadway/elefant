@@ -41,6 +41,7 @@ function elefant_autoloader ($class) {
 	if (strpos ($class, '\\') !== false) {
 		// Namespace is present
 		list ($app, $class) = explode ('\\', $class, 2);
+		$class = str_replace ('\\', DIRECTORY_SEPARATOR, $class);
 
 		// Check for app\Class in lib and models folders
 		if (@file_exists ('apps/' . $app . '/lib/' . $class . '.php')) {
