@@ -28,25 +28,28 @@ $(function () {
 
 <h2>
 {% if path == '' %}
-	Files
+	{"Files"}
 {% else %}
 	<a href="/filemanager">{"Files"}</a>
 	{% foreach parts %}
 		{% if loop_index == $data->lastpath %}
 			/ {{ loop_index }}
 		{% else %}
-			/ <a href="filemanager?path={{ loop_value }}">{{ loop_index }}</a>
+			/ <a href="/filemanager?path={{ loop_value }}">{{ loop_index }}</a>
 		{% end %}
 	{% end %}
 {% end %}
 </h2>
 
 <p>
-<form action="/filemanager/upload" method="post" enctype="multipart/form-data">
-<input type="hidden" name="path" value="{{ path }}" />
-<a href="#" onclick="return $.filemanager ('mkdir', {file: '{{ path }}'})">{"New folder"}</a> |
-{"New file"} ({"max"} {{ ini_get ('upload_max_filesize')}}B): <input type="file" name="file" /> <input type="submit" value="{"Upload"}" onclick="if (this.form.elements.file.value == '') { alert ('Please select a file to upload.'); return false; } this.value = 'Uploading...'; this.disabled = true; this.form.submit ()" />
-</form>
+	<form action="/filemanager/upload" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="path" value="{{ path }}" />
+	<a href="#" onclick="return $.filemanager ('mkdir', {file: '{{ path }}'})">{"New folder"}</a>
+	&nbsp;|&nbsp;
+	{"New file"} ({"max"} {{ ini_get ('upload_max_filesize')}}B): <input type="file" name="file" /> <input type="submit" value="{"Upload"}" onclick="if (this.form.elements.file.value == '') { alert ('Please select a file to upload.'); return false; } this.value = 'Uploading...'; this.disabled = true; this.form.submit ()" />
+	&nbsp;|&nbsp;
+	<a href="/filemanager/multi?path=/{{ path }}">{"Multi-file uploader"}</a>
+	</form>
 </p>
 
 <p>

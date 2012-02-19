@@ -1,0 +1,129 @@
+<script>
+$(function() {
+	$('#file').uploadify({
+		uploader        : '/apps/filemanager/js/uploadify/uploadify.swf',
+		script          : '/filemanager/multi',
+		scriptData      : { path: '/{{ path }}', uploadify_session_id: '{{$_SESSION.session_id}}' },
+		cancelImg       : '/apps/filemanager/js/uploadify/cancel.png',
+		buttonImg       : ' ',
+		buttonText      : '{"Browse"}',
+		wmode           : 'transparent',
+		queueID         : 'fileQueue',
+		removeCompleted : false,
+		auto            : true,
+		multi           : true,
+		onInit          : function () {
+			var w = $('#fileButton').outerWidth ();
+			$('#fileUploader').css ('width', w + 'px');
+			$('#uploadWrapper').css ('width', w + 'px');
+		},
+		onError         : function (evt, id, file, err) {
+			var msg = '';
+			switch (err.info) {
+				case 405:
+					msg = '{"Admin access required."}';
+					break;
+				case 406:
+					msg = '{"Invalid Path"}';
+					break;
+				case 408:
+					msg = '{"A file by that name already exists."}';
+					break;
+				case 409:
+					msg = '{"Unable to save the file."}';
+					break;
+				case 407:
+				default:
+					msg = '{"Unknown error"}';
+					break;
+			}
+			setTimeout ('$("#file' + id + ' span.percentage").html (" - ' + msg + '");', 100);
+		}
+	});
+
+	$('#uploadWrapper').hover (function () {
+		$('#fileButton').addClass ('hover');
+	}, function () {
+		$('#fileButton').removeClass ('hover');
+	});
+});
+</script>
+<style>
+#fileWrapper {
+	position: relative;
+}
+#fileButton {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+	float: left;
+    font-size: 12px;
+	border: 1px solid #ddd;
+    background: #e5e5e5;
+    background: -webkit-gradient(linear,0% 40%,0% 70%,from(#eee),to(#e5e5e5));
+    background: -moz-linear-gradient(linear,0% 40%,0% 70%,from(#eee),to(#e5e5e5));
+    border: solid 1px #ccc;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    color: #555;
+    padding: 5px 10px;
+    text-shadow: 0 1px 0 #fff;
+    height: 18px;
+    width: auto;
+    z-index: 0;
+}
+#fileButton.hover {
+	color: #333;
+	border: 1px solid #999;
+    -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+#uploadWrapper {
+	position: relative;
+	height: 28px;
+	width: 100px;
+	z-index: 10;
+}
+.cancel {
+	float: left;
+	margin-right: 5px;
+}
+#fileQueue {
+	margin-top: 15px;
+}
+</style>
+
+<p>
+	<a href="/filemanager?path=/{{ path }}">&laquo; {"Back"}</a>
+	&nbsp;|&nbsp;
+	{"Folder"}:
+{% if path === '' %}
+	<a href="/filemanager/multi?path=/">{"Files"}</a>
+{% else %}
+	<a href="/filemanager/multi?path=/">{"Files"}</a>
+	{% foreach parts %}
+		{% if loop_index == $data->lastpath %}
+			/ {{ loop_index }}
+		{% else %}
+			/ <a href="/filemanager/multi?path=/{{ loop_value }}">{{ loop_index }}</a>
+		{% end %}
+	{% end %}
+{% end %}
+</p>
+
+<div id="fileWrapper">
+	<a id="fileButton">{"Browse"}</a>
+	<div id="uploadWrapper">
+	<input id="file" type="file" name="file" />
+	</div>
+</div>
+
+<br clear="both" />
+
+<div id="fileQueue">
+</div>
+
+<br clear="both" />
