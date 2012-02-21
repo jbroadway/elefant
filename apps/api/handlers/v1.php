@@ -3,10 +3,33 @@
 /**
  * Provides RESTful CRUD API access to the objects specified in
  * `apps/api/conf/config.php`. Requests all require providing
- * an API token and secret key that matches those stored in
- * the `api` database table. Uses HTTP Basic authentication
- * to request the credentials. See `apps/api/models/Api.php`
- * for info on generating access tokens.
+ * an API token and an HMAC value calculated using a secret key
+ * and the concatenation of the following data:
+ * 
+ * - Request method (e.g., GET)
+ * - Request URI including host name (e.g., www.example.com/hello)
+ * - Any additional raw request data (e.g., ?name=John&last=Doe)
+ *
+ * A client calculation example:
+ *
+ *   <?php
+ *   
+ *   $token = 'my token';
+ *   $secret = 'my secret api key';
+ *   $data = 'GETwww.example.com/hello?name=John&last=Doe';
+ *   $hash = hash_hmac ('sha256', $data, $secret);
+ *   
+ *   // Now make an HTTP Basic client request and use
+ *   // $token as the user and $hash as the password.
+ *   
+ *   ?>
+ *
+ * The hash value will be recalculated based on the stored private
+ * key in the `api` database table. Uses HTTP Basic authentication
+ * to request token and hash.
+ *
+ * Note: See `apps/api/models/Api.php` for info on generating access
+ * tokens.
  */
 
 $page->layout = false;
