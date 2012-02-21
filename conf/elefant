@@ -125,7 +125,8 @@ if (count ($argv) > 1) {
 			date_default_timezone_set ($conf['General']['timezone']);
 			
 			// set the necessary folder permissions
-			system ('chmod -R 777 cache conf css files install layouts');
+			system ('chmod -R 777 cache conf css files lang layouts');
+			system ('chmod 777 apps');
 			
 			// connect to the database
 			$connected = false;
