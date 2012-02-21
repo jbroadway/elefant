@@ -25,56 +25,24 @@
  */
 
 /**
- * Authentication based on tokens associated with user accounts.
+ * Authentication based on tokens associated with user accounts. Creates a unique
+ * token and a private key and associates it with a user account. The private key
+ * can be used to create a hash of request data that in combination with the token
+ * can validate the client request.
+ *
  * To create new tokens, use:
  *
  *   list ($token, $key) = Api::create_token ($user_id);
  *
- * To authenticate, use:
+ * To authenticate, use the `user\Auth\HMAC` authentication scheme:
  *
- *   if (! Api::require_auth ()) {
- *     // unauthorized
- *   }
+ *   $this->require_auth (user\Auth\HMAC::init ($this, $memcache));
  */
 class Api extends Model {
 	/**
 	 * The auth token for the request.
 	 */
 	public $key = 'token';
-
-	/**
-	 * Verifies a token/key combo against the database.
-	 * Used by require_auth().
-	 */
-	public static function verifier ($token, $key) {
-		$u = db_single (
-			'select * from api where token = ? and api_key = ?',
-			$token,
-			$key
-		);
-		if ($u) {
-			$user = new User ($u->user_id);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Custom handler for simple_auth(). Used by require_auth().
-	 */
-	public static function method ($callback) {
-		if (isset ($_SERVER['PHP_AUTH_USER']) && isset ($_SERVER['PHP_AUTH_PW'])) {
-			return call_user_func ($callback, $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
-		}
-		return false;
-	}
-
-	/**
-	 * Authorize a request using HTTP basic using their API token and key.
-	 */
-	public static function require_auth () {
-		return simple_auth (array ('Api', 'verifier'), array ('Api', 'method'));
-	}
 
 	/**
 	 * Creates and returns a new token/api_key combination for the

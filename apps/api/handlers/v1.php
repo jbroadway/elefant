@@ -12,15 +12,7 @@
 $page->layout = false;
 header ('Content-Type: application/json');
 
-if (! Api::require_auth ()) {
-	$res = new StdClass;
-	$res->success = false;
-	$res->error = 'Authorization required.';
-	header ('WWW-Authenticate: Basic realm="API"');
-	header ('HTTP/1.0 401 Unauthorized');
-	echo json_encode ($res);
-	return;
-}
+$this->require_auth (user\Auth\HMAC::init ($this, $memcache));
 
 $error = false;
 
