@@ -55,8 +55,16 @@ class MemcacheRedis {
 	 * serialization via PHP's serialize/unserialize functions.
 	 */
 	public function addServer ($server, $port = 6379) {
+		if (strpos ($port, ',') !== false) {
+			list ($port, $pass) = explode (',', $port);
+		} else {
+			$pass = false;
+		}
 		$res = self::$redis->connect ($server, $port);
 		if ($res) {
+			if ($pass !== false) {
+				self::$redis->auth ($pass);
+			}
 			self::$redis->setOption (Redis::OPT_SERIALIZER, Redis::SERIALIZER_PHP);
 		}
 		return $res;

@@ -93,6 +93,9 @@ admin/delete[] = navigation/hook/delete
 ; backend. Each of these cache options uses an identical API
 ; so you can implement caching without worrying about the backend
 ; in development versus production.
+;
+; Note: To use Redis auth, add the password after the port,
+; separated by a comma, e.g. "localhost:6379,PASSWORD"
 
 ;backend = memcache
 ;server[] = localhost:11211
