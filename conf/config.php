@@ -83,15 +83,18 @@ admin/delete[] = navigation/hook/delete
 ;blog/edit[] = search/add
 ;blog/delete[] = search/delete
 
-[Memcache]
+[Cache]
 
-; Configure your memcache server list. If set, there will be a
-; global $memcache object available to your apps. If the list is
-; blank, or memcache is not available, it will create a fake
-; global $memcache object that caches to memory within the PHP
-; request, so you can hard-code cache functions even if caching
-; is disabled on some systems.
+; Configure your memcache server list. This will be available in
+; your handlers via the $memcache object. If blank, or memcache
+; is unavailable, it will emulate Memcache via the lib/Cache
+; object, storing the cache in the `conf/datastore` folder.
+; Alternately add `backend = redis` to use Redis as the cache
+; backend. Each of these cache options uses an identical API
+; so you can implement caching without worrying about the backend
+; in development versus production.
 
+;backend = memcache
 ;server[] = localhost:11211
 
 ; */ ?>

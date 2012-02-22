@@ -118,11 +118,19 @@ $tpl = new Template (conf ('General', 'charset'), $controller);
  * handlers and in the front controller, whether Memcache
  * is available or not.
  */
-if (conf ('Memcache', 'server') && extension_loaded ('memcache')) {
-	$memcache = new MemcacheExt;
-	foreach (conf ('Memcache', 'server') as $s) {
-		list ($server, $port) = explode (':', $s);
-		$memcache->addServer ($server, $port);
+if (conf ('Cache', 'server')) {
+	if (conf ('Cache', 'backend') === 'redis' && extension_loaded ('redis')) {
+		$memcache = new MemcacheRedis ();
+	} elseif (extension_loaded ('memcache')) {
+		$memcache = new MemcacheExt ();
+	} else {
+		$memcache = new Cache ();
+	}
+	if (get_class ($memcache) !== 'Cache') {
+		foreach (conf ('Cache', 'server') as $s) {
+			list ($server, $port) = explode (':', $s);
+			$memcache->addServer ($server, $port);
+		}
 	}
 } else {
 	$memcache = new Cache ();
