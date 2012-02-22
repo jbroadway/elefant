@@ -34,7 +34,7 @@ echo $tpl->render (
 	'filemanager/gallery',
 	array (
 		'files' => $files,
-		'gallery' => str_replace ('/', '-', $path)
+		'gallery' => str_replace (array ('/', '.'), array ('-', '-'), $path)
 	)
 );
 
