@@ -5,6 +5,8 @@
  * POST data must match values available to the Page object.
  */
 
+$this->require_admin ();
+
 $wp = new Webpage ($_POST);
 
 $page->id = $_POST['id'];
