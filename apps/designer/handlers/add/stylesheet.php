@@ -29,6 +29,9 @@ $o->layouts = array ();
 foreach (glob ('layouts/*.html') as $layout) {
 	$o->layouts[] = basename ($layout, '.html');
 }
+foreach (glob ('layouts/*/*.html') as $layout) {
+	$o->layouts[] = basename ($layout, '.html');
+}
 
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);

@@ -11,13 +11,29 @@ $page->preview = true;
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	if (! empty ($_GET['layout'])) {
-		$page->layout = file_get_contents ('layouts/' . $_GET['layout'] . '.html');
+		if (file_exists ('layouts/' . $_GET['layout'] . '.html')) {
+			$page->layout = file_get_contents ('layouts/' . $_GET['layout'] . '.html');
+		} elseif (file_exists ('layouts/' . $_GET['layout'] . '/' . $_GET['layout'] . '.html')) {
+			$page->layout = file_get_contents ('layouts/' . $_GET['layout'] . '/' . $_GET['layout'] . '.html');
+		} else {
+			$page->layout = file_get_contents ('layouts/default.html');
+		}
 	} else {
 		$page->layout = file_get_contents ('layouts/default.html');
 	}
 	$page->layout = str_replace ('</head>', '<style>' . file_get_contents ($_GET['css']) . '</style></head>', $page->layout);
 } else {
-	$page->layout = file_get_contents ('layouts/' . $_POST['layout'] . '.html');
+	if (! empty ($_POST['layout'])) {
+		if (file_exists ('layouts/' . $_POST['layout'] . '.html')) {
+			$page->layout = file_get_contents ('layouts/' . $_POST['layout'] . '.html');
+		} elseif (file_exists ('layouts/' . $_POST['layout'] . '/' . $_POST['layout'] . '.html')) {
+			$page->layout = file_get_contents ('layouts/' . $_POST['layout'] . '/' . $_POST['layout'] . '.html');
+		} else {
+			$page->layout = file_get_contents ('layouts/default.html');
+		}
+	} else {
+		$page->layout = file_get_contents ('layouts/default.html');
+	}
 	$page->layout = str_replace ('</head>', '<style>' . $_POST['css'] . '</style></head>', $page->layout);
 }
 
