@@ -138,7 +138,12 @@ if (conf ('Cache', 'server')) {
 	if (get_class ($memcache) !== 'Cache') {
 		foreach (conf ('Cache', 'server') as $s) {
 			list ($server, $port) = explode (':', $s);
-			$memcache->addServer ($server, $port);
+			if (strpos ($port, ',') !== false) {
+				list ($port, $password) = explode (',', $port);
+				$memcache->addServer ($server, $port, $password);
+			} else {
+				$memcache->addServer ($server, $port);
+			}
 		}
 	}
 } else {

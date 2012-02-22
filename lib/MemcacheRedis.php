@@ -54,16 +54,11 @@ class MemcacheRedis {
 	 * Emulates `Memcache::addServer` via `connect`. Also adds
 	 * serialization via PHP's serialize/unserialize functions.
 	 */
-	public function addServer ($server, $port = 6379) {
-		if (strpos ($port, ',') !== false) {
-			list ($port, $pass) = explode (',', $port);
-		} else {
-			$pass = false;
-		}
+	public function addServer ($server, $port = 6379, $password = false) {
 		$res = self::$redis->connect ($server, $port);
 		if ($res) {
-			if ($pass !== false) {
-				self::$redis->auth ($pass);
+			if ($password !== false) {
+				self::$redis->auth ($password);
 			}
 			self::$redis->setOption (Redis::OPT_SERIALIZER, Redis::SERIALIZER_PHP);
 		}
