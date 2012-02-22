@@ -300,9 +300,29 @@ class Model {
 	}
 
 	/**
+	 * Verify that the limit is false or numeric, and that the offset
+	 * is always numeric. Prevents SQL injection via these values.
+	 */
+	public function limit_offset_ok ($limit, $offset) {
+		if ($limit !== false && ! is_numeric ($limit)) {
+			$this->error = 'Invalid limit value';
+			return false;
+		}
+		if (! is_numeric ($offset)) {
+			$this->error = 'Invalid offset value';
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Fetch as an array of model objects.
 	 */
-	function fetch ($limit = false, $offset = 0) {
+	public function fetch ($limit = false, $offset = 0) {
+		if (! $this->limit_offset_ok ($limit, $offset)) {
+			return false;
+		}
+
 		if (is_array ($this->query_fields)) {
 			$this->query_fields = join (', ', Model::backticks ($this->query_fields));
 		}
@@ -361,7 +381,11 @@ class Model {
 	/**
 	 * Fetch the number of results for a query.
 	 */
-	function count ($limit = false, $offset = 0) {
+	public function count ($limit = false, $offset = 0) {
+		if (! $this->limit_offset_ok ($limit, $offset)) {
+			return false;
+		}
+
 		$sql = 'select count(*) from ' . Model::backticks ($this->table);
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ' . join (' and ', $this->query_filters);
@@ -383,7 +407,11 @@ class Model {
 	 * Fetch as an array of the original objects as returned from
 	 * the database.
 	 */
-	function fetch_orig ($limit = false, $offset = 0) {
+	public function fetch_orig ($limit = false, $offset = 0) {
+		if (! $this->limit_offset_ok ($limit, $offset)) {
+			return false;
+		}
+
 		if (is_array ($this->query_fields)) {
 			$this->query_fields = join (', ', Model::backticks ($this->query_fields));
 		}
