@@ -38,7 +38,9 @@ class Cache {
 	/**
 	 * Constructor method creates the directory if it's missing.
 	 */
-	public function __construct () {
+	public function __construct ($dir = 'cache/datastore') {
+		$this->dir = $dir;
+
 		if (! file_exists ($this->dir)) {
 			mkdir ($this->dir);
 			chmod ($this->dir, 0777);
