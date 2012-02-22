@@ -113,6 +113,15 @@ $controller = new Controller (conf ('Hooks'));
 $tpl = new Template (conf ('General', 'charset'), $controller);
 
 /**
+ * Check for a bootstrap.php file in the root of the site
+ * and if found, use it for additional app-level configurations
+ * (Dependency Injection, custom logging settings, etc.).
+ */
+if (file_exists ('bootstrap.php')) {
+	require_once ('bootstrap.php');
+}
+
+/**
  * Initialize the built-in Memcache support, or provide a
  * transparent fallback so we can include caching in our
  * handlers and in the front controller, whether Memcache
@@ -134,15 +143,6 @@ if (conf ('Cache', 'server')) {
 	}
 } else {
 	$memcache = new Cache ();
-}
-
-/**
- * Check for a bootstrap.php file in the root of the site
- * and if found, use it for additional app-level configurations
- * (Dependency Injection, custom logging settings, etc.).
- */
-if (file_exists ('bootstrap.php')) {
-	require_once ('bootstrap.php');
 }
 
 /**
