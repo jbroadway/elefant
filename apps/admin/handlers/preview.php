@@ -1,5 +1,9 @@
 <?php
 
+if (! User::require_admin ()) {
+	$this->redirect ('/admin');
+}
+
 $wp = new Webpage ($_POST);
 
 $page->id = $_POST['id'];
