@@ -122,32 +122,12 @@ if (file_exists ('bootstrap.php')) {
 }
 
 /**
- * Initialize the built-in Memcache support, or provide a
- * transparent fallback so we can include caching in our
- * handlers and in the front controller, whether Memcache
- * is available or not.
+ * Initialize the built-in cache support. Provides a
+ * consistent cache API (based on Memcache) so we can always
+ * include caching in our handlers and in the front controller.
  */
-if (conf ('Cache', 'server')) {
-	if (conf ('Cache', 'backend') === 'redis' && extension_loaded ('redis')) {
-		$memcache = new MemcacheRedis ();
-	} elseif (extension_loaded ('memcache')) {
-		$memcache = new MemcacheExt ();
-	} else {
-		$memcache = new Cache ();
-	}
-	if (get_class ($memcache) !== 'Cache') {
-		foreach (conf ('Cache', 'server') as $s) {
-			list ($server, $port) = explode (':', $s);
-			if (strpos ($port, ',') !== false) {
-				list ($port, $password) = explode (',', $port);
-				$memcache->addServer ($server, $port, $password);
-			} else {
-				$memcache->addServer ($server, $port);
-			}
-		}
-	}
-} else {
-	$memcache = new Cache ();
+if (! isset ($memcache) || ! is_object ($memcache)) {
+	$memcache = Cache::init (conf ('Cache'));
 }
 
 /**

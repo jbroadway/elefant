@@ -28,6 +28,9 @@
  * This is a basic class that immitates Memcache via the filesystem
  * so handlers can use "poor man's caching" even if Memcache ins't
  * available.
+ *
+ * Also provides an `init()` method that initializes the correct cache
+ * for the current request (Memcache, Redis, or itself).
  */
 class Cache {
 	/**
@@ -45,6 +48,45 @@ class Cache {
 			mkdir ($this->dir);
 			chmod ($this->dir, 0777);
 		}
+	}
+
+	/**
+	 * Initialize the correct cache based on the global configuration
+	 * and return the cache object (lib/MemcacheExt, lib/MemcacheRedis,
+	 * or lib/Cache).
+	 */
+	public static function init ($conf) {
+		$server = isset ($conf['server']) ? $conf['server'] : false;
+		$dir = isset ($conf['location']) ? $conf['location'] : 'cache/datastore';
+		$backend = isset ($conf['backend']) ? $conf['backend'] : 'memcache';
+
+		if ($server) {
+			// Determine the backend
+			if ($backend === 'redis' && extension_loaded ('redis')) {
+				$cache = new MemcacheRedis ();
+			} elseif (extension_loaded ('memcache')) {
+				$cache = new MemcacheExt ();
+			} else {
+				return new Cache ($dir);
+			}
+
+			// Connect to cache server(s)
+			foreach ($server as $s) {
+				list ($serv, $port) = explode (':', $s);
+				if (strpos ($port, ',') !== false) {
+					// There's an appended password
+					list ($port, $password) = explode (',', $port);
+					$cache->addServer ($serv, $port, $password);
+				} else {
+					// No auth
+					$cache->addServer ($serv, $port);
+				}
+			}
+			return $cache;
+		}
+
+		// No server, use fs
+		return new Cache ($dir);
 	}
 
 	/**
