@@ -331,34 +331,80 @@ class Model {
 	}
 
 	/**
-	 * Order the query by the specified clauses.
+	 * Order the query by the specified clauses. Can be called multiple
+	 * times to create complex sorting.
+	 *
+	 * Usage:
+	 *
+	 *   ->order ('field_name', 'asc') // preferred method
+	 *   ->order ('another_field asc') // alternate usage
 	 */
-	public function order ($order) {
-		$this->query_order = $order;
+	public function order ($by, $order = false) {
+		$sep = empty ($this->query_order) ? ' ' : ', ';
+		if (! $order) {
+			$this->query_order .= $sep . $by;
+		} else {
+			$this->query_order .= $sep . Model::backticks ($by) . ' ' . $order;
+		}
 		return $this;
 	}
 
 	/**
-	 * Group the query by the specific clauses.
+	 * Group the query by the specific clauses. Can be called multiple
+	 * times to group by multiple fields.
+	 *
+	 * Usage:
+	 *
+	 *   ->group ('field_name')
+	 *   ->group ('another_field')
 	 */
 	public function group ($group) {
-		$this->query_group = $group;
+		$sep = empty ($this->query_group) ? ' ' : ', ';
+		$this->query_group .= $sep . Model::backticks ($group);
 		return $this;
 	}
 
 	/**
 	 * Add a where condition to the query. Can be either a field/value
-	 * combo, or if no value is present it assumes a custom condition
-	 * in the first parameter.
+	 * combo, or if no value is present the first parameter can be one
+	 * of the following:
+	 *
+	 * - A custom where clause, e.g., `name like "%value%"`
+	 * - An associative array of clauses grouped by parentheses
+	 * - A closure function that creates one or more grouped clauses
 	 */
 	public function where ($key, $val = false) {
 		if (! $val) {
+			if (is_array ($key)) {
+				array_push ($this->query_filters, '(');
+				foreach ($key as $k => $v) {
+					$this->where ($k, $v);
+				}
+				array_push ($this->query_filters, ')');
+			} elseif ($key instanceof Closure) {
+				array_push ($this->query_filters, '(');
+				$key ($this);
+				array_push ($this->query_filters, ')');
+			} else {
+				array_push ($this->query_filters, $key);
+			}
+		} elseif (strpos ($key, '?') !== false) {
 			array_push ($this->query_filters, $key);
+			array_push ($this->query_params, $val);
 		} else {
 			array_push ($this->query_filters, Model::backticks ($key) . ' = ?');
 			array_push ($this->query_params, $val);
 		}
 		return $this;
+	}
+
+	/**
+	 * Creates an or clause with additional where conditions.
+	 * Accepts the same parameters as `where()`.
+	 */
+	public function or_where ($key, $val = false) {
+		array_push ($this->query_filters, ' or ');
+		return $this->where ($key, $val);
 	}
 
 	/**
@@ -378,9 +424,12 @@ class Model {
 	}
 
 	/**
-	 * Fetch as an array of model objects.
+	 * Generates the SQL query used for execution. If the limit or
+	 * offset values are invalid, it will return false. Otherwise,
+	 * it returns the SQL string with `?` for parameters to be
+	 * filled with `$this->query_params`.
 	 */
-	public function fetch ($limit = false, $offset = 0) {
+	public function sql ($limit = false, $offset = 0) {
 		if (! $this->limit_offset_ok ($limit, $offset)) {
 			return false;
 		}
@@ -388,19 +437,47 @@ class Model {
 		if (is_array ($this->query_fields)) {
 			$this->query_fields = join (', ', Model::backticks ($this->query_fields));
 		}
+
 		$sql = 'select ' . $this->query_fields . ' from ' . Model::backticks ($this->table);
+
 		if (count ($this->query_filters) > 0) {
-			$sql .= ' where ' . join (' and ', $this->query_filters);
+			$sql .= ' where ';
+			$and = '';
+			foreach ($this->query_filters as $where) {
+				if ($where === '(' || $where === ' or ') {
+					$sql .= $where;
+					$and = '';
+				} elseif ($where === ')') {
+					$sql .= $where;
+					$and = ' and ';
+				} else {
+					$sql .= $and . $where;
+					$and = ' and ';
+				}
+			}
 		}
 		if (! empty ($this->query_group)) {
-			$sql .= ' group by ' . $this->query_group;
+			$sql .= ' group by' . $this->query_group;
 		}
 		if (! empty ($this->query_order)) {
-			$sql .= ' order by ' . $this->query_order;
+			$sql .= ' order by' . $this->query_order;
 		}
 		if ($limit) {
 			$sql .= ' limit ' . $limit . ' offset ' . $offset;
 		}
+
+		return $sql;
+	}
+
+	/**
+	 * Fetch as an array of model objects.
+	 */
+	public function fetch ($limit = false, $offset = 0) {
+		$sql = $this->sql ($limit, $offset);
+		if ($sql === false) {
+			return false;
+		}
+
 		$res = db_fetch_array ($sql, $this->query_params);
 		if (! $res) {
 			$this->error = db_error ();
@@ -417,19 +494,11 @@ class Model {
 	 * Fetch a single result as a model object.
 	 */
 	public function single () {
-		if (is_array ($this->query_fields)) {
-			$this->query_fields = join (', ', Model::backticks ($this->query_fields));
+		$sql = $this->sql ();
+		if ($sql === false) {
+			return false;
 		}
-		$sql = 'select ' . $this->query_fields . ' from ' . Model::backticks ($this->table);
-		if (count ($this->query_filters) > 0) {
-			$sql .= ' where ' . join (' and ', $this->query_filters);
-		}
-		if (! empty ($this->query_group)) {
-			$sql .= ' group by ' . $this->query_group;
-		}
-		if (! empty ($this->query_order)) {
-			$sql .= ' order by ' . $this->query_order;
-		}
+
 		$res = db_single ($sql, $this->query_params);
 		if (! $res) {
 			$this->error = db_error ();
@@ -444,20 +513,13 @@ class Model {
 	 * Fetch the number of results for a query.
 	 */
 	public function count ($limit = false, $offset = 0) {
-		if (! $this->limit_offset_ok ($limit, $offset)) {
+		$this->query_fields = 'count(*)';
+
+		$sql = $this->sql ($limit, $offset);
+		if ($sql === false) {
 			return false;
 		}
 
-		$sql = 'select count(*) from ' . Model::backticks ($this->table);
-		if (count ($this->query_filters) > 0) {
-			$sql .= ' where ' . join (' and ', $this->query_filters);
-		}
-		if (! empty ($this->query_group)) {
-			$sql .= ' group by ' . $this->query_group;
-		}
-		if (! empty ($this->query_order)) {
-			$sql .= ' order by ' . $this->query_order;
-		}
 		$res = db_shift ($sql, $this->query_params);
 		if ($res === false) {
 			$this->error = db_error ();
@@ -470,26 +532,11 @@ class Model {
 	 * the database.
 	 */
 	public function fetch_orig ($limit = false, $offset = 0) {
-		if (! $this->limit_offset_ok ($limit, $offset)) {
+		$sql = $this->sql ($limit, $offset);
+		if ($sql === false) {
 			return false;
 		}
 
-		if (is_array ($this->query_fields)) {
-			$this->query_fields = join (', ', Model::backticks ($this->query_fields));
-		}
-		$sql = 'select ' . $this->query_fields . ' from ' . Model::backticks ($this->table);
-		if (count ($this->query_filters) > 0) {
-			$sql .= ' where ' . join (' and ', $this->query_filters);
-		}
-		if (! empty ($this->query_group)) {
-			$sql .= ' group by ' . $this->query_group;
-		}
-		if (! empty ($this->query_order)) {
-			$sql .= ' order by ' . $this->query_order;
-		}
-		if ($limit) {
-			$sql .= ' limit ' . $limit . ' offset ' . $offset;
-		}
 		$res = db_fetch_array ($sql, $this->query_params);
 		if (! $res) {
 			$this->error = db_error ();

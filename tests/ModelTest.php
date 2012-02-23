@@ -33,6 +33,83 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse (self::$q->is_new);
 	}
 
+	function test_sql () {
+		// And clauses
+		$sql = self::$q->query ()
+			->where ('foo', 'one')
+			->where ('foo', 'two')
+			->sql ();
+		$this->assertEquals ('select * from `qwerty` where `foo` = ? and `foo` = ?', $sql);
+
+		// Or clauses
+		$sql = self::$q->query ()
+			->where ('foo', 'one')
+			->or_where ('bar', 'two')
+			->sql ();
+		$this->assertEquals ('select * from `qwerty` where `foo` = ? or `bar` = ?', $sql);
+
+		// Associative arrays
+		$sql = self::$q->query ()
+			->where (array (
+				'foo' => 'one',
+				'bar' => 'two'
+			))
+			->sql ();
+		$this->assertEquals ('select * from `qwerty` where (`foo` = ? and `bar` = ?)', $sql);
+
+		// Closures
+		$sql = self::$q->query ()
+			->where (function ($query) {
+				$query->where ('foo', 'one');
+				$query->where ('bar', 'two');
+			})
+			->sql ();
+		$this->assertEquals ('select * from `qwerty` where (`foo` = ? and `bar` = ?)', $sql);
+
+		// Custom fields
+		$sql = self::$q->query ('count(*)')
+			->where (function ($query) {
+				$query->where ('foo', 'one');
+				$query->where ('bar', 'two');
+			})
+			->sql ();
+		$this->assertEquals ('select count(*) from `qwerty` where (`foo` = ? and `bar` = ?)', $sql);
+
+		// Custom clauses
+		$sql = self::$q->query ()
+			->where ('foo = "one"')
+			->sql ();
+		$this->assertEquals ('select * from `qwerty` where foo = "one"', $sql);
+
+		// Field array
+		$sql = self::$q->query (array ('foo', 'bar'))->sql ();
+		$this->assertEquals ('select `foo`, `bar` from `qwerty`', $sql);
+
+		// Group by
+		$sql = self::$q->query ()
+			->group ('foo')
+			->group ('bar')
+			->sql ();
+		$this->assertEquals ('select * from `qwerty` group by `foo`, `bar`', $sql);
+
+		// Order by
+		$sql = self::$q->query ()
+			->order ('foo', 'asc')
+			->order ('bar desc')
+			->sql ();
+		$this->assertEquals ('select * from `qwerty` order by `foo` asc, bar desc', $sql);
+
+		// Invalid limit/offset
+		$sql = self::$q->query ()->sql (';delete from qwerty where 1=1');
+		$this->assertFalse ($sql);
+		$sql = self::$q->query ()->sql (20, ';delete from qwerty where 1=1');
+		$this->assertFalse ($sql);
+
+		// Valid limit/offset
+		$sql = self::$q->query ()->sql (20, 0);
+		$this->assertEquals ('select * from `qwerty` limit 20 offset 0', $sql);
+	}
+
 	function test_orig () {
 		// orig()
 		$orig = new StdClass;

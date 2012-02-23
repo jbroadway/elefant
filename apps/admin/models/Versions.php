@@ -109,7 +109,8 @@ class Versions extends Model {
 			$v->where ('user', $user);
 		}
 		return $v->order ('ts desc')
-			->group ('class, pkey')
+			->group ('class')
+			->group ('pkey')
 			->fetch_orig ($limit, $offset);
 	}
 

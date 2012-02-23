@@ -50,7 +50,6 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 	 * @depends test_add
 	 */
 	function test_restore () {
-		
 		self::$foo2 = self::$v->restore ();
 		$this->assertEquals (self::$foo, self::$foo2);
 	}
