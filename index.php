@@ -70,16 +70,16 @@ if (get_magic_quotes_gpc ()) {
  * timezone to avoid warnings in date functions.
  */
 define ('ELEFANT_ENV', getenv ('ELEFANT_ENV') ? getenv ('ELEFANT_ENV') : 'config');
-require_once ('conf/version.php');
-require_once ('lib/Autoloader.php');
-require_once ('lib/Functions.php');
+require ('conf/version.php');
+require ('lib/Autoloader.php');
+require ('lib/Functions.php');
 date_default_timezone_set(conf ('General', 'timezone'));
 
 /**
  * Enable the debugger if conf[General][debug] is true.
  */
 if (conf ('General', 'debug')) {
-	require_once ('lib/Debugger.php');
+	require ('lib/Debugger.php');
 	Debugger::start ();
 }
 
@@ -87,11 +87,11 @@ if (conf ('General', 'debug')) {
  * Include the core libraries used by the front controller
  * to dispatch and respond to requests.
  */
-require_once ('lib/Database.php');
-require_once ('lib/Page.php');
-require_once ('lib/I18n.php');
-require_once ('lib/Controller.php');
-require_once ('lib/Template.php');
+require ('lib/Database.php');
+require ('lib/Page.php');
+require ('lib/I18n.php');
+require ('lib/Controller.php');
+require ('lib/Template.php');
 
 /**
  * If we're on the command line, set the request to use
@@ -118,7 +118,7 @@ $tpl = new Template (conf ('General', 'charset'), $controller);
  * (Dependency Injection, custom logging settings, etc.).
  */
 if (file_exists ('bootstrap.php')) {
-	require_once ('bootstrap.php');
+	require ('bootstrap.php');
 }
 
 /**
