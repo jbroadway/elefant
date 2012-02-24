@@ -174,6 +174,16 @@ class Page {
 	}
 
 	/**
+	 * Add a style to the page. Simply an alias of `add_script()` for the sake of
+	 * referring to stylesheets correctly as styles and not scripts, but functionally
+	 * they both do the same thing, and `add_script()` always handled stylesheets
+	 * as well.
+	 */
+	public function add_style ($script, $add_to = 'head') {
+		return $this->add_script ($script, $add_to);
+	}
+
+	/**
 	 * Wrap scripts that are simply URLs in the correct HTML tags,
 	 * including `<link>` tags for CSS files. Will pass through
 	 * on scripts that are already HTML.
