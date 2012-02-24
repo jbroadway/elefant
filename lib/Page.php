@@ -109,23 +109,31 @@ class Page {
 
 	/**
 	 * Render the page in its template and layout. Uses a Template
-	 * object for rendering.
+	 * object for rendering. Determines whether to render with a
+	 * layout template at all, and if so, which one. Also determines
+	 * whether to render as a preview or as a real page.
 	 */
 	public function render ($tpl) {
 		if ($this->layout === false) {
+			// No layout, return the body as-is
 			return $this->body;
 		}
 
+		// Set default menu and window titles if they're empty
 		$this->_menu_title = (! empty ($this->_menu_title)) ? $this->_menu_title : $this->title;
 		$this->_window_title = (! empty ($this->_window_title)) ? $this->_window_title : $this->title;
 
+		// No layout, use default
 		if ($this->layout === '') {
 			$this->layout = 'default';
 		}
+
+		// Fetch the default layout setting
 		if ($this->layout === 'default') {
-			$this->layout = conf('General', 'default_layout');
+			$this->layout = conf ('General', 'default_layout');
 		}
 
+		// Determine render method (preview or real)
 		if ($this->preview) {
 			return $tpl->render_preview ($this->layout, $this);
 		}
@@ -151,8 +159,10 @@ class Page {
 	 */
 	public function add_script ($script, $add_to = 'head') {
 		$script = Page::wrap_script ($script);
+
 		if (! in_array ($script, $this->scripts)) {
 			$this->scripts[] = $script;
+
 			if ($this->is_being_rendered) {
 				echo $script;
 			} elseif ($add_to === 'head') {

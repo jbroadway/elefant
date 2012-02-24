@@ -600,6 +600,7 @@ class Controller {
 
 	/**
 	 * Require the user to be logged in to proceed with the request.
+	 * If not, it will redirect to the appropriate login handler.
 	 */
 	public function require_login ($redirect = '/user/login') {
 		if (! User::require_login ()) {
@@ -609,6 +610,7 @@ class Controller {
 
 	/**
 	 * Require the user to be an administrator to proceed with the request.
+	 * If not, it will redirect to the appropriate admin login handler.
 	 */
 	public function require_admin ($redirect = '/admin') {
 		if (! User::require_admin ()) {
@@ -620,6 +622,8 @@ class Controller {
 	 * Require authentication via custom callbacks that are passed to `simple_auth()`.
 	 * If the second callback is missing, the first will be assumed to be an array
 	 * containing the two callbacks.
+	 *
+	 * See `apps/user/lib/Auth` for built-in auth handlers.
 	 */
 	public function require_auth ($verifier, $method = false) {
 		if ($method === false) {
