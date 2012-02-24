@@ -323,7 +323,7 @@ class Controller {
 		// Load the app's configuration settings if available
 		if (! isset (self::$appconf[$this->app])) {
 			try {
-				self::$appconf[$this->app] = @file_exists ('apps/' . $this->app . '/conf/config.php')
+				self::$appconf[$this->app] = file_exists ('apps/' . $this->app . '/conf/config.php')
 					? parse_ini_file ('apps/' . $this->app . '/conf/config.php', true)
 					: array ();
 			} catch (Exception $e) {
@@ -375,7 +375,7 @@ class Controller {
 		// If no / and doesn't match an app's name with an index.php
 		// handler, then use the default handler.
 		if (! strstr ($uri, '/')) {
-			if (@file_exists ('apps/' . $uri . '/handlers/index.php')) {
+			if (file_exists ('apps/' . $uri . '/handlers/index.php')) {
 				$uri .= '/index';
 			} else {
 				$this->add_param ($uri);
@@ -387,10 +387,10 @@ class Controller {
 		// until one matches.
 		list ($app, $handler) = preg_split ('/\//', $uri, 2);
 		$route = 'apps/' . $app . '/handlers/' . $handler . '.php';
-		while (! @file_exists ($route)) {
+		while (! file_exists ($route)) {
 			$route = preg_replace ('/\/([^\/]*)\.php$/e', '$this->add_param (\'\\1\')', $route);
 			if ($route === 'apps/' . $app . '/handlers.php') {
-				if (@file_exists ('apps/' . $app . '/handlers/index.php')) {
+				if (file_exists ('apps/' . $app . '/handlers/index.php')) {
 					$this->app = $app;
 					$this->uri = $app . '/index';
 					return 'apps/' . $app . '/handlers/index.php';

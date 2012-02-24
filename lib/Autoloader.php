@@ -44,10 +44,10 @@ function elefant_autoloader ($class) {
 		$class = str_replace ('\\', DIRECTORY_SEPARATOR, $class);
 
 		// Check for app\Class in lib and models folders
-		if (@file_exists ('apps/' . $app . '/lib/' . $class . '.php')) {
+		if (file_exists ('apps/' . $app . '/lib/' . $class . '.php')) {
 			require_once ('apps/' . $app . '/lib/' . $class . '.php');
 			return true;
-		} elseif (@file_exists ('apps/' . $app . '/models/' . $class . '.php')) {
+		} elseif (file_exists ('apps/' . $app . '/models/' . $class . '.php')) {
 			require_once ('apps/' . $app . '/models/' . $class . '.php');
 			return true;
 		}
@@ -59,14 +59,14 @@ function elefant_autoloader ($class) {
 			$file = 'lib/vendor/' . str_replace ('\\', '/', ltrim ($class, '\\')) . '.php';
 		}
 		$file = str_replace ('_', '/', $file);
-		if (@file_exists ($file)) {
+		if (file_exists ($file)) {
 			require_once ($file);
 		}
-	} elseif (@file_exists ('lib/' . $class . '.php')) {
+	} elseif (file_exists ('lib/' . $class . '.php')) {
 		// No namespace, check in lib/ first
 		require_once ('lib/' . $class . '.php');
 		return true;
-	} elseif (@file_exists ('lib/vendor/' . $class . '.php')) {
+	} elseif (file_exists ('lib/vendor/' . $class . '.php')) {
 		// No namespace, check in lib/vendor/ next
 		require_once ('lib/vendor/' . $class . '.php');
 		return true;

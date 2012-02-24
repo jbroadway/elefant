@@ -206,12 +206,12 @@ class Template {
 		if (strstr ($template, '/')) {
 			list ($app, $file) = preg_split ('/\//', $template, 2);
 			$file = 'apps/' . $app . '/views/' . $file . '.html';
-			if (! @file_exists ($file)) {
+			if (! file_exists ($file)) {
 				die ('Template not found: ' . $template);
 			}
-		} elseif (@file_exists ('layouts/' . $template . '.html')) {
+		} elseif (file_exists ('layouts/' . $template . '.html')) {
 			$file = 'layouts/' . $template . '.html';
-		} elseif (@file_exists ('layouts/' . $template . '/' . $template . '.html')) {
+		} elseif (file_exists ('layouts/' . $template . '/' . $template . '.html')) {
 			$file = 'layouts/' . $template . '/' . $template . '.html';
 		} else {
 			$file = 'layouts/default.html';

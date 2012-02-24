@@ -19,7 +19,7 @@ if (! User::require_admin ()) {
 	return;
 }
 
-$tools = array ('admin/pages' => array ('handler' => 'admin/pages', 'name' => i18n_get ('All Pages')));
+$tools = array ('admin/pages' => array ('handler' => 'admin/pages', 'name' => i18n_get ('All Pages'), 'class' => false));
 $res = glob ('apps/*/conf/config.php');
 $apps = db_pairs ('select * from apps');
 foreach ($res as $file) {

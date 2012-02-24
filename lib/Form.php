@@ -203,11 +203,11 @@ class Form {
 
 		// Fetch any form validation rules
 		if (! empty ($form_rules)) {
-			if (! @file_exists ($form_rules)) {
+			if (! file_exists ($form_rules)) {
 				list ($app, $form) = explode ('/', $form_rules);
 				$form_rules = 'apps/' . $app . '/forms/' . $form . '.php';
 			}
-			if (@file_exists ($form_rules)) {
+			if (file_exists ($form_rules)) {
 				$this->rules = parse_ini_file ($form_rules, true);
 			}
 			// Set the view by default based on the form rules (can be changed later)
@@ -603,9 +603,9 @@ class Form {
 
 			case 'exists':
 				if (strpos ($validator, '%s') !== false) {
-					return @file_exists (sprintf ($validator, $value));
+					return file_exists (sprintf ($validator, $value));
 				}
-				return @file_exists ($validator . '/' . $value);
+				return file_exists ($validator . '/' . $value);
 		}
 		// If tests fail, be safe and fail by default
 		return false;
@@ -632,7 +632,7 @@ class Form {
 	 * passed.
 	 */
 	public function verify_values ($values, $validations = array ()) {
-		if (is_string ($validations) && @file_exists ($validations)) {
+		if (is_string ($validations) && file_exists ($validations)) {
 			$validations = parse_ini_file ($validations, true);
 		}
 		$failed = array ();

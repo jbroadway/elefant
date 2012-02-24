@@ -31,7 +31,7 @@ $lock = new Lock ('Block', $id);
 $b = new Block ($id);
 if ($b->error) {
 	if (User::is_valid () && User::is ('admin')) {
-		echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false));
+		echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false, 'title' => false));
 	}
 	return;
 }

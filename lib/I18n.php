@@ -172,7 +172,7 @@ class I18n {
 	 * Includes the language index.
 	 */
 	public function getIndex () {
-		if ((! empty ($this->language)) && (@file_exists ($this->directory . '/' . $this->language . '.php'))) {
+		if ((! empty ($this->language)) && (file_exists ($this->directory . '/' . $this->language . '.php'))) {
 			include_once ($this->directory . '/' . $this->language . '.php');
 		}
 
@@ -245,7 +245,7 @@ class I18n {
 	 * 'name', 'code', 'locale', 'charset', 'fallback', and 'default'.
 	 */
 	public function getLanguages () {
-		if (@file_exists ($this->directory . '/languages.php')) {
+		if (file_exists ($this->directory . '/languages.php')) {
 			return parse_ini_file ($this->directory . '/languages.php', true);
 		} else {
 			$this->error = 'Language file (' . $this->directory . '/languages.php) does not exist!';
