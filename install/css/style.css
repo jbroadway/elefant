@@ -19,22 +19,18 @@ a:hover {
 a.next {
 	float: right;
 	padding: 7px 7px 0px 0px;
-	color: #A753CC;
 }
 
 h1 {
-	padding: 0px;
-	margin: 0px;
-	padding-bottom: 10px;
-	padding-right: 7px;
-	font-size: 21px;
-	padding-left: 150px;
+	padding: 0px 7px 10px 0px;
+	margin: -8px 0px 0px 150px;
+	color: transparent;
+	background: url(title.png);
+	background-repeat: no-repeat;
+	width: 228px;
+	height: 32px;
+	display: block;
 }
-
-	h1>span {
-		color: #A753CC;
-		font-style: italic;
-	}
 
 h2 {
 	padding: 0px;
@@ -69,6 +65,7 @@ h2 {
 	float: left;
 	padding: 0px;
 	margin: 0px;
+	clear: both;
 }
 
 	#steps ul {
