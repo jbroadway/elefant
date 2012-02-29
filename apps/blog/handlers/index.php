@@ -31,7 +31,14 @@ $page->next = $page->num + 2;
 
 if (count ($posts) == 0) {
 	echo '<p>' . i18n_get ('No posts yet... :(') . '</p>';
+	if (User::require_admin ()) {
+		echo '<p><a href="/blog/add">' . i18n_get ('Add Blog Post') . '</a></p>';
+	}
 } else {
+	if (User::require_admin ()) {
+		echo '<p><a href="/blog/add">' . i18n_get ('Add Blog Post') . '</a></p>';
+	}
+
 	foreach ($posts as $post) {
 		$post->url = '/blog/post/' . $post->id . '/' . blog_filter_title ($post->title);
 		$post->tag_list = explode (',', $post->tags);
