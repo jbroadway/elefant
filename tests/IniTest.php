@@ -4,17 +4,17 @@ require_once ('lib/Autoloader.php');
 
 class IniTest extends PHPUnit_Framework_TestCase {
 	function test_parse () {
-		$str = "one = two\nthree = On";
+		$str = "one = two\nthree = four";
 
 		$this->assertEquals (
-			array ('one' => 'two', 'three' => true),
+			array ('one' => 'two', 'three' => 'four'),
 			Ini::parse ($str)
 		);
 
-		$str = "[Section]\none = two\nthree = On";
+		$str = "[Section]\none = two\nthree = four";
 
 		$this->assertEquals (
-			array ('Section' => array ('one' => 'two', 'three' => true)),
+			array ('Section' => array ('one' => 'two', 'three' => 'four')),
 			Ini::parse ($str, true)
 		);
 	}
