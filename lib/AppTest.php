@@ -76,12 +76,6 @@ class AppTest extends PHPUnit_Framework_TestCase {
 	protected $backupGlobalsBlacklist = array ('i18n', 'memcache', 'page', 'tpl');
 
 	/**
-	 * Has the database connection been initialized and the schema
-	 * created?
-	 */
-	protected static $db_initialized = false;
-
-	/**
 	 * The Controller object.
 	 */
 	protected static $c;
@@ -140,34 +134,30 @@ class AppTest extends PHPUnit_Framework_TestCase {
 				'file' => ':memory:'
 			)
 		);
-		if (! self::$db_initialized) {
-			// Initializes PDO connection automatically
-			foreach (sql_split (file_get_contents ('conf/install_sqlite.sql')) as $sql) {
-				if (! db_execute ($sql)) {
-					die ('SQL failed: ' . $sql);
-				}
+
+		// Initializes PDO connection automatically
+		foreach (sql_split (file_get_contents ('conf/install_sqlite.sql')) as $sql) {
+			if (! db_execute ($sql)) {
+				die ('SQL failed: ' . $sql);
 			}
-
-			// Create default admin and member users
-			$date = gmdate ('Y-m-d H:i:s');
-			db_execute (
-				"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, 'Admin User', 'admin', ?, ?, ?)",
-				'admin@test.com',
-				User::encrypt_pass ('testing'),
-				$date, $date, $date,
-				json_encode (array ())
-			);
-			db_execute (
-				"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (2, ?, ?, null, ?, 'Joe Member', 'member', ?, ?, ?)",
-				'member@test.com',
-				User::encrypt_pass ('testing'),
-				$date, $date, $date,
-				json_encode (array ())
-			);
-
-			// Only create the schema once
-			self::$db_initialized = true;
 		}
+
+		// Create default admin and member users
+		$date = gmdate ('Y-m-d H:i:s');
+		db_execute (
+			"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, 'Admin User', 'admin', ?, ?, ?)",
+			'admin@test.com',
+			User::encrypt_pass ('testing'),
+			$date, $date, $date,
+			json_encode (array ())
+		);
+		db_execute (
+			"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (2, ?, ?, null, ?, 'Joe Member', 'member', ?, ?, ?)",
+			'member@test.com',
+			User::encrypt_pass ('testing'),
+			$date, $date, $date,
+			json_encode (array ())
+		);
 
 		$i18n = new I18n ('lang', array ('negotiation_method' => 'http'));
 		$page = new Page;
