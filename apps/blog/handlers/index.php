@@ -29,7 +29,7 @@ $page->last = $page->offset + count ($posts);
 $page->more = ($page->count > $page->last) ? true : false;
 $page->next = $page->num + 2;
 
-if (count ($posts) == 0) {
+if (! is_array ($posts) || count ($posts) === 0) {
 	echo '<p>' . i18n_get ('No posts yet... :(') . '</p>';
 	if (User::require_admin ()) {
 		echo '<p><a href="/blog/add">' . i18n_get ('Add Blog Post') . '</a></p>';
