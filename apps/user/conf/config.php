@@ -19,6 +19,12 @@ login_methods[] = google
 ;login_methods[] = twitter
 ;login_methods[] = facebook
 
+; Limit the number of login attempts, and how long to stop them (in seconds)
+; from trying again if they exceed the limit.
+
+login_attempt_limit = 5
+block_attempts_for = 900
+
 [Custom Handlers]
 
 ; You can override some of the built-in handlers with your own

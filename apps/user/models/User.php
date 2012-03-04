@@ -114,10 +114,29 @@ class User extends ExtendedModel {
 	 * twice).
 	 */
 	public static function verifier ($user, $pass) {
+		// If it's been called before for this user, return cached result
+		static $called = array ();
+		if (isset ($called[$user])) {
+			return $called[$user];
+		}
+
 		$u = db_single (
 			'select * from `user` where email = ?',
 			$user
 		);
+
+		// Check if they've exceeded their login attempt limit
+		global $memcache, $controller;
+		$appconf = parse_ini_file ('apps/user/conf/config.php', true);
+		$attempts = $memcache->get ('_user_login_attempts_' . session_id ());
+		if (! $attempts) {
+			$attempts = 0;
+		}
+		if ($attempts > $appconf['User']['login_attempt_limit']) {
+			$called[$user] = false;
+			$controller->redirect ('/user/too-many-attempts');
+		}
+
 		if ($u && crypt ($pass, $u->password) == $u->password) {
 			self::$user = new User ((array) $u, false);
 			self::$user->session_id = md5 (uniqid (mt_rand (), 1));
@@ -127,12 +146,28 @@ class User extends ExtendedModel {
 				self::$user->session_id = md5 (uniqid (mt_rand (), 1));
 				$try++;
 				if ($try == 5) {
+					$called[$user] = false;
 					return false;
 				}
 			}
 			$_SESSION['session_id'] = self::$user->session_id;
+
+			// Save the user agent so we can verify it against future sessions,
+			// and remove the login attempts cache item
+			$memcache->add ('_user_session_agent_' . $_SESSION['session_id'], $_SERVER['HTTP_USER_AGENT'], 0, time () + 2592000);
+			$memcache->delete ('_user_login_attempts_' . session_id ());
+
+			$called[$user] = true;
 			return true;
 		}
+
+		// Increment the number of attempts they've made
+		$attempts++;
+		if (! $memcache->add ('_user_login_attempts_' . session_id (), $attempts, 0, $appconf['User']['block_attempts_for'])) {
+			$memcache->replace ('_user_login_attempts_' . session_id (), $attempts, 0, $appconf['User']['block_attempts_for']);
+		}
+
+		$called[$user] = false;
 		return false;
 	}
 
@@ -153,6 +188,13 @@ class User extends ExtendedModel {
 				gmdate ('Y-m-d H:i:s')
 			);
 			if ($u) {
+				// Verify user agent as a last step (make hijacking harder)
+				global $memcache;
+				$ua = $memcache->get ('_user_session_agent_' . $_SESSION['session_id']);
+				if ($ua && $ua !== $_SERVER['HTTP_USER_AGENT']) {
+					return false;
+				}
+
 				self::$user = new User ((array) $u, false);
 				return true;
 			}
