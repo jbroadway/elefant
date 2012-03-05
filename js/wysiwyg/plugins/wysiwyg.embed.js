@@ -55,7 +55,7 @@
 						
 						var uiHtml = '';
 						for (var i = 0; i < _embed_list.length; i++) {
-							uiHtml += '<li><a href="javascript:void(0)" class="wysiwyg-embed-object" data-handler="' + i + '">' + _embed_list[i].label + '</a></li>';
+							uiHtml += '<li><a href="javascript:void(0)" class="wysiwyg-embed-object" id="wysiwyg-embed-object-' + i + '" data-handler="' + i + '">' + _embed_list[i].label + '</a></li>';
 						}
 						$('.wysiwyg-embed-object-list').html (uiHtml);
 						// enable pager for list
@@ -76,7 +76,7 @@
 							}
 							
 							// generate a form screen
-							uiHtml = '<form><input type="hidden" name="handler" value="' + obj.handler + '" />';
+							uiHtml = '<form id="wysiwyg-embed-form"><input type="hidden" name="handler" value="' + obj.handler + '" />';
 							uiHtml += '<p><strong>' + obj.label + '</strong></p>';
 
 							for (var i in obj.fields) {
@@ -217,9 +217,55 @@
 				});
 				
 				embedUI.open ();
+				
+				// If we're editing an existing element, start the dynamic objects dialog
+				// with that element selected and its form pre-filled with the existing
+				// embedded data.
+				if (self.embed_element !== null) {
+					var emb = parse_embed_string ($(self.embed_element).text ());
+					for (var i = 0; i < _embed_list.length; i++) {
+						if (_embed_list[i].handler === emb.handler) {
+							$('#wysiwyg-embed-object-' + i).click ();
+							// Fill with original values
+							var f = $('#wysiwyg-embed-form')[0];
+							for (var k in emb.data) {
+								if (f.elements[k]) {
+									f.elements[k].value = emb.data[k];
+								}
+							}
+							break;
+						}
+					}
+				}
 			}
 		};
 	};
+
+	/**
+	 * Parse an embed string and return its handler name and a list of
+	 * field names and values.
+	 */
+	function parse_embed_string (str) {
+		str = str.replace ('{!', '').replace ('!}', '').trim ();
+		if (str.indexOf ('?') !== -1) {
+			var split = str.split ('?'),
+				handler = split[0],
+				params = (split[1].indexOf ('&') !== -1) ? split[1].split ('&') : [split[1]],
+				data = {};
+
+			for (var i = 0; i < params.length; i++) {
+				split = params[i].split ('=');
+				data[split[0]] = decodeURIComponent (split[1]);
+			}
+		} else {
+			var handler = str,
+				data = {};
+		}
+		return {
+			handler: handler,
+			data: data
+		};
+	}
 
 	/**
 	 * Inserts the data into the content and closes the dialog window.
