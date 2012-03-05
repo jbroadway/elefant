@@ -65,6 +65,15 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 			'&lt;script type=&quot;text/javascript&quot;&gt;eval (&quot;alert (typeof window)&quot;)&lt;/script&gt;'
 		);
 	}
+
+	function test_escape () {
+		$t = new Template ('UTF-8');
+
+		$this->assertEquals (
+			'one {{ two }} three',
+			$t->parse_template ('one \\{{ two \\}} three')
+		);
+	}
 }
 
 ?>
