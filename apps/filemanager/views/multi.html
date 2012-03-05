@@ -3,7 +3,7 @@ $(function() {
 	$('#file').uploadify({
 		uploader        : '/apps/filemanager/js/uploadify/uploadify.swf',
 		script          : '/filemanager/multi',
-		scriptData      : { path: '/{{ path }}', uploadify_session_id: '{{$_SESSION.session_id}}' },
+		scriptData      : { path: '/{{ path }}', uploadify_session_id: '{{$_SESSION.session_id}}', uploadify_user_agent: '{{$_SERVER.HTTP_USER_AGENT}}' },
 		cancelImg       : '/apps/filemanager/js/uploadify/cancel.png',
 		buttonImg       : ' ',
 		buttonText      : '{"Browse"}',

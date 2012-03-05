@@ -6,8 +6,10 @@
 
 // Fetch the session from Uploadify
 if (isset ($_POST['uploadify_session_id'])) {
+	@session_set_cookie_params (time () + 2592000);
 	@session_start ();
 	$_SESSION['session_id'] = $_POST['uploadify_session_id'];
+	$_SERVER['HTTP_USER_AGENT'] = $_POST['uploadify_user_agent'];
 }
 
 // Authentication

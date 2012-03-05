@@ -177,8 +177,10 @@ class User extends ExtendedModel {
 	 * valid, since we have the data already.
 	 */
 	public static function method ($callback) {
-		@session_set_cookie_params (time () + 2592000);
-		@session_start ();
+		if (! isset ($_SESSION)) {
+			@session_set_cookie_params (time () + 2592000);
+			@session_start ();
+		}
 		if (isset ($_POST['username']) && isset ($_POST['password'])) {
 			return call_user_func ($callback, $_POST['username'], $_POST['password']);
 		} elseif (isset ($_SESSION['session_id'])) {
