@@ -128,6 +128,44 @@ tt {
 		float: right;
 	}
 
+.form {
+	width: 650px;
+	margin: auto;
+}
+
+.wysiwyg {
+	border: 0px none !important;
+	padding: 7px 0px 0px 0px !important;
+	background-image: none !important;
+	background-color: transparent !important;
+}
+
+	.wysiwyg ul.toolbar {
+		border-bottom: 2px solid transparent !important;
+	}
+
+		.wysiwyg ul.toolbar li {
+			border: 0px none !important;
+			margin: 2px !important;
+		}
+
+		.wysiwyg ul.toolbar li.wysiwyg-button-hover {
+			border: 2px solid #e5e5e5 !important;
+			background-color: #fff !important;
+			margin: 0px !important;
+		}
+
+		.wysiwyg ul.toolbar li.separator {
+			border-left: 1px solid #ccc !important;
+		}
+
+	.wysiwyg iframe {
+		width: 648px !important;
+		-webkit-border-radius: 2px;
+		-moz-border-radius: 2px;
+		border-radius: 2px;
+	}
+
 #extra-options {
 	display: none;
 }
