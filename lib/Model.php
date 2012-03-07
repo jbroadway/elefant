@@ -157,6 +157,11 @@ class Model {
 	public $verify = array ();
 
 	/**
+	 * A list of fields that failed validation on the last `put()` call.
+	 */
+	public $failed = array ();
+
+	/**
 	 * If `$vals` is false, we're creating a new object from scratch.
 	 * If it contains an array, it's a new object from an array.
 	 * If `$is_new` is false, then the array is an existing field
@@ -235,8 +240,11 @@ class Model {
 		$f = new Form;
 		$failed = $f->verify_values ($this->data, $this->verify);
 		if (! empty ($failed)) {
+			$this->failed = $failed;
 			$this->error = 'Validation failed for: ' . join (', ', $failed);
 			return false;
+		} else {
+			$this->failed = array ();
 		}
 
 		if ($this->is_new) {
