@@ -22,6 +22,8 @@ if (! isset ($rules[$_POST['handler']])) {
 	return;
 }
 
+$reverse = (isset ($_POST['reverse']) && $_POST['reverse'] === 'yes') ? true : false;
+
 // apply filters
 $out = array ();
 foreach ($_POST['data'] as $key => $value) {
@@ -32,7 +34,7 @@ foreach ($_POST['data'] as $key => $value) {
 		if (isset ($rules[$_POST['handler']][$key]['require'])) {
 			require_once ($rules[$_POST['handler']][$key]['require']);
 		}
-		$out[$key] = $rules[$_POST['handler']][$key]['filter'] ($value);
+		$out[$key] = $rules[$_POST['handler']][$key]['filter'] ($value, $reverse);
 	}
 }
 

@@ -230,7 +230,15 @@
 							var f = $('#wysiwyg-embed-form')[0];
 							for (var k in emb.data) {
 								if (f.elements[k]) {
-									f.elements[k].value = emb.data[k];
+									if (_embed_list[i].fields[k].hasOwnProperty ('filter')) {
+										var data = {};
+										data[k] = emb.data[k];
+										$.post ('/admin/embed/filters', {handler: emb.handler, data: data, reverse: 'yes'}, function (res) {
+											f.elements[k].value = res.data[k];
+										});
+									} else {
+										f.elements[k].value = emb.data[k];
+									}
 								}
 							}
 							break;
