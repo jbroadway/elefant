@@ -20,12 +20,16 @@ if (! $this->params[0]) {
 		return;
 	}
 	$user = User::$user;
+	$page->title = $user->name;
+	$data = $user->orig ();
+	$data->is_current = true;
 } else {
 	$user = new User ($this->params[0]);
+	$page->title = $user->name;
+	$data = $user->orig ();
+	$data->is_current = (User::is_valid () && $this->params[0] === User::$user->id) ? true : false;
 }
 
-$page->title = $user->name;
-$data = $user->orig ();
 $data->hash = md5 (strtolower (trim ($data->email)));
 echo $tpl->render ('user/index', $data);
 
