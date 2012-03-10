@@ -37,6 +37,7 @@ if (! User::require_login ()) {
 	if (! $this->internal && ! empty ($_POST['username'])) {
 		echo '<p>' . i18n_get ('Incorrect email or password, please try again.') . '</p>';
 	}
+	$_POST['signup_handler'] = $appconf['Custom Handlers']['user/signup'];
 	echo $tpl->render ('user/login', $_POST);
 } elseif (! $this->internal) {
 	$this->redirect ($_POST['redirect']);
