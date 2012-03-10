@@ -4,6 +4,11 @@
  * Twitter social login handler.
  */
 
+if (! in_array ('twitter', $appconf['User']['login_methods'])) {
+	echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));
+	return;
+}
+
 $twauth = new tmhOAuth (array (
 	'consumer_key' => $appconf['Twitter']['consumer_key'],
 	'consumer_secret' => $appconf['Twitter']['consumer_secret']

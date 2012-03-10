@@ -4,6 +4,11 @@
  * Google social login handler.
  */
 
+if (! in_array ('google', $appconf['User']['login_methods'])) {
+	echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));
+	return;
+}
+
 $openid = new LightOpenID ($_SERVER['HTTP_HOST']);
 
 // handle the openid request

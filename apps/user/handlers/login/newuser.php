@@ -4,6 +4,11 @@
  * New user form for registering social login users.
  */
 
+if (! $appconf['Custom Handlers']['user/signup']) {
+	echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));
+	return;
+}
+
 $f = new Form ('post', 'user/login/newuser');
 if ($f->submit ()) {
 	$date = gmdate ('Y-m-d H:i:s');

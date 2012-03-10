@@ -4,6 +4,11 @@
  * Facebook social login handler.
  */
 
+if (! in_array ('facebook', $appconf['User']['login_methods'])) {
+	echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));
+	return;
+}
+
 $app_id = $appconf['Facebook']['application_id'];
 $app_secret = $appconf['Facebook']['application_secret'];
 $my_url = 'http://' . $_SERVER['HTTP_HOST'] . '/user/login/facebook?redirect=' . urlencode ($_GET['redirect']);
