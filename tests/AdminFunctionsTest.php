@@ -1,9 +1,16 @@
 <?php
 
+require_once ('lib/Functions.php');
 require_once ('lib/Autoloader.php');
 require_once ('apps/admin/lib/Functions.php');
 
 class AdminFunctionsTest extends PHPUnit_Framework_TestCase {
+	static function setUpBeforeClass () {
+		if (file_exists ('cache/html')) {
+			rmdir_recursive ('cache/html');
+		}
+	}
+
 	function test_embed_filter_and_lookup () {
 		// Test filter returns non-empty ID
 		$html = 'testing<br />';

@@ -26,11 +26,20 @@ class LockTest extends PHPUnit_Framework_TestCase {
 		User::$user = false;
 	}
 
+	function test_construct () {
+		$lock = new Lock ('foo', 'bar');
+		$this->assertEquals ('foo', $lock->resource);
+		$this->assertEquals ('bar', $lock->key);
+	}
+
 	function test_add () {
 		// Add the lock and return id=1
 		$this->assertEquals (self::$lock->add (), 1);
 	}
 
+	/**
+	 * @depends test_add
+	 */
 	function test_info () {
 		// Check the lock info
 		$info = db_single ('select * from lock');
@@ -38,6 +47,9 @@ class LockTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($info->user, 1);
 	}
 
+	/**
+	 * @depends test_info
+	 */
 	function test_exists () {
 		// Shouldn't find our lock
 		$this->assertEquals (self::$lock->exists (), false);
@@ -47,6 +59,9 @@ class LockTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (self::$lock->exists (), 1);
 	}
 
+	/**
+	 * @depends test_exists
+	 */
 	function test_update () {
 		// Get the lock info
 		$info = db_single ('select * from lock');
@@ -60,10 +75,45 @@ class LockTest extends PHPUnit_Framework_TestCase {
 		$this->assertNotEquals (self::$lock->info (), $info);
 	}
 
+	/**
+	 * @depends test_update
+	 */
 	function test_remove () {
 		// Remove the lock
 		$this->assertEquals (self::$lock->remove (), true);
 		$this->assertFalse (self::$lock->info ());
+	}
+
+	/**
+	 * @depends test_remove
+	 */
+	function test_clear () {
+		// Add a lock
+		$this->assertEquals (self::$lock->add (), 1);
+		$this->assertTrue (self::$lock->clear ());
+		$this->assertEquals (0, db_shift ('select count(*) from lock'));
+	}
+
+	/**
+	 * @depends test_clear
+	 */
+	function test_clear_all () {
+		// Add a lock
+		$this->assertEquals (self::$lock->add (), 1);
+		$this->assertTrue (self::$lock->clear_all ());
+		$this->assertEquals (0, db_shift ('select count(*) from lock'));
+	}
+
+	/**
+	 * @depends test_clear_all
+	 */
+	function test_errors () {
+		unset (Database::$connections['master']);
+		$this->assertFalse (self::$lock->add ());
+		$this->assertNotEquals (false, self::$lock->error);
+
+		$this->assertFalse (self::$lock->update ());
+		$this->assertNotEquals (false, self::$lock->error);
 	}
 }
 

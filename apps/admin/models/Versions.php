@@ -105,7 +105,7 @@ class Versions extends Model {
 	 */
 	public static function recent ($user = false, $limit = 10, $offset = 0) {
 		$v = Versions::query ();
-		if ($user) {
+		if ($user !== false) {
 			$v->where ('user', $user);
 		}
 		return $v->order ('ts desc')
@@ -116,7 +116,8 @@ class Versions extends Model {
 
 	/**
 	 * Get recent versions of an object, or of objects of a specific
-	 * class.
+	 * class. If `$limit` is set to `true` (boolean), it will return
+	 * a count of the history.
 	 */
 	public static function history ($obj, $limit = 10, $offset = 0) {
 		if ($limit === true) {

@@ -79,6 +79,19 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 
 		$modified = Versions::diff ($history[0], $history[1]);
 		$this->assertEquals ($modified[0], 'name');
+
+		// get a count with class name (groups by pkey, so one result)
+		$history = Versions::history ('Foobar', true);
+		var_dump ($history);
+		$this->assertEquals ($history, 1);
+
+		// get a count with object (all for the item, so two results)
+		$history = Versions::history (self::$foo, true);
+		$this->assertEquals ($history, 2);
+
+		// get history from class name (groups by pkey, so one result)
+		$history = Versions::history ('Foobar');
+		$this->assertEquals (count ($history), 1);
 	}
 
 	/**
@@ -91,6 +104,36 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 
 		$restored = self::$v->restore ($recent[0]);
 		$this->assertEquals ($restored->name, 'Test2');
+	}
+
+	/**
+	 * @depends test_recent
+	 */
+	function test_get_classes () {
+		$res = self::$v->get_classes ();
+		$this->assertEquals (array ('Foobar'), $res);
+	}
+
+	/**
+	 * @depends test_get_classes
+	 */
+	function test_restore_deleted () {
+		// test restore on deleted item
+		$foo = new Foobar (array ('id' => 5, 'name' => 'Deleted'));
+		$v = Versions::add ($foo);
+		$foo->remove ();
+		$foo2 = $v->restore ();
+		$this->assertEquals ($foo, $foo2);
+	}
+
+	/**
+	 * @depends test_get_classes
+	 */
+	function test_recent_user () {
+		// recent with user
+		db_execute ('update versions set user = 1');
+		$recent = Versions::recent (1);
+		$this->assertEquals (count ($recent), 2);
 	}
 }
 
