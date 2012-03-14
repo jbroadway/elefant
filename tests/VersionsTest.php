@@ -82,7 +82,6 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 
 		// get a count with class name (groups by pkey, so one result)
 		$history = Versions::history ('Foobar', true);
-		var_dump ($history);
 		$this->assertEquals ($history, 1);
 
 		// get a count with object (all for the item, so two results)
