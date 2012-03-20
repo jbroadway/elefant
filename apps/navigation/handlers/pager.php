@@ -54,7 +54,7 @@ $o->count = $data['count']; // count of results in this set
 $o->url = $data['url']; // the url format for building pager links
 
 // the page number from the current url, or zero
-$url = str_replace ('%d', '([0-9]+)', $o->url);
+$url = str_replace ('%d', '([0-9]+)', preg_quote ($o->url));
 $o->num = (preg_match ('|' . $url . '|', $_SERVER['REQUEST_URI'], $matches))
 	? (int) $matches[1]
 	: 1;
