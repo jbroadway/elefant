@@ -70,6 +70,26 @@
  *         {% end %}
  *     {% end %}
  *
+ * To break up your template into smaller parts, you can use the `inc`
+ * tag to include one template from inside another. For example:
+ *
+ *     {% inc header %}
+ *
+ * This will include the contents of `layouts/header.html` into the
+ * current template, with the same data passed to it as the main template
+ * file.
+ *
+ * You can also specify subfolders in this way, to better organize your
+ * templates into themes. If you have a theme named `layouts/mytheme`
+ * then you can include a `header.html` template within it via:
+ *
+ *     {% inc mytheme/header %}
+ *
+ * Note that this will first look for `apps/mytheme/views/header.html`,
+ * which would be the most frequently desired behaviour, and second it
+ * will look for `layouts/mytheme/header.html`, so be sure to name your
+ * themes with unique names that do not conflict with the names of apps.
+ *
  * ## Usage in PHP
  *
  * To call a template, use:
@@ -200,14 +220,18 @@ class Template {
 
 		// Resolve the template to a file name, in one of:
 		// `apps/appname/views/filename.html`
+		// `layouts/themename/filename.html`
 		// `layouts/filename.html`
 		// `layouts/filename/filename.html`
 		// `layouts/default.html`
 		if (strstr ($template, '/')) {
-			list ($app, $file) = preg_split ('/\//', $template, 2);
-			$file = 'apps/' . $app . '/views/' . $file . '.html';
+			list ($app, $view) = preg_split ('/\//', $template, 2);
+			$file = 'apps/' . $app . '/views/' . $view . '.html';
 			if (! file_exists ($file)) {
-				die ('Template not found: ' . $template);
+				$file = 'layouts/' . $app . '/' . $view . '.html';
+				if (! file_exists ($file)) {
+					die ('Template not found: ' . $template);
+				}
 			}
 		} elseif (file_exists ('layouts/' . $template . '.html')) {
 			$file = 'layouts/' . $template . '.html';
@@ -507,6 +531,11 @@ class Template {
 			$block = $val;
 			$extra = '';
 		}
+
+		if ($block === 'inc' || $block === 'include') {
+			return '<?php echo $this->render (\'' . $extra . '\', $data); ?>';
+		}
+
 		if (strstr ($extra, '$_')) {
 			if (strstr ($val, '.')) {
 				$extra = preg_replace ('/\.([a-zA-Z0-9_]+)/', '[\'\1\']', $extra, 1);
