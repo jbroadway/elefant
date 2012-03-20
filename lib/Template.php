@@ -70,6 +70,26 @@
  *         {% end %}
  *     {% end %}
  *
+ * To break up your template into smaller parts, you can use the `inc`
+ * tag to include one template from inside another. For example:
+ *
+ *     {% inc header %}
+ *
+ * This will include the contents of `layouts/header.html` into the
+ * current template, with the same data passed to it as the main template
+ * file.
+ *
+ * You can also specify subfolders in this way, to better organize your
+ * templates into themes. If you have a theme named `layouts/mytheme`
+ * then you can include a `header.html` template within it via:
+ *
+ *     {% inc mytheme/header %}
+ *
+ * Note that this will first look for `apps/mytheme/views/header.html`,
+ * which would be the most frequently desired behaviour, and second it
+ * will look for `layouts/mytheme/header.html`, so be sure to name your
+ * themes with unique names that do not conflict with the names of apps.
+ *
  * ## Usage in PHP
  *
  * To call a template, use:
@@ -200,18 +220,22 @@ class Template {
 
 		// Resolve the template to a file name, in one of:
 		// `apps/appname/views/filename.html`
+		// `layouts/themename/filename.html`
 		// `layouts/filename.html`
 		// `layouts/filename/filename.html`
 		// `layouts/default.html`
 		if (strstr ($template, '/')) {
-			list ($app, $file) = preg_split ('/\//', $template, 2);
-			$file = 'apps/' . $app . '/views/' . $file . '.html';
-			if (! @file_exists ($file)) {
-				die ('Template not found: ' . $template);
+			list ($app, $view) = preg_split ('/\//', $template, 2);
+			$file = 'apps/' . $app . '/views/' . $view . '.html';
+			if (! file_exists ($file)) {
+				$file = 'layouts/' . $app . '/' . $view . '.html';
+				if (! file_exists ($file)) {
+					die ('Template not found: ' . $template);
+				}
 			}
-		} elseif (@file_exists ('layouts/' . $template . '.html')) {
+		} elseif (file_exists ('layouts/' . $template . '.html')) {
 			$file = 'layouts/' . $template . '.html';
-		} elseif (@file_exists ('layouts/' . $template . '/' . $template . '.html')) {
+		} elseif (file_exists ('layouts/' . $template . '/' . $template . '.html')) {
 			$file = 'layouts/' . $template . '/' . $template . '.html';
 		} else {
 			$file = 'layouts/default.html';
@@ -266,11 +290,15 @@ class Template {
 	 * code, eliminating the possibility of exposing a security hole.
 	 */
 	public function parse_template ($val) {
+		$val = str_replace ('\\{{', '#EOBRACE#', $val);
+		$val = str_replace ('\\}}', '#ECBRACE#', $val);
 		$val = preg_replace ('/\{\{ ?(.*?) ?\}\}/e', '$this->replace_vars (\'\\1\')', $val);
 		$val = preg_replace ('/\{[\'"] ?(.*?) ?[\'"]\}/e', '$this->replace_strings (\'\\1\')', $val);
 		$val = preg_replace ('/\{\% ?(.*?) ?\%\}/e', '$this->replace_blocks (\'\\1\')', $val);
 		$val = preg_replace ('/\{\! ?(.*?) ?\!\}/e', '$this->replace_includes (\'\\1\')', $val);
 		$val = preg_replace ('/\{# ?(.*?) ?#\}/e', '$this->hard_codes (\'\\1\')', $val);
+		$val = str_replace ('#EOBRACE#', '{{', $val);
+		$val = str_replace ('#ECBRACE#', '}}', $val);
 		return $val;
 	}
 
@@ -435,9 +463,35 @@ class Template {
 
 	/**
 	 * Sanitize a value for safe output, helping to prevent XSS attacks.
+	 * Please note that this method can still be insecure if used in an
+	 * unquoted portion of an HTML tag, for example:
+	 *
+	 * Don't do this:
+	 *
+	 *     <a href="/example" {{ some_var }}>click me</a>
+	 *
+	 * But this is okay:
+	 *
+	 *     <a href="/example" id="{{ some_var }}">click me</a>
+	 *
+	 * And so is this:
+	 *
+	 *     <span id="some-var">{{ some_var }}</span>
+	 *
+	 * In the first case, if the string were to contain something like
+	 * `onclick=alert(document.cookie)` then your visitors would be
+	 * exposed to the malicious JavaScript.
+	 *
+	 * The key is to know where your data comes from, and to act accordingly.
+	 * Not all cases of the first example are necessarily a security hole,
+	 * but it should only be used if you know the source and have validated
+	 * your data beforehand.
 	 */
 	public static function sanitize ($val, $charset = 'UTF-8') {
-		return htmlspecialchars ($val, ENT_QUOTES | ENT_IGNORE, $charset);
+		if (! defined ('ENT_SUBSTITUTE')) {
+			define ('ENT_SUBSTITUTE', ENT_IGNORE);
+		}
+		return htmlspecialchars ($val, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
 	}
 
 	/**
@@ -477,6 +531,11 @@ class Template {
 			$block = $val;
 			$extra = '';
 		}
+
+		if ($block === 'inc' || $block === 'include') {
+			return '<?php echo $this->render (\'' . $extra . '\', $data); ?>';
+		}
+
 		if (strstr ($extra, '$_')) {
 			if (strstr ($val, '.')) {
 				$extra = preg_replace ('/\.([a-zA-Z0-9_]+)/', '[\'\1\']', $extra, 1);

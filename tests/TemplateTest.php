@@ -37,6 +37,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($t->replace_blocks ('if $_POST.value'), '<?php if ($_POST[\'value\']) { ?>');
 		$this->assertEquals ($t->replace_blocks ('elseif foo'), '<?php } elseif ($data->foo) { ?>');
 		$this->assertEquals ($t->replace_blocks ('foreach foo'), '<?php foreach ($data->foo as $data->loop_index => $data->loop_value) { ?>');
+		$this->assertEquals ($t->replace_blocks ('inc foo'), '<?php echo $this->render (\'foo\', $data); ?>');
 	}
 
 	function test_replace_includes () {
@@ -63,6 +64,15 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (
 			$t->sanitize ('<script type="text/javascript">eval ("alert (typeof window)")</script>'),
 			'&lt;script type=&quot;text/javascript&quot;&gt;eval (&quot;alert (typeof window)&quot;)&lt;/script&gt;'
+		);
+	}
+
+	function test_escape () {
+		$t = new Template ('UTF-8');
+
+		$this->assertEquals (
+			'one {{ two }} three',
+			$t->parse_template ('one \\{{ two \\}} three')
 		);
 	}
 }
