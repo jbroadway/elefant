@@ -12,7 +12,16 @@ if (! $this->internal) {
 require_once ('apps/blog/lib/Filters.php');
 
 $p = new blog\Post;
-$pg->posts = $p->headlines ();
+if ($data['tag'] !== '') {
+	$out = array ();
+	$tagged = $p->tagged ($data['tag']);
+	foreach ($tagged as $post) {
+		$out[$post->id] = $post->title;
+	}
+	$pg->posts = $out;
+} else {
+	$pg->posts = $p->headlines ();
+}
 echo $tpl->render ('blog/headlines', $pg);
 
 ?>

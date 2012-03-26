@@ -4,6 +4,11 @@
 
 label = "Blog: Latest Posts"
 
+tag[label] = "Tag (optional)"
+tag[type] = select
+tag[require] = "apps/blog/lib/Functions.php"
+tag[callback] = "blog_get_tags"
+
 [blog/tags]
 
 label = "Blog: Tag Cloud"
