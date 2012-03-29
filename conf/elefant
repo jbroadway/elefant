@@ -224,12 +224,12 @@ if (count ($argv) > 1) {
 				$argv[2]
 			));
 			file_put_contents ('apps/' . $argv[2] . '/handlers/admin.php', sprintf (
-				"<?php\n\nif (! User::require_admin ()) {\n\t\$this->redirect ('/admin');\n}\n\n\$page->title = '%s admin';\n\$page->layout = 'admin';\n\n?>",
+				"<?php\n\n\$this->require_admin ();\n\n\$page->layout = 'admin';\n\$page->title = '%s admin';\n\n?>",
 				ucfirst ($argv[2])
 			));
 			file_put_contents ('apps/' . $argv[2] . '/views/index.html', '<p>{{ body|none }}</p>');
 			file_put_contents ('apps/' . $argv[2] . '/conf/config.php', sprintf (
-				"; <?php\n\n[Admin]\n\nhandler = %s/admin\nname = %s\n\n; */ ?>",
+				"; <?php /*\n\n[Admin]\n\nhandler = %s/admin\nname = %s\n\n; */ ?>",
 				$argv[2],
 				ucfirst ($argv[2])
 			));
