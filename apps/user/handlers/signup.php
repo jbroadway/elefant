@@ -30,18 +30,17 @@ if ($f->submit ()) {
 	$u->put ();
 	Versions::add ($u);
 	if (! $u->error) {
-		if (! @mail (
-			$_POST['name'] . ' <' . $_POST['email'] . '>',
-			i18n_get ('Please confirm your email address'),
-			$tpl->render ('user/email/verification', array (
-				'verifier' => $verifier,
-				'email' => $_POST['email'],
-				'name' => $_POST['name']
-			)),
-			'From: ' . conf ('General', 'site_name') . ' <' . conf ('General', 'email_from') . '>'
-		)) {
-			// undo verification since email failed
-			// here we assume they're okay
+		try {
+			Mailer::send (array (
+				'to' => array ($_POST['email'], $_POST['name']),
+				'subject' => i18n_get ('Please confirm your email address'),
+				'text' => $tpl->render ('user/email/verification', array (
+					'verifier' => $verifier,
+					'email' => $_POST['email'],
+					'name' => $_POST['name']
+				))
+			));
+		} catch (Exception $e) {
 			@error_log ('Email failed (user/signup): ' . $u->error);
 			$u->userdata = array ();
 			$u->put ();

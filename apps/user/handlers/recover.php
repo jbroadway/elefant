@@ -16,16 +16,17 @@ if ($f->submit ()) {
 	$u->userdata = $data;
 	$u->put ();
 
-	if (! @mail (
-		$u->name . ' <' . $u->email . '>',
-		i18n_get ('Password recovery'),
-		$tpl->render ('user/email/recover', array (
-			'recover' => $data['recover'],
-			'email' => $u->email,
-			'name' => $u->name
-		)),
-		'From: ' . conf ('General', 'site_name') . ' <' . conf ('General', 'email_from') . '>'
-	)) {
+	try {
+		Mailer::send (array (
+			'to' => array ($u->email, $u->name),
+			'subject' => i18n_get ('Password recovery'),
+			'text' => $tpl->render ('user/email/recover', array (
+				'recover' => $data['recover'],
+				'email' => $u->email,
+				'name' => $u->name
+			))
+		));
+	} catch (Exception $e) {
 		@error_log ('Email failed (user/recover): ' . $_POST['email']);
 		$page->title = i18n_get ('An Error Occurred');
 		echo '<p>' . i18n_get ('Please try again later.') . '</p>';
