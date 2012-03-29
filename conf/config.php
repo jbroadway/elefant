@@ -100,4 +100,44 @@ admin/delete[] = navigation/hook/delete
 ;backend = memcache
 ;server[] = localhost:11211
 
+[Mailer]
+
+; This is where you configure your settings for sending emails.
+; Email sending is powered by the Zend Framework's Mail package.
+; For more info on the configuration options for the various
+; transport methods here, see:
+; http://framework.zend.com/manual/en/zend.mail.html
+
+; To override the default email from info in the
+; global config file, edit these:
+email_from = default
+email_name = default
+
+; To send using PHP's mail() function, use this:
+transport[type] = sendmail
+
+; To send using an SMTP server, use this:
+;transport[type] = smtp
+;transport[host] = 127.0.0.1
+;transport[name] = localhost
+
+; To add TLS-based encryption to the SMTP connection:
+;transport[ssl]  = tls
+;transport[port] = 25
+
+; To add SSL-based encryption to the SMTP connection:
+;transport[ssl]  = ssl
+;transport[port] = 465
+
+; To add authentication to the SMTP connection:
+;transport[auth] = plain
+;transport[auth] = login
+;transport[auth] = crammd5
+;transport[username] = username
+;transport[password] = password
+
+; To send to a file in conf/mailer, use this:
+;transport[type] = file
+;transport[folder] = cache/mailer
+
 ; */ ?>
