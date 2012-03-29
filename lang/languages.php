@@ -27,6 +27,14 @@ charset                 = UTF-8
 fallback                = Off
 default                 = Off
 
+[nl]
+
+name                    = Nederlands
+code                    = nl
+charset                 = UTF-8
+fallback                = Off
+default                 = Off
+
 [zh]
 
 name                    = "简体中文"
