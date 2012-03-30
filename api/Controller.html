@@ -98,6 +98,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
+                                          <a class="source" href="./Acl.html">
+                              Acl.php              </a>
+                                          <a class="source" href="./AppTest.html">
+                              AppTest.php              </a>
                                           <a class="source" href="./Autoloader.html">
                               Autoloader.php              </a>
                                           <a class="source" href="./Cache.html">
@@ -108,14 +112,22 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               Database.php              </a>
                                           <a class="source" href="./Debugger.html">
                               Debugger.php              </a>
+                                          <a class="source" href="./ExtendedModel.html">
+                              ExtendedModel.php              </a>
                                           <a class="source" href="./Form.html">
                               Form.php              </a>
                                           <a class="source" href="./Functions.html">
                               Functions.php              </a>
                                           <a class="source" href="./I18n.html">
                               I18n.php              </a>
+                                          <a class="source" href="./Ini.html">
+                              Ini.php              </a>
+                                          <a class="source" href="./Mailer.html">
+                              Mailer.php              </a>
                                           <a class="source" href="./MemcacheExt.html">
                               MemcacheExt.php              </a>
+                                          <a class="source" href="./MemcacheRedis.html">
+                              MemcacheRedis.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
                                           <a class="source" href="./MongoManager.html">
@@ -591,7 +603,8 @@ interesting with the id:</p>
               <p>Check for a cached copy of this handler's output</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="nv">$out</span> <span class="o">=</span> <span class="nv">$memcache</span><span class="o">-&gt;</span><span class="na">get</span> <span class="p">(</span><span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">uri</span><span class="p">));</span>
+              <div class="highlight"><pre>  <span class="nv">$cache_uri</span> <span class="o">=</span> <span class="s1">&#39;_c_&#39;</span> <span class="o">.</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">uri</span><span class="p">);</span>
+  <span class="nv">$out</span> <span class="o">=</span> <span class="nv">$memcache</span><span class="o">-&gt;</span><span class="na">get</span> <span class="p">(</span><span class="nv">$cache_uri</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="nv">$out</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="nv">$out</span><span class="p">;</span>
   <span class="p">}</span></pre></div>            </td>
@@ -618,7 +631,7 @@ interesting with the id:</p>
             <td class="code">
               <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$appconf</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">app</span><span class="p">]))</span> <span class="p">{</span>
    <span class="k">try</span> <span class="p">{</span>
-    <span class="nx">self</span><span class="o">::</span><span class="nv">$appconf</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">app</span><span class="p">]</span> <span class="o">=</span> <span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">app</span> <span class="o">.</span> <span class="s1">&#39;/conf/config.php&#39;</span><span class="p">)</span>
+    <span class="nx">self</span><span class="o">::</span><span class="nv">$appconf</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">app</span><span class="p">]</span> <span class="o">=</span> <span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">app</span> <span class="o">.</span> <span class="s1">&#39;/conf/config.php&#39;</span><span class="p">)</span>
      <span class="o">?</span> <span class="nb">parse_ini_file</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">app</span> <span class="o">.</span> <span class="s1">&#39;/conf/config.php&#39;</span><span class="p">,</span> <span class="k">true</span><span class="p">)</span>
      <span class="o">:</span> <span class="k">array</span> <span class="p">();</span>
    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
@@ -662,9 +675,9 @@ interesting with the id:</p>
             <td class="code">
               <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$timeout</span> <span class="o">=</span> <span class="nb">is_numeric</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="p">)</span> <span class="o">?</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span> <span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-   <span class="nv">$res</span> <span class="o">=</span> <span class="nv">$memcache</span><span class="o">-&gt;</span><span class="na">replace</span> <span class="p">(</span><span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">uri</span><span class="p">),</span> <span class="nv">$out</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
+   <span class="nv">$res</span> <span class="o">=</span> <span class="nv">$memcache</span><span class="o">-&gt;</span><span class="na">replace</span> <span class="p">(</span><span class="nv">$cache_uri</span><span class="p">,</span> <span class="nv">$out</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
    <span class="k">if</span> <span class="p">(</span><span class="nv">$res</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nv">$memcache</span><span class="o">-&gt;</span><span class="na">set</span> <span class="p">(</span><span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">uri</span><span class="p">),</span> <span class="nv">$out</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
+    <span class="nv">$memcache</span><span class="o">-&gt;</span><span class="na">set</span> <span class="p">(</span><span class="nv">$cache_uri</span><span class="p">,</span> <span class="nv">$out</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
    <span class="p">}</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nv">$out</span><span class="p">;</span>
@@ -726,7 +739,7 @@ interesting with the id:</p>
             </td>
             <td class="code">
               <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">strstr</span> <span class="p">(</span><span class="nv">$uri</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">))</span> <span class="p">{</span>
-   <span class="k">if</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$uri</span> <span class="o">.</span> <span class="s1">&#39;/handlers/index.php&#39;</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$uri</span> <span class="o">.</span> <span class="s1">&#39;/handlers/index.php&#39;</span><span class="p">))</span> <span class="p">{</span>
     <span class="nv">$uri</span> <span class="o">.=</span> <span class="s1">&#39;/index&#39;</span><span class="p">;</span>
    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">add_param</span> <span class="p">(</span><span class="nv">$uri</span><span class="p">);</span>
@@ -754,10 +767,10 @@ interesting with the id:</p>
             <td class="code">
               <div class="highlight"><pre>  <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$handler</span><span class="p">)</span> <span class="o">=</span> <span class="nb">preg_split</span> <span class="p">(</span><span class="s1">&#39;/\//&#39;</span><span class="p">,</span> <span class="nv">$uri</span><span class="p">,</span> <span class="m">2</span><span class="p">);</span>
   <span class="nv">$route</span> <span class="o">=</span> <span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/handlers/&#39;</span> <span class="o">.</span> <span class="nv">$handler</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
-  <span class="k">while</span> <span class="p">(</span><span class="o">!</span> <span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$route</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">while</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$route</span><span class="p">))</span> <span class="p">{</span>
    <span class="nv">$route</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\/([^\/]*)\.php$/e&#39;</span><span class="p">,</span> <span class="s1">&#39;$this-&gt;add_param (\&#39;\\1\&#39;)&#39;</span><span class="p">,</span> <span class="nv">$route</span><span class="p">);</span>
    <span class="k">if</span> <span class="p">(</span><span class="nv">$route</span> <span class="o">===</span> <span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/handlers.php&#39;</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/handlers/index.php&#39;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/handlers/index.php&#39;</span><span class="p">))</span> <span class="p">{</span>
      <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">app</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">;</span>
      <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">uri</span> <span class="o">=</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/index&#39;</span><span class="p">;</span>
      <span class="k">return</span> <span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/handlers/index.php&#39;</span><span class="p">;</span>
@@ -1135,7 +1148,8 @@ interesting with the id:</p>
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
-              <p>Require the user to be logged in to proceed with the request.</p>
+              <p>Require the user to be logged in to proceed with the request.
+ If not, it will redirect to the appropriate login handler.</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">require_login</span> <span class="p">(</span><span class="nv">$redirect</span> <span class="o">=</span> <span class="s1">&#39;/user/login&#39;</span><span class="p">)</span> <span class="p">{</span>
@@ -1149,7 +1163,8 @@ interesting with the id:</p>
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
-              <p>Require the user to be an administrator to proceed with the request.</p>
+              <p>Require the user to be an administrator to proceed with the request.
+ If not, it will redirect to the appropriate admin login handler.</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">require_admin</span> <span class="p">(</span><span class="nv">$redirect</span> <span class="o">=</span> <span class="s1">&#39;/admin&#39;</span><span class="p">)</span> <span class="p">{</span>
@@ -1162,6 +1177,25 @@ interesting with the id:</p>
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-63">&#182;</a>
+              </div>
+              <p>Require authentication via custom callbacks that are passed to <code>simple_auth()</code>.
+ If the second callback is missing, the first will be assumed to be an array
+ containing the two callbacks.</p>
+
+<p>See <code>apps/user/lib/Auth</code> for built-in auth handlers.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">require_auth</span> <span class="p">(</span><span class="nv">$verifier</span><span class="p">,</span> <span class="nv">$method</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$method</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">list</span> <span class="p">(</span><span class="nv">$verifier</span><span class="p">,</span> <span class="nv">$method</span><span class="p">)</span> <span class="o">=</span> <span class="nv">$verifier</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">simple_auth</span> <span class="p">(</span><span class="nv">$verifier</span><span class="p">,</span> <span class="nv">$method</span><span class="p">);</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-64">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
               <p>Check if an app and version have been installed. Returns true if
  installed, false if not, and current installed version if an upgrade
@@ -1179,10 +1213,10 @@ interesting with the id:</p>
   <span class="k">return</span> <span class="nv">$v</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-64">
+                  <tr id="section-65">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-64">&#182;</a>
+                <a class="pilcrow" href="#section-65">&#182;</a>
               </div>
               <p>Mark an app and version as installed.</p>
             </td>

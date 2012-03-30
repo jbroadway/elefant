@@ -98,6 +98,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
+                                          <a class="source" href="./Acl.html">
+                              Acl.php              </a>
+                                          <a class="source" href="./AppTest.html">
+                              AppTest.php              </a>
                                           <a class="source" href="./Autoloader.html">
                               Autoloader.php              </a>
                                           <a class="source" href="./Cache.html">
@@ -108,14 +112,22 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               Database.php              </a>
                                           <a class="source" href="./Debugger.html">
                               Debugger.php              </a>
+                                          <a class="source" href="./ExtendedModel.html">
+                              ExtendedModel.php              </a>
                                           <a class="source" href="./Form.html">
                               Form.php              </a>
                                           <a class="source" href="./Functions.html">
                               Functions.php              </a>
                                           <a class="source" href="./I18n.html">
                               I18n.php              </a>
+                                          <a class="source" href="./Ini.html">
+                              Ini.php              </a>
+                                          <a class="source" href="./Mailer.html">
+                              Mailer.php              </a>
                                           <a class="source" href="./MemcacheExt.html">
                               MemcacheExt.php              </a>
+                                          <a class="source" href="./MemcacheRedis.html">
+                              MemcacheRedis.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
                                           <a class="source" href="./MongoManager.html">
@@ -206,7 +218,8 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Namespace is present</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$class</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="nv">$class</span><span class="p">,</span> <span class="m">2</span><span class="p">);</span></pre></div>            </td>
+              <div class="highlight"><pre>  <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$class</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="nv">$class</span><span class="p">,</span> <span class="m">2</span><span class="p">);</span>
+  <span class="nv">$class</span> <span class="o">=</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="nx">DIRECTORY_SEPARATOR</span><span class="p">,</span> <span class="nv">$class</span><span class="p">);</span></pre></div>            </td>
           </tr>
                   <tr id="section-3">
             <td class="docs">
@@ -216,10 +229,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Check for app\Class in lib and models folders</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span>
+              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">require_once</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">);</span>
    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
-  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/models/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/models/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">require_once</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/models/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">);</span>
    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
   <span class="p">}</span></pre></div>            </td>
@@ -238,10 +251,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
    <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;lib/vendor/&#39;</span> <span class="o">.</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nb">ltrim</span> <span class="p">(</span><span class="nv">$class</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">))</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="nv">$file</span> <span class="o">=</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nv">$file</span><span class="p">);</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$file</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$file</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">require_once</span> <span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
   <span class="p">}</span>
- <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+ <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-5">
             <td class="docs">
@@ -253,7 +266,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             <td class="code">
               <div class="highlight"><pre>  <span class="k">require_once</span> <span class="p">(</span><span class="s1">&#39;lib/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">);</span>
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
- <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;lib/vendor/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+ <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;lib/vendor/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-6">
             <td class="docs">

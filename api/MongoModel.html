@@ -98,6 +98,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
+                                          <a class="source" href="./Acl.html">
+                              Acl.php              </a>
+                                          <a class="source" href="./AppTest.html">
+                              AppTest.php              </a>
                                           <a class="source" href="./Autoloader.html">
                               Autoloader.php              </a>
                                           <a class="source" href="./Cache.html">
@@ -108,14 +112,22 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               Database.php              </a>
                                           <a class="source" href="./Debugger.html">
                               Debugger.php              </a>
+                                          <a class="source" href="./ExtendedModel.html">
+                              ExtendedModel.php              </a>
                                           <a class="source" href="./Form.html">
                               Form.php              </a>
                                           <a class="source" href="./Functions.html">
                               Functions.php              </a>
                                           <a class="source" href="./I18n.html">
                               I18n.php              </a>
+                                          <a class="source" href="./Ini.html">
+                              Ini.php              </a>
+                                          <a class="source" href="./Mailer.html">
+                              Mailer.php              </a>
                                           <a class="source" href="./MemcacheExt.html">
                               MemcacheExt.php              </a>
+                                          <a class="source" href="./MemcacheRedis.html">
+                              MemcacheRedis.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
                                           <a class="source" href="./MongoManager.html">
@@ -395,6 +407,16 @@ it's not a <code>MongoId</code> object.</li>
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
+              <p>A list of fields that failed validation on the last <code>put()</code> call.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$failed</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-16">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
               <p>If <code>$vals</code> is false, we're creating a new object from scratch.
  If it contains an array, it's a new object from an array.
  If <code>$is_new</code> is false, then the array is an existing field
@@ -406,7 +428,9 @@ it's not a <code>MongoId</code> object.</li>
   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nb">get_class</span> <span class="p">(</span><span class="nv">$this</span><span class="p">))</span> <span class="o">:</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
 
   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span> <span class="o">=</span> <span class="nx">MongoManager</span><span class="o">::</span><span class="na">get_database</span> <span class="p">();</span>
-  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">collection</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">};</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">collection</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">};</span>
+  <span class="p">}</span>
 
   <span class="k">if</span> <span class="p">(</span><span class="nb">is_object</span> <span class="p">(</span><span class="nv">$vals</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="nb">get_class</span> <span class="p">(</span><span class="nv">$vals</span><span class="p">)</span> <span class="o">!==</span> <span class="s1">&#39;MongoId&#39;</span><span class="p">)</span> <span class="p">{</span>
@@ -435,10 +459,23 @@ it's not a <code>MongoId</code> object.</li>
   <span class="p">}</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-16">
+                  <tr id="section-17">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Allows you to inject the database connection into <code>$db</code>. Also sets <code>$collection</code>.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">set_database</span> <span class="p">(</span><span class="nv">$conn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span> <span class="o">=</span> <span class="nv">$conn</span><span class="p">;</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">collection</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">};</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-18">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Custom caller to handle references to related models.</p>
             </td>
@@ -464,10 +501,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-17">
+                  <tr id="section-19">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Custom getter that uses <code>$this-&gt;data</code> array.</p>
             </td>
@@ -476,10 +513,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$key</span><span class="p">]))</span> <span class="o">?</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">:</span> <span class="k">null</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-18">
+                  <tr id="section-20">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>Custom setter that saves to <code>$this-&gt;data</code> array.</p>
             </td>
@@ -488,10 +525,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$val</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-19">
+                  <tr id="section-21">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Returns a MongoId object from a regular ID value or if it's
  already a MongoId value, the original is returned.</p>
@@ -508,10 +545,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="nv">$id</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-20">
+                  <tr id="section-22">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Returns the ID value from a MongoId object, or the original
  value if it's not a MongoId object.</p>
@@ -528,10 +565,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="nv">$id</span><span class="o">-&gt;</span><span class="p">{</span><span class="s1">&#39;$id&#39;</span><span class="p">};</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-21">
+                  <tr id="section-23">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Save the object to the database. If $verify is set, it will
  validate the data against any rules in the array, or in the
@@ -542,16 +579,19 @@ it's not a <code>MongoId</code> object.</li>
   <span class="nv">$f</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Form</span><span class="p">;</span>
   <span class="nv">$failed</span> <span class="o">=</span> <span class="nv">$f</span><span class="o">-&gt;</span><span class="na">verify_values</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">verify</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$failed</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">failed</span> <span class="o">=</span> <span class="nv">$failed</span><span class="p">;</span>
    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="s1">&#39;Validation failed for: &#39;</span> <span class="o">.</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="nv">$failed</span><span class="p">);</span>
    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">failed</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
   <span class="p">}</span>
 
   <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">is_new</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-22">
+                  <tr id="section-24">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Insert</p>
             </td>
@@ -571,10 +611,10 @@ it's not a <code>MongoId</code> object.</li>
    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
   <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-23">
+                  <tr id="section-25">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Update</p>
             </td>
@@ -591,10 +631,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-24">
+                  <tr id="section-26">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>Delete the specified or the current element if no id is specified.</p>
             </td>
@@ -613,10 +653,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-25">
+                  <tr id="section-27">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Get a single object and update the current instance with that data.</p>
             </td>
@@ -636,10 +676,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="nv">$q</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-26">
+                  <tr id="section-28">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>Begin a new query. Resets the internal state for a new query.
  Optionally you can pass the fields you want to return in
@@ -656,10 +696,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="k">new</span> <span class="nv">$class</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-27">
+                  <tr id="section-29">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Order the query by the specified clauses. Specify each as:</p>
 
@@ -681,10 +721,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-28">
+                  <tr id="section-30">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>Group the query by the specific clauses and immediately return
  the results as a data structure. The <code>group()</code> function in MongoDB
@@ -752,10 +792,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="nv">$cur</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-29">
+                  <tr id="section-31">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>Add a where condition to the query. This is a field/value
  combo, and special values are allowed, such as:</p>
@@ -769,10 +809,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-30">
+                  <tr id="section-32">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>Fetch as an array of model objects.</p>
             </td>
@@ -809,10 +849,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-31">
+                  <tr id="section-33">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>Fetch a single result as a model object.</p>
             </td>
@@ -841,10 +881,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="p">}</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-32">
+                  <tr id="section-34">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>Fetch the number of results for a query.</p>
             </td>
@@ -877,10 +917,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="nv">$count</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-33">
+                  <tr id="section-35">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>Fetch as an array of the original objects as returned from
  the database.</p>
@@ -918,10 +958,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-34">
+                  <tr id="section-36">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Fetch as an associative array of the specified key/value fields.</p>
             </td>
@@ -938,10 +978,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-35">
+                  <tr id="section-37">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>Fetch as an array of the specified field name.</p>
             </td>
@@ -958,10 +998,10 @@ it's not a <code>MongoId</code> object.</li>
   <span class="k">return</span> <span class="nv">$res</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-36">
+                  <tr id="section-38">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>Return the original data as an object.</p>
             </td>

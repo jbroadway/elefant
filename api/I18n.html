@@ -98,6 +98,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
+                                          <a class="source" href="./Acl.html">
+                              Acl.php              </a>
+                                          <a class="source" href="./AppTest.html">
+                              AppTest.php              </a>
                                           <a class="source" href="./Autoloader.html">
                               Autoloader.php              </a>
                                           <a class="source" href="./Cache.html">
@@ -108,14 +112,22 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               Database.php              </a>
                                           <a class="source" href="./Debugger.html">
                               Debugger.php              </a>
+                                          <a class="source" href="./ExtendedModel.html">
+                              ExtendedModel.php              </a>
                                           <a class="source" href="./Form.html">
                               Form.php              </a>
                                           <a class="source" href="./Functions.html">
                               Functions.php              </a>
                                           <a class="source" href="./I18n.html">
                               I18n.php              </a>
+                                          <a class="source" href="./Ini.html">
+                              Ini.php              </a>
+                                          <a class="source" href="./Mailer.html">
+                              Mailer.php              </a>
                                           <a class="source" href="./MemcacheExt.html">
                               MemcacheExt.php              </a>
+                                          <a class="source" href="./MemcacheRedis.html">
+                              MemcacheRedis.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
                                           <a class="source" href="./MongoManager.html">
@@ -238,56 +250,66 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>The charset of the current language, which can be used to tell
- the browser, or any language-aware PHP functions, which to use.</p>
+              <p>The language fallback order.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$charset</span> <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$hash_order</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
           </tr>
                   <tr id="section-7">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>The full name of language in use (ie. 'English' for 'en').</p>
+              <p>The charset of the current language, which can be used to tell
+ the browser, or any language-aware PHP functions, which to use.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$fullname</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$charset</span> <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-8">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Contains fallback text replacements.</p>
+              <p>The full name of language in use (ie. 'English' for 'en').</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$fallbacks</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$fullname</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-9">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>2-D list of available languages, retrieved from <code>getLanguages()</code>.</p>
+              <p>Contains fallback text replacements.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$languages</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$fallbacks</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
           </tr>
                   <tr id="section-10">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>The name of the language cookie for <code>$negotiation=cookie</code>.</p>
+              <p>2-D list of available languages, retrieved from <code>getLanguages()</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$cookieName</span> <span class="o">=</span> <span class="s1">&#39;lang&#39;</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$languages</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
           </tr>
                   <tr id="section-11">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>The name of the language cookie for <code>$negotiation=cookie</code>.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$cookieName</span> <span class="o">=</span> <span class="s1">&#39;lang&#39;</span><span class="p">;</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-12">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Tells the controller that the first level of the URL is the language
  and not the page ID when <code>$negotiation=url</code>.</p>
@@ -295,10 +317,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$url_includes_lang</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span></pre></div>            </td>
           </tr>
-                  <tr id="section-12">
+                  <tr id="section-13">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>If <code>$url_includes_lang</code> is true, this will include the request with
  the language stripped out.</p>
@@ -306,10 +328,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$new_request_uri</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>            </td>
           </tr>
-                  <tr id="section-13">
+                  <tr id="section-14">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>If <code>$url_includes_lang</code> is true, this will include the stripped out
  part of the URL. Otherwise it will be empty. This is useful for
@@ -318,20 +340,20 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>            </td>
           </tr>
-                  <tr id="section-14">
+                  <tr id="section-15">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>The negotiation method used to determine the current language.</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$negotiation</span> <span class="o">=</span> <span class="s1">&#39;url&#39;</span><span class="p">;</span></pre></div>            </td>
           </tr>
-                  <tr id="section-15">
+                  <tr id="section-16">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>If an error occurs during any portion of this class, this
  will contain the message.</p>
@@ -339,10 +361,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$error</span><span class="p">;</span></pre></div>            </td>
           </tr>
-                  <tr id="section-16">
+                  <tr id="section-17">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>Includes the appropriate language file in the provided <code>$directory</code>.
  This file is intended to fill out the <code>$lang_hash</code> array.
@@ -382,10 +404,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="p">}</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-17">
+                  <tr id="section-18">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Calls <code>setlocale()</code> based on the current language.</p>
             </td>
@@ -393,10 +415,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">setLocale</span> <span class="p">()</span> <span class="p">{</span>
   <span class="nv">$params</span> <span class="o">=</span> <span class="k">array</span> <span class="p">(</span><span class="nx">LC_TIME</span><span class="p">);</span></pre></div>            </td>
           </tr>
-                  <tr id="section-18">
+                  <tr id="section-19">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>| LC<em>MONETARY | LC</em>CTYPE | LC_COLLATE);</p>
             </td>
@@ -409,31 +431,33 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="nb">call_user_func_array</span> <span class="p">(</span><span class="s1">&#39;setlocale&#39;</span><span class="p">,</span> <span class="nv">$params</span><span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-19">
+                  <tr id="section-20">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>Includes the language index.</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">getIndex</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">((</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">language</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">directory</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">language</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">)))</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">((</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">language</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">directory</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">language</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">)))</span> <span class="p">{</span>
    <span class="k">include_once</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">directory</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">language</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">);</span>
   <span class="p">}</span>
 
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">hash_order</span> <span class="o">=</span> <span class="k">array</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">language</span><span class="p">);</span>
   <span class="nv">$curlang</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">language</span><span class="p">;</span>
 
   <span class="k">while</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">languages</span><span class="p">[</span><span class="nv">$curlang</span><span class="p">][</span><span class="s1">&#39;fallback&#39;</span><span class="p">])</span> <span class="p">{</span>
    <span class="nv">$curlang</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">languages</span><span class="p">[</span><span class="nv">$curlang</span><span class="p">][</span><span class="s1">&#39;fallback&#39;</span><span class="p">];</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">hash_order</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$curlang</span><span class="p">;</span>
    <span class="k">include_once</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">directory</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$curlang</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">);</span>
   <span class="p">}</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-20">
+                  <tr id="section-21">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Takes a string, serializes it to generate a key, and performs
  a key/value lookup on the <code>$lang_hash</code> array.  Returns the value found,
@@ -446,7 +470,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
   <span class="p">}</span>
 
-  <span class="k">foreach</span> <span class="p">(</span><span class="nb">array_keys</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">lang_hash</span><span class="p">)</span> <span class="k">as</span> <span class="nv">$lang</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">hash_order</span> <span class="k">as</span> <span class="nv">$lang</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">lang_hash</span><span class="p">[</span><span class="nv">$lang</span><span class="p">][</span><span class="nv">$original</span><span class="p">]))</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">lang_hash</span><span class="p">[</span><span class="nv">$lang</span><span class="p">][</span><span class="nv">$original</span><span class="p">];</span>
    <span class="p">}</span>
@@ -454,10 +478,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="nv">$original</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-21">
+                  <tr id="section-22">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Takes a string, serializes it to generate a key, and performs
  a key/value lookup on the <code>$lang_hash</code> array.  Returns the value found,
@@ -492,10 +516,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="nb">vsprintf</span> <span class="p">(</span><span class="nv">$original</span><span class="p">,</span> <span class="nv">$args</span><span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-22">
+                  <tr id="section-23">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Returns a 2-D array from the specified language file, which
  is an INI file.  Each section name in the file corresponds to a
@@ -504,7 +528,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">getLanguages</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">directory</span> <span class="o">.</span> <span class="s1">&#39;/languages.php&#39;</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">directory</span> <span class="o">.</span> <span class="s1">&#39;/languages.php&#39;</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">return</span> <span class="nb">parse_ini_file</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">directory</span> <span class="o">.</span> <span class="s1">&#39;/languages.php&#39;</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="s1">&#39;Language file (&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">directory</span> <span class="o">.</span> <span class="s1">&#39;/languages.php) does not exist!&#39;</span><span class="p">;</span>
@@ -512,10 +536,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="p">}</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-23">
+                  <tr id="section-24">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Returns the preferred language of the current visitor.
  If the <code>$method</code> is <code>'http'</code> then it uses the HTTP Accept-Language
@@ -539,10 +563,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 
    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$keys</span> <span class="k">as</span> <span class="nv">$lang</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-24">
+                  <tr id="section-25">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Remove trailing ";q=" data</p>
             </td>
@@ -551,10 +575,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
      <span class="nv">$lang</span> <span class="o">=</span> <span class="nb">trim</span> <span class="p">(</span><span class="nb">substr</span> <span class="p">(</span><span class="nv">$lang</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$pos</span><span class="p">));</span>
     <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-25">
+                  <tr id="section-26">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>Check for country code</p>
             </td>
@@ -588,16 +612,16 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$accepted</span> <span class="k">as</span> <span class="nv">$lang</span> <span class="o">=&gt;</span> <span class="nv">$cnlist</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">foreach</span> <span class="p">(</span><span class="nv">$cnlist</span> <span class="k">as</span> <span class="nv">$cn</span><span class="p">)</span> <span class="p">{</span>
      <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$cn</span><span class="p">))</span> <span class="p">{</span>
-      <span class="nv">$name</span> <span class="o">=</span> <span class="nv">$lang</span> <span class="o">.</span> <span class="s1">&#39;-&#39;</span> <span class="o">.</span> <span class="nv">$cn</span><span class="p">;</span>
+      <span class="nv">$name</span> <span class="o">=</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nv">$lang</span> <span class="o">.</span> <span class="s1">&#39;_&#39;</span> <span class="o">.</span> <span class="nv">$cn</span><span class="p">);</span>
      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="nv">$name</span> <span class="o">=</span> <span class="nv">$lang</span><span class="p">;</span>
+      <span class="nv">$name</span> <span class="o">=</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nv">$lang</span><span class="p">);</span>
      <span class="p">}</span>
      <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">languages</span><span class="p">[</span><span class="nv">$name</span><span class="p">]))</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-26">
+                  <tr id="section-27">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Found</p>
             </td>
@@ -634,10 +658,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="p">}</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-27">
+                  <tr id="section-28">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>Helper function available globablly. Alias of <code>I18n::get()</code>.</p>
             </td>
@@ -646,10 +670,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  <span class="k">return</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;i18n&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">get</span> <span class="p">(</span><span class="nv">$original</span><span class="p">);</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-28">
+                  <tr id="section-29">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Helper function available globablly. Alias of <code>I18n::getf()</code>.</p>
             </td>

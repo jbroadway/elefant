@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>MongoManager.php</title>
+  <title>Acl.php</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="layout.css" />
   <style>
@@ -150,7 +150,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         <tr>
           <th class="docs">
             <h1>
-              MongoManager.php            </h1>
+              Acl.php            </h1>
           </th>
           <th class="code">
           </th>
@@ -192,99 +192,98 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>Class to manage the connection to a MongoDB database. To specify your
- MongoDB settings, add the following section to <code>conf/config.php</code>:</p>
+              <p>A simple access control class for implementing custom permissions in your
+ applications.</p>
 
-<pre><code> [Mongo]
- host = localhost:27017
- name = database_name
- user = username ; optional
- pass = password ; optional
- set_name = my_replica_set ; optional
+<p>Usage:</p>
+
+<p>&lt;?php</p>
+
+<pre><code>Default usage
 </code></pre>
 
-<p>Then you can either use this class directly like so:</p>
+<p>$acl = new Acl ();</p>
 
-<pre><code> &lt;?php
+<p>if (! $acl->allowed ('resource')) {
+      Keep the current user out
+   }</p>
 
-  get the connection
- $mongo = MongoManager::get_connection ();
-
-  get the MongoDbB object
- $db = MongoManager::get_database ();
-
- ?&gt;
+<pre><code>Use an alternate user
 </code></pre>
 
-<p>Or use the MongoModel class to define a Mongo-based model for your data:</p>
+<p>$user = new User ($user_id);</p>
 
-<pre><code> &lt;?php
+<p>if (! $acl->allowed ('resource', $user)) {
+      Keep the user out
+   }</p>
 
- class MyCollection extends MongoModel {}
+<p>?></p>
 
- $obj = new MyCollection (array ('foo' =&gt; 'bar'));
- $obj-&gt;put ();
-  etc.
+<p>The format of the INI file is as follows:</p>
 
- ?&gt;
-</code></pre>
+<p>[admin]</p>
+
+<p>default = On</p>
+
+<p>[editor]</p>
+
+<p>default = On
+   user/admin = Off
+   myapp = Off</p>
+
+<p>[member]</p>
+
+<p>default = Off
+   user = On</p>
+
+<p>The default lines change whether you should allow or deny by default for a
+ given role. The naming convention <code>user/admin</code> signifies a feature within an
+ app as opposed to the app itself.</p>
+
+<p>Note that Elefant doesn't use Acl in its own features, just <code>require_admin()</code>
+ and <code>require_login()</code>. This class is intended for custom applications built on
+ top of the framework.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre><span class="k">class</span> <span class="nc">MongoManager</span> <span class="p">{</span></pre></div>            </td>
+              <div class="highlight"><pre><span class="k">class</span> <span class="nc">Acl</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-2">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>The Mongo connection object.</p>
+              <p>The INI file that the rules were read from.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="nv">$conn</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;conf/acl.php&#39;</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-3">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>The error string if a connection error occurred.</p>
+              <p>The access control rules as an array of roles and their permissions.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="nv">$error</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$rules</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
           </tr>
                   <tr id="section-4">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Get the Mongo database connection object. Uses your
- settings from <code>conf/config.php</code> for the connection
- info (<code>host</code>, <code>name</code>, <code>user</code>, <code>pass</code>, and <code>set_name</code>).
- The host and database name are required, but authentication
- (<code>user</code> and <code>pass</code>) settings and replica set name
- (<code>set_name</code>) are optional.</p>
+              <p>Constructor will call <code>init()</code> if a file is provided, or simply
+ set the <code>$rules</code> if an array is passed to it. With no parameters,
+ it will try to read <code>conf/acl.php</code> for the access list.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">get_connection</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nv">$conf</span> <span class="o">=</span> <span class="nx">conf</span> <span class="p">(</span><span class="s1">&#39;Mongo&#39;</span><span class="p">);</span>
-
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$conn</span><span class="p">)</span> <span class="p">{</span>
-   <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]))</span> <span class="p">{</span>
-    <span class="nv">$connstr</span> <span class="o">=</span> <span class="s1">&#39;mongodb://&#39;</span> <span class="o">.</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39;:&#39;</span> <span class="o">.</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;pass&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39;@&#39;</span> <span class="o">.</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">];</span>
-   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="nv">$connstr</span> <span class="o">=</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">];</span>
-   <span class="p">}</span>
-   <span class="k">try</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;set_name&#39;</span><span class="p">]))</span> <span class="p">{</span>
-     <span class="nx">self</span><span class="o">::</span><span class="nv">$conn</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Mongo</span> <span class="p">(</span><span class="nv">$connstr</span><span class="p">,</span> <span class="k">array</span> <span class="p">(</span><span class="s1">&#39;replicaSet&#39;</span> <span class="o">=&gt;</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;set_name&#39;</span><span class="p">]));</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-     <span class="nx">self</span><span class="o">::</span><span class="nv">$conn</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Mongo</span> <span class="p">(</span><span class="nv">$connstr</span><span class="p">);</span>
-    <span class="p">}</span>
-   <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">self</span><span class="o">::</span><span class="nv">$error</span> <span class="o">=</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span> <span class="p">();</span>
-   <span class="p">}</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span> <span class="p">(</span><span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;conf/acl.php&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">is_string</span> <span class="p">(</span><span class="nv">$file</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span> <span class="o">=</span> <span class="nv">$file</span><span class="p">;</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">init</span> <span class="p">();</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$file</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span> <span class="o">=</span> <span class="nv">$file</span><span class="p">;</span>
   <span class="p">}</span>
-  <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$conn</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-5">
@@ -292,11 +291,83 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Get the MongoDB database object.</p>
+              <p>Parses the INI file and generates the rule list, adding default=false
+ if no default is specified for that role (deny by default).</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">get_database</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">MongoManager</span><span class="o">::</span><span class="na">get_connection</span> <span class="p">()</span><span class="o">-&gt;</span><span class="p">{</span><span class="nx">conf</span> <span class="p">(</span><span class="s1">&#39;Mongo&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)};</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">init</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$list</span> <span class="o">=</span> <span class="nb">parse_ini_file</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="nv">$list</span> <span class="o">=</span> <span class="nx">parse_ini_string</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$list</span> <span class="k">as</span> <span class="nv">$role</span> <span class="o">=&gt;</span> <span class="nv">$rules</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$rules</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$rules</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">])</span> <span class="o">?</span> <span class="nv">$rules</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span> <span class="o">:</span> <span class="k">false</span><span class="p">;</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span><span class="p">[</span><span class="nv">$role</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$rules</span><span class="p">;</span>
+  <span class="p">}</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-6">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Test whether they can access a resource. If no user object is provided,
+ will use <code>User::$user-&gt;type</code> to determine the role.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">allowed</span> <span class="p">(</span><span class="nv">$resource</span><span class="p">,</span> <span class="nv">$user</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$type</span> <span class="o">=</span> <span class="nv">$user</span> <span class="o">?</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">type</span> <span class="o">:</span> <span class="nx">User</span><span class="o">::</span><span class="nv">$user</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span><span class="p">[</span><span class="nv">$type</span><span class="p">][</span><span class="nv">$resource</span><span class="p">])</span>
+   <span class="o">?</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span><span class="p">[</span><span class="nv">$type</span><span class="p">][</span><span class="nv">$resource</span><span class="p">]</span>
+   <span class="o">:</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span><span class="p">[</span><span class="nv">$type</span><span class="p">][</span><span class="s1">&#39;default&#39;</span><span class="p">];</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-7">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Add a role to the list, optionally assigning whether it should
+ allow or deny by default.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">add_role</span> <span class="p">(</span><span class="nv">$role</span><span class="p">,</span> <span class="nv">$default</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span><span class="p">[</span><span class="nv">$role</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span> <span class="p">(</span>
+   <span class="s1">&#39;default&#39;</span> <span class="o">=&gt;</span> <span class="nv">$default</span>
+  <span class="p">);</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-8">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Deny a role access to the specified resource.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">deny</span> <span class="p">(</span><span class="nv">$role</span><span class="p">,</span> <span class="nv">$resource</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">is_array</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span><span class="p">[</span><span class="nv">$role</span><span class="p">]))</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">add_role</span> <span class="p">(</span><span class="nv">$role</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span><span class="p">[</span><span class="nv">$role</span><span class="p">][</span><span class="nv">$resource</span><span class="p">]</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-9">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Allow a role access to the specified resource.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">allow</span> <span class="p">(</span><span class="nv">$role</span><span class="p">,</span> <span class="nv">$resource</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">is_array</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span><span class="p">[</span><span class="nv">$role</span><span class="p">]))</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">add_role</span> <span class="p">(</span><span class="nv">$role</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span><span class="p">[</span><span class="nv">$role</span><span class="p">][</span><span class="nv">$resource</span><span class="p">]</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
  <span class="p">}</span>
 <span class="p">}</span>
 

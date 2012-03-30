@@ -98,6 +98,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
+                                          <a class="source" href="./Acl.html">
+                              Acl.php              </a>
+                                          <a class="source" href="./AppTest.html">
+                              AppTest.php              </a>
                                           <a class="source" href="./Autoloader.html">
                               Autoloader.php              </a>
                                           <a class="source" href="./Cache.html">
@@ -108,14 +112,22 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               Database.php              </a>
                                           <a class="source" href="./Debugger.html">
                               Debugger.php              </a>
+                                          <a class="source" href="./ExtendedModel.html">
+                              ExtendedModel.php              </a>
                                           <a class="source" href="./Form.html">
                               Form.php              </a>
                                           <a class="source" href="./Functions.html">
                               Functions.php              </a>
                                           <a class="source" href="./I18n.html">
                               I18n.php              </a>
+                                          <a class="source" href="./Ini.html">
+                              Ini.php              </a>
+                                          <a class="source" href="./Mailer.html">
+                              Mailer.php              </a>
                                           <a class="source" href="./MemcacheExt.html">
                               MemcacheExt.php              </a>
+                                          <a class="source" href="./MemcacheRedis.html">
+                              MemcacheRedis.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
                                           <a class="source" href="./MongoManager.html">
@@ -190,9 +202,29 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 <p>The input validation can be useful not just for form submissions,
  but it's packaged here to keep things tidy.</p>
 
-<p>Usage:</p>
+<p>Simplest usage:</p>
 
-<pre><code> $form = new Form ('post', 'apps/myapp/forms/verify.php');
+<pre><code> &lt;?php
+
+ $form = new Form ('post', $this);
+
+ echo $form-&gt;handle (function ($form) {
+      Create some data...
+     $foo = new MyModel ($_POST);
+     $foo-&gt;put ();
+
+      Refer them to a thank you page
+     $form-&gt;controller-&gt;redirect ('/thank/you');
+ });
+
+ ?&gt;
+</code></pre>
+
+<p>Long form usage:</p>
+
+<pre><code> &lt;?php
+
+ $form = new Form ('post', 'apps/myapp/forms/verify.php');
 
  if ($form-&gt;submit ()) {
       handle form
@@ -226,6 +258,8 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
       output your form template
      echo $tpl-&gt;render ('myapp/form', $obj);
  }
+
+ ?&gt;
 </code></pre>
             </td>
             <td class="code">
@@ -266,86 +300,350 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Whether to verify the referrer or not.</p>
+              <p>The original <code>$form_rules</code> passed to the constructor, parsed
+ down to the <code>appname/rules</code> short form.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$verify_referrer</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">private</span> <span class="nv">$_rules</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-6">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Whether to verify with a CSRF token or not.</p>
+              <p>A view to render the form with. Used by <code>handle()</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$verify_csrf</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$view</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-7">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Token generated for CSRF prevention.</p>
+              <p>A data object with the initial form values. Used by <code>handle()</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$csrf_token</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$data</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-8">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>The name of the token form field.</p>
+              <p>An optional copy of the controller object.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$csrf_field_name</span> <span class="o">=</span> <span class="s1">&#39;_token_&#39;</span><span class="p">;</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$controller</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-9">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>The reason <code>submit()</code> failed to pass.</p>
+              <p>Whether to verify the referrer or not.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$error</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
-
- <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span> <span class="p">(</span><span class="nv">$required_method</span> <span class="o">=</span> <span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="nv">$form_rules</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$verify_referrer</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-10">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Normalize the request method to lowercase</p>
+              <p>Whether to verify with a CSRF token or not.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">method</span> <span class="o">=</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nv">$required_method</span><span class="p">);</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$verify_csrf</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-11">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Fetch any form validation rules</p>
+              <p>Token generated for CSRF prevention.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$form_rules</span><span class="p">))</span> <span class="p">{</span>
-   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$form_rules</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$form</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nv">$form_rules</span><span class="p">);</span>
-    <span class="nv">$form_rules</span> <span class="o">=</span> <span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/forms/&#39;</span> <span class="o">.</span> <span class="nv">$form</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
-   <span class="p">}</span>
-   <span class="k">if</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$form_rules</span><span class="p">))</span> <span class="p">{</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span> <span class="o">=</span> <span class="nb">parse_ini_file</span> <span class="p">(</span><span class="nv">$form_rules</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
-   <span class="p">}</span>
-  <span class="p">}</span>
- <span class="p">}</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$csrf_token</span><span class="p">;</span></pre></div>            </td>
           </tr>
                   <tr id="section-12">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>The name of the token form field.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$csrf_field_name</span> <span class="o">=</span> <span class="s1">&#39;_token_&#39;</span><span class="p">;</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-13">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>The reason <code>submit()</code> failed to pass.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$error</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-14">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Whether <code>handle()</code> should include the default JavaScript validation
+ or just the <code>/js/jquery.verify_values.js</code> script so you can write
+ your own custom validation display.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$js_validation</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-15">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Constructor method. Parameters are:</p>
+
+<ul>
+<li>Required request method (default is 'post')</li>
+<li>A reference to the form rules file, or a Controller object</li>
+<li><p>If param 2 is a file reference, this can be the Controller object</p>
+
+<p>Usage:</p>
+
+<p>$f = new Form ();  defaults and no Controller or rules set
+ $f = new Form ('post');  POST requests but no Controller or rules
+ $f = new Form ('post', $this);  POST and Controller set
+ $f = new Form ('post', 'myapp/rules');  POST and rules set
+ $f = new Form ('post', 'myapp/rules, $this);  Everything set</p>
+
+<p>Note that if the rules are not set but the Controller is passed,
+the rules file will be assumed to match the appname/handlername of
+the currently active handler, and the view will be set to match as
+well. This is the most handy scenario, since if you match your
+rules file, handler, and view names, you can simply say:</p>
+
+<p>$f = new Form ('post', $this);</p>
+
+<p>And it will set everything up correctly based on <code>$this-&gt;uri</code> in the
+Controller.</p></li>
+</ul>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span> <span class="p">(</span><span class="nv">$required_method</span> <span class="o">=</span> <span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="nv">$form_rules</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$controller</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-16">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Normalize the request method to lowercase</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">method</span> <span class="o">=</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nv">$required_method</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$form_rules</span> <span class="nx">instanceof</span> <span class="nx">Controller</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-17">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Controller was passed as the second param</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">controller</span> <span class="o">=</span> <span class="nv">$form_rules</span><span class="p">;</span>
+   <span class="nv">$form_rules</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">controller</span><span class="o">-&gt;</span><span class="na">uri</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-18">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Controller was third param</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">controller</span> <span class="o">=</span> <span class="nv">$controller</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-19">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Fetch any form validation rules</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$form_rules</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$form_rules</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$form</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nv">$form_rules</span><span class="p">);</span>
+    <span class="nv">$form_rules</span> <span class="o">=</span> <span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/forms/&#39;</span> <span class="o">.</span> <span class="nv">$form</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$form_rules</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span> <span class="o">=</span> <span class="nb">parse_ini_file</span> <span class="p">(</span><span class="nv">$form_rules</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+   <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-20">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Set the view by default based on the form rules (can be changed later)</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_rules</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;|apps/(.+)/forms/(.+)\.php$|&#39;</span><span class="p">,</span> <span class="s1">&#39;\1/\2&#39;</span><span class="p">,</span> <span class="nv">$form_rules</span><span class="p">);</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">view</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_rules</span><span class="p">;</span>
+  <span class="p">}</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-21">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Accepts an anonymous function (aka closure) that handles the
+ form submission, and abstracts away the rendering of the form
+ based on the provided rules and view, helping eliminate much
+ of the boilerplate code of form creation.</p>
+
+<p>Note that <code>handle()</code> will also include <code>/js/jquery.verify_values.js</code>
+ for you, but you need to provide your own initialization code
+ to perform the client-side validations. There is a page in the
+ public wiki on www.elefantcms.com describing the steps for this.</p>
+
+<p>Also note that if the anonymous function returns false, there
+ will be no output and the false status will be passed to the
+ handler to catch.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span> <span class="p">(</span><span class="nv">$func</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">submit</span> <span class="p">())</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-22">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Form can be handled, capture output and return it</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre></pre></div>            </td>
+          </tr>
+                  <tr id="section-23">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>If the function returns false, simply pass that</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre></pre></div>            </td>
+          </tr>
+                  <tr id="section-24">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>to the handler with no output</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="nb">ob_start</span> <span class="p">();</span>
+   <span class="nv">$res</span> <span class="o">=</span> <span class="nv">$func</span> <span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nv">$res</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">ob_get_clean</span> <span class="p">();</span>
+   <span class="p">}</span>
+   <span class="nb">ob_end_clean</span> <span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-25">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>No view so we simply return false so the handler</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre></pre></div>            </td>
+          </tr>
+                  <tr id="section-26">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>can take over rendering the form</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-27">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>Render the view and return its output</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="k">global</span> <span class="nv">$page</span><span class="p">,</span> <span class="nv">$tpl</span><span class="p">;</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-28">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>Take the initial form data from $this->data or a new StdClass</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$o</span> <span class="o">=</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="nv">$o</span> <span class="o">=</span> <span class="nb">is_object</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">)</span> <span class="o">?</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">:</span> <span class="p">(</span><span class="nx">object</span><span class="p">)</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-29">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>Determine the default values</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span> <span class="k">as</span> <span class="nv">$field</span> <span class="o">=&gt;</span> <span class="nv">$rules</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">foreach</span> <span class="p">(</span><span class="nv">$rules</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$key</span> <span class="o">===</span> <span class="s1">&#39;default&#39;</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nv">$o</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$field</span><span class="p">}</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+     <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+   <span class="p">}</span>
+  <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-30">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Set some views to go to the template</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="nv">$o</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">merge_values</span> <span class="p">(</span><span class="nv">$o</span><span class="p">);</span>
+  <span class="nv">$o</span><span class="o">-&gt;</span><span class="na">_form</span> <span class="o">=</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;-form&#39;</span><span class="p">;</span>
+  <span class="nv">$o</span><span class="o">-&gt;</span><span class="na">_failed</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">failed</span><span class="p">;</span>
+  <span class="nv">$o</span><span class="o">-&gt;</span><span class="na">_rules</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_rules</span><span class="p">;</span>
+  <span class="nv">$page</span><span class="o">-&gt;</span><span class="na">add_script</span> <span class="p">(</span><span class="s1">&#39;/js/jquery.verify_values.js&#39;</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">js_validation</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="nv">$tpl</span><span class="o">-&gt;</span><span class="na">render</span> <span class="p">(</span><span class="s1">&#39;admin/default-validation&#39;</span><span class="p">,</span> <span class="nv">$o</span><span class="p">)</span> <span class="o">.</span> <span class="nv">$tpl</span><span class="o">-&gt;</span><span class="na">render</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">,</span> <span class="nv">$o</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$tpl</span><span class="o">-&gt;</span><span class="na">render</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">,</span> <span class="nv">$o</span><span class="p">);</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-31">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>Check if the form is okay to submit. Verifies the request method,
  the referrer, and the input data.</p>
@@ -358,10 +656,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">verify_request_method</span> <span class="p">())</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-13">
+                  <tr id="section-32">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>form hasn't been submitted yet, or request method doesn't match</p>
             </td>
@@ -388,10 +686,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-14">
+                  <tr id="section-33">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>Merge the values from <code>$_GET</code> or <code>$_POST</code> onto a data array or
  object for re-rendering a form with the latest data entered.</p>
@@ -411,10 +709,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="nv">$obj</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-15">
+                  <tr id="section-34">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>Verify the request method is the one specified.</p>
             </td>
@@ -426,10 +724,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-16">
+                  <tr id="section-35">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>Verify the referrer came from this site. No remote form submissions,
  since those are almost certainly abusive.</p>
@@ -442,10 +740,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-17">
+                  <tr id="section-36">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Initialize the CSRF token.</p>
             </td>
@@ -453,10 +751,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">initialize_csrf</span> <span class="p">()</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">verify_csrf</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-18">
+                  <tr id="section-37">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>Start a session</p>
             </td>
@@ -466,30 +764,30 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 
    <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_token&#39;</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_expires&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nb">time</span> <span class="p">())</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-19">
+                  <tr id="section-38">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>Get an existing token</p>
             </td>
             <td class="code">
               <div class="highlight"><pre>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">csrf_token</span> <span class="o">=</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_token&#39;</span><span class="p">];</span></pre></div>            </td>
           </tr>
-                  <tr id="section-20">
+                  <tr id="section-39">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>Reset the timer on the request so it doesn't expire on the</p>
             </td>
             <td class="code">
               <div class="highlight"><pre></pre></div>            </td>
           </tr>
-                  <tr id="section-21">
+                  <tr id="section-40">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>user if time is running short</p>
             </td>
@@ -497,20 +795,20 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="highlight"><pre>    <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_expires&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">time</span> <span class="p">()</span> <span class="o">+</span> <span class="m">7200</span><span class="p">;</span>
    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-22">
+                  <tr id="section-41">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>Generate a random token</p>
             </td>
             <td class="code">
               <div class="highlight"><pre>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">csrf_token</span> <span class="o">=</span> <span class="nb">md5</span> <span class="p">(</span><span class="nb">uniqid</span> <span class="p">(</span><span class="nb">rand</span> <span class="p">(),</span> <span class="k">true</span><span class="p">));</span></pre></div>            </td>
           </tr>
-                  <tr id="section-23">
+                  <tr id="section-42">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>Set the token and expiry time (2 hours)</p>
             </td>
@@ -519,10 +817,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
     <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_expires&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">time</span> <span class="p">()</span> <span class="o">+</span> <span class="m">7200</span><span class="p">;</span>
    <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-24">
+                  <tr id="section-43">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p>Append the CSRF token Javascript if there is a page object</p>
             </td>
@@ -536,10 +834,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="p">}</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-25">
+                  <tr id="section-44">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p>Generate the script that will append the token to forms in the page.
  You do not need to call this directly as long as you have <code>{{ tail|none }}</code>
@@ -555,10 +853,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-26">
+                  <tr id="section-45">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p>Verify the CSRF token is present, matches the stored value in the session
  data, and has not expired (2 hour limit).</p>
@@ -567,10 +865,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">verify_csrf</span> <span class="p">()</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_token&#39;</span><span class="p">])</span> <span class="o">||</span> <span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_expires&#39;</span><span class="p">]))</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-27">
+                  <tr id="section-46">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>No token in session</p>
             </td>
@@ -582,10 +880,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$values</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">csrf_field_name</span><span class="p">]))</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-28">
+                  <tr id="section-47">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>No token provided</p>
             </td>
@@ -595,10 +893,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 
   <span class="k">if</span> <span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_token&#39;</span><span class="p">]</span> <span class="o">!==</span> <span class="nv">$values</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">csrf_field_name</span><span class="p">])</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-29">
+                  <tr id="section-48">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>Token doesn't match</p>
             </td>
@@ -607,10 +905,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="p">}</span>
   <span class="k">if</span> <span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_expires&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">time</span> <span class="p">())</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-30">
+                  <tr id="section-49">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>Timed out</p>
             </td>
@@ -620,10 +918,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-31">
+                  <tr id="section-50">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               <p>Verifies the specified value, useful for input validation.
  Pass the value, a type of validation, and a validator.
@@ -632,6 +930,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 <ul>
 <li><code>skip_if_empty</code> - a special verifier that tells <code>verify_values()</code> to skip
                validation on the field if it's been left blank.</li>
+<li><code>file</code> - a special verifier that tells <code>verify_values()</code> to check if it's
+      a valid uploaded file.</li>
+<li><code>filetype</code> - a special verifier that tells <code>verify_values()</code> to check if the
+          file name contains one of a list of comma-separated extensions.</li>
 <li><code>regex</code> - calls <code>preg_match($validator, $value)</code></li>
 <li><code>type</code> - calls <code>is_$validator($value)</code></li>
 <li><code>callback</code> - calls <code>call_user_func($validator, $value)</code></li>
@@ -668,6 +970,9 @@ opposite, for example "not empty".</p></li>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">verify_value</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$type</span><span class="p">,</span> <span class="nv">$validator</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$type</span> <span class="o">===</span> <span class="s1">&#39;default&#39;</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+  <span class="p">}</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/^not (.+)$/i&#39;</span><span class="p">,</span> <span class="nv">$type</span><span class="p">,</span> <span class="nv">$regs</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">return</span> <span class="o">!</span> <span class="nx">Form</span><span class="o">::</span><span class="na">verify_value</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$regs</span><span class="p">[</span><span class="m">1</span><span class="p">],</span> <span class="nv">$validator</span><span class="p">);</span>
   <span class="p">}</span>
@@ -675,10 +980,10 @@ opposite, for example "not empty".</p></li>
    <span class="k">case</span> <span class="s1">&#39;matches&#39;</span><span class="o">:</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/\$(_[a-z]+|GLOBALS)\[[\&#39;&quot;]?([a-z0-9_-]+)[\&#39;&quot;]?\]/i&#39;</span><span class="p">,</span> <span class="nv">$validator</span><span class="p">,</span> <span class="nv">$regs</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-32">
+                  <tr id="section-51">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
               <p>Can't dynamically reference superglobals, so instead...</p>
             </td>
@@ -761,20 +1066,20 @@ opposite, for example "not empty".</p></li>
      <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
     <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-33">
+                  <tr id="section-52">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               <p>also verify that the domain isn't just 'localhost'</p>
             </td>
             <td class="code">
               <div class="highlight"><pre></pre></div>            </td>
           </tr>
-                  <tr id="section-34">
+                  <tr id="section-53">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
               <p>which would allow garbage in</p>
             </td>
@@ -816,15 +1121,15 @@ opposite, for example "not empty".</p></li>
 
    <span class="k">case</span> <span class="s1">&#39;exists&#39;</span><span class="o">:</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span> <span class="p">(</span><span class="nv">$validator</span><span class="p">,</span> <span class="s1">&#39;%s&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
-     <span class="k">return</span> <span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nb">sprintf</span> <span class="p">(</span><span class="nv">$validator</span><span class="p">,</span> <span class="nv">$value</span><span class="p">));</span>
+     <span class="k">return</span> <span class="nb">file_exists</span> <span class="p">(</span><span class="nb">sprintf</span> <span class="p">(</span><span class="nv">$validator</span><span class="p">,</span> <span class="nv">$value</span><span class="p">));</span>
     <span class="p">}</span>
-    <span class="k">return</span> <span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$validator</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$value</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$validator</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$value</span><span class="p">);</span>
   <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-35">
+                  <tr id="section-54">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>If tests fail, be safe and fail by default</p>
             </td>
@@ -832,10 +1137,10 @@ opposite, for example "not empty".</p></li>
               <div class="highlight"><pre>  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-36">
+                  <tr id="section-55">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <p>Validate a list of values, such as <code>$_GET</code> or <code>$_POST</code> data against
  a list of validation rules. If the rules are a string, it will
@@ -859,20 +1164,41 @@ opposite, for example "not empty".</p></li>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">verify_values</span> <span class="p">(</span><span class="nv">$values</span><span class="p">,</span> <span class="nv">$validations</span> <span class="o">=</span> <span class="k">array</span> <span class="p">())</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nb">is_string</span> <span class="p">(</span><span class="nv">$validations</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$validations</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">is_string</span> <span class="p">(</span><span class="nv">$validations</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$validations</span><span class="p">))</span> <span class="p">{</span>
    <span class="nv">$validations</span> <span class="o">=</span> <span class="nb">parse_ini_file</span> <span class="p">(</span><span class="nv">$validations</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="nv">$failed</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
   <span class="k">foreach</span> <span class="p">(</span><span class="nv">$validations</span> <span class="k">as</span> <span class="nv">$name</span> <span class="o">=&gt;</span> <span class="nv">$validators</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$validators</span> <span class="k">as</span> <span class="nv">$type</span> <span class="o">=&gt;</span> <span class="nv">$validator</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">$type</span> <span class="o">==</span> <span class="s1">&#39;skip_if_empty&#39;</span><span class="p">)</span> <span class="p">{</span>
-     <span class="k">if</span> <span class="p">(</span><span class="k">empty</span> <span class="p">(</span><span class="nv">$values</span><span class="p">[</span><span class="nv">$name</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$type</span> <span class="o">===</span> <span class="s1">&#39;file&#39;</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">is_uploaded_file</span> <span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="nv">$name</span><span class="p">][</span><span class="s1">&#39;tmp_name&#39;</span><span class="p">]))</span> <span class="p">{</span>
+      <span class="nv">$failed</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$name</span><span class="p">;</span>
       <span class="k">break</span><span class="p">;</span>
      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
       <span class="k">continue</span><span class="p">;</span>
      <span class="p">}</span>
     <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">Form</span><span class="o">::</span><span class="na">verify_value</span> <span class="p">(</span><span class="nv">$values</span><span class="p">[</span><span class="nv">$name</span><span class="p">],</span> <span class="nv">$type</span><span class="p">,</span> <span class="nv">$validator</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$type</span> <span class="o">===</span> <span class="s1">&#39;filetype&#39;</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nv">$extensions</span> <span class="o">=</span> <span class="nb">preg_split</span> <span class="p">(</span><span class="s1">&#39;/, ?&#39;</span><span class="p">,</span> <span class="nb">trim</span> <span class="p">(</span><span class="nb">strtolower</span> <span class="p">(</span><span class="nv">$validator</span><span class="p">)));</span>
+     <span class="k">if</span> <span class="p">(</span><span class="nv">$extensions</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nv">$extensions</span> <span class="o">=</span> <span class="k">array</span> <span class="p">(</span><span class="nv">$validator</span><span class="p">);</span>
+     <span class="p">}</span>
+     <span class="nv">$extension</span> <span class="o">=</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nb">pathinfo</span> <span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="nv">$name</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="nx">PATHINFO_EXTENSION</span><span class="p">));</span>
+     <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">in_array</span> <span class="p">(</span><span class="nv">$extension</span><span class="p">,</span> <span class="nv">$extensions</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nv">$failed</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$name</span><span class="p">;</span>
+      <span class="k">break</span><span class="p">;</span>
+     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">continue</span><span class="p">;</span>
+     <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$type</span> <span class="o">===</span> <span class="s1">&#39;skip_if_empty&#39;</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">if</span> <span class="p">(</span><span class="k">empty</span> <span class="p">(</span><span class="nv">$values</span><span class="p">[</span><span class="nv">$name</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="nv">$name</span><span class="p">])</span> <span class="o">||</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="nv">$name</span><span class="p">][</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="m">4</span><span class="p">))</span> <span class="p">{</span>
+      <span class="k">break</span><span class="p">;</span>
+     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">continue</span><span class="p">;</span>
+     <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$values</span><span class="p">[</span><span class="nv">$name</span><span class="p">])</span> <span class="o">||</span> <span class="o">!</span> <span class="nx">Form</span><span class="o">::</span><span class="na">verify_value</span> <span class="p">(</span><span class="nv">$values</span><span class="p">[</span><span class="nv">$name</span><span class="p">],</span> <span class="nv">$type</span><span class="p">,</span> <span class="nv">$validator</span><span class="p">))</span> <span class="p">{</span>
      <span class="nv">$failed</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$name</span><span class="p">;</span>
      <span class="k">break</span><span class="p">;</span>
     <span class="p">}</span>

@@ -98,6 +98,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
+                                          <a class="source" href="./Acl.html">
+                              Acl.php              </a>
+                                          <a class="source" href="./AppTest.html">
+                              AppTest.php              </a>
                                           <a class="source" href="./Autoloader.html">
                               Autoloader.php              </a>
                                           <a class="source" href="./Cache.html">
@@ -108,14 +112,22 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               Database.php              </a>
                                           <a class="source" href="./Debugger.html">
                               Debugger.php              </a>
+                                          <a class="source" href="./ExtendedModel.html">
+                              ExtendedModel.php              </a>
                                           <a class="source" href="./Form.html">
                               Form.php              </a>
                                           <a class="source" href="./Functions.html">
                               Functions.php              </a>
                                           <a class="source" href="./I18n.html">
                               I18n.php              </a>
+                                          <a class="source" href="./Ini.html">
+                              Ini.php              </a>
+                                          <a class="source" href="./Mailer.html">
+                              Mailer.php              </a>
                                           <a class="source" href="./MemcacheExt.html">
                               MemcacheExt.php              </a>
+                                          <a class="source" href="./MemcacheRedis.html">
+                              MemcacheRedis.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
                                           <a class="source" href="./MongoManager.html">
@@ -219,6 +231,37 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 
 <p>Note that <code>'endif'</code> and <code>'endforeach'</code> are valid as well as <code>'end'</code>,
  if you prefer, for the sake of clarity.</p>
+
+<p>Here's one more example of how to loop through an array of arrays:</p>
+
+<pre><code> {% foreach my_list %}
+     {% foreach loop_value %}
+         {{ loop_index }}. {{ loop_value }}&lt;br /&gt;
+     {% end %}
+ {% end %}
+</code></pre>
+
+<p>To break up your template into smaller parts, you can use the <code>inc</code>
+ tag to include one template from inside another. For example:</p>
+
+<pre><code> {% inc header %}
+</code></pre>
+
+<p>This will include the contents of <code>layouts/header.html</code> into the
+ current template, with the same data passed to it as the main template
+ file.</p>
+
+<p>You can also specify subfolders in this way, to better organize your
+ templates into themes. If you have a theme named <code>layouts/mytheme</code>
+ then you can include a <code>header.html</code> template within it via:</p>
+
+<pre><code> {% inc mytheme/header %}
+</code></pre>
+
+<p>Note that this will first look for <code>apps/mytheme/views/header.html</code>,
+ which would be the most frequently desired behaviour, and second it
+ will look for <code>layouts/mytheme/header.html</code>, so be sure to name your
+ themes with unique names that do not conflict with the names of apps.</p>
 
 <p>## Usage in PHP</p>
 
@@ -415,7 +458,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p><code>layouts/filename.html</code></p>
+              <p><code>layouts/themename/filename.html</code></p>
             </td>
             <td class="code">
               <div class="highlight"><pre></pre></div>            </td>
@@ -425,25 +468,50 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p><code>layouts/default.html</code></p>
+              <p><code>layouts/filename.html</code></p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$template</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">))</span> <span class="p">{</span>
-   <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$file</span><span class="p">)</span> <span class="o">=</span> <span class="nb">preg_split</span> <span class="p">(</span><span class="s1">&#39;/\//&#39;</span><span class="p">,</span> <span class="nv">$template</span><span class="p">,</span> <span class="m">2</span><span class="p">);</span>
-   <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/views/&#39;</span> <span class="o">.</span> <span class="nv">$file</span> <span class="o">.</span> <span class="s1">&#39;.html&#39;</span><span class="p">;</span>
-   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$file</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">die</span> <span class="p">(</span><span class="s1">&#39;Template not found: &#39;</span> <span class="o">.</span> <span class="nv">$template</span><span class="p">);</span>
-   <span class="p">}</span>
-  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="o">@</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;layouts/&#39;</span> <span class="o">.</span> <span class="nv">$template</span> <span class="o">.</span> <span class="s1">&#39;.html&#39;</span><span class="p">))</span> <span class="p">{</span>
-   <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;layouts/&#39;</span> <span class="o">.</span> <span class="nv">$template</span> <span class="o">.</span> <span class="s1">&#39;.html&#39;</span><span class="p">;</span>
-  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-   <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;layouts/default.html&#39;</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>            </td>
+              <div class="highlight"><pre></pre></div>            </td>
           </tr>
                   <tr id="section-11">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p><code>layouts/filename/filename.html</code></p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre></pre></div>            </td>
+          </tr>
+                  <tr id="section-12">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p><code>layouts/default.html</code></p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$template</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$view</span><span class="p">)</span> <span class="o">=</span> <span class="nb">preg_split</span> <span class="p">(</span><span class="s1">&#39;/\//&#39;</span><span class="p">,</span> <span class="nv">$template</span><span class="p">,</span> <span class="m">2</span><span class="p">);</span>
+   <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/views/&#39;</span> <span class="o">.</span> <span class="nv">$view</span> <span class="o">.</span> <span class="s1">&#39;.html&#39;</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$file</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;layouts/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$view</span> <span class="o">.</span> <span class="s1">&#39;.html&#39;</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$file</span><span class="p">))</span> <span class="p">{</span>
+     <span class="k">die</span> <span class="p">(</span><span class="s1">&#39;Template not found: &#39;</span> <span class="o">.</span> <span class="nv">$template</span><span class="p">);</span>
+    <span class="p">}</span>
+   <span class="p">}</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;layouts/&#39;</span> <span class="o">.</span> <span class="nv">$template</span> <span class="o">.</span> <span class="s1">&#39;.html&#39;</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;layouts/&#39;</span> <span class="o">.</span> <span class="nv">$template</span> <span class="o">.</span> <span class="s1">&#39;.html&#39;</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;layouts/&#39;</span> <span class="o">.</span> <span class="nv">$template</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$template</span> <span class="o">.</span> <span class="s1">&#39;.html&#39;</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;layouts/&#39;</span> <span class="o">.</span> <span class="nv">$template</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$template</span> <span class="o">.</span> <span class="s1">&#39;.html&#39;</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;layouts/default.html&#39;</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-13">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>The cache file is named based on the original</p>
             </td>
@@ -452,10 +520,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$cache</span><span class="p">)</span> <span class="o">||</span> <span class="nb">filemtime</span> <span class="p">(</span><span class="nv">$file</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">filemtime</span> <span class="p">(</span><span class="nv">$cache</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-12">
+                  <tr id="section-14">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Regenerate cached file</p>
             </td>
@@ -472,10 +540,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="nb">ob_get_clean</span> <span class="p">();</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-13">
+                  <tr id="section-15">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Render a template string for preview purposes. Generates a temporary
  cached version but unlinks it immediately after use.</p>
@@ -487,10 +555,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="p">}</span>
   <span class="nv">$data</span><span class="o">-&gt;</span><span class="na">is_being_rendered</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span></pre></div>            </td>
           </tr>
-                  <tr id="section-14">
+                  <tr id="section-16">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>Parse and save to a temporary file</p>
             </td>
@@ -501,10 +569,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
    <span class="k">die</span> <span class="p">(</span><span class="s1">&#39;Failed to generate cached template: &#39;</span> <span class="o">.</span> <span class="nv">$cache_file</span><span class="p">);</span>
   <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-15">
+                  <tr id="section-17">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>Include the temp file, then delete it, and return the output</p>
             </td>
@@ -516,10 +584,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="nv">$out</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-16">
+                  <tr id="section-18">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Replace values from template as string into PHP code equivalents.
  Note that this method never receives the original data sent to the
@@ -528,18 +596,22 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">parse_template</span> <span class="p">(</span><span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$val</span> <span class="o">=</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;\\{{&#39;</span><span class="p">,</span> <span class="s1">&#39;#EOBRACE#&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
+  <span class="nv">$val</span> <span class="o">=</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;\\}}&#39;</span><span class="p">,</span> <span class="s1">&#39;#ECBRACE#&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
   <span class="nv">$val</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\{\{ ?(.*?) ?\}\}/e&#39;</span><span class="p">,</span> <span class="s1">&#39;$this-&gt;replace_vars (\&#39;\\1\&#39;)&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
   <span class="nv">$val</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\{[\&#39;&quot;] ?(.*?) ?[\&#39;&quot;]\}/e&#39;</span><span class="p">,</span> <span class="s1">&#39;$this-&gt;replace_strings (\&#39;\\1\&#39;)&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
   <span class="nv">$val</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\{\% ?(.*?) ?\%\}/e&#39;</span><span class="p">,</span> <span class="s1">&#39;$this-&gt;replace_blocks (\&#39;\\1\&#39;)&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
   <span class="nv">$val</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\{\! ?(.*?) ?\!\}/e&#39;</span><span class="p">,</span> <span class="s1">&#39;$this-&gt;replace_includes (\&#39;\\1\&#39;)&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
   <span class="nv">$val</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\{# ?(.*?) ?#\}/e&#39;</span><span class="p">,</span> <span class="s1">&#39;$this-&gt;hard_codes (\&#39;\\1\&#39;)&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
+  <span class="nv">$val</span> <span class="o">=</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;#EOBRACE#&#39;</span><span class="p">,</span> <span class="s1">&#39;{{&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
+  <span class="nv">$val</span> <span class="o">=</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;#ECBRACE#&#39;</span><span class="p">,</span> <span class="s1">&#39;}}&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
   <span class="k">return</span> <span class="nv">$val</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-17">
+                  <tr id="section-19">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Replace variables of the form:</p>
 
@@ -559,10 +631,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">replace_vars</span> <span class="p">(</span><span class="nv">$val</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-18">
+                  <tr id="section-20">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>Get any filters</p>
             </td>
@@ -570,10 +642,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="highlight"><pre>  <span class="nv">$filters</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
   <span class="nv">$val</span> <span class="o">=</span> <span class="nb">array_shift</span> <span class="p">(</span><span class="nv">$filters</span><span class="p">);</span></pre></div>            </td>
           </tr>
-                  <tr id="section-19">
+                  <tr id="section-21">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Change <code>$_GLOBAL.value</code> into <code>$_GLOBAL['value']</code></p>
             </td>
@@ -583,10 +655,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
     <span class="nv">$val</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\.([a-zA-Z0-9_]+)/&#39;</span><span class="p">,</span> <span class="s1">&#39;[\&#39;\1\&#39;]&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span>
    <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-20">
+                  <tr id="section-22">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Change <code>object.value</code> into <code>$GLOBALS['object']-&gt;value</code></p>
             </td>
@@ -594,10 +666,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="highlight"><pre>  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">))</span> <span class="p">{</span>
    <span class="nv">$val</span> <span class="o">=</span> <span class="s1">&#39;$GLOBALS[\&#39;&#39;</span> <span class="o">.</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\./&#39;</span><span class="p">,</span> <span class="s1">&#39;\&#39;]-&gt;&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span></pre></div>            </td>
           </tr>
-                  <tr id="section-21">
+                  <tr id="section-23">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Ordinary request for <code>$data-&gt;value</code></p>
             </td>
@@ -606,10 +678,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
    <span class="nv">$val</span> <span class="o">=</span> <span class="s1">&#39;$data-&gt;&#39;</span> <span class="o">.</span> <span class="nv">$val</span><span class="p">;</span>
   <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-22">
+                  <tr id="section-24">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Apply default filter or none</p>
             </td>
@@ -620,10 +692,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
    <span class="k">return</span> <span class="s1">&#39;&lt;?php echo &#39;</span> <span class="o">.</span> <span class="nv">$val</span> <span class="o">.</span> <span class="s1">&#39;; ?&gt;&#39;</span><span class="p">;</span>
   <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-23">
+                  <tr id="section-25">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Apply specified filters</p>
             </td>
@@ -648,10 +720,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="nv">$out</span> <span class="o">.</span> <span class="nv">$val</span> <span class="o">.</span> <span class="nv">$end</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-24">
+                  <tr id="section-26">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>Replace <code>{! app/handler?param=value !}</code> with calls to <code>Controller::run()</code>.
  You can also substitute sub-expressions for values using <code>[]</code> tags, like
@@ -695,10 +767,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-25">
+                  <tr id="section-27">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Replace <code>{# app/handler?param=value #}</code> with the hard-coded output from
  a call to <code>Controller::run()</code>. Note that you cannot use sub-expressions
@@ -715,10 +787,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">controller</span><span class="o">-&gt;</span><span class="na">run</span> <span class="p">(</span><span class="nv">$url</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">],</span> <span class="nv">$data</span><span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-26">
+                  <tr id="section-28">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>Run any includes and include their output in the return value. Primarily
  for page body in the admin app. This only evaluates <code>{! app/handler !}</code>
@@ -748,10 +820,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="nv">$out</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-27">
+                  <tr id="section-29">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Replace strings with calls to <code>i18n_get()</code> for multilingual sites.
  Translatable strings take the following form using either double
@@ -766,22 +838,51 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="s1">&#39;&lt;?php echo i18n_get (\&#39;&#39;</span> <span class="o">.</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;\&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;\\\&#39;&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;\&#39;); ?&gt;&#39;</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-28">
+                  <tr id="section-30">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
-              <p>Sanitize a value for safe output, helping to prevent XSS attacks.</p>
+              <p>Sanitize a value for safe output, helping to prevent XSS attacks.
+ Please note that this method can still be insecure if used in an
+ unquoted portion of an HTML tag, for example:</p>
+
+<p>Don't do this:</p>
+
+<pre><code> &lt;a href="/example" {{ some_var }}&gt;click me&lt;/a&gt;
+</code></pre>
+
+<p>But this is okay:</p>
+
+<pre><code> &lt;a href="/example" id="{{ some_var }}"&gt;click me&lt;/a&gt;
+</code></pre>
+
+<p>And so is this:</p>
+
+<pre><code> &lt;span id="some-var"&gt;{{ some_var }}&lt;/span&gt;
+</code></pre>
+
+<p>In the first case, if the string were to contain something like
+ <code>onclick=alert(document.cookie)</code> then your visitors would be
+ exposed to the malicious JavaScript.</p>
+
+<p>The key is to know where your data comes from, and to act accordingly.
+ Not all cases of the first example are necessarily a security hole,
+ but it should only be used if you know the source and have validated
+ your data beforehand.</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">sanitize</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="nv">$charset</span> <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nb">htmlspecialchars</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="nx">ENT_QUOTES</span> <span class="o">|</span> <span class="nx">ENT_IGNORE</span><span class="p">,</span> <span class="nv">$charset</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">defined</span> <span class="p">(</span><span class="s1">&#39;ENT_SUBSTITUTE&#39;</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nb">define</span> <span class="p">(</span><span class="s1">&#39;ENT_SUBSTITUTE&#39;</span><span class="p">,</span> <span class="nx">ENT_IGNORE</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nb">htmlspecialchars</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="nx">ENT_QUOTES</span> <span class="o">|</span> <span class="nx">ENT_SUBSTITUTE</span><span class="p">,</span> <span class="nv">$charset</span><span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-29">
+                  <tr id="section-31">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>Convert quotes to HTML entities for form input values.
  Note: This should only be done for <em>trusted</em> data, as it does
@@ -792,10 +893,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&amp;quot;&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-30">
+                  <tr id="section-32">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>Replace foreach and if blocks. Handles the following forms:</p>
 
@@ -826,6 +927,11 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
    <span class="nv">$block</span> <span class="o">=</span> <span class="nv">$val</span><span class="p">;</span>
    <span class="nv">$extra</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
   <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$block</span> <span class="o">===</span> <span class="s1">&#39;inc&#39;</span> <span class="o">||</span> <span class="nv">$block</span> <span class="o">===</span> <span class="s1">&#39;include&#39;</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="s1">&#39;&lt;?php echo $this-&gt;render (\&#39;&#39;</span> <span class="o">.</span> <span class="nv">$extra</span> <span class="o">.</span> <span class="s1">&#39;\&#39;, $data); ?&gt;&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+
   <span class="k">if</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$extra</span><span class="p">,</span> <span class="s1">&#39;$_&#39;</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="nb">strstr</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">))</span> <span class="p">{</span>
     <span class="nv">$extra</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\.([a-zA-Z0-9_]+)/&#39;</span><span class="p">,</span> <span class="s1">&#39;[\&#39;\1\&#39;]&#39;</span><span class="p">,</span> <span class="nv">$extra</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span>

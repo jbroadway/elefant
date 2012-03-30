@@ -98,6 +98,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
+                                          <a class="source" href="./Acl.html">
+                              Acl.php              </a>
+                                          <a class="source" href="./AppTest.html">
+                              AppTest.php              </a>
                                           <a class="source" href="./Autoloader.html">
                               Autoloader.php              </a>
                                           <a class="source" href="./Cache.html">
@@ -108,14 +112,22 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               Database.php              </a>
                                           <a class="source" href="./Debugger.html">
                               Debugger.php              </a>
+                                          <a class="source" href="./ExtendedModel.html">
+                              ExtendedModel.php              </a>
                                           <a class="source" href="./Form.html">
                               Form.php              </a>
                                           <a class="source" href="./Functions.html">
                               Functions.php              </a>
                                           <a class="source" href="./I18n.html">
                               I18n.php              </a>
+                                          <a class="source" href="./Ini.html">
+                              Ini.php              </a>
+                                          <a class="source" href="./Mailer.html">
+                              Mailer.php              </a>
                                           <a class="source" href="./MemcacheExt.html">
                               MemcacheExt.php              </a>
+                                          <a class="source" href="./MemcacheRedis.html">
+                              MemcacheRedis.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
                                           <a class="source" href="./MongoManager.html">
@@ -325,32 +337,78 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Render the page in its template and layout. Uses a Template
- object for rendering.</p>
+ object for rendering. Determines whether to render with a
+ layout template at all, and if so, which one. Also determines
+ whether to render as a preview or as a real page.</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">render</span> <span class="p">(</span><span class="nv">$tpl</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_menu_title</span> <span class="o">=</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_menu_title</span><span class="p">))</span> <span class="o">?</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_menu_title</span> <span class="o">:</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">;</span>
-  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_window_title</span> <span class="o">=</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_window_title</span><span class="p">))</span> <span class="o">?</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_window_title</span> <span class="o">:</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">;</span>
-
-  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span>
-   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span> <span class="o">===</span> <span class="s1">&#39;default&#39;</span><span class="p">)</span> <span class="p">{</span>
-   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span> <span class="o">=</span> <span class="nx">conf</span><span class="p">(</span><span class="s1">&#39;General&#39;</span><span class="p">,</span> <span class="s1">&#39;default_layout&#39;</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">body</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">preview</span><span class="p">)</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="nv">$tpl</span><span class="o">-&gt;</span><span class="na">render_preview</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">,</span> <span class="nv">$this</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="k">return</span> <span class="nv">$tpl</span><span class="o">-&gt;</span><span class="na">render</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">,</span> <span class="nv">$this</span><span class="p">);</span>
- <span class="p">}</span></pre></div>            </td>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-13">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>No layout, return the body as-is</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">body</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-14">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Set default menu and window titles if they're empty</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_menu_title</span> <span class="o">=</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_menu_title</span><span class="p">))</span> <span class="o">?</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_menu_title</span> <span class="o">:</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">;</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_window_title</span> <span class="o">=</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_window_title</span><span class="p">))</span> <span class="o">?</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_window_title</span> <span class="o">:</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">;</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-15">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>No layout, use default</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-16">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Fetch the default layout setting</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span> <span class="o">===</span> <span class="s1">&#39;default&#39;</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span> <span class="o">=</span> <span class="nx">conf</span> <span class="p">(</span><span class="s1">&#39;General&#39;</span><span class="p">,</span> <span class="s1">&#39;default_layout&#39;</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-17">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Determine render method (preview or real)</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">preview</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="nv">$tpl</span><span class="o">-&gt;</span><span class="na">render_preview</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">,</span> <span class="nv">$this</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$tpl</span><span class="o">-&gt;</span><span class="na">render</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">,</span> <span class="nv">$this</span><span class="p">);</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-18">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Returns title for menu<em>title or window</em>title if they're empty.</p>
             </td>
@@ -363,10 +421,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="p">}</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-14">
+                  <tr id="section-19">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Add a script to the head or tail of a page, or echo immediately if the template
  rendering has already begun. Tracks duplicate additions so scripts will only
@@ -376,8 +434,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">add_script</span> <span class="p">(</span><span class="nv">$script</span><span class="p">,</span> <span class="nv">$add_to</span> <span class="o">=</span> <span class="s1">&#39;head&#39;</span><span class="p">)</span> <span class="p">{</span>
   <span class="nv">$script</span> <span class="o">=</span> <span class="nx">Page</span><span class="o">::</span><span class="na">wrap_script</span> <span class="p">(</span><span class="nv">$script</span><span class="p">);</span>
+
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">in_array</span> <span class="p">(</span><span class="nv">$script</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">scripts</span><span class="p">))</span> <span class="p">{</span>
    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">scripts</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$script</span><span class="p">;</span>
+
    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">is_being_rendered</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">echo</span> <span class="nv">$script</span><span class="p">;</span>
    <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$add_to</span> <span class="o">===</span> <span class="s1">&#39;head&#39;</span><span class="p">)</span> <span class="p">{</span>
@@ -388,10 +448,25 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="p">}</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-15">
+                  <tr id="section-20">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Add a style to the page. Simply an alias of <code>add_script()</code> for the sake of
+ referring to stylesheets correctly as styles and not scripts, but functionally
+ they both do the same thing, and <code>add_script()</code> always handled stylesheets
+ as well.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">add_style</span> <span class="p">(</span><span class="nv">$script</span><span class="p">,</span> <span class="nv">$add_to</span> <span class="o">=</span> <span class="s1">&#39;head&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">add_script</span> <span class="p">(</span><span class="nv">$script</span><span class="p">,</span> <span class="nv">$add_to</span><span class="p">);</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-21">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Wrap scripts that are simply URLs in the correct HTML tags,
  including <code>&lt;link&gt;</code> tags for CSS files. Will pass through

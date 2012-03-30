@@ -98,6 +98,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
+                                          <a class="source" href="./Acl.html">
+                              Acl.php              </a>
+                                          <a class="source" href="./AppTest.html">
+                              AppTest.php              </a>
                                           <a class="source" href="./Autoloader.html">
                               Autoloader.php              </a>
                                           <a class="source" href="./Cache.html">
@@ -108,14 +112,22 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               Database.php              </a>
                                           <a class="source" href="./Debugger.html">
                               Debugger.php              </a>
+                                          <a class="source" href="./ExtendedModel.html">
+                              ExtendedModel.php              </a>
                                           <a class="source" href="./Form.html">
                               Form.php              </a>
                                           <a class="source" href="./Functions.html">
                               Functions.php              </a>
                                           <a class="source" href="./I18n.html">
                               I18n.php              </a>
+                                          <a class="source" href="./Ini.html">
+                              Ini.php              </a>
+                                          <a class="source" href="./Mailer.html">
+                              Mailer.php              </a>
                                           <a class="source" href="./MemcacheExt.html">
                               MemcacheExt.php              </a>
+                                          <a class="source" href="./MemcacheRedis.html">
+                              MemcacheRedis.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
                                           <a class="source" href="./MongoManager.html">
@@ -426,24 +438,73 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">show_variable</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$tabs</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nb">is_numeric</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
-   <span class="k">echo</span> <span class="nv">$value</span><span class="p">;</span>
-  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_bool</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
-   <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">is_numeric</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-13">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Render a numeric value</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="k">echo</span> <span class="nv">$value</span><span class="p">;</span>
+
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_bool</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-14">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Render a boolean value</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">echo</span> <span class="s1">&#39;true&#39;</span><span class="p">;</span>
    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
     <span class="k">echo</span> <span class="s1">&#39;false&#39;</span><span class="p">;</span>
    <span class="p">}</span>
-  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_string</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
-   <span class="k">echo</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">.</span> <span class="nx">Template</span><span class="o">::</span><span class="na">sanitize</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">;</span>
-  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
-   <span class="k">echo</span> <span class="s1">&#39;array (&#39;</span><span class="p">;</span>
+
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_string</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-15">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Render a string value</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="k">echo</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">.</span> <span class="nx">Template</span><span class="o">::</span><span class="na">sanitize</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">;</span>
+
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-16">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Render an array</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="k">echo</span> <span class="s1">&#39;array (&#39;</span><span class="p">;</span>
    <span class="k">if</span> <span class="p">(</span><span class="k">empty</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
     <span class="k">echo</span> <span class="s2">&quot;)&quot;</span><span class="p">;</span>
     <span class="k">return</span><span class="p">;</span>
    <span class="p">}</span>
-   <span class="k">if</span> <span class="p">(</span><span class="nx">Debugger</span><span class="o">::</span><span class="na">is_assoc</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
-    <span class="nv">$first</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+
+   <span class="k">if</span> <span class="p">(</span><span class="nx">Debugger</span><span class="o">::</span><span class="na">is_assoc</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-17">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Associative array</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>    <span class="nv">$first</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
     <span class="k">foreach</span> <span class="p">(</span><span class="nv">$value</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
      <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$first</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">echo</span> <span class="s2">&quot;,&quot;</span><span class="p">;</span>
@@ -454,8 +515,18 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
      <span class="nb">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">%s</span><span class="se">\&quot;</span><span class="s2"> =&gt; &quot;</span><span class="p">,</span> <span class="nv">$key</span><span class="p">);</span>
      <span class="nx">Debugger</span><span class="o">::</span><span class="na">show_variable</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="nv">$tabs</span> <span class="o">+</span> <span class="m">1</span><span class="p">);</span>
     <span class="p">}</span>
-   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="nv">$first</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+
+   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-18">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Ordinary array</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>    <span class="nv">$first</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
     <span class="k">foreach</span> <span class="p">(</span><span class="nv">$value</span> <span class="k">as</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
      <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$first</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">echo</span> <span class="s2">&quot;,&quot;</span><span class="p">;</span>
@@ -469,8 +540,18 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
    <span class="k">echo</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
    <span class="k">echo</span> <span class="nb">str_pad</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nv">$tabs</span><span class="p">)</span> <span class="o">*</span> <span class="m">4</span><span class="p">);</span>
    <span class="k">echo</span> <span class="s2">&quot;)&quot;</span><span class="p">;</span>
-  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_object</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
-   <span class="nv">$vars</span> <span class="o">=</span> <span class="nb">get_object_vars</span> <span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_object</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-19">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Render an object</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="nv">$vars</span> <span class="o">=</span> <span class="nb">get_object_vars</span> <span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
    <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$vars</span><span class="p">)</span> <span class="o">===</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">echo</span> <span class="nb">get_class</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39; ()&#39;</span><span class="p">;</span>
     <span class="k">return</span><span class="p">;</span>
@@ -483,15 +564,25 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
     <span class="k">echo</span> <span class="s2">&quot;;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
    <span class="p">}</span>
    <span class="k">echo</span> <span class="s2">&quot;)&quot;</span><span class="p">;</span>
-  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-   <span class="k">echo</span> <span class="nv">$value</span><span class="p">;</span>
+
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-20">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Render unknown values as-is</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="k">echo</span> <span class="nv">$value</span><span class="p">;</span>
   <span class="p">}</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-13">
+                  <tr id="section-21">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Checks if an array is associative.</p>
             </td>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>ExtendedModel.php</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="layout.css" />
+  <style>
+    /*--------------------- Layout and Typography ----------------------------*/
+body { font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif; font-size: 15px; line-height: 22px; color: #252519; margin: 0; padding: 0;
+}
+a { color: #261a3b;
+} a:visited { color: #261a3b; }
+p { margin: 0 0 15px 0;
+}
+h1, h2, h3, h4, h5, h6 { margin: 40px 0 15px 0;
+} h3, h4, h5, h6 { margin-top: 20px; }
+#container { position: relative;
+}
+#background { position: fixed; top: 0; left: 575px; right: 0; bottom: 0; background: #f5f5ff; border-left: 1px solid #e5e5ee; z-index: -1;
+}
+#jump_to, #jump_page { background: white; -webkit-box-shadow: 0 0 25px #777; -moz-box-shadow: 0 0 25px #777; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; font: 10px Arial; text-transform: uppercase; cursor: pointer; text-align: right;
+}
+#jump_to, #jump_wrapper { position: fixed; right: 0; top: 0; padding: 5px 10px;
+} #jump_wrapper { padding: 0; display: none; } #jump_to:hover #jump_wrapper { display: block; } #jump_page { padding: 5px 0 3px; margin: 0 0 25px 25px; overflow:hidden; } #jump_page .source { display: block; padding: 5px 10px; text-decoration: none; border-top: 1px solid #eee; float:left; min-width:180px; text-align:left; text-transform:none; font-size:11px; } #jump_page .source:hover { background: #f5f5ff; } #jump_page .source:first-child { }
+table td { border: 0; outline: 0;
+} td.docs, th.docs { max-width: 450px; min-width: 450px; min-height: 5px; padding: 10px 25px 1px 50px; overflow-x: hidden; vertical-align: top; text-align: left; } .docs pre { margin: 15px 0 15px; padding-left: 15px; } .docs p tt, .docs p code { background: #f8f8ff; border: 1px solid #dedede; font-size: 12px; padding: 0 0.2em; } .pilwrap { position: relative; } .pilcrow { font: 12px Arial; text-decoration: none; color: #454545; position: absolute; top: 3px; left: -20px; padding: 1px 2px; opacity: 0; -webkit-transition: opacity 0.2s linear; } td.docs:hover .pilcrow { opacity: 1; } td.code, th.code { padding: 14px 15px 16px 25px; width: 100%; vertical-align: top; background: #f5f5ff; border-left: 1px solid #e5e5ee; } pre, tt, code { font-size: 12px; line-height: 18px; font-family: Monaco, Consolas, "Lucida Console", monospace; margin: 0; padding: 0; } /*---------------------- Syntax Highlighting -----------------------------*/
+td.linenos { background-color: #f0f0f0; padding-right: 10px; }
+span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
+body .hll { background-color: #ffffcc }
+body .c { color: #408080; font-style: italic } /* Comment */
+body .err { border: 1px solid #FF0000 } /* Error */
+body .k { color: #954121 } /* Keyword */
+body .o { color: #666666 } /* Operator */
+body .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+body .cp { color: #BC7A00 } /* Comment.Preproc */
+body .c1 { color: #408080; font-style: italic } /* Comment.Single */
+body .cs { color: #408080; font-style: italic } /* Comment.Special */
+body .gd { color: #A00000 } /* Generic.Deleted */
+body .ge { font-style: italic } /* Generic.Emph */
+body .gr { color: #FF0000 } /* Generic.Error */
+body .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+body .gi { color: #00A000 } /* Generic.Inserted */
+body .go { color: #808080 } /* Generic.Output */
+body .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+body .gs { font-weight: bold } /* Generic.Strong */
+body .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+body .gt { color: #0040D0 } /* Generic.Traceback */
+body .kc { color: #954121 } /* Keyword.Constant */
+body .kd { color: #954121; font-weight: bold } /* Keyword.Declaration */
+body .kn { color: #954121; font-weight: bold } /* Keyword.Namespace */
+body .kp { color: #954121 } /* Keyword.Pseudo */
+body .kr { color: #954121; font-weight: bold } /* Keyword.Reserved */
+body .kt { color: #B00040 } /* Keyword.Type */
+body .m { color: #666666 } /* Literal.Number */
+body .s { color: #219161 } /* Literal.String */
+body .na { color: #7D9029 } /* Name.Attribute */
+body .nb { color: #954121 } /* Name.Builtin */
+body .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+body .no { color: #880000 } /* Name.Constant */
+body .nd { color: #AA22FF } /* Name.Decorator */
+body .ni { color: #999999; font-weight: bold } /* Name.Entity */
+body .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+body .nf { color: #0000FF } /* Name.Function */
+body .nl { color: #A0A000 } /* Name.Label */
+body .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+body .nt { color: #954121; font-weight: bold } /* Name.Tag */
+body .nv { color: #19469D } /* Name.Variable */
+body .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+body .w { color: #bbbbbb } /* Text.Whitespace */
+body .mf { color: #666666 } /* Literal.Number.Float */
+body .mh { color: #666666 } /* Literal.Number.Hex */
+body .mi { color: #666666 } /* Literal.Number.Integer */
+body .mo { color: #666666 } /* Literal.Number.Oct */
+body .sb { color: #219161 } /* Literal.String.Backtick */
+body .sc { color: #219161 } /* Literal.String.Char */
+body .sd { color: #219161; font-style: italic } /* Literal.String.Doc */
+body .s2 { color: #219161 } /* Literal.String.Double */
+body .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+body .sh { color: #219161 } /* Literal.String.Heredoc */
+body .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+body .sx { color: #954121 } /* Literal.String.Other */
+body .sr { color: #BB6688 } /* Literal.String.Regex */
+body .s1 { color: #219161 } /* Literal.String.Single */
+body .ss { color: #19469D } /* Literal.String.Symbol */
+body .bp { color: #954121 } /* Name.Builtin.Pseudo */
+body .vc { color: #19469D } /* Name.Variable.Class */
+body .vg { color: #19469D } /* Name.Variable.Global */
+body .vi { color: #19469D } /* Name.Variable.Instance */
+body .il { color: #666666 } /* Literal.Number.Integer.Long */ /********** PHP Comment Additions ********/
+td.docs .docparam {color:#DB251A;font-weight:bold;}
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+          <div id="jump_to">
+        Jump To &hellip;
+        <div id="jump_wrapper">
+          <div id="jump_page">
+                                          <a class="source" href="./Acl.html">
+                              Acl.php              </a>
+                                          <a class="source" href="./AppTest.html">
+                              AppTest.php              </a>
+                                          <a class="source" href="./Autoloader.html">
+                              Autoloader.php              </a>
+                                          <a class="source" href="./Cache.html">
+                              Cache.php              </a>
+                                          <a class="source" href="./Controller.html">
+                              Controller.php              </a>
+                                          <a class="source" href="./Database.html">
+                              Database.php              </a>
+                                          <a class="source" href="./Debugger.html">
+                              Debugger.php              </a>
+                                          <a class="source" href="./ExtendedModel.html">
+                              ExtendedModel.php              </a>
+                                          <a class="source" href="./Form.html">
+                              Form.php              </a>
+                                          <a class="source" href="./Functions.html">
+                              Functions.php              </a>
+                                          <a class="source" href="./I18n.html">
+                              I18n.php              </a>
+                                          <a class="source" href="./Ini.html">
+                              Ini.php              </a>
+                                          <a class="source" href="./Mailer.html">
+                              Mailer.php              </a>
+                                          <a class="source" href="./MemcacheExt.html">
+                              MemcacheExt.php              </a>
+                                          <a class="source" href="./MemcacheRedis.html">
+                              MemcacheRedis.php              </a>
+                                          <a class="source" href="./Model.html">
+                              Model.php              </a>
+                                          <a class="source" href="./MongoManager.html">
+                              MongoManager.php              </a>
+                                          <a class="source" href="./MongoModel.html">
+                              MongoModel.php              </a>
+                                          <a class="source" href="./Page.html">
+                              Page.php              </a>
+                                          <a class="source" href="./Product.html">
+                              Product.php              </a>
+                                          <a class="source" href="./Restful.html">
+                              Restful.php              </a>
+                                          <a class="source" href="./Template.html">
+                              Template.php              </a>
+                      </div>
+        </div>
+      </div>
+        <table cellpadding="0" cellspacing="0">
+      <thead>
+        <tr>
+          <th class="docs">
+            <h1>
+              ExtendedModel.php            </h1>
+          </th>
+          <th class="code">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+                  <tr id="section-0">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-0">&#182;</a>
+              </div>
+              <p>Elefant CMS - http:www.elefantcms.com/</p>
+
+<p>Copyright (c) 2011 Johnny Broadway</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre></pre></div>            </td>
+          </tr>
+                  <tr id="section-1">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>ExtendedModel extends Model to include the ability to add arbitrary values
+ to a single field that will be JSON encoded in storage and transparently
+ decoded in use. This allows you to extend your Model data with any number
+ of additional values without needing to change your schema.</p>
+
+<p>Note that these values are not indexable directly, but for additional data
+ that you don't need to search on, this can be useful. You can also build
+ simple additional tables for indexing associated data that does need to
+ be searched on, but that is outside of the scope of this class.</p>
+
+<p>Usage:</p>
+
+<ol>
+<li><p>By specifying allowed extended fields in <code>$verify</code></p>
+
+<p>&lt;?php</p>
+
+<p>class Foo extends ExtendedModel {
+  store extended data in a field named extradata
+ public $<em>extended</em>field = 'extradata';</p>
+
+<p>public $verify = array (
+    regular field validations, followed by extended fields:
+   'favorite<em>food' => array (
+     'extended' => 1  mark as extended
+   ),
+   'favorite</em>color' => array (
+     'extended' => 1,  can also have validation rules:
+     'regex' => '/^(red|green|blue|yellow|orange|purple|pink|brown)$/i'
+ );
+}</p>
+
+<p>fetch an item
+$foo = new Foo (1);</p>
+
+<p>since we've defined the extended fields, we can access them directly
+$foo->favorite_food = 'pizza';</p>
+
+<p>this will fail to save because the validation fails
+$foo->favorite_color = 'black';
+if (! $foo->put ()) {
+ echo $foo->error;
+}</p>
+
+<p>?></p></li>
+<li><p>By accessing the extradata field directly (will automatically serialize
+and unserialize for you), or through the <code>ext()</code> method:</p>
+
+<p>&lt;?php</p>
+
+<p>class Foo extends ExtendedModel {
+  store extended data in a field named extradata
+ public $<em>extended</em>field = 'extradata';
+}</p>
+
+<p>fetch an item
+$foo = new Foo (1);</p>
+
+<p>get its extradata field
+$extra = $foo->extradata;</p>
+
+<p>or
+$extra = $foo->ext ();</p>
+
+<p>add some fields to it
+$extra['favorite<em>food'] = 'pizza';
+$extra['favorite</em>color'] = 'green';</p>
+
+<p>or
+$foo->ext ('favorite<em>food', 'pizza');
+$foo->ext ('favorite</em>color', 'green');</p>
+
+<p>set it and save it
+$foo->extradata = $extra;
+$foo->put ();</p>
+
+<p>next time we retrieve the item
+our data will be there
+$foo = new Foo (1);
+$extra = $foo->extra;
+echo $extra['favorite_food'];</p>
+
+<p>or
+$foo = new Foo (1);
+echo $foo->ext ('favorite_food');</p>
+
+<p>?></p></li>
+</ol>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre><span class="k">class</span> <span class="nc">ExtendedModel</span> <span class="k">extends</span> <span class="nx">Model</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-2">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Override this in your child class to tell the ExtendedModel which field
+ contains your extended properties.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$_extended_field</span><span class="p">;</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-3">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>This is the unserialized array of extended data from the extended field.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="nv">$_extended</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-4">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Verification rules for extended attributes.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">private</span> <span class="nv">$_extended_verify</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-5">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Need to separate verify list for regular and extended attributes,
+ so we override the constructor to do so.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span> <span class="p">(</span><span class="nv">$vals</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$is_new</span> <span class="o">=</span> <span class="k">true</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">verify</span> <span class="k">as</span> <span class="nv">$k</span> <span class="o">=&gt;</span> <span class="nv">$v</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$v</span><span class="p">[</span><span class="s1">&#39;extended&#39;</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nb">unset</span> <span class="p">(</span><span class="nv">$v</span><span class="p">[</span><span class="s1">&#39;extended&#39;</span><span class="p">]);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended_verify</span><span class="p">[</span><span class="nv">$k</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$v</span><span class="p">;</span>
+    <span class="nb">unset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">verify</span><span class="p">[</span><span class="nv">$k</span><span class="p">]);</span>
+   <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span> <span class="p">(</span><span class="nv">$vals</span><span class="p">,</span> <span class="nv">$is_new</span><span class="p">);</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-6">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Need to verify extended fields, so we override the put() method.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">put</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nv">$f</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Form</span><span class="p">;</span>
+  <span class="nv">$failed</span> <span class="o">=</span> <span class="nv">$f</span><span class="o">-&gt;</span><span class="na">verify_values</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ext</span> <span class="p">(),</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended_verify</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$failed</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="s1">&#39;Validation failed for extended fields: &#39;</span> <span class="o">.</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="nv">$failed</span><span class="p">);</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">put</span> <span class="p">();</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-7">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Dynamic getter for user properties. If you get the field specified
+ in the child class's <code>$_extended_field</code> property, it will automatically
+ unserialize it into an array for you.</p>
+
+<p>If an extended property has been defined in the <code>$verify</code> list, you can
+ also get it directly using the usual <code>$model-&gt;property</code> syntax.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">__get</span> <span class="p">(</span><span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$key</span> <span class="o">==</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended_field</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended_field</span><span class="p">]))</span> <span class="p">{</span>
+     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended</span> <span class="o">=</span> <span class="p">(</span><span class="k">array</span><span class="p">)</span> <span class="nx">json_decode</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended_field</span><span class="p">]);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended_field</span><span class="p">]</span> <span class="o">=</span> <span class="nx">json_encode</span> <span class="p">(</span><span class="k">array</span> <span class="p">());</span>
+     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
+    <span class="p">}</span>
+   <span class="p">}</span>
+   <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended_verify</span><span class="p">[</span><span class="nv">$key</span><span class="p">]))</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ext</span> <span class="p">(</span><span class="nv">$key</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">__get</span> <span class="p">(</span><span class="nv">$key</span><span class="p">);</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-8">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Dynamic setter for extended properties field. If you set the field
+ specified in the child class's <code>$_extended_field</code> property, it will
+ automatically serialize it into JSON for storage.</p>
+
+<p>If an extended property has been defined in the <code>$verify</code> list, you can
+ also set it directly using the usual <code>$model-&gt;property = '...'</code> syntax.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">__set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$key</span> <span class="o">===</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended_field</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended</span> <span class="o">=</span> <span class="nv">$val</span><span class="p">;</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">json_encode</span> <span class="p">(</span><span class="nv">$val</span><span class="p">);</span>
+   <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended_verify</span><span class="p">[</span><span class="nv">$key</span><span class="p">]))</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ext</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">__set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">);</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-9">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>This method provides an easy getter/setter for the extended field values.
+ It works around the fact that accessing the array elements directly from the
+ extended field won't trigger the __get() and __set() magic methods.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">ext</span> <span class="p">(</span><span class="nv">$key</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="nv">$val</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$key</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended_field</span><span class="p">};</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$val</span> <span class="o">!==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$ext</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended_field</span><span class="p">};</span>
+   <span class="nv">$ext</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$val</span><span class="p">;</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended_field</span><span class="p">}</span> <span class="o">=</span> <span class="nv">$ext</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nv">$ext</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_extended_field</span><span class="p">};</span>
+  <span class="k">return</span> <span class="nv">$ext</span><span class="p">[</span><span class="nv">$key</span><span class="p">];</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div></pre></div>            </td>
+          </tr>
+              </tbody>
+    </table>
+  </div>
+</body>
+</html>

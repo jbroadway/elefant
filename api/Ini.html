@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>MemcacheExt.php</title>
+  <title>Ini.php</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="layout.css" />
   <style>
@@ -150,7 +150,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         <tr>
           <th class="docs">
             <h1>
-              MemcacheExt.php            </h1>
+              Ini.php            </h1>
           </th>
           <th class="code">
           </th>
@@ -162,62 +162,97 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-0">&#182;</a>
               </div>
-              <p>Elefant CMS - http:www.elefantcms.com/</p>
+              <p>A very simple class that abstracts reading/writing INI data from
+ strings and files.</p>
 
-<p>Copyright (c) 2011 Johnny Broadway</p>
+<p>Usage:</p>
 
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:</p>
+<p>&lt;?php</p>
 
-<p>The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.</p>
+<pre><code>Parsing files or strings
+</code></pre>
 
-<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.</p>
+<p>$data = Ini::parse ('ini<em>filename</em>or_string', true);</p>
+
+<pre><code>Write a data structure into an INI-formatted string
+</code></pre>
+
+<p>$ini = Ini::write ($data);</p>
+
+<pre><code>Write a data structure to an INI-formatted file
+</code></pre>
+
+<p>$res = Ini::write ($data, 'filename.ini');</p>
+
+<p>?></p>
             </td>
             <td class="code">
-              <div class="highlight"><pre></pre></div>            </td>
+              <div class="highlight"><pre><span class="k">class</span> <span class="nc">Ini</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-1">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>Extends Memcache with a method that takes a key, timeout, and a
- function that will be called to produce the value if it is not
- found in the cache.</p>
-
-<p>Based on Zane Ashby's idea posted here:</p>
-
-<p>http:demonastery.org/72/tiny-memcached-wrapper/</p>
+              <p>Parses an INI-formatted string or file. Just an alias
+ for parse<em>ini</em>file/parse<em>ini</em>string that's here for
+ completeness and consistency.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre><span class="k">class</span> <span class="nc">MemcacheExt</span> <span class="k">extends</span> <span class="nx">Memcache</span> <span class="p">{</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">parse</span> <span class="p">(</span><span class="nv">$string</span><span class="p">,</span> <span class="nv">$sections</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$scanner_mode</span> <span class="o">=</span> <span class="nx">INI_SCANNER_NORMAL</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$string</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="nb">parse_ini_file</span> <span class="p">(</span><span class="nv">$string</span><span class="p">,</span> <span class="nv">$sections</span><span class="p">,</span> <span class="nv">$scanner_mode</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">parse_ini_string</span> <span class="p">(</span><span class="nv">$string</span><span class="p">,</span> <span class="nv">$sections</span><span class="p">,</span> <span class="nv">$scanner_mode</span><span class="p">);</span>
+ <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-2">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Takes a callback function that generates the value 
- if it's not found in the cache.</p>
+              <p>Write a data structure to an INI-formatted string or file.
+ Adds "secure" comments to the start and end of the data so
+ you can hide your INI data in files using a .php extension.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">cache</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">,</span> <span class="nv">$function</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">((</span><span class="nv">$val</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span> <span class="p">(</span><span class="nv">$key</span><span class="p">))</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
-   <span class="nv">$val</span> <span class="o">=</span> <span class="nv">$function</span> <span class="p">();</span>
-   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">write</span> <span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nv">$file</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$out</span> <span class="o">=</span> <span class="s2">&quot;; &lt;?php /*</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+
+  <span class="nv">$write_value</span> <span class="o">=</span> <span class="k">function</span> <span class="err">($</span><span class="nf">value</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">is_bool</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;On&#39;</span> <span class="o">:</span> <span class="s1">&#39;Off&#39;</span><span class="p">;</span>
+   <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="s1">&#39;0&#39;</span> <span class="o">||</span> <span class="nv">$value</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s1">&#39;Off&#39;</span><span class="p">;</span>
+   <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s1">&#39;On&#39;</span><span class="p">;</span>
+   <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/[^a-z0-9\/\.@&lt;&gt; _-]/i&#39;</span><span class="p">,</span> <span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">.</span> <span class="nv">$value</span> <span class="o">.</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="k">return</span> <span class="nv">$value</span><span class="p">;</span>
+  <span class="p">};</span>
+ 
+  <span class="nv">$sections</span> <span class="o">=</span> <span class="nb">is_array</span> <span class="p">(</span><span class="nv">$data</span><span class="p">[</span><span class="nb">current</span> <span class="p">(</span><span class="nb">array_keys</span> <span class="p">(</span><span class="nv">$data</span><span class="p">))])</span> <span class="o">?</span> <span class="k">true</span> <span class="o">:</span> <span class="k">false</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$sections</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$out</span> <span class="o">.=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
   <span class="p">}</span>
-  <span class="k">return</span> <span class="nv">$val</span><span class="p">;</span>
+ 
+  <span class="k">foreach</span> <span class="p">(</span><span class="nv">$data</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nv">$out</span> <span class="o">.=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[</span><span class="si">$key</span><span class="s2">]</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">;</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$value</span> <span class="k">as</span> <span class="nv">$k</span> <span class="o">=&gt;</span> <span class="nv">$v</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nv">$out</span> <span class="o">.=</span> <span class="nb">str_pad</span> <span class="p">(</span><span class="nv">$k</span><span class="p">,</span> <span class="m">24</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;= &#39;</span> <span class="o">.</span> <span class="nv">$write_value</span> <span class="p">(</span><span class="nv">$v</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nv">$out</span> <span class="o">.=</span> <span class="nb">str_pad</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="m">24</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;= &#39;</span> <span class="o">.</span> <span class="nv">$write_value</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+   <span class="p">}</span>
+  <span class="p">}</span>
+ 
+  <span class="nv">$out</span> <span class="o">.=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">; */ ?&gt;&quot;</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$file</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="nv">$out</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nb">file_put_contents</span> <span class="p">(</span><span class="nv">$file</span><span class="p">,</span> <span class="nv">$out</span><span class="p">);</span>
  <span class="p">}</span>
 <span class="p">}</span>
 

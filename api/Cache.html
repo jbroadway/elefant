@@ -98,6 +98,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
+                                          <a class="source" href="./Acl.html">
+                              Acl.php              </a>
+                                          <a class="source" href="./AppTest.html">
+                              AppTest.php              </a>
                                           <a class="source" href="./Autoloader.html">
                               Autoloader.php              </a>
                                           <a class="source" href="./Cache.html">
@@ -108,14 +112,22 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               Database.php              </a>
                                           <a class="source" href="./Debugger.html">
                               Debugger.php              </a>
+                                          <a class="source" href="./ExtendedModel.html">
+                              ExtendedModel.php              </a>
                                           <a class="source" href="./Form.html">
                               Form.php              </a>
                                           <a class="source" href="./Functions.html">
                               Functions.php              </a>
                                           <a class="source" href="./I18n.html">
                               I18n.php              </a>
+                                          <a class="source" href="./Ini.html">
+                              Ini.php              </a>
+                                          <a class="source" href="./Mailer.html">
+                              Mailer.php              </a>
                                           <a class="source" href="./MemcacheExt.html">
                               MemcacheExt.php              </a>
+                                          <a class="source" href="./MemcacheRedis.html">
+                              MemcacheRedis.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
                                           <a class="source" href="./MongoManager.html">
@@ -183,6 +195,9 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>This is a basic class that immitates Memcache via the filesystem
  so handlers can use "poor man's caching" even if Memcache ins't
  available.</p>
+
+<p>Also provides an <code>init()</code> method that initializes the correct cache
+ for the current request (Memcache, Redis, or itself).</p>
             </td>
             <td class="code">
               <div class="highlight"><pre><span class="k">class</span> <span class="nc">Cache</span> <span class="p">{</span></pre></div>            </td>
@@ -205,7 +220,9 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Constructor method creates the directory if it's missing.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span> <span class="p">()</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span> <span class="p">(</span><span class="nv">$dir</span> <span class="o">=</span> <span class="s1">&#39;cache/datastore&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">=</span> <span class="nv">$dir</span><span class="p">;</span>
+
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span><span class="p">))</span> <span class="p">{</span>
    <span class="nb">mkdir</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span><span class="p">);</span>
    <span class="nb">chmod</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span><span class="p">,</span> <span class="m">0777</span><span class="p">);</span>
@@ -217,27 +234,153 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Emulates <code>Memcache::cache</code>.</p>
+              <p>Initialize the correct cache based on the global configuration
+ and return the cache object (lib/MemcacheExt, lib/MemcacheRedis,
+ or lib/Cache).</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">cache</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">,</span> <span class="nv">$function</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">((</span><span class="nv">$val</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span> <span class="p">(</span><span class="nv">$key</span><span class="p">))</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
-   <span class="nv">$val</span> <span class="o">=</span> <span class="nv">$function</span> <span class="p">();</span>
-   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="k">return</span> <span class="nv">$val</span><span class="p">;</span>
- <span class="p">}</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">init</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$server</span> <span class="o">=</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">])</span> <span class="o">?</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">]</span> <span class="o">:</span> <span class="k">false</span><span class="p">;</span>
+  <span class="nv">$dir</span> <span class="o">=</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">])</span> <span class="o">?</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">:</span> <span class="s1">&#39;cache/datastore&#39;</span><span class="p">;</span>
+  <span class="nv">$backend</span> <span class="o">=</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;backend&#39;</span><span class="p">])</span> <span class="o">?</span> <span class="nv">$conf</span><span class="p">[</span><span class="s1">&#39;backend&#39;</span><span class="p">]</span> <span class="o">:</span> <span class="s1">&#39;memcache&#39;</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$server</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-5">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
+              <p>Determine the backend</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="k">if</span> <span class="p">(</span><span class="nv">$backend</span> <span class="o">===</span> <span class="s1">&#39;redis&#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">extension_loaded</span> <span class="p">(</span><span class="s1">&#39;redis&#39;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nv">$cache</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MemcacheRedis</span> <span class="p">();</span>
+   <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">extension_loaded</span> <span class="p">(</span><span class="s1">&#39;memcache&#39;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nv">$cache</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MemcacheExt</span> <span class="p">();</span>
+   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Cache</span> <span class="p">(</span><span class="nv">$dir</span><span class="p">);</span>
+   <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-6">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Connect to cache server(s)</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="k">foreach</span> <span class="p">(</span><span class="nv">$server</span> <span class="k">as</span> <span class="nv">$s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">list</span> <span class="p">(</span><span class="nv">$serv</span><span class="p">,</span> <span class="nv">$port</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="nv">$s</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span> <span class="p">(</span><span class="nv">$port</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-7">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>There's an appended password</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>     <span class="k">list</span> <span class="p">(</span><span class="nv">$port</span><span class="p">,</span> <span class="nv">$password</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="nv">$port</span><span class="p">);</span>
+     <span class="nv">$cache</span><span class="o">-&gt;</span><span class="na">addServer</span> <span class="p">(</span><span class="nv">$serv</span><span class="p">,</span> <span class="nv">$port</span><span class="p">,</span> <span class="nv">$password</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-8">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>No auth</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>     <span class="nv">$cache</span><span class="o">-&gt;</span><span class="na">addServer</span> <span class="p">(</span><span class="nv">$serv</span><span class="p">,</span> <span class="nv">$port</span><span class="p">);</span>
+    <span class="p">}</span>
+   <span class="p">}</span>
+   <span class="k">return</span> <span class="nv">$cache</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-9">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>No server, use fs</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>  <span class="k">return</span> <span class="k">new</span> <span class="nx">Cache</span> <span class="p">(</span><span class="nv">$dir</span><span class="p">);</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-10">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Create a timeout file to store the timeout of the cached data.
+ Uses a similarly named dot-file to the main file that contains
+ only the timeout value.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">private</span> <span class="k">function</span> <span class="nf">_set_timeout</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">file_put_contents</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/.&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="nv">$timeout</span><span class="p">))</span> <span class="p">{</span>
+   <span class="nb">chmod</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/.&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="m">0777</span><span class="p">);</span>
+   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-11">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Checks whether a key's timeout has expired. If it has, it
+ also deletes the timeout dot-file.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">private</span> <span class="k">function</span> <span class="nf">_has_timed_out</span> <span class="p">(</span><span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$timeout_file</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/.&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$timeout_file</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nv">$timeout</span> <span class="o">=</span> <span class="nb">file_get_contents</span> <span class="p">(</span><span class="nv">$timeout_file</span><span class="p">);</span>
+  <span class="nv">$mtime</span> <span class="o">=</span> <span class="nb">filemtime</span> <span class="p">(</span><span class="nv">$timeout_file</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$mtime</span> <span class="o">&lt;</span> <span class="nb">time</span> <span class="p">()</span> <span class="o">-</span> <span class="nv">$timeout</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nb">unlink</span> <span class="p">(</span><span class="nv">$timeout_file</span><span class="p">);</span>
+   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-12">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Emulates <code>MemcacheExt::cache</code>.</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">cache</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">,</span> <span class="nv">$function</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">((</span><span class="nv">$val</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span> <span class="p">(</span><span class="nv">$key</span><span class="p">))</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$val</span> <span class="o">=</span> <span class="nv">$function</span> <span class="p">();</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nv">$val</span><span class="p">;</span>
+ <span class="p">}</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-13">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
               <p>Emulates <code>Memcache::get</code>.</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">get</span> <span class="p">(</span><span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">)))</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_has_timed_out</span> <span class="p">(</span><span class="nv">$key</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+   <span class="p">}</span>
    <span class="nv">$val</span> <span class="o">=</span> <span class="nb">file_get_contents</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">));</span>
    <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/^(a|O):[0-9]+:/&#39;</span><span class="p">,</span> <span class="nv">$val</span><span class="p">))</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nb">unserialize</span> <span class="p">(</span><span class="nv">$val</span><span class="p">);</span>
@@ -247,61 +390,79 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-6">
+                  <tr id="section-14">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Emulates <code>Memcache::add</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">add</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">add</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="nv">$flags</span> <span class="o">=</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$val</span><span class="p">)</span> <span class="o">||</span> <span class="nb">is_object</span> <span class="p">(</span><span class="nv">$val</span><span class="p">))</span> <span class="p">{</span>
    <span class="nv">$val</span> <span class="o">=</span> <span class="nb">serialize</span> <span class="p">(</span><span class="nv">$val</span><span class="p">);</span>
   <span class="p">}</span>
-  <span class="nb">file_put_contents</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="nv">$val</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">)))</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_put_contents</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="nv">$val</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
   <span class="nb">chmod</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="m">0777</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$timeout</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_set_timeout</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
+  <span class="p">}</span>
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-7">
+                  <tr id="section-15">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Emulates <code>Memcache::replace</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">replace</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">replace</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="nv">$flags</span> <span class="o">=</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$val</span><span class="p">)</span> <span class="o">||</span> <span class="nb">is_object</span> <span class="p">(</span><span class="nv">$val</span><span class="p">))</span> <span class="p">{</span>
    <span class="nv">$val</span> <span class="o">=</span> <span class="nb">serialize</span> <span class="p">(</span><span class="nv">$val</span><span class="p">);</span>
   <span class="p">}</span>
-  <span class="nb">file_put_contents</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="nv">$val</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_put_contents</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="nv">$val</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
   <span class="nb">chmod</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="m">0777</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$timeout</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_set_timeout</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
+  <span class="p">}</span>
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-8">
+                  <tr id="section-16">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>Emulates <code>Memcache::set</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="nv">$timeout</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="nv">$flags</span> <span class="o">=</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$val</span><span class="p">)</span> <span class="o">||</span> <span class="nb">is_object</span> <span class="p">(</span><span class="nv">$val</span><span class="p">))</span> <span class="p">{</span>
    <span class="nv">$val</span> <span class="o">=</span> <span class="nb">serialize</span> <span class="p">(</span><span class="nv">$val</span><span class="p">);</span>
   <span class="p">}</span>
-  <span class="nb">file_put_contents</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="nv">$val</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_put_contents</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="nv">$val</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
   <span class="nb">chmod</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="m">0777</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$timeout</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_set_timeout</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
+  <span class="p">}</span>
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-9">
+                  <tr id="section-17">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>Emulates <code>Memcache::increment</code>.</p>
             </td>
@@ -313,15 +474,17 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
    <span class="nv">$val</span> <span class="o">=</span> <span class="m">0</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="nv">$val</span> <span class="o">+=</span> <span class="nv">$value</span><span class="p">;</span>
-  <span class="nb">file_put_contents</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="nv">$val</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_put_contents</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="nv">$val</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
   <span class="nb">chmod</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="m">0777</span><span class="p">);</span>
   <span class="k">return</span> <span class="nv">$val</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-10">
+                  <tr id="section-18">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Emulates <code>Memcache::decrement</code>.</p>
             </td>
@@ -333,31 +496,45 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
    <span class="nv">$val</span> <span class="o">=</span> <span class="m">0</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="nv">$val</span> <span class="o">-=</span> <span class="nv">$value</span><span class="p">;</span>
-  <span class="nb">file_put_contents</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="nv">$val</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_put_contents</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="nv">$val</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
   <span class="nb">chmod</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">md5</span> <span class="p">(</span><span class="nv">$key</span><span class="p">),</span> <span class="m">0777</span><span class="p">);</span>
   <span class="k">return</span> <span class="nv">$val</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-11">
+                  <tr id="section-19">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Emulates <code>Memcache::flush</code>.</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">flush</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nv">$files</span> <span class="o">=</span> <span class="nb">glob</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/*&#39;</span><span class="p">);</span>
+  <span class="nv">$files</span> <span class="o">=</span> <span class="nb">glob</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">dir</span> <span class="o">.</span> <span class="s1">&#39;/{,.}*&#39;</span><span class="p">,</span> <span class="nx">GLOB_BRACE</span><span class="p">);</span>
   <span class="k">foreach</span> <span class="p">(</span><span class="nv">$files</span> <span class="k">as</span> <span class="nv">$file</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/\/\.+$/&#39;</span><span class="p">,</span> <span class="nv">$file</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-20">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Skip . and ..</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>    <span class="k">continue</span><span class="p">;</span>
+   <span class="p">}</span>
    <span class="nb">unlink</span> <span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-12">
+                  <tr id="section-21">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Emulates <code>Memcache::delete</code>.</p>
             </td>

@@ -98,6 +98,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
         Jump To &hellip;
         <div id="jump_wrapper">
           <div id="jump_page">
+                                          <a class="source" href="./Acl.html">
+                              Acl.php              </a>
+                                          <a class="source" href="./AppTest.html">
+                              AppTest.php              </a>
                                           <a class="source" href="./Autoloader.html">
                               Autoloader.php              </a>
                                           <a class="source" href="./Cache.html">
@@ -108,14 +112,22 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
                               Database.php              </a>
                                           <a class="source" href="./Debugger.html">
                               Debugger.php              </a>
+                                          <a class="source" href="./ExtendedModel.html">
+                              ExtendedModel.php              </a>
                                           <a class="source" href="./Form.html">
                               Form.php              </a>
                                           <a class="source" href="./Functions.html">
                               Functions.php              </a>
                                           <a class="source" href="./I18n.html">
                               I18n.php              </a>
+                                          <a class="source" href="./Ini.html">
+                              Ini.php              </a>
+                                          <a class="source" href="./Mailer.html">
+                              Mailer.php              </a>
                                           <a class="source" href="./MemcacheExt.html">
                               MemcacheExt.php              </a>
+                                          <a class="source" href="./MemcacheRedis.html">
+                              MemcacheRedis.php              </a>
                                           <a class="source" href="./Model.html">
                               Model.php              </a>
                                           <a class="source" href="./MongoManager.html">
@@ -235,9 +247,16 @@ individual queries.</li>
  Note: Uses ELEFANT_ENV, defined in the front controller, to determine
  which configuration file to load, allowing for alternate dev, staging,
  and production configurations in a single codebase.</p>
+
+<p>To update a value after the initial configuration has been loaded,
+ pass the new value as a third parameter, e.g.:</p>
+
+<pre><code>  Enable debugging
+ conf ('General', 'debug', true);
+</code></pre>
             </td>
             <td class="code">
-              <div class="highlight"><pre><span class="k">function</span> <span class="nf">conf</span> <span class="p">(</span><span class="nv">$section</span><span class="p">,</span> <span class="nv">$value</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre><span class="k">function</span> <span class="nf">conf</span> <span class="p">(</span><span class="nv">$section</span><span class="p">,</span> <span class="nv">$value</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$update</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
  <span class="k">static</span> <span class="nv">$conf</span><span class="p">;</span>
  <span class="k">if</span> <span class="p">(</span><span class="nv">$conf</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">&#39;conf&#39;</span><span class="p">]))</span> <span class="p">{</span>
@@ -247,6 +266,9 @@ individual queries.</li>
   <span class="p">}</span>
  <span class="p">}</span>
  <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$update</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$conf</span><span class="p">[</span><span class="nv">$section</span><span class="p">][</span><span class="nv">$value</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$update</span><span class="p">;</span>
+  <span class="p">}</span>
   <span class="k">return</span> <span class="nv">$conf</span><span class="p">[</span><span class="nv">$section</span><span class="p">][</span><span class="nv">$value</span><span class="p">];</span>
  <span class="p">}</span>
  <span class="k">return</span> <span class="nv">$conf</span><span class="p">[</span><span class="nv">$section</span><span class="p">];</span>
@@ -393,8 +415,8 @@ individual queries.</li>
 <li><p><code>mobile</code> and <code>tablet</code> matches are not exhaustive, they only list the common
 platforms.</p></li>
 <li><p>iPad and iPod are both reported as mobile devices in the user agent string,
-so this reports that to be true as well.</p></li>
-<li><p>Android reports as true for both mobile and tablet.</p></li>
+but <code>detect()</code> corrects for this in the case of the iPad.</p></li>
+<li><p>Android reports as true for both mobile and tablet currently.</p></li>
 <li><p>Some matches might be seen as false-positives, such as Chrome matching Safari.
 In these cases, look at other detection options. For example with Chrome, the
 rendering engine is Webkit, so better to simply use that.</p></li>
@@ -433,15 +455,26 @@ for example <code>wap</code>, or <code>smartphone</code>.</p></li>
             </td>
             <td class="code">
               <div class="highlight"><pre>   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
- <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$browser</span> <span class="o">===</span> <span class="s1">&#39;tablet&#39;</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/(ipad|android|tablet)/&#39;</span><span class="p">,</span> <span class="nv">$ua</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">strpos</span> <span class="p">(</span><span class="nv">$ua</span><span class="p">,</span> <span class="s1">&#39;ipad&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-12">
             <td class="docs">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>iPad should be separate from mobile</p>
+            </td>
+            <td class="code">
+              <div class="highlight"><pre>   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+ <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$browser</span> <span class="o">===</span> <span class="s1">&#39;tablet&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/(ipad|android|tablet)/&#39;</span><span class="p">,</span> <span class="nv">$ua</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
+          </tr>
+                  <tr id="section-13">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>Not iPad, Android, or tablet</p>
             </td>
@@ -452,10 +485,10 @@ for example <code>wap</code>, or <code>smartphone</code>.</p></li>
  <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$browser</span> <span class="o">===</span> <span class="s1">&#39;ios&#39;</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/(ipad|iphone|ipod)/&#39;</span><span class="p">,</span> <span class="nv">$ua</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
           </tr>
-                  <tr id="section-13">
+                  <tr id="section-14">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Not iOS</p>
             </td>
@@ -469,10 +502,10 @@ for example <code>wap</code>, or <code>smartphone</code>.</p></li>
  <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
 <span class="p">}</span></pre></div>            </td>
           </tr>
-                  <tr id="section-14">
+                  <tr id="section-15">
             <td class="docs">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Recursively delete a folder and all its contents.
  Handles hidden dot-files as well as regular files.</p>
