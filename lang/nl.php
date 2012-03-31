@@ -1,6 +1,7 @@
 <?php
 
 $this->lang_hash['nl'] = array (
+	'Extra options' => 'Extra opties',
 	'.htaccess file is missing from the site root. Please save the following file to your server:' => '.htaccess bestand ontbreekt in de site root. Sla het volgende bestand op op uw server.',
 	'Powered by' => 'Aangedreven door',
 	'Edit' => 'Aanpassen',
@@ -77,7 +78,7 @@ $this->lang_hash['nl'] = array (
 	'Date' => 'Datum',
 	'Date/Time' => 'Datum/Tijd',
 	'The MIT License' => 'De MIT Licentie',
-	'cache folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => 'De cache map is niet beschrijfbaar. Run aub </p><p><tt>chmod -R 777 cache conf css files install layouts</tt>',
+	'cache folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>' => 'De cache map is niet beschrijfbaar. Run aub </p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>',
 	'The page you requested could not be found.' => 'De door u gevraagde pagina kon niet worden gevonden.',
 	'The layout you entered doesn\'t exist.' => 'De door u ingevoerde layout bestaat niet.',
 	'Your name must be alphanumeric and not a duplicate of an existing layout.' => 'De naam moet bestaan uit alfanumerieke tekens en mag niet gelijk zijn aan die van een bestaande layout.',
@@ -376,12 +377,13 @@ $this->lang_hash['nl'] = array (
 	'Wordpress export file' => 'Wordpress exportbestand',
 	'Wordpress importer' => 'Wordpress importer',
 	'Port' => 'Zet om',
-	'conf folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => 'conf map is niet beschrijfbaar. Run aub </p><p><tt>chmod -R 777 cache conf css files install layouts</tt>',
-	'css folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => 'css map is niet beschrijfbaar. Run aub </p><p><tt>chmod -R 777 cache conf css files install layouts</tt>',
+	'apps folder is not writeable. Please run:</p><p><tt>chmod 775 apps</tt>' => 'apps map is niet beschrijfbaar. Run aub </p><p><tt>chmod 775 apps</tt>',
+	'conf folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>' => 'conf map is niet beschrijfbaar. Run aub </p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>',
+	'css folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>' => 'css map is niet beschrijfbaar. Run aub </p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>',
 	'by' => 'door',
-	'files folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => 'files map is niet beschrijfbaar. Run aub </p><p><tt>chmod -R 777 cache conf css files install layouts</tt>',
-	'install folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => 'install map is niet beschrijfbaar. Run aub </p><p><tt>chmod -R 777 cache conf css files install layouts</tt>',
-	'layouts folder is not writeable. Please run:</p><p><tt>chmod -R 777 cache conf css files install layouts</tt>' => 'layouts map is niet beschrijfbaar. Run aub </p><p><tt>chmod -R 777 cache conf css files install layouts</tt>'
+	'files folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>' => 'files map is niet beschrijfbaar. Run aub </p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>',
+	'lang folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>' => 'lang map is niet beschrijfbaar. Run aub </p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>',
+	'layouts folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>' => 'layouts map is niet beschrijfbaar. Run aub </p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>'
 );
 
 ?>
