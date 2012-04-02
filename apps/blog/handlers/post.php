@@ -30,6 +30,9 @@ $post->body = $tpl->run_includes ($post->body);
 echo $tpl->render ('blog/post', $post);
 
 switch ($appconf['Blog']['comments']) {
+	case 'disqus':
+		echo $this->run ('blog/disqus/comments', $post);
+		break;
 	case 'facebook':
 		echo $this->run ('social/facebook/comments', $post);
 		break;
