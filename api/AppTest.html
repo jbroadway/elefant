@@ -276,7 +276,7 @@ so you can test for them.</li>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">userAdmin</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">User</span><span class="o">::</span><span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">User</span> <span class="p">(</span><span class="m">1</span><span class="p">);</span>
+  <span class="nx">User</span><span class="o">::</span><span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">User</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-5">
@@ -288,7 +288,7 @@ so you can test for them.</li>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">userMember</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">User</span><span class="o">::</span><span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">User</span> <span class="p">(</span><span class="m">2</span><span class="p">);</span>
+  <span class="nx">User</span><span class="o">::</span><span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">User</span> <span class="p">(</span><span class="mi">2</span><span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-6">
@@ -382,14 +382,14 @@ so you can test for them.</li>
    <span class="s1">&#39;admin@test.com&#39;</span><span class="p">,</span>
    <span class="nx">User</span><span class="o">::</span><span class="na">encrypt_pass</span> <span class="p">(</span><span class="s1">&#39;testing&#39;</span><span class="p">),</span>
    <span class="nv">$date</span><span class="p">,</span> <span class="nv">$date</span><span class="p">,</span> <span class="nv">$date</span><span class="p">,</span>
-   <span class="nx">json_encode</span> <span class="p">(</span><span class="k">array</span> <span class="p">())</span>
+   <span class="nb">json_encode</span> <span class="p">(</span><span class="k">array</span> <span class="p">())</span>
   <span class="p">);</span>
   <span class="nx">db_execute</span> <span class="p">(</span>
    <span class="s2">&quot;insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (2, ?, ?, null, ?, &#39;Joe Member&#39;, &#39;member&#39;, ?, ?, ?)&quot;</span><span class="p">,</span>
    <span class="s1">&#39;member@test.com&#39;</span><span class="p">,</span>
    <span class="nx">User</span><span class="o">::</span><span class="na">encrypt_pass</span> <span class="p">(</span><span class="s1">&#39;testing&#39;</span><span class="p">),</span>
    <span class="nv">$date</span><span class="p">,</span> <span class="nv">$date</span><span class="p">,</span> <span class="nv">$date</span><span class="p">,</span>
-   <span class="nx">json_encode</span> <span class="p">(</span><span class="k">array</span> <span class="p">())</span>
+   <span class="nb">json_encode</span> <span class="p">(</span><span class="k">array</span> <span class="p">())</span>
   <span class="p">);</span>
 
   <span class="nv">$i18n</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">I18n</span> <span class="p">(</span><span class="s1">&#39;lang&#39;</span><span class="p">,</span> <span class="k">array</span> <span class="p">(</span><span class="s1">&#39;negotiation_method&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;http&#39;</span><span class="p">));</span>

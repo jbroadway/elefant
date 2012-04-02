@@ -218,7 +218,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Namespace is present</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$class</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="nv">$class</span><span class="p">,</span> <span class="m">2</span><span class="p">);</span>
+              <div class="highlight"><pre>  <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$class</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="nv">$class</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
   <span class="nv">$class</span> <span class="o">=</span> <span class="nb">str_replace</span> <span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">,</span> <span class="nx">DIRECTORY_SEPARATOR</span><span class="p">,</span> <span class="nv">$class</span><span class="p">);</span></pre></div>            </td>
           </tr>
                   <tr id="section-3">
@@ -289,15 +289,15 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             </td>
             <td class="code">
               <div class="highlight"><pre>  <span class="nv">$res</span> <span class="o">=</span> <span class="nb">glob</span> <span class="p">(</span><span class="s1">&#39;apps/*/{models,lib}/&#39;</span> <span class="o">.</span> <span class="nv">$class</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">,</span> <span class="nx">GLOB_BRACE</span><span class="p">);</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$res</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">count</span> <span class="p">(</span><span class="nv">$res</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
-   <span class="k">require_once</span> <span class="p">(</span><span class="nv">$res</span><span class="p">[</span><span class="m">0</span><span class="p">]);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$res</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">count</span> <span class="p">(</span><span class="nv">$res</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">require_once</span> <span class="p">(</span><span class="nv">$res</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
   <span class="p">}</span>
  <span class="p">}</span>
  <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="nx">spl_autoload_register</span> <span class="p">(</span><span class="s1">&#39;elefant_autoloader&#39;</span><span class="p">);</span>
+<span class="nb">spl_autoload_register</span> <span class="p">(</span><span class="s1">&#39;elefant_autoloader&#39;</span><span class="p">);</span>
 
 <span class="cp">?&gt;</span><span class="x"></span>
 </pre></div></pre></div>            </td>

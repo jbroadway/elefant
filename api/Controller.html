@@ -471,7 +471,7 @@ interesting with the id:</p>
   <span class="nv">$handler</span> <span class="o">=</span> <span class="nv">$c</span><span class="o">-&gt;</span><span class="na">route</span> <span class="p">(</span><span class="nv">$uri</span><span class="p">);</span>
 
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$called</span><span class="p">[</span><span class="nv">$uri</span><span class="p">]))</span> <span class="p">{</span>
-   <span class="nx">self</span><span class="o">::</span><span class="nv">$called</span><span class="p">[</span><span class="nv">$uri</span><span class="p">]</span> <span class="o">=</span> <span class="m">1</span><span class="p">;</span>
+   <span class="nx">self</span><span class="o">::</span><span class="nv">$called</span><span class="p">[</span><span class="nv">$uri</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
    <span class="nx">self</span><span class="o">::</span><span class="nv">$called</span><span class="p">[</span><span class="nv">$uri</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
   <span class="p">}</span>
@@ -497,7 +497,7 @@ interesting with the id:</p>
 </code></pre>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">error</span> <span class="p">(</span><span class="nv">$code</span> <span class="o">=</span> <span class="m">404</span><span class="p">,</span> <span class="nv">$title</span> <span class="o">=</span> <span class="s1">&#39;Page not found&#39;</span><span class="p">,</span> <span class="nv">$message</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">error</span> <span class="p">(</span><span class="nv">$code</span> <span class="o">=</span> <span class="mi">404</span><span class="p">,</span> <span class="nv">$title</span> <span class="o">=</span> <span class="s1">&#39;Page not found&#39;</span><span class="p">,</span> <span class="nv">$message</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-17">
             <td class="docs">
@@ -674,10 +674,10 @@ interesting with the id:</p>
             </td>
             <td class="code">
               <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
-   <span class="nv">$timeout</span> <span class="o">=</span> <span class="nb">is_numeric</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="p">)</span> <span class="o">?</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span> <span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-   <span class="nv">$res</span> <span class="o">=</span> <span class="nv">$memcache</span><span class="o">-&gt;</span><span class="na">replace</span> <span class="p">(</span><span class="nv">$cache_uri</span><span class="p">,</span> <span class="nv">$out</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
+   <span class="nv">$timeout</span> <span class="o">=</span> <span class="nb">is_numeric</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="p">)</span> <span class="o">?</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="nv">$res</span> <span class="o">=</span> <span class="nv">$memcache</span><span class="o">-&gt;</span><span class="na">replace</span> <span class="p">(</span><span class="nv">$cache_uri</span><span class="p">,</span> <span class="nv">$out</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
    <span class="k">if</span> <span class="p">(</span><span class="nv">$res</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nv">$memcache</span><span class="o">-&gt;</span><span class="na">set</span> <span class="p">(</span><span class="nv">$cache_uri</span><span class="p">,</span> <span class="nv">$out</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
+    <span class="nv">$memcache</span><span class="o">-&gt;</span><span class="na">set</span> <span class="p">(</span><span class="nv">$cache_uri</span><span class="p">,</span> <span class="nv">$out</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
    <span class="p">}</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nv">$out</span><span class="p">;</span>
@@ -738,7 +738,7 @@ interesting with the id:</p>
               <p>handler, then use the default handler.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">strstr</span> <span class="p">(</span><span class="nv">$uri</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">))</span> <span class="p">{</span>
+              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">strstr</span> <span class="p">(</span><span class="nv">$uri</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$uri</span> <span class="o">.</span> <span class="s1">&#39;/handlers/index.php&#39;</span><span class="p">))</span> <span class="p">{</span>
     <span class="nv">$uri</span> <span class="o">.=</span> <span class="s1">&#39;/index&#39;</span><span class="p">;</span>
    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -765,7 +765,7 @@ interesting with the id:</p>
               <p>until one matches.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$handler</span><span class="p">)</span> <span class="o">=</span> <span class="nb">preg_split</span> <span class="p">(</span><span class="s1">&#39;/\//&#39;</span><span class="p">,</span> <span class="nv">$uri</span><span class="p">,</span> <span class="m">2</span><span class="p">);</span>
+              <div class="highlight"><pre>  <span class="k">list</span> <span class="p">(</span><span class="nv">$app</span><span class="p">,</span> <span class="nv">$handler</span><span class="p">)</span> <span class="o">=</span> <span class="nb">preg_split</span> <span class="p">(</span><span class="s1">&#39;/\//&#39;</span><span class="p">,</span> <span class="nv">$uri</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
   <span class="nv">$route</span> <span class="o">=</span> <span class="s1">&#39;apps/&#39;</span> <span class="o">.</span> <span class="nv">$app</span> <span class="o">.</span> <span class="s1">&#39;/handlers/&#39;</span> <span class="o">.</span> <span class="nv">$handler</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
   <span class="k">while</span> <span class="p">(</span><span class="o">!</span> <span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$route</span><span class="p">))</span> <span class="p">{</span>
    <span class="nv">$route</span> <span class="o">=</span> <span class="nb">preg_replace</span> <span class="p">(</span><span class="s1">&#39;/\/([^\/]*)\.php$/e&#39;</span><span class="p">,</span> <span class="s1">&#39;$this-&gt;add_param (\&#39;\\1\&#39;)&#39;</span><span class="p">,</span> <span class="nv">$route</span><span class="p">);</span>
@@ -777,7 +777,7 @@ interesting with the id:</p>
     <span class="p">}</span>
     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">app</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">;</span>
     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">uri</span> <span class="o">=</span> <span class="nx">conf</span> <span class="p">(</span><span class="s1">&#39;General&#39;</span><span class="p">,</span> <span class="s1">&#39;default_handler&#39;</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nb">vsprintf</span> <span class="p">(</span>
+    <span class="k">return</span> <span class="nx">vsprintf</span> <span class="p">(</span>
      <span class="s1">&#39;apps/%s/handlers/%s.php&#39;</span><span class="p">,</span>
      <span class="nb">explode</span> <span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">conf</span> <span class="p">(</span><span class="s1">&#39;General&#39;</span><span class="p">,</span> <span class="s1">&#39;default_handler&#39;</span><span class="p">))</span>
     <span class="p">);</span>
@@ -797,7 +797,7 @@ interesting with the id:</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">clean</span> <span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="o">!</span> <span class="nb">strstr</span> <span class="p">(</span><span class="nv">$url</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">);</span>
+  <span class="k">return</span> <span class="o">!</span> <span class="nx">strstr</span> <span class="p">(</span><span class="nv">$url</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-36">
@@ -828,7 +828,7 @@ interesting with the id:</p>
   <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$_COOKIE</span><span class="p">[</span><span class="s1">&#39;elefant_notification&#39;</span><span class="p">]))</span> <span class="p">{</span>
    <span class="nv">$msg</span> <span class="o">=</span> <span class="nv">$_COOKIE</span><span class="p">[</span><span class="s1">&#39;elefant_notification&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39;|&#39;</span> <span class="o">.</span> <span class="nv">$msg</span><span class="p">;</span>
   <span class="p">}</span>
-  <span class="k">return</span> <span class="nb">setcookie</span> <span class="p">(</span><span class="s1">&#39;elefant_notification&#39;</span><span class="p">,</span> <span class="nv">$msg</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">setcookie</span> <span class="p">(</span><span class="s1">&#39;elefant_notification&#39;</span><span class="p">,</span> <span class="nv">$msg</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-38">
@@ -840,7 +840,7 @@ interesting with the id:</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">redirect</span> <span class="p">(</span><span class="nv">$url</span><span class="p">,</span> <span class="nv">$exit</span> <span class="o">=</span> <span class="k">true</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nb">header</span> <span class="p">(</span><span class="s1">&#39;Location: &#39;</span> <span class="o">.</span> <span class="nv">$url</span><span class="p">);</span>
+  <span class="nx">header</span> <span class="p">(</span><span class="s1">&#39;Location: &#39;</span> <span class="o">.</span> <span class="nv">$url</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="nv">$exit</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">quit</span> <span class="p">();</span>
   <span class="p">}</span>
@@ -873,7 +873,7 @@ interesting with the id:</p>
   <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">put_data</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$stdin</span> <span class="o">=</span> <span class="nb">fopen</span> <span class="p">(</span><span class="s1">&#39;php://input&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">);</span>
    <span class="nv">$out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-   <span class="k">while</span> <span class="p">(</span><span class="nv">$data</span> <span class="o">=</span> <span class="nb">fread</span> <span class="p">(</span><span class="nv">$stdin</span><span class="p">,</span> <span class="m">1024</span><span class="p">))</span> <span class="p">{</span>
+   <span class="k">while</span> <span class="p">(</span><span class="nv">$data</span> <span class="o">=</span> <span class="nb">fread</span> <span class="p">(</span><span class="nv">$stdin</span><span class="p">,</span> <span class="mi">1024</span><span class="p">))</span> <span class="p">{</span>
     <span class="nv">$out</span> <span class="o">.=</span> <span class="nv">$data</span><span class="p">;</span>
    <span class="p">}</span>
    <span class="nb">fclose</span> <span class="p">(</span><span class="nv">$stdin</span><span class="p">);</span>
@@ -927,7 +927,7 @@ interesting with the id:</p>
             <td class="code">
               <div class="highlight"><pre>  <span class="k">global</span> <span class="nv">$page</span><span class="p">;</span>
   <span class="nv">$page</span><span class="o">-&gt;</span><span class="na">layout</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
-  <span class="nb">header</span> <span class="p">(</span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="p">);</span></pre></div>            </td>
+  <span class="nx">header</span> <span class="p">(</span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="p">);</span></pre></div>            </td>
           </tr>
                   <tr id="section-45">
             <td class="docs">
@@ -937,7 +937,7 @@ interesting with the id:</p>
               <p>Verify an action has been specified.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">params</span><span class="p">[</span><span class="m">0</span><span class="p">]))</span> <span class="p">{</span>
+              <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="p">{</span>
    <span class="k">return</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="na">error</span> <span class="p">(</span><span class="s1">&#39;No action specified&#39;</span><span class="p">);</span>
   <span class="p">}</span></pre></div>            </td>
           </tr>
@@ -969,7 +969,7 @@ interesting with the id:</p>
               <p>call get<em>action</em>name().</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="nv">$method</span> <span class="o">=</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request_method</span> <span class="p">())</span> <span class="o">.</span> <span class="s1">&#39;_&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">params</span><span class="p">[</span><span class="m">0</span><span class="p">];</span></pre></div>            </td>
+              <div class="highlight"><pre>  <span class="nv">$method</span> <span class="o">=</span> <span class="nx">strtolower</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request_method</span> <span class="p">())</span> <span class="o">.</span> <span class="s1">&#39;_&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">params</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span></pre></div>            </td>
           </tr>
                   <tr id="section-49">
             <td class="docs">
@@ -1035,7 +1035,7 @@ interesting with the id:</p>
             <td class="code">
               <div class="highlight"><pre> <span class="k">function</span> <span class="nf">flush</span> <span class="p">(</span><span class="nv">$out</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">chunked</span><span class="p">)</span> <span class="p">{</span>
-   <span class="nb">header</span> <span class="p">(</span><span class="s1">&#39;Transfer-Encoding: chunked&#39;</span><span class="p">);</span>
+   <span class="nx">header</span> <span class="p">(</span><span class="s1">&#39;Transfer-Encoding: chunked&#39;</span><span class="p">);</span>
    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">chunked</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="k">if</span> <span class="p">(</span><span class="nv">$out</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
@@ -1048,7 +1048,7 @@ interesting with the id:</p>
               <p>Send an empty chunk and exit</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>   <span class="k">if</span> <span class="p">(</span><span class="nb">ob_get_level</span> <span class="p">()</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
+              <div class="highlight"><pre>   <span class="k">if</span> <span class="p">(</span><span class="nb">ob_get_level</span> <span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-55">
             <td class="docs">
@@ -1073,7 +1073,7 @@ interesting with the id:</p>
               <p>Send the data passed to flush()</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>   <span class="k">if</span> <span class="p">(</span><span class="nb">strlen</span> <span class="p">(</span><span class="nv">$out</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre>   <span class="k">if</span> <span class="p">(</span><span class="nb">strlen</span> <span class="p">(</span><span class="nv">$out</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
     <span class="nb">printf</span> <span class="p">(</span><span class="s2">&quot;%X</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">strlen</span> <span class="p">(</span><span class="nv">$out</span><span class="p">));</span>
     <span class="k">echo</span> <span class="nv">$out</span> <span class="o">.</span> <span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">;</span>
     <span class="nb">flush</span> <span class="p">();</span>
@@ -1089,7 +1089,7 @@ interesting with the id:</p>
             </td>
             <td class="code">
               <div class="highlight"><pre>   <span class="nv">$out</span> <span class="o">=</span> <span class="nb">ob_get_clean</span> <span class="p">();</span>
-   <span class="k">if</span> <span class="p">(</span><span class="nb">strlen</span> <span class="p">(</span><span class="nv">$out</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">strlen</span> <span class="p">(</span><span class="nv">$out</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
     <span class="nb">printf</span> <span class="p">(</span><span class="s2">&quot;%X</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">strlen</span> <span class="p">(</span><span class="nv">$out</span><span class="p">));</span>
     <span class="k">echo</span> <span class="nv">$out</span> <span class="o">.</span> <span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">;</span>
     <span class="nb">flush</span> <span class="p">();</span>
@@ -1107,7 +1107,7 @@ interesting with the id:</p>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">is_https</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTPS&#39;</span><span class="p">])</span> <span class="o">||</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTPS&#39;</span><span class="p">])</span> <span class="o">!==</span> <span class="s1">&#39;on&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTPS&#39;</span><span class="p">])</span> <span class="o">||</span> <span class="nx">strtolower</span> <span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTPS&#39;</span><span class="p">])</span> <span class="o">!==</span> <span class="s1">&#39;on&#39;</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
@@ -1207,7 +1207,7 @@ interesting with the id:</p>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$v</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
   <span class="p">}</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nb">version_compare</span> <span class="p">(</span><span class="nv">$version</span><span class="p">,</span> <span class="nv">$v</span><span class="p">)</span> <span class="o">===</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">version_compare</span> <span class="p">(</span><span class="nv">$version</span><span class="p">,</span> <span class="nv">$v</span><span class="p">)</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nv">$v</span><span class="p">;</span>

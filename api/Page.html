@@ -474,7 +474,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">wrap_script</span> <span class="p">(</span><span class="nv">$script</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span> <span class="p">(</span><span class="nv">$script</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span> <span class="p">(</span><span class="nv">$script</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="nv">$script</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/\.css$/i&#39;</span><span class="p">,</span> <span class="nv">$script</span><span class="p">))</span> <span class="p">{</span>

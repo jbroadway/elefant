@@ -365,7 +365,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
      <span class="k">require_once</span> <span class="p">(</span><span class="s1">&#39;Zend/Mail/Transport/File.php&#39;</span><span class="p">);</span>
      <span class="nx">self</span><span class="o">::</span><span class="nv">$transport</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Zend_Mail_Transport_File</span> <span class="p">(</span><span class="k">array</span> <span class="p">(</span>
       <span class="s1">&#39;path&#39;</span> <span class="o">=&gt;</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;transport&#39;</span><span class="p">][</span><span class="s1">&#39;path&#39;</span><span class="p">],</span>
-      <span class="s1">&#39;callback&#39;</span> <span class="o">=&gt;</span> <span class="k">function</span> <span class="err">($</span><span class="nf">transport</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
+      <span class="s1">&#39;callback&#39;</span> <span class="o">=&gt;</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$transport</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-12">
             <td class="docs">
@@ -375,7 +375,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Files are named DATETIME-RECIPIENT-RAND.tmp</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>       <span class="k">return</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_TIME&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39;-&#39;</span> <span class="o">.</span> <span class="nv">$transport</span><span class="o">-&gt;</span><span class="na">recipients</span> <span class="o">.</span> <span class="s1">&#39;-&#39;</span> <span class="o">.</span> <span class="nb">mt_rand</span> <span class="p">()</span> <span class="o">.</span> <span class="s1">&#39;.tmp&#39;</span><span class="p">;</span>
+              <div class="highlight"><pre>       <span class="k">return</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_TIME&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39;-&#39;</span> <span class="o">.</span> <span class="nv">$transport</span><span class="o">-&gt;</span><span class="na">recipients</span> <span class="o">.</span> <span class="s1">&#39;-&#39;</span> <span class="o">.</span> <span class="nx">mt_rand</span> <span class="p">()</span> <span class="o">.</span> <span class="s1">&#39;.tmp&#39;</span><span class="p">;</span>
       <span class="p">}</span>
      <span class="p">));</span>
      <span class="k">break</span><span class="p">;</span>
@@ -441,7 +441,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 
   <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">]))</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">]))</span> <span class="p">{</span>
-    <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">addTo</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">][</span><span class="m">0</span><span class="p">],</span> <span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">][</span><span class="m">1</span><span class="p">]);</span>
+    <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">addTo</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]);</span>
    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
     <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">addTo</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">]);</span>
    <span class="p">}</span>
@@ -449,7 +449,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 
   <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">]))</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">]))</span> <span class="p">{</span>
-    <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">setFrom</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">][</span><span class="m">0</span><span class="p">],</span> <span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">][</span><span class="m">1</span><span class="p">]);</span>
+    <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">setFrom</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]);</span>
    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
     <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">setFrom</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">]);</span>
    <span class="p">}</span>
@@ -457,7 +457,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 
   <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;cc&#39;</span><span class="p">]))</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;cc&#39;</span><span class="p">]))</span> <span class="p">{</span>
-    <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">addCc</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;cc&#39;</span><span class="p">][</span><span class="m">0</span><span class="p">],</span> <span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;cc&#39;</span><span class="p">][</span><span class="m">1</span><span class="p">]);</span>
+    <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">addCc</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;cc&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;cc&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]);</span>
    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
     <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">addCc</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;cc&#39;</span><span class="p">]);</span>
    <span class="p">}</span>
@@ -465,7 +465,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 
   <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;bcc&#39;</span><span class="p">]))</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;bcc&#39;</span><span class="p">]))</span> <span class="p">{</span>
-    <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">addBcc</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;bcc&#39;</span><span class="p">][</span><span class="m">0</span><span class="p">],</span> <span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;bcc&#39;</span><span class="p">][</span><span class="m">1</span><span class="p">]);</span>
+    <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">addBcc</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;bcc&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;bcc&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]);</span>
    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
     <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">addBcc</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;bcc&#39;</span><span class="p">]);</span>
    <span class="p">}</span>
@@ -473,7 +473,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 
   <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;reply_to&#39;</span><span class="p">]))</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;reply_to&#39;</span><span class="p">]))</span> <span class="p">{</span>
-    <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">setReplyTo</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;reply_to&#39;</span><span class="p">][</span><span class="m">0</span><span class="p">],</span> <span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;reply_to&#39;</span><span class="p">][</span><span class="m">1</span><span class="p">]);</span>
+    <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">setReplyTo</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;reply_to&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;reply_to&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]);</span>
    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
     <span class="nv">$mailer</span><span class="o">-&gt;</span><span class="na">setReplyTo</span> <span class="p">(</span><span class="nv">$msg</span><span class="p">[</span><span class="s1">&#39;reply_to&#39;</span><span class="p">]);</span>
    <span class="p">}</span>

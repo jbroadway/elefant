@@ -238,7 +238,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  serialization via PHP's serialize/unserialize functions.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">addServer</span> <span class="p">(</span><span class="nv">$server</span><span class="p">,</span> <span class="nv">$port</span> <span class="o">=</span> <span class="m">6379</span><span class="p">,</span> <span class="nv">$password</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">addServer</span> <span class="p">(</span><span class="nv">$server</span><span class="p">,</span> <span class="nv">$port</span> <span class="o">=</span> <span class="mi">6379</span><span class="p">,</span> <span class="nv">$password</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
   <span class="nv">$res</span> <span class="o">=</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$redis</span><span class="o">-&gt;</span><span class="na">connect</span> <span class="p">(</span><span class="nv">$server</span><span class="p">,</span> <span class="nv">$port</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="nv">$res</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="nv">$password</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
@@ -260,7 +260,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">cache</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">,</span> <span class="nv">$function</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">((</span><span class="nv">$val</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span> <span class="p">(</span><span class="nv">$key</span><span class="p">))</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$val</span> <span class="o">=</span> <span class="nv">$function</span> <span class="p">();</span>
-   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nv">$val</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
@@ -285,7 +285,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Emulates <code>Memcache::add</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">add</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">,</span> <span class="nv">$flag</span> <span class="o">=</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$expire</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">add</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">,</span> <span class="nv">$flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$expire</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$redis</span><span class="o">-&gt;</span><span class="na">exists</span> <span class="p">(</span><span class="nv">$key</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
   <span class="p">}</span>
@@ -300,7 +300,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Emulates <code>Memcache::set</code> via <code>set</code> and <code>setex</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">,</span> <span class="nv">$flag</span> <span class="o">=</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$expire</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">,</span> <span class="nv">$flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$expire</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nv">$expire</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$redis</span><span class="o">-&gt;</span><span class="na">setex</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$expire</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
   <span class="p">}</span>
@@ -315,7 +315,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Emulates <code>Memcache::replace</code> via <code>exists</code> and <code>set()</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">replace</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">,</span> <span class="nv">$flag</span> <span class="o">=</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$expire</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">replace</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">,</span> <span class="nv">$flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$expire</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$redis</span><span class="o">-&gt;</span><span class="na">exists</span> <span class="p">(</span><span class="nv">$key</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
   <span class="p">}</span>
@@ -342,8 +342,8 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Emulates <code>Memcache::increment</code> via <code>incr</code> and <code>incrBy</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">increment</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">increment</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$redis</span><span class="o">-&gt;</span><span class="na">incr</span> <span class="p">(</span><span class="nv">$key</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$redis</span><span class="o">-&gt;</span><span class="na">incrBy</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
@@ -357,8 +357,8 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Emulates <code>Memcache::decrement</code> via <code>decr</code> and <code>decrBy</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">decrement</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">decrement</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$redis</span><span class="o">-&gt;</span><span class="na">decr</span> <span class="p">(</span><span class="nv">$key</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$redis</span><span class="o">-&gt;</span><span class="na">decrBy</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>

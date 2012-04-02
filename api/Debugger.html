@@ -229,7 +229,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">handle_exception</span> <span class="p">(</span><span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">while</span> <span class="p">(</span><span class="nb">ob_get_level</span> <span class="p">()</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">while</span> <span class="p">(</span><span class="nb">ob_get_level</span> <span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
    <span class="nb">ob_end_clean</span> <span class="p">();</span>
   <span class="p">}</span>
   <span class="nb">printf</span> <span class="p">(</span>
@@ -249,22 +249,22 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">show_trace</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nv">$start</span> <span class="o">=</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">]))</span> <span class="p">{</span>
-   <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="m">3</span><span class="p">];</span>
+  <span class="nv">$start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">]))</span> <span class="p">{</span>
+   <span class="nv">$trace</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$trace</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">];</span>
   <span class="p">}</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">]))</span> <span class="p">{</span>
-   <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="m">2</span><span class="p">];</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">]))</span> <span class="p">{</span>
+   <span class="nv">$trace</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$trace</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">];</span>
   <span class="p">}</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="nv">$trace</span><span class="p">[</span><span class="m">1</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="nv">$trace</span><span class="p">[</span><span class="m">1</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">])</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="nv">$trace</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nv">$trace</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="nv">$trace</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">])</span> <span class="p">{</span>
    <span class="nv">$start</span><span class="o">++</span><span class="p">;</span>
   <span class="p">}</span>
 
   <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="nv">$start</span><span class="p">,</span> <span class="nv">$count</span> <span class="o">=</span> <span class="nb">count</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">);</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$count</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">echo</span> <span class="nx">Debugger</span><span class="o">::</span><span class="na">show_trace_step</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="nv">$i</span><span class="p">]);</span>
   <span class="p">}</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">is_array</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="m">4</span><span class="p">]))</span> <span class="p">{</span>
-   <span class="nx">Debugger</span><span class="o">::</span><span class="na">show_context</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="m">4</span><span class="p">]);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">is_array</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="mi">4</span><span class="p">]))</span> <span class="p">{</span>
+   <span class="nx">Debugger</span><span class="o">::</span><span class="na">show_context</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="mi">4</span><span class="p">]);</span>
   <span class="p">}</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
@@ -277,10 +277,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">handle_error</span> <span class="p">(</span><span class="nv">$errno</span><span class="p">,</span> <span class="nv">$errstr</span><span class="p">,</span> <span class="nv">$errfile</span><span class="p">,</span> <span class="nv">$errline</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nv">$errno</span> <span class="o">===</span> <span class="m">8</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$errno</span> <span class="o">===</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span><span class="p">;</span>
   <span class="p">}</span>
-  <span class="k">throw</span> <span class="k">new</span> <span class="nx">ErrorException</span> <span class="p">(</span><span class="nv">$errstr</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$errno</span><span class="p">,</span> <span class="nv">$errfile</span><span class="p">,</span> <span class="nv">$errline</span><span class="p">);</span>
+  <span class="k">throw</span> <span class="k">new</span> <span class="nx">ErrorException</span> <span class="p">(</span><span class="nv">$errstr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$errno</span><span class="p">,</span> <span class="nv">$errfile</span><span class="p">,</span> <span class="nv">$errline</span><span class="p">);</span>
  <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-6">
@@ -293,10 +293,10 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">show_trace_step</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="s1">&#39;line&#39;</span><span class="p">]))</span> <span class="p">{</span>
-   <span class="nv">$trace</span><span class="p">[</span><span class="s1">&#39;line&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$trace</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="m">3</span><span class="p">];</span>
+   <span class="nv">$trace</span><span class="p">[</span><span class="s1">&#39;line&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$trace</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">];</span>
   <span class="p">}</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]))</span> <span class="p">{</span>
-   <span class="nv">$trace</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$trace</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="m">2</span><span class="p">];</span>
+   <span class="nv">$trace</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$trace</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">];</span>
   <span class="p">}</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$trace</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]))</span> <span class="p">{</span>
    <span class="nb">printf</span> <span class="p">(</span>
@@ -380,9 +380,9 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="nv">$lines</span> <span class="o">=</span> <span class="nb">file</span> <span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
   <span class="nv">$count</span> <span class="o">=</span> <span class="nb">count</span> <span class="p">(</span><span class="nv">$lines</span><span class="p">);</span>
   <span class="nv">$out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-  <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="nv">$line</span> <span class="o">-</span> <span class="m">3</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$line</span> <span class="o">+</span> <span class="m">2</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="nv">$line</span> <span class="o">-</span> <span class="mi">3</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$line</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$lines</span><span class="p">[</span><span class="nv">$i</span><span class="p">]))</span> <span class="p">{</span>
-    <span class="nv">$out</span> <span class="o">.=</span> <span class="s1">&#39;&lt;span class=&quot;line-number&quot;&gt;&#39;</span> <span class="o">.</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">+</span> <span class="m">1</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;.&lt;/span&gt;&lt;span class=&quot;code&quot;&gt;&#39;</span> <span class="o">.</span> <span class="nx">Debugger</span><span class="o">::</span><span class="na">highlight</span> <span class="p">(</span><span class="nv">$lines</span><span class="p">[</span><span class="nv">$i</span><span class="p">])</span> <span class="o">.</span> <span class="s2">&quot;&lt;/span&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+    <span class="nv">$out</span> <span class="o">.=</span> <span class="s1">&#39;&lt;span class=&quot;line-number&quot;&gt;&#39;</span> <span class="o">.</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;.&lt;/span&gt;&lt;span class=&quot;code&quot;&gt;&#39;</span> <span class="o">.</span> <span class="nx">Debugger</span><span class="o">::</span><span class="na">highlight</span> <span class="p">(</span><span class="nv">$lines</span><span class="p">[</span><span class="nv">$i</span><span class="p">])</span> <span class="o">.</span> <span class="s2">&quot;&lt;/span&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
    <span class="p">}</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nv">$out</span><span class="p">;</span>
@@ -437,7 +437,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Show a variable for the debug output.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">show_variable</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$tabs</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">show_variable</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$tabs</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">is_numeric</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-13">
@@ -511,9 +511,9 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
       <span class="nv">$first</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
      <span class="p">}</span>
      <span class="k">echo</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-     <span class="k">echo</span> <span class="nb">str_pad</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nv">$tabs</span> <span class="o">+</span> <span class="m">1</span><span class="p">)</span> <span class="o">*</span> <span class="m">4</span><span class="p">);</span>
+     <span class="k">echo</span> <span class="nb">str_pad</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nv">$tabs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span><span class="p">);</span>
      <span class="nb">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">%s</span><span class="se">\&quot;</span><span class="s2"> =&gt; &quot;</span><span class="p">,</span> <span class="nv">$key</span><span class="p">);</span>
-     <span class="nx">Debugger</span><span class="o">::</span><span class="na">show_variable</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="nv">$tabs</span> <span class="o">+</span> <span class="m">1</span><span class="p">);</span>
+     <span class="nx">Debugger</span><span class="o">::</span><span class="na">show_variable</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="nv">$tabs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
     <span class="p">}</span>
 
    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>            </td>
@@ -533,12 +533,12 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
       <span class="nv">$first</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
      <span class="p">}</span>
      <span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-     <span class="k">echo</span> <span class="nb">str_pad</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nv">$tabs</span> <span class="o">+</span> <span class="m">1</span><span class="p">)</span> <span class="o">*</span> <span class="m">4</span><span class="p">);</span>
-     <span class="nx">Debugger</span><span class="o">::</span><span class="na">show_variable</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="nv">$tabs</span> <span class="o">+</span> <span class="m">1</span><span class="p">);</span>
+     <span class="k">echo</span> <span class="nb">str_pad</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nv">$tabs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span><span class="p">);</span>
+     <span class="nx">Debugger</span><span class="o">::</span><span class="na">show_variable</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="nv">$tabs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
     <span class="p">}</span>
    <span class="p">}</span>
    <span class="k">echo</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-   <span class="k">echo</span> <span class="nb">str_pad</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nv">$tabs</span><span class="p">)</span> <span class="o">*</span> <span class="m">4</span><span class="p">);</span>
+   <span class="k">echo</span> <span class="nb">str_pad</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nv">$tabs</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span><span class="p">);</span>
    <span class="k">echo</span> <span class="s2">&quot;)&quot;</span><span class="p">;</span>
 
   <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nb">is_object</span> <span class="p">(</span><span class="nv">$value</span><span class="p">))</span> <span class="p">{</span></pre></div>            </td>
@@ -552,15 +552,15 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             </td>
             <td class="code">
               <div class="highlight"><pre>   <span class="nv">$vars</span> <span class="o">=</span> <span class="nb">get_object_vars</span> <span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
-   <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$vars</span><span class="p">)</span> <span class="o">===</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$vars</span><span class="p">)</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">echo</span> <span class="nb">get_class</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39; ()&#39;</span><span class="p">;</span>
     <span class="k">return</span><span class="p">;</span>
    <span class="p">}</span>
    <span class="k">echo</span> <span class="nb">get_class</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot; (</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
    <span class="k">foreach</span> <span class="p">(</span><span class="nb">get_object_vars</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="nb">str_pad</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nv">$tabs</span> <span class="o">+</span> <span class="m">1</span><span class="p">)</span> <span class="o">*</span> <span class="m">4</span><span class="p">);</span>
+    <span class="k">echo</span> <span class="nb">str_pad</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nv">$tabs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span><span class="p">);</span>
     <span class="nb">printf</span> <span class="p">(</span><span class="s2">&quot;$%s = &quot;</span><span class="p">,</span> <span class="nv">$key</span><span class="p">);</span>
-    <span class="nx">Debugger</span><span class="o">::</span><span class="na">show_variable</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="nv">$tabs</span> <span class="o">+</span> <span class="m">1</span><span class="p">);</span>
+    <span class="nx">Debugger</span><span class="o">::</span><span class="na">show_variable</span> <span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="nv">$tabs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
     <span class="k">echo</span> <span class="s2">&quot;;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
    <span class="p">}</span>
    <span class="k">echo</span> <span class="s2">&quot;)&quot;</span><span class="p">;</span>
@@ -592,7 +592,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
   <span class="p">}</span>
 
-  <span class="nv">$i</span> <span class="o">=</span> <span class="m">0</span><span class="p">;</span>
+  <span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
   <span class="k">foreach</span> <span class="p">(</span><span class="nb">array_keys</span> <span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="k">as</span> <span class="nv">$k</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="nv">$k</span> <span class="o">!==</span> <span class="nv">$i</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">true</span><span class="p">;</span>

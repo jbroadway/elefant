@@ -299,7 +299,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
   <span class="k">if</span> <span class="p">(</span><span class="nb">file_exists</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span><span class="p">))</span> <span class="p">{</span>
    <span class="nv">$list</span> <span class="o">=</span> <span class="nb">parse_ini_file</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-   <span class="nv">$list</span> <span class="o">=</span> <span class="nx">parse_ini_string</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+   <span class="nv">$list</span> <span class="o">=</span> <span class="nb">parse_ini_string</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
   <span class="p">}</span>
 
   <span class="k">foreach</span> <span class="p">(</span><span class="nv">$list</span> <span class="k">as</span> <span class="nv">$role</span> <span class="o">=&gt;</span> <span class="nv">$rules</span><span class="p">)</span> <span class="p">{</span>

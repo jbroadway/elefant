@@ -416,7 +416,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span> <span class="p">(</span><span class="nv">$vals</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$is_new</span> <span class="o">=</span> <span class="k">true</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nb">get_class</span> <span class="p">(</span><span class="nv">$this</span><span class="p">))</span> <span class="o">:</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">;</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="nx">strtolower</span> <span class="p">(</span><span class="nb">get_class</span> <span class="p">(</span><span class="nv">$this</span><span class="p">))</span> <span class="o">:</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">;</span>
 
   <span class="nv">$vals</span> <span class="o">=</span> <span class="nb">is_object</span> <span class="p">(</span><span class="nv">$vals</span><span class="p">)</span> <span class="o">?</span> <span class="p">(</span><span class="k">array</span><span class="p">)</span> <span class="nv">$vals</span> <span class="o">:</span> <span class="nv">$vals</span><span class="p">;</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span> <span class="p">(</span><span class="nv">$vals</span><span class="p">))</span> <span class="p">{</span>
@@ -462,8 +462,8 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
    <span class="nb">sprintf</span> <span class="p">(</span><span class="s1">&#39;Call to undefined method %s::%s in %s on line %d&#39;</span><span class="p">,</span>
     <span class="nb">get_class</span> <span class="p">(</span><span class="nv">$this</span><span class="p">),</span>
     <span class="nv">$name</span><span class="p">,</span>
-    <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">],</span>
-    <span class="nv">$trace</span><span class="p">[</span><span class="m">0</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">]</span>
+    <span class="nv">$trace</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;file&#39;</span><span class="p">],</span>
+    <span class="nv">$trace</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">]</span>
    <span class="p">),</span>
    <span class="nx">E_USER_ERROR</span>
   <span class="p">);</span>
@@ -521,12 +521,12 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>Insert</p>
+              <p>This is an insert</p>
             </td>
             <td class="code">
               <div class="highlight"><pre>   <span class="nv">$ins</span> <span class="o">=</span> <span class="k">array</span> <span class="p">();</span>
    <span class="nv">$len</span> <span class="o">=</span> <span class="nb">count</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">);</span>
-   <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="m">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$len</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$len</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
     <span class="nv">$ins</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">&#39;?&#39;</span><span class="p">;</span>
    <span class="p">}</span>
    <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">db_execute</span> <span class="p">(</span><span class="s1">&#39;insert into `&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span> <span class="o">.</span> <span class="s1">&#39;` (&#39;</span> <span class="o">.</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="nx">Model</span><span class="o">::</span><span class="na">backticks</span> <span class="p">(</span><span class="nb">array_keys</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">)))</span> <span class="o">.</span> <span class="s1">&#39;) values (&#39;</span> <span class="o">.</span> <span class="nb">join</span> <span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="nv">$ins</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">))</span> <span class="p">{</span>
@@ -546,7 +546,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>Update</p>
+              <p>This is an update</p>
             </td>
             <td class="code">
               <div class="highlight"><pre>  <span class="nv">$ins</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
@@ -601,7 +601,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">get</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nv">$class</span> <span class="o">=</span> <span class="nx">get_called_class</span> <span class="p">();</span>
+  <span class="nv">$class</span> <span class="o">=</span> <span class="nb">get_called_class</span> <span class="p">();</span>
   <span class="nv">$q</span> <span class="o">=</span> <span class="k">new</span> <span class="nv">$class</span><span class="p">;</span>
   <span class="nv">$res</span> <span class="o">=</span> <span class="p">(</span><span class="k">array</span><span class="p">)</span> <span class="nx">db_single</span> <span class="p">(</span><span class="s1">&#39;select * from `&#39;</span> <span class="o">.</span> <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">table</span> <span class="o">.</span> <span class="s1">&#39;` where `&#39;</span> <span class="o">.</span> <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">key</span> <span class="o">.</span> <span class="s1">&#39;` = ?&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$res</span><span class="p">)</span> <span class="p">{</span>
@@ -626,7 +626,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">query</span> <span class="p">(</span><span class="nv">$fields</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nv">$class</span> <span class="o">=</span> <span class="nx">get_called_class</span> <span class="p">();</span>
+  <span class="nv">$class</span> <span class="o">=</span> <span class="nb">get_called_class</span> <span class="p">();</span>
   <span class="k">if</span> <span class="p">(</span><span class="nv">$fields</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nv">$class</span><span class="p">;</span>
    <span class="nv">$obj</span><span class="o">-&gt;</span><span class="na">query_fields</span> <span class="o">=</span> <span class="nv">$fields</span><span class="p">;</span>
@@ -766,7 +766,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  filled with <code>$this-&gt;query_params</code>.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">sql</span> <span class="p">(</span><span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">sql</span> <span class="p">(</span><span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">limit_offset_ok</span> <span class="p">(</span><span class="nv">$limit</span><span class="p">,</span> <span class="nv">$offset</span><span class="p">))</span> <span class="p">{</span>
    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
   <span class="p">}</span>
@@ -777,7 +777,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
 
   <span class="nv">$sql</span> <span class="o">=</span> <span class="s1">&#39;select &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_fields</span> <span class="o">.</span> <span class="s1">&#39; from &#39;</span> <span class="o">.</span> <span class="nx">Model</span><span class="o">::</span><span class="na">backticks</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">);</span>
 
-  <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_filters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_filters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$sql</span> <span class="o">.=</span> <span class="s1">&#39; where &#39;</span><span class="p">;</span>
    <span class="nv">$and</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_filters</span> <span class="k">as</span> <span class="nv">$where</span><span class="p">)</span> <span class="p">{</span>
@@ -814,7 +814,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Fetch as an array of model objects.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">fetch</span> <span class="p">(</span><span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">fetch</span> <span class="p">(</span><span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
   <span class="nv">$sql</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">sql</span> <span class="p">(</span><span class="nv">$limit</span><span class="p">,</span> <span class="nv">$offset</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="nv">$sql</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
@@ -864,7 +864,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Fetch the number of results for a query.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">count</span> <span class="p">(</span><span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">count</span> <span class="p">(</span><span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query_fields</span> <span class="o">=</span> <span class="s1">&#39;count(*)&#39;</span><span class="p">;</span>
 
   <span class="nv">$sql</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">sql</span> <span class="p">(</span><span class="nv">$limit</span><span class="p">,</span> <span class="nv">$offset</span><span class="p">);</span>
@@ -888,7 +888,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
  the database.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">fetch_orig</span> <span class="p">(</span><span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">fetch_orig</span> <span class="p">(</span><span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
   <span class="nv">$sql</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">sql</span> <span class="p">(</span><span class="nv">$limit</span><span class="p">,</span> <span class="nv">$offset</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="nv">$sql</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
@@ -909,7 +909,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Fetch as an associative array of the specified key/value fields.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">fetch_assoc</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">,</span> <span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">fetch_assoc</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">,</span> <span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
   <span class="nv">$tmp</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fetch</span> <span class="p">(</span><span class="nv">$limit</span><span class="p">,</span> <span class="nv">$offset</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$tmp</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="nv">$tmp</span><span class="p">;</span>
@@ -929,7 +929,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <p>Fetch as an array of the specified field name.</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">fetch_field</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+              <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">fetch_field</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$limit</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
   <span class="nv">$tmp</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fetch</span> <span class="p">(</span><span class="nv">$limit</span><span class="p">,</span> <span class="nv">$offset</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$tmp</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="nv">$tmp</span><span class="p">;</span>

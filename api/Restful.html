@@ -283,7 +283,7 @@ separately.</p></li>
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">get_put_data</span> <span class="p">(</span><span class="nv">$decode</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
   <span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">controller</span><span class="o">-&gt;</span><span class="na">get_put_data</span> <span class="p">();</span>
   <span class="k">if</span> <span class="p">(</span><span class="nv">$decode</span><span class="p">)</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="nx">json_decode</span> <span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+   <span class="k">return</span> <span class="nb">json_decode</span> <span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nv">$data</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
@@ -299,7 +299,7 @@ separately.</p></li>
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">get_raw_post_data</span> <span class="p">(</span><span class="nv">$decode</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
   <span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">controller</span><span class="o">-&gt;</span><span class="na">get_raw_post_data</span> <span class="p">();</span>
   <span class="k">if</span> <span class="p">(</span><span class="nv">$decode</span><span class="p">)</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="nx">json_decode</span> <span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+   <span class="k">return</span> <span class="nb">json_decode</span> <span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nv">$data</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
@@ -318,9 +318,9 @@ separately.</p></li>
    <span class="nv">$res</span> <span class="o">=</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">;</span>
    <span class="nv">$res</span><span class="o">-&gt;</span><span class="na">success</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
    <span class="nv">$res</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">=</span> <span class="nv">$data</span><span class="p">;</span>
-   <span class="k">echo</span> <span class="nx">json_encode</span> <span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+   <span class="k">echo</span> <span class="nb">json_encode</span> <span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-   <span class="k">echo</span> <span class="nx">json_encode</span> <span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+   <span class="k">echo</span> <span class="nb">json_encode</span> <span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
  <span class="p">}</span></pre></div>            </td>
@@ -337,7 +337,7 @@ separately.</p></li>
   <span class="nv">$res</span> <span class="o">=</span> <span class="k">new</span> <span class="k">StdClass</span><span class="p">;</span>
   <span class="nv">$res</span><span class="o">-&gt;</span><span class="na">success</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
   <span class="nv">$res</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="nv">$message</span><span class="p">;</span>
-  <span class="k">echo</span> <span class="nx">json_encode</span> <span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+  <span class="k">echo</span> <span class="nb">json_encode</span> <span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
   <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
  <span class="p">}</span>
 <span class="p">}</span>

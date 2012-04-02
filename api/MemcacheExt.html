@@ -215,7 +215,7 @@ td.docs .docparam {color:#DB251A;font-weight:bold;}
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">cache</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">,</span> <span class="nv">$function</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">((</span><span class="nv">$val</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span> <span class="p">(</span><span class="nv">$key</span><span class="p">))</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$val</span> <span class="o">=</span> <span class="nv">$function</span> <span class="p">();</span>
-   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
+   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">set</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$val</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$timeout</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nv">$val</span><span class="p">;</span>
  <span class="p">}</span>

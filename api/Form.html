@@ -441,7 +441,7 @@ Controller.</p></li>
               <p>Normalize the request method to lowercase</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">method</span> <span class="o">=</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nv">$required_method</span><span class="p">);</span>
+              <div class="highlight"><pre>  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">method</span> <span class="o">=</span> <span class="nx">strtolower</span> <span class="p">(</span><span class="nv">$required_method</span><span class="p">);</span>
 
   <span class="k">if</span> <span class="p">(</span><span class="nv">$form_rules</span> <span class="nx">instanceof</span> <span class="nx">Controller</span><span class="p">)</span> <span class="p">{</span></pre></div>            </td>
           </tr>
@@ -664,7 +664,7 @@ Controller.</p></li>
               <p>form hasn't been submitted yet, or request method doesn't match</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="s1">&#39;Request method must be &#39;</span> <span class="o">.</span> <span class="nb">strtoupper</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">);</span>
+              <div class="highlight"><pre>   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="s1">&#39;Request method must be &#39;</span> <span class="o">.</span> <span class="nx">strtoupper</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">);</span>
    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
   <span class="p">}</span>
   
@@ -679,7 +679,7 @@ Controller.</p></li>
   <span class="p">}</span>
 
   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">failed</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">verify_values</span> <span class="p">(</span><span class="nv">$values</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">rules</span><span class="p">);</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">failed</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">count</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">failed</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">error</span> <span class="o">=</span> <span class="s1">&#39;Validation error.&#39;</span><span class="p">;</span>
    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
   <span class="p">}</span>
@@ -718,7 +718,7 @@ Controller.</p></li>
             </td>
             <td class="code">
               <div class="highlight"><pre> <span class="k">public</span> <span class="k">function</span> <span class="nf">verify_request_method</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nb">strtolower</span> <span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">])</span> <span class="o">!==</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">strtolower</span> <span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">])</span> <span class="o">!==</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
@@ -759,7 +759,7 @@ Controller.</p></li>
               <p>Start a session</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>   <span class="o">@</span><span class="nb">session_set_cookie_params</span> <span class="p">(</span><span class="nb">time</span> <span class="p">()</span> <span class="o">+</span> <span class="m">2592000</span><span class="p">);</span>
+              <div class="highlight"><pre>   <span class="o">@</span><span class="nb">session_set_cookie_params</span> <span class="p">(</span><span class="nb">time</span> <span class="p">()</span> <span class="o">+</span> <span class="mi">2592000</span><span class="p">);</span>
    <span class="o">@</span><span class="nb">session_start</span> <span class="p">();</span>
 
    <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_token&#39;</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_expires&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nb">time</span> <span class="p">())</span> <span class="p">{</span></pre></div>            </td>
@@ -792,7 +792,7 @@ Controller.</p></li>
               <p>user if time is running short</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>    <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_expires&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">time</span> <span class="p">()</span> <span class="o">+</span> <span class="m">7200</span><span class="p">;</span>
+              <div class="highlight"><pre>    <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_expires&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">time</span> <span class="p">()</span> <span class="o">+</span> <span class="mi">7200</span><span class="p">;</span>
    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>            </td>
           </tr>
                   <tr id="section-41">
@@ -803,7 +803,7 @@ Controller.</p></li>
               <p>Generate a random token</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">csrf_token</span> <span class="o">=</span> <span class="nb">md5</span> <span class="p">(</span><span class="nb">uniqid</span> <span class="p">(</span><span class="nb">rand</span> <span class="p">(),</span> <span class="k">true</span><span class="p">));</span></pre></div>            </td>
+              <div class="highlight"><pre>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">csrf_token</span> <span class="o">=</span> <span class="nb">md5</span> <span class="p">(</span><span class="nb">uniqid</span> <span class="p">(</span><span class="nx">rand</span> <span class="p">(),</span> <span class="k">true</span><span class="p">));</span></pre></div>            </td>
           </tr>
                   <tr id="section-42">
             <td class="docs">
@@ -814,7 +814,7 @@ Controller.</p></li>
             </td>
             <td class="code">
               <div class="highlight"><pre>    <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_token&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">csrf_token</span><span class="p">;</span>
-    <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_expires&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">time</span> <span class="p">()</span> <span class="o">+</span> <span class="m">7200</span><span class="p">;</span>
+    <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;csrf_expires&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">time</span> <span class="p">()</span> <span class="o">+</span> <span class="mi">7200</span><span class="p">;</span>
    <span class="p">}</span></pre></div>            </td>
           </tr>
                   <tr id="section-43">
@@ -974,7 +974,7 @@ opposite, for example "not empty".</p></li>
    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/^not (.+)$/i&#39;</span><span class="p">,</span> <span class="nv">$type</span><span class="p">,</span> <span class="nv">$regs</span><span class="p">))</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="o">!</span> <span class="nx">Form</span><span class="o">::</span><span class="na">verify_value</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$regs</span><span class="p">[</span><span class="m">1</span><span class="p">],</span> <span class="nv">$validator</span><span class="p">);</span>
+   <span class="k">return</span> <span class="o">!</span> <span class="nx">Form</span><span class="o">::</span><span class="na">verify_value</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$regs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$validator</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="k">switch</span> <span class="p">(</span><span class="nv">$type</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">case</span> <span class="s1">&#39;matches&#39;</span><span class="o">:</span>
@@ -988,25 +988,25 @@ opposite, for example "not empty".</p></li>
               <p>Can't dynamically reference superglobals, so instead...</p>
             </td>
             <td class="code">
-              <div class="highlight"><pre>     <span class="k">switch</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="m">1</span><span class="p">])</span> <span class="p">{</span>
+              <div class="highlight"><pre>     <span class="k">switch</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
       <span class="k">case</span> <span class="s1">&#39;_POST&#39;</span><span class="o">:</span>
-       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_POST</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_POST</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="mi">2</span><span class="p">]]);</span>
       <span class="k">case</span> <span class="s1">&#39;_GET&#39;</span><span class="o">:</span>
-       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_GET</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_GET</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="mi">2</span><span class="p">]]);</span>
       <span class="k">case</span> <span class="s1">&#39;_REQUEST&#39;</span><span class="o">:</span>
-       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_REQUEST</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_REQUEST</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="mi">2</span><span class="p">]]);</span>
       <span class="k">case</span> <span class="s1">&#39;_SERVER&#39;</span><span class="o">:</span>
-       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="mi">2</span><span class="p">]]);</span>
       <span class="k">case</span> <span class="s1">&#39;_FILES&#39;</span><span class="o">:</span>
-       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="mi">2</span><span class="p">]]);</span>
       <span class="k">case</span> <span class="s1">&#39;_COOKIE&#39;</span><span class="o">:</span>
-       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_COOKIE</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_COOKIE</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="mi">2</span><span class="p">]]);</span>
       <span class="k">case</span> <span class="s1">&#39;_SESSION&#39;</span><span class="o">:</span>
-       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="mi">2</span><span class="p">]]);</span>
       <span class="k">case</span> <span class="s1">&#39;_ENV&#39;</span><span class="o">:</span>
-       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_ENV</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$_ENV</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="mi">2</span><span class="p">]]);</span>
       <span class="k">case</span> <span class="s1">&#39;GLOBALS&#39;</span><span class="o">:</span>
-       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]]);</span>
+       <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="nv">$regs</span><span class="p">[</span><span class="mi">2</span><span class="p">]]);</span>
      <span class="p">}</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
@@ -1029,15 +1029,15 @@ opposite, for example "not empty".</p></li>
 
    <span class="k">case</span> <span class="s1">&#39;length&#39;</span><span class="o">:</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span> <span class="p">(</span><span class="s1">&#39;/^([0-9]+)([+-]?)([0-9]*)$/&#39;</span><span class="p">,</span> <span class="nv">$validator</span><span class="p">,</span> <span class="nv">$regs</span><span class="p">))</span> <span class="p">{</span>
-     <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="m">3</span><span class="p">]))</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nv">$regs</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="o">||</span> <span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nv">$regs</span><span class="p">[</span><span class="m">3</span><span class="p">])</span> <span class="p">{</span>
+     <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">empty</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nv">$regs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">||</span> <span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nv">$regs</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="p">{</span>
        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
       <span class="p">}</span>
-     <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;+&#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nv">$regs</span><span class="p">[</span><span class="m">1</span><span class="p">])</span> <span class="p">{</span>
+     <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;+&#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nv">$regs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
       <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
-     <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;-&#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nv">$regs</span><span class="p">[</span><span class="m">1</span><span class="p">])</span> <span class="p">{</span>
+     <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;-&#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nv">$regs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
       <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
-     <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="k">empty</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="m">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">!=</span> <span class="nv">$regs</span><span class="p">[</span><span class="m">1</span><span class="p">])</span> <span class="p">{</span>
+     <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="k">empty</span> <span class="p">(</span><span class="nv">$regs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">strlen</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="o">!=</span> <span class="nv">$regs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
       <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
      <span class="p">}</span>
     <span class="p">}</span>
@@ -1062,7 +1062,7 @@ opposite, for example "not empty".</p></li>
     <span class="k">return</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">&lt;=</span> <span class="nv">$validator</span><span class="p">);</span>
 
    <span class="k">case</span> <span class="s1">&#39;email&#39;</span><span class="o">:</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">filter_var</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nx">FILTER_VALIDATE_EMAIL</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">filter_var</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nx">FILTER_VALIDATE_EMAIL</span><span class="p">))</span> <span class="p">{</span>
      <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
     <span class="p">}</span></pre></div>            </td>
           </tr>
@@ -1091,7 +1091,7 @@ opposite, for example "not empty".</p></li>
     <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
 
    <span class="k">case</span> <span class="s1">&#39;url&#39;</span><span class="o">:</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">filter_var</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nx">FILTER_VALIDATE_URL</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">filter_var</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nx">FILTER_VALIDATE_URL</span><span class="p">))</span> <span class="p">{</span>
      <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span> <span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
@@ -1179,11 +1179,11 @@ opposite, for example "not empty".</p></li>
      <span class="p">}</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="p">(</span><span class="nv">$type</span> <span class="o">===</span> <span class="s1">&#39;filetype&#39;</span><span class="p">)</span> <span class="p">{</span>
-     <span class="nv">$extensions</span> <span class="o">=</span> <span class="nb">preg_split</span> <span class="p">(</span><span class="s1">&#39;/, ?&#39;</span><span class="p">,</span> <span class="nb">trim</span> <span class="p">(</span><span class="nb">strtolower</span> <span class="p">(</span><span class="nv">$validator</span><span class="p">)));</span>
+     <span class="nv">$extensions</span> <span class="o">=</span> <span class="nb">preg_split</span> <span class="p">(</span><span class="s1">&#39;/, ?&#39;</span><span class="p">,</span> <span class="nx">trim</span> <span class="p">(</span><span class="nx">strtolower</span> <span class="p">(</span><span class="nv">$validator</span><span class="p">)));</span>
      <span class="k">if</span> <span class="p">(</span><span class="nv">$extensions</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
       <span class="nv">$extensions</span> <span class="o">=</span> <span class="k">array</span> <span class="p">(</span><span class="nv">$validator</span><span class="p">);</span>
      <span class="p">}</span>
-     <span class="nv">$extension</span> <span class="o">=</span> <span class="nb">strtolower</span> <span class="p">(</span><span class="nb">pathinfo</span> <span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="nv">$name</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="nx">PATHINFO_EXTENSION</span><span class="p">));</span>
+     <span class="nv">$extension</span> <span class="o">=</span> <span class="nx">strtolower</span> <span class="p">(</span><span class="nb">pathinfo</span> <span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="nv">$name</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="nx">PATHINFO_EXTENSION</span><span class="p">));</span>
      <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nb">in_array</span> <span class="p">(</span><span class="nv">$extension</span><span class="p">,</span> <span class="nv">$extensions</span><span class="p">))</span> <span class="p">{</span>
       <span class="nv">$failed</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$name</span><span class="p">;</span>
       <span class="k">break</span><span class="p">;</span>
@@ -1192,7 +1192,7 @@ opposite, for example "not empty".</p></li>
      <span class="p">}</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="p">(</span><span class="nv">$type</span> <span class="o">===</span> <span class="s1">&#39;skip_if_empty&#39;</span><span class="p">)</span> <span class="p">{</span>
-     <span class="k">if</span> <span class="p">(</span><span class="k">empty</span> <span class="p">(</span><span class="nv">$values</span><span class="p">[</span><span class="nv">$name</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="nv">$name</span><span class="p">])</span> <span class="o">||</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="nv">$name</span><span class="p">][</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="m">4</span><span class="p">))</span> <span class="p">{</span>
+     <span class="k">if</span> <span class="p">(</span><span class="k">empty</span> <span class="p">(</span><span class="nv">$values</span><span class="p">[</span><span class="nv">$name</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span> <span class="nb">isset</span> <span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="nv">$name</span><span class="p">])</span> <span class="o">||</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="nv">$name</span><span class="p">][</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="mi">4</span><span class="p">))</span> <span class="p">{</span>
       <span class="k">break</span><span class="p">;</span>
      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
       <span class="k">continue</span><span class="p">;</span>
