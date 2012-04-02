@@ -303,7 +303,7 @@ class MongoModel {
 		}
 
 		if ($this->is_new) {
-			// Insert
+			// This is an insert
 			$ins = array ();
 			$len = count ($this->data);
 			for ($i = 0; $i < $len; $i++) {
@@ -319,7 +319,7 @@ class MongoModel {
 			return true;
 		}
 		
-		// Update
+		// This is an update
 		if (! $this->keyval) {
 			$this->keyval = $this->data[$this->key];
 		}

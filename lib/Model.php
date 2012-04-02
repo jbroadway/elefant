@@ -248,7 +248,7 @@ class Model {
 		}
 
 		if ($this->is_new) {
-			// Insert
+			// This is an insert
 			$ins = array ();
 			$len = count ($this->data);
 			for ($i = 0; $i < $len; $i++) {
@@ -266,7 +266,7 @@ class Model {
 			return true;
 		}
 		
-		// Update
+		// This is an update
 		$ins = '';
 		$par = array ();
 		$sep = '';
