@@ -14,11 +14,16 @@ layout = default
 
 post_layout = default
 
-; This is the service to use for blog comments. Currently
-; only facebook is supported. Set it to Off to disable
-; comments.
+; Here you can choose a service to use for blog comments.
+; Supported platforms are Facebook and Disqus. Set it
+; to Off to disable comments. For Disqus, you also need
+; to register at disqus.com and enter your account's
+; "shortname" value into the disqus_shortname setting.
 
 comments = facebook
+;comments = disqus
+
+disqus_shortname = ""
 
 [Twitter]
 

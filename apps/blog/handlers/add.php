@@ -68,7 +68,7 @@ if ($f->submit ()) {
 	echo 'Error Message: ' . $p->error;
 } else {
 	$p = new blog\Post;
-	$p->author = $GLOBALS['user']->name;
+	$p->author = User::val ('name');
 	$p->ts = gmdate ('Y-m-d H:i:s');
 	$p->yes_no = array ('yes' => i18n_get ('Yes'), 'no' => i18n_get ('No'));
 	$p->autopost_pom = 'yes';
