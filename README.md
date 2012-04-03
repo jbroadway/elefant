@@ -124,7 +124,7 @@ to help you work faster and better:
 * [Installing on PHP Fog](http://www.elefantcms.com/wiki/Installing-Elefant-on-PHP-Fog)
 * [Installing on DotCloud](http://www.elefantcms.com/wiki/Installing-Elefant-on-DotCloud)
 * [Requirements and compatible hosts](http://www.elefantcms.com/wiki/Requirements)
-* [Support forum](http://www.elefantcms.com/forum/) and [support chat group](https://convore.com/elefantcms/)
+* [Support forum](http://www.elefantcms.com/forum/) and [IRC channel](http://www.elefantcms.com/elefant-irc)
 
 ## FAQ
 
