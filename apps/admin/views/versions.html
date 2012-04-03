@@ -1,3 +1,5 @@
+{! admin/dates !}
+
 {% if id === false %}
 <p class="selector">
 <form method="GET" action="/admin/versions">
@@ -27,7 +29,7 @@
 	{% foreach history %}
 		<tr>
 			<td>{{ loop_value->pkey }}</td>
-			<td>{{ loop_value->ts|gmdate ('F j, Y - g:ia', strtotime (%s)) }}</td>
+			<td>{{ loop_value->ts|I18n::date_time }}</td>
 			<td>{{ loop_value->user|admin_filter_user_name }}</td>
 			<td><a href="/admin/versions?type={{ type }}&id={{ loop_value->pkey }}">{"Show versions"}</a></td>
 		</tr>
@@ -44,7 +46,7 @@
 		</tr>
 	{% foreach history %}
 		<tr>
-			<td>{{ loop_value->ts|gmdate ('F j, Y - g:ia', strtotime (%s)) }}</td>
+			<td>{{ loop_value->ts|I18n::date_time }}</td>
 			<td>{{ loop_value->user|admin_filter_user_name }}</td>
 		{% if loop_index == 0 %}
 			{% if deleted %}

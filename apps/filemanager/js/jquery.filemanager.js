@@ -65,6 +65,7 @@
 									$.tmpl ('tpl_file', res.data.files[i]).appendTo (tbody);
 								}
 							}
+							$.localize_dates ();
 						}
 					});
 					break;

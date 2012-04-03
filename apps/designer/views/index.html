@@ -1,3 +1,5 @@
+{! admin/dates !}
+
 <link rel="stylesheet" type="text/css" href="/apps/filemanager/js/fancybox/jquery.fancybox-1.3.4.css" />
 <script src="/apps/filemanager/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 <script>
@@ -35,7 +37,7 @@ $(function () {
 {% foreach layouts %}
 	<tr>
 		<td><a href="/designer/preview?layout={{ loop_value }}" class="preview iframe">{{ loop_value }}</a></td>
-		<td>{{ loop_value|filemtime|gmdate ('F j, Y - g:ia', %s) }}</td>
+		<td>{{ loop_value|filemtime|I18n::date_time }}</td>
 		<td>{{ loop_value|filesize|format_filesize }}</td>
 		<td style="text-align: right">
 			{% if locks[$data->loop_value] %}
@@ -71,7 +73,7 @@ $(function () {
 {% foreach stylesheets %}
 	<tr>
 		<td><a href="/{{ loop_value }}" class="preview iframe">{{ loop_value }}</a></td>
-		<td>{{ loop_value|filemtime|gmdate ('F j, Y - g:ia', %s) }}</td>
+		<td>{{ loop_value|filemtime|I18n::date_time }}</td>
 		<td>{{ loop_value|filesize|format_filesize }}</td>
 		<td>
 			{% if locks[$data->loop_value] %}

@@ -65,13 +65,13 @@ class FileManager extends Restful {
 				$out['dirs'][] = array (
 					'name' => $entry,
 					'path' => ltrim ($file . '/' . $entry, '/'),
-					'mtime' => date ('F j, Y - g:ia', filemtime ($this->root . $file . '/' . $entry))
+					'mtime' => I18n::date_time (filemtime ($this->root . $file . '/' . $entry))
 				);
 			} else {
 				$out['files'][] = array (
 					'name' => $entry,
 					'path' => ltrim ($file . '/' . $entry, '/'),
-					'mtime' => date ('F j, Y - g:ia', filemtime ($this->root . $file . '/' . $entry)),
+					'mtime' => I18n::date_time (filemtime ($this->root . $file . '/' . $entry)),
 					'fsize' => format_filesize (filesize ($this->root . $file . '/' . $entry))
 				);
 			}

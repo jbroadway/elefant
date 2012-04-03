@@ -1,3 +1,5 @@
+{! admin/dates !}
+
 <p>
 	<a href="/blog/add">{"New Post"}</a>
 	&nbsp;|&nbsp;
@@ -20,7 +22,7 @@
 {% foreach posts %}
 	<tr>
 		<td><a href="/blog/post/{{ loop_value->id }}/{{ loop_value->title|blog_filter_title }}" target="_blank">{{ loop_value->title }}</a></td>
-		<td>{{ loop_value->ts|date ('F j, Y - g:ia', strtotime (%s)) }}</td>
+		<td>{{ loop_value->ts|I18n::date_time }}</td>
 		<td>{{ loop_value->author }}</td>
 		<td>{{ loop_value->published|ucfirst }}</td>
 		<td>

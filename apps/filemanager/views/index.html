@@ -1,9 +1,11 @@
+{! admin/dates !}
+
 <script type="text/javascript" src="/apps/filemanager/js/jquery.tmpl.beta1.min.js"></script>
 <script type="text/javascript" src="/apps/filemanager/js/jquery.filemanager.js"></script>
 <script type="text/x-jquery-tmpl" id="tpl_dir">
 	<tr>
 		<td><img src="/apps/admin/css/admin/folder.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/filemanager?path=${path}">${name}</a></td>
-		<td>${mtime}</td>
+		<td>\{{html mtime}}</td>
 		<td>&nbsp;</td>
 		<td><a href="#" onclick="return $.filemanager ('mv', {file: '${path}', name: '${name}'})">{"Rename"}</a></td>
 	</tr>
