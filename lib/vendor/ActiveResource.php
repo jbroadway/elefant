@@ -304,6 +304,9 @@ class ActiveResource {
 		if (! is_numeric ($k)) {
 			$res = '<' . $k . '{{attributes}}>';
 		}
+		if (is_object ($v)) {
+			$v = (array) $v;
+		}
 		if (is_array ($v)) {
 			foreach ($v as $key => $value) {
 				// handle attributes of repeating tags

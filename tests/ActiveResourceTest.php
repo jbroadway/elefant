@@ -58,6 +58,18 @@ class ActiveResourceTest extends PHPUnit_Framework_TestCase {
 		// starting from a SimpleXMLElement
 		$xml = new SimpleXMLElement ('<foo><bar asdf="qwerty" />what</foo>');
 		$this->assertEquals ($t->_build_xml (0, $xml), "<foo><bar asdf=\"qwerty\"/>what</foo>\n");
+
+		// testing objects converted to arrays
+		$this->assertEquals (
+			$t->_build_xml ('foo', array ((object) array ('bar' => 'asdf'))),
+			"<foo><bar>asdf</bar>\n</foo>\n"
+		);
+
+		// testing objects converted to arrays
+		$this->assertEquals (
+			$t->_build_xml ('foo', array ((object) array ('bar' => (object) array ('asdf' => 'qwerty')))),
+			"<foo><bar><asdf>qwerty</asdf>\n</bar>\n</foo>\n"
+		);
 	}
 
 	function test_pleuralize () {
