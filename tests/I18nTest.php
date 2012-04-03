@@ -9,6 +9,7 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 		global $i18n;
 		$_SERVER['REQUEST_URI'] = '/en/pagename';
 		$i18n = new I18n ('lang', array ('negotiation_method' => 'url'));
+		date_default_timezone_set ('GMT');
 	}
 
 	function test_parameters () {
@@ -74,6 +75,30 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals ('Maison', i18n_get ('Home'));
 		$this->assertEquals ('Retournez', i18n_get ('Back'));
+	}
+
+	function test_date () {
+		$date = '2012-05-01 18:30:00';
+		$time = strtotime ($date);
+		$expected = '<time class="date" datetime="2012-05-01T18:30:00+00:00">May 1, 2012</time>';
+		$this->assertEquals ($expected, I18n::date ($date));
+		$this->assertEquals ($expected, I18n::date ($time));
+	}
+
+	function test_time () {
+		$date = '2012-05-01 18:30:00';
+		$time = strtotime ($date);
+		$expected = '<time class="time" datetime="2012-05-01T18:30:00+00:00">6:30pm</time>';
+		$this->assertEquals ($expected, I18n::time ($date));
+		$this->assertEquals ($expected, I18n::time ($time));
+	}
+
+	function test_date_time () {
+		$date = '2012-05-01 18:30:00';
+		$time = strtotime ($date);
+		$expected = '<time class="datetime" datetime="2012-05-01T18:30:00+00:00">May 1, 2012 - 6:30pm</time>';
+		$this->assertEquals ($expected, I18n::date_time ($date));
+		$this->assertEquals ($expected, I18n::date_time ($time));
 	}
 }
 

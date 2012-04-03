@@ -343,7 +343,60 @@ class I18n {
 		}
 
 		return $this->default;
+	}
 
+	/**
+	 * Filter for outputting dates. Used with the jQuery
+	 * localize plugin to convert dates into the current user's
+	 * time zone.
+	 *
+	 * Usage:
+	 *
+	 *     {{ date_value|I18n::date }}
+	 */
+	public static function date ($date) {
+		$date = is_numeric ($date) ? $date : strtotime ($date);
+		return sprintf (
+			'<time class="date" datetime="%s">%s</time>',
+			gmdate ('Y-m-d\TH:i:sP', $date),
+			gmdate ('F j, Y', $date)
+		);
+	}
+
+	/**
+	 * Filter for outputting times. Used with the jQuery
+	 * localize plugin to convert dates into the current user's
+	 * time zone.
+	 *
+	 * Usage:
+	 *
+	 *     {{ date_value|I18n::time }}
+	 */
+	public static function time ($date) {
+		$date = is_numeric ($date) ? $date : strtotime ($date);
+		return sprintf (
+			'<time class="time" datetime="%s">%s</time>',
+			gmdate ('Y-m-d\TH:i:sP', $date),
+			gmdate ('g:ia', $date)
+		);
+	}
+
+	/**
+	 * Filter for outputting date and time. Used with the jQuery
+	 * localize plugin to convert dates into the current user's
+	 * time zone.
+	 *
+	 * Usage:
+	 *
+	 *     {{ date_value|I18n::date_time }}
+	 */
+	public static function date_time ($date) {
+		$date = is_numeric ($date) ? $date : strtotime ($date);
+		return sprintf (
+			'<time class="datetime" datetime="%s">%s</time>',
+			gmdate ('Y-m-d\TH:i:sP', $date),
+			gmdate ('F j, Y - g:ia', $date)
+		);
 	}
 }
 
