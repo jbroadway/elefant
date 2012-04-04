@@ -447,6 +447,14 @@ class Controller {
 	}
 
 	/**
+	 * Permanently redirect to a new address and exit.
+	 */
+	public function permanent_redirect ($url, $exit = true) {
+		header ('HTTP/1.1 301 Moved Permanently');
+		$this->redirect ($url, $exit);
+	}
+
+	/**
 	 * Wrapper around exit to work with subfolder installations.
 	 */
 	public function quit () {
