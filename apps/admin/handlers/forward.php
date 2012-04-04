@@ -6,21 +6,25 @@
  * into the WYSIWYG editor.
  */
 
+$url = isset ($data['to']) ? $data['to'] : $_GET['to'];
+
 if (User::is_valid () && User::is ('admin')) {
-	$to = isset ($data['to']) ? $data['to'] : $_GET['to'];
 	printf (
 		'<p>%s:</p><p><a href="%s">%s</a></p>',
 		i18n_get ('This page forwards visitors to the following link'),
-		$to,
-		$to
+		$url,
+		$url
 	);
 	return;
 }
 
-if (isset ($data['to'])) {
-	$this->redirect ($data['to']);
-} elseif (isset ($_GET['to'])) {
-	$this->redirect ($_GET['to']);
+$code = isset ($data['code'])
+	? $data['code']
+	: (isset ($_GET['code']) ? $_GET['code'] : 302);
+
+if ($code === 301) {
+	$this->permenent_redirect ($url);
 }
+$this->redirect ($url);
 
 ?>

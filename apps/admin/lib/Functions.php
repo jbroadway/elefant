@@ -57,4 +57,20 @@ function admin_layout_exists ($name) {
 	return (file_exists ('layouts/' . $name . '.html') || file_exists ('layouts/' . $name . '/' . $name . '.html'));
 }
 
+/**
+ * Status codes for the admin/forward dynamic object embed.
+ */
+function admin_status_codes () {
+	return array (
+		(object) array (
+			'key' => 301,
+			'value' => i18n_get ('Permanent (best for SEO)')
+		),
+		(object) array (
+			'key' => 302,
+			'value' => i18n_get ('Temporary')
+		)
+	);
+}
+
 ?>

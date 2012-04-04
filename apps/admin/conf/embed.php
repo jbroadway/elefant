@@ -11,6 +11,12 @@ to[not empty] = 1
 to[regex] = "|^(http:/)?/.+$|"
 to[message] = Please enter a valid URL.
 
+code[label] = Status
+code[type] = select
+code[initial] = 302
+code[require] = "apps/admin/lib/Functions.php"
+code[callback] = "admin_status_codes"
+
 [admin/html]
 
 label = "Embed HTML Code"
