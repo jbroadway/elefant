@@ -65,6 +65,22 @@ class FormTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue (Form::verify_value ('http://foo.com/bar', 'url'));
 		$this->assertFalse (Form::verify_value ('foobar', 'url'));
 		$this->assertFalse (Form::verify_value ('http:/fooobar', 'url'));
+
+		// test array validation
+		$valid_emails = array (
+			'joe@example.com',
+			'sue@example.com'
+		);
+		$invalid_emails = array (
+			'joe.example dot com',
+			'sue@localhost'
+		);
+		$this->assertTrue (Form::verify_value ($valid_emails, 'each email', 1));
+		$this->assertFalse (Form::verify_value ($invalid_emails, 'each email', 1));
+		$names = array ('Joe', 'Sue');
+		$empty = array ('', '');
+		$this->assertTrue (Form::verify_value ($names, 'each not empty', 1));
+		$this->assertFalse (Form::verify_value ($empty, 'each not empty', 1));
 	}
 
 	function test_verify_values () {
