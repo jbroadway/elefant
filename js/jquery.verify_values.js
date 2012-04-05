@@ -117,7 +117,15 @@
 				return true;
 			}
 			
-			if (type.match (/^not /)) {
+			if (type.match (/^each /)) {
+				type = type.replace (/^each /, '');
+				for (var i = 0; i < this.length; i++) {
+					if (! $(this[i]).verify_value ({form: options.form, type: type, validator: options.validator})) {
+						return false;
+					}
+				}
+				return true;
+			} else if (type.match (/^not /)) {
 				type = type.replace (/^not /, '');
 				_false = true;
 				_true = false;

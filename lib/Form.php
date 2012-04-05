@@ -479,6 +479,18 @@ class Form {
 		if ($type === 'default') {
 			return true;
 		}
+		if (preg_match ('/^each (.+)$/i', $type, $regs)) {
+			if (! is_array ($value)) {
+				// can't specify each on non-array value
+				return false;
+			}
+			foreach ($value as $val) {
+				if (! Form::verify_value ($val, $regs[1], $validator)) {
+					return false;
+				}
+			}
+			return true;
+		}
 		if (preg_match ('/^not (.+)$/i', $type, $regs)) {
 			return ! Form::verify_value ($value, $regs[1], $validator);
 		}
