@@ -474,6 +474,12 @@ class Form {
 	 *
 	 * You can also specify 'not' in front of any rule to check for its
 	 * opposite, for example "not empty".
+	 *
+	 * For array elements (e.g., `<input name="name[]" />`), you can also specify
+	 * 'each' in front of any rule and the rule will be applied to each element
+	 * of the array instead of the array itself. Note that the 'each' must come
+	 * before 'not', for example "each email" would make sure each is a valid
+	 * email address, and "each not empty" would make sure each is not empty.
 	 */
 	public static function verify_value ($value, $type, $validator = false) {
 		if ($type === 'default') {
