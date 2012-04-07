@@ -305,8 +305,8 @@ function db_shift () {
 	try {
 		list ($stmt, $args) = Database::prepare (func_get_args ());
 		$stmt->execute ($args);
-		$res = (array) $stmt->fetchObject ();
-		return array_shift ($res);
+		$res = $stmt->fetch (PDO::FETCH_NUM);
+		return $res[0];
 	} catch (PDOException $e) {
 		Database::$error = $e->getMessage ();
 		return false;
@@ -320,13 +320,7 @@ function db_shift_array () {
 	try {
 		list ($stmt, $args) = Database::prepare (func_get_args ());
 		$stmt->execute ($args);
-		$res = $stmt->fetchAll ();
-		$out = array ();
-		foreach ($res as $row) {
-			$row = (array) $row;
-			$out[] = array_shift ($row);
-		}
-		return $out;
+		return $stmt->fetchAll (PDO::FETCH_COLUMN);
 	} catch (PDOException $e) {
 		Database::$error = $e->getMessage ();
 		return false;
@@ -341,11 +335,10 @@ function db_pairs () {
 	try {
 		list ($stmt, $args) = Database::prepare (func_get_args ());
 		$stmt->execute ($args);
-		$res = $stmt->fetchAll ();
+		$res = $stmt->fetchAll (PDO::FETCH_NUM);
 		$out = array ();
 		foreach ($res as $row) {
-			$row = (array) $row;
-			$out[array_shift ($row)] = array_shift ($row);
+			$out[$row[0]] = $row[1];
 		}
 		return $out;
 	} catch (PDOException $e) {
