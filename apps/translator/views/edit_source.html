@@ -27,12 +27,12 @@
 		<td class="translate">
 			<textarea
 				rows="1" style="float:left; width: 85%; height: 100%"
-				data-orig="{{ loop_index|quotes }}"
+				data-orig="{{ loop_index }}"
 				data-id="{{ loop_index|translator_field_id }}"
 				id="textarea-{{ loop_index|translator_field_id }}"
 				onblur="$.save_element (this)"
 				{% if empty ($data->loop_value[trans]) %} class="empty"{% end %}
-			>{{ loop_value[trans]|quotes }}</textarea>
+			>{{ loop_value[trans] }}</textarea>
 			<span id="saving-{{ loop_index|translator_field_id }}" class="notice" style="float: left; margin-left: 7px">{"Saving..."}</span>
 		</td>
 	</tr>
