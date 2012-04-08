@@ -85,6 +85,14 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($expected, I18n::date ($time));
 	}
 
+	function test_short_date () {
+		$date = '2012-01-01 18:30:00';
+		$time = strtotime ($date);
+		$expected = '<time class="shortdate" datetime="2012-01-01T18:30:00+00:00">Jan 1</time>';
+		$this->assertEquals ($expected, I18n::short_date ($date));
+		$this->assertEquals ($expected, I18n::short_date ($time));
+	}
+
 	function test_time () {
 		$date = '2012-05-01 18:30:00';
 		$time = strtotime ($date);
@@ -99,6 +107,14 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 		$expected = '<time class="datetime" datetime="2012-05-01T18:30:00+00:00">May 1, 2012 - 6:30pm</time>';
 		$this->assertEquals ($expected, I18n::date_time ($date));
 		$this->assertEquals ($expected, I18n::date_time ($time));
+	}
+
+	function test_short_date_time () {
+		$date = '2012-01-01 18:30:00';
+		$time = strtotime ($date);
+		$expected = '<time class="shortdatetime" datetime="2012-01-01T18:30:00+00:00">Jan 1 - 6:30pm</time>';
+		$this->assertEquals ($expected, I18n::short_date_time ($date));
+		$this->assertEquals ($expected, I18n::short_date_time ($time));
 	}
 }
 

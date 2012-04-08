@@ -346,6 +346,21 @@ class I18n {
 	}
 
 	/**
+	 * Applies the specified class and format to a date for
+	 * the `date()`, `short_date()`, `time()`, `date_time()` and
+	 * `short_date_time()` methods.
+	 */
+	private static function _date ($date, $class, $format) {
+		$date = is_numeric ($date) ? $date : strtotime ($date);
+		return sprintf (
+			'<time class="%s" datetime="%s">%s</time>',
+			$class,
+			gmdate ('Y-m-d\TH:i:sP', $date),
+			gmdate ($format, $date)
+		);
+	}
+
+	/**
 	 * Filter for outputting dates. Used with the jQuery
 	 * localize plugin to convert dates into the current user's
 	 * time zone.
@@ -355,12 +370,20 @@ class I18n {
 	 *     {{ date_value|I18n::date }}
 	 */
 	public static function date ($date) {
-		$date = is_numeric ($date) ? $date : strtotime ($date);
-		return sprintf (
-			'<time class="date" datetime="%s">%s</time>',
-			gmdate ('Y-m-d\TH:i:sP', $date),
-			gmdate ('F j, Y', $date)
-		);
+		return self::_date ($date, 'date', 'F j, Y');
+	}
+
+	/**
+	 * Filter for outputting a shortened date. Used with the
+	 * jQuery localize plugin to convert dates into the
+	 * current user's time zone.
+	 *
+	 * Usage:
+	 *
+	 *     {{ date_value|I18n::short_date }}
+	 */
+	public static function short_date ($date) {
+		return self::_date ($date, 'shortdate', 'M j');
 	}
 
 	/**
@@ -373,12 +396,7 @@ class I18n {
 	 *     {{ date_value|I18n::time }}
 	 */
 	public static function time ($date) {
-		$date = is_numeric ($date) ? $date : strtotime ($date);
-		return sprintf (
-			'<time class="time" datetime="%s">%s</time>',
-			gmdate ('Y-m-d\TH:i:sP', $date),
-			gmdate ('g:ia', $date)
-		);
+		return self::_date ($date, 'time', 'g:ia');
 	}
 
 	/**
@@ -391,12 +409,20 @@ class I18n {
 	 *     {{ date_value|I18n::date_time }}
 	 */
 	public static function date_time ($date) {
-		$date = is_numeric ($date) ? $date : strtotime ($date);
-		return sprintf (
-			'<time class="datetime" datetime="%s">%s</time>',
-			gmdate ('Y-m-d\TH:i:sP', $date),
-			gmdate ('F j, Y - g:ia', $date)
-		);
+		return self::_date ($date, 'datetime', 'F j, Y - g:ia');
+	}
+
+	/**
+	 * Filter for outputting a shortened date and time. Used
+	 * with the jQuery localize plugin to convert dates into
+	 * the current user's time zone.
+	 *
+	 * Usage:
+	 *
+	 *     {{ date_value|I18n::short_date_time }}
+	 */
+	public static function short_date_time ($date) {
+		return self::_date ($date, 'shortdatetime', 'M j - g:ia');
 	}
 }
 

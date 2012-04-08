@@ -32,7 +32,9 @@ $page->add_script ('<script>
 $(function () {
 	$.localize_dates = function () {
 		$(\'time.datetime\').localize(\'mmmm d, yyyy - h:MMa\');
+		$(\'time.shortdatetime\').localize(\'mmm d - h:MMa\');
 		$(\'time.date\').localize(\'mmmm d, yyyy\');
+		$(\'time.shortdate\').localize(\'mmm d\');
 		$(\'time.time\').localize(\'h:MMa\');
 	};
 	$.localize_dates ();
