@@ -27,10 +27,22 @@
  *     April 16, 2012 - 11:13AM
  */
 
+$abbr_months = explode (
+	' ',
+	i18n_get ('Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec')
+);
+
+$full_months = explode (
+	' ',
+	i18n_get ('January February March April May June July August September October November December')
+);
+
 $page->add_script ('/js/jquery.localize.min.js');
 $page->add_script ('<script>
 $(function () {
 	$.localize_dates = function () {
+		$.localize.fullMonths = ' . json_encode ($full_months) . ';
+		$.localize.abbrMonths = ' . json_encode ($abbr_months) . ';
 		$(\'time.datetime\').localize(\'mmmm d, yyyy - h:MMa\');
 		$(\'time.shortdatetime\').localize(\'mmm d - h:MMa\');
 		$(\'time.date\').localize(\'mmmm d, yyyy\');
