@@ -13,15 +13,14 @@ require_once ('apps/blog/lib/Filters.php');
 
 $p = new blog\Post;
 if ($data['tag'] !== '') {
-	$out = array ();
-	$tagged = $p->tagged ($data['tag']);
-	foreach ($tagged as $post) {
-		$out[$post->id] = $post->title;
-	}
-	$pg->posts = $out;
+	$posts = $p->tagged ($data['tag']);
 } else {
-	$pg->posts = $p->headlines ();
+	$posts = $p->headlines ();
 }
-echo $tpl->render ('blog/headlines', $pg);
+$dates = (isset ($data['dates']) && $data['dates'] === 'yes') ? true : false;
+echo $tpl->render ('blog/headlines', array (
+	'posts' => $posts,
+	'dates' => $dates
+));
 
 ?>

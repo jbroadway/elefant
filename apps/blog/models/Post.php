@@ -73,7 +73,7 @@ class Post extends \ExtendedModel {
 	 */
 	public static function headlines ($limit = 10) {
 		$p = new Post;
-		return $p->query ()->where ('published', 'yes')->order ('ts desc')->fetch_assoc ('id', 'title', $limit);
+		return $p->query (array ('id', 'ts', 'title'))->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit);
 	}
 
 	/**

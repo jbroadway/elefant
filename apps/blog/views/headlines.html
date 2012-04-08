@@ -1,5 +1,9 @@
+{% if dates %}
+	{! admin/dates !}
+{% end %}
+
 <ul>
 {% foreach posts %}
-	<li><a href="/blog/post/{{ loop_index }}/{{ loop_value|blog_filter_title }}">{{ loop_value }}</a></li>
+	<li>{% if dates %}{{ loop_value->ts|I18n::short_date }} {% end %}<a href="/blog/post/{{ loop_value->id }}/{{ loop_value->title|blog_filter_title }}">{{ loop_value->title }}</a></li>
 {% end %}
 </ul>

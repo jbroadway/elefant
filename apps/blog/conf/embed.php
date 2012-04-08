@@ -9,6 +9,11 @@ tag[type] = select
 tag[require] = "apps/blog/lib/Functions.php"
 tag[callback] = "blog_get_tags"
 
+dates[label] = "Show dates"
+dates[type] = select
+dates[require] = "apps/blog/lib/Functions.php"
+dates[callback] = "blog_yes_no"
+
 [blog/tags]
 
 label = "Blog: Tag Cloud"
