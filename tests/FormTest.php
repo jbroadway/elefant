@@ -114,6 +114,20 @@ class FormTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (array ('foo'), $f->verify_values ($values, $validations));
 		$values['foo'] = 'asdf';
 		$this->assertEquals (array (), $f->verify_values ($values, $validations));
+
+		$validations = array (
+			'foo' => array (
+				'type' => 'array',
+				'skip_if_empty' => 1,
+				'each contains' => 'asdf'
+			)
+		);
+		$values = array ('foo' => 'asdf'); // Not an array
+		$this->assertEquals (array ('foo'), $f->verify_values ($values, $validations));
+		$values = array ('foo' => array ('bar', '')); // Contains should fail
+		$this->assertEquals (array ('foo'), $f->verify_values ($values, $validations));
+		$values = array ('foo' => array ('', '')); // All empty should pass
+		$this->assertEquals (array (), $f->verify_values ($values, $validations));
 	}
 
 	function test_merge_values () {
