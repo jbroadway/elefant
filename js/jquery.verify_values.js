@@ -55,21 +55,25 @@
 					
 					for (var n in opts.rules) {
 						fields.push (n);
+
+						// switch for fields with name[] format
+						var field = (typeof evt.target.elements[n + '[]'] !== 'undefined')
+								? evt.target.elements[n + '[]']
+								: evt.target.elements[n],
+							skip_if_empty = false;
+
 						for (var t in opts.rules[n]) {
 							if (t == 'skip_if_empty') {
-								if ($(evt.target.elements[n]).attr ('value') == '') {
-									break;
-								} else {
-									continue;
-								}
+								skip_if_empty = true;
 							}
 
-							// switch for checkboxes with name[] format
-							var field = (typeof evt.target.elements[n + '[]'] !== 'undefined')
-								? evt.target.elements[n + '[]']
-								: evt.target.elements[n];
-
-							if (! $(field).verify_value ({form: evt.target, type: t, validator: opts.rules[n][t]})) {
+							var opt_list = {
+								form: evt.target,
+								type: t,
+								validator: opts.rules[n][t],
+								skip_if_empty: skip_if_empty
+							};
+							if (! $(field).verify_value (opt_list)) {
 								failed.push (n);
 								break;
 							}
@@ -90,6 +94,10 @@
 			var value = $(this).attr ('value'),
 				type = options.type,
 				validator = options.validator;
+
+			if (options.skip_if_empty == true && value == '') {
+				return true;
+			}
 
 			// handle radio and checkbox buttons
 			if ($(this).attr ('type') == 'radio') {
@@ -120,7 +128,13 @@
 			if (type.match (/^each /)) {
 				type = type.replace (/^each /, '');
 				for (var i = 0; i < this.length; i++) {
-					if (! $(this[i]).verify_value ({form: options.form, type: type, validator: options.validator})) {
+					var opt_list = {
+						form: options.form,
+						type: type,
+						validator: options.validator,
+						skip_if_empty: options.skip_if_empty
+					};
+					if (! $(this[i]).verify_value (opt_list)) {
 						return false;
 					}
 				}

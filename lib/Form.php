@@ -678,7 +678,15 @@ class Form {
 					}
 				}
 				if ($type === 'skip_if_empty') {
-					if (empty ($values[$name]) && (! isset ($_FILES[$name]) || $_FILES[$name]['error'] === 4)) {
+					if (is_array ($values[$name])) {
+						foreach ($values[$name] as $k => $v) {
+							if (empty ($v)) {
+								// Unset empty array values so they're not checked against the other rules
+								unset ($values[$name][$k]);
+							}
+						}
+						continue;
+					} elseif (empty ($values[$name]) && (! isset ($_FILES[$name]) || $_FILES[$name]['error'] === 4)) {
 						break;
 					} else {
 						continue;
