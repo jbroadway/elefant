@@ -603,6 +603,76 @@ class Model {
 		}
 		return $item;
 	}
+
+	/**
+	 * Performs a batch of changes wrapped in a database transaction.
+	 * The batch `$task` can be an array of items to insert at once,
+	 * or a closure function that receives a copy of the current model
+	 * object and performs whatever logic necessary. If any insert fails,
+	 * or if the function returns false, the transaction will be rolled
+	 * back, otherwise it will be committed. For databases that support
+	 * it, records will be inserted using a single SQL insert statement
+	 * for better efficiency.
+	 */
+	public function batch ($tasks) {
+		db_execute ('begin');
+		if ($tasks instanceof Closure) {
+			if ($tasks ($this) === false) {
+				db_execute ('rollback');
+				return false;
+			}
+		} elseif (is_array ($tasks)) {
+			// Check the driver type, because SQLite doesn't support
+			// multiple row inserts
+			$db = Database::get_connection (1);
+			if (! $db) {
+				$this->error = 'No database connection';
+				return false;
+			}
+
+			if ($db->getAttribute (PDO::ATTR_DRIVER_NAME) === 'sqlite') {
+				$class = get_class ($this);
+				foreach ($tasks as $task) {
+					$o = new $class ($task);
+					if (! $o->put ()) {
+						$this->error = $o->error;
+						db_execute ('rollback');
+						return false;
+					}
+				}
+				return db_execute ('commit');
+			}
+
+			// Build the multi-row insert statement
+			$sql = 'insert into `' . $this->table . '` (';
+			$data = array ();
+
+			// Figure out how many placeholders are needed per record
+			$ins = array ();
+			$len = count ($tasks[0]);
+			for ($i = 0; $i < $len; $i++) {
+				$ins[] = '?';
+			}
+
+			// Add fields to statement
+			$sql .= join (', ', Model::backticks (array_keys ($tasks[0]))) . ') values ';
+			$sep = '';
+
+			// Add each record to the statement
+			foreach ($tasks as $task) {
+				$data = array_merge ($data, array_values ($task));
+				$sql .= $sep . '(' . join (', ', $ins) . ')';
+				$sep = ', ';
+			}
+
+			if (! db_execute ($sql, $data)) {
+				$this->error = db_error ();
+				db_execute ('rollback');
+				return false;
+			}
+		}
+		return db_execute ('commit');
+	}
 }
 
 ?>

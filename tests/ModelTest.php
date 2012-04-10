@@ -224,6 +224,49 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$f->put ();
 		$this->assertEquals ($f->error, 'Validation failed for: name');
 	}
+
+	function test_batch () {
+		// Clear existing records
+		$this->assertTrue (db_execute ('delete from foo'));
+		
+		// Test batch array of insertions
+		$f = new Foo;
+		$this->assertTrue ($f->batch (array (
+			array ('id' => 1, 'name' => 'One'),
+			array ('id' => 2, 'name' => 'Two'),
+			array ('id' => 3, 'name' => 'Three')
+		)));
+		$this->assertEquals (3, Foo::query ()->count ());
+
+		// Test closure batch
+		$this->assertTrue ($f->batch (function ($f) {
+			// Update an existing item
+			$one = $f->get (1);
+			$one->name = 'Joe';
+			if (! $one->put ()) {
+				$f->error = $one->error;
+				return false;
+			}
+
+			// Add a new one too
+			$four = new Foo (array ('name' => 'Four'));
+			if (! $four->put ()) {
+				$f->error = $four->error;
+				return false;
+			}
+		}));
+		$this->assertEquals (4, Foo::query ()->count ());
+		$one = new Foo (1);
+		$this->assertEquals ('Joe', $one->name);
+
+		// Test rollback on false
+		$this->assertFalse ($f->batch (function ($f) {
+			$five = new Foo (array ('name' => 'Five'));
+			$five->put ();
+			return false;
+		}));
+		$this->assertEquals (4, Foo::query ()->count ());
+	}
 }
 
 ?>
