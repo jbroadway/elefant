@@ -12,19 +12,19 @@ if ($this->installed ('user', $appconf['Admin']['version']) === true) {
 
 $page->title = i18n_get ('Upgrading User App');
 
-$db = Database::get_connection (1);
+$db = DB::get_connection (1);
 $dbtype = $db->getAttribute (PDO::ATTR_DRIVER_NAME);
 switch ($dbtype) {
 	case 'pgsql':
-		db_execute ('alter table "user" alter column "password" type varchar(128)');
+		DB::execute ('alter table "user" alter column "password" type varchar(128)');
 		break;
 	case 'mysql':
-		db_execute ('alter table `user` change column `password` `password` varchar(128) not null');
+		DB::execute ('alter table `user` change column `password` `password` varchar(128) not null');
 		break;
 	case 'sqlite':
-		db_execute ('begin transaction');
-		db_execute ('alter table `user` rename to `tmp_user`');
-		db_execute ('create table user (
+		DB::execute ('begin transaction');
+		DB::execute ('alter table `user` rename to `tmp_user`');
+		DB::execute ('create table user (
 			id integer primary key,
 			email char(72) unique not null,
 			password char(128) not null,
@@ -36,12 +36,12 @@ switch ($dbtype) {
 			updated datetime not null,
 			userdata text not null
 		)');
-		db_execute ('create index user_email_password on user (email, password)');
-		db_execute ('create index user_session_id on user (session_id)');
-		db_execute ('insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata)
+		DB::execute ('create index user_email_password on user (email, password)');
+		DB::execute ('create index user_session_id on user (session_id)');
+		DB::execute ('insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata)
 			select id, email, password, session_id, expires, name, type, signed_up, updated, userdata from `tmp_user`');
-		db_execute ('drop table `tmp_user`');
-		db_execute ('commit');
+		DB::execute ('drop table `tmp_user`');
+		DB::execute ('commit');
 		break;
 }
 

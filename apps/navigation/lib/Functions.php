@@ -50,7 +50,7 @@ function navigation_clear_cache () {
  */
 function navigation_get_other_pages ($ids) {
 	$pages = array ();
-	$res = db_fetch_array ('select id, title, menu_title from webpage where access = "public"');
+	$res = DB::fetch ('select id, title, menu_title from webpage where access = "public"');
 	foreach ($res as $p) {
 		if (in_array ($p->id, $ids)) {
 			// skip if in tree

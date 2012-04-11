@@ -29,8 +29,8 @@ if ($f->submit ()) {
 			$tags = explode (',', $_POST['tags']);
 			foreach ($tags as $tag) {
 				$tr = trim ($tag);
-				db_execute ('insert into blog_tag (id) values (?)', $tr);
-				db_execute (
+				DB::execute ('insert into blog_tag (id) values (?)', $tr);
+				DB::execute (
 					'insert into blog_post_tag (tag_id, post_id) values (?, ?)',
 					$tr,
 					$p->id

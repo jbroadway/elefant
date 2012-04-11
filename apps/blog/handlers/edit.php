@@ -49,12 +49,12 @@ if ($f->submit ()) {
 
 		// update tags
 		if ($_POST['published'] == 'yes') {
-			db_execute ('delete from blog_post_tag where post_id = ?', $p->id);
+			DB::execute ('delete from blog_post_tag where post_id = ?', $p->id);
 			$tags = explode (',', $_POST['tags']);
 			foreach ($tags as $tag) {
 				$tr = trim ($tag);
-				db_execute ('insert into blog_tag (id) values (?)', $tr);
-				db_execute (
+				DB::execute ('insert into blog_tag (id) values (?)', $tr);
+				DB::execute (
 					'insert into blog_post_tag (tag_id, post_id) values (?, ?)',
 					$tr,
 					$p->id

@@ -12,7 +12,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($t->replace_vars ('foo|date (\'F j\', %s)'), '<?php echo date (\'F j\', $data->foo); ?>');
 		$this->assertEquals ($t->replace_vars ('User::foo|none'), '<?php echo User::foo; ?>');
 		$this->assertEquals ($t->replace_vars ('User::foo ()|none'), '<?php echo User::foo (); ?>');
-		$this->assertEquals ($t->replace_vars ('db_shift (\'select * from foo\')|none'), '<?php echo db_shift (\'select * from foo\'); ?>');
+		$this->assertEquals ($t->replace_vars ('DB::shift (\'select * from foo\')|none'), '<?php echo DB::shift (\'select * from foo\'); ?>');
 		$this->assertEquals ($t->replace_vars ('user.name|none'), '<?php echo $GLOBALS[\'user\']->name; ?>');
 		$this->assertEquals ($t->replace_vars ('$_POST[value]|none'), '<?php echo $_POST[value]; ?>');
 		$this->assertEquals ($t->replace_vars ('$_POST[\'value\']|none'), '<?php echo $_POST[\'value\']; ?>');

@@ -613,7 +613,7 @@ class Form {
 
 			case 'unique':
 				list ($table, $column) = preg_split ('/[\.:\/]/', $validator);
-				$res = db_shift ('select ' . $column . ' from ' . $table . ' where ' . $column . ' = ?', $value);
+				$res = DB::shift ('select ' . $column . ' from ' . $table . ' where ' . $column . ' = ?', $value);
 				if ($res == $value) {
 					return false;
 				}

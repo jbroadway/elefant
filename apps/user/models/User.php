@@ -120,7 +120,7 @@ class User extends ExtendedModel {
 			return $called[$user];
 		}
 
-		$u = db_single (
+		$u = DB::single (
 			'select * from `user` where email = ?',
 			$user
 		);
@@ -184,7 +184,7 @@ class User extends ExtendedModel {
 		if (isset ($_POST['username']) && isset ($_POST['password'])) {
 			return call_user_func ($callback, $_POST['username'], $_POST['password']);
 		} elseif (isset ($_SESSION['session_id'])) {
-			$u = db_single (
+			$u = DB::single (
 				'select * from `user` where session_id = ? and expires > ?',
 				$_SESSION['session_id'],
 				gmdate ('Y-m-d H:i:s')

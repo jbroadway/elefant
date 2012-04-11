@@ -116,7 +116,7 @@
  *
  * Call a function:
  *
- *     {{ db_shift ('select * from foo') }}
+ *     {{ DB::shift ('select * from foo') }}
  *
  * In an if block:
  *

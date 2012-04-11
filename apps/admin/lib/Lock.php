@@ -90,7 +90,7 @@ class Lock {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 		
-		if (db_execute (
+		if (DB::execute (
 			'insert into `lock`
 				(user, resource, resource_id, expires, created, modified)
 			values
@@ -102,9 +102,9 @@ class Lock {
 			gmdate ('Y-m-d H:i:s'),
 			gmdate ('Y-m-d H:i:s')
 		)) {
-			return db_lastid ();
+			return DB::last_id ();
 		}
-		$this->error = db_error ();
+		$this->error = DB::error ();
 		return false;
 	}
 
@@ -115,7 +115,7 @@ class Lock {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
-		return db_shift (
+		return DB::shift (
 			'select id from `lock` where user != ? and resource = ? and resource_id = ? and expires > ?',
 			User::val ('id'),
 			$resource,
@@ -131,7 +131,7 @@ class Lock {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
-		return db_single ('select * from `lock` where resource = ? and resource_id = ?', $resource, $key);
+		return DB::single ('select * from `lock` where resource = ? and resource_id = ?', $resource, $key);
 	}
 
 	/**
@@ -141,7 +141,7 @@ class Lock {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
-		if (db_execute (
+		if (DB::execute (
 			'update `lock` set modified = ?, expires = ? where resource = ? and resource_id = ?',
 			gmdate ('Y-m-d H:i:s'),
 			gmdate ('Y-m-d H:i:s', time () + $this->timeout),
@@ -150,7 +150,7 @@ class Lock {
 		)) {
 			return true;
 		}
-		$this->error = db_error ();
+		$this->error = DB::error ();
 		return false;
 	}
 
@@ -161,21 +161,21 @@ class Lock {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
-		return db_execute ('delete from `lock` where resource = ? and resource_id = ?', $resource, $key);
+		return DB::execute ('delete from `lock` where resource = ? and resource_id = ?', $resource, $key);
 	}
 
 	/**
 	 * Clear all locks held by the current user.
 	 */
 	public static function clear () {
-		return db_execute ('delete from `lock` where user = ?', User::val ('id'));
+		return DB::execute ('delete from `lock` where user = ?', User::val ('id'));
 	}
 
 	/**
 	 * Clear all locks.
 	 */
 	public static function clear_all () {
-		return db_execute ('delete from `lock`');
+		return DB::execute ('delete from `lock`');
 	}
 }
 

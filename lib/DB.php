@@ -31,7 +31,7 @@
  * 2. A set of convenience methods that operate transparently on the PDO connection(s).
  *
  * The connection manager lazy loads the connections on the first call to
- * Database::get_connection(), so requests that don't need a database connection
+ * DB::get_connection(), so requests that don't need a database connection
  * don't suffer the extra overhead. It is also master/slave aware, with write
  * requests going to the master and reads being directed to a random connection.
  *
@@ -53,7 +53,7 @@
  *
  *     $id = DB::last_id ();
  *     
- *     $res = DB::fetch_array ('select * from sometable');
+ *     $res = DB::fetch ('select * from sometable');
  *     foreach ($res as $row) {
  *         echo $row->fieldname;
  *     }
