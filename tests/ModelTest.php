@@ -230,8 +230,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue (db_execute ('delete from foo'));
 		
 		// Test batch array of insertions
-		$f = new Foo;
-		$this->assertTrue ($f->batch (array (
+		$this->assertTrue (Foo::batch (array (
 			array ('id' => 1, 'name' => 'One'),
 			array ('id' => 2, 'name' => 'Two'),
 			array ('id' => 3, 'name' => 'Three')
@@ -239,9 +238,9 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (3, Foo::query ()->count ());
 
 		// Test closure batch
-		$this->assertTrue ($f->batch (function ($f) {
+		$this->assertTrue (Foo::batch (function () {
 			// Update an existing item
-			$one = $f->get (1);
+			$one = new Foo (1);
 			$one->name = 'Joe';
 			if (! $one->put ()) {
 				$f->error = $one->error;
@@ -260,7 +259,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ('Joe', $one->name);
 
 		// Test rollback on false
-		$this->assertFalse ($f->batch (function ($f) {
+		$this->assertFalse (Foo::batch (function () {
 			$five = new Foo (array ('name' => 'Five'));
 			$five->put ();
 			return false;

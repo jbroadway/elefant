@@ -121,6 +121,12 @@ class Model {
 	public $error = false;
 
 	/**
+	 * The error message from a batch() call if an error occurred,
+	 * or false if there was no error.
+	 */
+	public static $batch_error = false;
+
+	/**
 	 * Keeps track of whether the current object is new and needs
 	 * to be inserted or updated on save.
 	 */
@@ -607,17 +613,18 @@ class Model {
 	/**
 	 * Performs a batch of changes wrapped in a database transaction.
 	 * The batch `$task` can be an array of items to insert at once,
-	 * or a closure function that receives a copy of the current model
-	 * object and performs whatever logic necessary. If any insert fails,
-	 * or if the function returns false, the transaction will be rolled
+	 * or a closure function that executes a series of tasks and
+	 * performs whatever logic necessary. If any insert fails, or if
+	 * the function returns false, the transaction will be rolled
 	 * back, otherwise it will be committed. For databases that support
 	 * it, records will be inserted using a single SQL insert statement
-	 * for better efficiency.
+	 * for greater efficiency.
 	 */
-	public function batch ($tasks) {
+	public static function batch ($tasks) {
 		db_execute ('begin');
 		if ($tasks instanceof Closure) {
-			if ($tasks ($this) === false) {
+			if ($tasks () === false) {
+				self::$batch_error = db_error ();
 				db_execute ('rollback');
 				return false;
 			}
@@ -626,16 +633,16 @@ class Model {
 			// multiple row inserts
 			$db = Database::get_connection (1);
 			if (! $db) {
-				$this->error = 'No database connection';
+				self::$batch_error = 'No database connection';
 				return false;
 			}
 
 			if ($db->getAttribute (PDO::ATTR_DRIVER_NAME) === 'sqlite') {
-				$class = get_class ($this);
+				$class = get_called_class ();
 				foreach ($tasks as $task) {
 					$o = new $class ($task);
 					if (! $o->put ()) {
-						$this->error = $o->error;
+						self::$batch_error = $o->error;
 						db_execute ('rollback');
 						return false;
 					}
@@ -666,7 +673,7 @@ class Model {
 			}
 
 			if (! db_execute ($sql, $data)) {
-				$this->error = db_error ();
+				self::$batch_error = db_error ();
 				db_execute ('rollback');
 				return false;
 			}
