@@ -17,8 +17,8 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 	protected static $q;
 
 	static function setUpBeforeClass () {
-		Database::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
-		db_execute ('create table qwerty ( foo char(12), bar char(12) )');
+		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
+		DB::execute ('create table qwerty ( foo char(12), bar char(12) )');
 
 		self::$q = new Qwerty ();
 	}
@@ -29,7 +29,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue (self::$q->is_new);
 		$this->assertEquals (self::$q->foo, 'asdf');
 		$this->assertTrue (self::$q->put ());
-		$this->assertEquals (db_shift ('select count() from qwerty'), 1);
+		$this->assertEquals (DB::shift ('select count() from qwerty'), 1);
 		$this->assertFalse (self::$q->is_new);
 	}
 
@@ -148,7 +148,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		// put()
 		self::$q->bar = 'foobar';
 		$this->assertTrue (self::$q->put ());
-		$this->assertEquals (db_shift ('select bar from qwerty where foo = ?', 'asdf'), 'foobar');
+		$this->assertEquals (DB::shift ('select bar from qwerty where foo = ?', 'asdf'), 'foobar');
 	}
 
 	function test_get () {
@@ -179,13 +179,13 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 
 		// remove()
 		$this->assertTrue ($res->remove ());
-		$this->assertEquals (db_shift ('select count() from qwerty'), 0);
+		$this->assertEquals (DB::shift ('select count() from qwerty'), 0);
 	}
 
 	function test_references () {
 		// references
-		db_execute ('create table foo(id int, name char(12))');
-		db_execute ('create table bar(id int, name char(12), foo int)');
+		DB::execute ('create table foo(id int, name char(12))');
+		DB::execute ('create table bar(id int, name char(12), foo int)');
 		
 		$f = new Foo (array ('id' => 1, 'name' => 'Joe'));
 		$f->put ();
@@ -227,7 +227,7 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 
 	function test_batch () {
 		// Clear existing records
-		$this->assertTrue (db_execute ('delete from foo'));
+		$this->assertTrue (DB::execute ('delete from foo'));
 		
 		// Test batch array of insertions
 		$this->assertTrue (Foo::batch (array (

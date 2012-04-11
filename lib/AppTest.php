@@ -118,7 +118,7 @@ class AppTest extends PHPUnit_Framework_TestCase {
 	 */
 	public static function setUpBeforeClass () {
 		require_once ('lib/Functions.php');
-		require_once ('lib/Database.php');
+		require_once ('lib/DB.php');
 		error_reporting (E_ALL & ~E_NOTICE);
 		define ('ELEFANT_ENV', 'config');
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en';
@@ -137,21 +137,21 @@ class AppTest extends PHPUnit_Framework_TestCase {
 
 		// Initializes PDO connection automatically
 		foreach (sql_split (file_get_contents ('conf/install_sqlite.sql')) as $sql) {
-			if (! db_execute ($sql)) {
+			if (! DB::execute ($sql)) {
 				die ('SQL failed: ' . $sql);
 			}
 		}
 
 		// Create default admin and member users
 		$date = gmdate ('Y-m-d H:i:s');
-		db_execute (
+		DB::execute (
 			"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, 'Admin User', 'admin', ?, ?, ?)",
 			'admin@test.com',
 			User::encrypt_pass ('testing'),
 			$date, $date, $date,
 			json_encode (array ())
 		);
-		db_execute (
+		DB::execute (
 			"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (2, ?, ?, null, ?, 'Joe Member', 'member', ?, ?, ?)",
 			'member@test.com',
 			User::encrypt_pass ('testing'),
@@ -178,8 +178,8 @@ class AppTest extends PHPUnit_Framework_TestCase {
 		unset ($page);
 		unset ($tpl);
 
-		if (isset (Database::$connections) && isset (Database::$connections['master'])) {
-			unset (Database::$connections['master']);
+		if (isset (DB::$connections) && isset (DB::$connections['master'])) {
+			unset (DB::$connections['master']);
 		}
 
 		if (isset (User::$user)) {

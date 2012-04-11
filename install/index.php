@@ -58,7 +58,7 @@ date_default_timezone_set('GMT');
 require_once ('../lib/Functions.php');
 require_once ('../lib/I18n.php');
 require_once ('../lib/Form.php');
-require_once ('../lib/Database.php');
+require_once ('../lib/DB.php');
 require_once ('../lib/Template.php');
 require_once ('../lib/Model.php');
 require_once ('../lib/ExtendedModel.php');
@@ -131,16 +131,16 @@ switch ($_GET['step']) {
 			$_POST['user'] = $_POST[$_POST['driver'] . '_user'];
 			$_POST['pass'] = $_POST[$_POST['driver'] . '_pass'];
 
-			if (! Database::open ($_POST)) {
-				$data['error'] = db_error ();
+			if (! DB::open ($_POST)) {
+				$data['error'] = DB::error ();
 			} else {
 				$data['error'] = false;
 
 				// create the database
 				$sqldata = sql_split (file_get_contents ('../conf/install_' . $_POST['driver'] . '.sql'));
 				foreach ($sqldata as $sql) {
-					if (! db_execute ($sql)) {
-						$data['error'] = db_error ();
+					if (! DB::execute ($sql)) {
+						$data['error'] = DB::error ();
 						break;
 					}
 				}
@@ -191,11 +191,11 @@ switch ($_GET['step']) {
 					$conf_ini['Database']['master']['file'] = '../' . $conf_ini['Database']['master']['file'];
 				}
 
-				if (! Database::open ($conf_ini['Database']['master'])) {
-					$data['error'] = db_error ();
+				if (! DB::open ($conf_ini['Database']['master'])) {
+					$data['error'] = DB::error ();
 				} else {
 					$date = gmdate ('Y-m-d H:i:s');
-					if (! db_execute (
+					if (! DB::execute (
 						"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, ?, 'admin', ?, ?, ?)",
 						$_POST['email_from'],
 						encrypt_pass ($_POST['pass']),
@@ -205,7 +205,7 @@ switch ($_GET['step']) {
 						$date,
 						json_encode (array ())
 					)) {
-						$data['error'] = db_error ();
+						$data['error'] = DB::error ();
 					} else {
 						$data['ready'] = true;
 					}

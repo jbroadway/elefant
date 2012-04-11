@@ -6,7 +6,7 @@ class FormTest extends PHPUnit_Framework_TestCase {
 	protected $backupGlobalsBlacklist = array ('user');
 
 	static function setUpBeforeClass () {
-		Database::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
+		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 	}
 
 	function test_verify_value () {
@@ -45,8 +45,8 @@ class FormTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue (Form::verify_value ('asdf', 'equals', 'asdf'));
 		$this->assertFalse (Form::verify_value ('foobar', 'equals', 'asdf'));
 		$this->assertTrue (Form::verify_value ('asdf', 'unique', 'user.email'));
-		db_execute ('create table test ( email char(48) )');
-		db_execute ('insert into test (email) values (?)', 'foo.bar@gmail.com');
+		DB::execute ('create table test ( email char(48) )');
+		DB::execute ('insert into test (email) values (?)', 'foo.bar@gmail.com');
 		$this->assertTrue (Form::verify_value ('bar.foo@gmail.com', 'unique', 'test.email'));
 		$this->assertFalse (Form::verify_value ('foo.bar@gmail.com', 'unique', 'test.email'));
 		$this->assertTrue (Form::verify_value (5, 'lt', 10));

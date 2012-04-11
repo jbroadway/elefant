@@ -87,7 +87,7 @@ if (conf ('General', 'debug')) {
  * Include the core libraries used by the front controller
  * to dispatch and respond to requests.
  */
-require ('lib/Database.php');
+require ('lib/DB.php');
 require ('lib/Page.php');
 require ('lib/I18n.php');
 require ('lib/Controller.php');

@@ -187,7 +187,7 @@ class Model {
 				$this->is_new = true;
 			}
 		} elseif ($vals !== false) {
-			$res = db_single ('select * from `' . $this->table . '` where `' . $this->key . '` = ?', $vals);
+			$res = DB::single ('select * from `' . $this->table . '` where `' . $this->key . '` = ?', $vals);
 			if (! $res) {
 				$this->error = 'No object by that ID.';
 			} else {
@@ -260,12 +260,12 @@ class Model {
 			for ($i = 0; $i < $len; $i++) {
 				$ins[] = '?';
 			}
-			if (! db_execute ('insert into `' . $this->table . '` (' . join (', ', Model::backticks (array_keys ($this->data))) . ') values (' . join (', ', $ins) . ')', $this->data)) {
-				$this->error = db_error ();
+			if (! DB::execute ('insert into `' . $this->table . '` (' . join (', ', Model::backticks (array_keys ($this->data))) . ') values (' . join (', ', $ins) . ')', $this->data)) {
+				$this->error = DB::error ();
 				return false;
 			}
 			if (! isset ($this->data[$this->key])) {
-				$this->data[$this->key] = db_lastid ();
+				$this->data[$this->key] = DB::last_id ();
 				$this->keyval = $this->data[$this->key];
 			}
 			$this->is_new = false;
@@ -287,8 +287,8 @@ class Model {
 			$par[] = $this->data[$this->key];
 			$this->keyval = $this->data[$this->key];
 		}
-		if (! db_execute ('update `' . $this->table . '` set ' . $ins . ' where `' . $this->key . '` = ?', $par)) {
-			$this->error = db_error ();
+		if (! DB::execute ('update `' . $this->table . '` set ' . $ins . ' where `' . $this->key . '` = ?', $par)) {
+			$this->error = DB::error ();
 			return false;
 		}
 		$this->is_new = false;
@@ -304,8 +304,8 @@ class Model {
 			$this->error = 'No id specified.';
 			return false;
 		}
-		if (! db_execute ('delete from `' . $this->table . '` where `' . $this->key . '` = ?', $id)) {
-			$this->error = db_error ();
+		if (! DB::execute ('delete from `' . $this->table . '` where `' . $this->key . '` = ?', $id)) {
+			$this->error = DB::error ();
 			return false;
 		}
 		return true;
@@ -317,7 +317,7 @@ class Model {
 	public static function get ($id) {
 		$class = get_called_class ();
 		$q = new $class;
-		$res = (array) db_single ('select * from `' . $q->table . '` where `' . $q->key . '` = ?', $id);
+		$res = (array) DB::single ('select * from `' . $q->table . '` where `' . $q->key . '` = ?', $id);
 		if (! $res) {
 			$q->error = 'No object by that ID.';
 			$q->data = array ();
@@ -492,9 +492,9 @@ class Model {
 			return false;
 		}
 
-		$res = db_fetch_array ($sql, $this->query_params);
+		$res = DB::fetch ($sql, $this->query_params);
 		if (! $res) {
-			$this->error = db_error ();
+			$this->error = DB::error ();
 			return $res;
 		}
 		$class = get_class ($this);
@@ -513,9 +513,9 @@ class Model {
 			return false;
 		}
 
-		$res = db_single ($sql, $this->query_params);
+		$res = DB::single ($sql, $this->query_params);
 		if (! $res) {
-			$this->error = db_error ();
+			$this->error = DB::error ();
 			return $res;
 		}
 		$class = get_class ($this);
@@ -534,9 +534,9 @@ class Model {
 			return false;
 		}
 
-		$res = db_shift ($sql, $this->query_params);
+		$res = DB::shift ($sql, $this->query_params);
 		if ($res === false) {
-			$this->error = db_error ();
+			$this->error = DB::error ();
 		}
 		return $res;
 	}
@@ -551,9 +551,9 @@ class Model {
 			return false;
 		}
 
-		$res = db_fetch_array ($sql, $this->query_params);
+		$res = DB::fetch ($sql, $this->query_params);
 		if (! $res) {
-			$this->error = db_error ();
+			$this->error = DB::error ();
 		}
 		return $res;
 	}
@@ -621,17 +621,17 @@ class Model {
 	 * for greater efficiency.
 	 */
 	public static function batch ($tasks) {
-		db_execute ('begin');
+		DB::execute ('begin');
 		if ($tasks instanceof Closure) {
 			if ($tasks () === false) {
-				self::$batch_error = db_error ();
-				db_execute ('rollback');
+				self::$batch_error = DB::error ();
+				DB::execute ('rollback');
 				return false;
 			}
 		} elseif (is_array ($tasks)) {
 			// Check the driver type, because SQLite doesn't support
 			// multiple row inserts
-			$db = Database::get_connection (1);
+			$db = DB::get_connection (1);
 			if (! $db) {
 				self::$batch_error = 'No database connection';
 				return false;
@@ -643,11 +643,11 @@ class Model {
 					$o = new $class ($task);
 					if (! $o->put ()) {
 						self::$batch_error = $o->error;
-						db_execute ('rollback');
+						DB::execute ('rollback');
 						return false;
 					}
 				}
-				return db_execute ('commit');
+				return DB::execute ('commit');
 			}
 
 			// Build the multi-row insert statement
@@ -672,13 +672,13 @@ class Model {
 				$sep = ', ';
 			}
 
-			if (! db_execute ($sql, $data)) {
-				self::$batch_error = db_error ();
-				db_execute ('rollback');
+			if (! DB::execute ($sql, $data)) {
+				self::$batch_error = DB::error ();
+				DB::execute ('rollback');
 				return false;
 			}
 		}
-		return db_execute ('commit');
+		return DB::execute ('commit');
 	}
 }
 

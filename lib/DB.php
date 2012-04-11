@@ -25,60 +25,49 @@
  */
 
 /**
- * This package consists of two things:
+ * This is a database abstraction layer that provides two things:
  *
- * 1. Database - A connection management class with a few additional convenience
- *    methods.
- *
- * 2. db_*() - A set of convenience functions that operate transparently on the
- *    connection class.
+ * 1. A flexible connection manager with lazy loading and master/slave awareness.
+ * 2. A set of convenience methods that operate transparently on the PDO connection(s).
  *
  * The connection manager lazy loads the connections on the first call to
  * Database::get_connection(), so requests that don't need a database connection
  * don't suffer the extra overhead. It is also master/slave aware, with write
  * requests going to the master and reads being directed to a random connection.
  *
- * The db_*() functions are a simple procedural wrapper around a basic PDO
- * connection manager. While you're always free to use the PDO objects directly
- * via `Database::get_connection()` (or better, build off the Model class to
- * organize your logic into models), these are simply meant to provide a handful
- * of convenience functions to reduce direct-to-database logic down to just one
- * or two lines of code.
- *
- * Note: This is not a complete database abstraction layer, simply a connection
- * manager and a set of convenience functions. For creating models, and for any
- * real degree of ORM, see `lib/Model.php` which provides a more complete
- * abstraction, and a way of organizing your application logic.
+ * Note: This is a simple database abstraction layer. For more advanced modelling
+ * see `lib/Mode.php` which provides a more complete abstraction and a way of
+ * organizing your application logic.
  *
  * Usage:
  *
- *     if (! Database::open (array (
+ *     if (! DB::open (array (
  *         'driver' => 'sqlite', 'file' => 'conf/site.db'
  *     ))) {
- *         die (db_error ());
+ *         die (DB::error ());
  *     }
  *     
- *     db_execute (
- *         'insert into sometable values (%s, %s)', 'one', 'two'
+ *     DB::execute (
+ *         'insert into sometable values (?, ?)', 'one', 'two'
  *     );
  *
- *     $id = db_lastid ();
+ *     $id = DB::last_id ();
  *     
- *     $res = db_fetch_array ('select * from sometable');
+ *     $res = DB::fetch_array ('select * from sometable');
  *     foreach ($res as $row) {
  *         echo $row->fieldname;
  *     }
  *     
- *     $row = db_single ('select * from sometable where id = %s', $id);
+ *     $row = DB::single ('select * from sometable where id = ?', $id);
  *     
- *     $fieldname = db_shift (
- *         'select fieldname from sometable where id = %s', $id
+ *     $fieldname = DB::shift (
+ *         'select fieldname from sometable where id = ?', $id
  *     );
  *
- * Note that values inserted in the above way are automatically
- * escaped upon insertion.
+ * Values inserted use proper prepared statements and bound parameters to prevent
+ * SQL injection.
  */
-class Database {
+class DB {
 	/**
 	 * List of PDO connection objects.
 	 */
@@ -235,6 +224,12 @@ class Database {
 		return $sql;
 	}
 
+	/**
+	 * Prepares a statement from a list of arguments,
+	 * the first being the SQL query and the rest being
+	 * the parameters, and a `$master` flag to determine
+	 * which connection to use.
+	 */
 	public static function prepare ($args, $master = 0) {
 		$db = self::get_connection ($master);
 		$sql = array_shift ($args);
@@ -246,136 +241,213 @@ class Database {
 		$stmt = $db->prepare ($sql);
 		return array ($stmt, $args);
 	}
+
+	/**
+	 * Get the last error message.
+	 */
+	public static function error () {
+		return self::$error;
+	}
+	
+	/**
+	 * Fetch an array of all result objects.
+	 */
+	public static function fetch () {
+		try {
+			list ($stmt, $args) = self::prepare (func_get_args ());
+			$stmt->execute ($args);
+			return $stmt->fetchAll ();
+		} catch (Exception $e) {
+			self::$error = $e->getMessage ();
+			return false;
+		}
+	}
+	
+	/**
+	 * Execute a statement and return true/false.
+	 */
+	public static function execute () {
+		try {
+			list ($stmt, $args) = self::prepare (func_get_args (), 1);
+			return $stmt->execute ($args);
+		} catch (PDOException $e) {
+			self::$error = $e->getMessage ();
+			return false;
+		}
+	}
+	
+	/**
+	 * Fetch a single object.
+	 */
+	public static function single () {
+		try {
+			list ($stmt, $args) = self::prepare (func_get_args ());
+			$stmt->execute ($args);
+			return $stmt->fetchObject ();
+		} catch (PDOException $e) {
+			self::$error = $e->getMessage ();
+			return false;
+		}
+	}
+	
+	/**
+	 * Fetch the a single value from the first result returned.
+	 * Useful for `count()` and other such calculations, and when
+	 * you only need a single piece of information.
+	 */
+	public static function shift () {
+		try {
+			list ($stmt, $args) = self::prepare (func_get_args ());
+			$stmt->execute ($args);
+			$res = $stmt->fetch (PDO::FETCH_NUM);
+			return $res[0];
+		} catch (PDOException $e) {
+			self::$error = $e->getMessage ();
+			return false;
+		}
+	}
+	
+	/**
+	 * Fetch an array of a single field.
+	 */
+	public static function shift_array () {
+		try {
+			list ($stmt, $args) = self::prepare (func_get_args ());
+			$stmt->execute ($args);
+			return $stmt->fetchAll (PDO::FETCH_COLUMN);
+		} catch (PDOException $e) {
+			self::$error = $e->getMessage ();
+			return false;
+		}
+	}
+	
+	/**
+	 * Fetch an associative array of two fields, the first
+	 * being the keys and the second being the values.
+	 */
+	public static function pairs () {
+		try {
+			list ($stmt, $args) = self::prepare (func_get_args ());
+			$stmt->execute ($args);
+			$res = $stmt->fetchAll (PDO::FETCH_NUM);
+			$out = array ();
+			foreach ($res as $row) {
+				$out[$row[0]] = $row[1];
+			}
+			return $out;
+		} catch (PDOException $e) {
+			self::$error = $e->getMessage ();
+			return false;
+		}
+	}
+	
+	/**
+	 * Get the last inserted id value.
+	 */
+	public static function last_id () {
+		return self::$connections[self::$last_conn]->lastInsertId ();
+	}
+	
+	/**
+	 * Get the last error message directly from PDO.
+	 * Useful for queries that were done with the global $db
+	 * object directly.
+	 */
+	public static function last_error () {
+		$err = self::$connections[self::$last_conn]->errorInfo ();
+		return $err[2];
+	}
+	
+	/**
+	 * Fetch the last SQL statement.
+	 */
+	public static function last_sql () {
+		return self::$last_sql;
+	}
+	
+	/**
+	 * Fetch the arguments for the last SQL statement.
+	 */
+	public static function last_args () {
+		return self::$last_args;
+	}
 }
 
 /**
- * Get the last error message.
+ * Deprecated. Alias of `DB::error()`
  */
 function db_error () {
-	return Database::$error;
+	return DB::error ();
 }
 
 /**
- * Fetch an array of all result objects.
+ * Deprecated. Alias of `DB::fetch()`
  */
 function db_fetch_array () {
-	try {
-		list ($stmt, $args) = Database::prepare (func_get_args ());
-		$stmt->execute ($args);
-		return $stmt->fetchAll ();
-	} catch (Exception $e) {
-		Database::$error = $e->getMessage ();
-		return false;
-	}
+	return call_user_func_array (array ('DB', 'fetch'), func_get_args ());
 }
 
 /**
- * Execute a statement and return true/false.
+ * Deprecated. Alias of `DB::execute()`
  */
 function db_execute () {
-	try {
-		list ($stmt, $args) = Database::prepare (func_get_args (), 1);
-		return $stmt->execute ($args);
-	} catch (PDOException $e) {
-		Database::$error = $e->getMessage ();
-		return false;
-	}
+	return call_user_func_array (array ('DB', 'execute'), func_get_args ());
 }
 
 /**
- * Fetch a single object.
+ * Deprecated. Alias of `DB::single()`
  */
 function db_single () {
-	try {
-		list ($stmt, $args) = Database::prepare (func_get_args ());
-		$stmt->execute ($args);
-		return $stmt->fetchObject ();
-	} catch (PDOException $e) {
-		Database::$error = $e->getMessage ();
-		return false;
-	}
+	return call_user_func_array (array ('DB', 'single'), func_get_args ());
 }
 
 /**
- * Fetch the a single value from the first result returned.
- * Useful for `count()` and other such calculations, and when
- * you only need a single piece of information.
+ * Deprecated. Alias of `DB::shift()`
  */
 function db_shift () {
-	try {
-		list ($stmt, $args) = Database::prepare (func_get_args ());
-		$stmt->execute ($args);
-		$res = $stmt->fetch (PDO::FETCH_NUM);
-		return $res[0];
-	} catch (PDOException $e) {
-		Database::$error = $e->getMessage ();
-		return false;
-	}
+	return call_user_func_array (array ('DB', 'shift'), func_get_args ());
 }
 
 /**
- * Fetch an array of a single field.
+ * Deprecated. Alias of `DB::shift_array()`
  */
 function db_shift_array () {
-	try {
-		list ($stmt, $args) = Database::prepare (func_get_args ());
-		$stmt->execute ($args);
-		return $stmt->fetchAll (PDO::FETCH_COLUMN);
-	} catch (PDOException $e) {
-		Database::$error = $e->getMessage ();
-		return false;
-	}
+	return call_user_func_array (array ('DB', 'shift_array'), func_get_args ());
 }
 
 /**
- * Fetch an associative array of two fields, the first
- * being the keys and the second being the values.
+ * Deprecated. Alias of `DB::pairs()`
  */
 function db_pairs () {
-	try {
-		list ($stmt, $args) = Database::prepare (func_get_args ());
-		$stmt->execute ($args);
-		$res = $stmt->fetchAll (PDO::FETCH_NUM);
-		$out = array ();
-		foreach ($res as $row) {
-			$out[$row[0]] = $row[1];
-		}
-		return $out;
-	} catch (PDOException $e) {
-		Database::$error = $e->getMessage ();
-		return false;
-	}
+	return call_user_func_array (array ('DB', 'pairs'), func_get_args ());
 }
 
 /**
- * Get the last inserted id value.
+ * Deprecated. Alias of `DB::last_id()`
  */
 function db_lastid () {
-	return Database::$connections[Database::$last_conn]->lastInsertId ();
+	return DB::last_id ();
 }
 
 /**
- * Get the last error message directly from PDO.
- * Useful for queries that were done with the global $db
- * object directly.
+ * Deprecated. Alias of `DB::last_error()`
  */
 function db_last_error () {
-	$err = Database::$connections[Database::$last_conn]->errorInfo ();
-	return $err[2];
+	return DB::last_error ();
 }
 
 /**
- * Fetch the last SQL statement.
+ * Deprecated. Alias of `DB::last_sql()`
  */
 function db_last_sql () {
-	return Database::$last_sql;
+	return DB::last_sql ();
 }
 
 /**
- * Fetch the arguments for the last SQL statement.
+ * Deprecated. Alias of `DB::last_args()`
  */
 function db_last_args () {
-	return Database::$last_args;
+	return DB::last_args ();
 }
 
 ?>

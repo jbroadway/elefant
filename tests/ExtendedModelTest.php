@@ -19,8 +19,8 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
 	protected static $o;
 
 	static function setUpBeforeClass () {
-		Database::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
-		db_execute ('create table mymodel ( id integer primary key, name char(32), extra text )');
+		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
+		DB::execute ('create table mymodel ( id integer primary key, name char(32), extra text )');
 	}
 
 	function test_create () {

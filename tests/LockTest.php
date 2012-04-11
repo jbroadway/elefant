@@ -8,8 +8,8 @@ class LockTest extends PHPUnit_Framework_TestCase {
 	protected static $lock;
 
 	static function setUpBeforeClass () {
-		Database::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
-		db_execute ('create table `lock` (
+		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
+		DB::execute ('create table `lock` (
 			id integer primary key,
 			user int not null,
 			resource varchar(72) not null,
@@ -44,7 +44,7 @@ class LockTest extends PHPUnit_Framework_TestCase {
 	 */
 	function test_info () {
 		// Check the lock info
-		$info = db_single ('select * from lock');
+		$info = DB::single ('select * from lock');
 		$this->assertEquals (self::$lock->info (), $info);
 		$this->assertEquals ($info->user, 1);
 	}
@@ -66,7 +66,7 @@ class LockTest extends PHPUnit_Framework_TestCase {
 	 */
 	function test_update () {
 		// Get the lock info
-		$info = db_single ('select * from lock');
+		$info = DB::single ('select * from lock');
 
 		// Back to original user id
 		User::$user = (object) array ('id' => 1);
@@ -93,7 +93,7 @@ class LockTest extends PHPUnit_Framework_TestCase {
 		// Add a lock
 		$this->assertEquals (self::$lock->add (), 1);
 		$this->assertTrue (self::$lock->clear ());
-		$this->assertEquals (0, db_shift ('select count(*) from lock'));
+		$this->assertEquals (0, DB::shift ('select count(*) from lock'));
 	}
 
 	/**
@@ -103,14 +103,14 @@ class LockTest extends PHPUnit_Framework_TestCase {
 		// Add a lock
 		$this->assertEquals (self::$lock->add (), 1);
 		$this->assertTrue (self::$lock->clear_all ());
-		$this->assertEquals (0, db_shift ('select count(*) from lock'));
+		$this->assertEquals (0, DB::shift ('select count(*) from lock'));
 	}
 
 	/**
 	 * @depends test_clear_all
 	 */
 	function test_errors () {
-		unset (Database::$connections['master']);
+		unset (DB::$connections['master']);
 		$this->assertFalse (self::$lock->add ());
 		$this->assertNotEquals (false, self::$lock->error);
 
