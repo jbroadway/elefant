@@ -106,7 +106,7 @@ if (count ($argv) > 1) {
 		 * installer from being run a second time.
 		 */
 		case 'install':
-			if (@file_exists ('install/installed')) {
+			if (@file_exists ('conf/installed')) {
 				echo "** Error: Installer has already been run.\n";
 				die;
 			}
@@ -156,44 +156,34 @@ if (count ($argv) > 1) {
 			foreach ($sqldata as $sql) {
 				if (! DB::execute ($sql)) {
 					echo 'Error: ' . DB::error () . "\n";
+					DB::execute ('rollback');
 				}
 			}
 			
-			// create first admin user
-			if (DB::shift ('select count() from user') == 0) {
-				$pass = generate_password (8);
-				$date = gmdate ('Y-m-d H:i:s');
-				if (! DB::execute (
-					"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, 'Admin User', 'admin', ?, ?, ?)",
-					$conf['General']['email_from'],
-					encrypt_password ($pass),
-					$date,
-					$date,
-					$date,
-					json_encode (array ())
-				)) {
-					echo 'Error: ' . DB::error () . "\n";
-				}
-				
-				$user = new User (1);
-			
-				// respond with the root password
-				echo "Database created. Your initial admin account is:\n";
-				echo 'Username: ' . $conf['General']['email_from'] . "\n";
-				echo 'Password: ' . $pass . "\n";
-			
-				// create versions entries for initial content
-				$wp = new Webpage ('index');
-				Versions::add ($wp);
-				$b = new Block ('members');
-				Versions::add ($b);
-			} else {
-				echo "Database created.\n";
+			// change the admin user's password
+			$pass = generate_password (8);
+			$date = gmdate ('Y-m-d H:i:s');
+			if (! DB::execute (
+				"update `user` set `password` = ? where `id` = 1",
+				encrypt_password ($pass)
+			)) {
+				echo 'Error: ' . DB::error () . "\n";
 			}
+		
+			// respond with the root password
+			echo "Database created. Your initial admin account is:\n";
+			echo 'Username: ' . $conf['General']['email_from'] . "\n";
+			echo 'Password: ' . $pass . "\n";
+		
+			// create versions entries for initial content
+			$wp = new Webpage ('index');
+			Versions::add ($wp);
+			$b = new Block ('members');
+			Versions::add ($b);
 			
 			// disable the installer
 			@umask (0000);
-			@touch ('install/installed');
+			@touch ('conf/installed');
 			echo "Done.\n";
 			break;
 

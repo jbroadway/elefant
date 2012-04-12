@@ -50,6 +50,8 @@ create table "user" (
 create index user_email_password on "user" (email, password);
 create index user_session_id on "user" (session_id);
 
+insert into "user" (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, 'you@example.com', '$2a$07$1QeR9mu2doQxY0uBcpFlrOIfDxq0BwpR8FsImCgWvAL4Fz9jDByxi', null, now(), 'Admin User', 'admin', now(), now(), '[]');
+
 create table user_openid (
 	token varchar(128) primary key,
 	user_id integer not null

@@ -141,6 +141,7 @@ switch ($_GET['step']) {
 				foreach ($sqldata as $sql) {
 					if (! DB::execute ($sql)) {
 						$data['error'] = DB::error ();
+						DB::execute ('rollback');
 						break;
 					}
 				}
@@ -196,14 +197,10 @@ switch ($_GET['step']) {
 				} else {
 					$date = gmdate ('Y-m-d H:i:s');
 					if (! DB::execute (
-						"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, ?, 'admin', ?, ?, ?)",
+						"update `user` set `email` = ?, `password` = ?, `name` = ? where `id` = 1",
 						$_POST['email_from'],
 						encrypt_pass ($_POST['pass']),
-						$date,
-						$_POST['your_name'],
-						$date,
-						$date,
-						json_encode (array ())
+						$_POST['your_name']
 					)) {
 						$data['error'] = DB::error ();
 					} else {

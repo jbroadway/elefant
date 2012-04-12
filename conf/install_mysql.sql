@@ -1,3 +1,5 @@
+begin;
+
 create table webpage (
 	id char(72) not null primary key,
 	title char(72) not null,
@@ -38,6 +40,8 @@ create table user (
 	index(email, password),
 	index(session_id)
 );
+
+insert into user (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, 'you@example.com', '$2a$07$1QeR9mu2doQxY0uBcpFlrOIfDxq0BwpR8FsImCgWvAL4Fz9jDByxi', null, now(), 'Admin User', 'admin', now(), now(), '[]');
 
 create table user_openid (
 	token char(128) primary key,
@@ -105,3 +109,5 @@ create table apps (
 
 insert into apps (name, version) values ('blog', '1.1.3-stable');
 insert into apps (name, version) values ('user', '1.1.3-stable');
+
+commit;
