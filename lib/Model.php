@@ -201,16 +201,64 @@ class Model {
 
 	/**
 	 * Custom caller to handle references to related models.
+	 * Handles one-to-one and one-to-many relationships via
+	 * dynamic methods based on the field names.
 	 */
 	public function __call($name, $arguments) {
-		if (isset ($this->data[$name]) && isset ($this->fields[$name]) && isset ($this->fields[$name]['ref'])) {
-			if (isset ($this->{'_ref_' . $name})) {
+		// method not found in dynamic fields
+		if (! isset ($this->fields[$name])) {
+			$trace = debug_backtrace ();
+			trigger_error (
+				sprintf ('Call to undefined method %s::%s in %s on line %d',
+					get_class ($this),
+					$name,
+					$trace[0]['file'],
+					$trace[0]['line']
+				),
+				E_USER_ERROR
+			);
+		}
+
+		// if true is passed, re-fetch from the database
+		$reset_cache = (count ($arguments) > 0) ? $arguments[0] : false;
+
+		if (isset ($this->fields[$name]['ref'])) {
+			// for backwards compatibility
+			$this->fields[$name]['belongs_to'] = $this->fields[$name]['ref'];
+			unset ($this->fields[$name]['ref']);
+		}
+
+		if (isset ($this->fields[$name]['belongs_to'])) {
+			// handle belongs_to relationships (reverse of one to one or one to many)
+			if (! $reset_cache && isset ($this->{'_ref_' . $name})) {
 				return $this->{'_ref_' . $name};
 			}
-			$class = $this->fields[$name]['ref'];
-			$this->{'_ref_' . $name} = new $class ($this->data[$name]);
+			$class = $this->fields[$name]['belongs_to'];
+			$field_name = isset ($this->fields[$name]['field_name']) ? $this->fields[$name]['field_name'] : $name;
+			$this->{'_ref_' . $name} = new $class ($this->data[$field_name]);
+			return $this->{'_ref_' . $name};
+
+		} elseif (isset ($this->fields[$name]['has_one'])) {
+			// handle has_one relationships (one to one)
+			if (! $reset_cache && isset ($this->{'_ref_' . $name})) {
+				return $this->{'_ref_' . $name};
+			}
+			$class = $this->fields[$name]['has_one'];
+			$field_name = isset ($this->fields[$name]['field_name']) ? $this->fields[$name]['field_name'] : $this->table;
+			$this->{'_ref_' . $name} = $class::query ()->where ($field_name, $this->data[$this->key])->single ();
+			return $this->{'_ref_' . $name};
+
+		} elseif (isset ($this->fields[$name]['has_many'])) {
+			// handle has_many relationships (one to many)
+			if (! $reset_cache && isset ($this->{'_ref_' . $name})) {
+				return $this->{'_ref_' . $name};
+			}
+			$class = $this->fields[$name]['has_many'];
+			$field_name = isset ($this->fields[$name]['field_name']) ? $this->fields[$name]['field_name'] : $this->table;
+			$this->{'_ref_' . $name} = $class::query ()->where ($field_name, $this->data[$this->key])->fetch ();
 			return $this->{'_ref_' . $name};
 		}
+
 		$trace = debug_backtrace ();
 		trigger_error (
 			sprintf ('Call to undefined method %s::%s in %s on line %d',

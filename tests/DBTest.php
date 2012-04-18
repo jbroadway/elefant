@@ -88,9 +88,9 @@ class DBTest extends PHPUnit_Framework_TestCase {
 	function test_pairs () {
 		$cmp = new StdClass;
 		$cmp->foo = 'asdf';
-		db_execute ('create table test2 (foo char(12), bar char(12))');
-		db_execute ('insert into test2 (foo, bar) values (?, ?)', 'one', 'joe');
-		db_execute ('insert into test2 (foo, bar) values (?, ?)', 'two', 'sam');
+		DB::execute ('create table test2 (foo char(12), bar char(12))');
+		DB::execute ('insert into test2 (foo, bar) values (?, ?)', 'one', 'joe');
+		DB::execute ('insert into test2 (foo, bar) values (?, ?)', 'two', 'sam');
 		$res = DB::pairs ('select * from test2 order by foo asc');
 		$cmp = array ('one' => 'joe', 'two' => 'sam');
 		$this->assertEquals ($res, $cmp);

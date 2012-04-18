@@ -1,5 +1,6 @@
 <?php
 
+require_once ('lib/Functions.php');
 require_once ('lib/Autoloader.php');
 
 class Qwerty extends Model {
@@ -7,9 +8,29 @@ class Qwerty extends Model {
 }
 
 class Foo extends Model {}
+
 class Bar extends Model {
 	var $fields = array (
 		'foo' => array ('ref' => 'Foo')
+	);
+}
+
+class Gallery extends Model {
+	public $fields = array (
+		'cover' => array ('has_one' => 'Cover'),
+		'items' => array ('has_many' => 'Item', 'field_name' => 'gallery_id')
+	);
+}
+
+class Cover extends Model {
+	public $fields = array (
+		'gallery' => array ('belongs_to' => 'Gallery')
+	);
+}
+
+class Item extends Model {
+	public $fields = array (
+		'gallery' => array ('belongs_to' => 'Gallery', 'field_name' => 'gallery_id')
 	);
 }
 
@@ -18,7 +39,34 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 
 	static function setUpBeforeClass () {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
-		DB::execute ('create table qwerty ( foo char(12), bar char(12) )');
+		$sql = sql_split ("create table qwerty ( foo char(12), bar char(12) );
+		create table gallery (
+			id integer primary key,
+			title char(48)
+		);
+		create table cover (
+			id integer primary key,
+			gallery integer unique,
+			title char(48)
+		);
+		create table item (
+			id integer primary key,
+			gallery_id integer,
+			title char(48)
+		);
+		insert into gallery (id, title) values (1, 'Gallery One');
+		insert into cover (id, gallery, title) values (1, 1, 'Cover One');
+		insert into item (id, gallery_id, title) values (1, 1, 'Item One');
+		insert into item (id, gallery_id, title) values (2, 1, 'Item Two');
+		insert into item (id, gallery_id, title) values (3, 1, 'Item Three');
+		insert into gallery (id, title) values (2, 'Gallery Two');
+		insert into cover (id, gallery, title) values (2, 2, 'Cover Two');
+		insert into item (id, gallery_id, title) values (4, 2, 'Item Four');
+		insert into item (id, gallery_id, title) values (5, 2, 'Item Five');
+		insert into item (id, gallery_id, title) values (6, 2, 'Item Six');");
+		foreach ($sql as $query) {
+			DB::execute ($query);
+		}
 
 		self::$q = new Qwerty ();
 	}
@@ -265,6 +313,20 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 			return false;
 		}));
 		$this->assertEquals (4, Foo::query ()->count ());
+	}
+
+	function test___call () {
+		$gallery = new Gallery (1);
+		$this->assertEquals ('Gallery One', $gallery->title);
+
+		$cover = $gallery->cover ();
+		$this->assertEquals ('Cover One', $cover->title);
+
+		$items = $gallery->items ();
+		$this->assertEquals (3, count ($items));
+		$this->assertEquals ('Item One', $items[0]->title);
+
+		$this->assertEquals ('Gallery One', $items[1]->gallery ()->cover ()->gallery ()->title);
 	}
 }
 
