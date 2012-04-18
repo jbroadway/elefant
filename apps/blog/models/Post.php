@@ -81,7 +81,7 @@ class Post extends \ExtendedModel {
 	 */
 	public static function tagged ($tag, $limit = 10, $offset = 0) {
 		$p = new Post;
-		$ids = DB::shift_array ('select post_id from blog_post_tag where tag_id = ?', $tag);
+		$ids = \DB::shift_array ('select post_id from blog_post_tag where tag_id = ?', $tag);
 		return $p->query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
 	}
 
@@ -90,7 +90,7 @@ class Post extends \ExtendedModel {
 	 */
 	public static function count_by_tag ($tag, $limit = 10, $offset = 0) {
 		$p = new Post;
-		$ids = DB::shift_array ('select post_id from blog_post_tag where tag_id = ?', $tag);
+		$ids = \DB::shift_array ('select post_id from blog_post_tag where tag_id = ?', $tag);
 		return $p->query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->count ();
 	}
 
@@ -98,7 +98,7 @@ class Post extends \ExtendedModel {
 	 * Get a list of tags and the number of posts they've been used on.
 	 */
 	public static function tags () {
-		return DB::pairs ('select tag_id, count(*) as posts from blog_post_tag group by tag_id order by tag_id asc');
+		return \DB::pairs ('select tag_id, count(*) as posts from blog_post_tag group by tag_id order by tag_id asc');
 	}
 }
 
