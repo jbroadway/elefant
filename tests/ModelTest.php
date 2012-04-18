@@ -316,16 +316,24 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test___call () {
+		// fetch a gallery
 		$gallery = new Gallery (1);
 		$this->assertEquals ('Gallery One', $gallery->title);
 
+		// get its cover (has_one)
 		$cover = $gallery->cover ();
 		$this->assertEquals ('Cover One', $cover->title);
 
+		// get the cover's gallery now (belongs_to)
+		$gallery = $cover->gallery ();
+		$this->assertEquals ('Gallery One', $gallery->title);
+
+		// get the gallery's items (has_many)
 		$items = $gallery->items ();
 		$this->assertEquals (3, count ($items));
 		$this->assertEquals ('Item One', $items[0]->title);
 
+		// and chaining them all together
 		$this->assertEquals ('Gallery One', $items[1]->gallery ()->cover ()->gallery ()->title);
 	}
 }
