@@ -13,7 +13,7 @@
 <script type="text/x-jquery-tmpl" id="tpl_file">
 	<tr>
 		<td><img src="/apps/admin/css/admin/file.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/files/${path}" target="_blank">${name}</a></td>
-		<td>${mtime}</td>
+		<td>\{{html mtime}}</td>
 		<td>${fsize}</td>
 		<td>
 			<a href="#" onclick="return $.filemanager ('mv', {file: '${path}', name: '${name}'})">{"Rename"}</a> | 
