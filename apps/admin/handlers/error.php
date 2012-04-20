@@ -21,6 +21,4 @@ if (! empty ($this->data['message'])) {
 	echo $this->data['message'];
 }
 
-$page->layout = 'error';
-
 ?>
