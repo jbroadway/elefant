@@ -11,7 +11,7 @@ class Foo extends Model {}
 
 class Bar extends Model {
 	var $fields = array (
-		'foo' => array ('ref' => 'Foo')
+		'foo' => array ('belongs_to' => 'Foo')
 	);
 }
 
@@ -40,6 +40,8 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 	static function setUpBeforeClass () {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		$sql = sql_split ("create table qwerty ( foo char(12), bar char(12) );
+		create table foo(id int, name char(12));
+		create table bar(id int, name char(12), foo int);
 		create table gallery (
 			id integer primary key,
 			title char(48)
@@ -230,32 +232,6 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (DB::shift ('select count() from qwerty'), 0);
 	}
 
-	function test_references () {
-		// references
-		DB::execute ('create table foo(id int, name char(12))');
-		DB::execute ('create table bar(id int, name char(12), foo int)');
-		
-		$f = new Foo (array ('id' => 1, 'name' => 'Joe'));
-		$f->put ();
-		$b = new Bar (array ('id' => 1, 'name' => 'Jim', 'foo' => 1));
-		$b->put ();
-
-		$this->assertEquals ($b->name, 'Jim');
-		$this->assertEquals ($b->foo, 1);
-		$this->assertEquals ($b->foo ()->name, 'Joe');
-		$this->assertEquals ($b->foo ()->name, 'Joe');
-		
-		// fake reference should fail
-		try {
-			$this->assertTrue ($b->fake ());
-		} catch (Exception $e) {
-			$this->assertRegExp (
-				'/Call to undefined method Bar::fake in .+tests\/ModelTest\.php on line [0-9]+/',
-				$e->getMessage ()
-			);
-		}
-	}
-
 	function test_verify () {
 		$f = new Foo (array ('id' => 1, 'name' => 'Joe'));
 
@@ -315,7 +291,32 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (4, Foo::query ()->count ());
 	}
 
+	function test_references () {
+		// basic references (belongs_to)		
+		$f = new Foo (array ('id' => 1, 'name' => 'Joe'));
+		$f->put ();
+		$b = new Bar (array ('id' => 1, 'name' => 'Jim', 'foo' => 1));
+		$b->put ();
+
+		$this->assertEquals ($b->name, 'Jim');
+		$this->assertEquals ($b->foo, 1);
+		$this->assertEquals ($b->foo ()->name, 'Joe');
+		$this->assertEquals ($b->foo ()->name, 'Joe');
+		
+		// fake reference should fail
+		try {
+			$this->assertTrue ($b->fake ());
+		} catch (Exception $e) {
+			$this->assertRegExp (
+				'/Call to undefined method Bar::fake in .+tests\/ModelTest\.php on line [0-9]+/',
+				$e->getMessage ()
+			);
+		}
+	}
+
 	function test___call () {
+		// test more advanced references
+
 		// fetch a gallery
 		$gallery = new Gallery (1);
 		$this->assertEquals ('Gallery One', $gallery->title);
@@ -332,6 +333,16 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$items = $gallery->items ();
 		$this->assertEquals (3, count ($items));
 		$this->assertEquals ('Item One', $items[0]->title);
+
+		// test order_by
+		$gallery->fields['items'] = array (
+			'has_many' => 'Item',
+			'field_name' => 'gallery_id',
+			'order_by' => 'id desc'
+		);
+		$items = $gallery->items (true);
+		$this->assertEquals (3, count ($items));
+		$this->assertEquals ('Item Three', $items[0]->title);
 
 		// and chaining them all together
 		$this->assertEquals ('Gallery One', $items[1]->gallery ()->cover ()->gallery ()->title);

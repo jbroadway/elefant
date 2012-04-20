@@ -245,7 +245,9 @@ class Model {
 			}
 			$class = $this->fields[$name]['has_one'];
 			$field_name = isset ($this->fields[$name]['field_name']) ? $this->fields[$name]['field_name'] : $this->table;
-			$this->{'_ref_' . $name} = $class::query ()->where ($field_name, $this->data[$this->key])->single ();
+			$this->{'_ref_' . $name} = $class::query ()
+				->where ($field_name, $this->data[$this->key])
+				->single ();
 			return $this->{'_ref_' . $name};
 
 		} elseif (isset ($this->fields[$name]['has_many'])) {
@@ -255,7 +257,16 @@ class Model {
 			}
 			$class = $this->fields[$name]['has_many'];
 			$field_name = isset ($this->fields[$name]['field_name']) ? $this->fields[$name]['field_name'] : $this->table;
-			$this->{'_ref_' . $name} = $class::query ()->where ($field_name, $this->data[$this->key])->fetch ();
+			if (isset ($this->fields[$name]['order_by'])) {
+				$this->{'_ref_' . $name} = $class::query ()
+					->where ($field_name, $this->data[$this->key])
+					->order ($this->fields[$name]['order_by'])
+					->fetch ();
+			} else {
+				$this->{'_ref_' . $name} = $class::query ()
+					->where ($field_name, $this->data[$this->key])
+					->fetch ();
+			}
 			return $this->{'_ref_' . $name};
 		}
 
