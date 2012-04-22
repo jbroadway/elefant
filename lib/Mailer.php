@@ -90,10 +90,10 @@ class Mailer {
 
 	/**
 	 * Configures and fetches a singleton instance of Zend_Mail.
-	 * Also calls `clearRecipients()` on the Zend_Mail object for
-	 * you unless you call `getInstance(false)`.
+	 * Also clears settings from previous use onthe Zend_Mail object
+	 * unless you call `getInstance(false)`.
 	 */
-	public static function getInstance ($clear_recipients = true) {
+	public static function getInstance ($clear = true) {
 		// Has it been requested before?
 		if (self::$mailer === null) {
 			// Parse/verify configuration file
@@ -150,9 +150,11 @@ class Mailer {
 			Zend_Mail::setDefaultFrom ($email_from, $email_name);
 		}
 
-		// Clear recipient list
-		if ($clear_recipients) {
+		// Clear mailer settings
+		if ($clear) {
 			self::$mailer->clearRecipients ();
+			self::$mailer->clearSubject ();
+			self::$mailer->clearFrom ();
 		}
 
 		return self::$mailer;
