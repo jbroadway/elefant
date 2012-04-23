@@ -31,7 +31,9 @@
  * This allows you to use Redis as a drop-in replacement for Memcache as a cache
  * store in Elefant.
  *
- * To enable, add 
+ * To enable, edit the `conf/config.php` file and find the `[Cache]` section.
+ * Change the `backend` value to `redis` and add your Redis server info to the
+ * `server[]` setting in the same section.
  */
 class MemcacheRedis {
 	/**
