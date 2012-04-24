@@ -34,6 +34,30 @@ class Item extends Model {
 	);
 }
 
+class Author extends Model {
+	public $fields = array (
+		'books' => array (
+			'many_many' => 'Book',
+			'join_table' => 'book_author',
+			'this_field' => 'author',
+			'that_field' => 'book',
+			'order_by' => 'name'
+		)
+	);
+}
+
+class Book extends Model {
+	public $fields = array (
+		'authors' => array (
+			'many_many' => 'Author',
+			'join_table' => 'book_author',
+			'this_field' => 'book',
+			'that_field' => 'author',
+			'order_by' => 'name'
+		)
+	);
+}
+
 class ModelTest extends PHPUnit_Framework_TestCase {
 	protected static $q;
 
@@ -65,7 +89,28 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		insert into cover (id, gallery, title) values (2, 2, 'Cover Two');
 		insert into item (id, gallery_id, title) values (4, 2, 'Item Four');
 		insert into item (id, gallery_id, title) values (5, 2, 'Item Five');
-		insert into item (id, gallery_id, title) values (6, 2, 'Item Six');");
+		insert into item (id, gallery_id, title) values (6, 2, 'Item Six');
+		create table author (
+			id integer primary key,
+			name char(32)
+		);
+		create table book (
+			id integer primary key,
+			name char(32)
+		);
+		create table book_author (
+			book int not null,
+			author int not null
+		);
+		insert into author (id, name) values (1, 'Johnny Fast Fingers');
+		insert into author (id, name) values (2, 'Frankie Bazzar');
+		insert into book (id, name) values (1, 'Johnny & Frankie');
+		insert into book (id, name) values (2, 'Jamaican Me Crazy');
+		insert into book_author (book, author) values (1, 1);
+		insert into book_author (book, author) values (1, 2);
+		insert into book_author (book, author) values (2, 1);
+		insert into book_author (book, author) values (2, 2);
+		");
 		foreach ($sql as $query) {
 			DB::execute ($query);
 		}
@@ -346,6 +391,24 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 
 		// and chaining them all together
 		$this->assertEquals ('Gallery One', $items[1]->gallery ()->cover ()->gallery ()->title);
+	}
+
+	function test_many_many () {
+		// test many to many relationships
+
+		// get an author
+		$author = new Author (1);
+		$this->assertEquals ('Johnny Fast Fingers', $author->name);
+
+		// get his books
+		$books = $author->books ();
+		$this->assertEquals (2, count ($books));
+		$this->assertEquals ('Jamaican Me Crazy', $books[1]->name);
+
+		// now get all authors from a book
+		$authors = $books[1]->authors ();
+		$this->assertEquals (2, count ($authors));
+		$this->assertEquals ('Frankie Bazzar', $authors[1]->name);
 	}
 }
 
