@@ -280,9 +280,10 @@ class Model {
 				return $this->{'_ref_' . $name};
 			}
 			$class = $this->fields[$name]['many_many'];
+			$obj = new $class;
 			$join_table = $this->fields[$name]['join_table'];
-			$this_field = $this->fields[$name]['this_field'];
-			$that_field = $this->fields[$name]['that_field'];
+			$this_field = isset ($this->fields[$name]['this_field']) ? $this->fields[$name]['this_field'] : $this->table;
+			$that_field = isset ($this->fields[$name]['that_field']) ? $this->fields[$name]['that_field'] : $obj->table;
 			$order_by = isset ($this->fields[$name]['ordery_by']) ? $this->fields[$name]['ordery_by'] : false;
 
 			// we need this for the table and primary key fields
