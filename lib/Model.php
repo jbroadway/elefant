@@ -158,6 +158,11 @@ class Model {
 	public $query_params = array ();
 
 	/**
+	 * An alternate table listing for the current query.
+	 */
+	public $query_from = false;
+
+	/**
 	 * A list of validation rules to apply to ensure data is valid on save.
 	 */
 	public $verify = array ();
@@ -267,6 +272,49 @@ class Model {
 					->where ($field_name, $this->data[$this->key])
 					->fetch ();
 			}
+			return $this->{'_ref_' . $name};
+
+		} elseif (isset ($this->fields[$name]['many_many'])) {
+			// handle many_many relationships (many to many)
+			if (! $reset_cache && isset ($this->{'_ref_' . $name})) {
+				return $this->{'_ref_' . $name};
+			}
+			$class = $this->fields[$name]['many_many'];
+			$join_table = $this->fields[$name]['join_table'];
+			$this_field = $this->fields[$name]['this_field'];
+			$that_field = $this->fields[$name]['that_field'];
+			$order_by = isset ($this->fields[$name]['ordery_by']) ? $this->fields[$name]['ordery_by'] : false;
+
+			// we need this for the table and primary key fields
+			// of the other table
+			$obj = new $class;
+
+			if (is_array ($order_by)) {
+				$order_by[0] = Model::backticks ($obj->table) . '.' . Model::backticks ($order_by[0]);
+				$this->{'_ref_' . $name} = $class::query (Model::backticks ($obj->table) . '.*')
+					->from (Model::backticks ($obj->table) . ', ' . Model::backticks ($join_table))
+					->where (Model::backticks ($join_table) . '.' . Model::backticks ($that_field) . ' = ' . Model::backticks ($obj->table) . '.' . Model::backticks ($obj->key))
+					->where (Model::backticks ($join_table) . '.' . Model::backticks ($this_field), $this->id)
+					->order ($order_by[0], $order_by[1])
+					->fetch ();
+
+			} elseif ($order_by !== false) {
+				$order_by = Model::backticks ($obj->table) . '.' . Model::backticks ($order_by);
+				$this->{'_ref_' . $name} = $class::query (Model::backticks ($obj->table) . '.*')
+					->from (Model::backticks ($obj->table) . ', ' . Model::backticks ($join_table))
+					->where (Model::backticks ($join_table) . '.' . Model::backticks ($that_field) . ' = ' . Model::backticks ($obj->table) . '.' . Model::backticks ($obj->key))
+					->where (Model::backticks ($join_table) . '.' . Model::backticks ($this_field), $this->id)
+					->order ($order_by)
+					->fetch ();
+
+			} else {
+				$this->{'_ref_' . $name} = $class::query (Model::backticks ($obj->table) . '.*')
+					->from (Model::backticks ($obj->table) . ', ' . Model::backticks ($join_table))
+					->where (Model::backticks ($join_table) . '.' . Model::backticks ($that_field) . ' = ' . Model::backticks ($obj->table) . '.' . Model::backticks ($obj->key))
+					->where (Model::backticks ($join_table) . '.' . Model::backticks ($this_field), $this->id)
+					->fetch ();
+			}
+
 			return $this->{'_ref_' . $name};
 		}
 
@@ -404,6 +452,15 @@ class Model {
 	}
 
 	/**
+	 * Specify an alternate `from` clause for an SQL query. Overrides
+	 * using `$this->table` with a custom value.
+	 */
+	public function from ($from) {
+		$this->query_from = $from;
+		return $this;
+	}
+
+	/**
 	 * Order the query by the specified clauses. Can be called multiple
 	 * times to create complex sorting.
 	 *
@@ -511,7 +568,11 @@ class Model {
 			$this->query_fields = join (', ', Model::backticks ($this->query_fields));
 		}
 
-		$sql = 'select ' . $this->query_fields . ' from ' . Model::backticks ($this->table);
+		if ($this->query_from === false) {
+			$this->query_from = Model::backticks ($this->table);
+		}
+
+		$sql = 'select ' . $this->query_fields . ' from ' . $this->query_from;
 
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ';
@@ -661,9 +722,13 @@ class Model {
 	public static function backticks ($item) {
 		if (is_array ($item)) {
 			foreach ($item as $k => $v) {
-				$item[$k] = '`' . $v . '`';
+				if (strpos ($v, '`') !== 0) {
+					$item[$k] = '`' . $v . '`';
+				} else {
+					$item[$k] = $v; // Already has backticks
+				}
 			}
-		} else {
+		} elseif (strpos ($item, '`') !== 0) {
 			$item = '`' . $item . '`';
 		}
 		return $item;

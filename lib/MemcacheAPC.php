@@ -25,48 +25,15 @@
  */
 
 /**
- * Provides a Memcache-compatible wrapper for the Redis PHP extension, available
- * at https://github.com/nicolasff/phpredis
+ * Provides a Memcache-compatible wrapper for the PHP APC extension.
  *
- * This allows you to use Redis as a drop-in replacement for Memcache as a cache
+ * This allows you to use APC as a drop-in replacement for Memcache as a cache
  * store in Elefant.
  *
  * To enable, edit the `conf/config.php` file and find the `[Cache]` section.
- * Change the `backend` value to `redis` and add your Redis server info to the
- * `server[]` setting in the same section.
+ * Change the `backend` value to `apc`.
  */
-class MemcacheRedis {
-	/**
-	 * Redis connection object.
-	 */
-	public static $redis;
-
-	/**
-	 * Constructor method receives or creates a new Redis object.
-	 */
-	public function __construct ($redis = false) {
-		if ($redis !== false) {
-			self::$redis = $redis;
-		} else {
-			self::$redis = new Redis ();
-		}
-	}
-
-	/**
-	 * Emulates `Memcache::addServer` via `connect`. Also adds
-	 * serialization via PHP's serialize/unserialize functions.
-	 */
-	public function addServer ($server, $port = 6379, $password = false) {
-		$res = self::$redis->connect ($server, $port);
-		if ($res) {
-			if ($password !== false) {
-				self::$redis->auth ($password);
-			}
-			self::$redis->setOption (Redis::OPT_SERIALIZER, Redis::SERIALIZER_PHP);
-		}
-		return $res;
-	}
-
+class MemcacheAPC {
 	/**
 	 * Emulates `MemcacheExt::cache`.
 	 */
@@ -82,71 +49,78 @@ class MemcacheRedis {
 	 * Emulates `Memcache::get`.
 	 */
 	public function get ($key) {
-		return self::$redis->get ($key);
+		$value = apc_fetch ($key);
+		if (preg_match ('/^(a|O):[0-9]+:/', $value)) {
+			return unserialize ($value);
+		}
+		return $value;
 	}
 
 	/**
 	 * Emulates `Memcache::add`.
 	 */
 	public function add ($key, $value, $flag = 0, $expire = false) {
-		if (self::$redis->exists ($key)) {
+		if (is_array ($value) || is_object ($value)) {
+			$value = serialize ($value);
+		}
+		if (apc_exists ($key)) {
 			return false;
 		}
-		$this->setnx ($key, $value, $flag, $expire);
+		apc_store ($key, $value, $expire);
 	}
 
 	/**
-	 * Emulates `Memcache::set` via `set` and `setex`.
+	 * Emulates `Memcache::set`.
 	 */
 	public function set ($key, $value, $flag = 0, $expire = false) {
-		if ($expire) {
-			return self::$redis->setex ($key, $expire, $value);
+		if (is_array ($value) || is_object ($value)) {
+			$value = serialize ($value);
 		}
-		return self::$redis->set ($key, $value);
+		if ($expire) {
+			return apc_store ($key, $value, $expire);
+		}
+		return apc_store ($key, $value);
 	}
 
 	/**
-	 * Emulates `Memcache::replace` via `exists` and `set()`.
+	 * Emulates `Memcache::replace`.
 	 */
 	public function replace ($key, $value, $flag = 0, $expire = false) {
-		if (! self::$redis->exists ($key)) {
+		if (is_array ($value) || is_object ($value)) {
+			$value = serialize ($value);
+		}
+		if (! apc_exists ($key)) {
 			return false;
 		}
-		return $this->set ($key, $value, $flag, $expire);
+		return apc_store ($key, $value, $expire);
 	}
 
 	/**
 	 * Emulates `Memcache::delete`.
 	 */
 	public function delete ($key) {
-		return self::$redis->delete ($key);
+		return apc_delete ($key);
 	}
 
 	/**
-	 * Emulates `Memcache::increment` via `incr` and `incrBy`.
+	 * Emulates `Memcache::increment`.
 	 */
 	public function increment ($key, $value = 1) {
-		if ($value === 1) {
-			return self::$redis->incr ($key);
-		}
-		return self::$redis->incrBy ($key, $value);
+		return apc_inc ($key, $value);
 	}
 
 	/**
-	 * Emulates `Memcache::decrement` via `decr` and `decrBy`.
+	 * Emulates `Memcache::decrement`.
 	 */
 	public function decrement ($key, $value = 1) {
-		if ($value === 1) {
-			return self::$redis->decr ($key);
-		}
-		return self::$redis->decrBy ($key, $value);
+		return apc_dec ($key, $value);
 	}
 
 	/**
-	 * Emulates `Memcache::flush` via `flushDB`.
+	 * Emulates `Memcache::flush`.
 	 */
 	public function flush () {
-		return self::$redis->flushDB ();
+		return apc_clear_cache ('user');
 	}
 }
 
