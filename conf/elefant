@@ -164,17 +164,18 @@ if (count ($argv) > 1) {
 			$pass = generate_password (8);
 			$date = gmdate ('Y-m-d H:i:s');
 			if (! DB::execute (
-				"update `user` set `password` = ? where `id` = 1",
+				"update `user` set `email` = ?, `password` = ? where `id` = 1",
+				$conf['General']['email_from'],
 				encrypt_password ($pass)
 			)) {
 				echo 'Error: ' . DB::error () . "\n";
 			}
-		
+			
 			// respond with the root password
 			echo "Database created. Your initial admin account is:\n";
 			echo 'Username: ' . $conf['General']['email_from'] . "\n";
 			echo 'Password: ' . $pass . "\n";
-		
+			
 			// create versions entries for initial content
 			$wp = new Webpage ('index');
 			Versions::add ($wp);
