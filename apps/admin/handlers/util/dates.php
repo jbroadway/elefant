@@ -8,11 +8,11 @@
  *
  * 1. Load this handler either in your handler:
  *
- *     $this->run ('admin/dates');
+ *     $this->run ('admin/util/dates');
  * 
  * Or anywhere in your view:
  *
- *     {! admin/dates !}
+ *     {! admin/util/dates !}
  *
  * 2. Filter your dates via:
  *
