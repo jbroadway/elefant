@@ -257,6 +257,46 @@ class User extends ExtendedModel {
 	}
 
 	/**
+	 * Verify a user can access the specified access level based
+	 * on their user type.
+	 */
+	public static function access ($access) {
+		static $acl = null;
+		if ($acl === null) {
+			$appconf = parse_ini_file ('apps/user/conf/config.php', true);
+			$acl = $appconf['Access'];
+		}
+
+		if (! isset ($acl[$access])) {
+			return false;
+		}
+
+		if ($acl[$access] === 'all') {
+			return true;
+		}
+
+		if ($acl[$access] === 'login' && User::is_valid ()) {
+			return true;
+		}
+
+		if ($acl[$access] === 'admin' && User::is ('admin')) {
+			return true;
+		}
+
+		if (strpos ($acl[$access], 'type:') === 0) {
+			$type = str_replace ('type:', '', $acl[$access]);
+		} else {
+			$type = $acl[$access];
+		}
+
+		if (User::is ($type)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get or set a specific field's value.
 	 */
 	public static function val ($key, $val = null) {
