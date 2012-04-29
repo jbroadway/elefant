@@ -22,7 +22,7 @@
 <select name="access">
 	<option value="public"{% if access == 'public' %} selected{% end %}>{"Public"}</option>
 	<option value="member"{% if access == 'member' %} selected{% end %}>{"Members"}</option>
-	<option value="private"{% if access == 'member' %} selected{% end %}>{"Private"}</option>
+	<option value="private"{% if access == 'private' %} selected{% end %}>{"Private"}</option>
 </select></p>
 <p>{"Alternate menu title"}:<br /><input type="text" name="menu_title" size="40" value="{{ menu_title }}" /></p>
 <p>{"Alternate window title"}:<br /><input type="text" name="window_title" size="40" value="{{ window_title }}" /></p>
