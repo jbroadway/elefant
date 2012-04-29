@@ -31,7 +31,7 @@ if ($f->submit ()) {
 	echo i18n_get ('Error Message') . ': ' . $u->error;
 } else {
 	$u->password = '';
-	$u->types = array ('admin', 'member');
+	$u->types = preg_split ('/, ?/', $appconf['User']['user_types']);
 
 	$u->failed = $f->failed;
 	$u = $f->merge_values ($u);

@@ -9,8 +9,9 @@
 <span class="notice" id="verify_pass-notice">{"Your password doesn't match."}</span></p>
 <p>{"User type"}:<br />
 <select name="type">
-	<option value="admin"{% if type == 'admin' %} selected{% end %}>{"Admin"}</option>
-	<option value="member"{% if type == 'member' %} selected{% end %}>{"Member"}</option>
+{% foreach types %}
+	<option value="{{ loop_value }}"{% if type === $data->loop_value %} selected {% end %}>{{ loop_value|ucfirst }}</option>
+{% end %}
 </select></p>
 <p>
 	<input type="submit" value="Add User"}" />&nbsp;

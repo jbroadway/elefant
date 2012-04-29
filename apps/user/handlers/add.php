@@ -33,7 +33,7 @@ if ($f->submit ()) {
 } else {
 	$u = new User;
 	$u->type = 'admin';
-	$u->types = array ('admin', 'member');
+	$u->types = preg_split ('/, ?/', $appconf['User']['user_types']);
 
 	$u->failed = $f->failed;
 	$u = $f->merge_values ($u);
