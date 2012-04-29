@@ -37,14 +37,17 @@ if ($wp->error) {
 }
 
 // access control
-if ($wp->access == 'member' && ! User::require_login ()) {
-	$page->title = i18n_get ('Login required');
-	echo $this->run ('user/login');
-	return;
-} elseif ($wp->access == 'private' && ! User::require_admin ()) {
-	$page->title = i18n_get ('Login required');
-	echo $this->run ('user/login');
-	return;
+if ($wp->access !== 'public') {
+	if (! User::require_login ()) {
+		$page->title = i18n_get ('Login required');
+		echo $this->run ('user/login');
+		return;
+	}
+	if (! User::access ($wp->access)) {
+		$page->title = i18n_get ('Login required');
+		echo $this->run ('user/login');
+		return;
+	}
 }
 
 // set the page properties

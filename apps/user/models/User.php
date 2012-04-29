@@ -94,6 +94,11 @@ class User extends ExtendedModel {
 	public static $user = false;
 
 	/**
+	 * Access control list for `access()` method.
+	 */
+	public static $acl = false;
+
+	/**
 	 * Generates a random salt and encrypts a password using MD5.
 	 */
 	public static function encrypt_pass ($plain) {
@@ -257,36 +262,42 @@ class User extends ExtendedModel {
 	}
 
 	/**
+	 * Loads the access control list for the `access()` method.
+	 */
+	private static function load_acl () {
+		if (self::$acl === false) {
+			$appconf = parse_ini_file ('apps/user/conf/config.php', true);
+			self::$acl = $appconf['Access'];
+		}
+	}
+
+	/**
 	 * Verify a user can access the specified access level based
 	 * on their user type.
 	 */
 	public static function access ($access) {
-		static $acl = null;
-		if ($acl === null) {
-			$appconf = parse_ini_file ('apps/user/conf/config.php', true);
-			$acl = $appconf['Access'];
-		}
+		self::load_acl ();
 
-		if (! isset ($acl[$access])) {
+		if (! isset (self::$acl[$access])) {
 			return false;
 		}
 
-		if ($acl[$access] === 'all') {
+		if (self::$acl[$access] === 'all') {
 			return true;
 		}
 
-		if ($acl[$access] === 'login' && User::is_valid ()) {
+		if (self::$acl[$access] === 'login' && User::is_valid ()) {
 			return true;
 		}
 
-		if ($acl[$access] === 'admin' && User::is ('admin')) {
+		if (self::$acl[$access] === 'admin' && User::is ('admin')) {
 			return true;
 		}
 
-		if (strpos ($acl[$access], 'type:') === 0) {
-			$type = str_replace ('type:', '', $acl[$access]);
+		if (strpos (self::$acl[$access], 'type:') === 0) {
+			$type = str_replace ('type:', '', self::$acl[$access]);
 		} else {
-			$type = $acl[$access];
+			$type = self::$acl[$access];
 		}
 
 		if (User::is ($type)) {
@@ -294,6 +305,14 @@ class User extends ExtendedModel {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Returns the list of access levels.
+	 */
+	public static function access_list () {
+		self::load_acl ();
+		return array_keys (self::$acl);
 	}
 
 	/**

@@ -37,10 +37,13 @@ if ($b->error) {
 }
 
 // permissions
-if ($b->access == 'member' && ! User::require_login ()) {
-	return;
-} elseif ($b->access == 'private' && ! User::require_admin ()) {
-	return;
+if ($b->access !== 'public') {
+	if (! User::require_login ()) {
+		return;
+	}
+	if (! User::access ($b->access)) {
+		return;
+	}
 }
 
 if ($b->show_title == 'yes') {

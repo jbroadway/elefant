@@ -14,9 +14,9 @@
 <div id="extra-options">
 <p>{"Access"}:<br />
 <select name="access">
-	<option value="public"{% if access == 'public' %} selected{% end %}>{"Public"}</option>
-	<option value="member"{% if access == 'member' %} selected{% end %}>{"Members"}</option>
-	<option value="private"{% if access == 'private' %} selected{% end %}>{"Private"}</option>
+{% foreach User::access_list () %}
+	<option value="{{ loop_value }}"{% if access === $data->loop_value %} selected{% end %}>{{ loop_value|ucfirst }}</option>
+{% end %}
 </select></p>
 <p>{"Display title"}:<br />
 <select name="show_title">
