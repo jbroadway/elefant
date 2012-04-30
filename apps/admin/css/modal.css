@@ -1,0 +1,51 @@
+#modal-dialog {
+	display: none;
+	width: 550px;
+	height: 300px;
+}
+
+#modal-titlebar {
+	background: #333;
+	border: 1px solid #111;
+	color: #fff;
+	padding: 10px;
+	position: relative;
+}
+
+#modal-close-wrapper {
+	float: right;
+	font-size: 14px;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	position: static;
+	width: 528px;
+}
+
+#modal-close-button {
+	color: #fff;
+	text-decoration: none;
+	position: absolute;
+	right: 12px;
+	top: 12px;
+	display: block;
+	padding: 6px 10px 6px 10px;
+	background: #333;
+	line-height: normal;
+}
+
+#modal-close-button:hover {
+	background: #666;
+	color: #fff;
+}
+
+#modal-title {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#modal-content {
+	background: #fff;
+	border: 1px solid #ccc;
+	border-top: 0px none;
+	padding: 15px;
+	height: 202px;
+}
