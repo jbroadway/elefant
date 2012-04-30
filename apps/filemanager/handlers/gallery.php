@@ -28,13 +28,46 @@ if (! @is_dir ('files/' . $path)) {
 	return;
 }
 
+// fetch the files
 $files = glob ('files/' . $path . '/*.{jpg,jpeg,gif,png,JPG,JPEG,GIF,PNG}', GLOB_BRACE);
 
+// sorting order
+if ($data['order'] === 'desc') {
+	usort ($files, 'filemanager_sort_mtime_desc');
+} elseif ($data['order'] === 'asc') {
+	usort ($files, 'filemanager_sort_mtime_asc');
+}
+
+// remove 'files/' from paths and create output list
+$list = array ();
+foreach ($files as $key => $file) {
+	$list[preg_replace ('/^files\//', '', $file)] = (object) array (
+		'path' => $file,
+		'desc' => ''
+	);
+}
+
+// fetch descriptions
+if ($data['desc'] === 'yes') {
+	$descriptions = FileManager::prop (array_keys ($list), 'desc');
+	foreach ($descriptions as $file => $desc) {
+		$list[$file]->desc = $desc;
+	}
+}
+
+// display style
+if ($data['style'] === 'lightbox') {
+	$template = 'filemanager/gallery';
+} else {
+	$template = 'filemanager/gallery/embedded';
+}
+
 echo $tpl->render (
-	'filemanager/gallery',
+	$template,
 	array (
-		'files' => $files,
-		'gallery' => str_replace (array ('/', '.'), array ('-', '-'), $path)
+		'files' => $list,
+		'gallery' => str_replace (array ('/', '.'), array ('-', '-'), $path),
+		'desc' => $data['desc']
 	)
 );
 

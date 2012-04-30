@@ -1,0 +1,19 @@
+#gallery-full, #gallery-view {
+	max-width: 99%;
+}
+
+#gallery-list {
+	padding-top: 25px;
+}
+
+#gallery-list div {
+	width: 9%;
+	height: auto;
+	padding-right: 1%;
+	padding-bottom: 5px;
+	float: left;
+}
+
+#gallery-list div a img {
+	width: 100%;
+}

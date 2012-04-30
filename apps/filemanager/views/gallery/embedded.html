@@ -1,0 +1,34 @@
+<link rel="stylesheet" type="text/css" href="/apps/filemanager/css/gallery_embedded.css" />
+<script>
+var gallery_desc = '{{ desc }}';
+$(function () {
+	// load the first image
+	$('#gallery-view').attr ('src', $('.gallery').first ().attr ('href'));
+	if (gallery_desc === 'yes') {
+		$('#gallery-desc').html ($('.gallery').first ().data ('desc'));
+	} else {
+		$('#gallery-desc').hide ();
+	}
+
+	$.gallery_view = function (a) {
+		$('#gallery-view').attr ('src', $(a).attr ('href'));
+		if (gallery_desc === 'yes') {
+			$('#gallery-desc').html ($(a).data ('desc'));
+		}
+		return false;
+	}
+});
+</script>
+
+<div id="gallery-full">
+	<img src="" id="gallery-view" />
+	<div id="gallery-desc"></div>
+</div>
+
+<div id="gallery-list">
+{% foreach files %}
+	<div><a href="/{{ loop_value->path }}" rel="gallery-{{ gallery }}" class="gallery" data-desc="{{ loop_value->desc }}" onclick="return $.gallery_view (this)"><img src="/{{ loop_value->path|filemanager_get_thumbnail }}" alt="" /></a></div>
+{% end %}
+</div>
+
+<div style="clear: both"></div>
