@@ -110,6 +110,14 @@ create table `lock` (
 create index lock_resource on lock (resource, resource_id, expires);
 create index lock_user on lock (user);
 
+create table filemanager_prop (
+	file char(128) not null primary key,
+	prop char(32) not null,
+	value char(255) not null
+);
+
+create index filemanager_prop_name on filemanager_prop (prop);
+
 create table apps (
 	name char(48) not null primary key,
 	version char(16) not null
@@ -117,5 +125,6 @@ create table apps (
 
 insert into apps (name, version) values ('blog', '1.1.3-stable');
 insert into apps (name, version) values ('user', '1.1.3-stable');
+insert into apps (name, version) values ('filemanager', '1.3.0-beta');
 
 commit;

@@ -1,4 +1,5 @@
-{! admin/util/dates !}
+{! admin/dates !}
+{! admin/util/modal !}
 
 <script type="text/javascript" src="/apps/filemanager/js/jquery.tmpl.beta1.min.js"></script>
 <script type="text/javascript" src="/apps/filemanager/js/jquery.filemanager.js"></script>
@@ -7,7 +8,7 @@
 		<td><img src="/apps/admin/css/admin/folder.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/filemanager?path=${path}">${name}</a></td>
 		<td>\{{html mtime}}</td>
 		<td>&nbsp;</td>
-		<td><a href="#" onclick="return $.filemanager ('mv', {file: '${path}', name: '${name}'})">{"Rename"}</a></td>
+		<td style="text-align: right"><a href="#" onclick="return $.filemanager ('mv', {file: '${path}', name: '${name}'})">{"Rename"}</a></td>
 	</tr>
 </script>
 <script type="text/x-jquery-tmpl" id="tpl_file">
@@ -15,7 +16,8 @@
 		<td><img src="/apps/admin/css/admin/file.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/files/${path}" target="_blank">${name}</a></td>
 		<td>\{{html mtime}}</td>
 		<td>${fsize}</td>
-		<td>
+		<td style="text-align: right">
+			<a href="#" onclick="return $.filemanager ('prop', {file: '${path}', name: '${name}'})">{"Properties"}</a> |
 			<a href="#" onclick="return $.filemanager ('mv', {file: '${path}', name: '${name}'})">{"Rename"}</a> | 
 			<a href="#" onclick="return $.filemanager ('rm', {file: '${path}'})">{"Delete"}</a>
 		</td>
@@ -57,10 +59,10 @@ $(function () {
 <p>
 <table width="100%">
 	<tr>
-		<th width="55%">{" Name "}</th>
+		<th width="48%">{" Name "}</th>
 		<th width="22%">{" Last modified "}</th>
-		<th width="10%">{" File size "}</th>
-		<th width="13%">&nbsp;</th>
+		<th width="8%">{" File size "}</th>
+		<th width="22%">&nbsp;</th>
 	</tr>
 	<tbody id="file-list"></tbody>
 </table>

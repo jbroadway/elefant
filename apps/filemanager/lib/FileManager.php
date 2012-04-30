@@ -40,6 +40,11 @@ class FileManager extends Restful {
 	public $webroot = '/files/';
 
 	/**
+	 * The error message if an error occurs in one of the static methods.
+	 */
+	public static $error;
+
+	/**
 	 * Constructor sets $root.
 	 */
 	public function __construct () {
@@ -155,6 +160,32 @@ class FileManager extends Restful {
 	}
 
 	/**
+	 * Handle property update requests (/filemanager/api/prop).
+	 */
+	public function get_prop () {
+		$file = urldecode (join ('/', func_get_args ()));
+		if (! self::verify_file ($file, $this->root)) {
+			return $this->error (i18n_get ('Invalid file name'));
+		}
+		if (! isset ($_GET['prop'])) {
+			return $this->error (i18n_get ('Missing property name'));
+		}
+		if (isset ($_GET['value'])) {
+			// update and fetch
+			$res = self::prop ($file, $_GET['prop'], $_GET['value']);
+		} else {
+			// fetch
+			$res = self::prop ($file, $_GET['prop']);
+		}
+		return array (
+			'file' => $file,
+			'prop' => $_GET['prop'],
+			'value' => $res,
+			'msg' => i18n_get ('Properties saved.')
+		);
+	}
+
+	/**
 	 * Verify that the specified folder is valid, and exists
 	 * inside a certain root folder.
 	 */
@@ -213,6 +244,65 @@ class FileManager extends Restful {
 	 */
 	public static function fsort ($a, $b) {
 		return strcmp ($a['name'], $b['name']);
+	}
+
+	/**
+	 * Fetch all of the properties for the specified file.
+	 */
+	public static function props ($file) {
+		return DB::pairs ('select prop, value from filemanager_prop where file = ?', $file);
+	}
+
+	/**
+	 * Get or set a property for the specified file.
+	 * Can also retrieve an array of a property for a
+	 * list of files if `$file` is an array.
+	 */
+	public static function prop ($file, $prop, $value = null) {
+		if ($value !== null) {
+			// takes an extra select query, but works cross-database
+			$res = self::prop ($file, $prop);
+			if ($res === $value) {
+				return $value;
+			} elseif (! $res) {
+				// doesn't exist yet
+				if (! DB::execute (
+					'insert into filemanager_prop (file, prop, value) values (?, ?, ?)',
+					$file,
+					$prop,
+					$value
+				)) {
+					self::$error = DB::error ();
+					return false;
+				}
+			} else {
+				// already exists, update
+				if (! DB::execute (
+					'update filemanager_prop set value = ? where file = ? and prop = ?',
+					$value,
+					$file,
+					$prop
+				)) {
+					self::$error = DB::error ();
+					return false;
+				}
+			}
+			return $value;
+		}
+		if (is_array ($file)) {
+			// get as a list
+			return DB::pairs (
+				'select file, value from filemanager_prop where file in() and prop = ?',
+				$file,
+				$prop
+			);
+		}
+		// get a single value
+		return DB::shift (
+			'select value from filemanager_prop where file = ? and prop = ?',
+			$file,
+			$prop
+		);
 	}
 }
 

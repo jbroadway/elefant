@@ -69,8 +69,28 @@
 						}
 					});
 					break;
+				case 'prop':
+					// display properties dialogue
+					$.get ('/filemanager/properties/' + options.file, function (res) {
+						$.open_dialog (
+							res.title,
+							res.body
+						);
+					});
+					break;
 			}
 			return false;
 		}
 	});
+
+	$.filemanager_prop = function (form) {
+		var file = form.elements.file.value,
+			desc = form.elements.desc.value;
+
+		$.get ('/filemanager/api/prop/' + file + '?prop=desc&value=' + encodeURIComponent (desc), function (res) {
+			$.close_dialog ();
+			$.add_notification (res.data.msg);
+		});
+		return false;
+	};
 })(jQuery);
