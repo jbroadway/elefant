@@ -100,6 +100,7 @@ class FileManager extends Restful {
 		} elseif (! unlink ($this->root . $file)) {
 			return $this->error (i18n_get ('Unable to delete') . ' ' . $file);
 		}
+		FileManager::prop_delete ($file);
 		return array ('msg' => i18n_get ('File deleted.'), 'data' => $file);
 	}
 
@@ -119,6 +120,7 @@ class FileManager extends Restful {
 				if (! rename ($this->root . $file, $this->root . $new)) {
 					return $this->error (i18n_get ('Unable to rename') . ' ' . $file);
 				}
+				FileManager::prop_rename ($file, $new, true);
 				return array ('msg' => i18n_get ('Folder renamed.'), 'data' => $new);
 			}
 		} elseif (self::verify_file ($file, $this->root)) {
@@ -131,6 +133,7 @@ class FileManager extends Restful {
 				if (! rename ($this->root . $file, $this->root . $new)) {
 					return $this->error (i18n_get ('Unable to rename') . ' ' . $file);
 				}
+				FileManager::prop_rename ($file, $new);
 				return array ('msg' => i18n_get ('File renamed.'), 'data' => $new);
 			}
 		}
@@ -303,6 +306,47 @@ class FileManager extends Restful {
 			$file,
 			$prop
 		);
+	}
+
+	/**
+	 * Rename the properties for a file that has been renamed.
+	 */
+	public static function prop_rename ($file, $new_name, $folder = false) {
+		if ($folder) {
+			if (! DB::execute (
+				'update filemanager_prop set file = replace(file, ?, ?) where file like ?',
+				$file . '/',
+				$new_name . '/',
+				$file . '/%'
+			)) {
+				self::$error = DB::error ();
+				return false;
+			}
+			return true;
+		}
+		if (! DB::execute (
+			'update filemanager_prop set file = ? where file = ?',
+			$new_name,
+			$file
+		)) {
+			self::$error = DB::error ();
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Delete the properties for a file that has been deleted.
+	 */
+	public static function prop_delete ($file) {
+		if (! DB::execute (
+			'delete from filemanager_prop where file = ?',
+			$file
+		)) {
+			self::$error = DB::error ();
+			return false;
+		}
+		return true;
 	}
 }
 
