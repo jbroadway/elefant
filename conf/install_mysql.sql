@@ -106,7 +106,7 @@ create table filemanager_prop (
 	file char(128) not null primary key,
 	prop char(32) not null,
 	value char(255) not null,
-	index (prop);
+	index (prop)
 );
 
 create table apps (
