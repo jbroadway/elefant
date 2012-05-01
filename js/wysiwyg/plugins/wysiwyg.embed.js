@@ -74,6 +74,19 @@
 								embedUI.close ();
 								return false;
 							}
+
+							//Added to allow easy two columning in forms
+							if(obj.columns==2){
+								var columnwidth = 150;
+								var inputsizer = 15;
+								var columner = 'left';
+							}
+							else
+							{
+								var columnwidth = 300;
+								var inputsizer = 30;
+								var columner = 'left';
+							}
 							
 							// generate a form screen
 							uiHtml = '<form id="wysiwyg-embed-form"><input type="hidden" name="handler" value="' + obj.handler + '" />';
@@ -83,8 +96,19 @@
 								if (! obj.fields[i].initial) {
 									obj.fields[i].initial = '';
 								}
+
+								//Flip flops for easy column tracking
+								if (obj.columns==2 && columner=='left') {
+									columner = 'right';
+								}
+								else
+								{
+									columner = 'left';
+								}
+								
+
 								if (obj.fields[i].type == 'select') {
-									uiHtml += '<p>' + obj.fields[i].label + ':<br /><select name="' + obj.fields[i].name + '">';
+									uiHtml += '<p style="width:' + columnwidth + 'px;float:' + columner + '">' + obj.fields[i].label + ':<br /><select name="' + obj.fields[i].name + '">';
 									for (var o in obj.fields[i].values) {
 										if (obj.fields[i].values[o].hasOwnProperty ('key') && obj.fields[i].values[o].hasOwnProperty ('value')) {
 											if (obj.fields[i].initial == obj.fields[i].values[o].key) {
@@ -106,14 +130,14 @@
 										uiHtml += '</select></p>';
 									}
 								} else if (obj.fields[i].type == 'textarea') {
-									uiHtml += '<p>' + obj.fields[i].label + ':<br /><textarea name="' + obj.fields[i].name + '" cols="36" rows="6">' + obj.fields[i].initial + '</textarea>';
+									uiHtml += '<p style="width:' + columnwidth + 'px;float:' + columner + '">' + obj.fields[i].label + ':<br /><textarea name="' + obj.fields[i].name + '" cols="' + inputsizer +'" rows="6">' + obj.fields[i].initial + '</textarea>';
 									if (obj.fields[i].message) {
 										uiHtml += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span></p>';
 									} else {
 										uiHtml += '</p>';
 									}
 								} else if (obj.fields[i].type == 'file') {
-									uiHtml += '<p>' + obj.fields[i].label + ':<br /><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" size="30" />';
+									uiHtml += '<p style="width:' + columnwidth + 'px;float:' + columner + '">' + obj.fields[i].label + ':<br /><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" size="' + inputsizer +'" />';
 									if ($.wysiwyg.fileManager && $.wysiwyg.fileManager.ready) {
 										// Add the File Manager icon:
 										uiHtml += ' <div class="wysiwyg-fileManager" id="' + obj.fields[i].name + '-fileManager" title="Browse..." style="float: left; margin-top: -40px; margin-left: 200px" />';
@@ -124,7 +148,7 @@
 										uiHtml += '</p>';
 									}
 								} else {
-									uiHtml += '<p>' + obj.fields[i].label + ':<br /><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" size="30" />';
+									uiHtml += '<p style="width:' + columnwidth + 'px;float:' + columner + '">' + obj.fields[i].label + ':<br /><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" size="' + inputsizer +'" />';
 									if (obj.fields[i].message) {
 										uiHtml += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span></p>';
 										
