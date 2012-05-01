@@ -1,9 +1,10 @@
-<script type="text/javascript" src="/js/json2.js"></script>
-<script type="text/javascript" src="/js/jstorage.js"></script>
-<script type="text/javascript" src="/js/jquery.autosave.js"></script>
-<script type="text/javascript" src="/js/jquery.bgsave.js"></script>
-<script type="text/javascript" src="/js/jquery.verify_values.js"></script>
-<script type="text/javascript">
+<script src="/js/json2.js"></script>
+<script src="/js/jstorage.js"></script>
+<script src="/js/jquery.autosave.js"></script>
+<script src="/js/jquery.bgsave.js"></script>
+<script src="/js/jquery.verify_values.js"></script>
+<script src="/js/urlify.js"></script>
+<script>
 $(function () {
 	$('#edit-form').verify_values ({
 		handler: 'admin/edit',
@@ -34,7 +35,7 @@ $(function () {
 });
 function webpage_add_title_to_id (f) {
 	if (f.elements.id.value == '') {
-		f.elements.id.value = f.elements.title.value.toLowerCase ().replace (/[^a-z0-9\-]+/g, '-');
+		f.elements.id.value = URLify (f.elements.title.value, 60).replace (/-$/, '');
 	}
 }
 function webpage_show_extra_options (link) {
