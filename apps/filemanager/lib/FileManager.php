@@ -297,8 +297,8 @@ class FileManager extends Restful {
 			$db = DB::get_connection (1);
 			if ($db->getAttribute (PDO::ATTR_DRIVER_NAME) === 'mysql') {
 				return DB::pairs (
-					'select file, value from filemanager_prop where file in() and prop = ?',
-					$file,
+					'select file, value from filemanager_prop where file in(?) and prop = ?',
+					implode(', ', $file),
 					$prop
 				);
 			}
