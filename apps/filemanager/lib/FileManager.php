@@ -294,25 +294,12 @@ class FileManager extends Restful {
 		}
 		if (is_array ($file)) {
 			// get as a list
-			$db = DB::get_connection (1);
-			if ($db->getAttribute (PDO::ATTR_DRIVER_NAME) === 'mysql') {
-				return DB::pairs (
-					'select file, value from filemanager_prop where file in(?) and prop = ?',
-					implode(', ', $file),
-					$prop
-				);
-			}
-			$sql = 'select file, value from filemanager_prop where (';
-			$params = array ();
-			$join = '';
-			foreach ($file as $f) {
-				$sql .= $join . 'file = ?';
-				$params[] = $f;
-				$join = ' or ';
-			}
-			$sql .= ') and prop = ?';
-			$params[] = $prop;
-			return DB::pairs ($sql, $params);
+			$qmarks = array_fill (0, count ($file), '?');
+			$file[] = $prop;
+			return DB::pairs (
+				'select file, value from filemanager_prop where file in(' . join (', ', $qmarks) . ') and prop = ?',
+				$file
+			);
 		}
 		// get a single value
 		return DB::shift (
