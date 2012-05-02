@@ -25,15 +25,6 @@
  */
 
 /**
- * Filter blog post titles for use in URLs. Makes them lowercase,
- * and changes any non A-Z or 0-9 character series into a dash.
- * Also removes any leading or trailing whitespace.
- */
-function blog_filter_title ($title) {
-	return trim (preg_replace ('/[^a-z0-9-]+/', '-', strtolower ($title)), ' -');
-}
-
-/**
  * Formats a date in the format YYYY-MM-DD HH:MM:SS into the
  * specifed format using `gmdate()`. The default format is
  * `F j, Y - g:ia`.

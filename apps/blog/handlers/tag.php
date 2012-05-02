@@ -24,7 +24,7 @@ $page->more = ($page->count > $page->last) ? true : false;
 $page->next = $page->num + 2;
 
 foreach ($posts as $post) {
-	$post->url = '/blog/post/' . $post->id . '/' . blog_filter_title ($post->title);
+	$post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
 	$post->tag_list = explode (',', $post->tags);
 	echo $tpl->render ('blog/post', $post);
 }

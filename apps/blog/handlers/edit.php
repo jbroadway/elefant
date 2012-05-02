@@ -73,7 +73,7 @@ if ($f->submit ()) {
 
 			if ($autopost_tw && ! empty ($appconf['Twitter']['username']) && ! empty ($appconf['Twitter']['password'])) {
 				$b = new Bitly;
-				$short = $b->shorten ('http://' . $_SERVER['HTTP_HOST'] . '/blog/post/' . $p->id . '/' . blog_filter_title ($p->title));
+				$short = $b->shorten ('http://' . $_SERVER['HTTP_HOST'] . '/blog/post/' . $p->id . '/' . URLify::filter ($p->title));
 				$t = new twitter;
 				$t->username = $appconf['Twitter']['username'];
 				$t->password = $appconf['Twitter']['password'];
@@ -84,7 +84,7 @@ if ($f->submit ()) {
 		// reset blog rss cache
 		$memcache->delete ('blog_rss');
 
-		$_POST['page'] = 'blog/post/' . $p->id . '/' . blog_filter_title ($p->title);
+		$_POST['page'] = 'blog/post/' . $p->id . '/' . URLify::filter ($p->title);
 		$lock->remove ();
 		$this->hook ('blog/edit', $_POST);
 		$this->redirect ('/blog/admin');

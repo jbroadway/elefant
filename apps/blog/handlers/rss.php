@@ -13,7 +13,7 @@ if (! $res) {
 	$page->title = $appconf['Blog']['title'];
 	$page->date = gmdate ('Y-m-d\TH:i:s');
 	foreach ($page->posts as $k => $post) {
-		$page->posts[$k]->url = '/blog/post/' . $post->id . '/' . blog_filter_title ($post->title);
+		$page->posts[$k]->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
 	}
 	
 	$res = $tpl->render ('blog/rss', $page);

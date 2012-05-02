@@ -34,7 +34,7 @@ $memcache->delete ('blog_rss');
 
 DB::execute ('delete from blog_post_tag where post_id = ?', $_GET['id']);
 
-$_GET['page'] = 'blog/post/' . $_GET['id'] . '/' . blog_filter_title ($title);
+$_GET['page'] = 'blog/post/' . $_GET['id'] . '/' . URLify::filter ($title);
 $this->hook ('blog/delete', $_GET);
 $this->add_notification (i18n_get ('Blog post deleted.'));
 $this->redirect ('/blog/admin');

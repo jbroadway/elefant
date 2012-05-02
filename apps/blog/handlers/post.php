@@ -23,7 +23,7 @@ $page->title = $appconf['Blog']['title'];
 
 $post = $p->orig ();
 $post->full = true;
-$post->url = '/blog/post/' . $post->id . '/' . blog_filter_title ($post->title);
+$post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
 $post->tag_list = explode (',', $post->tags);
 $post->body = $tpl->run_includes ($post->body);
 

@@ -21,7 +21,7 @@
 	</tr>
 {% foreach posts %}
 	<tr>
-		<td><a href="/blog/post/{{ loop_value->id }}/{{ loop_value->title|blog_filter_title }}" target="_blank">{{ loop_value->title }}</a></td>
+		<td><a href="/blog/post/{{ loop_value->id }}/{{ loop_value->title|URLify::filter }}" target="_blank">{{ loop_value->title }}</a></td>
 		<td>{{ loop_value->ts|I18n::date_time }}</td>
 		<td>{{ loop_value->author }}</td>
 		<td>{{ loop_value->published|ucfirst }}</td>
