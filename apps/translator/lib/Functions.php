@@ -33,7 +33,7 @@ function translator_sort_languages ($a, $b) {
  * from a translatable string.
  */
 function translator_field_id ($text) {
-	return preg_replace ('/[^a-z0-9_-]+/', '-', strtolower ($text));
+	return URLify::filter ($text);
 }
 
 /**
