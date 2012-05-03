@@ -66,7 +66,7 @@ echo $tpl->render (
 	$template,
 	array (
 		'files' => $list,
-		'gallery' => str_replace (array ('/', '.'), array ('-', '-'), $path),
+		'gallery' => str_replace (array ('/', '.', ' '), array ('-', '-', '-'), $path),
 		'desc' => $data['desc']
 	)
 );
