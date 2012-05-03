@@ -25,6 +25,17 @@ comments = facebook
 
 disqus_shortname = ""
 
+[Social Buttons]
+
+; Here you can enable/disable different social buttons
+; that will be displayed in the footer of each blog
+; post. To turn one off, set it to `Off`. To enable,
+; set it to `On`.
+
+twitter = On
+facebook = On
+google = On
+
 [Twitter]
 
 ; Set these to your twitter credentials to have blog posts automatically

@@ -15,8 +15,14 @@
 <hr />
 <div class="blog-comments">
 {{ controller.run ('blog/commentcount', $data)|none }}&nbsp;
-{{ controller.run ('social/facebook/like', $data)|none }}
-{{ controller.run ('social/twitter/tweet', $data)|none }}
-{{ controller.run ('social/google/plusone', $data)|none }}
+{% if social_buttons['facebook'] %}
+	{{ controller.run ('social/facebook/like', $data)|none }}
+{% end %}
+{% if social_buttons['twitter'] %}
+	{{ controller.run ('social/twitter/tweet', $data)|none }}
+{% end %}
+{% if social_buttons['google'] %}
+	{{ controller.run ('social/google/plusone', $data)|none }}
+{% end %}
 </div>
 </div>
