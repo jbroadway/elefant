@@ -9,12 +9,13 @@
 			};
 			
 			var options = $.extend (defaults, options);
+			var dir_lenght= 120;
 			
 			switch (cmd) {
 				case 'mkdir':
-					var name = prompt ('New folder name:', '');
+					var name = downcode ( prompt ('New folder name:', ''), dir_lenght );
 					if (name) {
-						$.get (options.root + cmd + '/' + options.file + '/' + name, function (res) {
+						$.get (options.root + cmd + '/' + options.file + '/' + , function (res) {
 							if (res.success) {
 								$.add_notification (res.data.msg);
 								window.location = '/filemanager?path=' + res.data.data;
@@ -25,7 +26,7 @@
 					}
 					break;
 				case 'mv':
-					var name = prompt ('Rename:', options.name);
+					var name = downcode ( prompt ('Rename:', options.name), dir_lenght);
 					if (name) {
 						$.get (options.root + cmd + '/' + options.file + '?rename=' + name, function (res) {
 							if (res.success) {
