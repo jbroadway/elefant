@@ -15,7 +15,7 @@
 				case 'mkdir':
 					var name = downcode ( prompt ('New folder name:', ''), dir_lenght );
 					if (name) {
-						$.get (options.root + cmd + '/' + options.file + '/' + , function (res) {
+						$.get (options.root + cmd + '/' + options.file + '/' + name, function (res) {
 							if (res.success) {
 								$.add_notification (res.data.msg);
 								window.location = '/filemanager?path=' + res.data.data;
