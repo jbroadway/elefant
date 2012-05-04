@@ -44,4 +44,13 @@ charset                 = UTF-8
 fallback                = Off
 default                 = Off
 
+[cs]
+
+name                    = "Česky"
+code                    = cs
+charset                 = UTF-8
+fallback                = Off
+default                 = Off
+locale                  = Off
+
 ; */ ?>
