@@ -20,20 +20,28 @@ $out = array (
 	'locks' => array ()
 );
 
-foreach ($out['layouts2'] as $name) {
-	$out['layouts'][] = $name;
+if ($out['layouts2']) {
+  foreach ($out['layouts2'] as $name) {
+	  $out['layouts'][] = $name;
+  }
 }
 
-foreach ($out['stylesheets2'] as $name) {
-	$out['stylesheets'][] = $name;
+if ($out['stylesheets2']) {
+  foreach ($out['stylesheets2'] as $name) {
+	  $out['stylesheets'][] = $name;
+  }
 }
 
-foreach ($out['layouts'] as $name) {
-	$out['locks'][$name] = $lock->exists ('Designer', $name);
+if ($out['layouts']) {
+  foreach ($out['layouts'] as $name) {
+	  $out['locks'][$name] = $lock->exists ('Designer', $name);
+  }
 }
 
-foreach ($out['stylesheets'] as $name) {
-	$out['locks'][$name] = $lock->exists ('Designer', $name);
+if ($out['stylesheets']) {
+  foreach ($out['stylesheets'] as $name) {
+	  $out['locks'][$name] = $lock->exists ('Designer', $name);
+  }
 }
 
 function basename_html ($f) {
