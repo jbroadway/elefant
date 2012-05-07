@@ -3,11 +3,16 @@
 
 <p><strong><em>{"Important: Only install apps or themes from trusted sources."}</em></strong></p>
 
+{% if ! extension_loaded ('curl') %}
+<p class="visible-notice">{"Note: Installing from links has been disabled because the PHP cURL extension is missing."}</p>
+{% else %}
+
 <p>{"Link to a zip file or Github repository"} (ex: <tt>https://github.com/user/project.git</tt>):<br />
 <input type="text" size="40" name="github" value="{{ github|quotes }}" />
 <span class="notice" id="github-notice">{" The link appears to be invalid. "}</span></p>
 
 <p>- {"or"} -</p>
+{% end %}
 
 <p>{"Upload a zip file"}:<br />
 <input type="file" name="zipfile" />

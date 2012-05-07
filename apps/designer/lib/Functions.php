@@ -16,6 +16,10 @@ function github_parse_url ($url) {
 	return false;
 }
 
+/**
+ * Checks a URL to see if it's a zip file, accounting for GitHub's
+ * zipball URLs that don't end in .zip.
+ */
 function github_is_zip ($url) {
 	if (preg_match ('/^https?:\/\/.*\.zip$/i', $url)) {
 		return true;

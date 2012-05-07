@@ -64,6 +64,12 @@ tt {
 	padding: 3px 3px 3px 7px;
 }
 
+.visible-notice {
+	border: 1px solid #fcd9a1;
+	background: #faf7e5;
+	padding: 3px 3px 3px 7px;
+}
+
 .different {
 	background: #e5f2ff;
 }
