@@ -471,6 +471,10 @@ class Model {
 	 *   ->order ('another_field asc') // alternate usage
 	 */
 	public function order ($by, $order = false) {
+		if (is_array ($by)) {
+			list ($by, $order) = $by;
+		}
+
 		$sep = empty ($this->query_order) ? ' ' : ', ';
 		if (! $order) {
 			$this->query_order .= $sep . $by;
