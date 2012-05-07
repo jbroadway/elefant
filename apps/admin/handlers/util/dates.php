@@ -37,17 +37,19 @@ $full_months = explode (
 	i18n_get ('January February March April May June July August September October November December')
 );
 
+global $i18n;
+
 $page->add_script ('/js/jquery.localize.min.js');
 $page->add_script ('<script>
 $(function () {
 	$.localize_dates = function () {
 		$.localize.fullMonths = ' . json_encode ($full_months) . ';
 		$.localize.abbrMonths = ' . json_encode ($abbr_months) . ';
-		$(\'time.datetime\').localize(\'mmmm d, yyyy - h:MMa\');
-		$(\'time.shortdatetime\').localize(\'mmm d - h:MMa\');
-		$(\'time.date\').localize(\'mmmm d, yyyy\');
-		$(\'time.shortdate\').localize(\'mmm d\');
-		$(\'time.time\').localize(\'h:MMa\');
+		$(\'time.datetime\').localize(\'' . $i18n->date_format . ' - ' . $i18n->time_format . '\');
+		$(\'time.shortdatetime\').localize(\'' . $i18n->short_format . ' - ' . $i18n->time_format . '\');
+		$(\'time.date\').localize(\'' . $i18n->date_format . '\');
+		$(\'time.shortdate\').localize(\'' . $i18n->short_format . '\');
+		$(\'time.time\').localize(\'' . $i18n->time_format . '\');
 	};
 	$.localize_dates ();
 });

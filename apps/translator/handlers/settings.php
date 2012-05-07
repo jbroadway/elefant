@@ -57,6 +57,9 @@ echo $form->handle (function ($form) {
 	$i18n->languages[$lang]['locale'] = $_POST['locale'];
 	$i18n->languages[$lang]['charset'] = $_POST['charset'];
 	$i18n->languages[$lang]['fallback'] = $_POST['fallback'];
+	$i18n->languages[$lang]['date_format'] = $_POST['date_format'];
+	$i18n->languages[$lang]['short_format'] = $_POST['short_format'];
+	$i18n->languages[$lang]['time_format'] = $_POST['time_format'];
 
 	uasort ($i18n->languages, 'translator_sort_languages');
 
