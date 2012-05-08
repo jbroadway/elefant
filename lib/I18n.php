@@ -73,6 +73,21 @@ class I18n {
 	public $fullname = '';
 
 	/**
+	 * The full date format to send to jQuery.localize.
+	 */
+	public $date_format = 'mmmm d, yyyy';
+
+	/**
+	 * The short date format to send to jQuery.localize.
+	 */
+	public $short_format = 'mmm d';
+
+	/**
+	 * The time format to send to jQuery.localize.
+	 */
+	public $time_format = 'h:MMa';
+
+	/**
 	 * Contains fallback text replacements.
 	 */
 	public $fallbacks = array ();
@@ -147,6 +162,9 @@ class I18n {
 		$this->language = $this->negotiate ();
 		$this->charset = $this->languages[$this->language]['charset'];
 		$this->fullname = $this->languages[$this->language]['name'];
+		$this->date_format = isset ($this->languages[$this->language]['date_format']) ? $this->languages[$this->language]['date_format'] : 'mmmm d, yyyy';
+		$this->short_format = isset ($this->languages[$this->language]['short_format']) ? $this->languages[$this->language]['short_format'] : 'mmm d';
+		$this->time_format = isset ($this->languages[$this->language]['time_format']) ? $this->languages[$this->language]['time_format'] : 'h:MMa';
 		$this->setLocale ();
 		$this->getIndex ();
 

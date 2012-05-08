@@ -1,10 +1,12 @@
+{! admin/util/dates !}
+
 {% if full %}
 <p><a href="/blog">&laquo; {"Back to posts"}</a></p>
 {% end %}
 
 <div class="blog-post block">
 <h3><a href="{{ url }}">{{ title }}</a></h3>
-<p class="blog-info info">{{ ts|blog_filter_date }} - {" by "} <a href="/blog/by/{{ author }}">{{ author }}</a></p>
+<p class="blog-info info">{{ ts|I18n::date_time }} - {" by "} <a href="/blog/by/{{ author }}">{{ author }}</a></p>
 {{ body|none }}
 <div class="blog-tags info">
 {"Tags"}: 

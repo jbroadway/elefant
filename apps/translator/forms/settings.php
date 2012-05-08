@@ -11,6 +11,5 @@ not empty = 1
 [charset]
 
 not empty = 1
-default = UTF-8
 
 ; */ ?>

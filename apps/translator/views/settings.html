@@ -1,16 +1,48 @@
+{! admin/util/dates !}
+
 <form method="post" id="{{ _form }}">
 
 <p class="notice" id="dupe-notice">{"The language code entered already exists."}</p>
+
+<div class="date-reference">
+<p><strong>{"Date formatting reference"}:</strong></p>
+
+<code><pre>
+<span class="cd">yy     </span><span class="ex">12         </span><span class="su">{"Year in two digit form"}</span>
+<span class="cd">yyyy   </span><span class="ex">2012       </span><span class="su">{"Year in full"}</span>
+<span class="cd">m      </span><span class="ex">9          </span><span class="su">{"Month in numeric form"}</span>
+<span class="cd">mm     </span><span class="ex">09         </span><span class="su">{"Month in numeric form, zero-padded"}</span>
+<span class="cd">mmm    </span><span class="ex">Sep        </span><span class="su">{"Month name, abbreviated"}</span>
+<span class="cd">mmmm   </span><span class="ex">September  </span><span class="su">{"Month name"}</span>
+<span class="cd">d      </span><span class="ex">3          </span><span class="su">{"Date"}</span>
+<span class="cd">dd     </span><span class="ex">03         </span><span class="su">{"Date, zero-padded"}</span>
+<span class="cd">ddd    </span><span class="ex">Mon        </span><span class="su">{"Day of the week, abbreviated"}</span>
+<span class="cd">dddd   </span><span class="ex">Monday     </span><span class="su">{"Day of the week"}</span>
+<span class="cd">o      </span><span class="ex">1st        </span><span class="su">{"Date in ordinal form"}</span>
+<span class="cd">h      </span><span class="ex">6          </span><span class="su">{"Hours in 12-hour time"}</span>
+<span class="cd">hh     </span><span class="ex">06         </span><span class="su">{"Hours in 12-hour time, zero-padded"}</span>
+<span class="cd">H      </span><span class="ex">18         </span><span class="su">{"Hours in 24-hour time"}</span>
+<span class="cd">HH     </span><span class="ex">06         </span><span class="su">{"Hours in 24-hour time, zero-padded"}</span>
+<span class="cd">M      </span><span class="ex">4          </span><span class="su">{"Minutes"}</span>
+<span class="cd">MM     </span><span class="ex">04         </span><span class="su">{"Minutes, zero-padded"}</span>
+<span class="cd">s      </span><span class="ex">7          </span><span class="su">{"Seconds"}</span>
+<span class="cd">ss     </span><span class="ex">07         </span><span class="su">{"Seconds, zero-padded"}</span>
+<span class="cd">S      </span><span class="ex">7.000      </span><span class="su">{"Seconds with milliseconds"}</span>
+<span class="cd">SS     </span><span class="ex">07.000     </span><span class="su">{"Seconds, zero-padded, with milliseconds"}</span>
+<span class="cd">a      </span><span class="ex">AM         </span><span class="su">{"Period"}</span>
+<span class="cd">Z      </span><span class="ex">+02:00     </span><span class="su">{"Time zone offset"}</span>
+</pre></code>
+</div>
 
 <p>{"Language"}:<br />
 <input type="text" size="30" name="name" value="{{ name|quotes }}" />
 <span class="notice" id="name-notice">{"Please enter the name of the language."}</span></p>
 
-<p>{"Language code"} (ex: `en`, `fr`, `es`):<br />
+<p>{"Language code"} (ex: <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank">en, fr, es</a>):<br />
 <input type="text" size="15" name="code" value="{{ code|quotes }}" />
 <span class="notice" id="code-notice">{"Please enter the language code."}</span></p>
 
-<p>{"Locale"} ({"optional"}, ex: `us`, `ca`, 'gb`):<br />
+<p>{"Locale"} ({"optional"}, ex: <a href="http://en.wikipedia.org/wiki/ISO_3166-1" target="_blank">us, ca, gb</a>):<br />
 <input type="text" size="15" name="locale" value="{{ locale|quotes }}" /></p>
 
 <p>{"Character set"}:<br />
@@ -28,6 +60,21 @@
 </select>
 </p>
 
+<p>{"Local date format"}:<br />
+<input type="text" name="date_format" id="date-format" value="{{ date_format|quotes }}" />
+<span class="ex"><time class="date-preview" datetime="{{date ('Y')}}-09-21T16:32:47+00:00"></time></span>
+</p>
+
+<p>{"Short date format"}:<br />
+<input type="text" name="short_format" id="short-format" value="{{ short_format|quotes }}" />
+<span class="ex"><time class="short-preview" datetime="{{date ('Y')}}-09-21T16:32:47+00:00"></time></span>
+</p>
+
+<p>{"Local time format"}:<br />
+<input type="text" name="time_format" id="time-format" value="{{ time_format|quotes }}" />
+<span class="ex"><time class="time-preview" datetime="{{date ('Y')}}-09-21T22:32:47+00:00"></time></span>
+</p>
+
 <p>
 	<input type="submit" value="{"Save"}" />
 	&nbsp;
@@ -35,3 +82,46 @@
 </p>
 
 </form>
+
+<style>
+.date-reference {
+	float: right;
+	border: 1px solid #ddd;
+	background: #fff;
+	padding: 5px 7px 0px 7px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+.cd { color: teal; }
+.ex { font-style: italic; color: #777; }
+.su { color: #b84; }
+</style>
+
+<script>
+$(function () {
+	function dates_preview (field, id, default_value) {
+		if (field.value === '') {
+			$('time.' + id).localize (default_value);
+		} else {
+			$('time.' + id).localize (field.value);
+		}
+	}
+
+	dates_preview ($('#date-format')[0], 'date-preview', 'mmmm d, yyyy');
+	dates_preview ($('#short-format')[0], 'short-preview', 'mmm d');
+	dates_preview ($('#time-format')[0], 'time-preview', 'h:MMa');
+
+	$('#date-format').keyup (function () {
+		dates_preview (this, 'date-preview', 'mmmm d, yyyy');
+	});
+
+	$('#short-format').keyup (function () {
+		dates_preview (this, 'short-preview', 'mmm d');
+	});
+
+	$('#time-format').keyup (function () {
+		dates_preview (this, 'time-preview', 'h:MMa');
+	});
+});
+</script>
