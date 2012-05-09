@@ -16,26 +16,46 @@ if (! FileManager::verify_folder ($_POST['path'], $root)) {
 	$page->title = i18n_get ('Invalid Path');
 	echo '<p><a href="/filemanager">' . i18n_get ('Back') . '</a></p>';
 	return;
-} elseif ($_FILES['file']['error'] > 0) {
-	$page->title = i18n_get ('An Error Occurred');
-	echo '<p>' . i18n_get ('Error message') . ': ' . $_FILES['file']['error'] . '</p>';
-	echo '<p><a href="/filemanager">' . i18n_get ('Back') . '</a></p>';
-	return;
-} elseif (@file_exists ($root . $_POST['path'] . '/' . $_FILES['file']['name'])) {
-	$page->title = i18n_get ('File Already Exists');
-	echo '<p>' . i18n_get ('A file by that name already exists.') . '</p>';
-	echo '<p><a href="/filemanager">' . i18n_get ('Back') . '</a></p>';
-	return;
-} elseif (! @move_uploaded_file ($_FILES['file']['tmp_name'], $root . $_POST['path'] . '/' . $_FILES['file']['name'])) {
-	$page->title = i18n_get ('An Error Occurred');
-	echo '<p>' . i18n_get ('Unable to save the file.') . '</p>';
-	echo '<p><a href="/filemanager">' . i18n_get ('Back') . '</a></p>';
-	return;
 }
 
-@chmod ($root . $_POST['path'] . '/' . $_FILES['file']['name'], 0777);
+foreach ($_FILES['file']['error'] as $error) {
+	if ($error > 0) {
+		$page->title = i18n_get ('An Error Occurred');
+		echo '<p>' . i18n_get ('Error message') . ': ' . $error . '</p>';
+		echo '<p><a href="/filemanager">' . i18n_get ('Back') . '</a></p>';
+		return;
+	}
+}
 
-$this->add_notification (i18n_get ('File saved.'));
+for ($i = 0; $i < count ($_FILES['file']['name']); $i++) {
+	if (@file_exists ($root . $_POST['path'] . '/' . $_FILES['file']['name'][$i])) {
+		$page->title = i18n_get ('File Already Exists') . ': ' . $_FILES['file']['name'][$i];
+		echo '<p>' . i18n_get ('A file by that name already exists.') . '</p>';
+		echo '<p><a href="/filemanager">' . i18n_get ('Back') . '</a></p>';
+		return;
+	}
+}
+
+$count = 0;
+$errors = array ();
+for ($i = 0; $i < count ($_FILES['file']['name']); $i++) {
+	if (@move_uploaded_file ($_FILES['file']['tmp_name'][$i], $root . $_POST['path'] . '/' . $_FILES['file']['name'][$i])) {
+		$count++;
+		@chmod ($root . $_POST['path'] . '/' . $_FILES['file']['name'][$i], 0777);
+	} else {
+		$errors[] = $_FILES['file']['name'][$i];
+	}
+}
+
+if (count ($_FILES['file']) > 1) {
+	if (count ($_FILES['file']['name']) === $count) {
+		$this->add_notification (i18n_getf ('%d files saved.', $count));
+	} else {
+		$this->add_notification (i18n_getf ('%d file saved. Unable to save files: %s', $count, join (', ', $errors)));
+	}
+} else {
+	$this->add_notification (i18n_get ('File saved.'));
+}
 $this->redirect ('/filemanager?path=' . $_POST['path']);
 
 ?>
