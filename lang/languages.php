@@ -44,4 +44,16 @@ charset                 = UTF-8
 fallback                = Off
 default                 = Off
 
+[cs]
+
+name                    = "Česky"
+code                    = cs
+charset                 = UTF-8
+fallback                = Off
+default                 = Off
+locale                  = Off
+date_format             = d.mmmm yyyy
+short_format            = dd.mm.yyyy
+time_format             = "HH:MM"
+
 ; */ ?>
