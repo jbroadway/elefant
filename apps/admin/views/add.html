@@ -21,7 +21,7 @@
 <p>{"Access"}:<br />
 <select name="access">
 {% foreach User::access_list () %}
-	<option value="{{ loop_value }}"{% if access === $data->loop_value %} selected{% end %}>{{ loop_value|ucfirst }}</option>
+	<option value="{{ loop_value }}"{% if access === $data->loop_value %} selected{% end %}>{{ loop_value|ucfirst|i18n_get }}</option>
 {% end %}
 </select></p>
 <p>{"Alternate menu title"}:<br /><input type="text" name="menu_title" size="40" value="{{ menu_title }}" /></p>

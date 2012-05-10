@@ -272,6 +272,8 @@ class User extends ExtendedModel {
 		if (self::$acl === false) {
 			$appconf = parse_ini_file ('apps/user/conf/config.php', true);
 			self::$acl = $appconf['Access'];
+			// make the default access levels translatable
+			i18n_get ('Public'); i18n_get ('Member'); i18n_get ('Private');
 		}
 	}
 
