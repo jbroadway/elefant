@@ -37,18 +37,19 @@ if ($wp->error) {
 }
 
 // access control
-if ($wp->access !== 'public') {
+if ($wp->access !== 'public' && !User::is('admin')) {
 	if (! User::require_login ()) {
 		$page->title = i18n_get ('Login required');
 		echo $this->run ('user/login');
 		return;
 	}
-	if (! User::access ($wp->access)) {
+if (! User::access ($wp->access) && !User::is('admin')) {
 		$page->title = i18n_get ('Login required');
 		echo $this->run ('user/login');
 		return;
 	}
 }
+
 
 // set the page properties
 $page->id = $id;
@@ -61,7 +62,7 @@ $page->layout = $wp->layout;
 $page->head = $wp->head;
 
 // show admin edit buttons
-if (User::is_valid () && User::is ('admin')) {
+if (User::is_valid () && User::is('admin')) {
 	$lock = new Lock ('Webpage', $id);
 	$page->locked = $lock->exists ();
 	echo $tpl->render ('admin/editable', $page);
