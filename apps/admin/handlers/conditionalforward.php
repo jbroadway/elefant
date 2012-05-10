@@ -26,10 +26,6 @@ $code = isset ($data['code'])
 
 if (User::is($user_type))
 {		
-	if ($code === 301) {
-		$this->permenent_redirect ($url);
-	}
-	
 		$this->redirect ($url);
 }
 

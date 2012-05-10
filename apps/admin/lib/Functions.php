@@ -75,4 +75,12 @@ function admin_status_codes () {
 	);
 }
 
+/**
+ * User access levels for the admin/conditional_forward dynamic object embed.
+ */
+function user_user_groups () {
+	return User::access_list();		
+}
+
+
 ?>
