@@ -12,7 +12,7 @@ $user_type = isset ($data['user_type']) ? $data['user_type'] : $_GET['user_type'
 if (User::is_valid () && User::is ('admin')) {
 	printf (
 		'<p>%s:</p><p><a href="%s">%s</a></p>',
-		i18n_get ('This page forwards members of the '.$user_type.' group the following link'),
+		i18n_getf ('This page forwards members of the %s group to the following link', $user_type),
 		$url,
 		$url
 	);
@@ -23,13 +23,14 @@ $code = isset ($data['code'])
 	? $data['code']
 	: (isset ($_GET['code']) ? $_GET['code'] : 302);
 
-if ($code === 301) {
-	$this->permenent_redirect ($url);
-}
 
 if (User::is($user_type))
-{
-	$this->redirect ($url);
+{		
+	if ($code === 301) {
+		$this->permenent_redirect ($url);
+	}
+	
+		$this->redirect ($url);
 }
 
 ?>
