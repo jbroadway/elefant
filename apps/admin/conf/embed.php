@@ -29,7 +29,7 @@ to[message] = Please enter a valid URL.
 user_type[label] = Group
 user_type[type] = select
 user_type[require] = "apps/admin/lib/Functions.php"
-user_type[callback] = "user_access_groups"
+user_type[callback] = "admin_user_groups"
 
 [admin/html]
 
