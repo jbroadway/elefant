@@ -17,6 +17,7 @@ $f->verify_csrf = false;
 if ($f->submit ()) {
 	$u->name = $_POST['name'];
 	$u->email = $_POST['email'];
+	$u->type = $_POST['type'];
 	if (! empty ($_POST['password'])) {
 		$u->password = User::encrypt_pass ($_POST['password']);
 	}
