@@ -79,8 +79,15 @@ function admin_status_codes () {
  * User access levels for the admin/conditional_forward dynamic object embed.
  */
 function admin_user_groups () {
-	return User::access_list();		
+	$list = User::access_list ();
+	$out = array ();
+	foreach ($list as $access) {
+		$out[] = (object) array (
+			'key' => $access,
+			'value' => i18n_get (ucfirst ($access))
+		);
+	}
+	return $out;
 }
-
 
 ?>

@@ -37,13 +37,13 @@ if ($wp->error) {
 }
 
 // access control
-if ($wp->access !== 'public' && !User::is('admin')) {
+if ($wp->access !== 'public' && ! User::is ('admin')) {
 	if (! User::require_login ()) {
 		$page->title = i18n_get ('Login required');
 		echo $this->run ('user/login');
 		return;
 	}
-if (! User::access ($wp->access) && !User::is('admin')) {
+	if (! User::access ($wp->access)) {
 		$page->title = i18n_get ('Login required');
 		echo $this->run ('user/login');
 		return;

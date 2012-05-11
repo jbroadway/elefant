@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Forwards a user to the specified URL location.
+ * Forwards a user to the specified URL location
+ * if they match a specific access level.
  * Works as a dynamic object to be embedded
  * into the WYSIWYG editor.
  */
@@ -19,14 +20,8 @@ if (User::is_valid () && User::is ('admin')) {
 	return;
 }
 
-$code = isset ($data['code'])
-	? $data['code']
-	: (isset ($_GET['code']) ? $_GET['code'] : 302);
-
-
-if (User::is($user_type))
-{		
-		$this->redirect ($url);
+if (User::is ($user_type)) {
+	$this->redirect ($url);
 }
 
 ?>
