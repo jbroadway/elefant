@@ -55,6 +55,21 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 		$i18n = new I18n ('lang', array ('negotiation_method' => 'http'));
 
 		$this->assertEquals ($i18n->language, 'en');
+
+		// it-IT should still match it
+		$i18n->languages = array ('it' => 1, 'en' => 1);
+		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'it-IT';
+		$this->assertEquals ('it', $i18n->negotiate ('http'));
+
+		// should match fr_ca
+		$i18n->languages = array ('fr_ca' => 1, 'fr' => 1, 'en' => 1);
+		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'fr-CA';
+		$this->assertEquals ('fr_ca', $i18n->negotiate ('http'));
+
+		// should match fr
+		$i18n->languages = array ('fr_ca' => 1, 'fr' => 1, 'en' => 1);
+		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'fr';
+		$this->assertEquals ('fr', $i18n->negotiate ('http'));
 	}
 
 	function test_cascade () {
