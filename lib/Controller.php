@@ -49,15 +49,23 @@
  * The controller simply returns the matching URL so you can include
  * it via the following code:
  *
+ *     <?php
+ *     
  *     $handler = $controller->route ($_SERVER['REQUEST_URI']);
  *     ob_start ();
  *     require_once ($handler);
  *     $page->body = ob_get_clean ();
+ *     
+ *     ?>
  *
  * Or more simply (but in practice the same):
  *
+ *     <?php
+ *     
  *     $handler = $controller->route ($_SERVER['REQUEST_URI']);
  *     $page->body = $controller->handle ($handler);
+ *     
+ *     ?>
  *
  * In this way, there is less scaffolding code for individual controllers,
  * they can simply begin executing just like an ordinary PHP script, and
@@ -69,35 +77,55 @@
  *
  * To use named parameters, you simply say:
  *
+ *     <?php
+ *     
  *     list ($id, $title) = $this->params;
+ *     
+ *     ?>
  *
  * You can also call one handler from within another and get its results
  * like this:
  *
+ *     <?php
+ *     
  *     $res = $this->run ('/user/123');
+ *     
+ *     ?>
  *
  * Sometimes you might want to pass values to another handler for internal
  * processing, which you can do like this:
  *
+ *     <?php
+ *     
  *     $res = $this->run ('/user/123', array ('foo' => 'bar'));
+ *     
+ *     ?>
  *
  * You can then access the array via:
  *
+ *     <?php
+ *     
  *     echo $this->data['foo'];
+ *     
+ *     ?>
  *
  * In addition to running one handler from another, you can configure
  * hooks with one or more handlers to be run for you when you trigger
  * the hook. This is a 3-step process:
  *
- * 1. Add your hook and its handler to `conf/config.php`:
+ * 1\. Add your hook and its handler to `conf/config.php`:
  *
  *     myapp/somehandler[] = otherapp/handler
  *
- * 2. In `myapp/somehandler`, add the hook call and pass it some data:
+ * 2\. In `myapp/somehandler`, add the hook call and pass it some data:
  *
+ *     <?php
+ *     
  *     $this->hook ('myapp/somehandler', array('id' => 123));
+ *     
+ *     ?>
  *
- * 3. In `otherapp/handler`, verify the request and do something
+ * 3\. In `otherapp/handler`, verify the request and do something
  * interesting with the id:
  *
  *     <?php
@@ -172,12 +200,12 @@ class Controller {
 	 * When a handler is loaded, if there is a `conf/config.php` for that
 	 * app, its contents will be loaded into `$appconf['appname']` once
 	 * the first time it is called, and accessible thereafter by any
-	 * handler in that app directly via $appconf.
+	 * handler in that app directly via `$appconf`.
 	 */
 	public static $appconf = array ();
 
 	/**
-	 * This will be set the first time chunked() is called, so the controller
+	 * This will be set the first time `chunked()` is called, so the controller
 	 * knows it's already started sending the response with
 	 * `Transfer-Encoding: chunked`.
 	 */
@@ -191,17 +219,25 @@ class Controller {
 	 *
 	 * Usage:
 	 *
+	 *     <?php
+	 *     
 	 *     // cache indefinitely
 	 *     $this->cache = true;
-	 *
+	 *     
 	 *     // cache for 5 minutes
 	 *     $this->cache = 300;
+	 *     
+	 *     ?>
 	 *
 	 * To clear a cached handler before its time, which you would have to
 	 * do from a separate handler since the original won't be called while
 	 * cached, you can use:
 	 *
+	 *     <?php
+	 *     
 	 *     $memcache->delete ('myapp_handler');
+	 *     
+	 *     ?>
 	 */
 	public $cache = false;
 
@@ -235,12 +271,20 @@ class Controller {
 	 * Trigger the default error handler. Note that you must echo the
 	 * output from your handler before returning, for example:
 	 *
+	 *     <?php
+	 *     
 	 *     echo $this->error ();
 	 *     return;
+	 *     
+	 *     ?>
 	 *
 	 * Not like this:
 	 *
+	 *     <?php
+	 *     
 	 *     return $this->error ();
+	 *     
+	 *     ?>
 	 */
 	public function error ($code = 404, $title = 'Page not found', $message = '') {
 		// Erase any existing output up to this point
@@ -274,11 +318,19 @@ class Controller {
 	 * than the number of parameters. Handy for using named parameters
 	 * via:
 	 *
+	 *     <?php
+	 *     
 	 *     extract ($this->params ('id', 'title'));
+	 *     
+	 *     ?>
 	 *
 	 * Note that you can also achieve the same thing via:
 	 *
+	 *     <?php
+	 *     
 	 *     list ($id, $title) = $this->params;
+	 *     
+	 *     ?>
 	 */
 	public function params () {
 		$keys = func_get_args ();
@@ -289,23 +341,22 @@ class Controller {
 	 * Execute the request handler. $internal determines whether the
 	 * request originated internally from another handler or template,
 	 * or externally from a browser request.
-	 *
-	 * Note: We use three globals here. This may raise some flags in
-	 * you as a developer, but hear me out. These are global singletons
-	 * that the front controller creates for us, and I want to be able
-	 * to use them in handlers directly without first instantiating them,
-	 * through a `::getInstance()` call or otherwise. I know it's bad
-	 * form in general, but this is *by design* to save typing in handlers
-	 * and happens for these three objects only.
-	 *
-	 * I also could have simply added them as properties of `$this`, but
-	 * that would add typing too (e.g., `$this->view->render` vs
-	 * `$tpl->render`). I'm opting for conciseness. And as it is, I'm
-	 * deliberately making an ordinary script act like a controller, minus
-	 * the class wrapping it. It's a stylistic decision, and if it's not
-	 * your cup of tea, that's cool. It is mine, however :)
 	 */
 	public function handle ($handler, $internal = true, $data = array ()) {
+		// Note: We use three globals here. This may raise some flags in
+		// you as a developer, but hear me out. These are global singletons
+		// that the front controller creates for us, and I want to be able
+		// to use them in handlers directly without first instantiating them,
+		// through a `::getInstance()` call or otherwise. I know it's bad
+		// form in general, but this is *by design* to save typing in handlers
+		// and happens for these three objects only.
+		// 
+		// I also could have simply added them as properties of `$this`, but
+		// that would add typing too (e.g., `$this->view->render` vs
+		// `$tpl->render`). I'm opting for conciseness. And as it is, I'm
+		// deliberately making an ordinary script act like a controller, minus
+		// the class wrapping it. It's a stylistic decision, and if it's not
+		// your cup of tea, that's cool. It is mine, however :)
 		global $page, $tpl, $memcache;
 		
 		// Check for a cached copy of this handler's output
@@ -546,7 +597,7 @@ class Controller {
 	 * the current buffer to the client. Call this each time you want the
 	 * script to send the next chunk of data to the client.
 	 *
-	 * Note that this will cause render() to call `flush(null)` at the end,
+	 * Note that this will cause `render()` to call `flush(null)` at the end,
 	 * which will not return your output to be included in a page layout.
 	 * It will also flush and exit prior to setting a controller-level
 	 * cache of your output.

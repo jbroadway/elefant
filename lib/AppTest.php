@@ -39,35 +39,35 @@
  *
  * Usage:
  *
- *   <?php
- *   
- *   require_once ('lib/Autoloader.php');
- *   
- *   class MyappAppTest extends AppTest {
- *     public function test_myhandler () {
- *       // Perform a handler request and test its output
- *       $res = $this->get ('myapp/myhandler', array ('one' => 'two');
- *       $this->assertContains ('Expected output', $res);
+ *     <?php
+ *     
+ *     require_once ('lib/Autoloader.php');
+ *     
+ *     class MyappAppTest extends AppTest {
+ *         public function test_myhandler () {
+ *             // Perform a handler request and test its output
+ *             $res = $this->get ('myapp/myhandler', array ('one' => 'two');
+ *             $this->assertContains ('Expected output', $res);
+ *         }
+ *     
+ *         public function test_admin () {
+ *             // This should redirect to /admin
+ *             $res = $this->get ('myapp/admin');
+ *             $this->assertContains ('headers already sent', $res);
+ *       
+ *             // Become the admin and try again
+ *             $this->userAdmin ();
+ *             $res = $this->get ('myapp/admin');
+ *             $this->assertContains ('My admin output', $res);
+ *       
+ *             // Become anonymous user again
+ *             $this->userAnon ();
+ *       
+ *             // Continue...
+ *         }
  *     }
- *
- *     public function test_admin () {
- *       // This should redirect to /admin
- *       $res = $this->get ('myapp/admin');
- *       $this->assertContains ('headers already sent', $res);
- *       
- *       // Become the admin and try again
- *       $this->userAdmin ();
- *       $res = $this->get ('myapp/admin');
- *       $this->assertContains ('My admin output', $res);
- *       
- *       // Become anonymous user again
- *       $this->userAnon ();
- *       
- *       // Continue...
- *     }
- *   }
- *   
- *   ?>
+ *     
+ *     ?>
  */
 class AppTest extends PHPUnit_Framework_TestCase {
 	/**
@@ -113,7 +113,7 @@ class AppTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Initializes the $i18n, $memcache, $page, and $tpl objects
+	 * Initializes the `$i18n`, `$memcache`, `$page`, and `$tpl` objects
 	 * for use with the controller in testing handlers.
 	 */
 	public static function setUpBeforeClass () {
@@ -167,7 +167,7 @@ class AppTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Unset the $i18n, $memcache, $page, and $tpl objects upon
+	 * Unset the `$i18n`, `$memcache`, `$page`, and `$tpl` objects upon
 	 * completion.
 	 */
 	public static function tearDownAfterClass () {

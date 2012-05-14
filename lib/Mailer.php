@@ -32,65 +32,65 @@ require_once ('Zend/Mail.php');
 require_once ('Zend/Mime/Part.php');
 
 /**
- * This is a wrapper class around Zend_Mail that configures it based
+ * This is a wrapper class around `Zend_Mail` that configures it based
  * on Elefant's global mailer settings.
  *
  * Usage:
  *
- *   <?php
- *   
- *   // Using Mailer::send() as a wrapper:
- *   $mail = Mailer::send (array (
- *     'to'          => array ('user@example.com', 'Joe User'),
- *     'from'        => array ('me@widgets.com', 'Alternate Sender'),
- *     'cc'          => array ('me@widgets.com', 'CC This Guy'),
- *     'bcc'         => array ('me@widgets.com', 'BCC This Guy'),
- *     'reply_to'    => array ('me@widgets.com', 'Reply to This Guy'),
- *     'subject'     => 'Subject line',
- *     'text'        => 'This is a plain text message.',
- *     'html'        => 'This is an <b>html</b> message.',
- *     'attachments' => array (
- *       'File data...',
- *       // or
- *       new Zend_Mime_Part ('File data...')
- *     )
- *   );
- *   
- *   // Using the Zend_Mail object directly:
- *   $mail = Mailer::getInstance ();
- *   $mail->setBodyText ('This is an email message.');
- *   $mail->setSubject ('Subject line');
- *   $mail->addTo ('user@example.com', 'Joe User');
- *   // Etc.
- *   $mail->send ();
- *   
- *   ?>
+ *     <?php
+ *     
+ *     // Using Mailer::send() as a wrapper:
+ *     $mail = Mailer::send (array (
+ *         'to'          => array ('user@example.com', 'Joe User'),
+ *         'from'        => array ('me@widgets.com', 'Alternate Sender'),
+ *         'cc'          => array ('me@widgets.com', 'CC This Guy'),
+ *         'bcc'         => array ('me@widgets.com', 'BCC This Guy'),
+ *         'reply_to'    => array ('me@widgets.com', 'Reply to This Guy'),
+ *         'subject'     => 'Subject line',
+ *         'text'        => 'This is a plain text message.',
+ *         'html'        => 'This is an <b>html</b> message.',
+ *         'attachments' => array (
+ *             'File data...',
+ *             // or
+ *             new Zend_Mime_Part ('File data...')
+ *         )
+ *     );
+ *     
+ *     // Using the Zend_Mail object directly:
+ *     $mail = Mailer::getInstance ();
+ *     $mail->setBodyText ('This is an email message.');
+ *     $mail->setSubject ('Subject line');
+ *     $mail->addTo ('user@example.com', 'Joe User');
+ *     // Etc.
+ *     $mail->send ();
+ *     
+ *     ?>
  */
 class Mailer {
 	/**
-	 * The parsed configurations from the [Mailer] section of the
+	 * The parsed configurations from the `[Mailer]` section of the
 	 * global configuration.
 	 */
 	private static $config = null;
 
 	/**
-	 * Zend_Mail object.
+	 * `Zend_Mail` object.
 	 */
 	private static $mailer = null;
 
 	/**
-	 * Zend_Mail_Transport object.
+	 * `Zend_Mail_Transport` object.
 	 */
 	private static $transport = null;
 
 	/**
-	 * If getInstance() fails, this will contain the error message.
+	 * If `getInstance()` fails, this will contain the error message.
 	 */
 	public static $error = false;
 
 	/**
-	 * Configures and fetches a singleton instance of Zend_Mail.
-	 * Also clears settings from previous use onthe Zend_Mail object
+	 * Configures and fetches a singleton instance of `Zend_Mail`.
+	 * Also clears settings from previous use onthe `Zend_Mail` object
 	 * unless you call `getInstance(false)`.
 	 */
 	public static function getInstance ($clear = true) {
@@ -162,9 +162,9 @@ class Mailer {
 
 	/**
 	 * Send a single message to a recipient. Handy for one-off messages.
-	 * Returns the Zend_Mail object after calling `send()`, unless false
+	 * Returns the `Zend_Mail` object after calling `send()`, unless false
 	 * is passed as the second parameter, in which case `send()` is not
-	 * called and the Zend_Mail object is returned immediately.
+	 * called and the `Zend_Mail` object is returned immediately.
 	 */
 	public static function send ($msg, $send = true) {
 		$mailer = self::getInstance ();

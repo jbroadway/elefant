@@ -30,40 +30,40 @@
  *
  * Usage:
  *
- *   <?php
- *   
- *   // Default usage
- *   $acl = new Acl ();
- *   
- *   if (! $acl->allowed ('resource')) {
- *     // Keep the current user out
- *   }
- *   
- *   // Use an alternate user
- *   $user = new User ($user_id);
- *   
- *   if (! $acl->allowed ('resource', $user)) {
- *     // Keep the user out
- *   }
- *   
- *   ?>
+ *     <?php
+ *     
+ *     // Default usage
+ *     $acl = new Acl ();
+ *     
+ *     if (! $acl->allowed ('resource')) {
+ *         // Keep the current user out
+ *     }
+ *     
+ *     // Use an alternate user
+ *     $user = new User ($user_id);
+ *     
+ *     if (! $acl->allowed ('resource', $user)) {
+ *         // Keep the user out
+ *     }
+ *     
+ *     ?>
  *
  * The format of the INI file is as follows:
  *
- *   [admin]
- *   
- *   default = On
- *   
- *   [editor]
- *   
- *   default = On
- *   user/admin = Off
- *   myapp = Off
- *   
- *   [member]
- *   
- *   default = Off
- *   user = On
+ *     [admin]
+ *     
+ *     default = On
+ *     
+ *     [editor]
+ *     
+ *     default = On
+ *     user/admin = Off
+ *     myapp = Off
+ *     
+ *     [member]
+ *     
+ *     default = Off
+ *     user = On
  *
  * The default lines change whether you should allow or deny by default for a
  * given role. The naming convention `user/admin` signifies a feature within an

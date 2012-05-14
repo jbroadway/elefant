@@ -31,12 +31,19 @@
  *
  * Based on Zane Ashby's idea posted here:
  *
- * http://demonastery.org/72/tiny-memcached-wrapper/
+ * [http://demonastery.org/72/tiny-memcached-wrapper/](http://demonastery.org/72/tiny-memcached-wrapper/)
  */
 class MemcacheExt extends Memcache {
 	/**
 	 * Takes a callback function that generates the value 
 	 * if it's not found in the cache.
+	 *
+	 * - `$key` - Cache key
+	 * - `$timeout` - Seconds to cache for
+	 * - `$function` - Callback function to generate cache data
+	 *
+	 * Returns the data from cache, or from the callback and caches the results
+	 * for the next call.
 	 */
 	public function cache ($key, $timeout, $function) {
 		if (($val = $this->get ($key)) === false) {

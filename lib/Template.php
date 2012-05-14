@@ -94,7 +94,11 @@
  *
  * To call a template, use:
  *
+ *     <?php
+ *     
  *     echo $tpl->render ('base', array ('foo' => 'bar'));
+ *     
+ *     ?>
  *
  * Note that arrays passed to templates are converted to objects,
  * and objects are left as-is.
@@ -164,6 +168,8 @@
  * executing in the following order:
  *
  *     {{ body|strtoupper|strtolower }}
+ *
+ * This evaluates to:
  *
  *     <?php echo strtolower (strtoupper ($data->body)); ?>
  *

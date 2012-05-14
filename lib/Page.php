@@ -32,7 +32,11 @@
  * The layout property sets which template should be used to
  * render the design of the page, unless you specify:
  *
+ *     <?php
+ *     
  *     $page->layout = false;
+ *     
+ *     ?>
  *
  * This will skip the layout and simply return the page body
  * to the user.

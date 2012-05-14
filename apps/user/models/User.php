@@ -49,38 +49,42 @@
  *
  * Basic usage of additional methods:
  *
- *   // Send unauth users to myapp/login view
- *   if (! User::require_login ()) {
- *     $page->title = i18n_get ('Members');
- *     echo $this->run ('user/login');
- *     return;
- *   }
- *
- *   // Check if a user is valid at any point
- *   if (! User::is_valid ()) {
- *     // Not allowed
- *   }
- *
- *   // Check the user's type
- *   if (User::is ('member')) {
- *     // Access granted
- *   }
- *
- *   // Get the name value
- *   $name = User::val ('name');
- *
- *   // Get the actual user object
- *   info (User::$user);
- *
- *   // Update and save a user's name
- *   User::val ('name', 'Bob Diggity');
- *   User::save ();
- *
- *   // Encrypt a password
- *   $encrypted = User::encrypt_pass ($password);
- *
- *   // Log out and send them home
- *   User::logout ('/');
+ *     <?php
+ *     
+ *     // Send unauth users to myapp/login view
+ *     if (! User::require_login ()) {
+ *         $page->title = i18n_get ('Members');
+ *         echo $this->run ('user/login');
+ *         return;
+ *     }
+ *     
+ *     // Check if a user is valid at any point
+ *     if (! User::is_valid ()) {
+ *         // Not allowed
+ *     }
+ *     
+ *     // Check the user's type
+ *     if (User::is ('member')) {
+ *         // Access granted
+ *     }
+ *     
+ *     // Get the name value
+ *     $name = User::val ('name');
+ *     
+ *     // Get the actual user object
+ *     info (User::$user);
+ *     
+ *     // Update and save a user's name
+ *     User::val ('name', 'Bob Diggity');
+ *     User::save ();
+ *     
+ *     // Encrypt a password
+ *     $encrypted = User::encrypt_pass ($password);
+ *     
+ *     // Log out and send them home
+ *     User::logout ('/');
+ *     
+ *     ?>
  */
 class User extends ExtendedModel {
 	/**

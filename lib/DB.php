@@ -31,16 +31,18 @@
  * 2. A set of convenience methods that operate transparently on the PDO connection(s).
  *
  * The connection manager lazy loads the connections on the first call to
- * DB::get_connection(), so requests that don't need a database connection
+ * `DB::get_connection()`, so requests that don't need a database connection
  * don't suffer the extra overhead. It is also master/slave aware, with write
  * requests going to the master and reads being directed to a random connection.
  *
  * Note: This is a simple database abstraction layer. For more advanced modelling
- * see `lib/Mode.php` which provides a more complete abstraction and a way of
+ * see `lib/Model.php` which provides a more complete abstraction and a way of
  * organizing your application logic.
  *
  * Usage:
  *
+ *     <?php
+ *     
  *     if (! DB::open (array (
  *         'driver' => 'sqlite', 'file' => 'conf/site.db'
  *     ))) {
@@ -63,6 +65,8 @@
  *     $fieldname = DB::shift (
  *         'select fieldname from sometable where id = ?', $id
  *     );
+ *     
+ *     ?>
  *
  * Values inserted use proper prepared statements and bound parameters to prevent
  * SQL injection.
@@ -95,7 +99,7 @@ class DB {
 
 	/**
 	 * Open a database connection and add it to the pool. Accepts
-	 * an array of connection info taken from the global conf().
+	 * an array of connection info taken from the global `conf()`.
 	 */
 	public static function open ($conf) {
 		if (! self::$connections) {
@@ -209,7 +213,7 @@ class DB {
 	}
 	
 	/**
-	 * Normalize use of escape characters (`) to the database
+	 * Normalize use of escape characters (<code>`</code>) to the database
 	 * that's currently in use.
 	 */
 	public static function normalize_sql ($db, $sql) {

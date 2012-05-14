@@ -34,6 +34,8 @@
  *
  * Usage:
  *
+ *     <?php
+ *     
  *     class MyTable extends Model {
  *         function get_all_by_x () {
  *             return MyTable::query ()
@@ -64,9 +66,13 @@
  *     foreach ($res as $row) {
  *         $row->remove ();
  *     }
+ *     
+ *     ?>
  *
  * Also supports validation of values via:
  *
+ *     <?php
+ *     
  *     class MyTable extends Model {
  *         var $verify = array (
  *             'email' => array (
@@ -78,14 +84,20 @@
  *             )
  *         );
  *     }
+ *     
+ *     ?>
  *
  * Or specified as an INI file:
  *
+ *     <?php
+ *     
  *     class MyTable extends Model {
  *         var $verify = 'apps/myapp/forms/mytable.php';
  *     }
+ *     
+ *     ?>
  *
- * See Form::verify_values for more info on validation rules
+ * See `Form::verify_values` for more info on validation rules
  * and file formats.
  */
 class Model {

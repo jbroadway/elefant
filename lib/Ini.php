@@ -6,23 +6,23 @@
  *
  * Usage:
  *
- *   <?php
- *   
- *   // Parsing files or strings
- *   $data = Ini::parse ('ini_filename_or_string', true);
- *   
- *   // Write a data structure into an INI-formatted string
- *   $ini = Ini::write ($data);
- *   
- *   // Write a data structure to an INI-formatted file
- *   $res = Ini::write ($data, 'filename.ini');
- *   
- *   ?>
+ *     <?php
+ *     
+ *     // Parsing files or strings
+ *     $data = Ini::parse ('ini_filename_or_string', true);
+ *     
+ *     // Write a data structure into an INI-formatted string
+ *     $ini = Ini::write ($data);
+ *     
+ *     // Write a data structure to an INI-formatted file
+ *     $res = Ini::write ($data, 'filename.ini');
+ *     
+ *     ?>
  */
 class Ini {
 	/**
 	 * Parses an INI-formatted string or file. Just an alias
-	 * for parse_ini_file/parse_ini_string that's here for
+	 * for `parse_ini_file`/`parse_ini_string` that's here for
 	 * completeness and consistency.
 	 */
 	public static function parse ($string, $sections = false, $scanner_mode = INI_SCANNER_NORMAL) {

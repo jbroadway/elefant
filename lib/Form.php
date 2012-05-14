@@ -171,11 +171,15 @@ class Form {
 	 *
 	 * Usage:
 	 *
+	 *     <?php
+	 *     
 	 *     $f = new Form (); // defaults and no Controller or rules set
 	 *     $f = new Form ('post'); // POST requests but no Controller or rules
 	 *     $f = new Form ('post', $this); // POST and Controller set
 	 *     $f = new Form ('post', 'myapp/rules'); // POST and rules set
 	 *     $f = new Form ('post', 'myapp/rules, $this); // Everything set
+	 *     
+	 *     ?>
 	 *
 	 * Note that if the rules are not set but the Controller is passed,
 	 * the rules file will be assumed to match the appname/handlername of
@@ -183,7 +187,11 @@ class Form {
 	 * well. This is the most handy scenario, since if you match your
 	 * rules file, handler, and view names, you can simply say:
 	 *
+	 *     <?php
+	 *     
 	 *     $f = new Form ('post', $this);
+	 *     
+	 *     ?>
 	 *
 	 * And it will set everything up correctly based on `$this->uri` in the
 	 * Controller.

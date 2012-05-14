@@ -31,10 +31,14 @@
  *
  * Usage:
  *
+ *     <?php
+ *     
  *     if (conf ('General', 'debug')) {
  *         require_once ('lib/Debugger.php');
  *         Debugger::start ();
  *     }
+ *     
+ *     ?>
  */
 class Debugger {
 	/**

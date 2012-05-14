@@ -29,38 +29,42 @@
  *
  * Usage:
  *
- *   // saving a new version
- *   Versions::add ($obj);
- *
- *   // getting the history of an object
- *   $history = Versions::history ($obj);
- *
- *   // get recent changes by current user
- *   $recent = Versions::recent (User::$user);
- *
- *   // compare current version of a web page to previous:
- *
- *   // 1. fetch the page
- *   $w = new Webpage ('index');
- *
- *   // 2. get the previous version (limit=1, offset=1)
- *   $history = Versions::history ($w, 1, 1);
- *
- *   // 3. restore the first result's object
- *   $v = new Versions;
- *   $w2 = $v->restore ($history[0]);
- *
- *   // 4. compare the two
- *   $modified_fields = Versions::diff ($w, $w2);
+ *     <?php
+ *     
+ *     // saving a new version
+ *     Versions::add ($obj);
+ *     
+ *     // getting the history of an object
+ *     $history = Versions::history ($obj);
+ *     
+ *     // get recent changes by current user
+ *     $recent = Versions::recent (User::$user);
+ *     
+ *     // compare current version of a web page to previous:
+ *     
+ *     // 1. fetch the page
+ *     $w = new Webpage ('index');
+ *     
+ *     // 2. get the previous version (limit=1, offset=1)
+ *     $history = Versions::history ($w, 1, 1);
+ *     
+ *     // 3. restore the first result's object
+ *     $v = new Versions;
+ *     $w2 = $v->restore ($history[0]);
+ *     
+ *     // 4. compare the two
+ *     $modified_fields = Versions::diff ($w, $w2);
+ *     
+ *     ?>
  *
  * Fields:
  *
- * id - versions id
- * class - class name of the object
- * pkey - object's 'key' field value
- * user - user id or 0 if no user saved
- * ts - date/time of the change
- * serialized - serialized version of the object
+ * - `id` - versions id
+ * - `class` - class name of the object
+ * - `pkey` - object's 'key' field value
+ * - `user` - user id or 0 if no user saved
+ * - `ts` - date/time of the change
+ * - `serialized` - serialized version of the object
  */
 class Versions extends Model {
 	/**
@@ -80,7 +84,7 @@ class Versions extends Model {
 
 	/**
 	 * Recreate an object from the stored version. Takes any
-	 * result from recent() or history().
+	 * result from `recent()` or `history()`.
 	 */
 	public function restore ($vobj = false) {
 		if (! $vobj) {
@@ -152,7 +156,7 @@ class Versions extends Model {
 	 * of the changes themselves. Note that this looks at the data array
 	 * of the Model objects, not object properties, so it will not work
 	 * on ordinary objects, only Model-based objects and objects returned
-	 * by the recent() and history() methods.
+	 * by the `recent()` and `history()` methods.
 	 */
 	public static function diff ($obj1, $obj2) {
 		if (get_class ($obj1) === 'stdClass') {

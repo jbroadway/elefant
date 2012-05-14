@@ -37,81 +37,82 @@
  *
  * Usage:
  *
- * 1. By specifying allowed extended fields in `$verify`
+ * 1\. By specifying allowed extended fields in `$verify`
  *
- *   <?php
- *   
- *   class Foo extends ExtendedModel {
- *     // store extended data in a field named extradata
- *     public $_extended_field = 'extradata';
+ *     <?php
  *     
- *     public $verify = array (
- *       // regular field validations, followed by extended fields:
- *       'favorite_food' => array (
- *         'extended' => 1 // mark as extended
- *       ),
- *       'favorite_color' => array (
- *         'extended' => 1, // can also have validation rules:
- *         'regex' => '/^(red|green|blue|yellow|orange|purple|pink|brown)$/i'
- *     );
- *   }
- *   
- *   // fetch an item
- *   $foo = new Foo (1);
- *   
- *   // since we've defined the extended fields, we can access them directly
- *   $foo->favorite_food = 'pizza';
+ *     class Foo extends ExtendedModel {
+ *         // store extended data in a field named extradata
+ *         public $_extended_field = 'extradata';
+ *     
+ *         public $verify = array (
+ *             // regular field validations, followed by extended fields:
+ *             'favorite_food' => array (
+ *                 'extended' => 1 // mark as extended
+ *             ),
+ *             'favorite_color' => array (
+ *                 'extended' => 1, // can also have validation rules:
+ *                 'regex' => '/^(red|green|blue|yellow|orange|purple|pink|brown)$/i'
+ *             )
+ *         );
+ *     }
+ *     
+ *     // fetch an item
+ *     $foo = new Foo (1);
+ *     
+ *     // since we've defined the extended fields, we can access them directly
+ *     $foo->favorite_food = 'pizza';
+ *    
+ *     // this will fail to save because the validation fails
+ *     $foo->favorite_color = 'black';
+ *     if (! $foo->put ()) {
+ *         echo $foo->error;
+ *     }
+ *     
+ *     ?>
  *
- *   // this will fail to save because the validation fails
- *   $foo->favorite_color = 'black';
- *   if (! $foo->put ()) {
- *     echo $foo->error;
- *   }
- *   
- *   ?>
- *
- * 2. By accessing the extradata field directly (will automatically serialize
+ * 2\. By accessing the extradata field directly (will automatically serialize
  * and unserialize for you), or through the `ext()` method:
  *
- *   <?php
- *   
- *   class Foo extends ExtendedModel {
- *     // store extended data in a field named extradata
- *     public $_extended_field = 'extradata';
- *   }
- *   
- *   // fetch an item
- *   $foo = new Foo (1);
- *   
- *   // get its extradata field
- *   $extra = $foo->extradata;
- *
- *   // or
- *   $extra = $foo->ext ();
- *
- *   // add some fields to it
- *   $extra['favorite_food'] = 'pizza';
- *   $extra['favorite_color'] = 'green';
- *
- *   // or
- *   $foo->ext ('favorite_food', 'pizza');
- *   $foo->ext ('favorite_color', 'green');
- *
- *   // set it and save it
- *   $foo->extradata = $extra;
- *   $foo->put ();
- *
- *   // next time we retrieve the item
- *   // our data will be there
- *   $foo = new Foo (1);
- *   $extra = $foo->extra;
- *   echo $extra['favorite_food'];
- *
- *   // or
- *   $foo = new Foo (1);
- *   echo $foo->ext ('favorite_food');
- *   
- *   ?>
+ *     <?php
+ *     
+ *     class Foo extends ExtendedModel {
+ *         // store extended data in a field named extradata
+ *         public $_extended_field = 'extradata';
+ *     }
+ *     
+ *     // fetch an item
+ *     $foo = new Foo (1);
+ *     
+ *     // get its extradata field
+ *     $extra = $foo->extradata;
+ *     
+ *     // or
+ *     $extra = $foo->ext ();
+ *     
+ *     // add some fields to it
+ *     $extra['favorite_food'] = 'pizza';
+ *     $extra['favorite_color'] = 'green';
+ *     
+ *     // or
+ *     $foo->ext ('favorite_food', 'pizza');
+ *     $foo->ext ('favorite_color', 'green');
+ *     
+ *     // set it and save it
+ *     $foo->extradata = $extra;
+ *     $foo->put ();
+ *     
+ *     // next time we retrieve the item
+ *     // our data will be there
+ *     $foo = new Foo (1);
+ *     $extra = $foo->extra;
+ *     echo $extra['favorite_food'];
+ *     
+ *     // or
+ *     $foo = new Foo (1);
+ *     echo $foo->ext ('favorite_food');
+ *      
+ *     ?>
  */
 class ExtendedModel extends Model {
 	/**

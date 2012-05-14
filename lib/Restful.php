@@ -32,7 +32,7 @@
  *
  * Usage:
  *
- * 1. Create a Restful-based class and save it to
+ * 1\. Create a Restful-based class and save it to
  * the file `apps/myapp/lib/API.php`:
  *
  *     <?php
@@ -55,11 +55,17 @@
  *             return $this->error ('Error message');
  *         }
  *     }
+ *     
+ *     ?>
  *
- * 2. Create a handler and assign your class as its
+ * 2\. Create a handler and assign your class as its
  * restful handler in the file `apps/myapp/handlers/api.php`:
  *
- *     <?php $this->restful (new myapp\API); ?>
+ *     <?php
+ *     
+ *     $this->restful (new myapp\API);
+ *     
+ *     ?>
  *
  * Responses come in the following form, depending on success
  * or failure:
