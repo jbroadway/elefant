@@ -32,8 +32,8 @@ require_once ('Zend/Mail.php');
 require_once ('Zend/Mime/Part.php');
 
 /**
- * This is a wrapper class around `Zend_Mail` that configures it based
- * on Elefant's global mailer settings.
+ * Mailer is a wrapper around Zend_Mail configured from Elefant's global
+ * mail settings.
  *
  * Usage:
  *

@@ -25,9 +25,9 @@
  */
 
 /**
- * Extends PHPUnit to test Elefant handlers. Creates the necessary
- * environment that a handler expects. Note that you will have to set up
- * any `$_GET` or `$_POST` values that your handlers expect.
+ * Extends PHPUnit to provide testing capabilities for handlers. Creates
+ * the necessary environment that a handler expects. Note that you will
+ * have to set up any `$_GET` or `$_POST` values that your handlers expect.
  *
  * Also includes the following convenience functions:
  *
@@ -102,7 +102,7 @@ class AppTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Alias for Controller's `run()` method.
+	 * Alias for [[Controller]]'s `run()` method.
 	 */
 	public function get ($uri, $data = array ()) {
 		try {

@@ -25,7 +25,7 @@
  */
 
 /**
- * ExtendedModel extends Model to include the ability to add arbitrary values
+ * ExtendedModel extends [[Model]] to include the ability to add arbitrary values
  * to a single field that will be JSON encoded in storage and transparently
  * decoded in use. This allows you to extend your Model data with any number
  * of additional values without needing to change your schema.

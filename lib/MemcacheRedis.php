@@ -25,8 +25,10 @@
  */
 
 /**
- * Provides a Memcache-compatible wrapper for the Redis PHP extension, available
- * at https://github.com/nicolasff/phpredis
+ * Provides a Memcache-compatible wrapper for the Redis PHP extension. For more
+ * info, see:
+ *
+ * https://github.com/nicolasff/phpredis
  *
  * This allows you to use Redis as a drop-in replacement for Memcache as a cache
  * store in Elefant.

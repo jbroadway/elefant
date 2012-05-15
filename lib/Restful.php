@@ -25,7 +25,8 @@
  */
 
 /**
- * A class that can be extended and passed to `Controller::restful()`
+ * Restful is a base class for implementing REST APIs. Restful is
+ * meant to be extended and passed to `Controller::restful()`
  * to create RESTful request handlers. Works with GET, POST, PUT, and
  * DELETE request methods, as well as the `X-HTTP-Method-Override`
  * header if your server can't handle PUT and DELETE requests.

@@ -25,13 +25,13 @@
  */
 
 /**
- * Basic template renderer. Looks for templates via the pattern
- * `apps/{app}/views/{file}.html` where the template is passed as
- * `'app/file'`. Failing that, it looks for `layouts/{file}.html`
- * and finally `layouts/default.html`. It then creates a PHP version
- * of the template  and caches it to `cache/{app}-{template}.php`,
- * so the cache folder must be writeable. Auto-refreshes cached
- * versions when the originals change.
+ * Template is a template compiler and rendering engine. It looks
+ * for templates via the pattern `apps/{app}/views/{file}.html`
+ * where the template is passed as `'app/file'`. Failing that, it
+ * looks for `layouts/{file}.html` and finally `layouts/default.html`.
+ * It then creates a PHP version of the template  and caches it to
+ * `cache/{app}-{template}.php`, so the cache folder must be writeable.
+ * Auto-refreshes cached versions when the originals change.
  *
  * As a result, templates can include any PHP, along with tags of
  * the form:

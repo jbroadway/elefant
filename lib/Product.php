@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Provides the abstracted product info for white-labelling the CMS.
  * This class parses and returns values from `conf/product.php` which makes it easy
  * to rebrand the CMS interface with your own name, logo, website link,
  * and stylesheet.

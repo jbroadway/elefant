@@ -31,8 +31,9 @@
  * the first call to any validation method will initialize the `$user`
  * property to contain the static User object.
  *
- * Note that this class extends Model, so all of the Model methods are
- * available for querying the user list, and for user management, as well.
+ * Note that this class extends [[ExtendedModel]], so all of the [[ExtendedModel]]
+ * and [[Model]] methods are available for querying the user list, and for user
+ * management, as well.
  *
  * Fields:
  *
@@ -182,8 +183,8 @@ class User extends ExtendedModel {
 	}
 
 	/**
-	 * A custom handler for simple_auth(). Note: Calls session_start()
-	 * for you, and creates the global $user object if a session is
+	 * A custom handler for `simple_auth()`. Note: Calls `session_start()`
+	 * for you, and creates the global `$user` object if a session is
 	 * valid, since we have the data already.
 	 */
 	public static function method ($callback) {
@@ -218,9 +219,13 @@ class User extends ExtendedModel {
 	/**
 	 * Simplifies authorization down to:
 	 *
-	 *   if (! User::require_login ()) {
-	 *     // unauthorized
-	 *   }
+	 *     <?php
+	 *     
+	 *     if (! User::require_login ()) {
+	 *         // unauthorized
+	 *     }
+	 *     
+	 *     ?>
 	 */
 	public static function require_login () {
 		$class = get_called_class ();
@@ -230,9 +235,13 @@ class User extends ExtendedModel {
 	/**
 	 * Simplifies authorization for admins down to:
 	 *
-	 *   if (! User::require_admin ()) {
-	 *     // unauthorized
-	 *   }
+	 *     <?php
+	 *     
+	 *     if (! User::require_admin ()) {
+	 *         // unauthorized
+	 *     }
+	 *     
+	 *     ?>
 	 */
 	public static function require_admin () {
 		if (is_object (self::$user)) {

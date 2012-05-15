@@ -25,7 +25,7 @@
  */
 
 /**
- * This is a database abstraction layer that provides two things:
+ * DB is a database abstraction layer and connection manager. It provides two things:
  *
  * 1. A flexible connection manager with lazy loading and master/slave awareness.
  * 2. A set of convenience methods that operate transparently on the PDO connection(s).
@@ -36,7 +36,7 @@
  * requests going to the master and reads being directed to a random connection.
  *
  * Note: This is a simple database abstraction layer. For more advanced modelling
- * see `lib/Model.php` which provides a more complete abstraction and a way of
+ * see [[Model]] which provides a more complete abstraction and a way of
  * organizing your application logic.
  *
  * Usage:

@@ -25,7 +25,7 @@
  */
 
 /**
- * Keeps a change history of any Model object.
+ * Keeps a change history of any [[Model]] object.
  *
  * Usage:
  *

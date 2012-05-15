@@ -25,7 +25,7 @@
  */
 
 /**
- * This is a simple form handling class. Provides validation of the form
+ * Form is an elegant form handling class. It provides validation of the form
  * referrer, request method, cross-site request forgery (CSRF) prevention,
  * and numerous convenience functions for validating form submissions and
  * input data. Also integrates with the `/js/jquery.verify_values.js`

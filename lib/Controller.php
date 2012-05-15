@@ -25,9 +25,10 @@
  */
 
 /**
- * Basic routing controller. Maps `$_SERVER['REQUEST_URI']` to files in
- * a `apps/{appname}/handlers/` folder, defaulting to
- * `conf ('General', 'default_handler')` if no others match.
+ * Controller provides the request marshalling to Elefant handlers.
+ * It evaluates `$_SERVER['REQUEST_URI']` against files in
+ * a `apps/{appname}/handlers/` folder, defaulting to the handler
+ * specified in `conf ('General', 'default_handler')` if no others match.
  *
  * Matching is done by reducing the URL folder-by-folder until a file
  * matches. Here are some examples:
