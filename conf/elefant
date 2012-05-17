@@ -52,9 +52,11 @@ Commands:
   install                          Run the command line installer
   backup <path>                    Save a backup of the site and db
   export-db <file>                 Export the db to a file or STDOUT
+  import-db <file>                 Import a schema file into the db
   build-app <appname>              Build the scaffolding for an app
   generate-password <length(8)>    Generate a random password
   encrypt-password <password>      Encrypt a password for the db
+  version                          Output the Elefant version number
 
 
 HELP;
@@ -155,7 +157,7 @@ if (count ($argv) > 1) {
 			
 			foreach ($sqldata as $sql) {
 				if (! DB::execute ($sql)) {
-					echo 'Error: ' . DB::error () . "\n";
+					echo '** Error: ' . DB::error () . "\n";
 					DB::execute ('rollback');
 				}
 			}
@@ -321,6 +323,65 @@ if (count ($argv) > 1) {
 
 
 		/**
+		 * This command imports a schema file into the database.
+		 */
+		case 'import-db':
+			if (! isset ($argv[2])) {
+				echo "Usage: elefant import-db <file>\n";
+				die;
+			}
+
+			$file = $argv[2];
+			if (! file_exists ($file)) {
+				echo "** Error: File not found: $file\n";
+				die;
+			}
+
+			require_once ('lib/Functions.php');
+			require_once ('lib/DB.php');
+			
+			$conf = parse_ini_file ('conf/config.php', true);
+			date_default_timezone_set ($conf['General']['timezone']);// connect to the database
+
+			$connected = false;
+			foreach (array_keys ($conf['Database']) as $key) {
+				if ($key == 'master') {
+					$conf['Database'][$key]['master'] = true;
+					if (! DB::open ($conf['Database'][$key])) {
+						echo "** Error: Could not connect to the database. Please check the\n";
+						echo "          settings in conf/config.php and try again.\n";
+						echo "\n";
+						echo "          " . DB::error () . "\n";
+						die;
+					}
+					$connected = true;
+					break;
+				}
+			}
+			if (! $connected) {
+				echo "** Error: Could not find a master database. Please check the\n";
+				echo "          settings in conf/config.php and try again.\n";
+				die;
+			}
+			
+			// import the database schema
+			$sqldata = sql_split (file_get_contents ($file));
+			
+			DB::execute ('begin');
+			foreach ($sqldata as $sql) {
+				if (! DB::execute ($sql)) {
+					echo '** Error: ' . DB::error () . "\n";
+					DB::execute ('rollback');
+					die;
+				}
+			}
+			DB::execute ('commit');
+			echo count ($sqldata) . " commands executed.\n";
+			break;
+
+
+
+		/**
 		 * Create a backup of the site and database as a tarball
 		 * and move it to the specified folder.
 		 */
@@ -392,6 +453,16 @@ if (count ($argv) > 1) {
 				$length = 8;
 			}
 			echo generate_password ($length) . "\n";
+			break;
+
+
+
+		/**
+		 * Output the Elefant version number.
+		 */
+		case 'version':
+			require_once ('conf/version.php');
+			echo ELEFANT_VERSION . "\n";
 			break;
 
 
