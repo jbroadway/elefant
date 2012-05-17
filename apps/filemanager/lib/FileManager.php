@@ -45,9 +45,15 @@ class FileManager extends Restful {
 	public static $error;
 
 	/**
+	 * The controller object for the current request.
+	 */
+	public $controller;
+
+	/**
 	 * Constructor sets $root.
 	 */
-	public function __construct () {
+	public function __construct ($controller) {
+		$this->controller = $controller;
 		$this->root = getcwd () . $this->webroot;
 	}
 
@@ -101,6 +107,9 @@ class FileManager extends Restful {
 			return $this->error (i18n_get ('Unable to delete') . ' ' . $file);
 		}
 		FileManager::prop_delete ($file);
+		$this->controller->hook ('filemanager/delete', array (
+			'file' => $file
+		));
 		return array ('msg' => i18n_get ('File deleted.'), 'data' => $file);
 	}
 
@@ -134,6 +143,10 @@ class FileManager extends Restful {
 					return $this->error (i18n_get ('Unable to rename') . ' ' . $file);
 				}
 				FileManager::prop_rename ($file, $new);
+				$this->controller->hook ('filemanager/rename', array (
+					'file' => $file,
+					'renamed' => $new
+				));
 				return array ('msg' => i18n_get ('File renamed.'), 'data' => $new);
 			}
 		}

@@ -5,6 +5,6 @@
  */
 
 $this->require_admin ();
-$this->restful (new FileManager ());
+$this->restful (new FileManager ($this));
 
 ?>
