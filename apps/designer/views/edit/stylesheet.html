@@ -15,7 +15,7 @@
 	<option value="{{ loop_value }}"{% if loop_value == 'default' %} selected{% end %}>{{ loop_value }}</option>
 {% end %}
 </select><br />
-<iframe src="/designer/csspreview?layout=default" id="preview" frameborder="0" width="1022" height="300" style="border: 1px solid #ccc"></iframe></p>
+<iframe src="/designer/csspreview?layout=default&css={{ file }}" id="preview" frameborder="0" width="1022" height="300" style="border: 1px solid #ccc"></iframe></p>
 </form>
 
 <link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/lib/codemirror.css" />
@@ -85,12 +85,14 @@ $(function () {
 	});
 
 	filemanager_last_preview = _codemirror.getValue ();
+	filemanager_last_preview_layout = $('#layout').val ();
 	filemanager_interval = setInterval (function () {
 		var css = _codemirror.getValue (),
 			layout = $('#layout').val ();
 
-		if (css != filemanager_last_preview) {
-			filemanager_last_preview = layout;
+		if (css != filemanager_last_preview || layout != filemanager_last_preview_layout) {
+			filemanager_last_preview = css;
+			filemanager_last_preview_layout = layout;
 			$.post ('/designer/csspreview', {layout: layout, css: css}, function (res) {
 				document.getElementById ('preview').contentDocument.body.innerHTML = res;
 			});
