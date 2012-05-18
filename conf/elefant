@@ -54,6 +54,7 @@ Commands:
   export-db <file>                 Export the db to a file or STDOUT
   import-db <file>                 Import a schema file into the db
   build-app <appname>              Build the scaffolding for an app
+  crud-app <modelname> <fieldlist> Build the scaffolding for a CRUD app
   generate-password <length(8)>    Generate a random password
   encrypt-password <password>      Encrypt a password for the db
   version                          Output the Elefant version number
@@ -228,6 +229,267 @@ if (count ($argv) > 1) {
 			));
 			
 			printf ("App created in apps/%s/\n", $argv[2]);
+			break;
+
+
+
+		/**
+		 * This command builds the CRUD outline for a new
+		 * app in the apps folder. This includes the basic
+		 * directory structure as well as a model definition,
+		 * database schema files, and basic admin handlers
+		 * for Create, Read, Update, and Delete functions.
+		 */
+		case 'crud-app':
+			if (! isset ($argv[2])) {
+				echo "Usage: elefant crud-app <modelname> <fieldlist>\n";
+				die;
+			}
+
+			if (! isset ($argv[3])) {
+				echo "Usage: elefant crud-app <modelname <fieldlist>\n";
+				die;
+			}
+
+			$name = strtolower ($argv[2]);
+
+			// get plural name
+			require_once ('lib/vendor/ActiveResource.php');
+			$ar = new ActiveResource;
+			$plural = $ar->pluralize ($name);
+			unset ($ar);
+
+			// build list of fields
+			$fields = array ();
+			if ($argv[3] !== 'id') {
+				$fields[] = 'id';
+			}
+			for ($i = 3; $i < count ($argv); $i++) {
+				$fields[] = $argv[$i];
+			}
+
+			mkdir ('apps/' . $plural . '/conf', 0755, true);
+			mkdir ('apps/' . $plural . '/forms', 0755, true);
+			mkdir ('apps/' . $plural . '/handlers', 0755, true);
+			mkdir ('apps/' . $plural . '/lib', 0755, true);
+			mkdir ('apps/' . $plural . '/models', 0755, true);
+			mkdir ('apps/' . $plural . '/views', 0755, true);
+			
+			/**
+			 * Make a row for the MySQL schema.
+			 */
+			function mysql_column_row ($field) {
+				if ($field === 'id') {
+					return "\tid int not null auto_increment primary key";
+				}
+				return "\t$field char(48) not null";
+			}
+			
+			/**
+			 * Make a row for the SQLite schema.
+			 */
+			function sqlite_column_row ($field) {
+				if ($field === 'id') {
+					return "\tid integer primary key";
+				}
+				return "\t$field char(48) not null";
+			}
+			
+			/**
+			 * Make the validation rules for the form validators.
+			 */
+			function validate_field ($field) {
+				if ($field === 'id') {
+					return '';
+				}
+				return "[$field]\nnot empty = 1";
+			}
+			
+			/**
+			 * Make the assignments for the add handler.
+			 */
+			function add_post_field ($field) {
+				return "'$field' => \$_POST['$field']";
+			}
+			
+			/**
+			 * Make the assignments for the edit handler.
+			 */
+			function edit_post_fields ($fields, $name) {
+				$out = '';
+				foreach ($fields as $field) {
+					$out .= sprintf (
+						"\t\$%s->%s = \$_POST['%s'];\n",
+						$name,
+						$field,
+						$field
+					);
+				}
+				return $out;
+			}
+
+			/**
+			 * Make a field's form input for the add/edit views.
+			 */
+			function generate_field ($field) {
+				return sprintf (
+					"<p>\n\t{\"%s\"}:<br />\n\t<input type=\"text\" name=\"%s\" value=\"{{ %s|quotes }}\" />\n\t<span class=\"notice\" id=\"%s-notice\">{\"Please enter a %s.\"}</span>\n</p>",
+					ucfirst ($field),
+					$field,
+					$field,
+					$field,
+					$field
+				);
+			}
+			
+			/**
+			 * Make the field headers for the admin view.
+			 */
+			function make_fields_header ($fields) {
+				$out = '';
+				$limit = count ($fields) > 3 ? 3 : count ($fields);
+				if ($limit === 1) {
+					$width = 84;
+				} elseif ($limit === 2) {
+					$width = 42;
+				} else {
+					$width = 28;
+				}
+				for ($i = 0; $i < $limit; $i++) {
+					$out .= sprintf (
+						"\t\t<th width=\"%d%%\">{\" %s \"}</th>\n",
+						$width,
+						ucfirst ($fields[$i])
+					);
+				}
+				return $out;
+			}
+			
+			/**
+			 * Make the field rows for the admin view.
+			 */
+			function make_fields_row ($fields) {
+				$out = '';
+				$limit = count ($fields) > 3 ? 3 : count ($fields);
+				for ($i = 0; $i < $limit; $i++) {
+					$out .= sprintf (
+						"\t\t<td>{{ loop_value->%s }}</td>\n",
+						$fields[$i]
+					);
+				}
+				return $out;
+			}
+			
+			file_put_contents ('apps/' . $plural . '/conf/config.php', sprintf (
+				"; <?php\n\n[Admin]\n\nhandler = %s/admin\nname = %s\n\n; */ ?>",
+				$plural,
+				ucfirst ($plural)
+			));
+			file_put_contents ('apps/' . $plural . '/conf/install_mysql.sql', sprintf (
+				"create table %s (\n%s\n);",
+				$plural,
+				join (",\n", array_map ('mysql_column_row', $fields))
+			));
+			file_put_contents ('apps/' . $plural . '/conf/install_sqlite.sql', sprintf (
+				"create table %s (\n%s\n);",
+				$plural,
+				join (",\n", array_map ('sqlite_column_row', $fields))
+			));
+			file_put_contents ('apps/' . $plural . '/forms/add.php', sprintf (
+				"; <?php /*%s\n\n; */ ?>",
+				join ("\n\n", array_map ('validate_field', $fields))
+			));
+			file_put_contents ('apps/' . $plural . '/forms/edit.php', sprintf (
+				"; <?php /*%s\n\n; */ ?>",
+				join ("\n\n", array_map ('validate_field', $fields))
+			));
+			file_put_contents ('apps/' . $plural . '/models/' . ucfirst ($name) . '.php', sprintf (
+				"<?php\n\nnamespace %s;\n\nclass %s extends \\Model {\n\tpublic \$table = '%s';\n}\n\n?>",
+				$plural,
+				ucfirst ($name),
+				$plural
+			));
+			file_put_contents ('apps/' . $plural . '/handlers/admin.php', sprintf (
+				"<?php\n\n\$this->require_admin ();\n\n\$page->layout = 'admin';\n\$page->title = i18n_get ('%s');\n\n// Calculate the offset\n\$limit = 20;\n\$num = isset (\$this->params[0]) ? \$this->params[0] : 1;\n\$offset = (\$num - 1) * \$limit;\n\n// Fetch the items and total items\n\$items = %s\%s::query ()->fetch (\$limit, \$offset);\n\$total = %s\%s::query ()->count ();\n\n// Pass our data to the view template\necho \$tpl->render (\n\t'%s/admin',\n\tarray (\n\t\t'limit' => \$limit,\n\t\t'total' => \$total,\n\t\t'items' => \$items,\n\t\t'count' => count (\$items),\n\t\t'url' => '/%s/admin/%%d'\n\t)\n);\n\n?>",
+				ucfirst ($plural),
+				$plural,
+				ucfirst ($name),
+				$plural,
+				ucfirst ($name),
+				$plural,
+				$plural
+			));
+			file_put_contents ('apps/' . $plural . '/handlers/index.php', sprintf (
+				"<?php\n\n\$page->title = '%s home';\necho \$tpl->render ('%s/index', array ());\n\n?>",
+				ucfirst ($plural),
+				$plural
+			));
+			file_put_contents ('apps/' . $plural . '/handlers/add.php', sprintf (
+				"<?php\n\n\$this->require_admin ();\n\n\$page->layout = 'admin';\n\$page->title = i18n_get ('Add %s');\n\n\$form = new Form ('post', \$this);\n\necho \$form->handle (function (\$form) {\n\t// Create and save a new %s\n\t\$%s = new %s\%s (array (\n\t\t%s\n\t));\n\t\$%s->put ();\n\n\tif (\$%s->error) {\n\t\t// Failed to save\n\t\t\$form->controller->add_notification (i18n_get ('Unable to save %s.'));\n\t\treturn false;\n\t}\n\n\t// Save a version of the contact\n\tVersions::add (\$%s);\n\n\t// Notify the user and redirect on success\n\t\$form->controller->add_notification (i18n_get ('%s added.'));\n\t\$form->controller->redirect ('/%s/admin');\n});\n\n?>",
+				ucfirst ($name),
+				$name,
+				$name,
+				$plural,
+				ucfirst ($name),
+				join (",\n\t\t", array_map ('add_post_field', array_slice ($fields, 1))),
+				$name,
+				$name,
+				$name,
+				$name,
+				ucfirst ($name),
+				$plural
+			));
+			file_put_contents ('apps/' . $plural . '/handlers/edit.php', sprintf (
+				"<?php\n\n\$this->require_admin ();\n\n\$page->layout = 'admin';\n\$page->title = i18n_get ('Edit %s');\n\n\$form = new Form ('post', \$this);\n\n\$form->data = new %s\%s (\$_GET['id']);\n\necho \$form->handle (function (\$form) {\n\t// Update the %s\n\t\$%s = \$form->data;\n%s\t\$%s->put ();\n\n\tif (\$%s->error) {\n\t\t// Failed to save\n\t\t\$form->controller->add_notification (i18n_get ('Unable to save %s.'));\n\t\treturn false;\n\t}\n\n\t// Save a version of the %s\n\tVersions::add (\$%s);\n\n\t// Notify the user and redirect on success\n\t\$form->controller->add_notification (i18n_get ('%s saved.'));\n\t\$form->controller->redirect ('/%s/admin');\n});\n\n?>",
+				ucfirst ($name),
+				$plural,
+				ucfirst ($name),
+				$name,
+				$name,
+				edit_post_fields (array_slice ($fields, 1), $name),
+				$name,
+				$name,
+				$name,
+				$name,
+				$name,
+				ucfirst ($name),
+				$plural
+			));
+			file_put_contents ('apps/' . $plural . '/handlers/delete.php', sprintf (
+				"<?php\n\n\$this->require_admin ();\n\n\$%s = new %s\%s;\n\$%s->remove (\$_GET['id']);\n\nif (\$%s->error) {\n\t\$this->add_notification (i18n_get ('Unable to delete %s.'));\n\t\$this->redirect ('/%s/admin');\n}\n\n\$this->add_notification (i18n_get ('%s deleted.'));\n\$this->redirect ('/%s/admin');\n\n?>",
+				$name,
+				$plural,
+				ucfirst ($name),
+				$name,
+				$name,
+				$name,
+				$plural,
+				ucfirst ($name),
+				$plural
+			));
+			file_put_contents ('apps/' . $plural . '/views/index.html', '<p>{{ body|none }}</p>');
+			file_put_contents ('apps/' . $plural . '/views/add.html', sprintf (
+				"<form method=\"post\" id=\"{{ _form }}\">\n\n%s\n\n<p><input type=\"submit\" value=\"{\"Add %s\"}\" /></p>\n\n</form>",
+				join ("\n\n", array_map ('generate_field', array_slice ($fields, 1))),
+				ucfirst ($name)
+			));
+			file_put_contents ('apps/' . $plural . '/views/edit.html', sprintf (
+				"<form method=\"post\" id=\"{{ _form }}\">\n\n%s\n\n<p><input type=\"submit\" value=\"{\"Save %s\"}\" /></p>\n\n</form>",
+				join ("\n\n", array_map ('generate_field', array_slice ($fields, 1))),
+				ucfirst ($name)
+			));
+			file_put_contents ('apps/' . $plural . '/views/admin.html', sprintf (
+				"<p><a href=\"/%s/add\">{\"Add %s\"}</a></p>\n\n<p>\n<table width=\"100%%\">\n\t<tr>\n%s\t\t<th width=\"16%%\">&nbsp;</th>\n\t</tr>\n{%% foreach items %%}\n\t<tr>\n%s\t\t<td>\n\t\t\t<a\thref=\"/%s/edit?id={{ loop_value->id }}\">{\"Edit\"}</a> |\n\t\t\t<a\thref=\"/%s/delete?id={{ loop_value->id }}\"\n\t\t\t\tonclick=\"return confirm ('{\"Are you sure you want to delete this %s?\"}')\">{\"Delete\"}</a>\n\t\t</td>\n\t</tr>\n{%% end %%}\n</table>\n</p>\n\n{! navigation/pager?style=text&url=[url]&total=[total]&count=[count]&limit=[limit] !}",
+				$plural,
+				ucfirst ($name),
+				make_fields_header (array_slice ($fields, 1)),
+				make_fields_row (array_slice ($fields, 1)),
+				$plural,
+				$plural,
+				$name
+			));
+			
+			printf ("App created in apps/%s/\n", $plural);
 			break;
 
 
