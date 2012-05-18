@@ -48,6 +48,17 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 		$_SERVER['HTTPS'] = 'on';
 		$this->assertTrue ($this->c->is_https ());
 	}
+
+	function test_absolutize () {
+		$_SERVER['HTTP_HOST'] = 'www.example.com';
+		$this->assertEquals ('http://www.example.com/page', $this->c->absolutize ('/page'));
+		$this->assertEquals ('http://www.example.com/page', $this->c->absolutize ('//www.example.com/page'));
+		$this->assertEquals ('http://www.example.com/page', $this->c->absolutize ('http://www.example.com/page'));
+		$this->assertEquals ('http://www.example.com/page', $this->c->absolutize ('page'));
+		$this->assertEquals ('http://www.example.com/page', $this->c->absolutize ('page', 'http://www.example.com/'));
+		$this->assertEquals ('http://www.example.com/sub/page', $this->c->absolutize ('page', 'http://www.example.com/sub'));
+		$this->assertEquals ('http://www.example.com/sub/page', $this->c->absolutize ('page', 'http://www.example.com/sub/'));
+	}
 }
 
 ?>
