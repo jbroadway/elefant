@@ -60,6 +60,7 @@ if ($files) {
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);
 $page->add_script ('/apps/designer/css/edit_stylesheet.css');
+$page->add_script ('/apps/designer/js/jquery.bindWithDelay.js');
 echo $tpl->render ('designer/edit/stylesheet', $o);
 
 ?>

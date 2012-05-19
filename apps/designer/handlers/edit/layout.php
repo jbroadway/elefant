@@ -45,6 +45,7 @@ $o->body = @file_get_contents ($_GET['file']);
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);
 $page->add_script ('/apps/designer/css/edit_layout.css');
+$page->add_script ('/apps/designer/js/jquery.bindWithDelay.js');
 echo $tpl->render ('designer/edit/layout', $o);
 
 ?>

@@ -86,7 +86,7 @@ $(function () {
 
 	filemanager_last_preview = _codemirror.getValue ();
 	filemanager_last_preview_layout = $('#layout').val ();
-	filemanager_interval = setInterval (function () {
+	$('.CodeMirror').bindWithDelay ('keyup', function () {
 		var css = _codemirror.getValue (),
 			layout = $('#layout').val ();
 
@@ -97,6 +97,6 @@ $(function () {
 				document.getElementById ('preview').contentDocument.body.innerHTML = res;
 			});
 		}
-	}, 2000);
+	}, 500);
 });
 </script>
