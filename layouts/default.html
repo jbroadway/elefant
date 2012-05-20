@@ -26,6 +26,16 @@
 		</div>
 	</div>
 	<div class="clear"></div>
+{% if id === 'index' %}
+	<div id="body" class="grid_12 index-body">
+
+{! filemanager/slideshow?path=homepage !}
+
+{% if title != '' %}<h2>{{ title|none }}</h2>{% end %}
+{{ body|none }}
+
+	</div>
+{% else %}
 	<div id="body" class="grid_8">
 
 {% if title != '' %}<h2>{{ title|none }}</h2>{% end %}
@@ -35,13 +45,15 @@
 	<div id="sidebar" class="grid_4">
 {! blocks/members !}
 	</div>
+{% end %}
 	<div class="clear"></div>
 	<div id="footer" class="grid_12">
 		<div class="grid_6 alpha menu">
 			{! navigation/top !}
 		</div>
 		<div class="grid_6 omega powered">
-			{"Powered by"} <a href="http://www.elefantcms.com/">Elefant CMS</a>
+			{"Powered by"} <a href="http://www.elefantcms.com/">Elefant CMS</a><br />
+			{"Photos by"} <a href="http://www.rachaelhosein.com/">Rachael Hosein</a>
 		</div>
 	</div>
 	<div class="clear"></div>
