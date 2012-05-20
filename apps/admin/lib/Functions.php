@@ -42,7 +42,13 @@ function admin_get_layouts () {
 		$files = glob ($source);
 		if ($files) {
 			foreach ($files as $file) {
-				if (preg_match ('/\/([^\/]+)\.html$/', $file, $regs)) {
+				if (preg_match ('/\/([^\/]+)\/([^\/]+)\.html$/', $file, $regs)) {
+					if ($regs[1] === $regs[2]) {
+						$layouts[] = $regs[1];
+					} else {
+						$layouts[] = $regs[1] . '/' . $regs[2];
+					}
+				} elseif (preg_match ('/\/([^\/]+)\.html$/', $file, $regs)) {
 					$layouts[] = $regs[1];
 				}
 			}
