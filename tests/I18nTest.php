@@ -40,6 +40,20 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (i18n_getf ('Hello %s', 'world'), 'Bonjour world');
 	}
 
+	function test_underscore () {
+		global $i18n;
+
+		$i18n->lang_hash['en'] = array (
+			'Hello' => 'Bonjour',
+		);
+		$this->assertEquals (__ ('Hello'), 'Bonjour');
+
+		$i18n->lang_hash['en'] = array (
+			'Hello %s' => 'Bonjour %s'
+		);
+		$this->assertEquals (__ ('Hello %s', 'world'), 'Bonjour world');
+	}
+
 	function test_negotiation_methods () {
 		$_SERVER['HTTP_HOST'] = 'en.example.com';
 		$i18n = new I18n ('lang', array ('negotiation_method' => 'subdomain'));
