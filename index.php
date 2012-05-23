@@ -92,6 +92,7 @@ require ('lib/Page.php');
 require ('lib/I18n.php');
 require ('lib/Controller.php');
 require ('lib/Template.php');
+require ('lib/View.php');
 
 /**
  * If we're on the command line, set the request to use
@@ -111,6 +112,7 @@ $i18n = new I18n ('lang', conf ('I18n'));
 $page = new Page;
 $controller = new Controller (conf ('Hooks'));
 $tpl = new Template (conf ('General', 'charset'), $controller);
+View::init ($tpl);
 
 /**
  * Check for a bootstrap.php file in the root of the site
