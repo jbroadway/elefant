@@ -2,6 +2,13 @@
 
 require_once ('lib/Autoloader.php');
 
+class TemplateMock {
+	public function render ($template, $data = array ()) {
+		$data = is_object ($data) ? $data : (object) $data;
+		return sprintf ('<p>Hello %s</p>', $data->name);
+	}
+}
+
 class ViewTest extends PHPUnit_Framework_TestCase {
 	function test_init () {
 		$tpl = new Template ('UTF-8');
@@ -38,6 +45,14 @@ class ViewTest extends PHPUnit_Framework_TestCase {
 		);
 		
 		$this->assertEquals (array (), View::$params);
+
+		$tpl = new TemplateMock;
+		View::init ($tpl);
+
+		$this->assertEquals (
+			'<p>Hello Jill</p>',
+			View::render ('myapp/hello', $params)
+		);
 	}
 }
 
