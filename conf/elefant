@@ -296,6 +296,16 @@ if (count ($argv) > 1) {
 			}
 			
 			/**
+			 * Make a row for the PostgreSQL schema.
+			 */
+			function pgsql_column_row ($field) {
+				if ($field === 'id') {
+					return "\tid integer not null default nextval('TABLE_id_seq') primary key";
+				}
+				return "\t$field char(48) not null";
+			}
+			
+			/**
 			 * Make the validation rules for the form validators.
 			 */
 			function validate_field ($field) {
@@ -394,6 +404,12 @@ if (count ($argv) > 1) {
 				"create table %s (\n%s\n);",
 				$plural,
 				join (",\n", array_map ('sqlite_column_row', $fields))
+			));
+			file_put_contents ('apps/' . $plural . '/conf/install_pgsql.sql', sprintf (
+				"create sequence %s_id_seq;\n\ncreate table %s (\n%s\n);",
+				$plural,
+				$plural,
+				str_replace ('TABLE', $plural, join (",\n", array_map ('pgsql_column_row', $fields)))
 			));
 			file_put_contents ('apps/' . $plural . '/forms/add.php', sprintf (
 				"; <?php /*%s\n\n; */ ?>",
