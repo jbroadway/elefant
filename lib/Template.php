@@ -301,8 +301,8 @@ class Template {
 		$val = preg_replace ('/\{\{ ?(.*?) ?\}\}/e', '$this->replace_vars (\'\\1\')', $val);
 		$val = preg_replace ('/\{[\'"] ?(.*?) ?[\'"]\}/e', '$this->replace_strings (\'\\1\')', $val);
 		$val = preg_replace ('/\{\% ?(.*?) ?\%\}/e', '$this->replace_blocks (\'\\1\')', $val);
-		$val = preg_replace ('/\{\! ?(.*?) ?\!\}/e', '$this->replace_includes (\'\\1\')', $val);
-		$val = preg_replace ('/\{# ?(.*?) ?#\}/e', '$this->hard_codes (\'\\1\')', $val);
+		$val = preg_replace ('/\{\! ?(.*?) ?\!\}/es', '$this->replace_includes (\'\\1\')', $val);
+		$val = preg_replace ('/\{# ?(.*?) ?#\}/es', '$this->hard_codes (\'\\1\')', $val);
 		$val = str_replace ('#EOBRACE#', '{{', $val);
 		$val = str_replace ('#ECBRACE#', '}}', $val);
 		return $val;
@@ -376,6 +376,9 @@ class Template {
 	 * this: `{! app/handler?param=[varname] !}`
 	 */
 	public function replace_includes ($val) {
+		// remove spaces
+		$val = preg_replace ('/[\t\n ]+(\?|\&)/', '\1', trim ($val));
+
 		$url = parse_url ($val);
 		if (isset ($url['query'])) {
 			parse_str (html_entity_decode ($url['query'], ENT_COMPAT, 'UTF-8'), $data);
@@ -418,6 +421,9 @@ class Template {
 	 * here like you can with the dynamic `{! app/handler !}` calls.
 	 */
 	public function hard_codes ($val) {
+		// remove spaces
+		$val = preg_replace ('/[\t\n ]+(\?|\&)/', '\1', trim ($val));
+
 		$url = parse_url ($val);
 		if (isset ($url['query'])) {
 			parse_str (html_entity_decode ($url['query'], ENT_COMPAT, 'UTF-8'), $data);
@@ -433,6 +439,9 @@ class Template {
 	 * style tags.
 	 */
 	public function run_includes ($val) {
+		// remove spaces
+		$val = preg_replace ('/[\t\n ]+(\?|\&)/', '\1', trim ($val));
+
 		$parts = preg_split ('/(\{\! ?.*? ?\!\})/e', $val, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$out = '';
 		foreach ($parts as $part) {
