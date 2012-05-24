@@ -1,5 +1,5 @@
 <form style="display: inline" method="GET" action="/translator/edit/{{ lang }}">
-<div style="float: right">
+<div style="float: right; margin-top: -5px">
 <select name="source" onchange="this.form.elements['contains'].value = ''; this.form.submit ()">
 	<option value="">- {"Limit to source file"} -</option>
 {% foreach sources %}
@@ -19,23 +19,34 @@
 <table width="100%">
 	<tr>
 		<th width="48%">{"Original text"}</th>
-		<th width="52%">{{ name }}</th>
+		<th width="52%">
+			<span style="float: right">
+				{% if empty %}
+					<a href="/translator/edit/{{ lang }}?source={{ source|urlencode }}">{"Show all fields"}</a>
+				{% else %}
+					<a href="/translator/edit/{{ lang }}?source={{ source|urlencode }}&empty=1">{"Show empty fields"}</a>
+				{% end %}
+			</span>
+			{{ name }}
+		</th>
 	</tr>
 {% foreach items %}
-	<tr id="tr-{{ loop_index|translator_field_id }}">
-		<td class="original" title="{"Source"}: {{ loop_value[src] }}">{{ loop_index }}</td>
-		<td class="translate">
-			<textarea
-				rows="1" style="float:left; width: 85%; height: 100%"
-				data-orig="{{ loop_index }}"
-				data-id="{{ loop_index|translator_field_id }}"
-				id="textarea-{{ loop_index|translator_field_id }}"
-				onblur="$.save_element (this)"
-				{% if empty ($data->loop_value[trans]) %} class="empty"{% end %}
-			>{{ loop_value[trans] }}</textarea>
-			<span id="saving-{{ loop_index|translator_field_id }}" class="notice" style="float: left; margin-left: 7px">{"Saving..."}</span>
-		</td>
-	</tr>
+	{% if empty === false || $data->loop_value['trans'] === '' %}
+		<tr id="tr-{{ loop_index|translator_field_id }}">
+			<td class="original" title="{"Source"}: {{ loop_value[src] }}">{{ loop_index }}</td>
+			<td class="translate">
+				<textarea
+					rows="1" style="float:left; width: 85%; height: 100%"
+					data-orig="{{ loop_index }}"
+					data-id="{{ loop_index|translator_field_id }}"
+					id="textarea-{{ loop_index|translator_field_id }}"
+					onblur="$.save_element (this)"
+					{% if empty ($data->loop_value[trans]) %} class="empty"{% end %}
+				>{{ loop_value[trans] }}</textarea>
+				<span id="saving-{{ loop_index|translator_field_id }}" class="notice" style="float: left; margin-left: 7px">{"Saving..."}</span>
+			</td>
+		</tr>
+	{% end %}
 {% end %}
 </table>
 </p>
