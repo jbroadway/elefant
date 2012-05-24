@@ -48,4 +48,5 @@
 	border-top: 0px none;
 	padding: 15px;
 	height: 202px;
+	overflow-y: auto;
 }
