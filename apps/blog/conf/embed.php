@@ -2,7 +2,7 @@
 
 [blog/headlines]
 
-label = "Blog: Latest Posts"
+label = "Blog: Headlines"
 
 tag[label] = "Tag (optional)"
 tag[type] = select
@@ -28,11 +28,12 @@ url[not empty] = 1
 url[regex] = "|^http://.+$|"
 url[message] = Please enter a valid URL.
 
-
 [blog/postsfeed]
-label = "Blog : Posts Stream"
+
+label = "Blog: Latest Posts"
 
 number[label] = "Number of Posts"
 number[type] = numeric
+number[initial] = 5
 
 ; */ ?>
