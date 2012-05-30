@@ -48,7 +48,7 @@ class Ini {
 			} elseif ($value === '1') {
 				return 'On';
 			} elseif (preg_match ('/[^a-z0-9\/\.@<> _-]/i', $value)) {
-				return '"' . $value . '"';
+				return '"' . str_replace ('"', '\"', $value) . '"';
 			}
 			return $value;
 		};
