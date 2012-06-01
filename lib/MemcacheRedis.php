@@ -94,7 +94,7 @@ class MemcacheRedis {
 		if (self::$redis->exists ($key)) {
 			return false;
 		}
-		$this->setnx ($key, $value, $flag, $expire);
+		self::$redis->setnx ($key, $value, $flag, $expire);
 	}
 
 	/**
