@@ -13,7 +13,7 @@ master[name] = {{ name }}
 
 master[user] = {{ user }}
 
-master[pass] = "{{ pass }}"
+master[pass] = "{{ pass|none }}"
 {% end %}
 
 [Mongo]

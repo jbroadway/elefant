@@ -9,11 +9,11 @@
 			};
 			
 			var options = $.extend (defaults, options);
-			var dir_lenght= 120;
+			var dir_length= 120;
 			
 			switch (cmd) {
 				case 'mkdir':
-					var name = downcode ( prompt ('New folder name:', ''), dir_lenght );
+					var name = downcode ( prompt ('New folder name:', ''), dir_length );
 					if (name) {
 						$.get (options.root + cmd + '/' + options.file + '/' + name, function (res) {
 							if (res.success) {
@@ -26,7 +26,7 @@
 					}
 					break;
 				case 'mv':
-					var name = downcode ( prompt ('Rename:', options.name), dir_lenght);
+					var name = downcode ( prompt ('Rename:', options.name), dir_length);
 					if (name) {
 						$.get (options.root + cmd + '/' + options.file + '?rename=' + name, function (res) {
 							if (res.success) {
