@@ -73,7 +73,9 @@ class ZipInstaller extends Installer {
 	 * Remove all files and keep the cache folder clean.
 	 */
 	public static function clean () {
-		rmdir_recursive ('cache/zip');
+		if (file_exists ('cache/zip')) {
+			rmdir_recursive ('cache/zip');
+		}
 	}
 
 	/**
@@ -83,7 +85,7 @@ class ZipInstaller extends Installer {
 		$path = parse_url ($url, PHP_URL_PATH);
 		if (strpos ($path, '/zipball/') !== false) {
 			// Fix zip file links from Github
-			$path = array_shift (explode ('/zipball/', $path)) . '.zip';
+			$path = current (explode ('/zipball/', $path)) . '.zip';
 		}
 		$base = basename ($path);
 		$tmp = 'cache/zip/' . $base;
