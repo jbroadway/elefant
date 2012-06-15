@@ -44,9 +44,7 @@ if ($out['stylesheets']) {
   }
 }
 
-function basename_html ($f) {
-	return basename ($f, '.html');
-}
+require_once ('apps/designer/lib/Functions.php');
 
 $page->title = i18n_get ('Designer');
 echo $tpl->render ('designer/index', $out);

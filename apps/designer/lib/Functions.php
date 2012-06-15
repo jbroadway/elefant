@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * Fetches the short name of the layout template.
+ */
+function basename_html ($f) {
+	$name = basename ($f, '.html');
+	$parts = explode ('/', $f);
+	array_pop ($parts);
+	$folder = array_pop ($parts);
+	if ($folder === 'layouts' || $folder === $name) {
+		return $name;
+	}
+	return $folder . '/' . $name;
+}
+
+/**
  * Parse a Github URL and return an array with the username and repository.
  * Returns false on failure.
  */
