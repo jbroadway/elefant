@@ -688,7 +688,7 @@ if (count ($argv) > 1) {
 				file_put_contents ('.backups/.htaccess', "Order allow,deny\nDeny from all\n");
 			}
 			mkdir ('.backups/backup-' . $ts);
-			exec ('./conf/elefant export-db .backups/backup-' . $ts . '/dump.sql');
+			exec ('./conf/elefant export-db .backups/backup-' . $ts . '/db.sql');
 			copy ('.htaccess', '.backups/backup-' . $ts . '/.htaccess');
 			exec ('cp -R * .backups/backup-' . $ts . '/');
 			chdir ('.backups');
