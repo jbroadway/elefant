@@ -279,6 +279,21 @@ class DB {
 			return false;
 		}
 	}
+
+	/**
+	 * Execute a query and return the PDO statement object
+	 * so you can minimize memory usage.
+	 */
+	public static function query () {
+		try {
+			list ($stmt, $args) = self::prepare (func_get_args ());
+			$stmt->execute ($args);
+			return $stmt;
+		} catch (Exception $e) {
+			self::$error = $e->getMessage ();
+			return false;
+		}
+	}
 	
 	/**
 	 * Fetch a single object.
