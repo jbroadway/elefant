@@ -441,13 +441,14 @@ if (count ($argv) > 1) {
 				$plural
 			));
 			file_put_contents ('apps/' . $plural . '/handlers/add.php', sprintf (
-				"<?php\n\n\$this->require_admin ();\n\n\$page->layout = 'admin';\n\$page->title = i18n_get ('Add %s');\n\n\$form = new Form ('post', \$this);\n\necho \$form->handle (function (\$form) {\n\t// Create and save a new %s\n\t\$%s = new %s\%s (array (\n\t\t%s\n\t));\n\t\$%s->put ();\n\n\tif (\$%s->error) {\n\t\t// Failed to save\n\t\t\$form->controller->add_notification (i18n_get ('Unable to save %s.'));\n\t\treturn false;\n\t}\n\n\t// Save a version of the contact\n\tVersions::add (\$%s);\n\n\t// Notify the user and redirect on success\n\t\$form->controller->add_notification (i18n_get ('%s added.'));\n\t\$form->controller->redirect ('/%s/admin');\n});\n\n?>",
+				"<?php\n\n\$this->require_admin ();\n\n\$page->layout = 'admin';\n\$page->title = i18n_get ('Add %s');\n\n\$form = new Form ('post', \$this);\n\necho \$form->handle (function (\$form) {\n\t// Create and save a new %s\n\t\$%s = new %s\%s (array (\n\t\t%s\n\t));\n\t\$%s->put ();\n\n\tif (\$%s->error) {\n\t\t// Failed to save\n\t\t\$form->controller->add_notification (i18n_get ('Unable to save %s.'));\n\t\treturn false;\n\t}\n\n\t// Save a version of the %s\n\tVersions::add (\$%s);\n\n\t// Notify the user and redirect on success\n\t\$form->controller->add_notification (i18n_get ('%s added.'));\n\t\$form->controller->redirect ('/%s/admin');\n});\n\n?>",
 				ucfirst ($name),
 				$name,
 				$name,
 				$plural,
 				ucfirst ($name),
 				join (",\n\t\t", array_map ('add_post_field', array_slice ($fields, 1))),
+				$name,
 				$name,
 				$name,
 				$name,
