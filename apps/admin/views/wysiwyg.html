@@ -15,7 +15,7 @@
 <?php } ?>
 <script type="text/javascript">
 $(function () {
-	$('#webpage-body').wysiwyg ({
+	$('#{% if field_id %}{{ field_id }}{% else %}webpage-body{% end %}').wysiwyg ({
 		initialContent: '<p><br /></p>',
 <?php if (file_exists ('js/wysiwyg/i18n/lang.' . $GLOBALS['i18n']->language . '.js')) { ?>
 		plugins: {
