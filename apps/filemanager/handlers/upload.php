@@ -18,10 +18,26 @@ if (! FileManager::verify_folder ($_POST['path'], $root)) {
 	return;
 }
 
+if (! isset ($_FILES['file'])) {
+	$page->title = i18n_get ('An Error Occurred');
+	echo '<p>' . i18n_get ('No file uploaded or file too large.') . '</p>';
+	echo '<p><a href="/filemanager">' . i18n_get ('Back') . '</a></p>';
+	return;
+}
+
 foreach ($_FILES['file']['error'] as $error) {
 	if ($error > 0) {
+		$errors = array (
+			1 => i18n_get ('File size is too large.'),
+			2 => i18n_get ('File size is too large.'),
+			3 => i18n_get ('The file was only partially uploaded.'),
+			4 => i18n_get ('No file was uploaded.'),
+			6 => i18n_get ('Missing a temporary folder, check your PHP setup.'),
+			7 => i18n_get ('Failed to write the file to disk.'),
+			8 => i18n_get ('A PHP extension stopped the file upload.')
+		);
 		$page->title = i18n_get ('An Error Occurred');
-		echo '<p>' . i18n_get ('Error message') . ': ' . $error . '</p>';
+		echo '<p>' . i18n_get ('Error message') . ': ' . $errors[$error] . '</p>';
 		echo '<p><a href="/filemanager">' . i18n_get ('Back') . '</a></p>';
 		return;
 	}
