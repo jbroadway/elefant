@@ -363,8 +363,7 @@ class Model {
 	 * specified INI file if $verify is a string matching a file name.
 	 */
 	public function put () {
-		$f = new Form;
-		$failed = $f->verify_values ($this->data, $this->verify);
+		$failed = Validator::validate_list ($this->data, $this->verify);
 		if (! empty ($failed)) {
 			$this->failed = $failed;
 			$this->error = 'Validation failed for: ' . join (', ', $failed);
