@@ -12,7 +12,7 @@ if (! $this->internal) {
 require_once ('apps/blog/lib/Filters.php');
 
 $p = new blog\Post;
-if ($data['tag'] !== '') {
+if (isset ($data['tag']) && $data['tag'] !== '') {
 	$posts = $p->tagged ($data['tag']);
 } else {
 	$posts = $p->headlines ();
