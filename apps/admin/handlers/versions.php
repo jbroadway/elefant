@@ -45,9 +45,9 @@ function admin_filter_user_name ($id) {
 	return $u->name;
 }
 
-$page->title = i18n_get ('Versions of') . ' ' . $_GET['type'];
+$page->title = i18n_get ('Versions of') . ' ' . Template::sanitize ($_GET['type']);
 if (! empty ($_GET['id'])) {
-	$page->title .= ' / ' . $_GET['id'];
+	$page->title .= ' / ' . Template::sanitize ($_GET['id']);
 }
 
 echo $tpl->render ('admin/versions', array (
