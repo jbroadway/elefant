@@ -1,14 +1,12 @@
 {! admin/util/dates !}
 
-<p>
+<p style="float: left">
 	<a href="/blog/add">{"New Post"}</a>
 	&nbsp;|&nbsp;
 	<a href="/blog/import">{"Import Posts"}</a>
 </p>
 
-{% if offset > 0 %}
-<p class="previous"><a href="/blog/admin?offset={{ prev }}">&laquo; {"Previous"}</a></p>
-{% end %}
+{! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
 
 <p>
 <table width="100%">
@@ -37,6 +35,4 @@
 </table>
 </p>
 
-{% if more %}
-<p class="next"><a href="/blog/admin?offset={{ next }}">{"Next"} &raquo;</a></p>
-{% end %}
+{! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
