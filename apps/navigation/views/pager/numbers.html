@@ -1,14 +1,14 @@
 <div class="pager">
 	<div class="pager-numbers">
-		<span class="pager-number pager-first"><a href="{{ first_link }}">&laquo;</a></span>
+		<span class="pager-number pager-first"><a href="{{ first_link|none }}">&laquo;</a></span>
 {% foreach links %}
 	{% if loop_index === $data->num %}
 		<span class="pager-number pager-current">{{ loop_index }}</span>
 	{% else %}
-		<span class="pager-number"><a href="{{ loop_value }}">{{ loop_index }}</a></span>
+		<span class="pager-number"><a href="{{ loop_value|none }}">{{ loop_index }}</a></span>
 	{% end %}
 {% end %}
-		<span class="pager-number pager-last"><a href="{{ last_link }}">&raquo;</a></span>
+		<span class="pager-number pager-last"><a href="{{ last_link|none }}">&raquo;</a></span>
 	</div>
 
 	<br clear="both" />

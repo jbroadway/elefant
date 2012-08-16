@@ -6,26 +6,24 @@
 
 $page->layout = 'admin';
 
-if (! User::require_admin ()) {
-	$this->redirect ('/admin');
-}
+$this->require_admin ();
 
 $limit = 20;
-$_GET['offset'] = (isset ($_GET['offset'])) ? $_GET['offset'] : 0;
+$num = isset ($_GET['offset']) ? $_GET['offset'] : 1;
+$offset = ($num - 1) * $limit;
 
 $users = User::query ('id, name, email, type')
 	->order ('name asc')
-	->fetch_orig ($limit, $_GET['offset']);
+	->fetch_orig ($limit, $offset);
 $count = User::query ()->count ();
 
 $page->title = i18n_get ('Users');
 echo $tpl->render ('user/admin', array (
+	'limit' => $limit,
+	'total' => $count,
 	'users' => $users,
-	'count' => $count,
-	'offset' => $_GET['offset'],
-	'more' => ($count > $_GET['offset'] + $limit) ? true : false,
-	'prev' => $_GET['offset'] - $limit,
-	'next' => $_GET['offset'] + $limit
+	'count' => count ($users),
+	'url' => '/user/admin?offset=%d'
 ));
 
 ?>

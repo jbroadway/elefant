@@ -24,7 +24,9 @@ if (! preg_match ('/^(css|layouts|layouts\/[a-z0-9_-]+)\/[a-z0-9_-]+\.(html|css)
 if (! @file_put_contents ($_GET['file'], $_POST['body'])) {
 	$error = 'Saving file failed';
 } else {
-	@chmod ($_GET['file'], 0777);
+	try {
+		@chmod ($_GET['file'], 0777);
+	} catch (Exception $e) {}
 }
 
 $res = new StdClass;
