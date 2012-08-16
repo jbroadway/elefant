@@ -85,12 +85,18 @@ for ($i = $start; $i <= $end; $i++) {
 }
 
 if ($data['style'] === 'results') {
-	echo __ (
-		'%d to %d of %d results:',
-		($o->offset + 1),
-		$o->last,
-		$o->total
-	);
+	if ($o->total == 0) {
+		echo __ ('No results.');
+	} elseif ($o->total == 1) {
+		echo __ ('1 result:');
+	} else {
+		echo __ (
+			'%d to %d of %d results:',
+			($o->offset + 1),
+			$o->last,
+			$o->total
+		);
+	}
 	return;
 }
 
