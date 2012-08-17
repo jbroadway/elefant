@@ -61,8 +61,8 @@ foreach ($sources as $source) {
 			}
 		} else {
 			// parse for i18n_getf?() syntax
-			preg_match_all ('/i18n_getf? ?\([\'"](.*?)[\'"]\)/', $data, $matches);
-			foreach ($matches[1] as $str) {
+			preg_match_all ('/(i18n_getf?|__) ?\([\'"](.*?)[\'"]\)/', $data, $matches);
+			foreach ($matches[2] as $str) {
 				$str = stripslashes ($str);
 				if (! isset ($list[$str])) {
 					$list[$str] = array (
