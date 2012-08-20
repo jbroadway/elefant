@@ -158,14 +158,15 @@ class ActiveResource {
 		$this->_data = $data;
 		// Allow class-defined element name or use class name if not defined
 		$this->element_name = $this->element_name ? $this->element_name : strtolower (get_class ($this));
-		$this->element_name_plural = $this->pluralize ($this->element_name);
 
 		// Detect for namespaces, and take just the class name
-		if (stripos($this->element_name, '\\'))
-		{
-			$classItems = explode('\\', $this->element_name);
-			$this->element_name = end($classItems);
+		if (stripos ($this->element_name, '\\')) {
+			$classItems = explode ('\\', $this->element_name);
+			$this->element_name = end ($classItems);
 		}
+
+		// Get the plural name after removing namespaces
+		$this->element_name_plural = $this->pluralize ($this->element_name);
 
 		// If configuration file (`config.ini.php`) exists use it (overwrite class properties/attribute values).
 		$config_file_path = dirname (__FILE__) . '/' . 'config.ini.php';
