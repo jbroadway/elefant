@@ -49,17 +49,24 @@
  *     {% end %}
  *
  * Note the use of loop_index and loop_value, which are defined for
- * you inside foreach loops by the template engine.
+ * you inside foreach loops by the template engine, or you can specify
+ * your own key and value names:
  *
- * You can also test for more complex conditions, but make sure the
- * value being tested for is not preceeded by anything. For example,
- * no false checks via `{% if !some_val %}`, instead use:
- *
- *     {% if some_val == false %}
- *         {{ some_val }}
+ *     {% for pages as key, page %}
+ *         {{ key }} - {{ page }}
  *     {% end %}
  *
- * Note that `'endif'` and `'endforeach'` are valid as well as `'end'`,
+ * You can also test for more complex conditions, for example:
+ *
+ *     {% if ! some_val %}
+ *         No value.
+ *     {% end %}
+ *
+ *     {% if some_val == 'some value' %}
+ *         Value: {{ some_val }}
+ *     {% end %}
+ *
+ * Note that `endif` and `endforeach` are valid as well as `end`,
  * if you prefer, for the sake of clarity.
  *
  * Here's one more example of how to loop through an array of arrays:
@@ -524,19 +531,32 @@ class Template {
 	 *     {% foreach some_list %}
 	 *     {% endforeach %}
 	 *
+	 *     {% foreach some_list as key, item %}
+	 *     {% endforeach %}
+	 *
+	 *     {% for some_list %}
+	 *     {% endfor %}
+	 *
+	 *     {% for some_list as item %}
+	 *     {% endfor %}
+	 *
 	 *     {% if statement %}
 	 *     {% elseif statement %}
 	 *     {% else %}
 	 *     {% endif %}
 	 *
-	 * You can also use `{% end %}` as an alias for both `{% endforeach %}`
-	 * or `{% endif %}`.
+	 * Note: `for` and `endfor` are aliases of `foreach` and `endforeach`.
+	 * You can also use `{% end %}` as an alias for `{% endforeach %}`,
+	 * `{% endfor %}` or `{% endif %}`.
 	 *
-	 * The current loop index is available via `{{ loop_index }}` and
-	 * the current loop value is available via `{{ loop_value }}`.
+	 * If an `as` clause isn't specified, the current loop index is available
+	 * via `{{ loop_index }}~ and the current loop value is available via `{{ loop_value }}`.
+	 *
+	 * If an `as` clause is specified without a key, the current loop index is available
+	 * via `{{ loop_index }}`.
 	 */
 	public function replace_blocks ($val) {
-		if ($val === 'end' || $val === 'endif' || $val === 'endforeach') {
+		if ($val === 'end' || $val === 'endif' || $val === 'endforeach' || $val === 'endfor') {
 			return '<?php } ?>';
 		}
 		
@@ -551,6 +571,13 @@ class Template {
 			return '<?php echo $this->render (\'' . $extra . '\', $data); ?>';
 		}
 
+		if (($block === 'if' || $block === 'elseif') && strpos (ltrim ($extra), '!') === 0) {
+			$not = '! ';
+			$extra = ltrim ($extra, '! ');
+		} else {
+			$not = '';
+		}
+
 		if (strstr ($extra, '$_')) {
 			if (strstr ($val, '.')) {
 				$extra = preg_replace ('/\.([a-zA-Z0-9_]+)/', '[\'\1\']', $extra, 1);
@@ -560,12 +587,22 @@ class Template {
 		} elseif (! strstr ($extra, '::') && ! strstr ($extra, '(')) {
 			$extra = '$data->' . $extra;
 		}
-		if ($block === 'foreach') {
+		if ($block === 'foreach' || $block === 'for') {
+			if (strpos ($extra, ' as ') !== false) {
+				if (strpos ($extra, ', ') === false) {
+					return '<?php foreach (' . str_replace (' as ', ' as $data->loop_index => $data->', $extra) . ') { ?>';
+				}
+				return '<?php foreach (' . str_replace (
+					array (' as ', ', '),
+					array (' as $data->', ' => $data->'),
+					$extra
+				) . ') { ?>';
+			}
 			return '<?php foreach (' . $extra . ' as $data->loop_index => $data->loop_value) { ?>';
 		} elseif ($block === 'if') {
-			return '<?php if (' . $extra . ') { ?>';
+			return '<?php if (' . $not . $extra . ') { ?>';
 		} elseif ($block === 'elseif') {
-			return '<?php } elseif (' . $extra . ') { ?>';
+			return '<?php } elseif (' . $not . $extra . ') { ?>';
 		} elseif ($block === 'else') {
 			return '<?php } else { ?>';
 		}

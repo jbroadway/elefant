@@ -30,13 +30,23 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals ($t->replace_blocks ('end'), '<?php } ?>');
 		$this->assertEquals ($t->replace_blocks ('endif'), '<?php } ?>');
+		$this->assertEquals ($t->replace_blocks ('endfor'), '<?php } ?>');
 		$this->assertEquals ($t->replace_blocks ('endforeach'), '<?php } ?>');
 		$this->assertEquals ($t->replace_blocks ('else'), '<?php } else { ?>');
 		$this->assertEquals ($t->replace_blocks ('if foo'), '<?php if ($data->foo) { ?>');
+		$this->assertEquals ($t->replace_blocks ('if !foo'), '<?php if (! $data->foo) { ?>');
+		$this->assertEquals ($t->replace_blocks ('if ! foo'), '<?php if (! $data->foo) { ?>');
 		$this->assertEquals ($t->replace_blocks ('if foo.bar'), '<?php if ($GLOBALS[\'foo\']->bar) { ?>');
 		$this->assertEquals ($t->replace_blocks ('if $_POST.value'), '<?php if ($_POST[\'value\']) { ?>');
 		$this->assertEquals ($t->replace_blocks ('elseif foo'), '<?php } elseif ($data->foo) { ?>');
+		$this->assertEquals ($t->replace_blocks ('elseif !foo'), '<?php } elseif (! $data->foo) { ?>');
+		$this->assertEquals ($t->replace_blocks ('elseif ! foo'), '<?php } elseif (! $data->foo) { ?>');
 		$this->assertEquals ($t->replace_blocks ('foreach foo'), '<?php foreach ($data->foo as $data->loop_index => $data->loop_value) { ?>');
+		$this->assertEquals ($t->replace_blocks ('foreach foo as bar'), '<?php foreach ($data->foo as $data->loop_index => $data->bar) { ?>');
+		$this->assertEquals ($t->replace_blocks ('foreach foo as _k, _v'), '<?php foreach ($data->foo as $data->_k => $data->_v) { ?>');
+		$this->assertEquals ($t->replace_blocks ('for foo'), '<?php foreach ($data->foo as $data->loop_index => $data->loop_value) { ?>');
+		$this->assertEquals ($t->replace_blocks ('for foo as bar'), '<?php foreach ($data->foo as $data->loop_index => $data->bar) { ?>');
+		$this->assertEquals ($t->replace_blocks ('for foo as _k, _v'), '<?php foreach ($data->foo as $data->_k => $data->_v) { ?>');
 		$this->assertEquals ($t->replace_blocks ('inc foo'), '<?php echo $this->render (\'foo\', $data); ?>');
 	}
 
