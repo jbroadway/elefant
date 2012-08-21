@@ -578,6 +578,10 @@ class Template {
 			$not = '';
 		}
 
+		if (($block === 'foreach' || $block === 'for') && strpos ($extra, ' in ') !== false) {
+			$extra = preg_replace ('/^(.*) in (.*)$/', '\2 as \1', $extra);
+		}
+
 		if (strstr ($extra, '$_')) {
 			if (strstr ($val, '.')) {
 				$extra = preg_replace ('/\.([a-zA-Z0-9_]+)/', '[\'\1\']', $extra, 1);
