@@ -207,12 +207,37 @@ class Template {
 	public $cache_folder = 'cache';
 
 	/**
-	 * The controller object used to run includes.
+	 * The layouts location.
+	 */
+	public $layouts_folder = 'layouts';
+	
+	/**
+	 * The app view locations.
+	 */
+	public $view_folders = 'apps/%s/views/%s';
+	
+	/**
+	 * Default layout filename.
+	 */
+	public $default_layout = 'default';
+	
+	/**
+	 * File extension.
+	 */
+	public $file_extension = 'html';
+
+	/**
+	 * The controller object used to run includes. The controller can be
+	 * any object that satisfies the following interface:
+	 *
+	 *     interface AbstractController {
+	 *         public function run ($uri, $data = array ());
+	 *     }
 	 */
 	public $controller = null;
 
 	/**
-	 * Constructor method sets the charset and receives a Controller object.
+	 * Constructor method sets the charset and receives a controller object.
 	 */
 	public function __construct ($charset = 'UTF-8', $controller = false) {
 		$this->charset = $charset;
@@ -239,19 +264,19 @@ class Template {
 		// `layouts/default.html`
 		if (strstr ($template, '/')) {
 			list ($app, $view) = preg_split ('/\//', $template, 2);
-			$file = 'apps/' . $app . '/views/' . $view . '.html';
+			$file = sprintf ($this->view_folders, $app, $view . '.' . $this->file_extension);
 			if (! file_exists ($file)) {
-				$file = 'layouts/' . $app . '/' . $view . '.html';
+				$file = $this->layouts_folder . '/' . $app . '/' . $view . '.' . $this->file_extension;
 				if (! file_exists ($file)) {
-					die ('Template not found: ' . $template);
+					throw new RuntimeException ('Template not found: ' . $template);
 				}
 			}
-		} elseif (file_exists ('layouts/' . $template . '.html')) {
-			$file = 'layouts/' . $template . '.html';
-		} elseif (file_exists ('layouts/' . $template . '/' . $template . '.html')) {
-			$file = 'layouts/' . $template . '/' . $template . '.html';
+		} elseif (file_exists ($this->layouts_folder . '/' . $template . '.' . $this->file_extension)) {
+			$file = $this->layouts_folder . '/' . $template . '.' . $this->file_extension;
+		} elseif (file_exists ($this->layouts_folder . '/' . $template . '/' . $template . '.' . $this->file_extension)) {
+			$file = $this->layouts_folder . '/' . $template . '/' . $template . '.' . $this->file_extension;
 		} else {
-			$file = 'layouts/default.html';
+			$file = $this->layouts_folder . '/' . $this->default_layout . '.' . $this->file_extension;
 		}
 
 		// The cache file is named based on the original
@@ -262,7 +287,7 @@ class Template {
 			$out = file_get_contents ($file);
 			$out = $this->parse_template ($out);
 			if (! file_put_contents ($cache, $out)) {
-				die ('Failed to generate cached template: ' . $cache);
+				throw new RuntimeException ('Failed to generate cached template: ' . $cache);
 			}
 		}
 		
@@ -285,7 +310,7 @@ class Template {
 		$cache_file = $this->cache_folder . '/_preview_' . md5 ($template) . '.php';
 		$out = $this->parse_template ($template);
 		if (! file_put_contents ($cache_file, $out)) {
-			die ('Failed to generate cached template: ' . $cache_file);
+			throw new RuntimeException ('Failed to generate cached template: ' . $cache_file);
 		}
 
 		// Include the temp file, then delete it, and return the output
@@ -610,7 +635,7 @@ class Template {
 		} elseif ($block === 'else') {
 			return '<?php } else { ?>';
 		}
-		die ('Invalid template block: ' . $val);
+		throw new LogicException ('Invalid template block: ' . $val);
 	}
 }
 
