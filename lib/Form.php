@@ -212,7 +212,7 @@ class Form {
 		// Fetch any form validation rules
 		if (! empty ($form_rules)) {
 			if (! file_exists ($form_rules)) {
-				list ($app, $form) = explode ('/', $form_rules);
+				list ($app, $form) = explode ('/', $form_rules, 2);
 				$form_rules = 'apps/' . $app . '/forms/' . $form . '.php';
 			}
 			if (file_exists ($form_rules)) {

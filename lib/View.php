@@ -80,7 +80,7 @@
  *     // we can't pass $this to use()
  *     $c = $this;
  *     
- *     echo View::render (function $params) use ($c) {
+ *     echo View::render (function ($params) use ($c) {
  *         if (! $c->is_https ()) {
  *             $c->force_https ();
  *         }
@@ -102,7 +102,12 @@ class View {
 	public static $params = array ();
 
 	/**
-	 * Sets the template renderer.
+	 * Sets the template renderer. The renderer can be any object
+	 * that satisfies the following interface:
+	 *
+	 *     interface AbstractTemplateRenderer {
+	 *         public function render ($template, $data = array ());
+	 *     }
 	 */
 	public static function init ($tpl) {
 		self::$tpl = $tpl;

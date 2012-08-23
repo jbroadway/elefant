@@ -58,6 +58,11 @@ class Book extends Model {
 	);
 }
 
+class NextTest extends Model {
+	public $table = 'next_test';
+	public $key = 'fieldname';
+}
+
 class ModelTest extends PHPUnit_Framework_TestCase {
 	protected static $q;
 
@@ -110,6 +115,9 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		insert into book_author (book, author) values (1, 2);
 		insert into book_author (book, author) values (2, 1);
 		insert into book_author (book, author) values (2, 2);
+		create table next_test (
+			fieldname int not null
+		);
 		");
 		foreach ($sql as $query) {
 			DB::execute ($query);
@@ -334,6 +342,19 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 			return false;
 		}));
 		$this->assertEquals (4, Foo::query ()->count ());
+	}
+
+	function test_next () {
+		$nt = new NextTest;
+
+		$this->assertEquals (1, $nt->next ());
+		$this->assertEquals (1, $nt->next ('fieldname'));
+
+		$nt->fieldname = 5;
+		$nt->put ();
+
+		$this->assertEquals (6, $nt->next ());
+		$this->assertEquals (6, $nt->next ('fieldname'));
 	}
 
 	function test_references () {
