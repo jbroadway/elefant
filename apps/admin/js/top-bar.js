@@ -1,9 +1,52 @@
+/**
+ * Provides client-side equivalent to `Controller::add_notification()`.
+ * Usage:
+ *
+ *     $.add_notification('My notification.');
+ */
 jQuery.add_notification = function (msg) {
 	var notices = $.cookie ('elefant_notification');
 	if (notices !== null) {
 		msg = notices + '|' + msg;
 	}
 	$.cookie ('elefant_notification', msg, {path: '/'});
+};
+
+/**
+ * Adds a confirmation to a link and turns its `data-*` properties
+ * into a `POST` request. Usage:
+ *
+ *     <a href="/post/here"
+ *        data-id="{{id}}"
+ *        onclick="$.confirm_and_post (this, 'Are you sure?')"
+ *     >Delete</a>
+ */
+jQuery.confirm_and_post = function (el, msg) {
+	if (window.event) {
+		window.event.preventDefault ();
+	}
+
+	if (! confirm (msg)) {
+		return false;
+	}
+
+	var $el = $(el),
+		params = $el.data ()
+		url = $el.attr ('href'),
+		$form = $('<form>')
+			.attr ('method', 'post')
+			.attr ('action', url);
+
+	$.each (params, function (name, value) {
+		$('<input type="hidden">')
+			.attr ('name', name)
+			.attr ('value', value)
+			.appendTo ($form);
+	});
+
+	$form.appendTo ('body');
+	$form.submit ();
+	return false;
 };
 
 $(function () {
