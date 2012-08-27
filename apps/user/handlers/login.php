@@ -29,7 +29,7 @@ if (! isset ($_POST['redirect'])) {
 	}
 }
 
-if (! Form::verify_value ($_POST['redirect'], 'header')) {
+if (! Validator::validate ($_POST['redirect'], 'header')) {
 	$_POST['redirect'] = '/user';
 }
 

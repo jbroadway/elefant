@@ -18,6 +18,10 @@ if (! isset ($_GET['redirect'])) {
 	$_GET['redirect'] = $appconf['User']['logout_redirect'];
 }
 
+if (! Validator::validate ($_GET['redirect'], 'header')) {
+	$_GET['redirect'] = '/';
+}
+
 Lock::clear ();
 echo User::logout ($_GET['redirect']);
 
