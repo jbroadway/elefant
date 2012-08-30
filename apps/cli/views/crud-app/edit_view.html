@@ -1,0 +1,14 @@
+<form method="post" id="\{{ _form }}">
+
+{% for key, field in fields %}
+<p>
+	\{"{{field|ucfirst}}"}:<br />
+	<input type="text" name="{{field}}" value="\{{ {{field}}|quotes }}" />
+	<span class="notice" id="{{field}}-notice">\{"Please enter a {{field}}."}</span>
+</p>
+
+{% end %}
+
+<p><input type="submit" value="\{"Save {{appname|ucfirst}}"}" /></p>
+
+</form>

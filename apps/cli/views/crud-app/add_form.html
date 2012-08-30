@@ -1,0 +1,10 @@
+; {{open_tag|none}} /*
+
+{% for field in fields %}
+{% if field !== 'id' %}
+[{{field}}]
+not empty = 1
+
+{% end %}
+{% end %}
+; */ {{close_tag|none}}

@@ -1,0 +1,9 @@
+create table {{plural}} (
+{% for key, field in fields %}
+{% if field === 'id' %}
+	{{field}} int not null auto_increment primary key{% if $data->key < count ($data->fields) - 1 %},{% end %} 
+{% else %}
+	{{field}} char(48) not null{% if $data->key < count ($data->fields) - 1 %},{% end %} 
+{% end %}
+{% end %}
+);
