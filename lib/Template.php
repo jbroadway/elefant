@@ -328,15 +328,32 @@ class Template {
 	 * code, eliminating the possibility of exposing a security hole.
 	 */
 	public function parse_template ($val) {
-		$val = str_replace ('\\{{', '#EOBRACE#', $val);
-		$val = str_replace ('\\}}', '#ECBRACE#', $val);
+		$val = str_replace (
+			array (
+				'\\{{', '\\}}', '\\{%', '\\%}', '\\{"', '\\"}', '\\{\'', '\\\'}',
+				'\\{!', '\\!}', '\\{#', '\\#}'
+			),
+			array (
+				'#EOBRACE#', '#ECBRACE#', '#EOBLOCK#', '#ECBLOCK#', '#EOQUOTE#', '#ECQUOTE#',
+				'#EOQUOTE#', '#ECQUOTE#', '#EOINCLUDE#', '#ECINCLUDE#', '#EOHARDCODE#',
+				'#ECHARDCODE#'
+			),
+			$val
+		);
 		$val = preg_replace ('/\{\{ ?(.*?) ?\}\}/e', '$this->replace_vars (\'\\1\')', $val);
 		$val = preg_replace ('/\{[\'"] ?(.*?) ?[\'"]\}/e', '$this->replace_strings (\'\\1\')', $val);
 		$val = preg_replace ('/\{\% ?(.*?) ?\%\}/e', '$this->replace_blocks (\'\\1\')', $val);
 		$val = preg_replace ('/\{\! ?(.*?) ?\!\}/es', '$this->replace_includes (\'\\1\')', $val);
 		$val = preg_replace ('/\{# ?(.*?) ?#\}/es', '$this->hard_codes (\'\\1\')', $val);
-		$val = str_replace ('#EOBRACE#', '{{', $val);
-		$val = str_replace ('#ECBRACE#', '}}', $val);
+		$val = str_replace (
+			array (
+				'#EOBRACE#', '#ECBRACE#', '#EOBLOCK#', '#ECBLOCK#', '#EOQUOTE#', '#ECQUOTE#',
+				'#EOINCLUDE#', '#ECINCLUDE#', '#EOHARDCODE#', '#ECHARDCODE#'),
+			array (
+				'{{', '}}', '{%', '%}', '{"', '"}', '{!', '!}', '{#', '#}'
+			),
+			$val
+		);
 		return $val;
 	}
 

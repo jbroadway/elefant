@@ -88,6 +88,31 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 			'one {{ two }} three',
 			$t->parse_template ('one \\{{ two \\}} three')
 		);
+
+		$this->assertEquals (
+			'one {" two "} three',
+			$t->parse_template ('one \\{" two \\"} three')
+		);
+
+		$this->assertEquals (
+			'one {" two "} three',
+			$t->parse_template ('one \\{\' two \\\'} three')
+		);
+
+		$this->assertEquals (
+			'one {% two %} three',
+			$t->parse_template ('one \\{% two \\%} three')
+		);
+
+		$this->assertEquals (
+			'one {! two !} three',
+			$t->parse_template ('one \\{! two \\!} three')
+		);
+
+		$this->assertEquals (
+			'one {# two #} three',
+			$t->parse_template ('one \\{# two \\#} three')
+		);
 	}
 }
 
