@@ -4,10 +4,10 @@
  * Renders the RSS feed for the blog.
  */
 
-$res = $memcache->get ('_blog_rss');
+$res = $cache->get ('_blog_rss');
 if (! $res) {
 	require_once ('apps/blog/lib/Filters.php');
-	
+
 	$p = new blog\Post;
 	$page->posts = $p->latest (10, 0);
 	$page->title = $appconf['Blog']['title'];
@@ -15,11 +15,11 @@ if (! $res) {
 	foreach ($page->posts as $k => $post) {
 		$page->posts[$k]->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
 	}
-	
+
 	$res = $tpl->render ('blog/rss', $page);
-	$memcache->set ('_blog_rss', $res, 1800); // half an hour
+	$cache->set ('_blog_rss', $res, 1800); // half an hour
 }
-$page->layout = false;
+$page->layout = FALSE;
 header ('Content-Type: text/xml');
 echo $res;
 

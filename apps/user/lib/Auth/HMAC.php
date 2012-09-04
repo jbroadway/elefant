@@ -4,17 +4,17 @@
  * Elefant CMS - http://www.elefantcms.com/
  *
  * Copyright (c) 2011 Johnny Broadway
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,16 +33,16 @@ namespace user\Auth;
  * Usage:
  *
  *   <?php
- *   
+ *
  *   $this->require_auth (user\Auth\HMAC::init (
  *     $this,     // Controller
- *     $memcache, // Memcache
+ *     $cache, // Memcache
  *     3600       // Timeout
  *   ));
- *   
+ *
  *   // User has been authorized via HMAC
  *   $this->restful (new MyRestfulClass ());
- *   
+ *
  *   ?>
  */
 class HMAC {
@@ -52,7 +52,7 @@ class HMAC {
 	public static $controller = null;
 
 	/**
-	 * A copy of the memcache object required by `init()`.
+	 * A copy of the cache object required by `init()`.
 	 */
 	public static $memcache = null;
 

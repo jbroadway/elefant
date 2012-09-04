@@ -37,12 +37,12 @@ function navigation_print_context ($tree, $path) {
 }
 
 /**
- * Clears all memcache keys for the navigation app.
+ * Clears all cache keys for the navigation app.
  */
 function navigation_clear_cache () {
-	global $memcache;
-	$memcache->delete ('_navigation_top');
-	$memcache->delete ('navigation_map');
+	global $cache;
+	$cache->delete ('_navigation_top');
+	$cache->delete ('navigation_map');
 }
 
 /**
