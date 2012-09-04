@@ -85,7 +85,7 @@ admin/delete[] = navigation/hook/delete
 
 [Cache]
 
-; Configure your memcache server list. This will be available in
+; Configure your cache server list. This will be available in
 ; your handlers via the $cache object. If blank, or cache
 ; is unavailable, it will emulate Memcache via the lib/Cache
 ; object, storing the cache in the `conf/datastore` folder.
@@ -98,7 +98,7 @@ admin/delete[] = navigation/hook/delete
 ; Note: To use Redis auth, add the password after the port,
 ; separated by a comma, e.g. "localhost:6379,PASSWORD"
 
-;backend = memcache
+;backend = cache
 ;server[] = localhost:11211
 
 [Mailer]

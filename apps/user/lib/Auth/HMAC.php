@@ -49,12 +49,12 @@ class HMAC {
 	/**
 	 * A copy of the controller object required by `init()`.
 	 */
-	public static $controller = null;
+	public static $controller = NULL;
 
 	/**
 	 * A copy of the cache object required by `init()`.
 	 */
-	public static $memcache = null;
+	public static $cache = NULL;
 
 	/**
 	 * A timeout length for caching private API keys, set vai `init()`.
@@ -68,7 +68,7 @@ class HMAC {
 	 */
 	public static function init ($controller, $memcache, $timeout = 3600) {
 		self::$controller = $controller;
-		self::$memcache = $memcache;
+		self::$cache = $memcache;
 		self::$timeout = $timeout;
 
 		return array (
@@ -82,31 +82,31 @@ class HMAC {
 	 * Tokens and secret keys are stored in the `api` table.
 	 */
 	public static function verifier ($token, $hmac, $data) {
-		$api_key = self::$memcache->get ('_api_key_' . $token);
+		$api_key = self::$cache->get ('_api_key_' . $token);
 
 		if (! $api_key) {
 			// API key not yet cached
 			$api = new \Api ($token);
 			if ($api->error) {
-				return false;
+				return FALSE;
 			}
 			$api_key = $api->api_key;
 
 			// Cache the API key
-			$res = self::$memcache->replace ('_api_key_' . $token, $api_key, 0, self::$timeout);
-			if ($res === false) {
-				self::$memcache->set ('_api_key_' . $token, $api_key, 0, self::$timeout);
+			$res = self::$cache->replace ('_api_key_' . $token, $api_key, 0, self::$timeout);
+			if ($res === FALSE) {
+				self::$cache->set ('_api_key_' . $token, $api_key, 0, self::$timeout);
 			}
 		}
 
 		// Compare our hash calculation with the one given
 		if (hash_hmac ('sha256', $data, $api_key) !== $hmac) {
-			return false;
+			return FALSE;
 		}
 
 		// They have the private key, create the user
 		$user = new \User ($api->user_id);
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -148,7 +148,7 @@ class HMAC {
 			exit;
 		}
 
-		return true;
+		return TRUE;
 	}
 }
 
