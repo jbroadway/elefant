@@ -375,11 +375,25 @@ class Controller {
 		// Load the app's configuration settings if available
 		if (! isset (self::$appconf[$this->app])) {
 			try {
+				// First load the default configuration
 				self::$appconf[$this->app] = file_exists ('apps/' . $this->app . '/conf/config.php')
 					? parse_ini_file ('apps/' . $this->app . '/conf/config.php', true)
 					: array ();
 			} catch (Exception $e) {
+				// Catch and set to empty
 				self::$appconf[$this->app] = array ();
+			}
+
+			try {
+				// Now check for a custom configuration
+				self::$appconf[$this->app] = file_exists ('conf/app.' . $this->app . '.' . ELEFANT_ENV . '.php')
+					? array_merge (
+						self::$appconf[$this->app],
+						parse_ini_file ('conf/app.' . $this->app . '.' . ELEFANT_ENV . '.php', true)
+					  )
+					: self::$appconf[$this->app];
+			} catch (Exception $e) {
+				// Do nothing because self::$appconf[$this->app] is already set
 			}
 		}
 		$appconf = self::$appconf[$this->app];
