@@ -36,9 +36,15 @@ class Ini {
 	 * Write a data structure to an INI-formatted string or file.
 	 * Adds "secure" comments to the start and end of the data so
 	 * you can hide your INI data in files using a .php extension.
+	 * If a `$header` is provided, it will add that as a comment to
+	 * the top of the file.
 	 */
-	public static function write ($data, $file = false) {
+	public static function write ($data, $file = false, $header = false) {
 		$out = "; <?php /*\n";
+
+		if ($header !== false) {
+			$out .= ";\n; $header\n;\n";
+		}
 
 		$write_value = function ($value) {
 			if (is_bool ($value)) {
