@@ -5,7 +5,7 @@
  * `apps/api/conf/config.php`. Requests all require providing
  * an API token and an HMAC value calculated using a secret key
  * and the concatenation of the following data:
- * 
+ *
  * - Request method (e.g., GET)
  * - Request URI including host name (e.g., www.example.com/hello)
  * - Any additional raw request data (e.g., ?name=John&last=Doe)
@@ -13,15 +13,15 @@
  * A client calculation example:
  *
  *   <?php
- *   
+ *
  *   $token = 'my token';
  *   $secret = 'my secret api key';
  *   $data = 'GETwww.example.com/hello?name=John&last=Doe';
  *   $hash = hash_hmac ('sha256', $data, $secret);
- *   
+ *
  *   // Now make an HTTP Basic client request and use
  *   // $token as the user and $hash as the password.
- *   
+ *
  *   ?>
  *
  * The hash value will be recalculated based on the stored private
@@ -35,7 +35,7 @@
 $page->layout = false;
 header ('Content-Type: application/json');
 
-$this->require_auth (user\Auth\HMAC::init ($this, $memcache));
+$this->require_auth (user\Auth\HMAC::init ($this, $cache));
 
 $error = false;
 

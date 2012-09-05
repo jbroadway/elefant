@@ -61,9 +61,9 @@ if ($f->submit ()) {
 				);
 			}
 		}
-		
+
 		require_once ('apps/blog/lib/Filters.php');
-		
+
 		// autopost
 		if ($autopost) {
 			if ($autopost_pom) {
@@ -82,7 +82,7 @@ if ($f->submit ()) {
 		}
 
 		// reset blog rss cache
-		$memcache->delete ('blog_rss');
+		$cache->delete ('blog_rss');
 
 		$_POST['page'] = 'blog/post/' . $p->id . '/' . URLify::filter ($p->title);
 		$lock->remove ();
