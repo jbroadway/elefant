@@ -98,7 +98,7 @@ admin/delete[] = navigation/hook/delete
 ; Note: To use Redis auth, add the password after the port,
 ; separated by a comma, e.g. "localhost:6379,PASSWORD"
 
-;backend = cache
+;backend = memcache
 ;server[] = localhost:11211
 
 [Mailer]
