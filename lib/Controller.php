@@ -387,7 +387,7 @@ class Controller {
 			try {
 				// Now check for a custom configuration
 				self::$appconf[$this->app] = file_exists ('conf/app.' . $this->app . '.' . ELEFANT_ENV . '.php')
-					? array_merge (
+					? array_replace_recursive (
 						self::$appconf[$this->app],
 						parse_ini_file ('conf/app.' . $this->app . '.' . ELEFANT_ENV . '.php', true)
 					  )
