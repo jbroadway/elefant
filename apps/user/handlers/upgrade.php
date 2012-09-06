@@ -16,15 +16,15 @@ $db = DB::get_connection (1);
 $dbtype = $db->getAttribute (PDO::ATTR_DRIVER_NAME);
 switch ($dbtype) {
 	case 'pgsql':
-		DB::execute ('alter table "user" alter column "password" type varchar(128)');
+		DB::execute ('alter table "elefant_user" alter column "password" type varchar(128)');
 		break;
 	case 'mysql':
-		DB::execute ('alter table `user` change column `password` `password` varchar(128) not null');
+		DB::execute ('alter table `elefant_user` change column `password` `password` varchar(128) not null');
 		break;
 	case 'sqlite':
 		DB::execute ('begin transaction');
-		DB::execute ('alter table `user` rename to `tmp_user`');
-		DB::execute ('create table user (
+		DB::execute ('alter table `elefant_user` rename to `tmp_user`');
+		DB::execute ('create table elefant_user (
 			id integer primary key,
 			email char(72) unique not null,
 			password char(128) not null,
@@ -36,9 +36,9 @@ switch ($dbtype) {
 			updated datetime not null,
 			userdata text not null
 		)');
-		DB::execute ('create index user_email_password on user (email, password)');
-		DB::execute ('create index user_session_id on user (session_id)');
-		DB::execute ('insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata)
+		DB::execute ('create index elefant_user_email_password on elefant_user (email, password)');
+		DB::execute ('create index elefant_user_session_id on elefant_user (session_id)');
+		DB::execute ('insert into `elefant_user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata)
 			select id, email, password, session_id, expires, name, type, signed_up, updated, userdata from `tmp_user`');
 		DB::execute ('drop table `tmp_user`');
 		DB::execute ('commit');

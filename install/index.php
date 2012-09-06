@@ -198,7 +198,7 @@ switch ($_GET['step']) {
 				} else {
 					$date = gmdate ('Y-m-d H:i:s');
 					if (! DB::execute (
-						"update `user` set `email` = ?, `password` = ?, `name` = ? where `id` = 1",
+						"update `elefant_user` set `email` = ?, `password` = ?, `name` = ? where `id` = 1",
 						$_POST['email_from'],
 						encrypt_pass ($_POST['pass']),
 						$_POST['your_name']
