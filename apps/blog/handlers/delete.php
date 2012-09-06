@@ -30,7 +30,7 @@ if (! $p->remove ()) {
 }
 
 // reset blog rss cache
-$memcache->delete ('blog_rss');
+$cache->delete ('blog_rss');
 
 DB::execute ('delete from blog_post_tag where post_id = ?', $_GET['id']);
 

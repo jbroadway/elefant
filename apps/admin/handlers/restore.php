@@ -34,7 +34,7 @@ Versions::add ($obj);
 
 $this->add_notification ('Item restored.');
 if ($ver->class == 'Webpage') {
-	$memcache->delete ('_admin_page_' . $obj->id);
+	$cache->delete ('_admin_page_' . $obj->id);
 	$this->redirect ('/' . $obj->id);
 }
 $this->redirect ('/');

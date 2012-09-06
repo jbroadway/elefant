@@ -11,7 +11,7 @@
 $id = count ($this->params) ? $this->params[0] : 'index';
 
 // check if cached
-$res = $memcache->get ('_admin_page_' . $id);
+$res = $cache->get ('_admin_page_' . $id);
 if ($res) {
 	$page = (is_object ($res)) ? $res : unserialize ($res);
 
@@ -74,7 +74,7 @@ $out = $tpl->run_includes ($wp->body);
 if ($wp->access == 'public' && $out === $wp->body) {
 	// public page, no includes, cacheable.
 	$page->body = $out;
-	$memcache->set ('_admin_page_' . $id, serialize ($page));
+	$cache->set ('_admin_page_' . $id, serialize ($page));
 }
 
 // output the page body
