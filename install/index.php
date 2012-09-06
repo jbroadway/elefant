@@ -181,8 +181,8 @@ switch ($_GET['step']) {
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			// got the settings, save them
 			$conf = file_get_contents ('../conf/config.php');
-			$conf = preg_replace ('/site_name = .*/', 'site_name = "' . $_POST['site_name'] . '"', $conf);
-			$conf = preg_replace ('/email_from = .*/', 'email_from = "' . $_POST['email_from'] . '"', $conf);
+			$conf = preg_replace ('/site_name = .*/', 'site_name = "' . $_POST['site_name'] . '"', $conf, 1);
+			$conf = preg_replace ('/email_from = .*/', 'email_from = "' . $_POST['email_from'] . '"', $conf, 1);
 			if (! file_put_contents ('../conf/config.php', $conf)) {
 				$data['error'] = i18n_get ('Failed to write to conf/config.php');
 			} else {
