@@ -4,17 +4,17 @@
  * Elefant CMS - http://www.elefantcms.com/
  *
  * Copyright (c) 2011 Johnny Broadway
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -51,40 +51,40 @@
  * Basic usage of additional methods:
  *
  *     <?php
- *     
+ *
  *     // Send unauth users to myapp/login view
  *     if (! User::require_login ()) {
  *         $page->title = i18n_get ('Members');
  *         echo $this->run ('user/login');
  *         return;
  *     }
- *     
+ *
  *     // Check if a user is valid at any point
  *     if (! User::is_valid ()) {
  *         // Not allowed
  *     }
- *     
+ *
  *     // Check the user's type
  *     if (User::is ('member')) {
  *         // Access granted
  *     }
- *     
+ *
  *     // Get the name value
  *     $name = User::val ('name');
- *     
+ *
  *     // Get the actual user object
  *     info (User::$user);
- *     
+ *
  *     // Update and save a user's name
  *     User::val ('name', 'Bob Diggity');
  *     User::save ();
- *     
+ *
  *     // Encrypt a password
  *     $encrypted = User::encrypt_pass ($password);
- *     
+ *
  *     // Log out and send them home
  *     User::logout ('/');
- *     
+ *
  *     ?>
  */
 class User extends ExtendedModel {
@@ -96,12 +96,12 @@ class User extends ExtendedModel {
 	/**
 	 * This is the static User object for the current user.
 	 */
-	public static $user = false;
+	public static $user = FALSE;
 
 	/**
 	 * Access control list for `access()` method.
 	 */
-	public static $acl = false;
+	public static $acl = FALSE;
 
 	/**
 	 * Generates a random salt and encrypts a password using MD5.
@@ -136,20 +136,20 @@ class User extends ExtendedModel {
 		);
 
 		// Check if they've exceeded their login attempt limit
-		global $memcache, $controller;
-		$appconf = parse_ini_file ('apps/user/conf/config.php', true);
-		$attempts = $memcache->get ('_user_login_attempts_' . session_id ());
+		global $cache, $controller;
+		$appconf = parse_ini_file ('apps/user/conf/config.php', TRUE);
+		$attempts = $cache->get ('_user_login_attempts_' . session_id ());
 		if (! $attempts) {
 			$attempts = 0;
 		}
 		if ($attempts > $appconf['User']['login_attempt_limit']) {
-			$called[$user] = false;
+			$called[$user] = FALSE;
 			$controller->redirect ('/user/too-many-attempts');
 		}
 
 		if ($u && crypt ($pass, $u->password) == $u->password) {
 			$class = get_called_class ();
-			self::$user = new $class ((array) $u, false);
+			self::$user = new $class ((array) $u, FALSE);
 			self::$user->session_id = md5 (uniqid (mt_rand (), 1));
 			self::$user->expires = gmdate ('Y-m-d H:i:s', time () + 2592000); // 1 month
 			$try = 0;
@@ -157,29 +157,29 @@ class User extends ExtendedModel {
 				self::$user->session_id = md5 (uniqid (mt_rand (), 1));
 				$try++;
 				if ($try == 5) {
-					$called[$user] = false;
-					return false;
+					$called[$user] = FALSE;
+					return FALSE;
 				}
 			}
 			$_SESSION['session_id'] = self::$user->session_id;
 
 			// Save the user agent so we can verify it against future sessions,
 			// and remove the login attempts cache item
-			$memcache->add ('_user_session_agent_' . $_SESSION['session_id'], $_SERVER['HTTP_USER_AGENT'], 0, time () + 2592000);
-			$memcache->delete ('_user_login_attempts_' . session_id ());
+			$cache->add ('_user_session_agent_' . $_SESSION['session_id'], $_SERVER['HTTP_USER_AGENT'], 0, time () + 2592000);
+			$cache->delete ('_user_login_attempts_' . session_id ());
 
-			$called[$user] = true;
-			return true;
+			$called[$user] = TRUE;
+			return TRUE;
 		}
 
 		// Increment the number of attempts they've made
 		$attempts++;
-		if (! $memcache->add ('_user_login_attempts_' . session_id (), $attempts, 0, $appconf['User']['block_attempts_for'])) {
-			$memcache->replace ('_user_login_attempts_' . session_id (), $attempts, 0, $appconf['User']['block_attempts_for']);
+		if (! $cache->add ('_user_login_attempts_' . session_id (), $attempts, 0, $appconf['User']['block_attempts_for'])) {
+			$cache->replace ('_user_login_attempts_' . session_id (), $attempts, 0, $appconf['User']['block_attempts_for']);
 		}
 
-		$called[$user] = false;
-		return false;
+		$called[$user] = FALSE;
+		return FALSE;
 	}
 
 	/**
@@ -202,29 +202,29 @@ class User extends ExtendedModel {
 			);
 			if ($u) {
 				// Verify user agent as a last step (make hijacking harder)
-				global $memcache;
-				$ua = $memcache->get ('_user_session_agent_' . $_SESSION['session_id']);
+				global $cache;
+				$ua = $cache->get ('_user_session_agent_' . $_SESSION['session_id']);
 				if ($ua && $ua !== $_SERVER['HTTP_USER_AGENT']) {
-					return false;
+					return FALSE;
 				}
 
 				$class = get_called_class ();
-				self::$user = new $class ((array) $u, false);
-				return true;
+				self::$user = new $class ((array) $u, FALSE);
+				return TRUE;
 			}
 		}
-		return false;
+		return FALSE;
 	}
 
 	/**
 	 * Simplifies authorization down to:
 	 *
 	 *     <?php
-	 *     
+	 *
 	 *     if (! User::require_login ()) {
 	 *         // unauthorized
 	 *     }
-	 *     
+	 *
 	 *     ?>
 	 */
 	public static function require_login () {
@@ -236,29 +236,29 @@ class User extends ExtendedModel {
 	 * Simplifies authorization for admins down to:
 	 *
 	 *     <?php
-	 *     
+	 *
 	 *     if (! User::require_admin ()) {
 	 *         // unauthorized
 	 *     }
-	 *     
+	 *
 	 *     ?>
 	 */
 	public static function require_admin () {
 		if (is_object (self::$user)) {
 			if (self::$user->session_id == $_SESSION['session_id']) {
 				if (self::$user->type == 'admin') {
-					return true;
+					return TRUE;
 				}
-				return false;
+				return FALSE;
 			}
 		} else {
 			$class = get_called_class ();
 			$res = simple_auth (array ($class, 'verifier'), array ($class, 'method'));
 			if ($res && self::$user->type == 'admin') {
-				return true;
+				return TRUE;
 			}
 		}
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -266,7 +266,7 @@ class User extends ExtendedModel {
 	 */
 	public static function is_valid () {
 		if (is_object (self::$user) && self::$user->session_id == $_SESSION['session_id']) {
-			return true;
+			return TRUE;
 		}
 		return self::require_login ();
 	}
@@ -282,8 +282,8 @@ class User extends ExtendedModel {
 	 * Loads the access control list for the `access()` method.
 	 */
 	private static function load_acl () {
-		if (self::$acl === false) {
-			$appconf = parse_ini_file ('apps/user/conf/config.php', true);
+		if (self::$acl === FALSE) {
+			$appconf = parse_ini_file ('apps/user/conf/config.php', TRUE);
 			self::$acl = $appconf['Access'];
 			// make the default access levels translatable
 			i18n_get ('Public'); i18n_get ('Member'); i18n_get ('Private');
@@ -298,19 +298,19 @@ class User extends ExtendedModel {
 		self::load_acl ();
 
 		if (! isset (self::$acl[$access])) {
-			return false;
+			return FALSE;
 		}
 
 		if (self::$acl[$access] === 'all') {
-			return true;
+			return TRUE;
 		}
 
 		if (self::$acl[$access] === 'login' && self::is_valid ()) {
-			return true;
+			return TRUE;
 		}
 
 		if (self::$acl[$access] === 'admin' && self::is ('admin')) {
-			return true;
+			return TRUE;
 		}
 
 		if (strpos (self::$acl[$access], 'type:') === 0) {
@@ -320,10 +320,10 @@ class User extends ExtendedModel {
 		}
 
 		if (self::is ($type)) {
-			return true;
+			return TRUE;
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -337,8 +337,8 @@ class User extends ExtendedModel {
 	/**
 	 * Get or set a specific field's value.
 	 */
-	public static function val ($key, $val = null) {
-		if ($val !== null) {
+	public static function val ($key, $val = NULL) {
+		if ($val !== NULL) {
 			self::$user->{$key} = $val;
 		}
 		return self::$user->{$key};
@@ -354,15 +354,15 @@ class User extends ExtendedModel {
 	/**
 	 * Log out and optionally redirect to the specified URL.
 	 */
-	public static function logout ($redirect_to = false) {
-		if (self::$user === false) {
+	public static function logout ($redirect_to = FALSE) {
+		if (self::$user === FALSE) {
 			self::require_login ();
 		}
 		if (! empty (self::$user->session_id)) {
 			self::$user->expires = gmdate ('Y-m-d H:i:s', time () - 100000);
 			self::$user->put ();
 		}
-		$_SESSION['session_id'] = null;
+		$_SESSION['session_id'] = NULL;
 		if ($redirect_to) {
 			global $controller;
 			$controller->redirect ($redirect_to);

@@ -4,17 +4,17 @@
  * Elefant CMS - http://www.elefantcms.com/
  *
  * Copyright (c) 2011 Johnny Broadway
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -40,40 +40,40 @@
  * Usage:
  *
  *     <?php
- *     
+ *
  *     require_once ('lib/Autoloader.php');
- *     
+ *
  *     class MyappAppTest extends AppTest {
  *         public function test_myhandler () {
  *             // Perform a handler request and test its output
  *             $res = $this->get ('myapp/myhandler', array ('one' => 'two');
  *             $this->assertContains ('Expected output', $res);
  *         }
- *     
+ *
  *         public function test_admin () {
  *             // This should redirect to /admin
  *             $res = $this->get ('myapp/admin');
  *             $this->assertContains ('headers already sent', $res);
- *       
+ *
  *             // Become the admin and try again
  *             $this->userAdmin ();
  *             $res = $this->get ('myapp/admin');
  *             $this->assertContains ('My admin output', $res);
- *       
+ *
  *             // Become anonymous user again
  *             $this->userAnon ();
- *       
+ *
  *             // Continue...
  *         }
  *     }
- *     
+ *
  *     ?>
  */
 class AppTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * Prevent these from being reset between tests.
 	 */
-	protected $backupGlobalsBlacklist = array ('i18n', 'memcache', 'page', 'tpl');
+	protected $backupGlobalsBlacklist = array ('i18n', 'cache', 'page', 'tpl');
 
 	/**
 	 * The Controller object.
@@ -98,7 +98,7 @@ class AppTest extends PHPUnit_Framework_TestCase {
 	 * Make the current user anonymous.
 	 */
 	public function userAnon () {
-		User::$user = false;
+		User::$user = FALSE;
 	}
 
 	/**
@@ -113,7 +113,7 @@ class AppTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Initializes the `$i18n`, `$memcache`, `$page`, and `$tpl` objects
+	 * Initializes the `$i18n`, `$cache`, `$page`, and `$tpl` objects
 	 * for use with the controller in testing handlers.
 	 */
 	public static function setUpBeforeClass () {
@@ -124,10 +124,10 @@ class AppTest extends PHPUnit_Framework_TestCase {
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en';
 		$_SERVER['REQUEST_URI'] = '/';
 
-		global $conf, $i18n, $memcache, $page, $tpl;
+		global $conf, $i18n, $cache, $page, $tpl;
 
 		// Set up the database connection to be in memory
-		$conf = parse_ini_file ('conf/config.php', true);
+		$conf = parse_ini_file ('conf/config.php', TRUE);
 		$conf['Database'] = array (
 			'master' => array (
 				'driver' => 'sqlite',
@@ -163,18 +163,18 @@ class AppTest extends PHPUnit_Framework_TestCase {
 		$page = new Page;
 		self::$c = new Controller ();
 		$tpl = new Template ('utf-8', self::$c);
-		$memcache = Cache::init (array ());
+		$cache = Cache::init (array ());
 	}
 
 	/**
-	 * Unset the `$i18n`, `$memcache`, `$page`, and `$tpl` objects upon
+	 * Unset the `$i18n`, `$cache`, `$page`, and `$tpl` objects upon
 	 * completion.
 	 */
 	public static function tearDownAfterClass () {
 		error_reporting (E_ALL);
-		global $i18n, $memcache, $page, $tpl;
+		global $i18n, $cache, $page, $tpl;
 		unset ($i18n);
-		unset ($memcache);
+		unset ($cache);
 		unset ($page);
 		unset ($tpl);
 
@@ -183,7 +183,7 @@ class AppTest extends PHPUnit_Framework_TestCase {
 		}
 
 		if (isset (User::$user)) {
-			User::$user = false;
+			User::$user = FALSE;
 		}
 	}
 }

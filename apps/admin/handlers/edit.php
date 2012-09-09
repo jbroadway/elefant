@@ -38,7 +38,7 @@ if ($f->submit ()) {
 	$wp->put ();
 	if (! $wp->error) {
 		Versions::add ($wp);
-		$memcache->delete ('_admin_page_' . $_GET['page']);
+		$cache->delete ('_admin_page_' . $_GET['page']);
 		$this->add_notification (i18n_get ('Page saved.'));
 		$_POST['page'] = $_GET['page'];
 		$lock->remove ();
