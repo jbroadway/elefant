@@ -66,9 +66,9 @@ class HMAC {
 	 * Returns an array with the verifier and request method callbacks
 	 * that will be passed to `simple_auth()`.
 	 */
-	public static function init ($controller, $memcache, $timeout = 3600) {
+	public static function init ($controller, $cache, $timeout = 3600) {
 		self::$controller = $controller;
-		self::$cache = $memcache;
+		self::$cache = $cache;
 		self::$timeout = $timeout;
 
 		return array (
