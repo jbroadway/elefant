@@ -60,12 +60,14 @@ class Cache {
 		$dir = isset ($conf['location']) ? $conf['location'] : 'cache/datastore';
 		$backend = isset ($conf['backend']) ? $conf['backend'] : 'memcache';
 
+		if ($backend === 'apc' && extension_loaded ('apc')) {
+				return new MemcacheAPC ();
+		}
+
 		if ($server) {
 			// Determine the backend
 			if ($backend === 'redis' && extension_loaded ('redis')) {
 				$cache = new MemcacheRedis ();
-			} elseif ($backend === 'apc' && extension_loaded ('apc')) {
-				return new MemcacheAPC ();
 			} elseif (extension_loaded ('memcache')) {
 				$cache = new MemcacheExt ();
 			} else {
