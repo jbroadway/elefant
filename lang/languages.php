@@ -56,4 +56,28 @@ date_format             = d.mmmm yyyy
 short_format            = dd.mm.yyyy
 time_format             = "HH:MM"
 
+[ua]
+
+name                    = "Українська"
+code                    = ua
+charset                 = UTF-8
+fallback                = Off
+default                 = Off
+locale                  = Off
+date_format             = d.mmmm yyyy
+short_format            = dd.mm.yyyy
+time_format             = "HH:MM"
+
+[ru]
+
+name                    = "Русский"
+code                    = ru
+charset                 = UTF-8
+fallback                = Off
+default                 = Off
+locale                  = Off
+date_format             = d.mmmm yyyy
+short_format            = dd.mm.yyyy
+time_format             = "HH:MM"
+
 ; */ ?>
