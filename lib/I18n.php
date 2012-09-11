@@ -282,6 +282,7 @@ class I18n {
 					}
 
 					if (isset ($cn)) {
+						$cn = strtolower ($cn);
 						if (isset ($accepted[$lang]) && is_array ($accepted[$lang])) {
 							$accepted[$lang][] = $cn;
 						} else {
@@ -301,7 +302,7 @@ class I18n {
 
 			foreach ($accepted as $lang => $cnlist) {
 				foreach ($cnlist as $cn) {
-					if (! empty ($cn)) {
+					if (! empty ($cn) && $cn !== $lang) {
 						$name = $lang . '-' . $cn;
 					} else {
 						$name = $lang;
