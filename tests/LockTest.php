@@ -1,5 +1,7 @@
 <?php
 
+define ('ELEFANT_ENV', 'config');
+require_once ('lib/Functions.php');
 require_once ('lib/Autoloader.php');
 
 class LockTest extends PHPUnit_Framework_TestCase {
