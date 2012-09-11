@@ -342,16 +342,29 @@ class I18n {
 }
 
 /**
- * Helper function available globablly. Alias of `I18n::get()`.
+ * Helper function available globally. Alias of `I18n::get()`.
  */
 function i18n_get ($original = '') {
 	return $GLOBALS['i18n']->get ($original);
 }
 
 /**
- * Helper function available globablly. Alias of `I18n::getf()`.
+ * Helper function available globally. Alias of `I18n::getf()`.
  */
 function i18n_getf () {
+	$args = func_get_args ();
+	return call_user_func_array (array ($GLOBALS['i18n'], 'getf'), $args);
+}
+
+/**
+ * Helper function available globally. Alias of either `I18n::get()`
+ * and `I18n::getf()` depending on whether it's called with one
+ * parameter or several.
+ */
+function __ ($original = '') {
+	if (func_num_args () === 1) {
+		return $GLOBALS['i18n']->get ($original);
+	}
 	$args = func_get_args ();
 	return call_user_func_array (array ($GLOBALS['i18n'], 'getf'), $args);
 }
