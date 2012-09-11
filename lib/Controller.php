@@ -516,7 +516,15 @@ class Controller {
 		// Call the method with the extra URL parameters.
 		$params = $this->params;
 		array_shift ($params);
-		$res = call_user_func_array (array ($obj, $method), $params);
+		try {
+			$res = call_user_func_array (array ($obj, $method), $params);
+		} catch (ErrorException $e) {
+			$msg = $e->getMessage ();
+			if (strpos ($msg, 'Missing argument') === 0) {
+				return $obj->error ('Missing required argument');
+			}
+			return $obj->error ('Unexpected error occurred');
+		}
 
 		// If an error hasn't been output already, encode the response.
 		if ($res !== null) {
