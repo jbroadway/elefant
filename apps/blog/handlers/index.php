@@ -35,6 +35,7 @@ if (count ($posts) == 0) {
 	foreach ($posts as $post) {
 		$post->url = '/blog/post/' . $post->id . '/' . blog_filter_title ($post->title);
 		$post->tag_list = explode (',', $post->tags);
+		$post->body = $tpl->run_includes ($post->body);
 		echo $tpl->render ('blog/post', $post);
 	}
 }
