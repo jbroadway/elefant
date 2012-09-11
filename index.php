@@ -92,6 +92,7 @@ require_once ('lib/Page.php');
 require_once ('lib/I18n.php');
 require_once ('lib/Controller.php');
 require_once ('lib/Template.php');
+require_once ('lib/View.php');
 
 /**
  * If we're on the command line, set the request to use
@@ -111,6 +112,7 @@ $i18n = new I18n ('lang', conf ('I18n'));
 $page = new Page;
 $controller = new Controller (conf ('Hooks'));
 $tpl = new Template (conf ('General', 'charset'), $controller);
+View::init ($tpl);
 
 /**
  * Initialize the built-in Memcache support, or provide a
@@ -124,8 +126,10 @@ if (conf ('Memcache', 'server') && extension_loaded ('memcache')) {
 		list ($server, $port) = explode (':', $s);
 		$memcache->addServer ($server, $port);
 	}
+	$cache = $memcache; // for future compatibility
 } else {
 	$memcache = new Cache ();
+	$cache = $memcache; // for future compatibility
 }
 
 /**
