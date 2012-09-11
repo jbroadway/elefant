@@ -219,7 +219,7 @@ class Controller {
 	 * Run an internal request from one handler to another.
 	 */
 	public function run ($uri, $data = array ()) {
-		$c = new Controller;
+		$c = new Controller (conf ('Hooks'));
 		$handler = $c->route ($uri);
 
 		if (! isset (self::$called[$uri])) {
@@ -384,7 +384,7 @@ class Controller {
 
 		// Determine the handler by cascading through potential file names
 		// until one matches.
-		list ($app, $handler) = preg_split ('/\//', $uri, 2);
+		list ($app, $handler) = explode ('/', $uri, 2);
 		$route = 'apps/' . $app . '/handlers/' . $handler . '.php';
 		while (! @file_exists ($route)) {
 			$route = preg_replace ('/\/([^\/]*)\.php$/e', '$this->add_param (\'\\1\')', $route);
