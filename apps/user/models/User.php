@@ -119,7 +119,8 @@ class User extends ExtendedModel {
 			$user
 		);
 		if ($u && crypt ($pass, $u->password) == $u->password) {
-			self::$user = new User ((array) $u, false);
+			$class = get_called_class ();
+			self::$user = new $class ((array) $u, false);
 			self::$user->session_id = md5 (uniqid (mt_rand (), 1));
 			self::$user->expires = gmdate ('Y-m-d H:i:s', time () + 2592000); // 1 month
 			$try = 0;
@@ -153,7 +154,8 @@ class User extends ExtendedModel {
 				gmdate ('Y-m-d H:i:s')
 			);
 			if ($u) {
-				self::$user = new User ((array) $u, false);
+				$class = get_called_class ();
+				self::$user = new $class ((array) $u, false);
 				return true;
 			}
 		}
@@ -168,7 +170,8 @@ class User extends ExtendedModel {
 	 *   }
 	 */
 	public static function require_login () {
-		return simple_auth (array ('User', 'verifier'), array ('User', 'method'));
+		$class = get_called_class ();
+		return simple_auth (array ($class, 'verifier'), array ($class, 'method'));
 	}
 
 	/**
@@ -187,7 +190,8 @@ class User extends ExtendedModel {
 				return false;
 			}
 		} else {
-			$res = simple_auth (array ('User', 'verifier'), array ('User', 'method'));
+			$class = get_called_class ();
+			$res = simple_auth (array ($class, 'verifier'), array ($class, 'method'));
 			if ($res && self::$user->type == 'admin') {
 				return true;
 			}
@@ -202,7 +206,7 @@ class User extends ExtendedModel {
 		if (is_object (self::$user) && self::$user->session_id == $_SESSION['session_id']) {
 			return true;
 		}
-		return User::require_login ();
+		return self::require_login ();
 	}
 
 	/**
@@ -234,7 +238,7 @@ class User extends ExtendedModel {
 	 */
 	public static function logout ($redirect_to = false) {
 		if (self::$user === false) {
-			User::require_login ();
+			self::require_login ();
 		}
 		if (! empty (self::$user->session_id)) {
 			self::$user->expires = gmdate ('Y-m-d H:i:s', time () - 100000);
