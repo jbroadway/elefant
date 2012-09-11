@@ -436,10 +436,46 @@ class Controller {
 	}
 
 	/**
+	 * Turn a relative URL into an absolute URL. If the `$base` is false,
+	 * it will use the HTTP_HOST to construct a base for you.
+	 */
+	public function absolutize ($url, $base = false) {
+		if (strpos ($url, '://') !== false) {
+			// already contains scheme
+			return $url;
+		}
+
+		if (strpos ($url, '//') === 0) {
+			// scheme relative, add scheme
+			return $this->is_https ()
+				? 'https:' . $url
+				: 'http:' . $url;
+		}
+
+		if ($base === false) {
+			// construct the base from HTTP_HOST
+			$base = $this->is_https ()
+				? 'https://' . $_SERVER['HTTP_HOST']
+				: 'http://' . $_SERVER['HTTP_HOST'];
+		}
+
+		if (strpos ($url, '/') === 0) {
+			// absolute to the site root
+			return $base . $url;
+		}
+
+		// relative, so assume the base contains enough of
+		// a path prefix
+		return (substr ($base, -1) === '/')
+			? $base . $url
+			: $base . '/' . $url;
+	}
+
+	/**
 	 * Redirect the current request and exit.
 	 */
 	public function redirect ($url, $exit = true) {
-		header ('Location: ' . $url);
+		header ('Location: ' . $this->absolutize ($url));
 		if ($exit) {
 			$this->quit ();
 		}
