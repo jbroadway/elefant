@@ -43,7 +43,7 @@ create index user_email_password on user (email, password);
 create index user_session_id on user (session_id);
 
 create table user_openid (
-	token char(128) primary key,
+	token char(200) primary key,
 	user_id int not null
 );
 

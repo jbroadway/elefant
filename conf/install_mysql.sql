@@ -40,7 +40,7 @@ create table user (
 );
 
 create table user_openid (
-	token char(128) primary key,
+	token char(200) primary key,
 	user_id int not null
 );
 
