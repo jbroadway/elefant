@@ -57,7 +57,7 @@ $errors = array ();
 for ($i = 0; $i < count ($_FILES['file']['name']); $i++) {
 	if (@move_uploaded_file ($_FILES['file']['tmp_name'][$i], $root . $_POST['path'] . '/' . $_FILES['file']['name'][$i])) {
 		$count++;
-		@chmod ($root . $_POST['path'] . '/' . $_FILES['file']['name'][$i], 0777);
+		@chmod ($root . $_POST['path'] . '/' . $_FILES['file']['name'][$i], 0666);
 		$this->hook ('filemanager/add', array (
 			'file' => $_POST['path'] . '/' . $_FILES['file']['name']
 		));

@@ -66,8 +66,6 @@ class Cache {
 			// Determine the backend
 			if ($backend === 'redis' && extension_loaded ('redis')) {
 				$cache = new MemcacheRedis ();
-			} elseif ($backend === 'apc' && extension_loaded ('apc')) {
-				return new MemcacheAPC ();
 			} elseif (extension_loaded ('memcache')) {
 				$cache = new MemcacheExt ();
 			} else {

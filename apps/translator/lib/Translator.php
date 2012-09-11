@@ -85,7 +85,7 @@ class Translator extends Restful {
 		if (! file_put_contents ('lang/' . $lang . '.php', $out)) {
 			return false;
 		}
-		chmod ('lang/' . $lang . '.php', 0777);
+		chmod ('lang/' . $lang . '.php', 0666);
 		return true;
 	}
 

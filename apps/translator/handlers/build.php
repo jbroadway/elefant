@@ -76,7 +76,7 @@ foreach ($sources as $source) {
 }
 asort ($list);
 file_put_contents ('lang/_index.php', serialize ($list));
-chmod ('lang/_index.php', 0777);
+chmod ('lang/_index.php', 0666);
 
 $page->title = i18n_get ('Indexing completed');
 

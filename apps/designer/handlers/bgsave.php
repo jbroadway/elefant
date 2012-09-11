@@ -25,7 +25,7 @@ if (! @file_put_contents ($_GET['file'], $_POST['body'])) {
 	$error = 'Saving file failed';
 } else {
 	try {
-		@chmod ($_GET['file'], 0777);
+		@chmod ($_GET['file'], 0666);
 	} catch (Exception $e) {}
 }
 
