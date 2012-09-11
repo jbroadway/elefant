@@ -3,8 +3,10 @@
 require_once ('lib/Functions.php');
 require_once ('lib/Autoloader.php');
 
-class MTest extends MongoModel {
-	var $name = 'foo';
+if (extension_loaded ('mongo')) {
+	class MTest extends MongoModel {
+		var $name = 'foo';
+	}
 }
 
 class MongoModelTest extends PHPUnit_Framework_TestCase {
@@ -19,12 +21,20 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 
-	static function tearDownAfterClass () {
-		$t = new MTest ();
-		foreach ($t->fetch () as $row) {
-			$row->remove ();
+	protected function setUp () {
+		if (! extension_loaded ('mongo')) {
+			$this->markTestSkipped ('The Mongo extension is not available');
 		}
-		unset ($GLOBALS['conf']);
+	}
+
+	static function tearDownAfterClass () {
+		if (extension_loaded ('mongo')) {
+			$t = new MTest ();
+			foreach ($t->fetch () as $row) {
+				$row->remove ();
+			}
+			unset ($GLOBALS['conf']);
+		}
 	}
 
 	function test_construct () {
