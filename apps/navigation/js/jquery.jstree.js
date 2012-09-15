@@ -13,7 +13,7 @@
  */
 
 /*jslint browser: true, onevar: true, undef: true, bitwise: true, strict: true */
-/*global window : false, clearInterval: false, clearTimeout: false, document: false, setInterval: false, setTimeout: false, jQuery: false, navigator: false, XSLTProcessor: false, DOMParser: false, XMLSerializer: false*/
+/*global window : false, clearInterval: false, clearTimeout: false, document: false, setInterval: false, setTimeout: false, jQuery: false, navigator: false, XSLTProcessor: false, DOMParser: false, XMLSerializer: false, ActiveXObject: false */
 
 "use strict";
 
@@ -922,10 +922,12 @@
 			check_move : function () {
 				var obj = prepared_move, ret = true, r = obj.r === -1 ? this.get_container() : obj.r;
 				if(!obj || !obj.o || obj.or[0] === obj.o[0]) { return false; }
-				if(obj.op && obj.np && obj.op[0] === obj.np[0] && obj.cp - 1 === obj.o.index()) { return false; }
-				obj.o.each(function () { 
-					if(r.parentsUntil(".jstree", "li").andSelf().index(this) !== -1) { ret = false; return false; }
-				});
+				if(!obj.cy) {
+					if(obj.op && obj.np && obj.op[0] === obj.np[0] && obj.cp - 1 === obj.o.index()) { return false; }
+					obj.o.each(function () { 
+						if(r.parentsUntil(".jstree", "li").andSelf().index(this) !== -1) { ret = false; return false; }
+					});
+				}
 				return ret;
 			},
 			move_node : function (obj, ref, position, is_copy, is_prepared, skip_check) {
@@ -1929,6 +1931,7 @@
  * This is useful for maintaining the same structure in many languages (hence the name of the plugin)
  */
 (function ($) {
+	var sh = false;
 	$.jstree.plugin("languages", {
 		__init : function () { this._load_css();  },
 		defaults : [],
@@ -1943,9 +1946,9 @@
 					else { return false; }
 				}
 				if(i == this.data.languages.current_language) { return true; }
-				st = $.vakata.css.get_css(selector + "." + this.data.languages.current_language, false, this.data.languages.language_css);
+				st = $.vakata.css.get_css(selector + "." + this.data.languages.current_language, false, sh);
 				if(st !== false) { st.style.display = "none"; }
-				st = $.vakata.css.get_css(selector + "." + i, false, this.data.languages.language_css);
+				st = $.vakata.css.get_css(selector + "." + i, false, sh);
 				if(st !== false) { st.style.display = ""; }
 				this.data.languages.current_language = i;
 				this.__callback(i);
@@ -2019,7 +2022,7 @@
 						if(langs[ln] != this.data.languages.current_language) { str += " display:none; "; }
 						str += " } ";
 					}
-					this.data.languages.language_css = $.vakata.css.add_sheet({ 'str' : str, 'title' : "jstree-languages" });
+					sh = $.vakata.css.add_sheet({ 'str' : str, 'title' : "jstree-languages" });
 				}
 			},
 			create_node : function (obj, position, js, callback) {
@@ -2989,49 +2992,37 @@
  */
 (function ($) {
 	$.vakata.xslt = function (xml, xsl, callback) {
-		var rs = "", xm, xs, processor, support;
-		// TODO: IE9 no XSLTProcessor, no document.recalc
-		if(document.recalc) {
-			xm = document.createElement('xml');
-			xs = document.createElement('xml');
-			xm.innerHTML = xml;
-			xs.innerHTML = xsl;
-			$("body").append(xm).append(xs);
-			setTimeout( (function (xm, xs, callback) {
-				return function () {
-					callback.call(null, xm.transformNode(xs.XMLDocument));
-					setTimeout( (function (xm, xs) { return function () { $(xm).remove(); $(xs).remove(); }; })(xm, xs), 200);
-				};
-			})(xm, xs, callback), 100);
-			return true;
-		}
-		if(typeof window.DOMParser !== "undefined" && typeof window.XMLHttpRequest !== "undefined" && typeof window.XSLTProcessor === "undefined") {
-			xml = new DOMParser().parseFromString(xml, "text/xml");
-			xsl = new DOMParser().parseFromString(xsl, "text/xml");
-			// alert(xml.transformNode());
-			// callback.call(null, new XMLSerializer().serializeToString(rs));
-			
-		}
-		if(typeof window.DOMParser !== "undefined" && typeof window.XMLHttpRequest !== "undefined" && typeof window.XSLTProcessor !== "undefined") {
-			processor = new XSLTProcessor();
-			support = $.isFunction(processor.transformDocument) ? (typeof window.XMLSerializer !== "undefined") : true;
-			if(!support) { return false; }
-			xml = new DOMParser().parseFromString(xml, "text/xml");
-			xsl = new DOMParser().parseFromString(xsl, "text/xml");
-			if($.isFunction(processor.transformDocument)) {
-				rs = document.implementation.createDocument("", "", null);
-				processor.transformDocument(xml, xsl, rs, null);
-				callback.call(null, new XMLSerializer().serializeToString(rs));
-				return true;
+		var r = false, p, q, s;
+		// IE9
+		if(r === false && window.ActiveXObject) {
+			try {
+				r = new ActiveXObject("Msxml2.XSLTemplate");
+				q = new ActiveXObject("Msxml2.DOMDocument");
+				q.loadXML(xml);
+				s = new ActiveXObject("Msxml2.FreeThreadedDOMDocument");
+				s.loadXML(xsl);
+				r.stylesheet = s;
+				p = r.createProcessor();
+				p.input = q;
+				p.transform();
+				r = p.output;
 			}
-			else {
-				processor.importStylesheet(xsl);
-				rs = processor.transformToFragment(xml, document);
-				callback.call(null, $("<div />").append(rs).html());
-				return true;
-			}
+			catch (e) { }
 		}
-		return false;
+		xml = $.parseXML(xml);
+		xsl = $.parseXML(xsl);
+		// FF, Chrome
+		if(r === false && typeof (XSLTProcessor) !== "undefined") {
+			p = new XSLTProcessor();
+			p.importStylesheet(xsl);
+			r = p.transformToFragment(xml, document);
+			r = $('<div />').append(r).html();
+		}
+		// OLD IE
+		if(r === false && typeof (xml.transformNode) !== "undefined") {
+			r = xml.transformNode(xsl);
+		}
+		callback.call(null, r);
 	};
 	var xsl = {
 		'nest' : '<' + '?xml version="1.0" encoding="utf-8" ?>' + 
@@ -3407,12 +3398,26 @@
  * DOES NOT WORK WITH JSON PROGRESSIVE RENDER
  */
 (function ($) {
-	$.expr[':'].jstree_contains = function(a,i,m){
-		return (a.textContent || a.innerText || "").toLowerCase().indexOf(m[3].toLowerCase())>=0;
-	};
-	$.expr[':'].jstree_title_contains = function(a,i,m) {
-		return (a.getAttribute("title") || "").toLowerCase().indexOf(m[3].toLowerCase())>=0;
-	};
+	if($().jquery.split('.')[1] >= 8) {
+		$.expr[':'].jstree_contains = $.expr.createPseudo(function(search) {
+			return function(a) {
+				return (a.textContent || a.innerText || "").toLowerCase().indexOf(search.toLowerCase())>=0;
+			};
+		});
+		$.expr[':'].jstree_title_contains = $.expr.createPseudo(function(search) {
+			return function(a) {
+				return (a.getAttribute("title") || "").toLowerCase().indexOf(search.toLowerCase())>=0;
+			};
+		});
+	}
+	else {
+		$.expr[':'].jstree_contains = function(a,i,m){
+			return (a.textContent || a.innerText || "").toLowerCase().indexOf(m[3].toLowerCase())>=0;
+		};
+		$.expr[':'].jstree_title_contains = function(a,i,m) {
+			return (a.getAttribute("title") || "").toLowerCase().indexOf(m[3].toLowerCase())>=0;
+		};
+	}
 	$.jstree.plugin("search", {
 		__init : function () {
 			this.data.search.str = "";
@@ -4225,7 +4230,8 @@
 		_fn : {
 			_themeroller : function (obj) {
 				var s = this._get_settings().themeroller;
-				obj = !obj || obj == -1 ? this.get_container_ul() : this._get_node(obj).parent();
+				obj = (!obj || obj == -1) ? this.get_container_ul() : this._get_node(obj);
+				obj = (!obj || obj == -1) ? this.get_container_ul() : obj.parent();
 				obj
 					.find("li.jstree-closed")
 						.children("ins.jstree-icon").removeClass(s.opened).addClass("ui-icon " + s.closed).end()
@@ -4338,15 +4344,19 @@
 		},
 		_fn : { 
 			_check_unique : function (nms, p, func) {
-				var cnms = [];
+				var cnms = [], ok = true;
 				p.children("a").each(function () { cnms.push($(this).text().replace(/^\s+/g,"")); });
 				if(!cnms.length || !nms.length) { return true; }
-				cnms = cnms.sort().join(",,").replace(/(,|^)([^,]+)(,,\2)+(,|$)/g,"$1$2$4").replace(/,,+/g,",").replace(/,$/,"").split(",");
-				if((cnms.length + nms.length) != cnms.concat(nms).sort().join(",,").replace(/(,|^)([^,]+)(,,\2)+(,|$)/g,"$1$2$4").replace(/,,+/g,",").replace(/,$/,"").split(",").length) {
+				$.each(nms, function (i, v) {
+					if($.inArray(v, cnms) !== -1) {
+						ok = false;
+						return false;
+					}
+				});
+				if(!ok) {
 					this._get_settings().unique.error_callback.call(null, nms, p, func);
-					return false;
 				}
-				return true;
+				return ok;
 			},
 			check_move : function () {
 				if(!this.__call_old()) { return false; }
