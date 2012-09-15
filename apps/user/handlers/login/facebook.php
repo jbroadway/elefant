@@ -76,7 +76,47 @@ if ($u) {
 
 	$this->redirect ($_GET['redirect']);
 } else {
-	// signup form to create a linked account, prefill name
+
+	//Check to see if they already signed in with the same email retreived from facebook
+	//If so link that email and Open_ID
+	$u = User::query ()
+		->where ('email', $user->email)
+		->single ();
+
+	if ($u) {
+		$oid = new User_OpenID (array (
+							'token' => $token,
+							'user_id' => $u->id
+						));
+						
+						$oid->put ();
+
+		$u->session_id = md5 (uniqid (mt_rand (), 1));
+		$u->expires = gmdate ('Y-m-d H:i:s', time () + 2592000);
+		$u->last_login = gmdate('Y-m-d H:i:s');
+		$try = 0;
+		
+		while (! $u->put ()) {
+			$u->session_id = md5 (uniqid (mt_rand (), 1));
+			$try++;
+			if ($try == 5) {
+				$this->redirect ($_GET['redirect']);
+			}
+		}
+		
+			$_SESSION['session_id'] = $u->session_id;
+
+			// save openid token
+			$oid = new User_OpenID (array (
+				'token' => $token,
+				'user_id' => $u->id
+			));
+		
+		$oid->put ();
+		$this->redirect ($_GET['redirect']);
+	}
+
+	//Otherwise signup form to create a linked account, prefill name
 	$_POST['name'] = $user->name;
 	$_POST['redirect'] = $_GET['redirect'];
 	$_POST['token'] = $token;
