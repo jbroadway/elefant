@@ -1,0 +1,30 @@
+{{open_tag|none}}
+
+
+$this->require_admin ();
+
+$page->layout = 'admin';
+$page->title = __ ('{{plural|ucfirst}}');
+
+// Calculate the offset
+$limit = 20;
+$num = isset ($this->params[0]) ? $this->params[0] : 1;
+$offset = ($num - 1) * $limit;
+
+// Fetch the items and total items
+$items = {{plural}}{{backslash}}{{appname|ucfirst}}::query ()->fetch ($limit, $offset);
+$total = {{plural}}{{backslash}}{{appname|ucfirst}}::query ()->count ();
+
+// Pass our data to the view template
+echo $tpl->render (
+	'{{plural}}/admin',
+	array (
+		'limit' => $limit,
+		'total' => $total,
+		'items' => $items,
+		'count' => count ($items),
+		'url' => '/{{plural}}/admin/%d'
+	)
+);
+
+{{close_tag|none}}

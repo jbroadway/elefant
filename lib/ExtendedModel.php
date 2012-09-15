@@ -151,8 +151,7 @@ class ExtendedModel extends Model {
 	 * Need to verify extended fields, so we override the put() method.
 	 */
 	public function put () {
-		$f = new Form;
-		$failed = $f->verify_values ($this->ext (), $this->_extended_verify);
+		$failed = Validator::validate_list ($this->ext (), $this->_extended_verify);
 		if (! empty ($failed)) {
 			$this->error = 'Validation failed for extended fields: ' . join (', ', $failed);
 			return false;

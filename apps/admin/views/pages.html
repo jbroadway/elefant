@@ -1,7 +1,13 @@
 <p><a href="/admin/add">{"Add Page"}</a></p>
 
-{% if offset > 0 %}
-<p class="previous"><a href="/admin/pages?offset={{ prev }}">&laquo; {"Previous"}</a></p>
+<p style="float: left">
+{! navigation/pager?style=results&url=[url]&total=[total]&count=[count]&limit=[limit] !}
+</p>
+
+{% if total > $data->limit %}
+<div style="float: right">
+{! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
+</div>
 {% end %}
 
 <p>
@@ -29,6 +35,6 @@
 </table>
 </p>
 
-{% if more %}
-<p class="next"><a href="/admin/pages?offset={{ next }}">{"Next"} &raquo;</a></p>
+{% if total > $data->limit %}
+{! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
 {% end %}

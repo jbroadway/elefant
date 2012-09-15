@@ -6,20 +6,19 @@
 
 $page->layout = 'admin';
 
-if (! User::require_admin ()) {
-	$this->redirect ('/admin');
-}
+$this->require_admin ();
 
 require_once ('apps/blog/lib/Filters.php');
 
 $limit = 20;
-$_GET['offset'] = (isset ($_GET['offset'])) ? $_GET['offset'] : 0;
+$num = isset ($_GET['offset']) ? $_GET['offset'] : 1;
+$offset = ($num - 1) * $limit;
 
 $lock = new Lock ();
 
 $posts = blog\Post::query ('id, title, ts, author, published')
 	->order ('ts desc')
-	->fetch_orig ($limit, $_GET['offset']);
+	->fetch_orig ($limit, $offset);
 $count = blog\Post::query ()->count ();
 
 foreach ($posts as $k => $p) {
@@ -28,12 +27,11 @@ foreach ($posts as $k => $p) {
 
 $page->title = i18n_get ('Blog Posts');
 echo $tpl->render ('blog/admin', array (
+	'limit' => $limit,
+	'total' => $count,
 	'posts' => $posts,
-	'count' => $count,
-	'offset' => $_GET['offset'],
-	'more' => ($count > $_GET['offset'] + $limit) ? true : false,
-	'prev' => $_GET['offset'] - $limit,
-	'next' => $_GET['offset'] + $limit
+	'count' => count ($posts),
+	'url' => '/blog/admin?offset=%d'
 ));
 
 ?>

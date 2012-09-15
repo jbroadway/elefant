@@ -7,12 +7,11 @@
 
 $page->layout = 'admin';
 
-if (! User::require_admin ()) {
-	$this->redirect ('/admin');
-}
+$this->require_admin ();
 
 $limit = 20;
-$_GET['offset'] = (isset ($_GET['offset'])) ? $_GET['offset'] : 0;
+$num = isset ($_GET['offset']) ? $_GET['offset'] : 1;
+$offset = ($num - 1) * $limit;
 $_GET['type'] = (isset ($_GET['type'])) ? $_GET['type'] : 'Webpage';
 
 $classes = Versions::get_classes ();
@@ -30,7 +29,7 @@ if (isset ($_GET['type'])) {
 	} else {
 		$obj = $class;
 	}
-	$history = Versions::history ($obj, $limit, $_GET['offset']);
+	$history = Versions::history ($obj, $limit, $offset);
 	$count = Versions::history ($obj, true);
 } else {
 	$history = array ();
@@ -45,9 +44,9 @@ function admin_filter_user_name ($id) {
 	return $u->name;
 }
 
-$page->title = i18n_get ('Versions of') . ' ' . $_GET['type'];
+$page->title = i18n_get ('Versions of') . ' ' . Template::sanitize ($_GET['type']);
 if (! empty ($_GET['id'])) {
-	$page->title .= ' / ' . $_GET['id'];
+	$page->title .= ' / ' . Template::sanitize ($_GET['id']);
 }
 
 echo $tpl->render ('admin/versions', array (
@@ -55,11 +54,10 @@ echo $tpl->render ('admin/versions', array (
 	'type' => $_GET['type'],
 	'classes' => $classes,
 	'history' => $history,
-	'count' => $count,
-	'offset' => $_GET['offset'],
-	'more' => ($count > $_GET['offset'] + $limit) ? true : false,
-	'prev' => $_GET['offset'] - $limit,
-	'next' => $_GET['offset'] + $limit,
+	'limit' => $limit,
+	'total' => $count,
+	'count' => count ($history),
+	'url' => sprintf ('/admin/versions?type=%s&id=%s&offset=%%d', $_GET['type'], $_GET['id']),
 	'deleted' => $deleted
 ));
 

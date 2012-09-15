@@ -43,7 +43,7 @@ if (! empty ($_FILES)) {
 	}
 	// File saved
 
-	chmod ($root . $_GET['path'] . '/' . $_FILES['Filedata']['name'], 0777);
+	chmod ($root . $_GET['path'] . '/' . $_FILES['Filedata']['name'], 0666);
 	$this->hook ('filemanager/add', array (
 		'file' => $_POST['path'] . '/' . $_FILES['Filedata']['name']
 	));

@@ -95,6 +95,26 @@ class DBTest extends PHPUnit_Framework_TestCase {
 		$cmp = array ('one' => 'joe', 'two' => 'sam');
 		$this->assertEquals ($res, $cmp);
 	}
+
+	function test_transactions () {
+		$this->assertEquals (true, DB::execute ('create table transaction_test (id integer, name char(32))'));
+		$this->assertEquals (0, DB::shift ('select count(*) from transaction_test'));
+
+		$this->assertEquals (true, DB::beginTransaction ());
+		$this->assertEquals (true, DB::execute ('insert into transaction_test (name) values ("Joe")'));
+		$this->assertEquals (true, DB::execute ('insert into transaction_test (name) values ("Ron")'));
+		$this->assertEquals (true, DB::rollback ());
+
+		$this->assertEquals (0, DB::shift ('select count(*) from transaction_test'));
+
+		$this->assertEquals (true, DB::beginTransaction ());
+		$this->assertEquals (true, DB::execute ('insert into transaction_test (name) values ("Joe")'));
+		$this->assertEquals (true, DB::execute ('insert into transaction_test (name) values ("Ron")'));
+		$this->assertEquals (true, DB::execute ('insert into transaction_test (name) values ("Sue")'));
+		$this->assertEquals (true, DB::commit ());
+		
+		$this->assertEquals (3, DB::shift ('select count(*) from transaction_test'));
+	}
 }
 
 ?>

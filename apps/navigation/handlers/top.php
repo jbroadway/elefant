@@ -6,7 +6,7 @@
  * `<li>` element for custom styling.
  */
 
-$res = $memcache->get ('_navigation_top');
+$res = $cache->get ('_navigation_top');
 if ($res) {
 	echo str_replace (
 		sprintf ('<li><a href="/%s">', $page->id),
@@ -24,7 +24,7 @@ foreach ($n->tree as $item) {
 }
 $out .= '</ul>';
 
-$memcache->set ('_navigation_top', $out);
+$cache->set ('_navigation_top', $out);
 
 echo str_replace (
 	sprintf ('<li><a href="/%s">', $page->id),

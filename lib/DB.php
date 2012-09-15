@@ -390,6 +390,30 @@ class DB {
 	public static function last_args () {
 		return self::$last_args;
 	}
+
+	/**
+	 * Begin a database transaction.
+	 */
+	public static function beginTransaction () {
+		$db = self::get_connection (1);
+		return $db->beginTransaction ();
+	}
+
+	/**
+	 * Commit a database transaction.
+	 */
+	public static function commit () {
+		$db = self::get_connection (1);
+		return $db->commit ();
+	}
+
+	/**
+	 * Rollback a database transaction.
+	 */
+	public static function rollback () {
+		$db = self::get_connection (1);
+		return $db->rollback ();
+	}
 }
 
 /**

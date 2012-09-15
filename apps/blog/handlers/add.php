@@ -37,7 +37,7 @@ if ($f->submit ()) {
 				);
 			}
 		}
-		
+
 		// autopost
 		if ($_POST['published'] == 'yes') {
 			require_once ('apps/blog/lib/Filters.php');
@@ -58,7 +58,7 @@ if ($f->submit ()) {
 		}
 
 		// reset blog rss cache
-		$memcache->delete ('blog_rss');
+		$cache->delete ('blog_rss');
 
 		$_POST['page'] = 'blog/post/' . $p->id . '/' . URLify::filter ($p->title);
 		$this->hook ('blog/add', $_POST);

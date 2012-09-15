@@ -363,8 +363,10 @@ class Model {
 	 * specified INI file if $verify is a string matching a file name.
 	 */
 	public function put () {
-		$f = new Form;
-		$failed = $f->verify_values ($this->data, $this->verify);
+		$failed = (count ($this->verify) > 0)
+			? Validator::validate_list ($this->data, $this->verify)
+			: array ();
+
 		if (! empty ($failed)) {
 			$this->failed = $failed;
 			$this->error = 'Validation failed for: ' . join (', ', $failed);
@@ -820,6 +822,28 @@ class Model {
 			}
 		}
 		return DB::execute ('commit');
+	}
+
+	/**
+	 * Fetch the next incremental value for the specified field.
+	 * If no field name is specified, it will use the primary key
+	 * field by default.
+	 */
+	public function next ($field = false) {
+		if ($field === false) {
+			$field = $this->key;
+		}
+		
+		$res = DB::shift (
+			'select (' . Model::backticks ($field) . ' + 1)' .
+			' from ' . Model::backticks ($this->table) .
+			' order by ' . Model::backticks ($field) . ' desc' .
+			' limit 1'
+		);
+		if (! $res) {
+			return 1;
+		}
+		return $res;
 	}
 }
 

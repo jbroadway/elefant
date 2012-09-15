@@ -1,0 +1,21 @@
+{{open_tag|none}}
+
+
+$this->require_admin ();
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+	$this->redirect ('/{{plural}}/admin');
+}
+
+${{appname}} = new {{plural}}{{backslash}}{{appname|ucfirst}};
+${{appname}}->remove ($_POST['id']);
+
+if (${{appname}}->error) {
+	$this->add_notification (__ ('Unable to delete {{appname}}.'));
+	$this->redirect ('/{{plural}}/admin');
+}
+
+$this->add_notification (__ ('{{appname|ucfirst}} deleted.'));
+$this->redirect ('/{{plural}}/admin');
+
+{{close_tag|none}}

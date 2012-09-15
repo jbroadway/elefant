@@ -6,18 +6,17 @@
 
 $page->layout = 'admin';
 
-if (! User::require_admin ()) {
-	$this->redirect ('/admin');
-}
+$this->require_admin ();
 
 $limit = 20;
-$_GET['offset'] = (isset ($_GET['offset'])) ? $_GET['offset'] : 0;
+$num = isset ($_GET['offset']) ? $_GET['offset'] : 1;
+$offset = ($num - 1) * $limit;
 
 $lock = new Lock ();
 
 $blocks = Block::query ('id, title, access')
 	->order ('id asc')
-	->fetch_orig ($limit, $_GET['offset']);
+	->fetch_orig ($limit, $offset);
 $count = Block::query ()->count ();
 
 foreach ($blocks as $k => $b) {
@@ -26,12 +25,11 @@ foreach ($blocks as $k => $b) {
 
 $page->title = i18n_get ('Blocks');
 echo $tpl->render ('blocks/admin', array (
+	'limit' => $limit,
+	'total' => $count,
 	'blocks' => $blocks,
-	'count' => $count,
-	'offset' => $_GET['offset'],
-	'more' => ($count > $_GET['offset'] + $limit) ? true : false,
-	'prev' => $_GET['offset'] - $limit,
-	'next' => $_GET['offset'] + $limit
+	'count' => count ($blocks),
+	'url' => '/blocks/admin?offset=%d'
 ));
 
 ?>

@@ -30,6 +30,12 @@ class IniTest extends PHPUnit_Framework_TestCase {
 		$ini = "; <?php /*\n\n[Section]\n\none                     = \"http://www.foo.com/\"\ntwo                     = Off\n\n; */ ?>";
 		$this->assertEquals ($ini, Ini::write ($data));
 	}
+
+	function test_write_with_header () {
+		$data = array ('one' => 'two', 'three' => 'four');
+		$ini = "; <?php /*\n;\n; Header test.\n;\n\none                     = two\nthree                   = four\n\n; */ ?>";
+		$this->assertEquals ($ini, Ini::write ($data, false, 'Header test.'));
+	}
 }
 
 ?>

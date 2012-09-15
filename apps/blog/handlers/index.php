@@ -43,6 +43,7 @@ if (! is_array ($posts) || count ($posts) === 0) {
 		$post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
 		$post->tag_list = explode (',', $post->tags);
 		$post->social_buttons = $appconf['Social Buttons'];
+		$post->body = $tpl->run_includes ($post->body);
 		echo $tpl->render ('blog/post', $post);
 	}
 }

@@ -15,7 +15,7 @@ $f->verify_csrf = false;
 if ($f->submit ()) {
 	if (@file_put_contents ('css/' . $_POST['name'] . '.css', $_POST['body'])) {
 		$this->add_notification (i18n_get ('Stylesheet added.'));
-		@chmod ('layouts/' . $_POST['name'] . '.html', 0777);
+		@chmod ('layouts/' . $_POST['name'] . '.html', 0666);
 		$this->redirect ('/designer');
 	}
 	$page->title = i18n_get ('Saving Stylesheet Failed');

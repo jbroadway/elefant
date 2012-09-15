@@ -4,17 +4,17 @@
  * Elefant CMS - http://www.elefantcms.com/
  *
  * Copyright (c) 2011 Johnny Broadway
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -51,21 +51,21 @@
  * it via the following code:
  *
  *     <?php
- *     
+ *
  *     $handler = $controller->route ($_SERVER['REQUEST_URI']);
  *     ob_start ();
  *     require_once ($handler);
  *     $page->body = ob_get_clean ();
- *     
+ *
  *     ?>
  *
  * Or more simply (but in practice the same):
  *
  *     <?php
- *     
+ *
  *     $handler = $controller->route ($_SERVER['REQUEST_URI']);
  *     $page->body = $controller->handle ($handler);
- *     
+ *
  *     ?>
  *
  * In this way, there is less scaffolding code for individual controllers,
@@ -79,35 +79,35 @@
  * To use named parameters, you simply say:
  *
  *     <?php
- *     
+ *
  *     list ($id, $title) = $this->params;
- *     
+ *
  *     ?>
  *
  * You can also call one handler from within another and get its results
  * like this:
  *
  *     <?php
- *     
+ *
  *     $res = $this->run ('/user/123');
- *     
+ *
  *     ?>
  *
  * Sometimes you might want to pass values to another handler for internal
  * processing, which you can do like this:
  *
  *     <?php
- *     
+ *
  *     $res = $this->run ('/user/123', array ('foo' => 'bar'));
- *     
+ *
  *     ?>
  *
  * You can then access the array via:
  *
  *     <?php
- *     
+ *
  *     echo $this->data['foo'];
- *     
+ *
  *     ?>
  *
  * In addition to running one handler from another, you can configure
@@ -121,26 +121,26 @@
  * 2\. In `myapp/somehandler`, add the hook call and pass it some data:
  *
  *     <?php
- *     
+ *
  *     $this->hook ('myapp/somehandler', array('id' => 123));
- *     
+ *
  *     ?>
  *
  * 3\. In `otherapp/handler`, verify the request and do something
  * interesting with the id:
  *
  *     <?php
- *     
+ *
  *     if (! $this->internal) {
  *         die ('Cannot call me from a browser.');
  *     }
- *     
+ *
  *     if (! Form::verify_value ($this->data['id'], 'type', 'numeric')) {
  *         die ('Invalid id value');
  *     }
- *     
+ *
  *     // do something with $this->data['id']
- *     
+ *
  *     ?>
  */
 class Controller {
@@ -148,12 +148,12 @@ class Controller {
 	 * Extra parameters from the end of the URL.
 	 */
 	public $params = array ();
-	
+
 	/**
 	 * Whether the request originated internally or externally.
 	 */
 	public $internal = true;
-	
+
 	/**
 	 * Data sent from another handler to the current one.
 	 */
@@ -221,13 +221,13 @@ class Controller {
 	 * Usage:
 	 *
 	 *     <?php
-	 *     
+	 *
 	 *     // cache indefinitely
 	 *     $this->cache = true;
-	 *     
+	 *
 	 *     // cache for 5 minutes
 	 *     $this->cache = 300;
-	 *     
+	 *
 	 *     ?>
 	 *
 	 * To clear a cached handler before its time, which you would have to
@@ -235,9 +235,9 @@ class Controller {
 	 * cached, you can use:
 	 *
 	 *     <?php
-	 *     
-	 *     $memcache->delete ('myapp_handler');
-	 *     
+	 *
+	 *     $cache->delete ('myapp_handler');
+	 *
 	 *     ?>
 	 */
 	public $cache = false;
@@ -256,7 +256,7 @@ class Controller {
 	 * Run an internal request from one handler to another.
 	 */
 	public function run ($uri, $data = array ()) {
-		$c = new Controller;
+		$c = new Controller (conf ('Hooks'));
 		$handler = $c->route ($uri);
 
 		if (! isset (self::$called[$uri])) {
@@ -273,18 +273,18 @@ class Controller {
 	 * output from your handler before returning, for example:
 	 *
 	 *     <?php
-	 *     
+	 *
 	 *     echo $this->error ();
 	 *     return;
-	 *     
+	 *
 	 *     ?>
 	 *
 	 * Not like this:
 	 *
 	 *     <?php
-	 *     
+	 *
 	 *     return $this->error ();
-	 *     
+	 *
 	 *     ?>
 	 */
 	public function error ($code = 404, $title = 'Page not found', $message = '') {
@@ -320,17 +320,17 @@ class Controller {
 	 * via:
 	 *
 	 *     <?php
-	 *     
+	 *
 	 *     extract ($this->params ('id', 'title'));
-	 *     
+	 *
 	 *     ?>
 	 *
 	 * Note that you can also achieve the same thing via:
 	 *
 	 *     <?php
-	 *     
+	 *
 	 *     list ($id, $title) = $this->params;
-	 *     
+	 *
 	 *     ?>
 	 */
 	public function params () {
@@ -351,18 +351,18 @@ class Controller {
 		// through a `::getInstance()` call or otherwise. I know it's bad
 		// form in general, but this is *by design* to save typing in handlers
 		// and happens for these three objects only.
-		// 
+		//
 		// I also could have simply added them as properties of `$this`, but
 		// that would add typing too (e.g., `$this->view->render` vs
 		// `$tpl->render`). I'm opting for conciseness. And as it is, I'm
 		// deliberately making an ordinary script act like a controller, minus
 		// the class wrapping it. It's a stylistic decision, and if it's not
 		// your cup of tea, that's cool. It is mine, however :)
-		global $page, $tpl, $memcache;
-		
+		global $page, $tpl, $cache;
+
 		// Check for a cached copy of this handler's output
 		$cache_uri = '_c_' . str_replace ('/', '_', $this->uri);
-		$out = $memcache->get ($cache_uri);
+		$out = $cache->get ($cache_uri);
 		if ($out) {
 			return $out;
 		}
@@ -375,11 +375,25 @@ class Controller {
 		// Load the app's configuration settings if available
 		if (! isset (self::$appconf[$this->app])) {
 			try {
+				// First load the default configuration
 				self::$appconf[$this->app] = file_exists ('apps/' . $this->app . '/conf/config.php')
-					? parse_ini_file ('apps/' . $this->app . '/conf/config.php', true)
+					? parse_ini_file ('apps/' . $this->app . '/conf/config.php', TRUE)
 					: array ();
 			} catch (Exception $e) {
+				// Catch and set to empty
 				self::$appconf[$this->app] = array ();
+			}
+
+			try {
+				// Now check for a custom configuration
+				self::$appconf[$this->app] = file_exists ('conf/app.' . $this->app . '.' . ELEFANT_ENV . '.php')
+					? array_replace_recursive (
+						self::$appconf[$this->app],
+						parse_ini_file ('conf/app.' . $this->app . '.' . ELEFANT_ENV . '.php', true)
+					  )
+					: self::$appconf[$this->app];
+			} catch (Exception $e) {
+				// Do nothing because self::$appconf[$this->app] is already set
 			}
 		}
 		$appconf = self::$appconf[$this->app];
@@ -392,15 +406,15 @@ class Controller {
 		// If this is a chunked request, flush and exit
 		if ($this->chunked) {
 			$this->flush ($out);
-			$this->flush (null);
+			$this->flush (NULL);
 		}
 
 		// If the handler is cacheable, cache the results before returning
-		if ($this->cache !== false) {
+		if ($this->cache !== FALSE) {
 			$timeout = is_numeric ($this->cache) ? $this->cache : 0;
-			$res = $memcache->replace ($cache_uri, $out, 0, $timeout);
-			if ($res === false) {
-				$memcache->set ($cache_uri, $out, 0, $timeout);
+			$res = $cache->replace ($cache_uri, $out, 0, $timeout);
+			if ($res === FALSE) {
+				$cache->set ($cache_uri, $out, 0, $timeout);
 			}
 		}
 		return $out;
@@ -437,7 +451,7 @@ class Controller {
 
 		// Determine the handler by cascading through potential file names
 		// until one matches.
-		list ($app, $handler) = preg_split ('/\//', $uri, 2);
+		list ($app, $handler) = explode ('/', $uri, 2);
 		$route = 'apps/' . $app . '/handlers/' . $handler . '.php';
 		while (! file_exists ($route)) {
 			$route = preg_replace ('/\/([^\/]*)\.php$/e', '$this->add_param (\'\\1\')', $route);

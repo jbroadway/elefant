@@ -52,20 +52,20 @@ class Cache {
 
 	/**
 	 * Initialize the correct cache based on the global configuration
-	 * and return the cache object (lib/MemcacheExt, lib/MemcacheRedis,
-	 * or lib/Cache).
+	 * and return the cache object (lib/MemcacheExt, lib/MemcacheAPC,
+	 * lib/MemcacheRedis, or lib/Cache).
 	 */
 	public static function init ($conf) {
 		$server = isset ($conf['server']) ? $conf['server'] : false;
 		$dir = isset ($conf['location']) ? $conf['location'] : 'cache/datastore';
 		$backend = isset ($conf['backend']) ? $conf['backend'] : 'memcache';
 
-		if ($server) {
+		if ($backend === 'apc' && extension_loaded ('apc')) {
+			return new MemcacheAPC ();
+		} elseif ($server) {
 			// Determine the backend
 			if ($backend === 'redis' && extension_loaded ('redis')) {
 				$cache = new MemcacheRedis ();
-			} elseif ($backend === 'apc' && extension_loaded ('apc')) {
-				return new MemcacheAPC ();
 			} elseif (extension_loaded ('memcache')) {
 				$cache = new MemcacheExt ();
 			} else {
@@ -98,7 +98,7 @@ class Cache {
 	 */
 	private function _set_timeout ($key, $timeout) {
 		if (file_put_contents ($this->dir . '/.' . md5 ($key), $timeout)) {
-			chmod ($this->dir . '/.' . md5 ($key), 0777);
+			chmod ($this->dir . '/.' . md5 ($key), 0666);
 			return true;
 		}
 		return false;
@@ -163,7 +163,7 @@ class Cache {
 		if (! file_put_contents ($this->dir . '/' . md5 ($key), $val)) {
 			return false;
 		}
-		chmod ($this->dir . '/' . md5 ($key), 0777);
+		chmod ($this->dir . '/' . md5 ($key), 0666);
 		if ($timeout) {
 			$this->_set_timeout ($key, $timeout);
 		}
@@ -180,7 +180,7 @@ class Cache {
 		if (! file_put_contents ($this->dir . '/' . md5 ($key), $val)) {
 			return false;
 		}
-		chmod ($this->dir . '/' . md5 ($key), 0777);
+		chmod ($this->dir . '/' . md5 ($key), 0666);
 		if ($timeout) {
 			$this->_set_timeout ($key, $timeout);
 		}
@@ -197,7 +197,7 @@ class Cache {
 		if (! file_put_contents ($this->dir . '/' . md5 ($key), $val)) {
 			return false;
 		}
-		chmod ($this->dir . '/' . md5 ($key), 0777);
+		chmod ($this->dir . '/' . md5 ($key), 0666);
 		if ($timeout) {
 			$this->_set_timeout ($key, $timeout);
 		}
@@ -217,7 +217,7 @@ class Cache {
 		if (! file_put_contents ($this->dir . '/' . md5 ($key), $val)) {
 			return false;
 		}
-		chmod ($this->dir . '/' . md5 ($key), 0777);
+		chmod ($this->dir . '/' . md5 ($key), 0666);
 		return $val;
 	}
 
@@ -234,7 +234,7 @@ class Cache {
 		if (! file_put_contents ($this->dir . '/' . md5 ($key), $val)) {
 			return false;
 		}
-		chmod ($this->dir . '/' . md5 ($key), 0777);
+		chmod ($this->dir . '/' . md5 ($key), 0666);
 		return $val;
 	}
 

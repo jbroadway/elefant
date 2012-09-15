@@ -37,13 +37,19 @@
  *
  *     << 1 2 3 4 >>
  *
+ *     {! navigation/pager?style=results&url=[url]&total=[total]&count=[count]&limit=[limit] !}
+ *
+ * Will show:
+ *
+ *     1 to 20 of 32 results:
+ *
  * All elements can be styled with CSS classes.
  */
 
 $o = new StdClass;
 
 // the pager template to display
-$styles = array ('text', 'numbers');
+$styles = array ('text', 'numbers', 'results');
 if (! isset ($data['style']) || ! in_array ($data['style'], $styles)) {
 	$data['style'] = 'text';
 }
@@ -51,7 +57,7 @@ if (! isset ($data['style']) || ! in_array ($data['style'], $styles)) {
 $o->limit = $data['limit']; // number of results per set
 $o->total = $data['total']; // total number of results
 $o->count = $data['count']; // count of results in this set
-$o->url = $data['url']; // the url format for building pager links
+$o->url = str_replace ('&amp;', '&', $data['url']); // the url format for building pager links
 
 // the page number from the current url, or zero
 $url = str_replace ('%d', '([0-9]+)', preg_quote ($o->url));
@@ -76,6 +82,22 @@ $start = ($o->num - 3 > 0) ? $o->num - 3 : 1;
 $end = ($o->num + 3 <= $o->last_screen) ? $o->num + 3 : $o->last_screen;
 for ($i = $start; $i <= $end; $i++) {
 	$o->links[$i] = sprintf ($o->url, $i);
+}
+
+if ($data['style'] === 'results') {
+	if ($o->total == 0) {
+		echo __ ('No results.');
+	} elseif ($o->total == 1) {
+		echo __ ('1 result:');
+	} else {
+		echo __ (
+			'%d to %d of %d results:',
+			($o->offset + 1),
+			$o->last,
+			$o->total
+		);
+	}
+	return;
 }
 
 echo $tpl->render ('navigation/pager/' . $data['style'], $o);

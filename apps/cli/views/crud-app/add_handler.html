@@ -1,0 +1,34 @@
+{{open_tag|none}}
+
+
+$this->require_admin ();
+
+$page->layout = 'admin';
+$page->title = __ ('Add {{appname|ucfirst}}');
+
+$form = new Form ('post', $this);
+
+echo $form->handle (function ($form) {
+	// Create and save a new {{appname}} 
+	${{appname}} = new {{plural}}{{backslash}}{{appname|ucfirst}} (array (
+{% for key, field in fields %}
+		'{{field}}' => $_POST['{{field}}']{% if $data->key < count ($data->fields) - 1 %},{% end %} 
+{% end %}
+	));
+	${{appname}}->put ();
+
+	if (${{appname}}->error) {
+		// Failed to save
+		$form->controller->add_notification (__ ('Unable to save {{appname}}.'));
+		return false;
+	}
+
+	// Save a version of the {{appname}} 
+	Versions::add (${{appname}});
+
+	// Notify the user and redirect on success
+	$form->controller->add_notification (__ ('{{appname|ucfirst}} added.'));
+	$form->controller->redirect ('/{{plural}}/admin');
+});
+
+{{close_tag|none}}

@@ -10,7 +10,7 @@ if (! User::require_admin ()) {
 	$this->redirect ('/admin');
 }
 
-if (! preg_match ('/^(css|layouts\/[a-z0-9_-]+)\/[a-z0-9\._-]+\.css$/i', $_GET['file'])) {
+if (! preg_match ('/^(css|layouts|layouts\/[a-z0-9_-]+)\/[a-z0-9_-]+\.css$/i', $_GET['file'])) {
 	$this->redirect ('/designer');
 }
 
@@ -28,7 +28,9 @@ $f->verify_csrf = false;
 if ($f->submit ()) {
 	if (@file_put_contents ($_GET['file'], $_POST['body'])) {
 		$this->add_notification (i18n_get ('Stylesheet saved.'));
-		@chmod ($_GET['file'], 0777);
+		try {
+			@chmod ($_GET['file'], 0666);
+		} catch (Exception $e) {}
 		$lock->remove ();
 		$this->redirect ('/designer');
 	}

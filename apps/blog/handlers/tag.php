@@ -9,7 +9,7 @@ $page->layout = $appconf['Blog']['layout'];
 require_once ('apps/blog/lib/Filters.php');
 
 $page->limit = 10;
-$page->tag = $this->params[0];
+$page->tag = urldecode ($this->params[0]);
 if (! $page->tag) {
 	$this->redirect ('/blog');
 }

@@ -85,8 +85,8 @@ admin/delete[] = navigation/hook/delete
 
 [Cache]
 
-; Configure your memcache server list. This will be available in
-; your handlers via the $memcache object. If blank, or memcache
+; Configure your cache server list. This will be available in
+; your handlers via the $cache object. If blank, or cache
 ; is unavailable, it will emulate Memcache via the lib/Cache
 ; object, storing the cache in the `conf/datastore` folder.
 ; Alternately add `backend = redis` to use Redis as the cache

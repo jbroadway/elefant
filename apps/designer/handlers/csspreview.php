@@ -8,37 +8,38 @@ $this->require_admin ();
 
 $page->title = i18n_get ('Page title');
 $page->preview = true;
+$page->layout = false;
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	if (! empty ($_GET['layout'])) {
-		if (file_exists ('layouts/' . $_GET['layout'] . '.html')) {
-			$page->layout = file_get_contents ('layouts/' . $_GET['layout'] . '.html');
-		} elseif (file_exists ('layouts/' . $_GET['layout'] . '/' . $_GET['layout'] . '.html')) {
-			$page->layout = file_get_contents ('layouts/' . $_GET['layout'] . '/' . $_GET['layout'] . '.html');
-		} else {
-			$page->layout = file_get_contents ('layouts/default.html');
+		if (strpos ($_GET['layout'], '..') === false) {
+			if (file_exists ('layouts/' . $_GET['layout'] . '.html')) {
+				$page->layout = file_get_contents ('layouts/' . $_GET['layout'] . '.html');
+			} elseif (file_exists ('layouts/' . $_GET['layout'] . '/' . $_GET['layout'] . '.html')) {
+				$page->layout = file_get_contents ('layouts/' . $_GET['layout'] . '/' . $_GET['layout'] . '.html');
+			}
 		}
-	} else {
-		$page->layout = file_get_contents ('layouts/default.html');
 	}
-	if ($_GET['css']) {
+	if ($_GET['css'] && preg_match ('/^(layouts|css)\/[a-z0-9\/_-]+\.css$/i', $_GET['css'])) {
 		$page->layout = str_replace ('</head>', '<style>' . file_get_contents ($_GET['css']) . '</style></head>', $page->layout);
 	}
 } else {
 	if (! empty ($_POST['layout'])) {
-		if (file_exists ('layouts/' . $_POST['layout'] . '.html')) {
-			$page->layout = file_get_contents ('layouts/' . $_POST['layout'] . '.html');
-		} elseif (file_exists ('layouts/' . $_POST['layout'] . '/' . $_POST['layout'] . '.html')) {
-			$page->layout = file_get_contents ('layouts/' . $_POST['layout'] . '/' . $_POST['layout'] . '.html');
-		} else {
-			$page->layout = file_get_contents ('layouts/default.html');
+		if (strpos ($_POST['layout'], '..') === false) {
+			if (file_exists ('layouts/' . $_POST['layout'] . '.html')) {
+				$page->layout = file_get_contents ('layouts/' . $_POST['layout'] . '.html');
+			} elseif (file_exists ('layouts/' . $_POST['layout'] . '/' . $_POST['layout'] . '.html')) {
+				$page->layout = file_get_contents ('layouts/' . $_POST['layout'] . '/' . $_POST['layout'] . '.html');
+			}
 		}
-	} else {
-		$page->layout = file_get_contents ('layouts/default.html');
 	}
 	if ($_POST['css']) {
 		$page->layout = str_replace ('</head>', '<style>' . $_POST['css'] . '</style></head>', $page->layout);
 	}	
+}
+
+if ($page->layout === false) {
+	$page->layout = file_get_contents ('layouts/default.html');
 }
 
 echo '<p>' . i18n_get ('This is a preview of how your layout will look.') . '</p>';

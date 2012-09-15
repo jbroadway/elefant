@@ -49,17 +49,24 @@
  *     {% end %}
  *
  * Note the use of loop_index and loop_value, which are defined for
- * you inside foreach loops by the template engine.
+ * you inside foreach loops by the template engine, or you can specify
+ * your own key and value names:
  *
- * You can also test for more complex conditions, but make sure the
- * value being tested for is not preceeded by anything. For example,
- * no false checks via `{% if !some_val %}`, instead use:
- *
- *     {% if some_val == false %}
- *         {{ some_val }}
+ *     {% for pages as key, page %}
+ *         {{ key }} - {{ page }}
  *     {% end %}
  *
- * Note that `'endif'` and `'endforeach'` are valid as well as `'end'`,
+ * You can also test for more complex conditions, for example:
+ *
+ *     {% if ! some_val %}
+ *         No value.
+ *     {% end %}
+ *
+ *     {% if some_val == 'some value' %}
+ *         Value: {{ some_val }}
+ *     {% end %}
+ *
+ * Note that `endif` and `endforeach` are valid as well as `end`,
  * if you prefer, for the sake of clarity.
  *
  * Here's one more example of how to loop through an array of arrays:
@@ -200,12 +207,37 @@ class Template {
 	public $cache_folder = 'cache';
 
 	/**
-	 * The controller object used to run includes.
+	 * The layouts location.
+	 */
+	public $layouts_folder = 'layouts';
+	
+	/**
+	 * The app view locations.
+	 */
+	public $view_folders = 'apps/%s/views/%s';
+	
+	/**
+	 * Default layout filename.
+	 */
+	public $default_layout = 'default';
+	
+	/**
+	 * File extension.
+	 */
+	public $file_extension = 'html';
+
+	/**
+	 * The controller object used to run includes. The controller can be
+	 * any object that satisfies the following interface:
+	 *
+	 *     interface AbstractController {
+	 *         public function run ($uri, $data = array ());
+	 *     }
 	 */
 	public $controller = null;
 
 	/**
-	 * Constructor method sets the charset and receives a Controller object.
+	 * Constructor method sets the charset and receives a controller object.
 	 */
 	public function __construct ($charset = 'UTF-8', $controller = false) {
 		$this->charset = $charset;
@@ -232,19 +264,19 @@ class Template {
 		// `layouts/default.html`
 		if (strstr ($template, '/')) {
 			list ($app, $view) = preg_split ('/\//', $template, 2);
-			$file = 'apps/' . $app . '/views/' . $view . '.html';
+			$file = sprintf ($this->view_folders, $app, $view . '.' . $this->file_extension);
 			if (! file_exists ($file)) {
-				$file = 'layouts/' . $app . '/' . $view . '.html';
+				$file = $this->layouts_folder . '/' . $app . '/' . $view . '.' . $this->file_extension;
 				if (! file_exists ($file)) {
-					die ('Template not found: ' . $template);
+					throw new RuntimeException ('Template not found: ' . $template);
 				}
 			}
-		} elseif (file_exists ('layouts/' . $template . '.html')) {
-			$file = 'layouts/' . $template . '.html';
-		} elseif (file_exists ('layouts/' . $template . '/' . $template . '.html')) {
-			$file = 'layouts/' . $template . '/' . $template . '.html';
+		} elseif (file_exists ($this->layouts_folder . '/' . $template . '.' . $this->file_extension)) {
+			$file = $this->layouts_folder . '/' . $template . '.' . $this->file_extension;
+		} elseif (file_exists ($this->layouts_folder . '/' . $template . '/' . $template . '.' . $this->file_extension)) {
+			$file = $this->layouts_folder . '/' . $template . '/' . $template . '.' . $this->file_extension;
 		} else {
-			$file = 'layouts/default.html';
+			$file = $this->layouts_folder . '/' . $this->default_layout . '.' . $this->file_extension;
 		}
 
 		// The cache file is named based on the original
@@ -255,7 +287,7 @@ class Template {
 			$out = file_get_contents ($file);
 			$out = $this->parse_template ($out);
 			if (! file_put_contents ($cache, $out)) {
-				die ('Failed to generate cached template: ' . $cache);
+				throw new RuntimeException ('Failed to generate cached template: ' . $cache);
 			}
 		}
 		
@@ -278,7 +310,7 @@ class Template {
 		$cache_file = $this->cache_folder . '/_preview_' . md5 ($template) . '.php';
 		$out = $this->parse_template ($template);
 		if (! file_put_contents ($cache_file, $out)) {
-			die ('Failed to generate cached template: ' . $cache_file);
+			throw new RuntimeException ('Failed to generate cached template: ' . $cache_file);
 		}
 
 		// Include the temp file, then delete it, and return the output
@@ -296,15 +328,32 @@ class Template {
 	 * code, eliminating the possibility of exposing a security hole.
 	 */
 	public function parse_template ($val) {
-		$val = str_replace ('\\{{', '#EOBRACE#', $val);
-		$val = str_replace ('\\}}', '#ECBRACE#', $val);
+		$val = str_replace (
+			array (
+				'\\{{', '\\}}', '\\{%', '\\%}', '\\{"', '\\"}', '\\{\'', '\\\'}',
+				'\\{!', '\\!}', '\\{#', '\\#}'
+			),
+			array (
+				'#EOBRACE#', '#ECBRACE#', '#EOBLOCK#', '#ECBLOCK#', '#EOQUOTE#', '#ECQUOTE#',
+				'#EOQUOTE#', '#ECQUOTE#', '#EOINCLUDE#', '#ECINCLUDE#', '#EOHARDCODE#',
+				'#ECHARDCODE#'
+			),
+			$val
+		);
 		$val = preg_replace ('/\{\{ ?(.*?) ?\}\}/e', '$this->replace_vars (\'\\1\')', $val);
 		$val = preg_replace ('/\{[\'"] ?(.*?) ?[\'"]\}/e', '$this->replace_strings (\'\\1\')', $val);
 		$val = preg_replace ('/\{\% ?(.*?) ?\%\}/e', '$this->replace_blocks (\'\\1\')', $val);
 		$val = preg_replace ('/\{\! ?(.*?) ?\!\}/es', '$this->replace_includes (\'\\1\')', $val);
 		$val = preg_replace ('/\{# ?(.*?) ?#\}/es', '$this->hard_codes (\'\\1\')', $val);
-		$val = str_replace ('#EOBRACE#', '{{', $val);
-		$val = str_replace ('#ECBRACE#', '}}', $val);
+		$val = str_replace (
+			array (
+				'#EOBRACE#', '#ECBRACE#', '#EOBLOCK#', '#ECBLOCK#', '#EOQUOTE#', '#ECQUOTE#',
+				'#EOINCLUDE#', '#ECINCLUDE#', '#EOHARDCODE#', '#ECHARDCODE#'),
+			array (
+				'{{', '}}', '{%', '%}', '{"', '"}', '{!', '!}', '{#', '#}'
+			),
+			$val
+		);
 		return $val;
 	}
 
@@ -524,19 +573,32 @@ class Template {
 	 *     {% foreach some_list %}
 	 *     {% endforeach %}
 	 *
+	 *     {% foreach some_list as key, item %}
+	 *     {% endforeach %}
+	 *
+	 *     {% for some_list %}
+	 *     {% endfor %}
+	 *
+	 *     {% for some_list as item %}
+	 *     {% endfor %}
+	 *
 	 *     {% if statement %}
 	 *     {% elseif statement %}
 	 *     {% else %}
 	 *     {% endif %}
 	 *
-	 * You can also use `{% end %}` as an alias for both `{% endforeach %}`
-	 * or `{% endif %}`.
+	 * Note: `for` and `endfor` are aliases of `foreach` and `endforeach`.
+	 * You can also use `{% end %}` as an alias for `{% endforeach %}`,
+	 * `{% endfor %}` or `{% endif %}`.
 	 *
-	 * The current loop index is available via `{{ loop_index }}` and
-	 * the current loop value is available via `{{ loop_value }}`.
+	 * If an `as` clause isn't specified, the current loop index is available
+	 * via `{{ loop_index }}~ and the current loop value is available via `{{ loop_value }}`.
+	 *
+	 * If an `as` clause is specified without a key, the current loop index is available
+	 * via `{{ loop_index }}`.
 	 */
 	public function replace_blocks ($val) {
-		if ($val === 'end' || $val === 'endif' || $val === 'endforeach') {
+		if ($val === 'end' || $val === 'endif' || $val === 'endforeach' || $val === 'endfor') {
 			return '<?php } ?>';
 		}
 		
@@ -551,6 +613,17 @@ class Template {
 			return '<?php echo $this->render (\'' . $extra . '\', $data); ?>';
 		}
 
+		if (($block === 'if' || $block === 'elseif') && strpos (ltrim ($extra), '!') === 0) {
+			$not = '! ';
+			$extra = ltrim ($extra, '! ');
+		} else {
+			$not = '';
+		}
+
+		if (($block === 'foreach' || $block === 'for') && strpos ($extra, ' in ') !== false) {
+			$extra = preg_replace ('/^(.*) in (.*)$/', '\2 as \1', $extra);
+		}
+
 		if (strstr ($extra, '$_')) {
 			if (strstr ($val, '.')) {
 				$extra = preg_replace ('/\.([a-zA-Z0-9_]+)/', '[\'\1\']', $extra, 1);
@@ -560,16 +633,26 @@ class Template {
 		} elseif (! strstr ($extra, '::') && ! strstr ($extra, '(')) {
 			$extra = '$data->' . $extra;
 		}
-		if ($block === 'foreach') {
+		if ($block === 'foreach' || $block === 'for') {
+			if (strpos ($extra, ' as ') !== false) {
+				if (strpos ($extra, ', ') === false) {
+					return '<?php foreach (' . str_replace (' as ', ' as $data->loop_index => $data->', $extra) . ') { ?>';
+				}
+				return '<?php foreach (' . str_replace (
+					array (' as ', ', '),
+					array (' as $data->', ' => $data->'),
+					$extra
+				) . ') { ?>';
+			}
 			return '<?php foreach (' . $extra . ' as $data->loop_index => $data->loop_value) { ?>';
 		} elseif ($block === 'if') {
-			return '<?php if (' . $extra . ') { ?>';
+			return '<?php if (' . $not . $extra . ') { ?>';
 		} elseif ($block === 'elseif') {
-			return '<?php } elseif (' . $extra . ') { ?>';
+			return '<?php } elseif (' . $not . $extra . ') { ?>';
 		} elseif ($block === 'else') {
 			return '<?php } else { ?>';
 		}
-		die ('Invalid template block: ' . $val);
+		throw new LogicException ('Invalid template block: ' . $val);
 	}
 }
 
