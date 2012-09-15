@@ -3,3 +3,6 @@ phps:
   - 5.3
   - 5.4
 script: phpunit tests
+branches:
+  only:
+    - master
