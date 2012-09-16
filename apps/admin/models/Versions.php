@@ -68,6 +68,11 @@
  */
 class Versions extends Model {
 	/**
+	 * The database table name.
+	 */
+	public $table = 'elefant_versions';
+
+	/**
 	 * Add a version to the store.
 	 */
 	public static function add ($obj) {
@@ -182,7 +187,7 @@ class Versions extends Model {
 	 */
 	public static function get_classes () {
 		return db_shift_array (
-			'select distinct class from versions order by class asc'
+			'select distinct class from elefant_versions order by class asc'
 		);
 	}
 }

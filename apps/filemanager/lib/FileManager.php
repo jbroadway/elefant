@@ -266,7 +266,7 @@ class FileManager extends Restful {
 	 * Fetch all of the properties for the specified file.
 	 */
 	public static function props ($file) {
-		return DB::pairs ('select prop, value from filemanager_prop where file = ?', $file);
+		return DB::pairs ('select prop, value from elefant_filemanager_prop where file = ?', $file);
 	}
 
 	/**
@@ -283,7 +283,7 @@ class FileManager extends Restful {
 			} elseif (! $res) {
 				// doesn't exist yet
 				if (! DB::execute (
-					'insert into filemanager_prop (file, prop, value) values (?, ?, ?)',
+					'insert into elefant_filemanager_prop (file, prop, value) values (?, ?, ?)',
 					$file,
 					$prop,
 					$value
@@ -294,7 +294,7 @@ class FileManager extends Restful {
 			} else {
 				// already exists, update
 				if (! DB::execute (
-					'update filemanager_prop set value = ? where file = ? and prop = ?',
+					'update elefant_filemanager_prop set value = ? where file = ? and prop = ?',
 					$value,
 					$file,
 					$prop
@@ -310,13 +310,13 @@ class FileManager extends Restful {
 			$qmarks = array_fill (0, count ($file), '?');
 			$file[] = $prop;
 			return DB::pairs (
-				'select file, value from filemanager_prop where file in(' . join (', ', $qmarks) . ') and prop = ?',
+				'select file, value from elefant_filemanager_prop where file in(' . join (', ', $qmarks) . ') and prop = ?',
 				$file
 			);
 		}
 		// get a single value
 		return DB::shift (
-			'select value from filemanager_prop where file = ? and prop = ?',
+			'select value from elefant_filemanager_prop where file = ? and prop = ?',
 			$file,
 			$prop
 		);
@@ -328,7 +328,7 @@ class FileManager extends Restful {
 	public static function prop_rename ($file, $new_name, $folder = false) {
 		if ($folder) {
 			if (! DB::execute (
-				'update filemanager_prop set file = replace(file, ?, ?) where file like ?',
+				'update elefant_filemanager_prop set file = replace(file, ?, ?) where file like ?',
 				$file . '/',
 				$new_name . '/',
 				$file . '/%'
@@ -339,7 +339,7 @@ class FileManager extends Restful {
 			return true;
 		}
 		if (! DB::execute (
-			'update filemanager_prop set file = ? where file = ?',
+			'update elefant_filemanager_prop set file = ? where file = ?',
 			$new_name,
 			$file
 		)) {
@@ -354,7 +354,7 @@ class FileManager extends Restful {
 	 */
 	public static function prop_delete ($file) {
 		if (! DB::execute (
-			'delete from filemanager_prop where file = ?',
+			'delete from elefant_filemanager_prop where file = ?',
 			$file
 		)) {
 			self::$error = DB::error ();

@@ -756,7 +756,7 @@ class Controller {
 	 * should be performed.
 	 */
 	public function installed ($app, $version) {
-		$v = db_shift ('select version from apps where name = ?', $app);
+		$v = db_shift ('select version from elefant_apps where name = ?', $app);
 		if (! $v) {
 			return false;
 		}
@@ -770,11 +770,11 @@ class Controller {
 	 * Mark an app and version as installed.
 	 */
 	public function mark_installed ($app, $version) {
-		$v = db_shift ('select version from apps where name = ?', $app);
+		$v = db_shift ('select version from elefant_apps where name = ?', $app);
 		if ($v) {
-			return db_execute ('update apps set version = ? where name = ?', $version, $app);
+			return db_execute ('update elefant_apps set version = ? where name = ?', $version, $app);
 		}
-		return db_execute ('insert into apps (name, version) values (?, ?)', $app, $version);
+		return db_execute ('insert into elefant_apps (name, version) values (?, ?)', $app, $version);
 	}
 }
 

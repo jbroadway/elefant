@@ -10,7 +10,7 @@ header ('Content-Type: application/json');
 
 echo json_encode (
 	DB::shift_array (
-		'select distinct tag_id from blog_post_tag'
+		'select distinct tag_id from elefant_blog_post_tag'
 	)
 );
 
