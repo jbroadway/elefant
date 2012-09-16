@@ -62,6 +62,13 @@ if ($data['style'] === 'lightbox') {
 	$template = 'filemanager/gallery/embedded';
 }
 
+// rewrite if proxy is set
+if ($appconf['General']['proxy_handler']) {
+	foreach ($list as $k => $file) {
+		$list[$k]->path = str_replace ('files/', 'filemanager/proxy/', $file->path);
+	}
+}
+
 echo $tpl->render (
 	$template,
 	array (

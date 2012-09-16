@@ -28,6 +28,13 @@ if (! @is_dir ('files/' . $path)) {
 
 $files = glob ('files/' . $path . '/*.{jpg,jpeg,gif,png,JPG,JPEG,GIF,PNG}', GLOB_BRACE);
 
+// rewrite if proxy is set
+if ($appconf['General']['proxy_handler']) {
+	foreach ($files as $k => $file) {
+		$files[$k] = str_replace ('files/', 'filemanager/proxy/', $file);
+	}
+}
+
 echo $tpl->render ('filemanager/slideshow', array ('files' => $files));
 
 ?>
