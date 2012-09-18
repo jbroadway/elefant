@@ -39,7 +39,7 @@ class Block extends Model {
 	/**
 	 * The database table name.
 	 */
-	public $table = 'elefant_block';
+	public $table = '#prefix#block';
 }
 
 ?>

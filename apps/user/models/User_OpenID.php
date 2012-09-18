@@ -36,7 +36,7 @@ class User_OpenID extends Model {
 	/**
 	 * The database table name.
 	 */
-	public $table = 'elefant_user_openid';
+	public $table = '#prefix#user_openid';
 
 	/**
 	 * The default token name.

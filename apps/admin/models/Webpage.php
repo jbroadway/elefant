@@ -44,7 +44,7 @@ class Webpage extends Model {
 	/**
 	 * The database table name.
 	 */
-	public $table = 'elefant_webpage';
+	public $table = '#prefix#webpage';
 
 	/**
 	 * Override the getter for head to include the description

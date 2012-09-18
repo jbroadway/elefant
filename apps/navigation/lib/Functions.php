@@ -40,9 +40,9 @@ function navigation_print_context ($tree, $path) {
  * Clears all cache keys for the navigation app.
  */
 function navigation_clear_cache () {
-	global $memcache;
-	$memcache->delete ('_navigation_top');
-	$memcache->delete ('navigation_map');
+	global $cache;
+	$cache->delete ('_navigation_top');
+	$cache->delete ('_c_navigation_map');
 }
 
 /**
@@ -50,7 +50,7 @@ function navigation_clear_cache () {
  */
 function navigation_get_other_pages ($ids) {
 	$pages = array ();
-	$res = DB::fetch ('select id, title, menu_title from elefant_webpage where access = "public"');
+	$res = DB::fetch ('select id, title, menu_title from #prefix#webpage where access = "public"');
 	foreach ($res as $p) {
 		if (in_array ($p->id, $ids)) {
 			// skip if in tree

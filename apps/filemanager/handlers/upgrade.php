@@ -16,7 +16,7 @@ $db = DB::get_connection (1);
 $dbtype = $db->getAttribute (PDO::ATTR_DRIVER_NAME);
 switch ($dbtype) {
 	case 'mysql':
-		DB::execute ('create table elefant_filemanager_prop (
+		DB::execute ('create table #prefix#filemanager_prop (
 			file char(128) not null primary key,
 			prop char(32) not null,
 			value char(255) not null,
@@ -25,12 +25,12 @@ switch ($dbtype) {
 		break;
 	case 'pgsql':
 	case 'sqlite':
-		DB::execute ('create table elefant_filemanager_prop (
+		DB::execute ('create table #prefix#filemanager_prop (
 			file char(128) not null primary key,
 			prop char(32) not null,
 			value char(255) not null
 		)');
-		DB::execute ('create index elefant_filemanager_prop_name on elefant_filemanager_prop (prop)');
+		DB::execute ('create index #prefix#filemanager_prop_name on #prefix#filemanager_prop (prop)');
 		break;
 }
 echo '<p>' . i18n_get ('Done.') . '</p>';

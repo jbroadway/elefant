@@ -70,7 +70,7 @@ class Versions extends Model {
 	/**
 	 * The database table name.
 	 */
-	public $table = 'elefant_versions';
+	public $table = '#prefix#versions';
 
 	/**
 	 * Add a version to the store.
@@ -186,8 +186,8 @@ class Versions extends Model {
 	 * Get a list of classes that have objects stored.
 	 */
 	public static function get_classes () {
-		return db_shift_array (
-			'select distinct class from elefant_versions order by class asc'
+		return DB::shift_array (
+			'select distinct class from #prefix#versions order by class asc'
 		);
 	}
 }

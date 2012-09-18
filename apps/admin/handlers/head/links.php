@@ -21,7 +21,7 @@ if (! User::require_admin ()) {
 
 $tools = array ('admin/pages' => array ('handler' => 'admin/pages', 'name' => i18n_get ('All Pages'), 'class' => false));
 $res = glob ('apps/*/conf/config.php');
-$apps = DB::pairs ('select * from elefant_apps');
+$apps = DB::pairs ('select * from #prefix#apps');
 foreach ($res as $file) {
 	$app = preg_replace ('/^apps\/(.*)\/conf\/config\.php$/i', '\1', $file);
 	$appconf = parse_ini_file ($file, true);

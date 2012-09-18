@@ -66,7 +66,7 @@ foreach ($sqldata as $sql) {
 $pass = generate_password (8);
 $date = gmdate ('Y-m-d H:i:s');
 if (! DB::execute (
-	"update `elefant_user` set `email` = ?, `password` = ? where `id` = 1",
+	"update `#prefix#user` set `email` = ?, `password` = ? where `id` = 1",
 	$conf['General']['email_from'],
 	encrypt_password ($pass)
 )) {

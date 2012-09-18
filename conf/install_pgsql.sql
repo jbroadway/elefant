@@ -1,6 +1,6 @@
 begin;
 
-create table elefant_webpage (
+create table #prefix#webpage (
 	id varchar(72) not null primary key,
 	title varchar(72) not null,
 	menu_title varchar(72) not null,
@@ -13,12 +13,12 @@ create table elefant_webpage (
 	check (access in ('public','member','private'))
 );
 
-create index elefant_webpage_access on elefant_webpage (access);
+create index #prefix#webpage_access on #prefix#webpage (access);
 
-insert into elefant_webpage (id, title, menu_title, window_title, access, layout, description, keywords, body) values ('index', 'Welcome to Elefant', 'Home', '', 'public', 'default', '', '', '<table><tbody><tr><td><h3>Congratulations!</h3>You have successfully installed Elefant, the refreshingly simple new PHP web framework and CMS.</td><td><h3>Getting Started</h3>To log in as an administrator and edit pages, write a blog post, or upload files, go to <a href="/admin">/admin</a>.</td><td><h3>Developers</h3>Documentation, source code and issue tracking can be found at <a href="http://github.com/jbroadway/elefant">github.com/jbroadway/elefant</a></td></tr></tbody></table>');
+insert into #prefix#webpage (id, title, menu_title, window_title, access, layout, description, keywords, body) values ('index', 'Welcome to Elefant', 'Home', '', 'public', 'default', '', '', '<table><tbody><tr><td><h3>Congratulations!</h3>You have successfully installed Elefant, the refreshingly simple new PHP web framework and CMS.</td><td><h3>Getting Started</h3>To log in as an administrator and edit pages, write a blog post, or upload files, go to <a href="/admin">/admin</a>.</td><td><h3>Developers</h3>Documentation, source code and issue tracking can be found at <a href="http://github.com/jbroadway/elefant">github.com/jbroadway/elefant</a></td></tr></tbody></table>');
 
 
-create table elefant_block (
+create table #prefix#block (
 	id varchar(72) not null primary key,
 	title varchar(72) not null,
 	body text,
@@ -28,14 +28,14 @@ create table elefant_block (
 	check (show_title in ('yes','no'))
 );
 
-create index elefant_block_access on elefant_block (id, access);
+create index #prefix#block_access on #prefix#block (id, access);
 
-insert into elefant_block (id, title, access, body, show_title) values ('members', 'Members', 'public', '{! user/sidebar !}', 'no');
+insert into #prefix#block (id, title, access, body, show_title) values ('members', 'Members', 'public', '{! user/sidebar !}', 'no');
 
-create sequence elefant_user_id_seq;
+create sequence #prefix#user_id_seq;
 
-create table elefant_user (
-	id integer not null default nextval('elefant_user_id_seq') primary key,
+create table #prefix#user (
+	id integer not null default nextval('#prefix#user_id_seq') primary key,
 	email varchar(72) unique not null,
 	password varchar(128) not null,
 	session_id varchar(32) unique,
@@ -47,20 +47,20 @@ create table elefant_user (
 	userdata text not null
 );
 
-create index elefant_user_email_password on elefant_user (email, password);
-create index elefant_user_session_id on elefant_user (session_id);
+create index #prefix#user_email_password on #prefix#user (email, password);
+create index #prefix#user_session_id on #prefix#user (session_id);
 
-insert into elefant_user (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, 'you@example.com', '$2a$07$1QeR9mu2doQxY0uBcpFlrOIfDxq0BwpR8FsImCgWvAL4Fz9jDByxi', null, now(), 'Admin User', 'admin', now(), now(), '[]');
+insert into #prefix#user (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, 'you@example.com', '$2a$07$1QeR9mu2doQxY0uBcpFlrOIfDxq0BwpR8FsImCgWvAL4Fz9jDByxi', null, now(), 'Admin User', 'admin', now(), now(), '[]');
 
-create table elefant_user_openid (
+create table #prefix#user_openid (
 	token varchar(200) primary key,
 	user_id integer not null
 );
 
-create sequence elefant_versions_id_seq;
+create sequence #prefix#versions_id_seq;
 
-create table elefant_versions (
-	id integer not null default nextval('elefant_versions_id_seq') primary key,
+create table #prefix#versions (
+	id integer not null default nextval('#prefix#versions_id_seq') primary key,
 	class varchar(72) not null,
 	pkey varchar(72) not null,
 	"user" integer not null,
@@ -68,22 +68,22 @@ create table elefant_versions (
 	serialized text not null
 );
 
-create index elefant_versions_class on elefant_versions (class, pkey, ts);
-create index elefant_versions_user on elefant_versions ("user", ts);
+create index #prefix#versions_class on #prefix#versions (class, pkey, ts);
+create index #prefix#versions_user on #prefix#versions ("user", ts);
 
-create table elefant_api (
+create table #prefix#api (
 	token varchar(35) not null primary key,
 	api_key varchar(35) not null,
 	user_id integer not null
 );
 
-create index elefant_api_token on elefant_api (token, api_key);
-create index elefant_api_user on elefant_api (user_id);
+create index #prefix#api_token on #prefix#api (token, api_key);
+create index #prefix#api_user on #prefix#api (user_id);
 
-create sequence elefant_blog_post_id_seq;
+create sequence #prefix#blog_post_id_seq;
 
-create table elefant_blog_post (
-	id integer not null default nextval('elefant_blog_post_id_seq') primary key,
+create table #prefix#blog_post (
+	id integer not null default nextval('#prefix#blog_post_id_seq') primary key,
 	title varchar(72) not null,
 	ts timestamp not null,
 	author varchar(32) not null,
@@ -94,23 +94,23 @@ create table elefant_blog_post (
 	check (published in ('yes', 'no'))
 );
 
-create index elefant_blog_post_ts on elefant_blog_post (ts);
-create index elefant_blog_post_pts on elefant_blog_post (ts, published);
+create index #prefix#blog_post_ts on #prefix#blog_post (ts);
+create index #prefix#blog_post_pts on #prefix#blog_post (ts, published);
 
-create table elefant_blog_tag (
+create table #prefix#blog_tag (
 	id varchar(24) not null primary key
 );
 
-create table elefant_blog_post_tag (
+create table #prefix#blog_post_tag (
 	tag_id varchar(24) not null,
 	post_id integer not null,
 	primary key (tag_id, post_id)
 );
 
-create sequence elefant_lock_id_seq;
+create sequence #prefix#lock_id_seq;
 
-create table elefant_lock (
-	id integer not null default nextval('elefant_lock_id_seq') primary key,
+create table #prefix#lock (
+	id integer not null default nextval('#prefix#lock_id_seq') primary key,
 	"user" integer not null,
 	resource varchar(72) not null,
 	resource_id varchar(72) not null,
@@ -119,24 +119,24 @@ create table elefant_lock (
 	modified timestamp not null
 );
 
-create index elefant_lock_resource on elefant_lock (resource, resource_id, expires);
-create index elefant_lock_user on elefant_lock ("user");
+create index #prefix#lock_resource on #prefix#lock (resource, resource_id, expires);
+create index #prefix#lock_user on #prefix#lock ("user");
 
-create table elefant_filemanager_prop (
+create table #prefix#filemanager_prop (
 	file char(128) not null primary key,
 	prop char(32) not null,
 	value char(255) not null
 );
 
-create index elefant_filemanager_prop_name on elefant_filemanager_prop (prop);
+create index #prefix#filemanager_prop_name on #prefix#filemanager_prop (prop);
 
-create table elefant_apps (
+create table #prefix#apps (
 	name varchar(48) not null primary key,
 	version varchar(16) not null
 );
 
-insert into elefant_apps (name, version) values ('blog', '1.1.3-stable');
-insert into elefant_apps (name, version) values ('user', '1.1.3-stable');
-insert into elefant_apps (name, version) values ('filemanager', '1.3.0-beta');
+insert into #prefix#apps (name, version) values ('blog', '1.1.3-stable');
+insert into #prefix#apps (name, version) values ('user', '1.1.3-stable');
+insert into #prefix#apps (name, version) values ('filemanager', '1.3.0-beta');
 
 commit;

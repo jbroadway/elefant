@@ -29,9 +29,9 @@ if ($f->submit ()) {
 			$tags = explode (',', $_POST['tags']);
 			foreach ($tags as $tag) {
 				$tr = trim ($tag);
-				DB::execute ('insert into elefant_blog_tag (id) values (?)', $tr);
+				DB::execute ('insert into #prefix#blog_tag (id) values (?)', $tr);
 				DB::execute (
-					'insert into elefant_blog_post_tag (tag_id, post_id) values (?, ?)',
+					'insert into #prefix#blog_post_tag (tag_id, post_id) values (?, ?)',
 					$tr,
 					$p->id
 				);

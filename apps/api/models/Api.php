@@ -42,7 +42,7 @@ class Api extends Model {
 	/**
 	 * The database table name.
 	 */
-	public $table = 'elefant_api';
+	public $table = '#prefix#api';
 
 	/**
 	 * The auth token for the request.

@@ -204,7 +204,7 @@ class Navigation {
 		if (is_object ($id)) {
 			$new_page = $id;
 		} else {
-			$pg = DB::single ('select title, menu_title from elefant_webpage where id = ?', $id);
+			$pg = DB::single ('select title, menu_title from #prefix#webpage where id = ?', $id);
 			$title = (! empty ($pg->menu_title)) ? $pg->menu_title : $pg->title;
 			$new_page = (object) array (
 				'data' => $title,

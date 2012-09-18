@@ -232,13 +232,16 @@ class DB {
 	 * Prepares a statement from a list of arguments,
 	 * the first being the SQL query and the rest being
 	 * the parameters, and a `$master` flag to determine
-	 * which connection to use.
+	 * which connection to use. Also replaces `#query#`
+	 * with a database table name prefix set in the global
+	 * configuration.
 	 */
 	public static function prepare ($args, $master = 0) {
 		$db = self::get_connection ($master);
 		$sql = array_shift ($args);
 		$args = self::args ($args);
 		$sql = self::normalize_sql ($db, $sql);
+		$sql = str_replace ('#prefix#', conf ('Database', 'prefix'), $sql);
 		self::$last_sql = $sql;
 		self::$last_args = $args;
 
