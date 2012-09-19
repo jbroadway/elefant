@@ -96,6 +96,11 @@ class DB {
 	 * The arguments for the last SQL statement.
 	 */
 	public static $last_args = array ();
+	
+	/**
+	 * Table name prefix to replace `#prefix#` occurrences with.
+	 */
+	public static $prefix = '';
 
 	/**
 	 * Open a database connection and add it to the pool. Accepts
@@ -140,6 +145,7 @@ class DB {
 	 */
 	public static function load_connections () {
 		$list = conf ('Database');
+		self::$prefix = isset ($list['prefix']) ? $list['prefix'] : '';
 		foreach ($list as $key => $conf) {
 			if ($key == 'master') {
 				$conf['master'] = true;
@@ -241,7 +247,7 @@ class DB {
 		$sql = array_shift ($args);
 		$args = self::args ($args);
 		$sql = self::normalize_sql ($db, $sql);
-		$sql = str_replace ('#prefix#', conf ('Database', 'prefix'), $sql);
+		$sql = str_replace ('#prefix#', self::$prefix, $sql);
 		self::$last_sql = $sql;
 		self::$last_args = $args;
 
