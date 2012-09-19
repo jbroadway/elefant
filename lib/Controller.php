@@ -490,16 +490,16 @@ class Controller {
 	}
 
 	/**
-	 * Add a notification to the `elefant_notification` cookie, which is
+	 * Add a notification to the `#prefix#notification` cookie, which is
 	 * monitored by `admin/head` and will be displayed using jGrowl. Handy
 	 * for setting confirmation messages and other notices for the current
 	 * user to display on a subsequent screen.
 	 */
 	public function add_notification ($msg) {
-		if (isset ($_COOKIE['elefant_notification'])) {
-			$msg = $_COOKIE['elefant_notification'] . '|' . $msg;
+		if (isset ($_COOKIE['#prefix#notification'])) {
+			$msg = $_COOKIE['#prefix#notification'] . '|' . $msg;
 		}
-		return setcookie ('elefant_notification', $msg, 0, '/');
+		return setcookie ('#prefix#notification', $msg, 0, '/');
 	}
 
 	/**
@@ -756,7 +756,7 @@ class Controller {
 	 * should be performed.
 	 */
 	public function installed ($app, $version) {
-		$v = db_shift ('select version from apps where name = ?', $app);
+		$v = db_shift ('select version from #prefix#apps where name = ?', $app);
 		if (! $v) {
 			return false;
 		}
@@ -770,11 +770,11 @@ class Controller {
 	 * Mark an app and version as installed.
 	 */
 	public function mark_installed ($app, $version) {
-		$v = db_shift ('select version from apps where name = ?', $app);
+		$v = db_shift ('select version from #prefix#apps where name = ?', $app);
 		if ($v) {
-			return db_execute ('update apps set version = ? where name = ?', $version, $app);
+			return db_execute ('update #prefix#apps set version = ? where name = ?', $version, $app);
 		}
-		return db_execute ('insert into apps (name, version) values (?, ?)', $app, $version);
+		return db_execute ('insert into #prefix#apps (name, version) values (?, ?)', $app, $version);
 	}
 }
 

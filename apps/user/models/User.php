@@ -89,6 +89,11 @@
  */
 class User extends ExtendedModel {
 	/**
+	 * The database table name.
+	 */
+	public $table = '#prefix#user';
+
+	/**
 	 * Tell the ExtendedModel which field should contain the extended properties.
 	 */
 	public $_extended_field = 'userdata';
@@ -131,7 +136,7 @@ class User extends ExtendedModel {
 		}
 
 		$u = DB::single (
-			'select * from `user` where email = ?',
+			'select * from `#prefix#user` where email = ?',
 			$user
 		);
 
@@ -196,7 +201,7 @@ class User extends ExtendedModel {
 			return call_user_func ($callback, $_POST['username'], $_POST['password']);
 		} elseif (isset ($_SESSION['session_id'])) {
 			$u = DB::single (
-				'select * from `user` where session_id = ? and expires > ?',
+				'select * from `#prefix#user` where session_id = ? and expires > ?',
 				$_SESSION['session_id'],
 				gmdate ('Y-m-d H:i:s')
 			);

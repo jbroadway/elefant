@@ -36,6 +36,10 @@
  * show_title
  */
 class Block extends Model {
+	/**
+	 * The database table name.
+	 */
+	public $table = '#prefix#block';
 }
 
 ?>

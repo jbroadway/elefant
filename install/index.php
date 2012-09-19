@@ -130,11 +130,14 @@ switch ($_GET['step']) {
 			$_POST['name'] = $_POST[$_POST['driver'] . '_name'];
 			$_POST['user'] = $_POST[$_POST['driver'] . '_user'];
 			$_POST['pass'] = $_POST[$_POST['driver'] . '_pass'];
+			$_POST['prefix'] = $_POST[$_POST['driver'] . '_prefix'];
 
 			if (! DB::open ($_POST)) {
 				$data['error'] = DB::error ();
 			} else {
 				$data['error'] = false;
+
+				conf ('Database', 'prefix', $_POST['prefix']);
 
 				// create the database
 				$sqldata = sql_split (file_get_contents ('../conf/install_' . $_POST['driver'] . '.sql'));
@@ -153,12 +156,12 @@ switch ($_GET['step']) {
 
 				// write the settings
 				if (! $data['error']) {
-					$conf = file_get_contents ('../conf/config.php');
+					$config = file_get_contents ('../conf/config.php');
 					// good to replace database settings
 					$_POST['pass'] = str_replace ('"', '\"', $_POST['pass']);
 					$dbinfo = $tpl->render ('dbinfo', $_POST);
-					$conf = preg_replace ('/\[Database\].*\[Mongo\]/s', $dbinfo, $conf);
-					if (! file_put_contents ('../conf/config.php', $conf)) {
+					$config = preg_replace ('/\[Database\].*\[Mongo\]/s', $dbinfo, $config);
+					if (! file_put_contents ('../conf/config.php', $config)) {
 						$data['error'] = i18n_get ('Failed to write to conf/config.php');
 					} else {
 						$data['ready'] = true;
@@ -171,6 +174,9 @@ switch ($_GET['step']) {
 			$_POST['pgsql_host'] = 'localhost';
 			$_POST['mysql_port'] = '3306';
 			$_POST['pgsql_port'] = '5432';
+			$_POST['sqlite_prefix'] = 'elefant_';
+			$_POST['mysql_prefix'] = 'elefant_';
+			$_POST['pgsql_prefix'] = 'elefant_';
 		}
 		break;
 
@@ -180,25 +186,25 @@ switch ($_GET['step']) {
 		$data['error'] = false;
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			// got the settings, save them
-			$conf = file_get_contents ('../conf/config.php');
-			$conf = preg_replace ('/site_name = .*/', 'site_name = "' . $_POST['site_name'] . '"', $conf, 1);
-			$conf = preg_replace ('/email_from = .*/', 'email_from = "' . $_POST['email_from'] . '"', $conf, 1);
-			if (! file_put_contents ('../conf/config.php', $conf)) {
+			$config = file_get_contents ('../conf/config.php');
+			$config = preg_replace ('/site_name = .*/', 'site_name = "' . $_POST['site_name'] . '"', $config, 1);
+			$config = preg_replace ('/email_from = .*/', 'email_from = "' . $_POST['email_from'] . '"', $config, 1);
+			if (! file_put_contents ('../conf/config.php', $config)) {
 				$data['error'] = i18n_get ('Failed to write to conf/config.php');
 			} else {
 				// create the admin user now
-				$conf_ini = parse_ini_file ('../conf/config.php', true);
-				$conf_ini['Database']['master']['master'] = true;
-				if (isset ($conf_ini['Database']['master']['file'])) {
-					$conf_ini['Database']['master']['file'] = '../' . $conf_ini['Database']['master']['file'];
+				$conf = parse_ini_file ('../conf/config.php', true);
+				$conf['Database']['master']['master'] = true;
+				if (isset ($conf['Database']['master']['file'])) {
+					$conf['Database']['master']['file'] = '../' . $conf['Database']['master']['file'];
 				}
 
-				if (! DB::open ($conf_ini['Database']['master'])) {
+				if (! DB::open ($conf['Database']['master'])) {
 					$data['error'] = DB::error ();
 				} else {
 					$date = gmdate ('Y-m-d H:i:s');
 					if (! DB::execute (
-						"update `user` set `email` = ?, `password` = ?, `name` = ? where `id` = 1",
+						"update `#prefix#user` set `email` = ?, `password` = ?, `name` = ? where `id` = 1",
 						$_POST['email_from'],
 						encrypt_pass ($_POST['pass']),
 						$_POST['your_name']

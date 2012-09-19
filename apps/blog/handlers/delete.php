@@ -32,7 +32,7 @@ if (! $p->remove ()) {
 // reset blog rss cache
 $cache->delete ('blog_rss');
 
-DB::execute ('delete from blog_post_tag where post_id = ?', $_GET['id']);
+DB::execute ('delete from #prefix#blog_post_tag where post_id = ?', $_GET['id']);
 
 $_GET['page'] = 'blog/post/' . $_GET['id'] . '/' . URLify::filter ($title);
 $this->hook ('blog/delete', $_GET);

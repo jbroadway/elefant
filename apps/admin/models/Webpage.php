@@ -42,6 +42,11 @@
  */
 class Webpage extends Model {
 	/**
+	 * The database table name.
+	 */
+	public $table = '#prefix#webpage';
+
+	/**
 	 * Override the getter for head to include the description
 	 * and keywords fields as meta tags.
 	 */

@@ -91,7 +91,7 @@ class Lock {
 		$key = ($key) ? $key : $this->key;
 		
 		if (DB::execute (
-			'insert into `lock`
+			'insert into `#prefix#lock`
 				(user, resource, resource_id, expires, created, modified)
 			values
 				(?, ?, ?, ?, ?, ?)',
@@ -116,7 +116,7 @@ class Lock {
 		$key = ($key) ? $key : $this->key;
 
 		return DB::shift (
-			'select id from `lock` where user != ? and resource = ? and resource_id = ? and expires > ?',
+			'select id from `#prefix#lock` where user != ? and resource = ? and resource_id = ? and expires > ?',
 			User::val ('id'),
 			$resource,
 			$key,
@@ -131,7 +131,7 @@ class Lock {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
-		return DB::single ('select * from `lock` where resource = ? and resource_id = ?', $resource, $key);
+		return DB::single ('select * from `#prefix#lock` where resource = ? and resource_id = ?', $resource, $key);
 	}
 
 	/**
@@ -142,7 +142,7 @@ class Lock {
 		$key = ($key) ? $key : $this->key;
 
 		if (DB::execute (
-			'update `lock` set modified = ?, expires = ? where resource = ? and resource_id = ?',
+			'update `#prefix#lock` set modified = ?, expires = ? where resource = ? and resource_id = ?',
 			gmdate ('Y-m-d H:i:s'),
 			gmdate ('Y-m-d H:i:s', time () + $this->timeout),
 			$resource,
@@ -161,21 +161,21 @@ class Lock {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
-		return DB::execute ('delete from `lock` where resource = ? and resource_id = ?', $resource, $key);
+		return DB::execute ('delete from `#prefix#lock` where resource = ? and resource_id = ?', $resource, $key);
 	}
 
 	/**
 	 * Clear all locks held by the current user.
 	 */
 	public static function clear () {
-		return DB::execute ('delete from `lock` where user = ?', User::val ('id'));
+		return DB::execute ('delete from `#prefix#lock` where user = ?', User::val ('id'));
 	}
 
 	/**
 	 * Clear all locks.
 	 */
 	public static function clear_all () {
-		return DB::execute ('delete from `lock`');
+		return DB::execute ('delete from `#prefix#lock`');
 	}
 }
 

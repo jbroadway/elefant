@@ -68,6 +68,11 @@
  */
 class Versions extends Model {
 	/**
+	 * The database table name.
+	 */
+	public $table = '#prefix#versions';
+
+	/**
 	 * Add a version to the store.
 	 */
 	public static function add ($obj) {
@@ -181,8 +186,8 @@ class Versions extends Model {
 	 * Get a list of classes that have objects stored.
 	 */
 	public static function get_classes () {
-		return db_shift_array (
-			'select distinct class from versions order by class asc'
+		return DB::shift_array (
+			'select distinct class from #prefix#versions order by class asc'
 		);
 	}
 }

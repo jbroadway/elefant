@@ -5,7 +5,7 @@ require_once ('lib/Autoloader.php');
 class UserTest extends PHPUnit_Framework_TestCase {
 	static function setUpBeforeClass () {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
-		DB::execute ('create table user (
+		DB::execute ('create table #prefix#user (
 			id integer primary key,
 			email char(72) unique not null,
 			password char(128) not null,

@@ -16,4 +16,8 @@ master[user] = {{ user }}
 master[pass] = "{{ pass|none }}"
 {% end %}
 
+; The database table name prefix.
+
+prefix = "{{ prefix }}"
+
 [Mongo]

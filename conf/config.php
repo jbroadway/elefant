@@ -57,6 +57,10 @@ negotiation_method = http
 master[driver] = sqlite
 master[file] = "conf/site.db"
 
+; The database table name prefix.
+
+prefix = ""
+
 [Mongo]
 
 ; Settings to connect to MongoDB. Must have PHP Mongo extension

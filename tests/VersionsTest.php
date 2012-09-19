@@ -12,7 +12,7 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 	static function setUpBeforeClass () {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		DB::execute ('create table foobar (id int not null, name char(32) not null)');
-		if (! DB::execute ('create table versions (
+		if (! DB::execute ('create table #prefix#versions (
 			id integer primary key,
 			class char(72) not null,
 			pkey char(72) not null,
@@ -22,10 +22,10 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 		)')) {
 			die ('Failed to create versions table');
 		}
-		if (! DB::execute ('create index versions_class on versions (class, pkey, ts)')) {
+		if (! DB::execute ('create index #prefix#versions_class on #prefix#versions (class, pkey, ts)')) {
 			die ('Failed to create versions_class index');
 		}
-		if (! DB::execute ('create index versions_user on versions (user, ts)')) {
+		if (! DB::execute ('create index #prefix#versions_user on #prefix#versions (user, ts)')) {
 			die ('Failed to create versions_user index');
 		}
 		User::$user = false;
@@ -40,7 +40,7 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 		self::$foo->put ();
 
 		self::$v = Versions::add (self::$foo);
-		$this->assertEquals (DB::shift ('select count(*) from versions'), 1);
+		$this->assertEquals (DB::shift ('select count(*) from #prefix#versions'), 1);
 		$this->assertEquals (self::$v->class, 'Foobar');
 		$this->assertEquals (self::$v->pkey, 1);
 		$this->assertEquals (self::$v->user, 0);
@@ -63,7 +63,7 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 		self::$foo->put ();
 
 		$v = Versions::add (self::$foo);
-		$this->assertEquals (DB::shift ('select count(*) from versions'), 2);
+		$this->assertEquals (DB::shift ('select count(*) from #prefix#versions'), 2);
 
 		$modified = Versions::diff (self::$foo2, self::$foo);
 		$this->assertEquals ($modified[0], 'name');
@@ -130,7 +130,7 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 	 */
 	function test_recent_user () {
 		// recent with user
-		DB::execute ('update versions set user = 1');
+		DB::execute ('update #prefix#versions set user = 1');
 		$recent = Versions::recent (1);
 		$this->assertEquals (count ($recent), 2);
 	}

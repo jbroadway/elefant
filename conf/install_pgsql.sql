@@ -1,6 +1,6 @@
 begin;
 
-create table webpage (
+create table #prefix#webpage (
 	id varchar(72) not null primary key,
 	title varchar(72) not null,
 	menu_title varchar(72) not null,
@@ -13,12 +13,12 @@ create table webpage (
 	check (access in ('public','member','private'))
 );
 
-create index webpage_access on webpage (access);
+create index #prefix#webpage_access on #prefix#webpage (access);
 
-insert into webpage (id, title, menu_title, window_title, access, layout, description, keywords, body) values ('index', 'Welcome to Elefant', 'Home', '', 'public', 'default', '', '', '<table><tbody><tr><td><h3>Congratulations!</h3>You have successfully installed Elefant, the refreshingly simple new PHP web framework and CMS.</td><td><h3>Getting Started</h3>To log in as an administrator and edit pages, write a blog post, or upload files, go to <a href="/admin">/admin</a>.</td><td><h3>Developers</h3>Documentation, source code and issue tracking can be found at <a href="http://github.com/jbroadway/elefant">github.com/jbroadway/elefant</a></td></tr></tbody></table>');
+insert into #prefix#webpage (id, title, menu_title, window_title, access, layout, description, keywords, body) values ('index', 'Welcome to Elefant', 'Home', '', 'public', 'default', '', '', '<table><tbody><tr><td><h3>Congratulations!</h3>You have successfully installed Elefant, the refreshingly simple new PHP web framework and CMS.</td><td><h3>Getting Started</h3>To log in as an administrator and edit pages, write a blog post, or upload files, go to <a href="/admin">/admin</a>.</td><td><h3>Developers</h3>Documentation, source code and issue tracking can be found at <a href="http://github.com/jbroadway/elefant">github.com/jbroadway/elefant</a></td></tr></tbody></table>');
 
 
-create table block (
+create table #prefix#block (
 	id varchar(72) not null primary key,
 	title varchar(72) not null,
 	body text,
@@ -28,14 +28,14 @@ create table block (
 	check (show_title in ('yes','no'))
 );
 
-create index block_access on block (id, access);
+create index #prefix#block_access on #prefix#block (id, access);
 
-insert into block (id, title, access, body, show_title) values ('members', 'Members', 'public', '{! user/sidebar !}', 'no');
+insert into #prefix#block (id, title, access, body, show_title) values ('members', 'Members', 'public', '{! user/sidebar !}', 'no');
 
-create sequence user_id_seq;
+create sequence #prefix#user_id_seq;
 
-create table "user" (
-	id integer not null default nextval('user_id_seq') primary key,
+create table #prefix#user (
+	id integer not null default nextval('#prefix#user_id_seq') primary key,
 	email varchar(72) unique not null,
 	password varchar(128) not null,
 	session_id varchar(32) unique,
@@ -47,20 +47,20 @@ create table "user" (
 	userdata text not null
 );
 
-create index user_email_password on "user" (email, password);
-create index user_session_id on "user" (session_id);
+create index #prefix#user_email_password on #prefix#user (email, password);
+create index #prefix#user_session_id on #prefix#user (session_id);
 
-insert into "user" (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, 'you@example.com', '$2a$07$1QeR9mu2doQxY0uBcpFlrOIfDxq0BwpR8FsImCgWvAL4Fz9jDByxi', null, now(), 'Admin User', 'admin', now(), now(), '[]');
+insert into #prefix#user (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, 'you@example.com', '$2a$07$1QeR9mu2doQxY0uBcpFlrOIfDxq0BwpR8FsImCgWvAL4Fz9jDByxi', null, now(), 'Admin User', 'admin', now(), now(), '[]');
 
-create table user_openid (
+create table #prefix#user_openid (
 	token varchar(200) primary key,
 	user_id integer not null
 );
 
-create sequence versions_id_seq;
+create sequence #prefix#versions_id_seq;
 
-create table versions (
-	id integer not null default nextval('versions_id_seq') primary key,
+create table #prefix#versions (
+	id integer not null default nextval('#prefix#versions_id_seq') primary key,
 	class varchar(72) not null,
 	pkey varchar(72) not null,
 	"user" integer not null,
@@ -68,22 +68,22 @@ create table versions (
 	serialized text not null
 );
 
-create index versions_class on versions (class, pkey, ts);
-create index versions_user on versions ("user", ts);
+create index #prefix#versions_class on #prefix#versions (class, pkey, ts);
+create index #prefix#versions_user on #prefix#versions ("user", ts);
 
-create table api (
+create table #prefix#api (
 	token varchar(35) not null primary key,
 	api_key varchar(35) not null,
 	user_id integer not null
 );
 
-create index api_token on api (token, api_key);
-create index api_user on api (user_id);
+create index #prefix#api_token on #prefix#api (token, api_key);
+create index #prefix#api_user on #prefix#api (user_id);
 
-create sequence blog_post_id_seq;
+create sequence #prefix#blog_post_id_seq;
 
-create table blog_post (
-	id integer not null default nextval('blog_post_id_seq') primary key,
+create table #prefix#blog_post (
+	id integer not null default nextval('#prefix#blog_post_id_seq') primary key,
 	title varchar(72) not null,
 	ts timestamp not null,
 	author varchar(32) not null,
@@ -94,23 +94,23 @@ create table blog_post (
 	check (published in ('yes', 'no'))
 );
 
-create index blog_post_ts on blog_post (ts);
-create index blog_post_pts on blog_post (ts, published);
+create index #prefix#blog_post_ts on #prefix#blog_post (ts);
+create index #prefix#blog_post_pts on #prefix#blog_post (ts, published);
 
-create table blog_tag (
+create table #prefix#blog_tag (
 	id varchar(24) not null primary key
 );
 
-create table blog_post_tag (
+create table #prefix#blog_post_tag (
 	tag_id varchar(24) not null,
 	post_id integer not null,
 	primary key (tag_id, post_id)
 );
 
-create sequence lock_id_seq;
+create sequence #prefix#lock_id_seq;
 
-create table lock (
-	id integer not null default nextval('lock_id_seq') primary key,
+create table #prefix#lock (
+	id integer not null default nextval('#prefix#lock_id_seq') primary key,
 	"user" integer not null,
 	resource varchar(72) not null,
 	resource_id varchar(72) not null,
@@ -119,24 +119,24 @@ create table lock (
 	modified timestamp not null
 );
 
-create index lock_resource on lock (resource, resource_id, expires);
-create index lock_user on lock ("user");
+create index #prefix#lock_resource on #prefix#lock (resource, resource_id, expires);
+create index #prefix#lock_user on #prefix#lock ("user");
 
-create table filemanager_prop (
+create table #prefix#filemanager_prop (
 	file char(128) not null primary key,
 	prop char(32) not null,
 	value char(255) not null
 );
 
-create index filemanager_prop_name on filemanager_prop (prop);
+create index #prefix#filemanager_prop_name on #prefix#filemanager_prop (prop);
 
-create table apps (
+create table #prefix#apps (
 	name varchar(48) not null primary key,
 	version varchar(16) not null
 );
 
-insert into apps (name, version) values ('blog', '1.1.3-stable');
-insert into apps (name, version) values ('user', '1.1.3-stable');
-insert into apps (name, version) values ('filemanager', '1.3.0-beta');
+insert into #prefix#apps (name, version) values ('blog', '1.1.3-stable');
+insert into #prefix#apps (name, version) values ('user', '1.1.3-stable');
+insert into #prefix#apps (name, version) values ('filemanager', '1.3.0-beta');
 
 commit;

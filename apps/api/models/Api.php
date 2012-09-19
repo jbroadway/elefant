@@ -40,6 +40,11 @@
  */
 class Api extends Model {
 	/**
+	 * The database table name.
+	 */
+	public $table = '#prefix#api';
+
+	/**
 	 * The auth token for the request.
 	 */
 	public $key = 'token';

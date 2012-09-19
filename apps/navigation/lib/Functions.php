@@ -42,7 +42,7 @@ function navigation_print_context ($tree, $path) {
 function navigation_clear_cache () {
 	global $cache;
 	$cache->delete ('_navigation_top');
-	$cache->delete ('navigation_map');
+	$cache->delete ('_c_navigation_map');
 }
 
 /**
@@ -50,7 +50,7 @@ function navigation_clear_cache () {
  */
 function navigation_get_other_pages ($ids) {
 	$pages = array ();
-	$res = DB::fetch ('select id, title, menu_title from webpage where access = "public"');
+	$res = DB::fetch ('select id, title, menu_title from #prefix#webpage where access = "public"');
 	foreach ($res as $p) {
 		if (in_array ($p->id, $ids)) {
 			// skip if in tree

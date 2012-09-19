@@ -1,5 +1,6 @@
 <?php
 
+require_once ('lib/Functions.php');
 require_once ('lib/Autoloader.php');
 
 class DBTest extends PHPUnit_Framework_TestCase {
@@ -42,9 +43,9 @@ class DBTest extends PHPUnit_Framework_TestCase {
 	function test_args () {
 		$cmp = array ('one', 'two');
 		$obj = (object) $cmp;
-		$this->assertEquals (DB::args (array ('one', 'two')), $cmp);
-		$this->assertEquals (DB::args (array (array ('one', 'two'))), $cmp);
-		$this->assertEquals (DB::args (array ($obj)), $cmp);
+		$this->assertEquals ($cmp, DB::args (array ('one', 'two')));
+		$this->assertEquals ($cmp, DB::args (array (array ('one', 'two'))));
+		$this->assertEquals ($cmp, DB::args (array ($obj)));
 	}
 
 	function test_execute () {
@@ -53,36 +54,36 @@ class DBTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_last_sql () {
-		$this->assertEquals (DB::last_sql (), 'insert into test (foo) values (?)');
+		$this->assertEquals ('insert into test (foo) values (?)', DB::last_sql ());
 	}
 
 	function test_last_args () {
-		$this->assertEquals (DB::last_args (), array ('asdf'));
+		$this->assertEquals (array ('asdf'), DB::last_args ());
 	}
 
 	function test_fetch () {
 		$res = DB::fetch ('select * from test');
-		$this->assertEquals (count ($res), 1);
+		$this->assertEquals (1, count ($res));
 		$cmp = new StdClass;
 		$cmp->foo = 'asdf';
-		$this->assertEquals ($res[0], $cmp);
+		$this->assertEquals ($cmp, $res[0]);
 	}
 
 	function test_single () {
 		$cmp = new StdClass;
 		$cmp->foo = 'asdf';
 		$res = DB::single ('select * from test');
-		$this->assertEquals ($res, $cmp);
+		$this->assertEquals ($cmp, $res);
 	}
 
 	function test_shift () {
 		$res = DB::shift ('select foo from test');
-		$this->assertEquals ($res, 'asdf');
+		$this->assertEquals ('asdf', $res);
 	}
 
 	function test_shift_array () {		
 		$res = DB::shift_array ('select * from test');
-		$this->assertEquals ($res, array ('asdf'));
+		$this->assertEquals (array ('asdf'), $res);
 	}
 
 	function test_pairs () {
@@ -93,7 +94,7 @@ class DBTest extends PHPUnit_Framework_TestCase {
 		DB::execute ('insert into test2 (foo, bar) values (?, ?)', 'two', 'sam');
 		$res = DB::pairs ('select * from test2 order by foo asc');
 		$cmp = array ('one' => 'joe', 'two' => 'sam');
-		$this->assertEquals ($res, $cmp);
+		$this->assertEquals ($cmp, $res);
 	}
 
 	function test_transactions () {
