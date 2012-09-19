@@ -14,6 +14,7 @@ if (! $res) {
 	$page->date = gmdate ('Y-m-d\TH:i:s');
 	foreach ($page->posts as $k => $post) {
 		$page->posts[$k]->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
+		$page->posts[$k]->body = $tpl->run_includes ($page->posts[$k]->body);
 	}
 
 	$res = $tpl->render ('blog/rss', $page);

@@ -26,6 +26,8 @@ $page->next = $page->num + 2;
 foreach ($posts as $post) {
 	$post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
 	$post->tag_list = explode (',', $post->tags);
+	$post->social_buttons = $appconf['Social Buttons'];
+	$post->body = $tpl->run_includes ($post->body);
 	echo $tpl->render ('blog/post', $post);
 }
 
