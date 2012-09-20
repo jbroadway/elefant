@@ -135,3 +135,5 @@ A. This was my attempt at being hip and cool. No good?
 **Q. Isn't Elefant a bit of an oxymoron for a slim framework?**
 
 A. Why, yes. Yes it is.
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/20d52a948c8e7c7335a8a7600a121467 "githalytics.com")](http://githalytics.com/jbroadway/elefant)
