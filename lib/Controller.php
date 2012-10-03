@@ -496,10 +496,10 @@ class Controller {
 	 * user to display on a subsequent screen.
 	 */
 	public function add_notification ($msg) {
-		if (isset ($_COOKIE['#prefix#notification'])) {
-			$msg = $_COOKIE['#prefix#notification'] . '|' . $msg;
+		if (isset ($_COOKIE['elefant_notification'])) {
+			$msg = $_COOKIE['elefant_notification'] . '|' . $msg;
 		}
-		return setcookie ('#prefix#notification', $msg, 0, '/');
+		return setcookie ('elefant_notification', $msg, 0, '/');
 	}
 
 	/**
