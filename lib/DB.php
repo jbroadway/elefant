@@ -146,6 +146,7 @@ class DB {
 	public static function load_connections () {
 		$list = conf ('Database');
 		self::$prefix = isset ($list['prefix']) ? $list['prefix'] : '';
+		unset ($list['prefix']);
 		foreach ($list as $key => $conf) {
 			if ($key == 'master') {
 				$conf['master'] = true;
