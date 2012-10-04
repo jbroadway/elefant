@@ -90,7 +90,7 @@ create table #prefix#blog_post_tag (
 	primary key (tag_id, post_id)
 ) default charset=utf8;
 
-create table #prefix#lock (
+create table `#prefix#lock` (
 	id int not null auto_increment primary key,
 	user int not null,
 	resource varchar(72) not null,
