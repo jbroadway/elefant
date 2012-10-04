@@ -132,12 +132,12 @@ switch ($_GET['step']) {
 			$_POST['pass'] = $_POST[$_POST['driver'] . '_pass'];
 			$_POST['prefix'] = $_POST[$_POST['driver'] . '_prefix'];
 
+			DB::$prefix = $_POST['prefix'];
+
 			if (! DB::open ($_POST)) {
 				$data['error'] = DB::error ();
 			} else {
 				$data['error'] = false;
-
-				conf ('Database', 'prefix', $_POST['prefix']);
 
 				// create the database
 				$sqldata = sql_split (file_get_contents ('../conf/install_' . $_POST['driver'] . '.sql'));
@@ -198,6 +198,8 @@ switch ($_GET['step']) {
 				if (isset ($conf['Database']['master']['file'])) {
 					$conf['Database']['master']['file'] = '../' . $conf['Database']['master']['file'];
 				}
+
+				DB::$prefix = $conf['Database']['prefix'];
 
 				if (! DB::open ($conf['Database']['master'])) {
 					$data['error'] = DB::error ();
