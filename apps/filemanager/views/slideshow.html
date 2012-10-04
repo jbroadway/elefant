@@ -1,20 +1,19 @@
-<script type="text/javascript" src="/apps/filemanager/js/jquery.cycle.all.min.js"></script>
 <script type="text/javascript"> 
 $(window).load (function () {
-	$('#slideshow').cycle ({
+	$('#slideshow-{{name}}').cycle ({
 		fx: 'fade',
-		pager: '#slideshow-nav',
+		pager: '#slideshow-{{name}}-nav',
 		timeout: 6000,
 		startingSlide: Math.floor (Math.random () * 5)
 	});
 });
 </script>
 <style type="text/css">
-#slideshow-nav {
+#slideshow-{{name}}-nav {
 	margin-left: 48%;
 	margin-top: 10px;
 }
-#slideshow-nav a {
+#slideshow-{{name}}-nav a {
 	display: block;
 	width: 10px;
 	height: 10px;
@@ -26,15 +25,15 @@ $(window).load (function () {
 	text-decoration: none;
 }
 
-#slideshow-nav a.activeSlide {
+#slideshow-{{name}}-nav a.activeSlide {
 	background: url(/apps/filemanager/css/current.png) no-repeat;
 }
 </style>
 
-<div id="slideshow">
+<div id="slideshow-{{name}}">
 {% foreach files %}
 	<img src="/{{ loop_value }}" alt="" {% if loop_index > 0 %}style="display: none"{% end %} />
 {% end %}
 </div>
-<div id="slideshow-nav"></div>
+<div id="slideshow-{{name}}-nav"></div>
 <br style="clear: both" />
