@@ -31,6 +31,12 @@
 <input type="text" name="disqus_shortname" size="30" value="{{ disqus_shortname|quotes }}" />
 </p>
 
+<p>{"Social buttons"}:<br />
+<input type="checkbox" name="social_twitter" value="yes"{% if social_twitter %} checked{% end %} /> {"Twitter"}<br />
+<input type="checkbox" name="social_facebook" value="yes"{% if social_facebook %} checked{% end %} /> {"Facebook"}<br />
+<input type="checkbox" name="social_google" value="yes"{% if social_google %} checked{% end %} /> {"Google"}<br />
+</p>
+
 <p><input type="submit" value="{"Save Settings"}" /></p>
 
 </form>

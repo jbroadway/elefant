@@ -19,7 +19,10 @@ $form->data = array (
 	'layout' => $appconf['Blog']['layout'],
 	'post_layout' => $appconf['Blog']['post_layout'],
 	'comments' => $appconf['Blog']['comments'],
-	'disqus_shortname' => $appconf['Blog']['disqus_shortname']
+	'disqus_shortname' => $appconf['Blog']['disqus_shortname'],
+	'social_twitter' => $appconf['Social Buttons']['twitter'],
+	'social_facebook' => $appconf['Social Buttons']['facebook'],
+	'social_google' => $appconf['Social Buttons']['google'],
 );
 
 echo $form->handle (function ($form) {
@@ -31,6 +34,11 @@ echo $form->handle (function ($form) {
 				'post_layout' => $_POST['post_layout'],
 				'comments' => ($_POST['comments'] === 'none') ? false : $_POST['comments'],
 				'disqus_shortname' => $_POST['disqus_shortname']
+			),
+			'Social Buttons' => array (
+				'twitter' => ($_POST['social_twitter'] === 'yes') ? true : false,
+				'facebook' => ($_POST['social_facebook'] === 'yes') ? true : false,
+				'google' => ($_POST['social_google'] === 'yes') ? true : false
 			)
 		),
 		'conf/app.blog.' . ELEFANT_ENV . '.php'
