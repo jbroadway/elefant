@@ -14,9 +14,7 @@ $f = new Form ('post', 'blog/add');
 $f->verify_csrf = false;
 if ($f->submit ()) {
 	$autopost_pom = ($_POST['autopost_pom'] == 'yes') ? true : false;
-	$autopost_tw = ($_POST['autopost_tw'] == 'yes') ? true : false;
 	unset ($_POST['autopost_pom']);
-	unset ($_POST['autopost_tw']);
 
 	$p = new blog\Post ($_POST);
 	$p->put ();
@@ -46,15 +44,6 @@ if ($f->submit ()) {
 				$pom = new Pingomatic;
 				$pom->post ($appconf['Blog']['title'], 'http://' . $_SERVER['HTTP_HOST'] . '/blog');
 			}
-
-			if ($autopost_tw && ! empty ($appconf['Twitter']['username']) && ! empty ($appconf['Twitter']['password'])) {
-				$b = new Bitly;
-				$short = $b->shorten ('http://' . $_SERVER['HTTP_HOST'] . '/blog/post/' . $p->id . '/' . URLify::filter ($p->title));
-				$t = new twitter;
-				$t->username = $appconf['Twitter']['username'];
-				$t->password = $appconf['Twitter']['password'];
-				$t->update ($p->title . ' ' . $short);
-			}
 		}
 
 		// reset blog rss cache
@@ -72,7 +61,6 @@ if ($f->submit ()) {
 	$p->ts = gmdate ('Y-m-d H:i:s');
 	$p->yes_no = array ('yes' => i18n_get ('Yes'), 'no' => i18n_get ('No'));
 	$p->autopost_pom = 'yes';
-	$p->autopost_tw = 'yes';
 
 	$p->failed = $f->failed;
 	$p = $f->merge_values ($p);
