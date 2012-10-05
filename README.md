@@ -1,4 +1,4 @@
-# Elefant
+# Elefant CMS
 
 [Elefant](http://www.elefantcms.com/) is a refreshingly simple PHP content management
 system and web framework. Elefant is a fast, lean tool for building everything from
@@ -13,7 +13,7 @@ designer guides, and developer tutorials here:
 
 * http://www.elefantcms.com/documentation
 
-You can also find help on our community forum or IRC chat room here:
+You can also find help on our community forum here:
 
 * http://www.elefantcms.com/community
 
@@ -21,8 +21,8 @@ You can also find help on our community forum or IRC chat room here:
 
 **Compiled, ultra-fast templates**
 
-Elefant compiles your templates into secure PHP code, so rendering is as fast as
-possible.
+Elefant compiles your templates into secure, readable PHP code, so rendering is as fast as
+possible and also takes advantage of bytecode caching (e.g., APC).
 
 **Dead simple, concise template tags**
 
@@ -46,7 +46,7 @@ your editor of choice.
 
 **Integrates with 960 grid system and jQuery**
 
-Or any other CSS grid system, giving you complete control over your designs.
+Or any other CSS grid/layout system, giving you complete control over your designs. Theme builder also provides defaults for Twitter Bootstrap.
 
 ## Built for developers
 
@@ -57,7 +57,7 @@ code quickly.
 
 **Extensively documented**
 
-Including full [API reference](http://www.elefantcms.com/wiki/API-reference),
+Including full [API reference](http://api.elefantcms.com/),
 [cheat sheets](http://www.elefantcms.com/wiki/Cheat-sheet),
 [tutorials, and much more](https://github.com/jbroadway/elefant/wiki/Developers).
 
@@ -71,12 +71,12 @@ and automatic prevention of XSS, SQL injection, CSRF, and other types of attacks
 Elefant uses [less memory per request](http://www.elefantcms.com/wiki/Performance)
 than any of the major frameworks, so you can serve more visitors with the same resources.
 
-**Good debugging tools**
+**Solid debugging tools**
 
 Debug mode prints full traces with highlighted source code and variable state to
 help you fix bugs faster.
 
-**Minimalist MVC/Model2 architecture**
+**Minimalist HMVC/Model2 architecture**
 
 Elefant takes a [unique but proven approach](http://www.elefantcms.com/wiki/Elefant-architecture)
 that helps minimize boilerplate without sacrificing code organization as your project grows.

@@ -36,14 +36,6 @@ twitter = On
 facebook = On
 google = On
 
-[Twitter]
-
-; Set these to your twitter credentials to have blog posts automatically
-; tweeted to your twitter account.
-
-username = ""
-password = ""
-
 [Custom Handlers]
 
 ; You can override some of the built-in handlers with your own

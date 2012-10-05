@@ -431,6 +431,14 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (2, count ($authors));
 		$this->assertEquals ('Frankie Bazzar', $authors[1]->name);
 	}
+
+	function test_table () {
+		$this->assertEquals ('cover', Cover::table ());
+	}
+
+	function test_key () {
+		$this->assertEquals ('id', Cover::key ());
+	}
 }
 
 ?>

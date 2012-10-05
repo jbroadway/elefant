@@ -845,6 +845,24 @@ class Model {
 		}
 		return $res;
 	}
+
+	/**
+	 * Get the table name for this model.
+	 */
+	public static function table () {
+		$class = get_called_class ();
+		$o = new $class;
+		return $o->table;
+	}
+
+	/**
+	 * Get the primary key field for this model.
+	 */
+	public static function key () {
+		$class = get_called_class ();
+		$o = new $class;
+		return $o->key;
+	}
 }
 
 ?>

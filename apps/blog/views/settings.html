@@ -2,7 +2,7 @@
 
 <form method="post" id="{{_form}}">
 
-<p>{"Blog Title"}:<br />
+<p>{"Blog title"}:<br />
 <input type="text" name="title" size="40" value="{{ title|quotes }}" />
 <span class="notice" id="title-notice">{"You must enter a blog title."}</span></p>
 
@@ -37,7 +37,11 @@
 <input type="checkbox" name="social_google" value="yes"{% if social_google %} checked{% end %} /> {"Google"}<br />
 </p>
 
-<p><input type="submit" value="{"Save Settings"}" /></p>
+<p>
+	<input type="submit" value="{"Save Settings"}" />
+	&nbsp;
+	<a href="/blog/admin" onclick="return confirm ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
+</p>
 
 </form>
 
