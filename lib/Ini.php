@@ -68,10 +68,22 @@ class Ini {
 			if (is_array ($value)) {
 				$out .= "\n[$key]\n\n";
 				foreach ($value as $k => $v) {
-					$out .= str_pad ($k, 24) . '= ' . $write_value ($v) . "\n";
+					if (is_array ($v)) {
+						foreach ($v as $val) {
+							$out .= str_pad ($k . '[]', 24) . '= ' . $write_value ($val) . "\n";
+						}
+					} else {
+						$out .= str_pad ($k, 24) . '= ' . $write_value ($v) . "\n";
+					}
 				}
 			} else {
-				$out .= str_pad ($key, 24) . '= ' . $write_value ($value) . "\n";
+				if (is_array ($value)) {
+					foreach ($value as $val) {
+						$out .= str_pad ($key . '[]', 24) . '= ' . $write_value ($val) . "\n";
+					}
+				} else {
+					$out .= str_pad ($key, 24) . '= ' . $write_value ($value) . "\n";
+				}
 			}
 		}
 	
