@@ -38,6 +38,7 @@
  * For PSR-0 compatible frameworks, put them in `lib/vendors/`.
  */
 function elefant_autoloader ($class) {
+	$orig = $class;
 	if (strpos ($class, '\\') !== false) {
 		// Namespace is present
 		list ($app, $class) = explode ('\\', $class, 2);
@@ -78,7 +79,7 @@ function elefant_autoloader ($class) {
 			return true;
 		}
 	}
-	return false;
+	throw new LogicException ("Class '$orig' not found.");
 }
 
 spl_autoload_register ('elefant_autoloader');
