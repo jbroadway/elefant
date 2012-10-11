@@ -62,6 +62,7 @@ function elefant_autoloader ($class) {
 		$file = str_replace ('_', '/', $file);
 		if (file_exists ($file)) {
 			require_once ($file);
+			return true;
 		}
 	} elseif (file_exists ('lib/' . $class . '.php')) {
 		// No namespace, check in lib/ first
