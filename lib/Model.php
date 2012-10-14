@@ -794,7 +794,7 @@ class Model {
 			}
 
 			// Build the multi-row insert statement
-			$sql = 'insert into `' . $this->table . '` (';
+			$sql = 'insert into `' . self::table . '` (';
 			$data = array ();
 
 			// Figure out how many placeholders are needed per record
