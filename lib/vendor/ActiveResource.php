@@ -96,6 +96,11 @@ class ActiveResource {
 	public $request_body = '';
 
 	/**
+	 * The request headers that was sent to the server.
+	 */
+	public $request_headers = array ();
+
+	/**
 	 * The complete URL that the request was sent to.
 	 */
 	public $request_uri = '';
@@ -234,14 +239,15 @@ class ActiveResource {
 		if (! $id) {
 			$id = $this->_data['id'];
 		}
+		$options_string = '';
+		if (count ($options) > 0) {
+			$options_string = '?' . http_build_query ($options);
+		}
 		if ($id === 'all') {
 			$url = $this->site . $this->element_name_plural . '.xml';
-			if (count ($options) > 0) {
-				$url .= '?' . http_build_query ($options);
-			}
-			return $this->_send_and_receive ($url, 'GET');
+			return $this->_send_and_receive ($url . $options_string, 'GET');
 		}
-		return $this->_send_and_receive ($this->site . $this->element_name_plural . '/' . $id . '.xml', 'GET');
+		return $this->_send_and_receive ($this->site . $this->element_name_plural . '/' . $id . '.xml' . $options_string, 'GET');
 	}
 
 	/**
@@ -252,7 +258,7 @@ class ActiveResource {
 	 */
 	public function get ($method, $options = array ()) {
 		$req = $this->site . $this->element_name_plural;
-        if ($this->_data['id']) { 
+        if (isset ($this->_data['id']) && $this->_data['id']) { 
           $req .= '/' . $this->_data['id'];
         }
         $req .= '/' . $method . '.xml';
@@ -267,13 +273,13 @@ class ActiveResource {
 	 *
 	 *     POST /collection/id/method.xml
 	 */
-	public function post ($method, $options = array ()) {
+	function post ($method, $options = array (), $start_tag = false) {
 		$req = $this->site . $this->element_name_plural;
         if ($this->_data['id']) {
           $req .= '/' . $this->_data['id'];
         }
         $req .= '/' . $method . '.xml';
-		return $this->_send_and_receive ($req, 'POST', $options);
+		return $this->_send_and_receive ($req, 'POST', $options, $start_tag);
 	}
 
 	/**
@@ -281,12 +287,15 @@ class ActiveResource {
 	 *
 	 *     PUT /collection/id/method.xml
 	 */
-	public function put ($method, $options = array ()) {
+	public function put ($method, $options = array (), $options_as_xml = false, $start_tag = false) {
 		$req = $this->site . $this->element_name_plural;
         if ($this->_data['id']) { 
-          $req .= '/' . $this->_data['id'];
+        	$req .= '/' . $this->_data['id'];
         }
         $req .= '/' . $method . '.xml';
+		if ($options_as_xml) {
+			return $this->_send_and_receive ($req, 'PUT', $options, $start_tag);
+		}
 		if (count ($options) > 0) {
 			$req .= '?' . http_build_query ($options);
 		}
@@ -356,7 +365,7 @@ class ActiveResource {
 	 * @author Dom Hastings - modified to suit my needs
 	 * @see http://www.php.net/manual/en/function.ord.php#78032
 	 */
-	private function _unicode_ord(&$c, &$i = 0) {
+	private function _unicode_ord (&$c, &$i = 0) {
 		// get the character length
 		$l = strlen($c);
 		// copy the offset
@@ -414,6 +423,7 @@ class ActiveResource {
 			// just return it
 			return $s;
 		}
+		$s = (string) $s;
 		
 		// create the return string
 		$r = '';
@@ -425,7 +435,7 @@ class ActiveResource {
 			// get the value of the character
 			$o = $this->_unicode_ord($s, $i);
 			
-			// valid cahracters
+			// valid characters
 			$v = (
 				// \t \n <vertical tab> <form feed> \r
 				($o >= 9 && $o <= 13) || 
@@ -494,9 +504,9 @@ class ActiveResource {
 	/**
 	 * Build the request, call `_fetch()` and parse the results.
 	 */
-	private function _send_and_receive ($url, $method, $data = array ()) {
+	private function _send_and_receive ($url, $method, $data = array (), $start_tag = false) {
 		$params = '';
-		$el = $this->element_name; // Singular this time
+		$el = $start_tag ? $start_tag : $this->element_name; // Singular this time
 		if ($this->request_format === 'url') {
 			foreach ($data as $k => $v) {
 				if ($k !== 'id' && $k !== 'created-at' && $k !== 'updated-at') {
@@ -514,8 +524,7 @@ class ActiveResource {
 			$params .= '</' . $el . '>';
 		}
 
-		if ($this->extra_params !== false)
-		{
+		if ($this->extra_params !== false) {
 			$url = $url . $this->extra_params;
 		}
 
@@ -525,8 +534,7 @@ class ActiveResource {
 
 		$res = $this->_fetch ($url, $method, $params);
 
-		if ($res === false)
-		{
+		if ($res === false) {
 			return $this;
 		}
 
@@ -614,7 +622,7 @@ class ActiveResource {
 		}
 
 		if ($this->request_format === 'xml') {
-			curl_setopt ($ch, CURLOPT_HTTPHEADER, array ("Expect:", "Content-Type: text/xml", "Length: " . strlen ($params)));
+			$this->request_headers = array_merge ($this->request_headers, array ("Expect:", "Content-Type: text/xml", "Length: " . strlen ($params)));
 		}
 		switch ($method) {
 			case 'POST':
@@ -632,6 +640,11 @@ class ActiveResource {
 			default:
 				break;
 		}
+
+		if (count ($this->request_headers)) {
+			curl_setopt ($ch, CURLOPT_HTTPHEADER, $this->request_headers);
+		}
+
 		$res = curl_exec ($ch);
 
 		// Check HTTP status code for denied access
@@ -649,6 +662,7 @@ class ActiveResource {
 			curl_close ($ch);
 			return false;
 		}
+
 		curl_close ($ch);
 		return $res;
 	}

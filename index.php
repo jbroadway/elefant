@@ -78,10 +78,8 @@ date_default_timezone_set(conf ('General', 'timezone'));
 /**
  * Enable the debugger if conf[General][debug] is true.
  */
-if (conf ('General', 'debug')) {
-	require ('lib/Debugger.php');
-	Debugger::start ();
-}
+require ('lib/Debugger.php');
+Debugger::start (conf ('General', 'debug'));
 
 /**
  * Include the core libraries used by the front controller

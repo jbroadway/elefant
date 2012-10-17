@@ -794,7 +794,9 @@ class Model {
 			}
 
 			// Build the multi-row insert statement
-			$sql = 'insert into `' . $this->table . '` (';
+			$class = get_called_class ();
+			$o = new $class;
+			$sql = 'insert into `' . $o->table . '` (';
 			$data = array ();
 
 			// Figure out how many placeholders are needed per record
