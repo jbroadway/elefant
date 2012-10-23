@@ -25,9 +25,9 @@
  */
 
 /**
- * Provides a Memcache-compatible wrapper for the PHP APC extension.
+ * Provides a Memcache-compatible wrapper for the PHP XCache extension.
  *
- * This allows you to use APC as a drop-in replacement for Memcache as a cache
+ * This allows you to use XCache as a drop-in replacement for Memcache as a cache
  * store in Elefant.
  *
  * To enable, edit the `conf/config.php` file and find the `[Cache]` section.
