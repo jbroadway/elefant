@@ -94,8 +94,9 @@ admin/delete[] = navigation/hook/delete
 ; is unavailable, it will emulate Memcache via the lib/Cache
 ; object, storing the cache in the `conf/datastore` folder.
 ; Alternately add `backend = redis` to use Redis as the cache
-; backend, or `backend = apc` to use APC as the cache backend.
-* Each of these cache options uses an identical API so you can
+; backend, `backend = apc` to use APC as the cache backend, or
+; `backend = xcache` to use XCache as the cache backend.
+; Each of these cache options uses an identical API so you can
 ; implement caching without worrying about the backend in
 ; development versus production.
 ;

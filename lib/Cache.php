@@ -53,7 +53,7 @@ class Cache {
 	/**
 	 * Initialize the correct cache based on the global configuration
 	 * and return the cache object (lib/MemcacheExt, lib/MemcacheAPC,
-	 * lib/MemcacheRedis, or lib/Cache).
+	 * lib/MemcacheXCache, lib/MemcacheRedis, or lib/Cache).
 	 */
 	public static function init ($conf) {
 		$server = isset ($conf['server']) ? $conf['server'] : false;
@@ -62,6 +62,8 @@ class Cache {
 
 		if ($backend === 'apc' && extension_loaded ('apc')) {
 			return new MemcacheAPC ();
+		} elseif ($backend === 'xcache' && extension_loaded ('xcache')) {
+			return new MemcacheXCache ();
 		} elseif ($server) {
 			// Determine the backend
 			if ($backend === 'redis' && extension_loaded ('redis')) {

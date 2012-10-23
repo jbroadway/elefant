@@ -25,15 +25,15 @@
  */
 
 /**
- * Provides a Memcache-compatible wrapper for the PHP APC extension.
+ * Provides a Memcache-compatible wrapper for the PHP XCache extension.
  *
- * This allows you to use APC as a drop-in replacement for Memcache as a cache
+ * This allows you to use XCache as a drop-in replacement for Memcache as a cache
  * store in Elefant.
  *
  * To enable, edit the `conf/config.php` file and find the `[Cache]` section.
- * Change the `backend` value to `apc`.
+ * Change the `backend` value to `xcache`.
  */
-class MemcacheAPC {
+class MemcacheXCache {
 	/**
 	 * Unique per-site key prefix.
 	 */
@@ -65,7 +65,7 @@ class MemcacheAPC {
 	 * Emulates `Memcache::get`.
 	 */
 	public function get ($key) {
-		$value = apc_fetch (self::$key_prefix.$key);
+		$value = xcache_get (self::$key_prefix.$key);
 		if (preg_match ('/^(a|O):[0-9]+:/', $value)) {
 			return unserialize ($value);
 		}
@@ -79,10 +79,10 @@ class MemcacheAPC {
 		if (is_array ($value) || is_object ($value)) {
 			$value = serialize ($value);
 		}
-		if (apc_exists (self::$key_prefix.$key)) {
+		if (xcache_isset (self::$key_prefix.$key)) {
 			return false;
 		}
-		apc_store (self::$key_prefix.$key, $value, $expire);
+		xcache_set (self::$key_prefix.$key, $value, $expire);
 	}
 
 	/**
@@ -93,9 +93,9 @@ class MemcacheAPC {
 			$value = serialize ($value);
 		}
 		if ($expire) {
-			return apc_store (self::$key_prefix.$key, $value, $expire);
+			return xcache_set (self::$key_prefix.$key, $value, $expire);
 		}
-		return apc_store (self::$key_prefix.$key, $value);
+		return xcache_set (self::$key_prefix.$key, $value);
 	}
 
 	/**
@@ -105,38 +105,38 @@ class MemcacheAPC {
 		if (is_array ($value) || is_object ($value)) {
 			$value = serialize ($value);
 		}
-		if (! apc_exists (self::$key_prefix.$key)) {
+		if (! xcache_isset (self::$key_prefix.$key)) {
 			return false;
 		}
-		return apc_store (self::$key_prefix.$key, $value, $expire);
+		return xcache_set (self::$key_prefix.$key, $value, $expire);
 	}
 
 	/**
 	 * Emulates `Memcache::delete`.
 	 */
 	public function delete ($key) {
-		return apc_delete (self::$key_prefix.$key);
+		return xcache_unset (self::$key_prefix.$key);
 	}
 
 	/**
 	 * Emulates `Memcache::increment`.
 	 */
 	public function increment ($key, $value = 1) {
-		return apc_inc (self::$key_prefix.$key, $value);
+		return xcache_inc (self::$key_prefix.$key, $value);
 	}
 
 	/**
 	 * Emulates `Memcache::decrement`.
 	 */
 	public function decrement ($key, $value = 1) {
-		return apc_dec (self::$key_prefix.$key, $value);
+		return xcache_dec (self::$key_prefix.$key, $value);
 	}
 
 	/**
 	 * Emulates `Memcache::flush`.
 	 */
 	public function flush () {
-		return apc_clear_cache ('user');
+		return xcache_unset_by_prefix (self::$key_prefix);
 	}
 }
 
