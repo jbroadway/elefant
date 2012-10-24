@@ -43,6 +43,7 @@ function navigation_clear_cache () {
 	global $memcache;
 	$memcache->delete ('_navigation_top');
 	$memcache->delete ('navigation_map');
+	$memcache->delete ('navigation_dropmenu');
 }
 
 /**
