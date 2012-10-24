@@ -180,6 +180,7 @@
 								evt.preventDefault ();
 								var i = 0,
 									fields = obj.fields,
+									label = obj.label,
 									form = $(this)[0].form,
 									out = form.elements.handler.value,
 									key_list = ['name', 'label', 'type', 'initial', 'message', 'require', 'callback', 'values', 'filter'],
@@ -226,11 +227,11 @@
 								if (filters) {
 									// apply filters server-side then submit the form with the returned values
 									$.post ('/admin/embed/filters', {handler: out, data: unfiltered}, function (res) {
-										submit_form (embedUI, self.embed_element, callback, out, res.data);
+										submit_form (embedUI, self.embed_element, callback, out, label, res.data);
 									});
 								} else {
 									// no filters, submit the form now
-									submit_form (embedUI, self.embed_element, callback, out, unfiltered);
+									submit_form (embedUI, self.embed_element, callback, out, label, unfiltered);
 								}
 
 								return false;
@@ -246,7 +247,7 @@
 				// with that element selected and its form pre-filled with the existing
 				// embedded data.
 				if (self.embed_element !== null) {
-					var emb = parse_embed_string ($(self.embed_element).text ());
+					var emb = parse_embed_string ($(self.embed_element).data ('embed'));
 					for (var i = 0; i < _embed_list.length; i++) {
 						if (_embed_list[i].handler === emb.handler) {
 							$('#wysiwyg-embed-object-' + i).click ();
@@ -310,13 +311,13 @@
 	 * - The initial string containing the handler name
 	 * - The array of field names and values
 	 */
-	function submit_form (ui, embed_element, callback, out, data) {
+	function submit_form (ui, embed_element, callback, out, label, data) {
 		var i, sep = '?';
 		for (i in data) {
 			out += sep + i + '=' + escape (data[i]);
 			sep = '&';
 		}
-		callback (embed_element, out);
+		callback (embed_element, out, label);
 		ui.close ();
 		return false;
 	}
