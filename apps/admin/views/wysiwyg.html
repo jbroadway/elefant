@@ -56,12 +56,12 @@ $(function () {
 				tooltip: '{"Dynamic Objects"}',
 				tags: ['span'],
 				exec: function () {
-					$.wysiwyg.embed.init (this, function (existing, embed_code) {
+					$.wysiwyg.embed.init (this, function (existing, embed_code, label) {
 						if (! existing) {
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! ' + embed_code + ' !}</span></p>');
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="' + embed_code + '">' + label + '</span></p>');
 							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
 						} else {
-							$(existing).replaceWith ('<span class="embedded">{' + '! ' + embed_code + ' !}</span>');
+							$(existing).replaceWith ('<span class="embedded" data-embed="' + embed_code + '">' + label + '<span>');
 						}
 					});
 				}
