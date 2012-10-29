@@ -9,10 +9,11 @@ $(function () {
 			'<div id="modal-content"></div>' +
 		'</div>');
 
-	$.open_dialog = function (title, html) {
+	$.open_dialog = function (title, html, opts) {
+		opts = opts || {};
 		$('#modal-title').html (title);
 		$('#modal-content').html (html);
-		$('#modal-dialog').modal ();
+		$('#modal-dialog').modal (opts);
 	};
 
 	$.close_dialog = function () {

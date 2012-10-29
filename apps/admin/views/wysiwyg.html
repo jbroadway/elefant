@@ -56,14 +56,7 @@ $(function () {
 				tooltip: '{"Dynamic Objects"}',
 				tags: ['span'],
 				exec: function () {
-					$.wysiwyg.embed.init (this, function (existing, embed_code, label) {
-						if (! existing) {
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="' + embed_code + '">' + label + '</span></p>');
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
-						} else {
-							$(existing).replaceWith ('<span class="embedded" data-embed="' + embed_code + '">' + label + '<span>');
-						}
-					});
+					$.wysiwyg.embed.init (this, wysiwyg_embed_update);
 				}
 			}
 		},
@@ -74,9 +67,23 @@ $(function () {
 				try {
 					$('form').autosave ();
 				} catch (e) {}
+			},
+			dblclick: function (e) {
+				if ($(e.target).hasClass ('embedded')) {
+					$.wysiwyg.embed.init ($('#webpage-body').data ('wysiwyg'), wysiwyg_embed_update);
+				}
 			}
 		}
 	});
 	$.wysiwyg.fileManager.setAjaxHandler ('http://{{ $_SERVER.HTTP_HOST }}/filemanager/embed');
+
+	function wysiwyg_embed_update (existing, embed_code, label) {
+		if (! existing) {
+			$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="' + embed_code + '" title="{"Double-click to edit."}">' + label + '</span></p>');
+			$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
+		} else {
+			$(existing).replaceWith ('<span class="embedded" data-embed="' + embed_code + '">' + label + '<span>');
+		}
+	}
 });
 </script>
