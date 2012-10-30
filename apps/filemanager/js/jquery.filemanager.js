@@ -119,9 +119,13 @@
 				appendTo: '',
 				onSave: function (img, url) {
 					// send update to server
-					console.log (img);
-					console.log (url);
-					console.log (filemanager.aviary_current);
+					$.get ('/filemanager/edit/img?file=' + encodeURIComponent (filemanager.aviary_current) + '&url=' + encodeURIComponent (url), function (res) {
+						if (! res.success) {
+							$.add_notification (res.error);
+						} else {
+							$.add_notification (res.data);
+						}
+					});
 				}
 			});
 		}

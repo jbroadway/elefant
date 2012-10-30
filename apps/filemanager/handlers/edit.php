@@ -26,7 +26,10 @@ $page->title = __ ('Edit file') . ': ' . basename ($_GET['file']);
 $page->layout = 'admin';
 
 echo $form->handle (function ($form) {
-	info ($_POST);
+	if (! file_put_contents ('files/' . $_GET['file'], $_POST['body'])) {
+		$form->controller->add_notification (__ ('Unable to write to the file. Please check your folder permissions and try again.'));
+		return false;
+	}
 
 	$form->controller->add_notification (__ ('File saved.'));
 	$form->controller->redirect ('/filemanager/index');
