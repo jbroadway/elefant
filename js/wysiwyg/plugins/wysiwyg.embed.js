@@ -15,11 +15,11 @@
 		embedList: [],
 		selected: null,
 		ready: true,
-		init: function (Wysiwyg, callback) {
+		init: function (Wysiwyg, callback, target) {
 			$.get (this.ajaxHandler, function (res) {
 				this.embedList = res;
 				var embedder = new embedObj(this.embedList);
-				embedder.load (Wysiwyg, callback);
+				embedder.load (Wysiwyg, callback, target);
 			});
 		}
 	};
@@ -31,13 +31,13 @@
 		this.embed_list = _embed_list;
 		this.dialog = null;
 		
-		this.load = function (Wysiwyg, callback) {
+		this.load = function (Wysiwyg, callback, target) {
 			var self = this;
 			self.loaded = true;
 			
 			var uiHtml = '<div id="wysiwyg-embed-content"><div class="wysiwyg-embed-objects"><ul class="wysiwyg-embed-object-list"></ul></div><div class="wysiwyg-embed-object-form"></div><br clear="both" /></div>';
 
-			self.embed_element = Wysiwyg.dom.getElement ('span');
+			self.embed_element = (target !== null) ? target : Wysiwyg.dom.getElement ('span');
 			if (self.embed_element && ! $(self.embed_element).hasClass ('embedded')) {
 				self.embed_element = null;
 			}
@@ -70,7 +70,7 @@
 								uiHtml = '';
 
 							if (obj.fields.length === 0) {
-								callback (self.embed_element, obj.handler);
+								callback (self.embed_element, obj.handler, obj.label);
 								embedUI.close ();
 								return false;
 							}
@@ -97,15 +97,12 @@
 									obj.fields[i].initial = '';
 								}
 
-								//Flip flops for easy column tracking
-								if (obj.columns==2 && columner=='left') {
+								// flip flops for easy column tracking
+								if (obj.columns == 2 && columner == 'left') {
 									columner = 'right';
-								}
-								else
-								{
+								} else {
 									columner = 'left';
 								}
-								
 
 								if (obj.fields[i].type == 'select') {
 									uiHtml += '<p style="width:' + columnwidth + 'px;float:' + columner + '">' + obj.fields[i].label + ':<br /><select name="' + obj.fields[i].name + '">';
@@ -250,19 +247,30 @@
 					var emb = parse_embed_string ($(self.embed_element).data ('embed'));
 					for (var i = 0; i < _embed_list.length; i++) {
 						if (_embed_list[i].handler === emb.handler) {
-							$('#wysiwyg-embed-object-' + i).click ();
-							// Fill with original values
-							var f = $('#wysiwyg-embed-form')[0];
-							for (var k in emb.data) {
-								if (f.elements[k]) {
-									if (_embed_list[i].fields[k].hasOwnProperty ('filter')) {
-										var data = {};
-										data[k] = emb.data[k];
-										$.post ('/admin/embed/filters', {handler: emb.handler, data: data, reverse: 'yes'}, function (res) {
-											f.elements[k].value = res.data[k];
-										});
-									} else {
-										f.elements[k].value = emb.data[k];
+							// count number of properties
+							var c = 0;
+							for (k in emb.data) {
+								if (emb.data.hasOwnProperty (k)) {
+									c++;
+								}
+							}
+
+							if (c > 0) {
+								// has properties, simulate selection
+								$('#wysiwyg-embed-object-' + i).click ();
+								// Fill with original values
+								var f = $('#wysiwyg-embed-form')[0];
+								for (var k in emb.data) {
+									if (f.elements[k]) {
+										if (_embed_list[i].fields[k].hasOwnProperty ('filter')) {
+											var data = {};
+											data[k] = emb.data[k];
+											$.post ('/admin/embed/filters', {handler: emb.handler, data: data, reverse: 'yes'}, function (res) {
+												f.elements[k].value = res.data[k];
+											});
+										} else {
+											f.elements[k].value = emb.data[k];
+										}
 									}
 								}
 							}
