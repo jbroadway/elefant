@@ -285,6 +285,7 @@ input[type=submit]:hover {
 	text-decoration: none;
 	line-height:16px;
 	vertical-align:top;
+	height:16px;
 }
 
 .wysiwyg-embed-object i{
@@ -293,6 +294,8 @@ input[type=submit]:hover {
 	height:16px;
 	display:inline-block;
 	color:#8A5AB5;
+	font-size:16px;
+	line-height:16px;
 }
 
 .wysiwyg-embed-object-list li a.current, .wysiwyg-embed-object-list li a:hover{

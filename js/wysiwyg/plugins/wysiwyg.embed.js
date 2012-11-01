@@ -67,7 +67,7 @@
 							
 							if ( _embed_list[i].icon ) {
 								if ( _embed_list[i].icon.indexOf("/") === -1) {
-									icon = "class='" + _embed_list[i].icon + "'";
+									icon = "class='icon-" + _embed_list[i].icon + "'";
 								} else {
 									icon = "style='background: url(" + _embed_list[i].icon + ") no-repeat'";
 								}
