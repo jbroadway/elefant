@@ -12,19 +12,22 @@
 		name: "embed",
 		version: "0.98",
 		ajaxHandler: "/admin/embed",
-		embedList: [],
 		embedder: null,
 		selected: null,
 		ready: true,
+		inited: false,
 		init: function (Wysiwyg, callback, target) {
 			if (embed.embedder) {
 				embed.embedder.load (Wysiwyg, callback, target);
 			} else {
-				$.get (this.ajaxHandler, function (res) {					
-					this.embedList = res;
-					embed.embedder = new embedObj(this.embedList);
-					embed.embedder.load (Wysiwyg, callback, target);
-				});
+				if (!embed.inited) {
+					$.get (this.ajaxHandler, function (res) {					
+						embed.embedder = new embedObj(res);
+						embed.embedder.load (Wysiwyg, callback, target);
+						
+					});
+					embed.inited = true;
+				}
 			}
 		}
 	};
