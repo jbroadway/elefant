@@ -12,6 +12,7 @@ path[callback] = "filemanager_list_folders"
 [filemanager/gallery]
 
 label = "Images: Gallery"
+icon = "icon-picture"
 
 path[label] = Folder
 path[type] = select
@@ -50,6 +51,7 @@ file[type] = file
 [filemanager/swf]
 
 label = "Embedded Flash (SWF)"
+icon = "/apps/filemanager/css/icon_swf.png"
 
 file[label] = SWF Flash File
 file[type] = file

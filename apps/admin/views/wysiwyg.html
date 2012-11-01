@@ -54,7 +54,7 @@ $(function () {
 			'dynamic': {
 				visible: true,
 				tooltip: '{"Dynamic Objects"}',
-				tags: ['span'],
+				tags: ['input'],
 				exec: function () {
 					$.wysiwyg.embed.init (this, wysiwyg_embed_update);
 				}
@@ -67,16 +67,26 @@ $(function () {
 				var range;
 				
 				if ($(e.target).hasClass ('embedded')) {
-					if (document.selection) {
-						range = document.body.createTextRange ();
-						range.moveToElementText (e.target);
+					
+					
+					var body = document.body, range, sel, el = e.target;
+					if (document.createRange && window.getSelection) {
+						range = document.createRange();
+						sel = window.getSelection();
+						sel.removeAllRanges();
+						try {
+							range.selectNodeContents (el);
+							sel.addRange (range);
+						} catch (e) {
+							range.selectNode (el);
+							sel.addRange (range);
+						}
+					} else if (body.createTextRange) {
+						range = body.createTextRange ();
+						range.moveToElementText (el);
 						range.select ();
-					} else if (window.getSelection) {
-						range = document.createRange ();
-						range.selectNode (e.target);
-						window.getSelection ().addRange (range);
 					}
-
+					
 					$.wysiwyg.embed.init ($('#webpage-body').data ('wysiwyg'), wysiwyg_embed_update, e.target);
 				}
 
@@ -90,10 +100,10 @@ $(function () {
 
 	function wysiwyg_embed_update (existing, embed_code, label) {
 		if (! existing) {
-			$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="{"Click to edit."}"></span></p>');
+			$('#webpage-body').wysiwyg ('insertHtml', '<p><input class="embedded" type="button" data-embed="' + embed_code + '" value="' + label + '" title="{"Click to edit."}" /></p>');
 			$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
 		} else {
-			$(existing).replaceWith ('<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="{"Click to edit."}"></span>');
+			$(existing).replaceWith ('<input type="button" class="embedded" data-embed="' + embed_code + '" value="' + label + '" title="{"Click to edit."}" />');
 		}
 	}
 });
