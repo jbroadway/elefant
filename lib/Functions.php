@@ -267,4 +267,25 @@ function rmdir_recursive ($path) {
 		: array_map ('rmdir_recursive', glob ($path . '/{,.}*', GLOB_BRACE)) == rmdir ($path);
 }
 
+/**
+ * Fetch a remote URL using either cURL or fopen, depending
+ * on which is available.
+ */
+function fetch_url ($url) {
+	if (extension_loaded ('curl')) {
+		$ch = curl_init ();
+		curl_setopt ($ch, CURLOPT_HEADER, 0);
+		curl_setopt ($ch, CURLOPT_VERBOSE, 0);
+		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_setopt ($ch, CURLOPT_FAILONERROR, 0);
+		curl_setopt ($ch, CURLOPT_URL, $url);
+		$res = curl_exec ($ch);
+		curl_close ($ch);
+		return $res;
+	}
+	return file_get_contents ($url);
+}
+
 ?>

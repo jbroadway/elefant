@@ -17,3 +17,11 @@ body {
 	padding: 5px 7px 5px 28px;
 	white-space: nowrap;
 }
+
+.embedded:hover {
+	cursor: pointer;
+}
+
+.embedded:after {
+	content: attr(data-label);
+}

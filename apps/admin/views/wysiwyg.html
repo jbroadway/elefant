@@ -37,13 +37,13 @@ $(function () {
 						if (file.match (/\.(jpg|png|gif)$/i)) {
 							$('#webpage-body').wysiwyg ('insertImage', file);
 						} else if (file.match (/\.swf$/i)) {
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! filemanager/swf?file=' + file + ' !}</span></p>');
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="filemanager/swf?file=' + file + '" data-label="{"Embedded Flash (SWF)"}" title="{"Click to edit."}"></span></p>');
 							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
 						} else if (file.match (/\.mp4$/i)) {
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! filemanager/video?file=' + file + ' !}</span></p>');
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="filemanager/video?file=' + file + '" data-label="{"Embedded Video (MP4)"}" title="{"Click to edit."}"></span></p>');
 							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
 						} else if (file.match (/\.mp3$/i)) {
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! filemanager/audio?file=' + file + ' !}</span></p>');
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="filemanager/audio?file=' + file + '" data-label="{"Embedded Audio (MP3)"}" title="{"Click to edit."}"></span></p>');
 							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
 						} else {
 							$('#webpage-body').wysiwyg ('createLink', file);
@@ -63,15 +63,26 @@ $(function () {
 		//dialog:'jqueryui',
 		css: '/css/wysiwyg/default.css',
 		'events': {
-			click: function () {
+			click: function (e) {
+				var range;
+				
+				if ($(e.target).hasClass ('embedded')) {
+					if (document.selection) {
+						range = document.body.createTextRange ();
+						range.moveToElementText (e.target);
+						range.select ();
+					} else if (window.getSelection) {
+						range = document.createRange ();
+						range.selectNode (e.target);
+						window.getSelection ().addRange (range);
+					}
+
+					$.wysiwyg.embed.init ($('#webpage-body').data ('wysiwyg'), wysiwyg_embed_update, e.target);
+				}
+
 				try {
 					$('form').autosave ();
-				} catch (e) {}
-			},
-			dblclick: function (e) {
-				if ($(e.target).hasClass ('embedded')) {
-					$.wysiwyg.embed.init ($('#webpage-body').data ('wysiwyg'), wysiwyg_embed_update);
-				}
+				} catch (ex) {}
 			}
 		}
 	});
@@ -79,10 +90,10 @@ $(function () {
 
 	function wysiwyg_embed_update (existing, embed_code, label) {
 		if (! existing) {
-			$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="' + embed_code + '" title="{"Double-click to edit."}">' + label + '</span></p>');
+			$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="{"Click to edit."}"></span></p>');
 			$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
 		} else {
-			$(existing).replaceWith ('<span class="embedded" data-embed="' + embed_code + '">' + label + '<span>');
+			$(existing).replaceWith ('<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="{"Click to edit."}"></span>');
 		}
 	}
 });

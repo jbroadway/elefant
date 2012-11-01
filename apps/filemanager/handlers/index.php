@@ -42,6 +42,13 @@ if (isset ($_GET['path'])) {
 	$page->window_title = i18n_get ('Files');
 }
 
+if ($appconf['General']['aviary_key']) {
+	$page->add_script ('http://feather.aviary.com/js/feather.js');
+	$o->aviary_key = $appconf['General']['aviary_key'];
+} else {
+	$o->aviary_key = false;
+}
+
 echo $tpl->render ('filemanager/index', $o);
 
 ?>
