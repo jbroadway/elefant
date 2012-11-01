@@ -45,7 +45,7 @@
 			
 			var uiHtml = '<div id="wysiwyg-embed-content"><div class="wysiwyg-embed-objects clearfix"><ul class="wysiwyg-embed-object-list clearfix"></ul></div><div class="wysiwyg-embed-object-form"></div><br clear="both" /></div>';
 
-			self.embed_element = (target !== null) ? target : Wysiwyg.dom.getElement ('input');
+			self.embed_element = (target !== null) ? target : Wysiwyg.dom.getElement ('span');
 			if (self.embed_element && ! $(self.embed_element).hasClass ('embedded')) {
 				self.embed_element = null;
 			}

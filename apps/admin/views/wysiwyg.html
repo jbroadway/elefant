@@ -54,7 +54,7 @@ $(function () {
 			'dynamic': {
 				visible: true,
 				tooltip: '{"Dynamic Objects"}',
-				tags: ['input'],
+				tags: ['span'],
 				exec: function () {
 					$.wysiwyg.embed.init (this, wysiwyg_embed_update);
 				}
@@ -67,7 +67,6 @@ $(function () {
 				var range;
 				
 				if ($(e.target).hasClass ('embedded')) {
-					
 					
 					var body = document.body, range, sel, el = e.target;
 					if (document.createRange && window.getSelection) {
@@ -100,10 +99,10 @@ $(function () {
 
 	function wysiwyg_embed_update (existing, embed_code, label) {
 		if (! existing) {
-			$('#webpage-body').wysiwyg ('insertHtml', '<p><input class="embedded" type="button" data-embed="' + embed_code + '" value="' + label + '" title="{"Click to edit."}" /></p>');
+			$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="{"Click to edit."}"></span></p>');
 			$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
 		} else {
-			$(existing).replaceWith ('<input type="button" class="embedded" data-embed="' + embed_code + '" value="' + label + '" title="{"Click to edit."}" />');
+			$(existing).replaceWith ('<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="{"Click to edit."}"></span>');			
 		}
 	}
 });
