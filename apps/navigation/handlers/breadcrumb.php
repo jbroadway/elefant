@@ -16,6 +16,14 @@
  *         padding: 0;
  *         display: inline;
  *     }
+ *
+ *     .breadcrumb li:before {
+ *         content: " / ";
+ *     }
+ *
+ *     .breadcrumb li:first-child:before {
+ *         content: "";
+ *     }
  */
 
 $n = new Navigation;
