@@ -21,4 +21,8 @@ section[callback] = "navigation_get_sections"
 
 label = "Navigation: Contextual"
 
+[navigation/breadcrumb]
+
+label = "Navigation: Breadcrumb"
+
 ; */ ?>
