@@ -41,6 +41,11 @@ compress_output = On
 
 debug = Off
 
+; For development, turn display_errors on and Elefant will
+; output fatal error messages in addition to the debugger.
+
+display_errors = Off
+
 [I18n]
 
 ; This is the method for determining which language to show the

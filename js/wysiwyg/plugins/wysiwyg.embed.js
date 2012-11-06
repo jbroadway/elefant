@@ -12,15 +12,23 @@
 		name: "embed",
 		version: "0.98",
 		ajaxHandler: "/admin/embed",
-		embedList: [],
+		embedder: null,
 		selected: null,
 		ready: true,
+		inited: false,
 		init: function (Wysiwyg, callback, target) {
-			$.get (this.ajaxHandler, function (res) {
-				this.embedList = res;
-				var embedder = new embedObj(this.embedList);
-				embedder.load (Wysiwyg, callback, target);
-			});
+			if (embed.embedder) {
+				embed.embedder.load (Wysiwyg, callback, target);
+			} else {
+				if (!embed.inited) {
+					$.get (this.ajaxHandler, function (res) {					
+						embed.embedder = new embedObj(res);
+						embed.embedder.load (Wysiwyg, callback, target);
+						
+					});
+					embed.inited = true;
+				}
+			}
 		}
 	};
 	
@@ -35,14 +43,14 @@
 			var self = this;
 			self.loaded = true;
 			
-			var uiHtml = '<div id="wysiwyg-embed-content"><div class="wysiwyg-embed-objects"><ul class="wysiwyg-embed-object-list"></ul></div><div class="wysiwyg-embed-object-form"></div><br clear="both" /></div>';
+			var uiHtml = '<div id="wysiwyg-embed-content"><div class="wysiwyg-embed-objects clearfix"><ul class="wysiwyg-embed-object-list clearfix"></ul></div><div class="wysiwyg-embed-object-form"></div><br clear="both" /></div>';
 
 			self.embed_element = (target !== null) ? target : Wysiwyg.dom.getElement ('span');
 			if (self.embed_element && ! $(self.embed_element).hasClass ('embedded')) {
 				self.embed_element = null;
 			}
 			
-			if ($.wysiwyg.dialog) {
+			if (!self.dialog && $.wysiwyg.dialog) {
 				var embedUI = new $.wysiwyg.dialog(_embed_list, {
 					title: 'Dynamic Objects',
 					content: uiHtml,
@@ -55,12 +63,24 @@
 						
 						var uiHtml = '';
 						for (var i = 0; i < _embed_list.length; i++) {
-							uiHtml += '<li><a href="javascript:void(0)" class="wysiwyg-embed-object" id="wysiwyg-embed-object-' + i + '" data-handler="' + i + '">' + _embed_list[i].label + '</a></li>';
+							var icon = "";
+							
+							if ( _embed_list[i].icon ) {
+								if ( _embed_list[i].icon.indexOf("/") === -1) {
+									icon = "class='icon-" + _embed_list[i].icon + "'";
+								} else {
+									icon = "style='background: url(" + _embed_list[i].icon + ") no-repeat'";
+								}
+							} else {
+								icon = "style='background: url(/apps/admin/css/admin/dynamic-icon.png) no-repeat'";
+								
+							}
+							
+							uiHtml += '<li><a href="javascript:void(0)" class="wysiwyg-embed-object" id="wysiwyg-embed-object-' + i + '" data-handler="' + i + '"><i ' + icon + ' ></i>' + _embed_list[i].label + '</a></li>';
 						}
 						$('.wysiwyg-embed-object-list').html (uiHtml);
 						// enable pager for list
-						$('.wysiwyg-embed-object-list').quickPager ();
-						$('.wysiwyg-embed-object-form').html ('Select an object on the left.');
+						$('.wysiwyg-embed-object-list').quickPager ();						
 						$('.wysiwyg-embed-object').click (function () {
 							var i = 0,
 								dia = self.dialog,
@@ -74,38 +94,25 @@
 								embedUI.close ();
 								return false;
 							}
-
-							//Added to allow easy two columning in forms
-							if(obj.columns==2){
-								var columnwidth = 150;
-								var inputsizer = 15;
-								var columner = 'left';
-							}
-							else
-							{
-								var columnwidth = 300;
-								var inputsizer = 30;
-								var columner = 'left';
-							}
+							
+							$('.wysiwyg-embed-object').removeClass ("current");
+							$(this).addClass("current");
+							$(".wysiwyg-embed-objects").hide ();
+							$(".wysiwyg-embed-object-form").show ();
 							
 							// generate a form screen
+							
+							
 							uiHtml = '<form id="wysiwyg-embed-form"><input type="hidden" name="handler" value="' + obj.handler + '" />';
-							uiHtml += '<p><strong>' + obj.label + '</strong></p>';
-
+							uiHtml += '<h2>' + obj.label + '</h2>';	
+							uiHtml += '<div class="clearfix">';												
 							for (var i in obj.fields) {
 								if (! obj.fields[i].initial) {
 									obj.fields[i].initial = '';
 								}
-
-								// flip flops for easy column tracking
-								if (obj.columns == 2 && columner == 'left') {
-									columner = 'right';
-								} else {
-									columner = 'left';
-								}
-
+								
 								if (obj.fields[i].type == 'select') {
-									uiHtml += '<p style="width:' + columnwidth + 'px;float:' + columner + '">' + obj.fields[i].label + ':<br /><select name="' + obj.fields[i].name + '">';
+									uiHtml += '<p><label for="' + obj.fields[i].name + '">' + obj.fields[i].label + '</label><select name="' + obj.fields[i].name + '">';
 									for (var o in obj.fields[i].values) {
 										if (obj.fields[i].values[o].hasOwnProperty ('key') && obj.fields[i].values[o].hasOwnProperty ('value')) {
 											if (obj.fields[i].initial == obj.fields[i].values[o].key) {
@@ -127,25 +134,28 @@
 										uiHtml += '</select></p>';
 									}
 								} else if (obj.fields[i].type == 'textarea') {
-									uiHtml += '<p style="width:' + columnwidth + 'px;float:' + columner + '">' + obj.fields[i].label + ':<br /><textarea name="' + obj.fields[i].name + '" cols="' + inputsizer +'" rows="6">' + obj.fields[i].initial + '</textarea>';
+									uiHtml += '<p><label for="' + obj.fields[i].name + '">' + obj.fields[i].label + '</label><textarea name="' + obj.fields[i].name + '" rows="6">' + obj.fields[i].initial + '</textarea>';
 									if (obj.fields[i].message) {
 										uiHtml += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span></p>';
 									} else {
 										uiHtml += '</p>';
 									}
 								} else if (obj.fields[i].type == 'file') {
-									uiHtml += '<p style="width:' + columnwidth + 'px;float:' + columner + '">' + obj.fields[i].label + ':<br /><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" size="' + inputsizer +'" />';
+									uiHtml += '<p><label for="' + obj.fields[i].name + '" >' + obj.fields[i].label + '</label>';
+									uiHtml += '<input type="text" class="wysiwyg-file-input" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
 									if ($.wysiwyg.fileManager && $.wysiwyg.fileManager.ready) {
 										// Add the File Manager icon:
-										uiHtml += ' <div class="wysiwyg-fileManager" id="' + obj.fields[i].name + '-fileManager" title="Browse..." style="float: left; margin-top: -40px; margin-left: 200px" />';
+										uiHtml += '<span class="wysiwyg-fileManager" id="' + obj.fields[i].name + '-fileManager" title="Browse..." ></span>';
+										uiHtml += "<br clear:both />"
 									}
 									if (obj.fields[i].message) {
-										uiHtml += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span></p>';
-									} else {
-										uiHtml += '</p>';
-									}
+										uiHtml += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span>';
+									} 
+										
+									uiHtml += '</p>';
+									
 								} else {
-									uiHtml += '<p style="width:' + columnwidth + 'px;float:' + columner + '">' + obj.fields[i].label + ':<br /><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" size="' + inputsizer +'" />';
+									uiHtml += '<p><label for="' + obj.fields[i].name + '">' + obj.fields[i].label + '</label><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
 									if (obj.fields[i].message) {
 										uiHtml += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span></p>';
 										
@@ -155,18 +165,33 @@
 								}
 							}
 
-							uiHtml += '<p><input type="submit" class="wysiwyg-embed-object-form-submit" value="Embed" /></p>';
+							uiHtml += '</div>';							
+							uiHtml += '<div><input type="submit" class="wysiwyg-embed-object-form-submit" value="Embed" />';
+							uiHtml += '<input type="button" class="wysiwyg-embed-object-back clearfix" value="Back" /></div>';
+							uiHtml += '<br clear="both">';
 							uiHtml += '</form>';
 							f.html (uiHtml);
+
+							if (obj.columns == "2") { 
+								$(".wysiwyg-embed-object-form").addClass ("columns-2");
+							} else { 
+								$(".wysiwyg-embed-object-form").removeClass ("columns-2");
+							};
+							
+							$(".wysiwyg-embed-object-back", "#wysiwyg-embed-form").unbind ("click").click (function () {
+								$(".wysiwyg-embed-object-form").hide ();
+								$(".wysiwyg-embed-objects").show ();
+								
+							});
 
 							// File Manager (select file):
 							if ($.wysiwyg.fileManager) {
 								for (var i in obj.fields) {
 									if (obj.fields[i].type == 'file') {
-										$('#' + obj.fields[i].name + '-fileManager').bind('click', function () {
-											$.wysiwyg.fileManager.init(function (selected) {
-												dialog.find('input[name=' + obj.fields[i].name + ']').val(selected);
-												dialog.find('input[name=' + obj.fields[i].name + ']').trigger('change');
+										$('#' + obj.fields[i].name + '-fileManager').bind ('click', function () {
+											$.wysiwyg.fileManager.init (function (selected) {
+												dialog.find ('input[name=' + obj.fields[i].name + ']').val (selected);
+												dialog.find ('input[name=' + obj.fields[i].name + ']').trigger ('change');
 											});
 										});
 									}
@@ -243,37 +268,45 @@
 				// If we're editing an existing element, start the dynamic objects dialog
 				// with that element selected and its form pre-filled with the existing
 				// embedded data.
-				if (self.embed_element !== null) {
+				if (self.embed_element !== null && typeof self.embed_element !== "undefined") {
+									
 					var emb = parse_embed_string ($(self.embed_element).data ('embed'));
 					for (var i = 0; i < _embed_list.length; i++) {
 						if (_embed_list[i].handler === emb.handler) {
-							// count number of properties
-							var c = 0;
-							for (k in emb.data) {
-								if (emb.data.hasOwnProperty (k)) {
-									c++;
+							
+							$('#wysiwyg-embed-object-' + i).addClass ("current");
+							if (!$.isEmptyObject (emb.data)) {
+								// count number of properties
+								var c = 0;
+								for (k in emb.data) {
+									if (emb.data.hasOwnProperty (k)) {
+										c++;
+									}
 								}
-							}
-
-							if (c > 0) {
-								// has properties, simulate selection
-								$('#wysiwyg-embed-object-' + i).click ();
-								// Fill with original values
-								var f = $('#wysiwyg-embed-form')[0];
-								for (var k in emb.data) {
-									if (f.elements[k]) {
-										if (_embed_list[i].fields[k].hasOwnProperty ('filter')) {
-											var data = {};
-											data[k] = emb.data[k];
-											$.post ('/admin/embed/filters', {handler: emb.handler, data: data, reverse: 'yes'}, function (res) {
-												f.elements[k].value = res.data[k];
-											});
-										} else {
-											f.elements[k].value = emb.data[k];
+	
+								if (c > 0) {
+									// has properties, simulate selection
+									$('#wysiwyg-embed-object-' + i).click ();
+									// Fill with original values
+									var f = $('#wysiwyg-embed-form')[0];
+									for (var k in emb.data) {
+										if (f.elements[k]) {
+											if (_embed_list[i].fields[k].hasOwnProperty ('filter')) {
+												var data = {};
+												data[k] = emb.data[k];
+												$.post ('/admin/embed/filters', {handler: emb.handler, data: data, reverse: 'yes'}, function (res) {
+													f.elements[k].value = res.data[k];
+												});
+											} else {
+												f.elements[k].value = emb.data[k];
+											}
 										}
 									}
 								}
 							}
+							
+							$('.simplePageNav' + Math.ceil (i/10) + ' a').click (); 
+							
 							break;
 						}
 					}
