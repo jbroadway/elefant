@@ -3,6 +3,7 @@
 [admin/forward]
 
 label = "Pages: Redirect Link"
+icon = external-link
 
 to[label] = Link
 to[type] = text
@@ -19,6 +20,7 @@ code[callback] = "admin_status_codes"
 
 [admin/conditionalforward]
 label ="Pages: Conditional Redirect"
+icon = /apps/admin/css/icon-conditionalforward.png
 
 to[label] = link
 to[type] = text
@@ -34,6 +36,7 @@ user_type[callback] = "admin_user_groups"
 [admin/html]
 
 label = "Embed HTML Code"
+icon = /apps/admin/css/icon-html.png
 
 id[label] = HTML
 id[type] = textarea

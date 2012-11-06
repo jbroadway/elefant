@@ -3,6 +3,7 @@
 [blog/headlines]
 
 label = "Blog: Headlines"
+icon = rss
 
 tag[label] = "Tag (optional)"
 tag[type] = select
@@ -17,10 +18,12 @@ dates[callback] = "blog_yes_no"
 [blog/tags]
 
 label = "Blog: Tag Cloud"
+icon = tags
 
 [blog/rssviewer]
 
 label = "Blog: RSS Viewer"
+icon = rss
 
 url[label] = RSS Link
 url[type] = text
@@ -31,6 +34,7 @@ url[message] = Please enter a valid URL.
 [blog/postsfeed]
 
 label = "Blog: Latest Posts"
+icon = time
 
 number[label] = "Number of Posts"
 number[type] = numeric
