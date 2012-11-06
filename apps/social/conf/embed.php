@@ -3,6 +3,7 @@
 [social/facebook/like]
 
 label = Facebook: Like Button
+icon = thumbs-up
 
 url[label] = Link
 url[type] = text
@@ -13,6 +14,7 @@ url[message] = Please enter a valid URL.
 [social/facebook/like-box]
 
 label = Facebook: Like-Box
+icon = facebook-sign
 columns = 2
 
 url[label] = Facebook Page URL
@@ -60,10 +62,12 @@ stream[callback] = "social_true_false"
 [social/facebook/comments]
 
 label = Facebook: Comments
+icon = /apps/social/css/icon-facebook-comments.png
 
 [social/facebook/commentcount]
 
 label = Facebook: Comment Count
+icon = /apps/social/css/icon-facebook-commentcount.png
 
 url[label] = Link
 url[type] = text
@@ -74,6 +78,7 @@ url[message] = Please enter a valid URL.
 [social/twitter/follow]
 
 label = Twitter: Follow
+icon = /apps/social/css/icon-twitter-follow.png
 
 twitter_id[label] = Twitter ID
 twitter_id[type] = text
@@ -82,6 +87,7 @@ twitter_id[message] = Please enter your Twitter ID.
 
 [social/twitter/feed]
 label = Twitter: Feed
+icon = twitter-sign
 columns = 2
 
 twitter_id[label] = Twitter ID
@@ -141,6 +147,7 @@ link[message] = Please enter a valid color.
 [social/twitter/tweet]
 
 label = Twitter: Share
+icon = twitter
 
 url[label] = Link
 url[type] = text
@@ -154,6 +161,7 @@ via[type] = text
 [social/google/plusone]
 
 label = "Google: +1 Button"
+icon = google-plus-sign
 
 url[label] = Link
 url[type] = text
@@ -164,6 +172,7 @@ url[message] = Please enter a valid URL.
 [social/video/youtube]
 
 label = "Video: YouTube"
+icon = facetime-video
 
 url[label] = Link
 url[type] = text
@@ -174,6 +183,7 @@ url[message] = Please enter a valid URL.
 [social/google/maps]
 
 label = "Google: Map"
+icon = map-marker
 
 address[label] = Address
 address[type] = text
@@ -199,6 +209,7 @@ zip[type] = text
 [social/video/vimeo]
 
 label = "Video: Vimeo"
+icon = facetime-video
 
 url[label] = Link
 url[type] = text
