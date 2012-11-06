@@ -22,7 +22,7 @@ code[callback] = "admin_status_codes"
 label ="Pages: Conditional Redirect"
 icon = /apps/admin/css/icon-conditionalforward.png
 
-to[label] = link
+to[label] = Link
 to[type] = text
 to[initial] = "http://"
 to[regex] = "|^(http:/)?/.+$|"
