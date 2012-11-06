@@ -231,7 +231,7 @@ input[disabled] {
 	background: #eee;
 }
 
-input[type=submit],.wysiwyg-embed-object-back {
+input[type=submit], .wysiwyg-embed-object-back {
     font-size: 12px;
 	border: 1px solid #ddd;
     background: #e5e5e5;
@@ -246,7 +246,7 @@ input[type=submit],.wysiwyg-embed-object-back {
     text-shadow: 0 1px 0 #fff;
 }
 
-input[type=submit]:hover {
+input[type=submit]:hover, .wysiwyg-embed-object-back:hover {
 	color: #333;
 	border: 1px solid #999;
     -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
@@ -335,82 +335,77 @@ input[type=submit]:hover {
 	text-decoration: none;
 }
 
-.wysiwyg-embed-object-back{
-	float:left;
-	opacity: 0.5;
-	margin-top:15px;
-}
-
-.wysiwyg-embed-object-back:hover{
-	opacity: 1;
+.wysiwyg-embed-object-back {
+	float: left;
+	margin-top: 15px;
 }
 
 .wysiwyg-embed-object-form-submit {
-	float:right;
-	margin-top:15px;
+	float: right;
+	margin-top: 15px;
 }
 
-.wysiwyg-embed-object-form h2{
-	margin:0;
-	font-size:16px;
+.wysiwyg-embed-object-form h2 {
+	margin: 0;
+	font-size: 16px;
 	color: #333;
 	padding: 5px;
 }
 
-.wysiwyg-embed-object-form p{
-	margin:0.5% 0.25%;
+.wysiwyg-embed-object-form p {
+	margin: 0.5% 0.25%;
 	background: #eee;
 	color: #333;
 	padding: 1.5%;
 }
 
-.wysiwyg-embed-object-form label{
+.wysiwyg-embed-object-form label {
 	display: block;
-	padding:0.5% 0.25% 0.25% 0.25%;
-	margin:0 0.5% 0 0;
+	padding: 0.5% 0.25% 0.25% 0.25%;
+	margin: 0 0.5% 0 0;
 }
 .wysiwyg-embed-object-form input[type=text], .wysiwyg-embed-object-form textarea, .wysiwyg-embed-object-form select {
-	margin:0;
+	margin: 0;
 	padding: 0.25%;
-	width:99.5%;
+	width: 99.5%;
 }
 
-.wysiwyg-embed-object-form.columns-2 label{
-	float:left;
+.wysiwyg-embed-object-form.columns-2 label {
+	float: left;
 	display: block;
 	padding: 1% 0 0.5% 0;
 }
 .wysiwyg-embed-object-form.columns-2 input[type=text], .wysiwyg-embed-object-form.columns-2 select {
-	float:left;
+	float: left;
 	margin: 0 0 0.5% 0;
 	padding: 1%;
-	width:95%;
+	width: 95%;
 }
 
-.wysiwyg-embed-object-form.columns-2 p{
+.wysiwyg-embed-object-form.columns-2 p {
 	float: left;	
-	width:46%;	
-	margin:0.25%;
+	width: 46%;	
+	margin: 0.25%;
 }
 
-.wysiwyg-embed-object-form p.wysiwyg-embed-object-form-submit-wrapper{
+.wysiwyg-embed-object-form p.wysiwyg-embed-object-form-submit-wrapper {
 	background: #fff;
 }
 
-.wysiwyg-embed-object-form input[type=text].wysiwyg-file-input{
+.wysiwyg-embed-object-form input[type=text].wysiwyg-file-input {
 	float: left;	
-	width:90%;	
+	width: 90%;	
 }
+
 span.wysiwyg-fileManager { 
 	background: url('/css/files/icon.png');
 	float: left;
-	width:16px; 
-	height:16px; 
+	width: 16px; 
+	height: 16px; 
 	cursor: pointer; 
 	cursor: hand;
-	margin:2px 2px;
+	margin: 2px 2px;
 }
-
 
 #wrapper {
 	padding-top: 40px;
