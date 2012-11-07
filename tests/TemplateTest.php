@@ -59,6 +59,10 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals ($t->replace_includes ('app/handler'), '<?php echo $this->controller->run (\'app/handler\', array ()); ?>');
 		$this->assertEquals ($t->replace_includes ('app/handler?foo=bar&asdf=qwerty'), '<?php echo $this->controller->run (\'app/handler\', array (\'foo\' => \'bar\', \'asdf\' => \'qwerty\')); ?>');
+
+		// Test sub-expressions
+		$this->assertEquals ($t->replace_includes ('app/handler?foo=[bar]'), '<?php echo $this->controller->run (\'app/handler\', array (\'foo\' => Template::sanitize ($data->bar, \'UTF-8\'))); ?>');
+		$this->assertEquals ($t->replace_includes ('app/handler?foo=[bar]&bar=a[sd]f'), '<?php echo $this->controller->run (\'app/handler\', array (\'foo\' => Template::sanitize ($data->bar, \'UTF-8\'), \'bar\' => \'a\' . Template::sanitize ($data->sd, \'UTF-8\') . \'f\')); ?>');
 	}
 
 	function test_parse_template () {
