@@ -44,9 +44,14 @@ class Debugger {
 	/**
 	 * Set the error and exception handlers.
 	 */
-	public static function start () {
-		set_error_handler (array ('Debugger', 'handle_error'));
-		set_exception_handler (array ('Debugger', 'handle_exception'));
+	public static function start ($on = true) {
+		if ($on) {
+			set_error_handler (array ('Debugger', 'handle_error'));
+			set_exception_handler (array ('Debugger', 'handle_exception'));
+		} else {
+			set_error_handler (array ('Debugger', 'handle_error'));
+			set_exception_handler (array ('Debugger', 'log_exception'));
+		}
 	}
 
 	/**
@@ -62,6 +67,21 @@ class Debugger {
 			$e->getMessage ()
 		);
 		Debugger::show_trace ($e->getTrace ());
+	}
+	
+	/**
+	 * Handles exceptions by logging them.
+	 */
+	public static function log_exception ($e) {
+		error_log (
+			sprintf (
+				'Error in %s on line %d: %s',
+				$e->getFile (),
+				$e->getLine (),
+				$e->getMessage ()
+			)
+		);
+		throw $e;
 	}
 
 	/**
@@ -106,6 +126,9 @@ class Debugger {
 		}
 		if (! isset ($trace['file'])) {
 			$trace['file'] = $trace['args'][2];
+			if (empty ($trace['file'])) {
+				return;
+			}
 		}
 		if (isset ($trace['class'])) {
 			printf (

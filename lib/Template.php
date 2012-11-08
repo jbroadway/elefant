@@ -452,6 +452,14 @@ class Template {
 					$this->replace_vars (substr ($v, 1, strlen ($v) - 2))
 				);
 				$arr .= sprintf ('%s\'%s\' => %s', $sep, $k, $v);
+			} elseif (preg_match ('/\[(.*)\]/', $v, $regs)) {
+				$r = str_replace (
+					array ('<?php echo ', '; ?>'),
+					array ('\' . ', ' . \''),
+					$this->replace_vars ($regs[1])
+				);
+				$v = preg_replace ('/\[(.*)\]/', $r, $v);
+				$arr .= sprintf ('%s\'%s\' => \'%s\'', $sep, $k, $v);
 			} else {
 				$arr .= sprintf ('%s\'%s\' => \'%s\'', $sep, $k, $v);
 			}
@@ -490,6 +498,9 @@ class Template {
 	public function run_includes ($val) {
 		// remove spaces
 		$val = preg_replace ('/[\t\n ]+(\?|\&)/', '\1', trim ($val));
+
+		// normalize <span data-embed> tags to {! tags !}
+		$val = preg_replace ('/<.*?data-embed="([^"]+)".*?>.*?<\/.*?>/', '{! \1 !}', $val);
 
 		$parts = preg_split ('/(\{\! ?.*? ?\!\})/e', $val, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$out = '';

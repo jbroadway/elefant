@@ -37,12 +37,28 @@ function navigation_print_context ($tree, $path) {
 }
 
 /**
+ * Print the full site tree as an HTML list.
+ */
+function navigation_print_level ($tree) {
+	echo '<ul>';
+	foreach ($tree as $item) {
+		printf ('<li><a href="/%s">%s</a>', $item->attr->id, $item->data);
+		if (isset ($item->children)) {
+			navigation_print_level ($item->children);
+		}
+		echo '</li>';
+	}
+	echo '</ul>';
+}
+
+/**
  * Clears all cache keys for the navigation app.
  */
 function navigation_clear_cache () {
 	global $cache;
 	$cache->delete ('_navigation_top');
 	$cache->delete ('_c_navigation_map');
+	$cache->delete ('_c_navigation_dropmenu');
 }
 
 /**

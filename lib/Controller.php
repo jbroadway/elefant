@@ -602,7 +602,7 @@ class Controller {
 	 */
 	public function restful ($obj) {
 		// Disable page layout and set JSON header.
-		global $page;
+		global $page, $cache;
 		$page->layout = false;
 		header ('Content-Type: application/json');
 
@@ -621,8 +621,9 @@ class Controller {
 			return $obj->error ('Invalid action name');
 		}
 
-		// Assign the controller to the object.
+		// Assign the controller and cache to the object.
 		$obj->controller = $this;
+		$obj->cache = $cache;
 
 		// Call the method with the extra URL parameters.
 		$params = $this->params;

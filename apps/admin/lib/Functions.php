@@ -26,6 +26,9 @@ function admin_embed_filter ($html, $reverse = false) {
  * The reverse lookup that returns HTML for a given ID value.
  */
 function admin_embed_lookup ($id) {
+	if (! file_exists ('cache/html/' . $id . '.html')) {
+		return '';
+	}
 	return file_get_contents ('cache/html/' . $id . '.html');
 }
 

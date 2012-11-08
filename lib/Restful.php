@@ -91,6 +91,11 @@ class Restful {
 	public $controller = null;
 
 	/**
+	 * The cache object.
+	 */
+	public $cache = null;
+
+	/**
 	 * Whether `wrap()` should alter the output data to add
 	 * a `{"success":true,"data":"..."}` structure around it.
 	 */

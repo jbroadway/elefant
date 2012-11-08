@@ -3,6 +3,7 @@
 [filemanager/slideshow]
 
 label = "Images: Slideshow"
+icon = picture
 
 path[label] = Folder
 path[type] = select
@@ -12,6 +13,7 @@ path[callback] = "filemanager_list_folders"
 [filemanager/gallery]
 
 label = "Images: Gallery"
+icon = picture
 
 path[label] = Folder
 path[type] = select
@@ -36,6 +38,7 @@ style[callback] = "filemanager_style_list"
 [filemanager/audio]
 
 label = "Embedded Audio (MP3)"
+icon = headphones
 
 file[label] = MP3 Audio
 file[type] = file
@@ -43,6 +46,7 @@ file[type] = file
 [filemanager/video]
 
 label = "Embedded Video (MP4)"
+icon = facetime-video
 
 file[label] = MP4 Video
 file[type] = file
@@ -50,6 +54,7 @@ file[type] = file
 [filemanager/swf]
 
 label = "Embedded Flash (SWF)"
+icon = "/apps/filemanager/css/icon-swf.png"
 
 file[label] = SWF Flash File
 file[type] = file

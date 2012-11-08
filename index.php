@@ -39,17 +39,6 @@ if (php_sapi_name () === 'cli-server' && isset ($_SERVER['REQUEST_URI']) && preg
 }
 
 /**
- * Set the default error reporting level to All except Notices,
- * and turn off displaying errors. Error handling/debugging can
- * be done by setting conf[General][debug] to true, causing full
- * debug traces to be displayed with highlighted code in the
- * browser (*for development purposes only*), or by checking
- * the error log for errors.
- */
-error_reporting (E_ALL & ~E_NOTICE);
-ini_set ('display_errors', 'Off');
-
-/**
  * Normalize slashes for servers that are still poorly
  * configured...
  */
@@ -76,12 +65,25 @@ require ('lib/Functions.php');
 date_default_timezone_set(conf ('General', 'timezone'));
 
 /**
+ * Set the default error reporting level to All except Notices,
+ * and turn off displaying errors. Error handling/debugging can
+ * be done by setting conf[General][debug] to true, causing full
+ * debug traces to be displayed with highlighted code in the
+ * browser (*for development purposes only*), or by checking
+ * the error log for errors.
+ */
+error_reporting (E_ALL & ~E_NOTICE);
+if (conf ('General', 'display_errors')) {
+	ini_set ('display_errors', 'On');
+} else {
+	ini_set ('display_errors', 'Off');
+}
+
+/**
  * Enable the debugger if conf[General][debug] is true.
  */
-if (conf ('General', 'debug')) {
-	require ('lib/Debugger.php');
-	Debugger::start ();
-}
+require ('lib/Debugger.php');
+Debugger::start (conf ('General', 'debug'));
 
 /**
  * Include the core libraries used by the front controller

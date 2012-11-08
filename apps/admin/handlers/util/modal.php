@@ -18,7 +18,7 @@
  * 2. Use the $.open_dialog() function to create your
  * dialog windows:
  *
- *     $.open_dialog ('Title', 'HTML goes here');
+ *     $.open_dialog ('Title', 'HTML goes here', options);
  *
  * 3. To close the dialog programmatically, you can
  * use the $.close_dialog() function:

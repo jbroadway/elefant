@@ -35,12 +35,28 @@
  */
 class MemcacheAPC {
 	/**
+	 * Unique per-site key prefix.
+	 */
+	public static $key_prefix = "";
+
+	/**
+	 * Constructor method
+	 */
+	public function __construct () {
+		// We need unique key prefix to avoid mixing values on shared hosting
+		if (isset ($_SERVER["SERVER_NAME"])) {
+			self::$key_prefix = md5 (strtolower ($_SERVER["SERVER_NAME"])) . ":";
+		}
+	}
+
+
+	/**
 	 * Emulates `MemcacheExt::cache`.
 	 */
 	public function cache ($key, $timeout, $function) {
-		if (($val = $this->get ($key)) === false) {
+		if (($val = $this->get (self::$key_prefix.$key)) === false) {
 			$val = $function ();
-			$this->set ($key, $val, 0, $timeout);
+			$this->set (self::$key_prefix.$key, $val, 0, $timeout);
 		}
 		return $val;
 	}
@@ -49,7 +65,7 @@ class MemcacheAPC {
 	 * Emulates `Memcache::get`.
 	 */
 	public function get ($key) {
-		$value = apc_fetch ($key);
+		$value = apc_fetch (self::$key_prefix.$key);
 		if (preg_match ('/^(a|O):[0-9]+:/', $value)) {
 			return unserialize ($value);
 		}
@@ -63,10 +79,10 @@ class MemcacheAPC {
 		if (is_array ($value) || is_object ($value)) {
 			$value = serialize ($value);
 		}
-		if (apc_exists ($key)) {
+		if (apc_exists (self::$key_prefix.$key)) {
 			return false;
 		}
-		apc_store ($key, $value, $expire);
+		apc_store (self::$key_prefix.$key, $value, $expire);
 	}
 
 	/**
@@ -77,9 +93,9 @@ class MemcacheAPC {
 			$value = serialize ($value);
 		}
 		if ($expire) {
-			return apc_store ($key, $value, $expire);
+			return apc_store (self::$key_prefix.$key, $value, $expire);
 		}
-		return apc_store ($key, $value);
+		return apc_store (self::$key_prefix.$key, $value);
 	}
 
 	/**
@@ -89,31 +105,31 @@ class MemcacheAPC {
 		if (is_array ($value) || is_object ($value)) {
 			$value = serialize ($value);
 		}
-		if (! apc_exists ($key)) {
+		if (! apc_exists (self::$key_prefix.$key)) {
 			return false;
 		}
-		return apc_store ($key, $value, $expire);
+		return apc_store (self::$key_prefix.$key, $value, $expire);
 	}
 
 	/**
 	 * Emulates `Memcache::delete`.
 	 */
 	public function delete ($key) {
-		return apc_delete ($key);
+		return apc_delete (self::$key_prefix.$key);
 	}
 
 	/**
 	 * Emulates `Memcache::increment`.
 	 */
 	public function increment ($key, $value = 1) {
-		return apc_inc ($key, $value);
+		return apc_inc (self::$key_prefix.$key, $value);
 	}
 
 	/**
 	 * Emulates `Memcache::decrement`.
 	 */
 	public function decrement ($key, $value = 1) {
-		return apc_dec ($key, $value);
+		return apc_dec (self::$key_prefix.$key, $value);
 	}
 
 	/**

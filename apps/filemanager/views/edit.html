@@ -1,0 +1,53 @@
+<form method="post" id="{{_form}}">
+
+<p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
+
+<p><textarea name="body" id="code-body" cols="90" rows="28">{{body}}</textarea></p>
+
+<p>
+	<input type="submit" class="autosave-clear" value="{"Save File"}" />&nbsp;
+	<a href="/filemanager/index" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
+</p>
+
+</form>
+
+<link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/lib/codemirror.css" />
+<link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/theme/default.css" />
+<style>
+.CodeMirror {
+	border: 1px solid #ccc;
+	background: #fff;
+}
+</style>
+<script src="/js/json2.js"></script>
+<script src="/js/jstorage.js"></script>
+<script src="/js/jquery.autosave.js"></script>
+<script src="/apps/designer/js/codemirror/lib/codemirror.js"></script>
+<script src="/apps/designer/js/codemirror/mode/xml/xml.js"></script>
+<script src="/apps/designer/js/codemirror/mode/css/css.js"></script>
+<script src="/apps/designer/js/codemirror/mode/javascript/javascript.js"></script>
+<script src="/apps/designer/js/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+<script>
+var _codemirror;
+
+$(function () {
+	_codemirror = CodeMirror.fromTextArea (
+		document.getElementById ('code-body'),
+		{
+			mode: 'text/html',
+			theme: 'default',
+			indentWithTabs: true,
+			lineNumbers: true,
+			onFocus: function () {
+				try {
+					$('form').autosave ();
+				} catch (e) {}
+			}
+		}
+	);
+
+	$('.CodeMirror-scroll').height ($(window).height () - 200);
+
+	$('#{{_form}}').autosave ();
+});
+</script>

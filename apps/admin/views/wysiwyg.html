@@ -1,19 +1,23 @@
 <link rel="stylesheet" href="/js/jquery-ui/jquery-ui.css" />
-<link rel="stylesheet" href="/css/wysiwyg/jquery.wysiwyg.css" type="text/css" />
-<link rel="stylesheet" href="/css/files/wysiwyg.fileManager.css" type="text/css" />
-<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
-<script type="text/javascript" src="/js/wysiwyg/jquery.wysiwyg.js"></script>
-<script type="text/javascript" src="/js/wysiwyg/controls/wysiwyg.image2.js"></script>
-<script type="text/javascript" src="/js/wysiwyg/controls/wysiwyg.link2.js"></script>
-<script type="text/javascript" src="/js/wysiwyg/controls/wysiwyg.table.js"></script>
-<script type="text/javascript" src="/js/wysiwyg/plugins/wysiwyg.fileManager.js"></script>
-<script type="text/javascript" src="/js/jquery.quickpager.js"></script>
-<script type="text/javascript" src="/js/wysiwyg/plugins/wysiwyg.embed.js"></script>
-<script type="text/javascript" src="/js/wysiwyg/plugins/wysiwyg.i18n.js"></script>
+<link rel="stylesheet" href="/css/wysiwyg/jquery.wysiwyg.css" />
+<link rel="stylesheet" href="/css/files/wysiwyg.fileManager.css" />
+<!--[if IE 7]>
+<link rel="stylesheet" href="/apps/admin/css/font-awesome/css/font-awesome-ie7.css" />
+<![endif]-->
+<link rel="stylesheet" href="/apps/admin/css/font-awesome/css/font-awesome.css" />
+<script src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script src="/js/wysiwyg/jquery.wysiwyg.js"></script>
+<script src="/js/wysiwyg/controls/wysiwyg.image2.js"></script>
+<script src="/js/wysiwyg/controls/wysiwyg.link2.js"></script>
+<script src="/js/wysiwyg/controls/wysiwyg.table.js"></script>
+<script src="/js/wysiwyg/plugins/wysiwyg.fileManager.js"></script>
+<script src="/js/jquery.quickpager.js"></script>
+<script src="/js/wysiwyg/plugins/wysiwyg.embed.js"></script>
+<script src="/js/wysiwyg/plugins/wysiwyg.i18n.js"></script>
 <?php if (file_exists ('js/wysiwyg/i18n/lang.' . $GLOBALS['i18n']->language . '.js')) { ?>
-<script type="text/javascript" src="/js/wysiwyg/i18n/lang.{{i18n.language|none}}.js"></script>
+<script src="/js/wysiwyg/i18n/lang.{{i18n.language|none}}.js"></script>
 <?php } ?>
-<script type="text/javascript">
+<script>
 $(function () {
 	$('#{% if field_id %}{{ field_id }}{% else %}webpage-body{% end %}').wysiwyg ({
 		initialContent: '<p><br /></p>',
@@ -37,13 +41,13 @@ $(function () {
 						if (file.match (/\.(jpg|png|gif)$/i)) {
 							$('#webpage-body').wysiwyg ('insertImage', file);
 						} else if (file.match (/\.swf$/i)) {
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! filemanager/swf?file=' + file + ' !}</span></p>');
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="filemanager/swf?file=' + file + '" data-label="{"Embedded Flash (SWF)"}" title="{"Click to edit."}"></span></p>');
 							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
 						} else if (file.match (/\.mp4$/i)) {
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! filemanager/video?file=' + file + ' !}</span></p>');
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="filemanager/video?file=' + file + '" data-label="{"Embedded Video (MP4)"}" title="{"Click to edit."}"></span></p>');
 							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
 						} else if (file.match (/\.mp3$/i)) {
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! filemanager/audio?file=' + file + ' !}</span></p>');
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="filemanager/audio?file=' + file + '" data-label="{"Embedded Audio (MP3)"}" title="{"Click to edit."}"></span></p>');
 							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
 						} else {
 							$('#webpage-body').wysiwyg ('createLink', file);
@@ -56,27 +60,54 @@ $(function () {
 				tooltip: '{"Dynamic Objects"}',
 				tags: ['span'],
 				exec: function () {
-					$.wysiwyg.embed.init (this, function (existing, embed_code) {
-						if (! existing) {
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded">{' + '! ' + embed_code + ' !}</span></p>');
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
-						} else {
-							$(existing).replaceWith ('<span class="embedded">{' + '! ' + embed_code + ' !}</span>');
-						}
-					});
+					$.wysiwyg.embed.init (this, wysiwyg_embed_update);
 				}
 			}
 		},
 		//dialog:'jqueryui',
 		css: '/css/wysiwyg/default.css',
 		'events': {
-			click: function () {
+			click: function (e) {
+				var range;
+				
+				if ($(e.target).hasClass ('embedded')) {
+					
+					var body = document.body, range, sel, el = e.target;
+					if (document.createRange && window.getSelection) {
+						range = document.createRange();
+						sel = window.getSelection();
+						sel.removeAllRanges();
+						try {
+							range.selectNodeContents (el);
+							sel.addRange (range);
+						} catch (e) {
+							range.selectNode (el);
+							sel.addRange (range);
+						}
+					} else if (body.createTextRange) {
+						range = body.createTextRange ();
+						range.moveToElementText (el);
+						range.select ();
+					}
+					
+					$.wysiwyg.embed.init ($('#webpage-body').data ('wysiwyg'), wysiwyg_embed_update, e.target);
+				}
+
 				try {
 					$('form').autosave ();
-				} catch (e) {}
+				} catch (ex) {}
 			}
 		}
 	});
 	$.wysiwyg.fileManager.setAjaxHandler ('http://{{ $_SERVER.HTTP_HOST }}/filemanager/embed');
+
+	function wysiwyg_embed_update (existing, embed_code, label) {
+		if (! existing) {
+			$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="{"Click to edit."}"></span></p>');
+			$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
+		} else {
+			$(existing).replaceWith ('<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="{"Click to edit."}"></span>');			
+		}
+	}
 });
 </script>

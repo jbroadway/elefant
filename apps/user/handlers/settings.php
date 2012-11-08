@@ -13,6 +13,10 @@ $page->title = __ ('User Settings');
 
 $form = new Form ('post', $this);
 
+$appconf['User']['login_methods'] = is_array ($appconf['User']['login_methods'])
+	? $appconf['User']['login_methods']
+	: array ();
+
 $form->data = array (
 	'facebook_app_id' => $appconf['Facebook']['application_id'],
 	'facebook_app_secret' => $appconf['Facebook']['application_secret'],
@@ -37,6 +41,9 @@ echo $form->handle (function ($form) {
 	}
 	if ($_POST['login_twitter'] === 'yes') {
 		$login_methods[] = 'twitter';
+	}
+	if (count ($login_methods) === 0) {
+		$login_methods = false;
 	}
 
 	if (! Ini::write (
