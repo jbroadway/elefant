@@ -37,7 +37,9 @@
 	</div>
 {% else %}
 	<div id="body" class="grid_8">
-
+	
+	{! blocks/index?id=banner-[id]&fallback=banner !}
+	
 {% if title != '' %}<h2>{{ title|none }}</h2>{% end %}
 {{ body|none }}
 
