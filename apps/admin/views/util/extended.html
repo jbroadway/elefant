@@ -1,0 +1,39 @@
+<h4 id="extended-header">{"Custom Fields"}</h4>
+
+<div id="extended-fields">
+{% foreach fields as field %}
+	{% if field->type === 'file' %}
+		<p>
+			{{field->label|__}}:<br />
+			<input type="file" name="extra[{{field->name}}]" />
+		</p>
+	{% elseif field->type === 'text' %}
+		<p>
+			{{field->label|__}}:<br />
+			<input type="text" name="extra[{{field->name}}]" />
+		</p>
+	{% elseif field->type === 'textarea' %}
+		<p>
+			{{field->label|__}}:<br />
+			<textarea name="extra[{{field->name}}]" cols="80" rows="6"></textarea>
+		</p>
+	{% elseif field->type === 'select' %}
+		<p>
+			{{field->label|__}}:<br />
+			<select name="extra[{{field->name}}]">
+				<option value="">- {"choose"} -</option>
+			</select>
+		</p>
+	{% end %}
+{% end %}
+</div>
+
+<script>
+$(function () {
+	$.expanded_section ({
+		header: '#extended-header',
+		section: '#extended-fields',
+		visible: false
+	});
+});
+</script>

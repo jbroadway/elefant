@@ -35,4 +35,10 @@ if (! class_exists ($class)) {
 	return;
 }
 
+$data['fields'] = ExtendedFields::for_class ($class);
+
+if ($data['fields'] || count ($data['fields']) === 0) {
+	echo $tpl->render ('admin/util/extended', $data);
+}
+
 ?>
