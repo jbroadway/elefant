@@ -49,6 +49,72 @@ jQuery.confirm_and_post = function (el, msg) {
 	return false;
 };
 
+/**
+ * Turns a section of a form into an expandable/collapsible section.
+ * Usage:
+ *
+ *     <h4 id="extras-header">{"Extra options"}</h4>
+ *     <div id="extras-section">
+ *         <!-- Extra content here -->
+ *     </div>
+ *     
+ *     <script>
+ *     $(function () {
+ *         $.expanded_section ({
+ *             handle: '#extras-header',
+ *             section: '#extras-section',
+ *             visible: false
+ *         });
+ *     });
+ *     </script>
+ */
+jQuery.expanded_section = function (options) {
+	var defaults = {
+		header: '#expanded-header',
+		section: '#expanded-section',
+		arrowClass: 'arrow',
+		arrowOffClass: 'arrow-off',
+		visible: false
+	};
+
+	var options = $.extend (defaults, options),
+		header = $(options.header),
+		section = $(options.section);
+
+	if (options.visible) {
+		header.prepend ('<span class="' + options.arrowClass + '"></span>');
+		section.css ('display', 'block');
+	} else {
+		header.prepend ('<span class="' + options.arrowClass + ' ' + options.arrowOffClass + '"></span>');
+		section.css ('display', 'none');
+	}
+
+	header
+		.hover (
+			function () {
+				$(this).css ('cursor', 'pointer');
+			},
+			function () {
+				$(this).css ('cursor', 'default');
+			}
+		)
+		.click (
+			function (evt) {
+				if (section.css ('display') === 'none') {
+					section.slideDown ('fast', function () {
+						window.scrollTo (0, 1000);
+					});
+					header.children ('span.' + options.arrowClass).removeClass (options.arrowOffClass);
+				} else {
+					section.slideUp ('fast', function () {
+						section.css ('display', 'none');
+					});
+					header.children ('span.' + options.arrowClass).addClass (options.arrowOffClass);
+				}
+			}
+		);
+};
+
 $(function () {
 	var sliding_up = false;
 	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img id="admin-logo" src="/apps/admin/css/admin/spacer.png" alt="" /></a></div>');
