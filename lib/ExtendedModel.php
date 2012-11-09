@@ -191,6 +191,13 @@ class ExtendedModel extends Model {
 	}
 
 	/**
+	 * Return the original data as an object, including extended fields.
+	 */
+	public function orig () {
+		return (object) array_merge ($this->data, $this->ext ());
+	}
+
+	/**
 	 * Dynamic getter for user properties. If you get the field specified
 	 * in the child class's `$_extended_field` property, it will automatically
 	 * unserialize it into an array for you.
