@@ -27,6 +27,9 @@ $post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
 $post->tag_list = explode (',', $post->tags);
 $post->body = $tpl->run_includes ($post->body);
 $post->social_buttons = $appconf['Social Buttons'];
+foreach ($p->ext () as $k => $v) {
+	$post->{$k} = $v;
+}
 
 echo $tpl->render ('blog/post', $post);
 
