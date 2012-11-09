@@ -35,8 +35,8 @@ if ($f->submit ()) {
 	$b->failed = $f->failed;
 	$b = $f->merge_values ($b);
 	$page->title = i18n_get ('Add Block');
-	$page->head = $tpl->render ('blocks/add/head', $b)
-				. $tpl->render ('admin/wysiwyg');
+	$this->run ('admin/util/wysiwyg');
+	echo $tpl->render ('blocks/add/head', $b);
 	echo $tpl->render ('blocks/add', $b);
 }
 
