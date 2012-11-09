@@ -2,38 +2,80 @@
 
 <div id="extended-fields">
 {% foreach fields as field %}
-	{% if field->type === 'file' %}
+	{% if field->type === 'text' %}
 		<p>
 			{{field->label|__}}:<br />
-			<input type="file" name="extra[{{field->name}}]" />
-		</p>
-	{% elseif field->type === 'text' %}
-		<p>
-			{{field->label|__}}:<br />
-			<input type="text" name="extra[{{field->name}}]" />
+			<input	type="text"
+					name="_extended[{{field->name}}]"
+					id="_extended_{{field->name}}"
+					value="{{field->value|quotes}}"
+					size="30"
+			/>
 		</p>
 	{% elseif field->type === 'textarea' %}
 		<p>
 			{{field->label|__}}:<br />
-			<textarea name="extra[{{field->name}}]" cols="80" rows="6"></textarea>
+			<textarea	name="_extended[{{field->name}}]"
+						id="_extended_{{field->name}}"
+						cols="80"
+						rows="6"
+			>{{field->value}}</textarea>
 		</p>
 	{% elseif field->type === 'select' %}
 		<p>
 			{{field->label|__}}:<br />
-			<select name="extra[{{field->name}}]">
+			<select	name="_extended[{{field->name}}]"
+					id="_extended_{{field->name}}"
+			>
 				<option value="">- {"choose"} -</option>
+				{% foreach field->options as option %}
+				<option value="{{option}}"{% if option == $data->field->value %} selected{% end %}>{{option}}</option>
+				{% end %}
 			</select>
+		</p>
+	{% elseif field->type === 'file' %}
+		<p>
+			{{field->label|__}}:<br />
+			<input	type="text"
+					name="_extended[{{field->name}}]"
+					id="_extended_{{field->name}}"
+					value="{{field->value|quotes}}"
+					class="wysiwyg-file-input"
+					size="30"
+			/>
+			<span	class="wysiwyg-fileManager"
+					id="{{field->name}}-fileManager"
+					title="{'Browse...'}"
+					onclick="return filemanager_{{field->name}} ()"
+					style="float: none; display: inline-block; margin: 4px 2px -4px 2px"
+			></span>
 		</p>
 	{% end %}
 {% end %}
 </div>
 
 <script>
+{% foreach fields as field %}
+	{% if field->type === 'file' %}
+		function filemanager_{{field->name}} () {
+			$.wysiwyg.fileManager.init (function (file) {
+				$('#_extended_{{field->name}}').val (file);
+			});
+			return false;
+		}
+	{% end %}
+{% end %}
 $(function () {
 	$.expanded_section ({
 		header: '#extended-header',
 		section: '#extended-fields',
 		visible: false
 	});
+
+	{% foreach fields as field %}
+		{% if field->type === 'file' %}
+			$.wysiwyg.fileManager.setAjaxHandler ('//{{$_SERVER.HTTP_HOST}}/filemanager/embed');
+		{% end %}
+	{% end %}
 });
 </script>
