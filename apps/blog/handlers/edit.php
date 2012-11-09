@@ -40,6 +40,8 @@ if ($f->submit ()) {
 	$p->body = $_POST['body'];
 	$p->tags = $_POST['tags'];
 
+	$p->update_extended ();
+
 	$p->put ();
 	Versions::add ($p);
 	if (! $p->error) {
@@ -88,8 +90,8 @@ if ($f->submit ()) {
 	$p->failed = $f->failed;
 	$p = $f->merge_values ($p);
 	$page->title = i18n_get ('Edit Blog Post') . ': ' . $p->title;
-	$page->head = $tpl->render ('admin/wysiwyg')
-				. $tpl->render ('blog/edit/head', $p);
+	$this->run ('admin/util/wysiwyg');
+	echo $tpl->render ('blog/edit/head', $p);
 	echo $tpl->render ('blog/edit', $p);
 }
 
