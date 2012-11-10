@@ -43,7 +43,6 @@ $lock = new Lock ('Block', $id);
 $b = new Block ($id);
 if ($b->error) {	
 	if ($fallback_id) {		
-		$lock->remove ();
 		$lock = new Lock ('Block', $fallback_id);
 		$b = new Block ($fallback_id);
 		$b->new_id = $id;
