@@ -50,7 +50,7 @@ if ($b->error) {
 	}	
 	if ($b->error) {
 		if (User::is_valid () && User::is ('admin')) {
-			echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false, 'title' => false));
+			echo $tpl->render ('blocks/editable', (object) array ('id' => $fallback_id, 'locked' => false, 'title' => false));
 		}
 		return;
 	}
