@@ -11,6 +11,9 @@
 					value="{{field->value|quotes}}"
 					size="30"
 			/>
+			{% if field->required %}
+				<span class="notice" id="_extended_{{field->name}}_notice">{{field->label|__}} {"is required"}.</span>
+			{% end %}
 		</p>
 	{% elseif field->type === 'textarea' %}
 		<p>
@@ -20,6 +23,10 @@
 						cols="80"
 						rows="6"
 			>{{field->value}}</textarea>
+			{% if field->required %}
+				<br />
+				<span class="notice" id="_extended_{{field->name}}_notice">{{field->label|__}} {"is required"}.</span>
+			{% end %}
 		</p>
 	{% elseif field->type === 'select' %}
 		<p>
@@ -32,6 +39,9 @@
 				<option value="{{option}}"{% if option == $data->field->value %} selected{% end %}>{{option}}</option>
 				{% end %}
 			</select>
+			{% if field->required %}
+				<span class="notice" id="_extended_{{field->name}}_notice">{{field->label|__}} {"is required"}.</span>
+			{% end %}
 		</p>
 	{% elseif field->type === 'file' %}
 		<p>
@@ -49,6 +59,9 @@
 					onclick="return filemanager_{{field->name}} ()"
 					style="float: none; display: inline-block; margin: 4px 2px -4px 2px"
 			></span>
+			{% if field->required %}
+				<span class="notice" id="_extended_{{field->name}}_notice">{{field->label|__}} {"is required"}.</span>
+			{% end %}
 		</p>
 	{% end %}
 {% end %}
@@ -75,6 +88,18 @@ $(function () {
 	{% foreach fields as field %}
 		{% if field->type === 'file' %}
 			$.wysiwyg.fileManager.setAjaxHandler ('//{{$_SERVER.HTTP_HOST}}/filemanager/embed');
+		{% end %}
+
+		{% if field->required %}
+			$('form').on ('submit', function () {
+				var val = $('#_extended_{{field->name}}').val ();
+				if (! val || val === null || val === '') {
+					$('#_extended_{{field->name}}_notice').show ();
+					return false;
+				}
+				$('#_extended_{{field->name}}_notice').hide ();
+				return true;
+			});
 		{% end %}
 	{% end %}
 });
