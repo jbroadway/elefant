@@ -22,7 +22,7 @@
  * 3. Create a link to edit the custom fields for a given
  * class somewhere in your app:
  *
- *     <a href="/admin/extended?extends=blog\Post&name=Blog+Posts">{"Custom fields"}</a>
+ *     <a href="/admin/extended?extends=blog\Post&name=Blog+Posts">{"Custom Fields"}</a>
  */
 
 if (! $this->internal) {
