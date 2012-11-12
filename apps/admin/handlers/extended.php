@@ -23,6 +23,7 @@ if (! isset ($_GET['name'])) {
 $page->layout = 'admin';
 $page->title = __ ('Custom Fields') . ': ' . __ ($_GET['name']);
 $page->add_script ('/apps/admin/js/handlebars-1.0.rc.1.js');
+$page->add_script ('/apps/admin/js/jquery-ui.min.js');
 $page->add_script ('/apps/admin/js/extended.js');
 
 $data = array ('extends' => $_GET['extends']);

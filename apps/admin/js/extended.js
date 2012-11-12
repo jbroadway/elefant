@@ -45,7 +45,8 @@ var extended = (function ($) {
 		options_empty: 'You must enter options for a select field.',
 		field_added: 'Field added.',
 		field_updated: 'Field updated.',
-		field_deleted: 'Field deleted.'
+		field_deleted: 'Field deleted.',
+		order_updated: 'Field order has been updated.'
 	};
 
 	/**
@@ -115,6 +116,13 @@ var extended = (function ($) {
 	};
 
 	/**
+	 * Update sorting order of the fields.
+	 */
+	e.api.update_order = function (fields, callback) {
+		$.post (e.api.prefix + 'sort', {fields: fields}, callback);
+	};
+
+	/**
 	 * Initialize the extended fields UI.
 	 */
 	e.init = function (data) {
@@ -133,6 +141,18 @@ var extended = (function ($) {
 		$('#new-field-type').on ('change', e.toggle_add_field_options);
 		$('#new-field-cancel').on ('click', e.show_add_field_button);
 		$('#new-field').on ('submit', e.add_field);
+
+		$('#fields').sortable ({
+			items: '> div',
+			handle: '.field-handle',
+			containment: 'parent',
+			axis: 'y',
+			placeholder: 'placeholder',
+			opacity: 0.9,
+			update: e.update_sorting_order
+			
+		});
+		$('#fields').disableSelection ();
 	};
 
 	/**
@@ -218,7 +238,11 @@ var extended = (function ($) {
 			return e.error (e.strings.options_empty);
 		}
 
+		$('#new-field-saving').show ();
+
 		e.api.add_field (data, function (res) {
+			$('#new-field-saving').hide (200);
+
 			if (! res.success) {
 				$.add_notification (res.error);
 				return;
@@ -249,6 +273,27 @@ var extended = (function ($) {
 			});
 		};
 		return false;
+	};
+	
+	/**
+	 * Update the sorting order of the fields.
+	 */
+	e.update_sorting_order = function (evt, ui) {
+		var new_order = [],
+			fields = $('#fields .field');
+
+		for (var i = 0; i < fields.length; i++) {
+			new_order.push (_parse_id ($(fields[i]).attr ('id')));
+		}
+
+		e.api.update_order (new_order, function (res) {
+			if (! res.success) {
+				$.add_notification (res.error);
+				return;
+			}
+
+			$.add_notification (e.strings.order_updated);
+		});
 	};
 	
 	/**

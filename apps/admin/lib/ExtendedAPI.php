@@ -108,17 +108,30 @@ class ExtendedAPI extends Restful {
 
 	/**
 	 * Update the sorting order of the specified fields.
-	 * Accepts an array of fields of the form:
+	 * Accepts an array of field IDs of the form:
 	 *
-	 *     fields[123]=2&fields[234]=0&field[345]=1
+	 *     fields[]=2&fields[]=1&fields[]=3
 	 *
-	 * The keys are the field IDs and the values are the sorting
-	 * order (ascending).
+	 * This should be the new sorting order (ascending).
 	 */
 	public function post_sort () {
 		if (! isset ($_POST['fields']) || ! is_array ($_POST['fields'])) {
 			return $this->error (__ ('Missing parameter: fields'));
 		}
+
+		ExtendedFields::batch (function () {
+			for ($i = 0; $i < count ($_POST['fields']); $i++) {
+				if (! DB::execute (
+					'update #prefix#extended_fields set sort = ? where id = ?',
+					$i,
+					$_POST['fields'][$i]
+				)) {
+					return false;
+				}
+			}
+
+			return true;
+		});
 
 		return true;
 	}
