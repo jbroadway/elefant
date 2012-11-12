@@ -22,13 +22,13 @@
 			&nbsp;<span class="vertical-hr">|</span>&nbsp;
 			<input type="checkbox" name="required" value="1" /> {"Required"}
 		</p>
-		<p style="float: right">
+		<p class="submit-buttons">
 			<input type="submit" value="{"Add"}" />
 			&nbsp;
 			<a href="#" id="new-field-cancel">{"Cancel"}</a>
 		</p>
 		<p style="float: left; display: none" id="new-field-options">
-			{"Options (one per line)"}:<br />
+			{"Drop down options (one per line)"}:<br />
 			<textarea name="options" cols="60" rows="4"></textarea>
 		</p>
 	</form>
@@ -56,13 +56,13 @@
 				&nbsp;<span class="vertical-hr">|</span>&nbsp;
 				<input type="checkbox" name="required" value="1"\{{#if required}} checked\{{/if}} /> {"Required"}
 			</p>
-			<p style="float: right">
+			<p class="submit-buttons">
 				<input type="submit" value="{"Save"}" />
 				&nbsp;
 				<a href="#" id="\{{id}}-delete">{"Delete"}</a>
 			</p>
 			<p style="float: left\{{#unless select}}; display: none\{{/unless}}" id="\{{id}}-options">
-				{"Options (one per line)"}:<br />
+				{"Drop down options (one per line)"}:<br />
 				<textarea name="options" cols="60" rows="3">\{{{options}}}</textarea>
 			</p>
 		</form>
@@ -99,6 +99,7 @@ $(function () {
 	border-top-left-radius: 0;
 	padding: 5px 8px 5px 8px;
 	margin-bottom: 8px;
+	min-height: 58px;
 	z-index: 1;
 }
 
@@ -137,6 +138,12 @@ $(function () {
 
 	.field p:first-child {
 		margin-top: 0px;
+	}
+	
+	.submit-buttons {
+		position: absolute;
+		bottom: 5px;
+		right: 8px;
 	}
 
 #new-field {

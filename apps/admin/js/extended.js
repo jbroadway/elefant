@@ -41,7 +41,8 @@ var extended = (function ($) {
 	 */
 	e.strings = {
 		confirm_delete: 'Are you sure you want to delete this field?',
-		label_empty: 'You must enter a field name.'
+		label_empty: 'You must enter a field name.',
+		options_empty: 'You must enter options for a select field.'
 	};
 
 	/**
