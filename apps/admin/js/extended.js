@@ -42,7 +42,10 @@ var extended = (function ($) {
 	e.strings = {
 		confirm_delete: 'Are you sure you want to delete this field?',
 		label_empty: 'You must enter a field name.',
-		options_empty: 'You must enter options for a select field.'
+		options_empty: 'You must enter options for a select field.',
+		field_added: 'Field added.',
+		field_updated: 'Field updated.',
+		field_deleted: 'Field deleted.'
 	};
 
 	/**
@@ -81,6 +84,37 @@ var extended = (function ($) {
 	};
 
 	/**
+	 * Server-side API methods.
+	 */
+	e.api = {};
+
+	/**
+	 * API URL prefix.
+	 */
+	e.api.prefix = '/admin/extended/api/';
+
+	/**
+	 * Add a new field to the list.
+	 */
+	e.api.add_field = function (data, callback) {
+		$.post (e.api.prefix + 'add', data, callback);
+	};
+
+	/**
+	 * Update an existing field.
+	 */
+	e.api.update_field = function (data, callback) {
+		$.post (e.api.prefix + 'edit', data, callback);
+	};
+
+	/**
+	 * Delete a field from the list.
+	 */
+	e.api.delete_field = function (id, callback) {
+		$.post (e.api.prefix + 'delete', {id: id}, callback);
+	};
+
+	/**
 	 * Initialize the extended fields UI.
 	 */
 	e.init = function (data) {
@@ -110,7 +144,7 @@ var extended = (function ($) {
 		field.textarea = (field.type === 'textarea') ? true : false;
 		field.select = (field.type === 'select') ? true : false;
 		field.file = (field.type === 'file') ? true : false;
-		e.div.append (e.render.field (e.fields[i]));
+		e.div.append (e.render.field (field));
 
 		$('#' + field.id + '-type').on ('change', e.toggle_field_options);
 		$('#' + field.id + '-delete').on ('click', e.delete_field);
@@ -170,12 +204,12 @@ var extended = (function ($) {
 			data = {
 				label: form.elements.label.value,
 				type: form.elements.type[form.elements.type.selectedIndex].value,
-				required: form.elements.required.checked,
+				required: form.elements.required.checked ? 1 : 0,
 				options: form.elements.options.value,
-				name: _name (form.elements.label.value)
+				name: _name (form.elements.label.value),
+				class: e.extends
 			};
 
-		_log (data);
 		if (data.label.length === 0) {
 			return e.error (e.strings.label_empty);
 		}
@@ -184,7 +218,17 @@ var extended = (function ($) {
 			return e.error (e.strings.options_empty);
 		}
 
-		e.show_add_field_button ();
+		e.api.add_field (data, function (res) {
+			if (! res.success) {
+				$.add_notification (res.error);
+				return;
+			}
+
+			$.add_notification (e.strings.field_added);
+			e.init_field (res.data);
+			e.show_add_field_button ();
+		});
+
 		return false;
 	};
 
@@ -194,7 +238,15 @@ var extended = (function ($) {
 	e.delete_field = function (evt) {
 		if (confirm (e.strings.confirm_delete)) {
 			var id = _parse_id ($(evt.target).attr ('id'));
-			console.log (id);
+			e.api.delete_field ({id: id}, function (res) {
+				if (! res.success) {
+					$.add_notification (res.error);
+					return;
+				}
+
+				$.add_notification (e.strings.field_deleted);
+				$('#' + id + '-wrapper').remove ();
+			});
 		};
 		return false;
 	};

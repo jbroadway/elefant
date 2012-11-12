@@ -39,7 +39,7 @@
 </div>
 
 <script id="field-tpl" type="text/html">
-	<div class="field" id="\{{id}}-wrapper">
+	<div class="field" id="\{{id}}-wrapper" data-sort="\{{sort}}">
 		<div class="field-handle" id="\{{id}}-handle"></div>
 		<form id="\{{id}}-form">
 			<p>
@@ -73,12 +73,15 @@
 <script>
 $(function () {
 	extended.init ({
-		extends: '{{class}}',
+		extends: {{extends||json_encode}},
 		fields: {{fields|json_encode}},
 		strings: {
 			confirm_delete: '{"Are you sure you want to delete this field?"}',
 			label_empty: '{"You must enter a field name."}',
-			options_empty: '{"You must enter options for a select field."}'
+			options_empty: '{"You must enter options for a select field."}',
+			field_added: '{"Field added."}',
+			field_updated: '{"Field updated."}',
+			field_delete: '{"Field deleted."}'
 		}
 	});
 });

@@ -50,6 +50,15 @@ class ExtendedFields extends Model {
 			->order ('sort', 'asc')
 			->fetch_orig ();
 	}
+
+	/**
+	 * Get the next number to use for sorting.
+	 */
+	public static function next_sort ($class) {
+		return self::query ()
+			->where ('class', $class)
+			->count ();
+	}
 }
 
 ?>
