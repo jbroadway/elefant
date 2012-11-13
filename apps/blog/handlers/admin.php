@@ -25,7 +25,7 @@ foreach ($posts as $k => $p) {
 	$posts[$k]->locked = $lock->exists ('Blog', $p->id);
 }
 
-$page->title = i18n_get ('Blog Posts');
+$page->title = __ ('Blog Posts');
 echo $tpl->render ('blog/admin', array (
 	'limit' => $limit,
 	'total' => $count,
