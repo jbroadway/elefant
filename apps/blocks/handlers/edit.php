@@ -47,8 +47,8 @@ if ($f->submit ()) {
 	$b->failed = $f->failed;
 	$b = $f->merge_values ($b);
 	$page->title = i18n_get ('Edit Block') . ': ' . $b->title;
-	$page->head = $tpl->render ('blocks/edit/head', $b)
-				. $tpl->render ('admin/wysiwyg');
+	$this->run ('admin/util/wysiwyg');
+	echo $tpl->render ('blocks/edit/head', $b);
 	echo $tpl->render ('blocks/edit', $b);
 }
 

@@ -66,8 +66,8 @@ if ($f->submit ()) {
 	$p = $f->merge_values ($p);
 	$p->tag_list = explode (',', $p->tags);
 	$page->title = i18n_get ('Add Blog Post');
-	$page->head = $tpl->render ('admin/wysiwyg')
-				. $tpl->render ('blog/add/head', $p);
+	$this->run ('admin/util/wysiwyg');
+	echo $tpl->render ('blog/add/head', $p);
 	echo $tpl->render ('blog/add', $p);
 }
 

@@ -183,14 +183,15 @@ body {
 	z-index: 25;
 	display: none;
 	top: 23px;
-	width: 100px;
-	left: -37px;
+	min-width:100px;
 }
 
 	.admin-tooltip-top {
 		height: 8px;
-		background: url(/apps/admin/css/admin/tooltip-top.png);
-		background-position: 50% 0%;
+		background: url(/apps/admin/css/admin/tooltip-top.png) 5px 0 no-repeat; 
+		z-index: 26;
+		width:100%;
+		position: absolute;
 	}
 
 	.admin-tooltip-body {
@@ -199,11 +200,11 @@ body {
 		color: #222;
 		font-weight: bold;
 		background-color: #fff;
-		border-left: 1px solid #222;
-		border-right: 1px solid #222;
-		border-bottom: 1px solid #222;
-		height: 20px;
+		border: 1px solid #222;		
 		text-align: center;
+		margin-top:7px;		
+		margin-left: -25%;
+		width:100%;
 	}
 
 	.admin-tooltip-body {

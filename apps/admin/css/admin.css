@@ -16,6 +16,11 @@ h1, h2 {
 	color: #222;
 }
 
+h4 {
+	font-size: 17px;
+	border-bottom: 1px solid #ccc;
+}
+
 table {
 	empty-cells: show;
 }

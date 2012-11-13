@@ -1,0 +1,106 @@
+<h4 id="extended-header">{"Custom Fields"}</h4>
+
+<div id="extended-fields">
+{% foreach fields as field %}
+	{% if field->type === 'text' %}
+		<p>
+			{{field->label|__}}:<br />
+			<input	type="text"
+					name="_extended[{{field->name}}]"
+					id="_extended_{{field->name}}"
+					value="{{field->value|quotes}}"
+					size="30"
+			/>
+			{% if field->required %}
+				<span class="notice" id="_extended_{{field->name}}_notice">{{field->label|__}} {"is required"}.</span>
+			{% end %}
+		</p>
+	{% elseif field->type === 'textarea' %}
+		<p>
+			{{field->label|__}}:<br />
+			<textarea	name="_extended[{{field->name}}]"
+						id="_extended_{{field->name}}"
+						cols="80"
+						rows="6"
+			>{{field->value}}</textarea>
+			{% if field->required %}
+				<br />
+				<span class="notice" id="_extended_{{field->name}}_notice">{{field->label|__}} {"is required"}.</span>
+			{% end %}
+		</p>
+	{% elseif field->type === 'select' %}
+		<p>
+			{{field->label|__}}:<br />
+			<select	name="_extended[{{field->name}}]"
+					id="_extended_{{field->name}}"
+			>
+				<option value="">- {"choose"} -</option>
+				{% foreach field->options as option %}
+				<option value="{{option}}"{% if option == $data->field->value %} selected{% end %}>{{option}}</option>
+				{% end %}
+			</select>
+			{% if field->required %}
+				<span class="notice" id="_extended_{{field->name}}_notice">{{field->label|__}} {"is required"}.</span>
+			{% end %}
+		</p>
+	{% elseif field->type === 'file' %}
+		<p>
+			{{field->label|__}}:<br />
+			<input	type="text"
+					name="_extended[{{field->name}}]"
+					id="_extended_{{field->name}}"
+					value="{{field->value|quotes}}"
+					class="wysiwyg-file-input"
+					size="30"
+			/>
+			<span	class="wysiwyg-fileManager"
+					id="{{field->name}}-fileManager"
+					title="{'Browse...'}"
+					onclick="return filemanager_{{field->name}} ()"
+					style="float: none; display: inline-block; margin: 4px 2px -4px 2px"
+			></span>
+			{% if field->required %}
+				<span class="notice" id="_extended_{{field->name}}_notice">{{field->label|__}} {"is required"}.</span>
+			{% end %}
+		</p>
+	{% end %}
+{% end %}
+</div>
+
+<script>
+{% foreach fields as field %}
+	{% if field->type === 'file' %}
+		function filemanager_{{field->name}} () {
+			$.wysiwyg.fileManager.init (function (file) {
+				$('#_extended_{{field->name}}').val (file);
+			});
+			return false;
+		}
+	{% end %}
+{% end %}
+$(function () {
+	$.expanded_section ({
+		header: '#extended-header',
+		section: '#extended-fields',
+		visible: false
+	});
+
+	{% foreach fields as field %}
+		{% if field->type === 'file' %}
+			$.wysiwyg.fileManager.setAjaxHandler ('//{{$_SERVER.HTTP_HOST}}/filemanager/embed');
+		{% end %}
+
+		{% if field->required %}
+			$('form').on ('submit', function () {
+				var val = $('#_extended_{{field->name}}').val ();
+				if (! val || val === null || val === '') {
+					$('#_extended_{{field->name}}_notice').show ();
+					return false;
+				}
+				$('#_extended_{{field->name}}_notice').hide ();
+				return true;
+			});
+		{% end %}
+	{% end %}
+});
+</script>
