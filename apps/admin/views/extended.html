@@ -1,0 +1,193 @@
+<div class="form">
+
+<div id="fields">
+</div>
+
+<div id="add">
+	<a href="#" id="add-field">{"Add Field"}</a>
+
+	<div class="field" id="new-field">
+	<form class="field-form" id="new-field-form">
+		<p>
+			{"Field name"}:
+			<input type="text" name="label" size="40" />
+			&nbsp;<span class="vertical-hr">|</span>&nbsp;
+			{"Type"}:
+			<select name="type" id="new-field-type">
+				<option value="text">{"Single-line text"}</option>
+				<option value="textarea">{"Paragraph text"}</option>
+				<option value="select">{"Drop down"}</option>
+				<option value="file">{"File link"}</option>
+			</select>
+			&nbsp;<span class="vertical-hr">|</span>&nbsp;
+			<input type="checkbox" name="required" value="1" /> {"Required"}
+		</p>
+		<p class="submit-buttons">
+			<span class="saving" id="new-field-saving">{"Saving..."}&nbsp;</span>
+			<input type="submit" value="{"Add"}" />
+			&nbsp;
+			<a href="#" id="new-field-cancel">{"Cancel"}</a>
+		</p>
+		<p style="float: left; display: none" id="new-field-options">
+			{"Drop down options (one per line)"}:<br />
+			<textarea name="options" cols="60" rows="4"></textarea>
+		</p>
+		<br style="clear: both" />
+	</form>
+</div>
+</div>
+
+</div>
+
+<script id="field-tpl" type="text/html">
+	<div class="field" id="\{{id}}-wrapper" data-sort="\{{sort}}">
+		<div class="field-handle" id="\{{id}}-handle"></div>
+		<form class="field-form" id="\{{id}}-form">
+			<p>
+				{"Field name"}:
+				<input type="text" name="label" value="\{{label}}" size="40" />
+				&nbsp;<span class="vertical-hr">|</span>&nbsp;
+				{"Type"}:
+				<select name="type" id="\{{id}}-type">
+					<option value="text"\{{#if text}} selected\{{/if}}>{"Single-line text"}</option>
+					<option value="textarea"\{{#if textarea}} selected\{{/if}}>{"Paragraph text"}</option>
+					<option value="select"\{{#if select}} selected\{{/if}}>{"Drop down"}</option>
+					<option value="file"\{{#if file}} selected\{{/if}}>{"File link"}</option>
+				</select>
+				&nbsp;<span class="vertical-hr">|</span>&nbsp;
+				<input type="checkbox" name="required" value="1"\{{#if required}} checked\{{/if}} /> {"Required"}
+			</p>
+			<p class="submit-buttons">
+				<span class="saving" id="\{{id}}-saving">{"Saving..."}&nbsp;</span>
+				<input type="submit" id="\{{id}}-save" value="{"Save"}" />
+				&nbsp;
+				<a href="#" id="\{{id}}-delete">{"Delete"}</a>
+			</p>
+			<p style="float: left\{{#unless select}}; display: none\{{/unless}}" id="\{{id}}-options">
+				{"Drop down options (one per line)"}:<br />
+				<textarea name="options" cols="60" rows="3">\{{{options}}}</textarea>
+			</p>
+			<br style="clear: both" />
+		</form>
+	</div>
+</script>
+
+<script>
+$(function () {
+	extended.init ({
+		extends: {{extends||json_encode}},
+		fields: {{fields|json_encode}},
+		strings: {
+			confirm_delete: '{"Are you sure you want to delete this field?"}',
+			label_empty: '{"You must enter a field name."}',
+			options_empty: '{"You must enter options for a select field."}',
+			field_added: '{"Field added."}',
+			field_updated: '{"Field updated."}',
+			field_delete: '{"Field deleted."}',
+			order_updated: '{"Field order has been updated."}'
+		}
+	});
+});
+</script>
+
+<style>
+.vertical-hr {
+	color: #ccc;
+}
+
+#fields {
+	margin-left: -33px;
+	padding-left: 33px;
+}
+
+.field {
+	position: relative;
+	margin-left: -33px;
+	padding-left: 33px;
+}
+
+	.placeholder {
+		border: 1px solid #ccc;
+		background-color: #ffe;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		border-radius: 4px;
+		padding: 5px 8px 5px 8px;
+		margin-bottom: 8px;
+		min-height: 58px;
+		z-index: 1;
+	}
+
+	.field-form {
+		position: relative;
+		border: 1px solid #ccc;
+		background-color: #fafafa;
+		-webkit-border-radius: 4px;
+		-webkit-border-top-left-radius: 0;
+		-moz-border-radius: 4px;
+		-moz-border-radius-topleft: 0;
+		border-radius: 4px;
+		border-top-left-radius: 0;
+		padding: 5px 8px 5px 8px;
+		margin-bottom: 8px;
+		min-height: 58px;
+		z-index: 1;
+	}
+
+	.field-handle {
+		position: absolute;
+		display: block;
+		border: 1px solid #ccc;
+		border-right: 0px none;
+		background-color: #fafafa;
+		background-image: url(/apps/admin/css/admin/drag_drop_up_down.png);
+		background-repeat: no-repeat;
+		background-position: 5px 5px;
+		-webkit-border-radius: 4px;
+		-webkit-border-top-right-radius: 0;
+		-webkit-border-bottom-right-radius: 0;
+		-moz-border-radius: 4px;
+		-moz-border-radius-topright: 0;
+		-moz-border-radius-bottomright: 0;
+		border-radius: 4px;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+		width: 24px;
+		height: 24px;
+		margin-top: 0px;
+		margin-left: -24px;
+		z-index: 2;
+	}
+	
+	.field-handle:hover {
+		cursor: move;
+	}
+
+	.field p {
+		margin: 8px 0px 0px 0px;
+	}
+
+	.field p:first-child {
+		margin-top: 0px;
+	}
+	
+	.submit-buttons {
+		position: absolute;
+		bottom: 5px;
+		right: 8px;
+	}
+
+	.saving {
+		display: none;
+	}
+
+#new-field {
+	display: none;
+}
+
+	#new-field form {
+		-webkit-border-top-left-radius: 4px;
+		-moz-border-radius-topleft: 4px;
+		border-top-left-radius: 4px;
+	}
+</style>

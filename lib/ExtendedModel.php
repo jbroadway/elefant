@@ -144,11 +144,26 @@ class ExtendedModel extends Model {
 			}
 		}
 
-		return parent::__construct ($vals, $is_new);
+		// `_extended` is a special field to auto-populate extended attributes
+		if (is_array ($vals) && isset ($vals['_extended'])) {
+			$extended = $vals['_extended'];
+			unset ($vals['_extended']);
+		}
+
+		parent::__construct ($vals, $is_new);
+
+		// Populate extended attributes after `parent::__construct()`
+		if (isset ($extended)) {
+			foreach ($extended as $k => $v) {
+				$this->ext ($k, $v);
+			}
+		}
 	}
 
 	/**
-	 * Need to verify extended fields, so we override the put() method.
+	 * Need to verify extended fields, so we override the `put()` method.
+	 * Note: On update forms, call `update_extended()` if the fields were
+	 * set by the `admin/util/extended` handler.
 	 */
 	public function put () {
 		$failed = Validator::validate_list ($this->ext (), $this->_extended_verify);
@@ -158,6 +173,28 @@ class ExtendedModel extends Model {
 		}
 
 		return parent::put ();
+	}
+
+	/**
+	 * Look for `_extended` field and auto-populate extended attributes.
+	 * Will unset `$_POST['_extended']` as a side-effect. Call this before
+	 * calling `put()` on update forms that use the `admin/util/extended`
+	 * handler.
+	 */
+	public function update_extended () {
+		if (isset ($_POST['_extended'])) {
+			foreach ($_POST['_extended'] as $k => $v) {
+				$this->ext ($k, $v);
+			}
+			unset ($_POST['_extended']);
+		}
+	}
+
+	/**
+	 * Return the original data as an object, including extended fields.
+	 */
+	public function orig () {
+		return (object) array_merge ($this->data, $this->ext ());
 	}
 
 	/**

@@ -21,6 +21,7 @@ if ($f->submit ()) {
 	if (! empty ($_POST['password'])) {
 		$u->password = User::encrypt_pass ($_POST['password']);
 	}
+	$u->update_extended ();
 	$u->put ();
 	Versions::add ($u);
 	if (! $u->error) {
