@@ -167,6 +167,7 @@ var extended = (function ($) {
 		e.div.append (e.render.field (field));
 
 		$('#' + field.id + '-type').on ('change', e.toggle_field_options);
+		$('#' + field.id + '-save').on ('click', e.update_field);
 		$('#' + field.id + '-delete').on ('click', e.delete_field);
 	};
 
@@ -251,6 +252,46 @@ var extended = (function ($) {
 			$.add_notification (e.strings.field_added);
 			e.init_field (res.data);
 			e.show_add_field_button ();
+		});
+
+		return false;
+	};
+
+	/**
+	 * Update a field.
+	 */
+	e.update_field = function (evt) {
+		var id = _parse_id ($(evt.target).attr ('id')),
+			form = $('#' + id + '-form')[0],
+			data = {
+				id: id,
+				label: form.elements.label.value,
+				type: form.elements.type[form.elements.type.selectedIndex].value,
+				required: form.elements.required.checked ? 1 : 0,
+				options: form.elements.options.value,
+				name: _name (form.elements.label.value),
+				class: e.extends
+			};
+
+		if (data.label.length === 0) {
+			return e.error (e.strings.label_empty);
+		}
+
+		if (data.type === 'select' && data.options.length === 0) {
+			return e.error (e.strings.options_empty);
+		}
+
+		$('#' + id + '-saving').show ();
+
+		e.api.update_field (data, function (res) {
+			$('#' + id + '-saving').hide (200);
+
+			if (! res.success) {
+				$.add_notification (res.error);
+				return;
+			}
+
+			$.add_notification (e.strings.field_updated);
 		});
 
 		return false;
