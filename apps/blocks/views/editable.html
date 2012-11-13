@@ -3,7 +3,7 @@
 	{% if locked %}
 		<a href="javascript:void(0)" title="{"Editing Locked"}"><img src="/apps/admin/css/admin/lock.png" /></a>
 	{% else %}
-		<a href="/blocks/edit?id={{ id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Edit Block"}"><img src="/apps/admin/css/admin/edit.png" /></a><a href="/admin/versions?type=Block&id={{ id }}" title="{"Versions"}"><img src="/apps/admin/css/admin/versions.png" /></a><a href="/blocks/delete?id={{ id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Delete Block"}" onclick="return confirm ('{"Are you sure you want to delete the current block?"}');"><img src="/apps/admin/css/admin/delete.png" /></a>
+		<a href="/blocks/edit?id={{ id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Edit Block"}"><img src="/apps/admin/css/admin/edit.png" /></a><a href="/admin/versions?type=Block&id={{ id }}" title="{"Versions"}"><img src="/apps/admin/css/admin/versions.png" /></a><a href="/blocks/delete?id={{ id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Delete Block"}" onclick="return confirm  {% if new_id %}('{"Are you sure you want to delete the default block? This will have impact on all other Pages using this default block"}'){% else %} ('{"Are you sure you want to delete the current block?"}') {% end %};"><img src="/apps/admin/css/admin/delete.png" /></a>{% if new_id %}<a href="/blocks/add?id={{ new_id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Add a page related block"}"><img src="/apps/admin/css/admin/add.png" /></a> {% end %}
 	{% end %}
 {% else %}
 	<a href="/blocks/add?id={{ id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Add Block"}"><img src="/apps/admin/css/admin/add.png" /></a>
