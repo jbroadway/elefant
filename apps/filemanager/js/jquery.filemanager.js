@@ -8,7 +8,10 @@
 		aviary_key: false,
 		aviary_current: false,
 		text_file: /\.(txt|html?|xml|md|csv|css|js|json)$/,
-		img_file: /\.(gif|png|jpe?g)$/
+		img_file: /\.(gif|png|jpe?g)$/,
+		strings: {
+			
+		}
 	};
 
 	$.extend ({
@@ -67,6 +70,8 @@
 						if (res.success && res.data) {
 							if (res.data.dirs) {
 								for (var i = 0; i < res.data.dirs.length; i++) {
+									res.data.dirs[i]._name = res.data.dirs[i].name.replace (/'/g, '\\\'');
+									res.data.dirs[i]._path = res.data.dirs[i].path.replace (/'/g, '\\\'');
 									$.tmpl ('tpl_dir', res.data.dirs[i]).appendTo (tbody);
 								}
 							}
@@ -76,6 +81,8 @@
 										? res.data.files[i].name.match (filemanager.img_file)
 										: false;
 									res.data.files[i].text_file = res.data.files[i].name.match (filemanager.text_file);
+									res.data.files[i]._name = res.data.files[i].name.replace (/'/g, '\\\'');
+									res.data.files[i]._path = res.data.files[i].path.replace (/'/g, '\\\'');
 									$.tmpl ('tpl_file', res.data.files[i]).appendTo (tbody);
 								}
 							}
@@ -141,6 +148,21 @@
 			$.close_dialog ();
 			$.add_notification (res.data.msg);
 		});
+		return false;
+	};
+
+	$.filemanager_verify_files = function (files) {
+		if (files.length === 0) {
+			return 'no_files';
+		}
+		for (var i = 0; i < files.length; i++) {
+			if (files[i].name === '') {
+				return 'invalid_name';
+			}
+			if (files[i].name.indexOf ('..') !== -1) {
+				return 'invalid_name';
+			}
+		}
 		return false;
 	};
 })(jQuery);

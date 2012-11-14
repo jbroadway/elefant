@@ -13,41 +13,47 @@ if (! User::require_admin ()) {
 $root = getcwd () . '/files/';
 
 if (! FileManager::verify_folder ($_POST['path'], $root)) {
-	$page->title = i18n_get ('Invalid Path');
-	echo '<p><a href="/filemanager">' . i18n_get ('Back') . '</a></p>';
+	$page->title = __ ('Invalid Path');
+	echo '<p><a href="/filemanager">' . __ ('Back') . '</a></p>';
 	return;
 }
 
 if (! isset ($_FILES['file'])) {
-	$page->title = i18n_get ('An Error Occurred');
-	echo '<p>' . i18n_get ('No file uploaded or file too large.') . '</p>';
-	echo '<p><a href="/filemanager">' . i18n_get ('Back') . '</a></p>';
+	$page->title = __ ('An Error Occurred');
+	echo '<p>' . __ ('No file uploaded or file too large.') . '</p>';
+	echo '<p><a href="/filemanager">' . __ ('Back') . '</a></p>';
 	return;
 }
 
 foreach ($_FILES['file']['error'] as $error) {
 	if ($error > 0) {
 		$errors = array (
-			1 => i18n_get ('File size is too large.'),
-			2 => i18n_get ('File size is too large.'),
-			3 => i18n_get ('The file was only partially uploaded.'),
-			4 => i18n_get ('No file was uploaded.'),
-			6 => i18n_get ('Missing a temporary folder, check your PHP setup.'),
-			7 => i18n_get ('Failed to write the file to disk.'),
-			8 => i18n_get ('A PHP extension stopped the file upload.')
+			1 => __ ('File size is too large.'),
+			2 => __ ('File size is too large.'),
+			3 => __ ('The file was only partially uploaded.'),
+			4 => __ ('No file was uploaded.'),
+			6 => __ ('Missing a temporary folder, check your PHP setup.'),
+			7 => __ ('Failed to write the file to disk.'),
+			8 => __ ('A PHP extension stopped the file upload.')
 		);
-		$page->title = i18n_get ('An Error Occurred');
-		echo '<p>' . i18n_get ('Error message') . ': ' . $errors[$error] . '</p>';
-		echo '<p><a href="/filemanager">' . i18n_get ('Back') . '</a></p>';
+		$page->title = __ ('An Error Occurred');
+		echo '<p>' . __ ('Error message') . ': ' . $errors[$error] . '</p>';
+		echo '<p><a href="/filemanager">' . __ ('Back') . '</a></p>';
 		return;
 	}
 }
 
 for ($i = 0; $i < count ($_FILES['file']['name']); $i++) {
 	if (@file_exists ($root . $_POST['path'] . '/' . $_FILES['file']['name'][$i])) {
-		$page->title = i18n_get ('File Already Exists') . ': ' . $_FILES['file']['name'][$i];
-		echo '<p>' . i18n_get ('A file by that name already exists.') . '</p>';
-		echo '<p><a href="/filemanager">' . i18n_get ('Back') . '</a></p>';
+		$page->title = __ ('File Already Exists') . ': ' . $_FILES['file']['name'][$i];
+		echo '<p>' . __ ('A file by that name already exists.') . '</p>';
+		echo '<p><a href="/filemanager">' . __ ('Back') . '</a></p>';
+		return;
+	}
+	if (strpos ($_FILES['file']['name'][$i], '..') !== false) {
+		$page->title = __ ('Invalid File Name') . ': ' . $_FILES['file']['name'][$i];
+		echo '<p>' . __ ('The file name contains invalid characters.') . '</p>';
+		echo '<p><a href="/filemanager">' . __ ('Back') . '</a></p>';
 		return;
 	}
 }
@@ -68,12 +74,12 @@ for ($i = 0; $i < count ($_FILES['file']['name']); $i++) {
 
 if (count ($_FILES['file']) > 1) {
 	if (count ($_FILES['file']['name']) === $count) {
-		$this->add_notification (i18n_getf ('%d files saved.', $count));
+		$this->add_notification (__ ('%d files saved.', $count));
 	} else {
-		$this->add_notification (i18n_getf ('%d file saved. Unable to save files: %s', $count, join (', ', $errors)));
+		$this->add_notification (__ ('%d file saved. Unable to save files: %s', $count, join (', ', $errors)));
 	}
 } else {
-	$this->add_notification (i18n_get ('File saved.'));
+	$this->add_notification (__ ('File saved.'));
 }
 $this->redirect ('/filemanager?path=' . $_POST['path']);
 

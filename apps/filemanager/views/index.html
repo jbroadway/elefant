@@ -19,14 +19,14 @@
 		<td>${fsize}</td>
 		<td style="text-align: right">
 			\{{if image_file}}
-			<a href="#" onclick="return $.filemanager ('img', {file: '${path}', name: '${name}'})">{"Edit"}</a> |
+			<a href="#" onclick="return $.filemanager ('img', {file: '${_path}', name: '${_name}'})">{"Edit"}</a> |
 			\{{/if}}
 			\{{if text_file}}
 			<a href="/filemanager/edit?file=${path}">{"Edit"}</a> |
 			\{{/if}}
-			<a href="#" onclick="return $.filemanager ('prop', {file: '${path}', name: '${name}'})">{"Properties"}</a> |
-			<a href="#" onclick="return $.filemanager ('mv', {file: '${path}', name: '${name}'})">{"Rename"}</a> | 
-			<a href="#" onclick="return $.filemanager ('rm', {file: '${path}'})">{"Delete"}</a>
+			<a href="#" onclick="return $.filemanager ('prop', {file: '${_path}', name: '${_name}'})">{"Properties"}</a> |
+			<a href="#" onclick="return $.filemanager ('mv', {file: '${_path}', name: '${_name}'})">{"Rename"}</a> | 
+			<a href="#" onclick="return $.filemanager ('rm', {file: '${_path}'})">{"Delete"}</a>
 		</td>
 	</tr>
 </script>
@@ -41,6 +41,10 @@ $(function () {
 
 	});
 });
+var i18n = {
+	no_files: '{"Please select a file to upload."}',
+	invalid_name: '{"The file name contains invalid characters."}'
+};
 </script>
 
 <h2>
@@ -63,7 +67,7 @@ $(function () {
 	<input type="hidden" name="path" value="{{ path }}" />
 	<a href="#" onclick="return $.filemanager ('mkdir', {file: '{{ path }}'})">{"New folder"}</a>
 	&nbsp;|&nbsp;
-	{"New file"} ({"max"} {{ ini_get ('upload_max_filesize')}}B): <input type="file" name="file[]" multiple="multiple" /> <input type="submit" value="{"Upload"}" onclick="if (this.form.elements.file.value == '') { alert ('Please select a file to upload.'); return false; } this.value = 'Uploading...'; this.disabled = true; this.form.submit ()" />
+	{"New file"} ({"max"} {{ ini_get ('upload_max_filesize')}}B): <input type="file" name="file[]" id="file-upload" multiple="multiple" /> <input type="submit" value="{"Upload"}" onclick="err = $.filemanager_verify_files ($('#file-upload')[0].files); if (err) { alert (i18n[err]); return false; } this.value = 'Uploading...'; this.disabled = true; this.form.submit ()" />
 	&nbsp;|&nbsp;
 	<a href="/filemanager/multi?path=/{{ path }}">{"Multi-file uploader"}</a>
 	</form>
