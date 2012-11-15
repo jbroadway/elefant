@@ -18,15 +18,22 @@ $page->layout = false;
 echo "Not implemented yet.\n";
 return;
 
+require_once ('apps/cli/lib/Functions.php');
+
 // get the major/minor version
 $major_minor = preg_replace ('/\.[0-9]+$/', '', ELEFANT_VERSION);
 
 // fetch the latest version from the server
 $res = json_decode (
-	file_get_contents (
+	fetch_url (
 		'http://www.elefantcms.com/updates/check.php?v=' . $major_minor
 	)
 );
+
+if (! is_object ($res)) {
+	echo "Error: Unable to fetch latest version from the server.\n";
+	return;
+}
 
 // are we already up to date?
 if ($res->latest <= ELEFANT_VERSION) {
@@ -44,16 +51,24 @@ if (! file_exists ('conf/updates')) {
 }
 
 // check for and download new patch files
-$res = json_decode (file_get_contents ('http://www.elefantcms.com/updates/patches.php'));
+$res = json_decode (fetch_url ('http://www.elefantcms.com/updates/patches.php'));
+
+if (! is_object ($res)) {
+	echo "Error: Unable to fetch patch list from the server.\n";
+	return;
+}
 
 foreach ($res->patches as $patch_file) {
 	$base = basename ($patch_file);
 	if (! file_exists ('conf/updates/' . $base)) {
 		echo "Fetching new patch: {$base}\n";
-		file_put_contents (
-			'conf/updates/' . $base,
-			file_get_contents ($patch_file)
-		);
+		$contents = fetch_url ($patch_file);
+		if (! $contents) {
+			printf ("Error: Unable to retrieve file %s\n", $patch_file);
+			return;
+		}
+		file_put_contents ('conf/updates/' . $base, $contents);
+
 		// TODO: MD5 checks from 3rd party repo
 	}
 }
@@ -62,16 +77,20 @@ foreach ($res->scripts as $script_file) {
 	$base = basename ($script_file);
 	if (! file_exists ('conf/updates/' . $base)) {
 		echo "Fetching new db update: {$base}\n";
-		file_put_contents (
-			'conf/updates/' . $base,
-			file_get_contents ($script_file)
-		);
+		$contents = fetch_url ($script_file);
+		if (! $contents) {
+			printf ("Error: Unable to retrieve file %s\n", $script_file);
+			return;
+		}
+		file_put_contents ('conf/updates/' . $base, $contents);
+
 		// TODO: MD5 checks from 3rd party repo
 	}
 }
 
-// TODO:
-// 1. determine which patches/db updates need to be run
-// 2. test and apply the patches and db updates in sequence
+$versions = cli_get_versions (ELEFANT_VERSION, $latest);
+info ($versions, true);
+
+// TODO: Test and apply the patches and db updates in sequence
 
 ?>
