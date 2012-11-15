@@ -22,14 +22,11 @@ $(function () {
 						if (file.match (/\.(jpg|png|gif)$/i)) {
 							$('#webpage-body').wysiwyg ('insertImage', file);
 						} else if (file.match (/\.swf$/i)) {
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="filemanager/swf?file=' + file + '" data-label="{"Embedded Flash (SWF)"}" title="{"Click to edit."}"></span></p>');
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="filemanager/swf?file=' + file + '" data-label="{"Embedded Flash (SWF)"}" title="{"Click to edit."}"></span></p><p><br /></p>');
 						} else if (file.match (/\.mp4$/i)) {
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="filemanager/video?file=' + file + '" data-label="{"Embedded Video (MP4)"}" title="{"Click to edit."}"></span></p>');
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="filemanager/video?file=' + file + '" data-label="{"Embedded Video (MP4)"}" title="{"Click to edit."}"></span></p><p><br /></p>');
 						} else if (file.match (/\.mp3$/i)) {
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="filemanager/audio?file=' + file + '" data-label="{"Embedded Audio (MP3)"}" title="{"Click to edit."}"></span></p>');
-							$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
+							$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="filemanager/audio?file=' + file + '" data-label="{"Embedded Audio (MP3)"}" title="{"Click to edit."}"></span></p><p><br /></p>');
 						} else {
 							$('#webpage-body').wysiwyg ('createLink', file);
 						}
@@ -84,8 +81,7 @@ $(function () {
 
 	function wysiwyg_embed_update (existing, embed_code, label) {
 		if (! existing) {
-			$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="{"Click to edit."}"></span></p>');
-			$('#webpage-body').wysiwyg ('insertHtml', '<p><br /></p>');
+			$('#webpage-body').wysiwyg ('insertHtml', '<p><span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="{"Click to edit."}"></span></p><p><br /></p>');
 		} else {
 			$(existing).replaceWith ('<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="{"Click to edit."}"></span>');			
 		}
