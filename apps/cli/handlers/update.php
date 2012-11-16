@@ -89,8 +89,37 @@ foreach ($res->scripts as $script_file) {
 }
 
 $versions = cli_get_versions (ELEFANT_VERSION, $latest);
-info ($versions, true);
 
-// TODO: Test and apply the patches and db updates in sequence
+// Test and apply the patches and db updates in sequence
+foreach ($versions as $version) {
+	printf ("Testing patch: %s\n", basename ($version['patch']));
+	exec ('patch --dry-run -p1 -f -i ' . $version['patch'], $output);
+	$output = join ('', $output);
+	if (strpos ($output, 'FAILED')) {
+		printf ("Error applying patch %s\n", $version['patch']);
+		return;
+	}
+
+	// Patch is okay to apply
+	echo "Patch ok, applying...\n";
+	exec ('patch -p1 -f -i ' . $version['patch']);
+
+	// Apply associated database updates
+	if ($version['script']) {
+		printf ("Applying db update: %s\n", basename ($version['script']));
+		$sqldata = sql_split (file_get_contents ($version['script']));
+		DB::beginTransaction ();
+		foreach ($sqldata as $sql) {
+			if (! DB::execute ($sql)) {
+				DB::rollback ();
+				printf ("Error applying db update: %s\n", $version['script']);
+				return;
+			}
+		}
+		DB::commit ();
+	}
+}
+
+printf ("Applied %d updates.\n", count ($versions));
 
 ?>
