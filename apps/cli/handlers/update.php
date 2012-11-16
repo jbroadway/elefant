@@ -94,9 +94,11 @@ $versions = cli_get_versions (ELEFANT_VERSION, $latest);
 foreach ($versions as $version) {
 	printf ("Testing patch: %s\n", basename ($version['patch']));
 	exec ('patch --dry-run -p1 -f -i ' . $version['patch'], $output);
-	$output = join ('', $output);
+	$output = join ("\n", $output);
 	if (strpos ($output, 'FAILED')) {
 		printf ("Error applying patch %s\n", $version['patch']);
+		echo "See conf/updates/error.log for details.\n";
+		file_put_contents ('conf/updates/error.log', $output);
 		return;
 	}
 
@@ -111,8 +113,11 @@ foreach ($versions as $version) {
 		DB::beginTransaction ();
 		foreach ($sqldata as $sql) {
 			if (! DB::execute ($sql)) {
+				$error = DB::error ();
 				DB::rollback ();
 				printf ("Error applying db update: %s\n", $version['script']);
+				echo "See conf/updates/error.log for details.\n";
+				file_put_contents ('conf/updates/error.log', $error);
 				return;
 			}
 		}
