@@ -412,6 +412,15 @@ class Navigation {
 		}
 		return true;
 	}
+	
+	/**
+	 * Update the tree from Json to the file.
+	 */
+	public function update ($tree) {
+		$this->tree = $tree;
+		return true;
+	}
+	
 
 	/**
 	 * Save the tree out to the file.

@@ -67,7 +67,21 @@ switch ($this->params[0]) {
 		} else {
 			$error = $nav->error;
 		}
-		break;
+		break;		
+	case 'update':
+		$tree = $_POST['tree'];	
+		if(empty($tree)){
+			$tree =  array();
+		}
+		require_once ('apps/navigation/lib/Functions.php');		
+		if ($nav->update ($tree) && $nav->save ()) {
+			$out = array (
+				'msg' => sprintf ('Nav json has been updated'),
+			);
+		} else {
+			$error = $nav->error;
+		}
+		break;	
 	default:
 		$error = 'Unknown method';
 		break;
