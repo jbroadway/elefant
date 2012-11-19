@@ -23,6 +23,7 @@ $out = null;
 $nav = new Navigation;
 
 switch ($this->params[0]) {
+	//TODO: check if this is still needed?
 	case 'add':
 		$id = $_POST['page'];
 		$parent = $_POST['parent'];
@@ -39,6 +40,7 @@ switch ($this->params[0]) {
 			$error = $nav->error;
 		}
 		break;
+	//TODO: check if this is still needed?
 	case 'move':
 		$id = $_POST['page'];
 		$ref = $_POST['ref'];
@@ -54,6 +56,7 @@ switch ($this->params[0]) {
 			$error = $nav->error;
 		}
 		break;
+	//TODO: check if this is still needed?
 	case 'remove':
 		$id = $_POST['page'];
 		if ($nav->remove ($id) && $nav->save ()) {
