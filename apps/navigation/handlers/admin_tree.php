@@ -9,6 +9,6 @@ $n = new Navigation;
 require_once ('apps/navigation/lib/Functions.php');
 navigation_print_admin_tree ($n->tree);
 
-$this->cache = true;
+//$this->cache = true;
 
 ?>
