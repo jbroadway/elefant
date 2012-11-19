@@ -16,13 +16,16 @@ if (typeof String.prototype.trim !== 'function') {
 			selectedClass: "tdd-selected",
 			collapsedClass: "tdd-collapsed",
 			expandedClass: "tdd-expanded",
+			appendClass: "tdd-append", 
+			beforeClass: "tdd-before", 
+			afterClass: "tdd-after",
 			inFolderThreshhold: 100,
-			cursorAt: {left:10, top: -40}, 
+			cursorAt: {left: 10, top: -40}, 
 			dragContainer: $('<div class="tdd-dragContainer" />'),			
 			marker: $('<div />'),
 			attributes: ["id", "class"],
-			getUrl: "/navigation/api/get",
-			updateUrl: "/navigation/api/update"		
+			getUrl: null,
+			updateUrl: null		
 		}		
 	};	
 	
@@ -34,20 +37,29 @@ if (typeof String.prototype.trim !== 'function') {
 			window.console.log(txt);
 		}
 	}
+			
+	function getContext(el) {
+		return el.closest(".treeDragDrop");
+	}
 	
-	function serializeTree(el){
-		var data = [];
+	function getOptions(el) {
+		return el.closest(".treeDragDrop").data("options");
+	}
+	
+	function serializeTree(el, ctx) {
+		var data = [],
+			intestingAttr = getOptions(el).attributes;
+		
 		el.children("li").each(function (index, value) {			
 			var obj = {},
-				attr = {}, 
-				intestingAttr = $.treeDragDrop.defaults.attributes;
-			
+				attr = {};
+				
 			obj.data = $(value).clone().children().remove().end().text().trim();
 			$.each(intestingAttr, function (index, attribute) {
 				if ($(value).attr(attribute) !== undef) {
-					if(attribute == "class"){
-						attr["classname"] = $(value).attr(attribute);
-					}else{
+					if (attribute === "class") {
+						attr.classname = $(value).attr(attribute);
+					} else {
 						attr[attribute] = $(value).attr(attribute);
 					}
 				}
@@ -62,14 +74,14 @@ if (typeof String.prototype.trim !== 'function') {
 		return data;
 	}
 		
-	function sendTree(tree){
+	function sendTree(tree, updateUrl) {
+		var ajaxData, 
+			treeData = serializeTree(tree);
 		
-		var ajaxData, treeData = serializeTree(tree);
-		
-		if ($.treeDragDrop.defaults.updateUrl !== null) {
+		if (updateUrl !== null) {
 			ajaxData = {tree: treeData};
 			debug(ajaxData);
-			$.post($.treeDragDrop.defaults.updateUrl, ajaxData, function (res) {
+			$.post(updateUrl, ajaxData, function (res) {
 				//console.log (res.data.msg);
 				//TODO: error handling
 				return true;
@@ -81,10 +93,9 @@ if (typeof String.prototype.trim !== 'function') {
 		
 	$.treeDragDrop.handlers = {
 				
-		handleDraggableStart: function (e, o) {
-			var ctx = $(e.target).data("tddCtx");	
+		handleDraggableStart: function (e, o) {			
 			debug("handleDraggableStart");	
-			$(e.target).addClass($.treeDragDrop.defaults.selectedClass);
+			$(e.target).addClass(getOptions($(e.target)).selectedClass);
 			document.onmousemove = function () {
 				return false;
 			};	
@@ -96,45 +107,53 @@ if (typeof String.prototype.trim !== 'function') {
 		
 		handleDraggableStop: function (e, o) {
 			debug("handleDraggableStop");
-			var ctx = $(e.target).data("tddCtx"),
+			
+			var ctx = getContext($(e.target)),
+				options = getOptions($(e.target)),			
 				tree = $(".tdd-tree", ctx);			
 			// remove the mousemove Listener			
-			$("li, .tdd-tree", ctx).unbind("mousemove").removeClass($.treeDragDrop.defaults.selectedClass);;
+			$("li, .tdd-tree", ctx).unbind("mousemove").removeClass(options.selectedClass);
 			
 			// build the array and post the ajax
-			sendTree(tree);
+			debug("handleDraggableStop: sendTree");
+			sendTree(tree, options.updateUrl);
+			
+			
 		},
 		
 		handleDroppableOut: function (e, o) {
-			$(e.target).unbind("mousemove");
+			$(e.target).unbind("mousemove");						
 		},
 		
 		handleDroppableOver: function (e, o) {
 			debug("handleDroppableOver");
-			var	marker = $.treeDragDrop.defaults.marker;		
+			var	options = getOptions($(e.target)),
+				selectedClass = options.selectedClass,
+				appendClass = options.appendClass, 
+				beforeClass = options.beforeClass,
+				afterClass = options.afterClass,
+				marker = options.marker;		
 			
 			if ($(e.target).is("li")) {
-				
 				// bind MouseMove to the item to check if the draggable should be appended or placed before or after the item 
 				$(e.target).bind("mousemove", function (mme) {
 					
-					var target = $(mme.target),
-						selectedClass = $.treeDragDrop.defaults.selectedClass,
+					var target = $(mme.target),						
 						x = mme.pageX - $(mme.target).offset().left,
 						y = mme.pageY - $(mme.target).offset().top,
-						threshhold = $.treeDragDrop.defaults.inFolderThreshhold;
+						threshhold = options.inFolderThreshhold;
 					
 					// threshhold for apending or placing before/ater
 					// will grow according to the deepness of nesting
 					
 					if (target.find("ul").length !== 0) {
-						threshhold = Math.min($.treeDragDrop.defaults.inFolderThreshhold * (target.find("ul").length + 1), target.width() * 0.75);
+						threshhold = Math.min(options.inFolderThreshhold * (target.find("ul").length + 1), target.width() * 0.75);
 					}
 					
-					marker.removeClass("tdd-append", "tdd-before", "tdd-after");
+					marker.removeClass(appendClass, beforeClass, afterClass);
 										
 					// prevent dropping items in itself
-					if (target.hasClass(selectedClass) || target.parents("." + selectedClass).length !== 0 ||  target.parents(".tdd-trashbin").length !== 0 ) {
+					if (target.hasClass(selectedClass) || target.parents("." + selectedClass).length !== 0 || target.parents(".tdd-trashbin").length !== 0) {
 						marker.detach();
 					} else {
 						// append to item
@@ -147,23 +166,24 @@ if (typeof String.prototype.trim !== 'function') {
 							}
 						// place before item	
 						} else if (y < target.height() / 2) {
-							marker.addClass("tdd-before");
+							marker.addClass(beforeClass);
 							target.before(marker);
 						// place after item
 						} else {
-							marker.addClass("tdd-after");
+							marker.addClass(afterClass);
 							target.after(marker);
 						}
 					}
-										
+							
 					//e.stopImmediatePropagation();
 				});
-			
+							
 			// if tree is empty items may be put in the ul 
-			} else if ($(e.target).hasClass("tdd-tree") /* && $(".tdd-tree").children().length === 0 */) {
+			//} else if ($(e.target).hasClass("tdd-tree")/* && $(".tdd-tree").children().length === 0 */) {
+			} else if ($(e.target).hasClass("tdd-tree")) {
 				debug("tree");
-				marker.removeClass("tdd-append", "tdd-before", "tdd-after");
-				marker.addClass("tdd-before");
+				marker.removeClass(appendClass, beforeClass, afterClass);
+				marker.addClass(beforeClass);
 				$(e.target).append(marker);
 			} else if ($(e.target).hasClass("tdd-trashbin")) {
 				debug("trashbin");
@@ -176,24 +196,21 @@ if (typeof String.prototype.trim !== 'function') {
 		handleDroppableDrop: function (e, o) {
 			debug("handleDroppableDrop");
 			
-			var	ajaxData,
-				draggable = $(o.draggable),
+			var	draggable = $(o.draggable),
 				dropable = $(e.target),
 				marker = $.treeDragDrop.defaults.marker,
 				ctx = draggable.data("tddCtx"),
-				options = ctx.data("options"),
-				tree = $(".tdd-tree", ctx);
+				options = ctx.data("options");
 				
 			// remove selection	
-			draggable.removeClass($.treeDragDrop.defaults.selectedClass);
+			draggable.removeClass(options.selectedClass);
 			
 			// if its the trashbin put them all next to each other (no nesting)
 			if (dropable.parents(".tdd-trashbin").length !== 0 || dropable.hasClass("tdd-trashbin")) {
 				$(".tdd-trashbin").append(draggable);	
 				$("li", draggable).each(function (index, value) {
 					$(".tdd-trashbin").append(value);
-				});
-				
+				});				
 				
 			// put the item directly in the tree ul if it contains no other element	
 			} else if (dropable.hasClass("tdd-tree") && $(".tdd-tree").children().length === 0) {
@@ -223,26 +240,27 @@ if (typeof String.prototype.trim !== 'function') {
 		handleClick: function (e) {
 			
 			var target = $(e.target),
-				ctx = $(e.target).data("tddCtx"),
-				tree = $(".tdd-tree", ctx);
-				options = ctx.data("options"),
-				collapsed = ctx.data("options").collapsedClass,
-				expanded = ctx.data("options").expandedClass;
+				ctx = getContext($(e.target)),
+				tree = $(".tdd-tree", ctx),
+				options = getOptions($(e.target)),
+				collapsed = options.collapsedClass,
+				expanded = options.expandedClass;
 			
-			if ($(e.target).children("ul").length === 0) {				
-				target.removeClass(collapsed).removeClass(expanded);
-			} else {
+			
+			if (target.children("ul").length === 0) {				
+				return false;				
+			} else {			
 				if (target.hasClass(collapsed)) {
-					target.removeClass(collapsed).addClass(expanded);
-					$(e.target).children("ul").show();
+					target.removeClass(collapsed).addClass(expanded);					
+					target.children("ul").show();					
 				} else {
 					target.removeClass(expanded).addClass(collapsed);	
-					$(e.target).children("ul").hide();
+					target.children("ul").hide();
 				}
 			}	
 			
 			debug("handleClick: sendTree");
-			sendTree(tree);	
+			sendTree(tree, options.updateUrl);	
 					
 			e.stopImmediatePropagation();
 		}
@@ -255,14 +273,16 @@ if (typeof String.prototype.trim !== 'function') {
 		
 		//extend the global default with the options for the element
 		options = $.extend({}, $.treeDragDrop.defaults, options);
-
+		
+		
+		
 		return this.each(function () {
-			var $el = $(this),
-				data = $el.data('treeDragDrop');
+			var ctx = $(this),
+				data = ctx.data('treeDragDrop');
 			
 			// init the element
 			if (!data) {	
-				$("li", $el).draggable({ 
+				$("li", ctx).draggable({ 
 					addClasses: false,
 					cursorAt:  $.treeDragDrop.defaults.cursorAt,
 					helper: "clone",
@@ -286,9 +306,9 @@ if (typeof String.prototype.trim !== 'function') {
 					$.treeDragDrop.handlers.handleClick
 				).bind("onselectstart", function () { 
 					return false;
-				}).attr("unselectable", "on").data("tddCtx", $el).has("ul").addClass($.treeDragDrop.defaults.expandedClass);
+				}).attr("unselectable", "on").data("tddCtx", ctx).has("ul").addClass(options.expandedClass);
 				
-				$(".tdd-tree, .tdd-trashbin", $el).droppable({
+				$(".tdd-tree, .tdd-trashbin", ctx).droppable({
 					addClasses: false,				
 					tolerance: "pointer",
 					drop: $.treeDragDrop.handlers.handleDroppableDrop,
@@ -296,15 +316,21 @@ if (typeof String.prototype.trim !== 'function') {
 					out: $.treeDragDrop.handlers.handleDroppableOut				
 				}).bind("onselectstart", function () {return false; }).attr("unselectable", "on");
 				
-				$.treeDragDrop.defaults.marker.bind("mousemove", function() { return false });
-				$.treeDragDrop.defaults.marker.bind("mouseover", function() { return false });
-				$el.data('options',  options);											
-				$el.data('treeDragDrop', {inited: true});				
+				$.treeDragDrop.defaults.marker.bind("mousemove", function () { return false; });
+				$.treeDragDrop.defaults.marker.bind("mouseover", function () { return false; });
+				
+			
+				ctx.data('options',  options);											
+				ctx.data('treeDragDrop', {inited: true});				
 			}				
 		});
 	};
 	
 }(jQuery));
 
-$('.treeDragDrop').treeDragDrop({collapsedClass:"icon-folder-close", expandedClass:"icon-folder-open"}); 
+$('.treeDragDrop').treeDragDrop({
+	collapsedClass: "icon-folder-close", 
+	expandedClass: "icon-folder-open", 
+	updateUrl: "/navigation/api/update"
+}); 
 

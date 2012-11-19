@@ -18,15 +18,13 @@
 
 <div class="treeDragDrop">
 	<div class="tree">
-		<h4>{"Site tree"}</h4>
+		<h4> {"Site tree"}</h4>
 		<p class="caption">{"Drag pages to the site tree to include them in your navigation."}</p>
-		<ul class="tdd-tree">
-			{! navigation/admin_tree !}	
-		</ul>
+		{! navigation/admin_tree !}	
 		
 	</div>	
 	<div class="trashbin">
-		<h4>{"Other pages"}</h4>	
+		<h4> {"Other pages"}</h4>	
 		<p class="caption">{"Drag pages here to remove them from the tree."}</p>
 		<ul class="tdd-trashbin">
 		{% foreach other_pages %}
@@ -37,7 +35,8 @@
 	</div>
 </div>
 <br clear="both" />
-<p><em>{"Note: Pages that are not publicly visible will not be listed here."}</em></p>
+
+<p class="caption"><em>{"Note: Pages that are not publicly visible will not be listed here."}</em></p>
 
 <script type="text/javascript">
 </script>
