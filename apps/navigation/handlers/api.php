@@ -22,52 +22,21 @@ $error = false;
 $out = null;
 $nav = new Navigation;
 
-switch ($this->params[0]) {
-	case 'add':
-		$id = $_POST['page'];
-		$parent = $_POST['parent'];
-		if ($parent === 'false') {
-			$parent = false;
+switch ($this->params[0]) {	
+	case 'update':
+		$tree = $_POST['tree'];	
+		if(empty($tree)){
+			$tree =  array();
 		}
-		if ($nav->add ($id, $parent) && $nav->save ()) {
+		require_once ('apps/navigation/lib/Functions.php');		
+		if ($nav->update ($tree) && $nav->save ()) {
 			$out = array (
-				'msg' => sprintf ('Page %s added to tree under %s.', $id, $parent),
-				'page' => $id,
-				'parent' => $parent
+				'msg' => sprintf ('Nav json has been updated'),
 			);
 		} else {
 			$error = $nav->error;
 		}
-		break;
-	case 'move':
-		$id = $_POST['page'];
-		$ref = $_POST['ref'];
-		$pos = $_POST['pos'];
-		if ($nav->move ($id, $ref, $pos) && $nav->save ()) {
-			$out = array (
-				'msg' => sprintf ('Page %s moved to %s %s.', $id, $pos, $ref),
-				'page' => $id,
-				'ref' => $ref,
-				'pos' => $pos
-			);
-		} else {
-			$error = $nav->error;
-		}
-		break;
-	case 'remove':
-		$id = $_POST['page'];
-		if ($nav->remove ($id) && $nav->save ()) {
-			require_once ('apps/navigation/lib/Functions.php');
-			$ids = $nav->get_all_ids ();
-			$out = array (
-				'msg' => sprintf ('Page %s removed.', $id),
-				'page' => $id,
-				'other' => navigation_get_other_pages ($ids)
-			);
-		} else {
-			$error = $nav->error;
-		}
-		break;
+		break;	
 	default:
 		$error = 'Unknown method';
 		break;

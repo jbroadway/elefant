@@ -236,7 +236,7 @@ class Navigation {
 	 * Remove a page from the tree. Removes all children as well
 	 * unless you set $recursive to false.
 	 */
-	public function remove ($id, $recursive = true) {
+	function remove ($id, $recursive = true) {
 		$ref = $this->parent ($id);
 
 		if ($ref) {
@@ -412,6 +412,15 @@ class Navigation {
 		}
 		return true;
 	}
+	
+	/**
+	 * Update the tree from Json to the file.
+	 */
+	public function update ($tree) {
+		$this->tree = $tree;
+		return true;
+	}
+	
 
 	/**
 	 * Save the tree out to the file.
