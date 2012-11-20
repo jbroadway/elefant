@@ -200,8 +200,6 @@ class Navigation {
 	 * Add a page to the tree under the specified parent.
 	 * $id can be a page ID or a node object.
 	 */
-	 
-	//TODO: check if this is still needed?
 	public function add ($id, $parent = false) {
 		if (is_object ($id)) {
 			$new_page = $id;
@@ -238,9 +236,7 @@ class Navigation {
 	 * Remove a page from the tree. Removes all children as well
 	 * unless you set $recursive to false.
 	 */
-	 
-	 //TODO: check if this is still needed?
-	public function remove ($id, $recursive = true) {
+	function remove ($id, $recursive = true) {
 		$ref = $this->parent ($id);
 
 		if ($ref) {
@@ -292,8 +288,6 @@ class Navigation {
 	 * Remove a specific path from the tree recursively. Used
 	 * primarily by move().
 	 */
-	 
-	//TODO: check if this is still needed? 
 	public function remove_path ($path) {
 		$id = $path[count ($path) - 1];
 		if (! $id) {
@@ -331,8 +325,6 @@ class Navigation {
 	 * $pos can be one of: after, before, inside (default is
 	 * inside).
 	 */
-	 
-	 //TODO: check if this is still needed?
 	public function move ($id, $ref, $pos = 'inside') {
 		$old_path = $this->path ($id);
 		$ref_parent = $this->parent ($ref);
