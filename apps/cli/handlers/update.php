@@ -34,7 +34,7 @@ if (! is_object ($res)) {
 
 // are we already up to date?
 if ($res->latest <= ELEFANT_VERSION) {
-	echo "Already up-to-date.\n";
+	echo ELEFANT_VERSION . " is already up-to-date.\n";
 	return;
 }
 
