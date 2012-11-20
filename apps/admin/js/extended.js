@@ -184,6 +184,7 @@ var extended = (function ($) {
 	 * Adds a new field.
 	 */
 	e.show_add_field_button = function (evt) {
+		$('#new-field-options').hide ();
 		$('#new-field').hide ();
 		var form = $('#new-field-form')[0];
 		form.elements.label.value = '';

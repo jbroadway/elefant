@@ -64,7 +64,7 @@ class FileManager extends Restful {
 		$file = urldecode (join ('/', func_get_args ()));
 
 		if (! self::verify_folder ($file, $this->root)) {
-			return $this->error (i18n_get ('Invalid folder name'));
+			return $this->error (__ ('Invalid folder name'));
 		}
 
 		$d = dir ($this->root . $file);
@@ -100,17 +100,17 @@ class FileManager extends Restful {
 		$file = urldecode (join ('/', func_get_args ()));
 
 		if (self::verify_folder ($file, $this->root)) {
-			return $this->error (i18n_get ('Unable to delete folders'));
+			return $this->error (__ ('Unable to delete folders'));
 		} elseif (! self::verify_file ($file, $this->root)) {
-			return $this->error (i18n_get ('File not found'));
+			return $this->error (__ ('File not found'));
 		} elseif (! unlink ($this->root . $file)) {
-			return $this->error (i18n_get ('Unable to delete') . ' ' . $file);
+			return $this->error (__ ('Unable to delete') . ' ' . $file);
 		}
 		FileManager::prop_delete ($file);
 		$this->controller->hook ('filemanager/delete', array (
 			'file' => $file
 		));
-		return array ('msg' => i18n_get ('File deleted.'), 'data' => $file);
+		return array ('msg' => __ ('File deleted.'), 'data' => $file);
 	}
 
 	/**
@@ -121,36 +121,36 @@ class FileManager extends Restful {
 		
 		if (self::verify_folder ($file, $this->root)) {
 			if (! self::verify_folder_name ($_GET['rename'])) {
-				return $this->error (i18n_get ('Invalid folder name'));
+				return $this->error (__ ('Invalid folder name'));
 			} else {
 				$parts = explode ('/', $file);
 				$old = array_pop ($parts);
 				$new = preg_replace ('/' . preg_quote ($old) . '$/', $_GET['rename'], $file);
 				if (! rename ($this->root . $file, $this->root . $new)) {
-					return $this->error (i18n_get ('Unable to rename') . ' ' . $file);
+					return $this->error (__ ('Unable to rename') . ' ' . $file);
 				}
 				FileManager::prop_rename ($file, $new, true);
-				return array ('msg' => i18n_get ('Folder renamed.'), 'data' => $new);
+				return array ('msg' => __ ('Folder renamed.'), 'data' => $new);
 			}
 		} elseif (self::verify_file ($file, $this->root)) {
 			if (! self::verify_file_name ($_GET['rename'])) {
-				return $this->error (i18n_get ('Invalid file name'));
+				return $this->error (__ ('Invalid file name'));
 			} else {
 				$parts = explode ('/', $file);
 				$old = array_pop ($parts);
 				$new = preg_replace ('/' . preg_quote ($old) . '$/', $_GET['rename'], $file);
 				if (! rename ($this->root . $file, $this->root . $new)) {
-					return $this->error (i18n_get ('Unable to rename') . ' ' . $file);
+					return $this->error (__ ('Unable to rename') . ' ' . $file);
 				}
 				FileManager::prop_rename ($file, $new);
 				$this->controller->hook ('filemanager/rename', array (
 					'file' => $file,
 					'renamed' => $new
 				));
-				return array ('msg' => i18n_get ('File renamed.'), 'data' => $new);
+				return array ('msg' => __ ('File renamed.'), 'data' => $new);
 			}
 		}
-		return $this->error (i18n_get ('File not found'));
+		return $this->error (__ ('File not found'));
 	}
 
 	/**
@@ -163,16 +163,16 @@ class FileManager extends Restful {
 		$newdir = array_pop ($parts);
 		$path = preg_replace ('/\/?' . preg_quote ($newdir) . '$/', '', $file);
 		if (! self::verify_folder ($path, $this->root)) {
-			return $this->error (i18n_get ('Invalid location'));
+			return $this->error (__ ('Invalid location'));
 		} elseif (! self::verify_folder_name ($newdir)) {
-			return $this->error (i18n_get ('Invalid folder name'));
+			return $this->error (__ ('Invalid folder name'));
 		} elseif (@is_dir ($this->root . $file)) {
-			return $this->error (i18n_get ('Folder already exists') . ' ' . $file);
+			return $this->error (__ ('Folder already exists') . ' ' . $file);
 		} elseif (! mkdir ($this->root . $file)) {
-			return $this->error (i18n_get ('Unable to create folder') . ' ' . $file);
+			return $this->error (__ ('Unable to create folder') . ' ' . $file);
 		}
 		chmod ($this->root . $file, 0777);
-		return array ('msg' => i18n_get ('Folder created.'), 'data' => $file);
+		return array ('msg' => __ ('Folder created.'), 'data' => $file);
 	}
 
 	/**
@@ -181,10 +181,10 @@ class FileManager extends Restful {
 	public function get_prop () {
 		$file = urldecode (join ('/', func_get_args ()));
 		if (! self::verify_file ($file, $this->root)) {
-			return $this->error (i18n_get ('Invalid file name'));
+			return $this->error (__ ('Invalid file name'));
 		}
 		if (! isset ($_GET['prop'])) {
-			return $this->error (i18n_get ('Missing property name'));
+			return $this->error (__ ('Missing property name'));
 		}
 		if (isset ($_GET['value'])) {
 			// update and fetch
@@ -197,7 +197,7 @@ class FileManager extends Restful {
 			'file' => $file,
 			'prop' => $_GET['prop'],
 			'value' => $res,
-			'msg' => i18n_get ('Properties saved.')
+			'msg' => __ ('Properties saved.')
 		);
 	}
 

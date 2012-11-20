@@ -15,7 +15,7 @@ if (isset ($_POST['uploadify_session_id'])) {
 // Authentication
 if (! User::require_admin ()) {
 	if (! empty ($_FILES)) {
-		header ('HTTP/1.1 405 ' . i18n_get ('Admin access required.'));
+		header ('HTTP/1.1 405 ' . __ ('Admin access required.'));
 		exit;
 	}
 	$this->redirect ('/admin');
@@ -29,16 +29,19 @@ if (! empty ($_FILES)) {
 	$page->layout = false;
 
 	if (! FileManager::verify_folder ($_GET['path'], $root)) {
-		header ('HTTP/1.1 406 ' . i18n_get ('Invalid Path'));
+		header ('HTTP/1.1 406 ' . __ ('Invalid Path'));
 		exit;
 	} elseif ($_FILES['Filedata']['error'] > 0) {
-		header ('HTTP/1.1 407 ' . i18n_get ('Unknown error'));
+		header ('HTTP/1.1 407 ' . __ ('Unknown error'));
 		exit;
 	} elseif (file_exists ($root . $_GET['path'] . '/' . $_FILES['Filedata']['name'])) {
-		header ('HTTP/1.1 408 ' . i18n_get ('A file by that name already exists.'));
+		header ('HTTP/1.1 408 ' . __ ('A file by that name already exists.'));
+		exit;
+	} elseif (strpos ($_FILES['Filedata']['name'], '..') !== false) {
+		header ('HTTP/1.1 408 ' . __ ('The file name contains invalid characters.'));
 		exit;
 	} elseif (! move_uploaded_file ($_FILES['Filedata']['tmp_name'], $root . $_GET['path'] . '/' . $_FILES['Filedata']['name'])) {
-		header ('HTTP/1.1 409 ' . i18n_get ('Unable to save the file.'));
+		header ('HTTP/1.1 409 ' . __ ('Unable to save the file.'));
 		return;
 	}
 	// File saved
@@ -52,7 +55,7 @@ if (! empty ($_FILES)) {
 }
 
 $page->layout = 'admin';
-$page->title = i18n_get ('Multi-file uploader');
+$page->title = __ ('Multi-file uploader');
 
 // Show uploader
 $o = new StdClass;

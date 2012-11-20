@@ -20,6 +20,22 @@ if (! isset ($_GET['name'])) {
 	$_GET['name'] = $_GET['extends'];
 }
 
+// Create the database table if it doesn't exist
+if (! DB::single ('select count(*) from #prefix#extended_fields')) {
+	$db = DB::get_connection (true);
+	$queries = sql_split (
+		file_get_contents (
+			sprintf (
+				'apps/admin/conf/update/extended_fields_%s.sql',
+				$db->getAttribute (PDO::ATTR_DRIVER_NAME)
+			)
+		)
+	);
+	foreach ($queries as $query) {
+		DB::execute ($query);
+	}
+}
+
 $page->layout = 'admin';
 $page->title = __ ('Custom Fields') . ': ' . __ ($_GET['name']);
 $page->add_script ('/apps/admin/js/handlebars-1.0.rc.1.js');

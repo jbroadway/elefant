@@ -14,4 +14,43 @@ function generate_password ($length) {
 	return $pass;
 }
 
+/**
+ * Determine which patches/db updates need to be run.
+ * Note that this imposes limits on the version numbering
+ * of Elefant, specifically:
+ *
+ * - Minor versions can go up to 10
+ * - Bug fix numbers can go up to 20
+ *
+ * So the highest release number for the 1.x series is 1.10.20
+ * before rolling over to 2.0.0.
+ */
+function cli_get_versions ($current, $latest) {
+	$versions = array ();
+	$files = glob ('conf/updates/elefant-' . $current . '-*.patch');
+	while ($current !== $latest) {
+		$files = glob ('conf/updates/elefant-' . $current . '-*.patch');
+		if (count ($files) > 0) {
+			$script = preg_replace ('/\.patch$/', '.sql', $files[0]);
+			$versions[] = array (
+				'patch' => $files[0],
+				'script' => file_exists ($script) ? $script : false
+			);
+		}
+
+		list ($major, $minor, $fix) = explode ('.', $current);
+		$fix++;
+		if ($fix > 20) {
+			$fix = 0;
+			$minor++;
+		}
+		if ($minor > 10) {
+			$major++;
+			$minor = 0;
+		}
+		$current = $major . '.' . $minor . '.' . $fix;
+	}
+	return $versions;
+}
+
 ?>
