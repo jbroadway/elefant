@@ -128,11 +128,11 @@ $(function () {
 				$('#admin-tools-list').stop ().css("height","auto").slideDown ('fast');
 			},
 			function () {
-				$('#admin-tools-list').stop ().slideUp ('fast');
+				$('#admin-tools-list').stop ().slideUp ('slow');
 			}
 		)
 		$('#admin-links a').not('#admin-tools-list a').bind("mouseover", function(){
-			$('#admin-tools-list').stop ().slideUp ('fast');
+			$('#admin-tools-list').stop ().slideUp ('slow');
 		});
 	});
 	$('.admin-options a').hover (
