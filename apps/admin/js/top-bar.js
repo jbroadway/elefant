@@ -125,7 +125,7 @@ $(function () {
 		
 		$('#admin-tools').hover (
 			function () {
-				$('#admin-tools-list').stop ().slideDown ('fast');
+				$('#admin-tools-list').stop ().css("height","auto").slideDown ('fast');
 			},
 			function () {
 				$('#admin-tools-list').stop ().slideUp ('fast');
