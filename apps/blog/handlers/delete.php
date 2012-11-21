@@ -4,39 +4,41 @@
  * Blog post delete handler.
  */
 
+$this->require_admin ();
+
 $page->layout = 'admin';
 
-if (! User::require_admin ()) {
-	$this->redirect ('/admin');
+if (! isset ($_POST['id'])) {
+	$this->redirect ('/blog/admin');
 }
 
-$lock = new Lock ('Blog', $_GET['id']);
+$lock = new Lock ('Blog', $_POST['id']);
 if ($lock->exists ()) {
-	$page->title = i18n_get ('Editing Locked');
+	$page->title = __ ('Editing Locked');
 	echo $tpl->render ('admin/locked', $lock->info ());
 	return;
 }
 
 require_once ('apps/blog/lib/Filters.php');
 
-$p = new blog\Post ($_GET['id']);
+$p = new blog\Post ($_POST['id']);
 $tags = $p->tags;
 $title = $p->title;
 
 if (! $p->remove ()) {
-	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $u->error;
+	$page->title = __ ('An Error Occurred');
+	echo __ ('Error Message') . ': ' . $u->error;
 	return;
 }
 
 // reset blog rss cache
 $cache->delete ('blog_rss');
 
-DB::execute ('delete from #prefix#blog_post_tag where post_id = ?', $_GET['id']);
+DB::execute ('delete from #prefix#blog_post_tag where post_id = ?', $_POST['id']);
 
-$_GET['page'] = 'blog/post/' . $_GET['id'] . '/' . URLify::filter ($title);
-$this->hook ('blog/delete', $_GET);
-$this->add_notification (i18n_get ('Blog post deleted.'));
+$_GET['page'] = 'blog/post/' . $_POST['id'] . '/' . URLify::filter ($title);
+$this->hook ('blog/delete', $_POST);
+$this->add_notification (__ ('Blog post deleted.'));
 $this->redirect ('/blog/admin');
 
 ?>

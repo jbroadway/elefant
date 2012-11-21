@@ -4,30 +4,32 @@
  * Deletes a web page.
  */
 
+$this->require_admin ();
+
 $page->layout = 'admin';
 
-if (! User::require_admin ()) {
-	$this->redirect ('/admin');
+if (! isset ($_POST['page'])) {
+	$this->redirect ('/');
 }
 
-$lock = new Lock ('Webpage', $_GET['page']);
+$lock = new Lock ('Webpage', $_POST['page']);
 if ($lock->exists ()) {
-	$page->title = i18n_get ('Editing Locked');
+	$page->title = __ ('Editing Locked');
 	echo $tpl->render ('admin/locked', $lock->info ());
 	return;
 }
 
-$wp = new Webpage ($_GET['page']);
+$wp = new Webpage ($_POST['page']);
 
 if (! $wp->remove ()) {
-	$page->title = i18n_get ('An Error Occurred');
-	echo i18n_get ('Error Message') . ': ' . $wp->error;
+	$page->title = __ ('An Error Occurred');
+	echo __ ('Error Message') . ': ' . $wp->error;
 	return;
 }
 
-$cache->delete ('_admin_page_' . $_GET['page']);
-$this->add_notification (i18n_get ('Page deleted.'));
-$this->hook ('admin/delete', $_GET);
+$cache->delete ('_admin_page_' . $_POST['page']);
+$this->add_notification (__ ('Page deleted.'));
+$this->hook ('admin/delete', $_POST);
 $this->redirect ('/');
 
 ?>
