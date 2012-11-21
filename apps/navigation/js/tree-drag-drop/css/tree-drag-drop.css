@@ -36,6 +36,7 @@
 	font-size:13px;
 	line-height:20px;
 	display:block;
+	cursor:move;
 }
 
 .treeDragDrop li [class^="icon-"], .treeDragDrop  li [class*=" icon-"]{
