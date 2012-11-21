@@ -121,20 +121,19 @@ $(function () {
 	$.get ('/admin/head/links', function (res) {
 		$('#admin-logo').attr ('src', res.logo).attr ('alt', res.name);
 		$('#admin-links').append (res.links);
-		$('#admin-tools').hover (function () {
-			if (! sliding_up) {
-				$('#admin-tools-list').slideDown ('fast').show ();
+		
+		
+		$('#admin-tools').hover (
+			function () {
+				$('#admin-tools-list').stop ().slideDown ('fast');
+			},
+			function () {
+				$('#admin-tools-list').stop ().slideUp ('fast');
 			}
-			$(this).parent ().hover (
-				function () {},
-				function () {
-					sliding_up = true;
-					$('#admin-tools-list').slideUp ('slow', function () {
-						sliding_up = false;
-					});
-				}
-			);
-		})
+		)
+		$('#admin-links a').not('#admin-tools-list a').bind("mouseover", function(){
+			$('#admin-tools-list').stop ().slideUp ('fast');
+		});
 	});
 	$('.admin-options a').hover (
 		function () {
