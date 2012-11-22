@@ -38,6 +38,10 @@
 	display:block;
 }
 
+body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
+	cursor: url(cursorGrab.png), move;
+}
+
 .treeDragDrop li [class^="icon-"], .treeDragDrop  li [class*=" icon-"]{
 	display:block;
 	width:inherit;
@@ -65,10 +69,6 @@
 	opacity:0.4
 }
 
-.treeDragDrop .tdd-append{
-	margin-left:50px;
-}
-
 .tdd-dragContainer{
 	position:absolute;
 	z-index:999;
@@ -78,3 +78,6 @@ li.ui-draggable-dragging, .ui-draggable-dragging li{
 	list-style:none;
 }
 
+body.cursorGrabbing{
+	cursor: url(cursorGrabbing.png), move;
+}
