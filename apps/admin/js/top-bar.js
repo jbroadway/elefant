@@ -18,7 +18,7 @@ jQuery.add_notification = function (msg) {
  *
  *     <a href="/post/here"
  *        data-id="{{id}}"
- *        onclick="$.confirm_and_post (this, 'Are you sure?')"
+ *        onclick="return $.confirm_and_post (this, 'Are you sure?')"
  *     >Delete</a>
  */
 jQuery.confirm_and_post = function (el, msg) {
