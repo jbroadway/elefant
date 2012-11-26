@@ -13,7 +13,7 @@
 			<a	href="/{{plural}}/edit?id=\{{ loop_value->id }}">\{"Edit"}</a> |
 			<a	href="/{{plural}}/delete"
 				data-id="\{{ loop_value->id }}"
-				onclick="$.confirm_and_post (this, '\{"Are you sure you want to delete this {{appname}}?"}')">\{"Delete"}</a>
+				onclick="return $.confirm_and_post (this, '\{"Are you sure you want to delete this {{appname}}?"}')">\{"Delete"}</a>
 		</td>
 	</tr>
 \{% end %}

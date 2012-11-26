@@ -30,6 +30,6 @@ if (! $wp->remove ()) {
 $cache->delete ('_admin_page_' . $_POST['page']);
 $this->add_notification (__ ('Page deleted.'));
 $this->hook ('admin/delete', $_POST);
-$this->redirect ('/');
+$this->redirect ( isset ($_POST['admin']) ? '/admin/pages' : '/' );
 
 ?>

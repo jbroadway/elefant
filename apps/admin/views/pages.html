@@ -27,7 +27,7 @@
 			{% if loop_value->locked %}
 			{"Editing Locked"}
 			{% else %}
-			<a href="/admin/edit?page={{ loop_value->id }}">{"Edit"}</a> | <a href="/admin/delete" data-page="{{ loop_value->id }}" onclick="$.confirm_and_post (this, '{"Are you sure you want to delete this page?"}')">{"Delete"}</a>
+			<a href="/admin/edit?page={{ loop_value->id }}">{"Edit"}</a> | <a href="/admin/delete" data-page="{{ loop_value->id }}" data-admin="true" onclick="return $.confirm_and_post (this, '{"Are you sure you want to delete this page?"}')">{"Delete"}</a>
 			{% end %}
 		</td>
 	</tr>
