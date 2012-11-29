@@ -64,6 +64,12 @@ stream[callback] = "social_true_false"
 label = Facebook: Comments
 icon = /apps/social/css/icon-facebook-comments.png
 
+url[label] = Link
+url[type] = text
+url[not empty] = 1
+url[regex] = "|^http://.+$|"
+url[message] = Please enter a valid URL.
+
 [social/facebook/commentcount]
 
 label = Facebook: Comment Count
