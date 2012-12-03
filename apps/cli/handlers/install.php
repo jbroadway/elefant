@@ -22,6 +22,8 @@ if (@file_exists ('conf/installed')) {
 	return;
 }
 
+require_once ('apps/cli/lib/Functions.php');
+
 $conf = parse_ini_file ('conf/config.php', true);
 
 // set the necessary folder permissions
@@ -56,9 +58,14 @@ $sqldata = sql_split (file_get_contents ('conf/install_' . $conf['Database']['ma
 DB::beginTransaction ();
 
 foreach ($sqldata as $sql) {
+	if (trim ($sql) === 'begin' || trim ($sql) === 'commit') {
+		continue;
+	}
+
 	if (! DB::execute ($sql)) {
 		echo '** Error: ' . DB::error () . "\n";
 		DB::rollback ();
+		return;
 	}
 }
 
@@ -68,10 +75,11 @@ $date = gmdate ('Y-m-d H:i:s');
 if (! DB::execute (
 	"update `#prefix#user` set `email` = ?, `password` = ? where `id` = 1",
 	$conf['General']['email_from'],
-	encrypt_password ($pass)
+	User::encrypt_pass ($pass)
 )) {
 	echo 'Error: ' . DB::error () . "\n";
 	DB::rollback ();
+	return;
 }
 
 DB::commit ();
