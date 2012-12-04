@@ -490,16 +490,16 @@ class Controller {
 	}
 
 	/**
-	 * Add a notification to the `#prefix#notification` cookie, which is
+	 * Add a notification to the `elefant_notification` cookie, which is
 	 * monitored by `admin/head` and will be displayed using jGrowl. Handy
 	 * for setting confirmation messages and other notices for the current
 	 * user to display on a subsequent screen.
 	 */
-	public function add_notification ($msg) {
-		if (isset ($_COOKIE['elefant_notification'])) {
-			$msg = $_COOKIE['elefant_notification'] . '|' . $msg;
+	public function add_notification ($msg, $cookie_name = 'elefant_notification') {
+		if (isset ($_COOKIE[$cookie_name])) {
+			$msg = $_COOKIE[$cookie_name] . '|' . $msg;
 		}
-		return setcookie ('elefant_notification', $msg, 0, '/');
+		return setcookie ($cookie_name, $msg, 0, '/');
 	}
 
 	/**

@@ -500,7 +500,7 @@ class Template {
 		$val = preg_replace ('/[\t\n ]+(\?|\&)/', '\1', trim ($val));
 
 		// normalize <span data-embed> tags to {! tags !}
-		$val = preg_replace ('/<.*?data-embed="([^"]+)".*?>.*?<\/.*?>/', '{! \1 !}', $val);
+		$val = preg_replace ('/<[^>]*?data-embed="([^"]+)".*?>.*?<\/.*?>/', '{! \1 !}', $val);
 
 		$parts = preg_split ('/(\{\! ?.*? ?\!\})/e', $val, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$out = '';
