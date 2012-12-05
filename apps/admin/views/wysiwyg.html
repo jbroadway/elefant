@@ -1,6 +1,91 @@
+<style>
+.redactor_box {
+	border: 0;
+	background: #f5f5f5;
+}
+
+.redactor_toolbar {
+	border: 0;
+	background: #f5f5f5;
+}
+
+.redactor_toolbar li.redactor_separator {
+	border: 0;
+	background-image: url(/apps/admin/css/admin/pipe.png);
+	background-repeat: no-repeat;
+	background-position: 0px 9px;
+	width: 1px;
+}
+
+.redactor_editor, .redactor_box textarea {
+	border: 1px solid #999;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	width: 654px !important;
+	height: 418px !important;
+	padding: 5px !important;
+}
+
+.redactor_editor:focus {
+	height: 418px !important;
+	padding: 5px !important;
+}
+
+.redactor_toolbar li a.redactor_btn_dynamic {
+	background-image: url(/apps/admin/css/admin/dynamic-icon.png);
+	background-repeat: no-repeat;
+	background-position: 4px 4px;
+}
+</style>
+
 <script>
 $(function () {
-	$('#{% if field_id %}{{ field_id }}{% else %}webpage-body{% end %}').wysiwyg ({
+	/**
+	 * TO DO:
+	 *
+	 * - Insertion of embed codes for swf, mp4, and mp3 files
+	 * - Dynamic objects dialog
+	 * - Page list in link dialog
+	 * - Browse files in image dialog
+	 * - Click to edit dynamic objects
+	 */
+
+	$('#{{ field_id }}')
+		.removeAttr ('cols')
+		.removeAttr ('rows')
+		.redactor ({
+			lang: '{{i18n.language|none}}',
+			buttons: [
+				'html', '|', 'formatting', '|', 'bold', 'italic', 'deleted', '|',
+				'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
+				'image', 'file', 'table', 'link', 'horizontalrule', '|', 'alignment',
+				'|', 'dynamic'
+			],
+			buttonsCustom: {
+				dynamic: {
+					title: '{"Dynamic Objects"}',
+					callback: dynamic_objects
+				}
+			},
+			imageGetJson: '/filesmanager/redactor/images',
+			imageUpload: '/filemanager/redactor/upload',
+			fileUpload: '/filemanager/redactor/upload',
+			imageUploadErrorCallback: upload_error
+		});
+
+	function dynamic_objects (obj, evt, key) {
+		console.log (obj);
+		console.log (evt);
+		console.log (key);
+	}
+
+	function upload_error (obj, json) {
+		console.log (obj);
+		console.log (json);
+	}
+
+	/*
 		initialContent: '<p><br /></p>',
 <?php if (file_exists ('js/wysiwyg/i18n/lang.' . $GLOBALS['i18n']->language . '.js')) { ?>
 		plugins: {
@@ -85,6 +170,6 @@ $(function () {
 		} else {
 			$(existing).replaceWith ('<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="{"Click to edit."}"></span>');			
 		}
-	}
+	}*/
 });
 </script>

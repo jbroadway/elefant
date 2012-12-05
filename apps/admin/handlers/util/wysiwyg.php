@@ -13,25 +13,16 @@
  */
 
 $page->add_style ('/js/jquery-ui/jquery-ui.css');
-$page->add_style ('/css/wysiwyg/jquery.wysiwyg.css');
-$page->add_style ('/css/files/wysiwyg.fileManager.css');
 if (detect ('msie 7')) {
 	$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome-ie7.css');
 }
 $page->add_style ('/apps/admin/css/font-awesome/css/font-awesome.css');
 $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
-$page->add_script ('/js/wysiwyg/jquery.wysiwyg.js');
-$page->add_script ('/js/wysiwyg/controls/wysiwyg.image2.js');
-$page->add_script ('/js/wysiwyg/controls/wysiwyg.link2.js');
-$page->add_script ('/js/wysiwyg/controls/wysiwyg.table.js');
-$page->add_script ('/js/wysiwyg/plugins/wysiwyg.fileManager.js');
 $page->add_script ('/js/jquery.quickpager.js');
-$page->add_script ('/js/wysiwyg/plugins/wysiwyg.embed.js');
-$page->add_script ('/js/wysiwyg/plugins/wysiwyg.i18n.js');
-if (file_exists ('js/wysiwyg/i18n/lang.' . $GLOBALS['i18n']->language . '.js')) {
-	$page->add_script ('/js/wysiwyg/i18n/lang.' . $GLOBALS['i18n']->language . '.js');
-}
+$page->add_style ('/apps/admin/js/redactor/redactor.css');
+$page->add_script ('/apps/admin/js/redactor/redactor.min.js');
 
+$data['field_id'] = isset ($data['field_id']) ? $data['field_id'] : 'webpage-body';
 $page->add_script ($tpl->render ('admin/wysiwyg', $data));
 
 ?>
