@@ -9,7 +9,7 @@
 $n = new Navigation;
 $section = $n->node ($data['section']);
 
-if ( (array)$section->children === $section->children ) {
+if (is_array ($section->children)) {
 	echo '<ul>';
 	foreach ($section->children as $item) {
 		if ($item->attr->id == $page->id) {
