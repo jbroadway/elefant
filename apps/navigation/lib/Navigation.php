@@ -78,7 +78,11 @@ class Navigation {
 	 */
 	public function __construct ($file = 'conf/navigation.json') {
 		$this->file = $file;
-		$this->tree = json_decode (file_get_contents ($file));
+		$this->tree = json_decode (file_exists ($file) ? file_get_contents ($file) : '[]');
+		if ( (json_last_error () != JSON_ERROR_NONE) ||
+			 !((array)$this->tree === $this->tree) ) {
+			$this->tree = array();
+		}
 	}
 
 	/**
