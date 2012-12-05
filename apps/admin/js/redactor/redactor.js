@@ -1,6 +1,6 @@
 /*
-	Redactor v8.2.0
-	Updated: November 8, 2012
+	Redactor v8.2.1
+	Updated: December 2, 2012
 
 	http://redactorjs.com/
 
@@ -170,8 +170,10 @@ var RLANG = {
 			observeImages: true,
 			overlay: true, // modal overlay
 
-			allowedTags: ["form", "code", "span", "div", "label", "a", "br", "p", "b", "i", "del", "strike", "u",
-					"img", "video", "audio", "iframe", "object", "embed", "param", "blockquote",
+			allowedTags: ["form", "input", "button", "select", "option", "datalist", "output", "textarea", "fieldset", "legend",
+					"section", "header", "hgroup", "aside", "footer", "article", "details", "nav", "progress", "time", "canvas",
+					"code", "span", "div", "label", "a", "br", "p", "b", "i", "del", "strike", "u",
+					"img", "video", "source", "track", "audio", "iframe", "object", "embed", "param", "blockquote",
 					"mark", "cite", "small", "ul", "ol", "li", "hr", "dl", "dt", "dd", "sup", "sub",
 					"big", "pre", "code", "figure", "figcaption", "strong", "em", "table", "tr", "td",
 					"th", "tbody", "thead", "tfoot", "h1", "h2", "h3", "h4", "h5", "h6"],
@@ -1934,7 +1936,7 @@ var RLANG = {
 				this.$content.hide();
 
 				html = this.$editor.html();
-				html = $.trim(this.formatting(html));
+				//html = $.trim(this.formatting(html));
 
 				this.$el.height(height).val(html).show().focus();
 
@@ -1946,10 +1948,10 @@ var RLANG = {
 				this.$el.hide();
 				var html = this.$el.val();
 
-				html = this.savePreCode(html);
+				//html = this.savePreCode(html);
 
 				// clean up
-				html = this.stripTags(html);
+				//html = this.stripTags(html);
 
 				// set code
 				this.$editor.html(html).show();
@@ -2652,7 +2654,7 @@ var RLANG = {
 				var s = this.window.getSelection();
 				if (s.rangeCount > 0)
 				{
-					return this.getSelection().getRangeAt(0).startContainer;
+					return this.getSelection().getRangeAt(0).commonAncestorContainer;
 				}
 				else
 				{
@@ -2832,6 +2834,7 @@ var RLANG = {
 			$(resize).mouseup($.proxy(function(e)
 			{
 				clicked = false;
+				$(resize).css('cursor','');
 				this.syncCode();
 
 			}, this));
@@ -3776,7 +3779,7 @@ var RLANG = {
 			var d = this.document.createElement('div');
 			var iframe = '<iframe style="display:none" id="'+this.id+'" name="'+this.id+'"></iframe>';
 			d.innerHTML = iframe;
-			this.document.body.appendChild(d);
+			$(d).appendTo("body");
 
 			// Start
 			if (this.uploadOptions.start)
@@ -3806,7 +3809,7 @@ var RLANG = {
 							v = $(v).val();
 						}
 
-						var hidden = $('<input type="hidden" name="' + k + '" value="' + v + '">');
+						var hidden = $('<input/>', {'type': "hidden", 'name': k, 'value': v});
 						$(this.form).append(hidden);
 
 					}, this));
@@ -3837,7 +3840,7 @@ var RLANG = {
 		},
 		uploadLoaded : function()
 		{
-			var i = $('#' + this.id);
+			var i = $('#' + this.id)[0];
 			var d;
 
 			if (i.contentDocument)
