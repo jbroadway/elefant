@@ -7,9 +7,9 @@
  */
 
 if ($appconf['Scripts']['jquery_source'] === 'local') {
-	echo "<script src=\"/js/jquery-1.7.1.min.js\"></script>\n";
+	echo "<script src=\"/js/jquery-1.8.2.min.js\"></script>\n";
 } elseif ($appconf['Scripts']['jquery_source'] === 'google') {
-	echo "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js\"></script>\n";
+	echo "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js\"></script>\n";
 } else {
 	echo '<script src="' . $appconf['Scripts']['jquery_source'] . "\"></script>\n";
 }
