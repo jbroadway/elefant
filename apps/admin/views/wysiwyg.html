@@ -32,6 +32,12 @@
 	padding: 5px !important;
 }
 
+.redactor_toolbar li a.redactor_btn_undo {
+	background-image: url(/apps/admin/css/admin/undo-icon.png);
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+}
+
 .redactor_toolbar li a.redactor_btn_dynamic {
 	background-image: url(/apps/admin/css/admin/dynamic-icon.png);
 	background-repeat: no-repeat;
@@ -49,6 +55,7 @@ $(function () {
 	 * - Page list in link dialog
 	 * - Browse files in image dialog
 	 * - Click to edit dynamic objects
+	 * - Make sure autosave updates editor
 	 */
 
 	$('#{{ field_id }}')
@@ -57,12 +64,25 @@ $(function () {
 		.redactor ({
 			lang: '{{i18n.language|none}}',
 			buttons: [
-				'html', '|', 'formatting', '|', 'bold', 'italic', 'deleted', '|',
-				'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
-				'image', 'file', 'table', 'link', 'horizontalrule', '|', 'alignment',
-				'|', 'dynamic'
+				'formatting', '|', 'bold', 'italic', 'deleted', '|',
+				'alignment', 'horizontalrule', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
+				'link', 'image', 'file', 'table', '|',
+				'undo', 'html', 'dynamic'
 			],
 			buttonsCustom: {
+				undo: {
+					title: '{"Undo"}',
+					dropdown: {
+						point1: {
+							title: '{"Undo"}',
+							callback: undo
+						},
+						point2: {
+							title: '{"Redo"}',
+							callback: redo
+						}
+					}
+				},
 				dynamic: {
 					title: '{"Dynamic Objects"}',
 					callback: dynamic_objects
@@ -73,6 +93,14 @@ $(function () {
 			fileUpload: '/filemanager/redactor/upload',
 			imageUploadErrorCallback: upload_error
 		});
+
+	function undo (obj, evt, key) {
+		obj.execCommand ('undo');
+	}
+
+	function redo (obj, evt, key) {
+		obj.execCommand ('redo');
+	}
 
 	function dynamic_objects (obj, evt, key) {
 		console.log (obj);
