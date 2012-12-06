@@ -28,7 +28,7 @@
 				<a href="/translator/makedefault?lang={{ loop_index }}">{"Make default"}</a> |
 			{% end %}
 			<a href="/translator/edit/{{ loop_index }}">{"Edit"}</a> |
-			<a href="/translator/settings/?lang={{ loop_index }}">{"Settings"}</a> |
+			<a href="/translator/settings?lang={{ loop_index }}">{"Settings"}</a> |
 			<a href="/translator/delete?lang={{ loop_index }}" onclick="return confirm ('{"Are you sure you want to delete this language?"}');">{"Delete"}</a>
 		</td>
 	</tr>
