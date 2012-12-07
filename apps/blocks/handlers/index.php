@@ -46,9 +46,10 @@ if ($b->error) {
 		$lock = new Lock ('Block', $fallback_id);
 		$b = new Block ($fallback_id);
 		$b->new_id = $id;
-	}	
+	}
 	if ($b->error) {
 		if (User::is_valid () && User::is ('admin')) {
+			$fallback_id = $id;
 			echo $tpl->render ('blocks/editable', (object) array ('id' => $fallback_id, 'locked' => false, 'title' => false));
 		}
 		return;
