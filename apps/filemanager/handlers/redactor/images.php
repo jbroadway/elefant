@@ -23,7 +23,7 @@ foreach ($glob as $list) {
 			$images[] = array (
 				'thumb' => '/' . $item,
 				'image' => '/' . $item,
-				'folder' => str_replace ('/', ' / ', dirname (str_replace ('files/', '', $item)))
+				'folder' => str_replace ('/', ' / ', dirname ($item))
 			);
 		}
 	}
