@@ -17,9 +17,10 @@ if (detect ('msie 7')) {
 	$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome-ie7.css');
 }
 $page->add_style ('/apps/admin/css/font-awesome/css/font-awesome.css');
+$page->add_style ('/apps/admin/js/redactor/redactor.css');
+$page->add_style ('/apps/admin/js/redactor/custom.css');
 $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/js/jquery.quickpager.js');
-$page->add_style ('/apps/admin/js/redactor/redactor.css');
 $page->add_script ('/apps/admin/js/redactor/redactor.min.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/dynamic.js');
 
