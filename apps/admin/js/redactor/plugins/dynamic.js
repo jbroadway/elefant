@@ -73,12 +73,37 @@ RedactorPlugins.dynamic = {
 	// Reopen the dialog to edit an existing embed
 	edit_handler: function (evt) {
 		var self = evt.data.plugin;
+
 		self.saveSelection ();
+
 		var emb = self.parse_embed_string ($(this).data ('embed'));
+
+		self.addbtn_handler (self);
+
 		for (var i = 0; i < self.object_list.length; i++) {
 			if (self.object_list[i].handler === emb.handler) {
 				$('#dynamic-embed-object-' + i).addClass ('current');
-				console.log (emb);
+
+				if (! $.isEmptyObject (emb.data)) {
+					var c = 0;
+
+					for (var k in emb.data) {
+						if (emb.data.hasOwnProperty (k)) {
+							c++;
+						}
+					}
+
+					if (c > 0) {
+						// Has property, simulate selection
+						$('#dynamic-embed-object-' + i).click ();
+
+						// Fill with original values
+						// TODO
+					}
+				}
+				
+				$('.simplePageNav' + Math.ceil (i / 10) + ' a').click ();
+				break;
 			}
 		}
 	},
