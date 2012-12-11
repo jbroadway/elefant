@@ -63,6 +63,7 @@ $(function () {
 		.removeAttr ('rows')
 		.redactor ({
 			lang: '{{i18n.language|none}}',
+			plugins: ['dynamic'],
 			buttons: [
 				'formatting', '|', 'bold', 'italic', 'deleted', '|',
 				'alignment', 'horizontalrule', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
@@ -82,10 +83,6 @@ $(function () {
 							callback: redo
 						}
 					}
-				},
-				dynamic: {
-					title: '{"Dynamic Objects"}',
-					callback: dynamic_objects
 				}
 			},
 			imageGetJson: '/filemanager/redactor/images',
@@ -101,12 +98,6 @@ $(function () {
 
 	function redo (obj, evt, key) {
 		obj.execCommand ('redo');
-	}
-
-	function dynamic_objects (obj, evt, key) {
-		console.log (obj);
-		console.log (evt);
-		console.log (key);
 	}
 
 	function upload_error (obj, json) {
