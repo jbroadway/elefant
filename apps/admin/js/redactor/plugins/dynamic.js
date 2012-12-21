@@ -65,6 +65,7 @@ RedactorPlugins.dynamic = {
 		);
 
 		$('.dynamic-embed-object-list').quickPager ();
+		$('#redactor_modal_footer').html ('').hide ();
 		$('.dynamic-embed-object').unbind ('click').click (function () {
 			self.select_object (this, self);
 		});
@@ -74,6 +75,9 @@ RedactorPlugins.dynamic = {
 	edit_handler: function (evt) {
 		var self = evt.data.plugin;
 
+		console.log (this);
+		self.setSelection (this, 0, this, 0);
+		console.log (self.getSelection ());
 		self.saveSelection ();
 
 		var emb = self.parse_embed_string ($(this).data ('embed'));
@@ -130,7 +134,7 @@ RedactorPlugins.dynamic = {
 		$('.dynamic-embed-object-form').show ();
 
 		html = '<form id="dynamic-embed-form"><input type="hidden" name="handler" value="' + obj.handler + '" />';
-		html += '<h2>' + obj.label + '</h2>';
+		html += '<p><strong>' + obj.label + '</strong></p>';
 		html += '<div class="clearfix">';
 
 		for (var i in obj.fields) {
@@ -144,7 +148,7 @@ RedactorPlugins.dynamic = {
 		$('#redactor_modal_footer').html (
 			'<a href="#" class="redactor_modal_btn dynamic-embed-object-back">Back</a>' +
 			'<a href="#" class="redactor_modal_btn dynamic-embed-object-form-submit">Embed</a>'
-		);
+		).show ();
 
 		if (obj.columns == '2') { 
 			$('.dynamic-embed-object-form').addClass ('columns-2');
@@ -153,7 +157,7 @@ RedactorPlugins.dynamic = {
 		};
 
 		$('.dynamic-embed-object-back', '#redactor_modal_footer').unbind ('click').click (function () {
-			$('#redactor_modal_footer').html ('');
+			$('#redactor_modal_footer').html ('').hide ();
 			$('.dynamic-embed-object-form').hide ();
 			$('.dynamic-embed-objects').show ();
 		});

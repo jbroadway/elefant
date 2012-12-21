@@ -236,7 +236,7 @@ input[disabled] {
 	background: #eee;
 }
 
-input[type=submit], .wysiwyg-embed-object-back {
+input[type=submit], .dynamic-embed-object-back {
     font-size: 12px;
 	border: 1px solid #ddd;
     background: #e5e5e5;
@@ -249,9 +249,10 @@ input[type=submit], .wysiwyg-embed-object-back {
     color: #555;
     padding: 5px 10px;
     text-shadow: 0 1px 0 #fff;
+    margin-bottom: 16px;
 }
 
-input[type=submit]:hover, .wysiwyg-embed-object-back:hover {
+input[type=submit]:hover, .dynamic-embed-object-back:hover {
 	color: #333;
 	border: 1px solid #999;
     -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
@@ -281,7 +282,7 @@ input[type=submit]:hover, .wysiwyg-embed-object-back:hover {
 .dynamic-embed-object-list li a {
 	display: block;	
 	padding: 3%;
-	background: #eee;
+	background: transparent;
 	color: #333;
 	text-decoration: none;
 	line-height:16px;
@@ -299,7 +300,7 @@ input[type=submit]:hover, .wysiwyg-embed-object-back:hover {
 	line-height:16px;
 }
 
-.dynamic-embed-object-list li a.current, .wysiwyg-embed-object-list li a:hover{
+.dynamic-embed-object-list li a.current, .dynamic-embed-object-list li a:hover{
 	background: #ddd;
 	color: #333;
 }
@@ -320,17 +321,21 @@ input[type=submit]:hover, .wysiwyg-embed-object-back:hover {
 .dynamic-embed-objects .simplePagerNav li a {
 	display: block;
 	float: left;
-	margin:0.25%;
-	padding: 3px 6px 3px 6px;
-	background: #eee;
+	margin: 1px;
+	padding: 3px 8px 3px 8px;
+	background: #f5f5f5;
 	color: #333;
 	text-decoration: none;
+}
+
+.dynamic-embed-objects .simplePagerNav li a:hover {
+	background: #ddd;
 }
 
 .dynamic-embed-objects .simplePagerNav li.currentPage a {
 	display: block;
 	float: left;
-	padding: 3px 6px 3px 6px;
+	padding: 3px 8px 3px 8px;
 	background: #8A5AB5;
 	color: #fff;
 	text-decoration: none;
@@ -393,12 +398,12 @@ input[type=submit]:hover, .wysiwyg-embed-object-back:hover {
 	background: #fff;
 }
 
-.dynamic-embed-object-form input[type=text].wysiwyg-file-input {
+.dynamic-embed-object-form input[type=text].dynamic-file-input {
 	float: left;	
 	width: 90%;	
 }
 
-span.wysiwyg-fileManager { 
+span.dynamic-fileManager { 
 	background: url('/css/files/icon.png');
 	float: left;
 	width: 16px; 
