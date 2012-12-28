@@ -18,6 +18,17 @@ charset                 = UTF-8
 fallback                = Off
 default                 = Off
 
+[de]
+
+name                    = Deutsch
+code                    = de
+locale                  = Off
+charset                 = UTF-8
+default                 = Off
+date_format             = d mmmm yyyy
+short_format            = d mmm
+time_format             = "HH:MM"
+
 [nl]
 
 name                    = Nederlands

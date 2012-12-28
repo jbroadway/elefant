@@ -46,6 +46,7 @@ set_time_limit (90);
 
 foreach ($sources as $source) {
 	$files = glob ($source);
+	$files = is_array ($files) ? $files : array ();
 	foreach ($files as $file) {
 		$data = file_get_contents ($file);
 		if (preg_match ('/\.html/', $file)) {
