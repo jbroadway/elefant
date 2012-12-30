@@ -461,12 +461,10 @@ class Controller {
 					$this->uri = $app . '/index';
 					return 'apps/' . $app . '/handlers/index.php';
 				}
-				$this->app = $app;
 				$this->uri = conf ('General', 'default_handler');
-				return vsprintf (
-					'apps/%s/handlers/%s.php',
-					explode ('/', conf ('General', 'default_handler'))
-				);
+				$this->add_param ($app);
+				list ($this->app, $handler) = explode ('/', $this->uri);
+				return sprintf ('apps/%s/handlers/%s.php', $this->app, $handler);
 			}
 		}
 		$this->app = $app;
