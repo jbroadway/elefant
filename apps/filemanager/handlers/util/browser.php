@@ -7,11 +7,11 @@
  *
  * 1. Load this handler either in your handler:
  *
- *     $this->run ('filemanager/browser');
+ *     $this->run ('filemanager/util/browser');
  *
  * Or anywhere in your view:
  *
- *      {! filemanager/browser !}
+ *      {! filemanager/util/browser !}
  *
  * 2. Use the $.filebrowser() function to open the dialog window:
  *
@@ -37,6 +37,7 @@
 
 $this->run ('admin/util/modal');
 
+$page->add_style ('/apps/filemanager/css/filebrowser.css');
 $page->add_script ('/apps/filemanager/js/filemanager.js');
 $page->add_script ('/apps/filemanager/js/jquery.filebrowser.js');
 

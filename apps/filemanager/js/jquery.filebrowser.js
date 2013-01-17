@@ -52,6 +52,15 @@
 				self.list.append (
 					$('<li></li>')
 						.append (
+							$('<img />')
+								.attr ('src', '/apps/admin/css/admin/file.png')
+								.attr ('alt', res.data.files[i].name)
+								.css ({
+									'padding-right': '5px',
+									'margin-top': '-2px'
+								})
+						)
+						.append (
 							$('<a></a>')
 								.attr ('href', '#')
 								.attr ('class', 'filebrowser-file')
@@ -101,7 +110,7 @@
 		self.opts = $.extend (defaults, opts);
 
 		self.extensions = self.opts.allowed.length
-			? new RegExp ('\.(' + self.opts.allowed.join ('|') + ')$')
+			? new RegExp ('\.(' + self.opts.allowed.join ('|') + ')$', 'i')
 			: null;
 
 		$.open_dialog (
