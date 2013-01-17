@@ -19,6 +19,7 @@
  *          allowed: ['jpg', 'jpeg', 'png', 'gif'],
  *          set_value: '#field-id',
  *          title: 'Choose an image',
+ *          thumbs: true,
  *          callback: function (file) {
  *              console.log ('You chose: '  + file);
  *          }
@@ -30,6 +31,7 @@
  * - callback:  A function to call with the chosen file link.
  * - set_value: The selector of an input field to update with the
  *   chosen file link.
+ * - thumbs:    Whether to generate
  * - title:     A custom title for the dialog window.
  */
 

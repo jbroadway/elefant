@@ -17,6 +17,9 @@
 	// jQuery reference to #filemanager-list
 	self.list = null;
 
+	// A regular expression matching any of the allowed file extensions
+	self.extensions = null;
+
 	// Callback to update list of folders
 	self.update_dirs = function (res) {
 		if (! res.success) {
@@ -41,7 +44,9 @@
 		self.list.empty ();
 
 		for (var i in res.data.files) {
-			// TODO: limit by self.opts.allowed
+			if (self.extensions && ! res.data.files[i].path.match (self.extensions)) {
+				continue;
+			}
 
 			if (! self.opts.thumbs) {
 				self.list.append (
@@ -94,6 +99,10 @@
 		};
 
 		self.opts = $.extend (defaults, opts);
+
+		self.extensions = self.opts.allowed.length
+			? new RegExp ('\.(' + self.opts.allowed.join ('|') + ')$')
+			: null;
 
 		$.open_dialog (
 			self.opts.title,
