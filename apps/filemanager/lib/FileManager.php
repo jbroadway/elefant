@@ -94,6 +94,14 @@ class FileManager extends Restful {
 	}
 
 	/**
+	 * Handle a directories request (/filemanager/api/dirs).
+	 */
+	public function get_dirs () {
+		require_once ('apps/filemanager/lib/Functions.php');
+		return filemanager_list_folders ();
+	}
+
+	/**
 	 * Handle remove file requests (/filemanager/api/rm).
 	 */
 	public function get_rm () {
