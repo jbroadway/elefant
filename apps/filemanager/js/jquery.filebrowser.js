@@ -144,6 +144,10 @@
 
 		self.opts = $.extend (defaults, opts);
 
+		if (self.opts.thumbs) {
+			self.opts.allowed = ['jpg', 'jpeg', 'png', 'gif'];
+		}
+
 		self.extensions = self.opts.allowed.length
 			? new RegExp ('\.(' + self.opts.allowed.join ('|') + ')$', 'i')
 			: null;

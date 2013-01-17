@@ -31,7 +31,9 @@
  * - callback:  A function to call with the chosen file link.
  * - set_value: The selector of an input field to update with the
  *   chosen file link.
- * - thumbs:    Whether to generate
+ * - thumbs:    Whether to show thumbnails instead of file names.
+ *   Note: also automatically sets allowed list to jpeg, png, and
+ *   gif formats so you don't have to set allowed explicitly.
  * - title:     A custom title for the dialog window.
  */
 
