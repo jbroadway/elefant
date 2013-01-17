@@ -1,9 +1,30 @@
-#filebrowser-list, #filebrowser-list li {
+#filebrowser-list {
+	margin-top: 8px;
+}
+
+#filebrowser-col-a, #filebrowser-col-b {
 	list-style-type: none;
 	margin-left: 0px;
 	padding-left: 0px;
+	width: 50%;
+	float: left;
 }
 
-#filebrowser-list li {
+#filebrowser-col-a li, #filebrowser-col-b li {
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 0px;
 	padding-bottom: 5px;
+}
+
+.filebrowser-thumb {
+	display: inline-block;
+	vertical-align: bottom;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+.filebrowser-thumb img {
+	max-width: 100px;
+	border: 1px solid #ddd;
 }

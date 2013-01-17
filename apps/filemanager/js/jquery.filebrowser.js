@@ -20,6 +20,13 @@
 	// A regular expression matching any of the allowed file extensions
 	self.extensions = null;
 
+	// Shorten a file name if it's too long
+	self.shorten = function (name) {
+		return (name.length < 30)
+			? name
+			: name.substr (0, 17) + '...' + name.slice (-9);
+	};
+
 	// Callback to update list of folders
 	self.update_dirs = function (res) {
 		if (! res.success) {
@@ -43,18 +50,34 @@
 
 		self.list.empty ();
 
+		// Initialize columns for file lists
+		if (! self.opts.thumbs) {
+			self.list.append ('<ul id="filebrowser-col-a"></ul><ul id="filebrowser-col-b"></ul>');
+			var list = $('#filebrowser-col-a');
+
+			if (res.data.files.length > 8) {
+				col_b_after = Math.ceil (res.data.files.length / 2);
+			} else {
+				col_b_after = res.data.files.length;
+			}
+		}
+
 		for (var i in res.data.files) {
 			if (self.extensions && ! res.data.files[i].path.match (self.extensions)) {
 				continue;
 			}
 
 			if (! self.opts.thumbs) {
-				self.list.append (
+				// Create list items
+				if (i >= col_b_after) {
+					list = $('#filebrowser-col-b');
+				}
+
+				list.append (
 					$('<li></li>')
 						.append (
 							$('<img />')
 								.attr ('src', '/apps/admin/css/admin/file.png')
-								.attr ('alt', res.data.files[i].name)
 								.css ({
 									'padding-right': '5px',
 									'margin-top': '-2px'
@@ -64,13 +87,24 @@
 							$('<a></a>')
 								.attr ('href', '#')
 								.attr ('class', 'filebrowser-file')
+								.attr ('title', res.data.files[i].name)
 								.data ('file', res.data.files[i].path)
-								.text (res.data.files[i].name)
+								.text (self.shorten (res.data.files[i].name))
 								.click (self.select_file)
 						)
 				);
+
 			} else {
-				// TODO: show as thumbnails
+				// Create thumbnails
+				self.list.append (
+					$('<a></a>')
+						.attr ('href', '#')
+						.attr ('class', 'filebrowser-thumb')
+						.attr ('title', res.data.files[i].name)
+						.data ('file', res.data.files[i].path)
+						.click (self.select_file)
+						.append ('<img src="' + self.prefix + res.data.files[i].path + '" />')
+				);
 			}
 		}
 	};
@@ -115,7 +149,7 @@
 
 		$.open_dialog (
 			self.opts.title,
-			'<p><select id="filebrowser-dirs"><option value="">files</option></select></p><ul id="filebrowser-list"></ul>'
+			'<select id="filebrowser-dirs"><option value="">files</option></select><div id="filebrowser-list"></div>'
 		);
 
 		self.dirs = $('#filebrowser-dirs');
