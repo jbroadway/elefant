@@ -48,7 +48,7 @@ if (! file_exists ('conf/updates')) {
 }
 
 // check for and download new patch files
-$res = json_decode (fetch_url ('http://www.elefantcms.com/updates/patches.php'));
+$res = json_decode (fetch_url ('http://www.elefantcms.com/updates/patches.php?v=' . $major_minor));
 
 if (! is_object ($res)) {
 	echo "Error: Unable to fetch patch list from the server.\n";
