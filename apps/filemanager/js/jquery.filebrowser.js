@@ -129,6 +129,7 @@
 		}
 
 		$.close_dialog ();
+		return false;
 	};
 
 	$.filebrowser = function (opts) {
