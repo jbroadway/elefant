@@ -365,6 +365,22 @@ class I18n {
 	}
 
 	/**
+	 * Export an array of strings into a JavaScript block that calls
+	 * `$.i18n_add()` which can be passed to `$page->add_script()`.
+	 * Can also be called from a view template on an array of strings
+	 * like this: `{{ my_array|I18n::export }}`.
+	 */
+	public static function export ($strings) {
+		$out = "<script>\$(function(){\$.i18n_append({\n";
+		$sep = '';
+		foreach ($strings as $string) {
+			$out .= $sep . "\t'" . str_replace ("'", "\\'", $string) . "': '" . str_replace ("'", "\\'", __ ($string)) . "'";
+			$sep = ",\n";
+		}
+		return $out . "\n});});</script>\n";
+	}
+
+	/**
 	 * Applies the specified class and format to a date for
 	 * the `date()`, `short_date()`, `time()`, `date_time()` and
 	 * `short_date_time()` methods.
