@@ -3,10 +3,10 @@
 [General]
 
 ; The name of your website.
-site_name = "Your Site Name"
+site_name = "die symbionten"
 
 ; Default outbound email address.
-email_from = "you@example.com"
+email_from = "jens@die-symbionten.de"
 
 ; Default character set for output.
 
@@ -39,12 +39,12 @@ compress_output = On
 ; For development, turn debugging on and Elefant will output
 ; helpful information on errors.
 
-debug = Off
+debug = On
 
 ; For development, turn display_errors on and Elefant will
 ; output fatal error messages in addition to the debugger.
 
-display_errors = Off
+display_errors = On
 
 [I18n]
 
@@ -59,12 +59,15 @@ negotiation_method = http
 
 ; Database settings go here. Driver must be a valid PDO driver.
 
-master[driver] = sqlite
-master[file] = "conf/site.db"
+master[driver] = mysql
+master[host] = "localhost:3306"
+master[name] = d0161ff6
+master[user] = d0161ff6
+master[pass] = "bm7bK34HTVnf8u7S"
 
 ; The database table name prefix.
 
-prefix = ""
+prefix = "elefant_"
 
 [Mongo]
 
