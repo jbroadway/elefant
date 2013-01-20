@@ -53,12 +53,16 @@ if (typeof String.prototype.trim !== 'function') {
 		el.children("li").each(function (index, value) {			
 			var obj = {},
 				attr = {};
-				
+						
 			obj.data = $(value).clone().children().remove().end().text().trim();
 			$.each(intestingAttr, function (index, attribute) {
-				if ($(value).attr(attribute) !== undef) {
-					if (attribute === "class") {
-						attr.classname = $(value).attr(attribute);
+				
+				if ($(value).attr(attribute) !== undef || attribute === "class") {
+					if (attribute === "class") {						
+						if ($(value).children("i").attr(attribute) !== undef) {
+							attr.classname = $(value).children("i").attr(attribute);
+							debug("serializeTree: attr.classname " + attr.classname);
+						}						
 					} else {
 						attr[attribute] = $(value).attr(attribute);
 					}
@@ -88,7 +92,17 @@ if (typeof String.prototype.trim !== 'function') {
 			});
 		}	
 	}
+	
+	function updateFolderIcons(ctx, options) {
+		debug("updateFolderIcons:");
 		
+		//debug($("li:not(>ul)", ctx).length);
+		//debug($("li>ul", ctx).length);
+		//debug($("li", ctx).length);
+		
+		$("li:not(:has(ul))", ctx).children("i").removeClass(options.expandedClass).removeClass(options.collapsedClass);
+		$("li>ul", ctx).siblings("i:not(." + options.collapsedClass + ")").addClass(options.expandedClass);
+	}
 	// handlers	
 		
 	$.treeDragDrop.handlers = {
@@ -235,13 +249,18 @@ if (typeof String.prototype.trim !== 'function') {
 				}
 			});	
 			// adjust expand/collapse icons 
-			$("li", ctx).has("ul").not("li." + options.collapsedClass).addClass(options.expandedClass);
-			$("li", ctx).not("li:has(ul)").removeClass(options.expandedClass).removeClass(options.collapsedClass);							
+			
+			updateFolderIcons(ctx, options);
 		},
 		
 		
 		// toggle expand/collapse
 		handleClick: function (e) {
+			
+			if ($("body").hasClass("cursorGrabbing")) {
+				e.stopImmediatePropagation();
+				return false;
+			}
 			
 			var target = $(e.target),
 				ctx = getContext($(e.target)),
@@ -251,21 +270,22 @@ if (typeof String.prototype.trim !== 'function') {
 				expanded = options.expandedClass;
 			
 			
-			if (target.children("ul").length === 0) {				
+			if (target.siblings("ul").length === 0) {				
 				return false;				
 			} else {			
 				if (target.hasClass(collapsed)) {
 					target.removeClass(collapsed).addClass(expanded);					
-					target.children("ul").show();					
+					target.siblings("ul").show();					
 				} else {
 					target.removeClass(expanded).addClass(collapsed);	
-					target.children("ul").hide();
+					target.siblings("ul").hide();
 				}
 			}	
 			
-			debug("handleClick: sendTree");
-			sendTree(tree, options.updateUrl);	
-					
+			//debug("handleClick: target " +target);
+			//debug(target);
+			//debug("handleClick: sendTree ");
+			sendTree(tree, options.updateUrl);						
 			e.stopImmediatePropagation();
 		}
 	};
@@ -277,9 +297,7 @@ if (typeof String.prototype.trim !== 'function') {
 		
 		//extend the global default with the options for the element
 		options = $.extend({}, $.treeDragDrop.defaults, options);
-		
-		
-		
+						
 		return this.each(function () {
 			var ctx = $(this),
 				data = ctx.data('treeDragDrop');
@@ -305,12 +323,10 @@ if (typeof String.prototype.trim !== 'function') {
 					over: $.treeDragDrop.handlers.handleDroppableOver,
 					out: $.treeDragDrop.handlers.handleDroppableOut
 					
-				}).bind(
-					"click", 
-					$.treeDragDrop.handlers.handleClick
-				).bind("onselectstart", function () { 
+				}).bind("onselectstart", function () { 
 					return false;
-				}).attr("unselectable", "on").data("tddCtx", ctx).has("ul").addClass(options.expandedClass);
+				//}).attr("unselectable", "on").data("tddCtx", ctx).has("ul").children("i").addClass(options.expandedClass);
+				}).attr("unselectable", "on").data("tddCtx", ctx);
 				
 				$(".tdd-tree, .tdd-trashbin", ctx).droppable({
 					addClasses: false,				
@@ -319,6 +335,10 @@ if (typeof String.prototype.trim !== 'function') {
 					over: $.treeDragDrop.handlers.handleDroppableOver,
 					out: $.treeDragDrop.handlers.handleDroppableOut				
 				}).bind("onselectstart", function () {return false; }).attr("unselectable", "on");
+				
+				$(".tdd-tree i", ctx).bind("click", $.treeDragDrop.handlers.handleClick);
+				updateFolderIcons(ctx, options);
+				$(".tdd-tree i." + options.collapsedClass, ctx).siblings("ul").hide();
 				
 				$.treeDragDrop.defaults.marker.bind("mousemove", function () { return false; });
 				$.treeDragDrop.defaults.marker.bind("mouseover", function () { return false; });
