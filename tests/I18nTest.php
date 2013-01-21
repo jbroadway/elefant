@@ -106,6 +106,14 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ('Retournez', i18n_get ('Back'));
 	}
 
+	function test_export () {
+		$expected = "<script>\$(function(){\$.i18n_append({\n\t'One': 'One',\n\t'Don\\'t': 'Don\\'t'\n});});</script>\n";
+		$this->assertEquals (
+			$expected,
+			I18n::export (array ('One', 'Don\'t'))
+		);
+	}
+
 	function test_date () {
 		$date = '2012-05-01 18:30:00';
 		$time = strtotime ($date);
