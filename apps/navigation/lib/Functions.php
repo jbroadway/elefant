@@ -84,7 +84,7 @@ function navigation_get_other_pages ($ids) {
 function navigation_print_admin_tree ($tree, $tree_root=true) {
 	echo ($tree_root) ?'<ul class="tdd-tree">' : "<ul>";
 	foreach ($tree as $item) {
-		printf ('<li id="%s" class="%s">%s', $item->attr->id, $item->attr->classname,  $item->data);
+		printf ('<li id="%s"><i class="%s"></i> %s', $item->attr->id, $item->attr->classname,  $item->data);
 		if (isset ($item->children)) {
 			navigation_print_admin_tree ($item->children, false);
 		}
