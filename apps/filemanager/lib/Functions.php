@@ -160,8 +160,8 @@ function filemanager_sort_mtime_asc ($one, $two) {
  * This makes first requests to a gallery page expensive, but
  * subsequent requests much faster.
  */
-function filemanager_get_thumbnail ($file, $width = 140, $height = 105) {
-	$cache_file = 'cache/thumbs/' . md5 ($file) . '-' . $width . 'x' . $height . '.jpg';
+function filemanager_get_thumbnail ($file, $width = 140, $height = 105, $style = "cover") {
+	$cache_file = 'cache/thumbs/' . md5 ($file) . '-'. $style ."-" . $width . 'x' . $height . '.jpg';
 	if (@file_exists ($cache_file) && @filemtime ($cache_file) > @filemtime ($file)) {
 		return $cache_file;
 	}
@@ -200,14 +200,26 @@ function filemanager_get_thumbnail ($file, $width = 140, $height = 105) {
 
 	list ($w, $h) = getimagesize ($file);
 
-	$ratio = max ($width / $w, $height / $h);
-	$woffset = ($w - $width / $ratio) / 2;
-	$hoffset = ($h - $height / $ratio) / 2;
-	$h = $height / $ratio;
-	$w = $width / $ratio;
-
+	if($style === "cover"){
+		$ratio = max ($width / $w, $height / $h);
+		$woffset = ($w - $width / $ratio) / 2;
+		$hoffset = ($h - $height / $ratio) / 2;
+		$h = $height / $ratio;
+		$w = $width / $ratio;	
+	} elseif ($style === "stretch"){		
+		$woffset = 0;
+		$hoffset = 0;
+	} elseif ($style === "contain"){		
+		$woffset = 0;
+		$hoffset = 0;			
+		$scale = min($width/$w, $height/$h);	
+		$width  = ceil($scale*$w);
+		$height = ceil($scale*$h);
+	}
+	
 	$new = @imagecreatetruecolor ($width, $height);
 	@imagecopyresampled ($new, $orig, 0, 0, $woffset, $hoffset, $width, $height, $w, $h);
+	
 	@imagejpeg ($new, $cache_file);
 	@imagedestroy ($orig);
 	@imagedestroy ($new);
