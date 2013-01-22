@@ -18,8 +18,8 @@
  */
 
 if (detect ('msie 7')) {
-	$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome-ie7.css');
+	$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome-ie7.min.css');
 }
-$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome.css');
+$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome.min.css');
 
 ?>

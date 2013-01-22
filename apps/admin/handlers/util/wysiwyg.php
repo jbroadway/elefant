@@ -12,13 +12,12 @@
  *     {! admin/util/wysiwyg?field_id=my_field !}
  */
 
+$this->run ('admin/util/fontawesome');
+
 $page->add_style ('/js/jquery-ui/jquery-ui.css');
 $page->add_style ('/css/wysiwyg/jquery.wysiwyg.css');
 $page->add_style ('/css/files/wysiwyg.fileManager.css');
-if (detect ('msie 7')) {
-	$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome-ie7.css');
-}
-$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome.css');
+
 $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/js/wysiwyg/jquery.wysiwyg.js');
 $page->add_script ('/js/wysiwyg/controls/wysiwyg.image2.js');

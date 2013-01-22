@@ -43,13 +43,6 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 	cursor: url(cursorGrab.png), move;
 }
 
-.treeDragDrop li [class^="icon-"], .treeDragDrop  li [class*=" icon-"]{
-	display:block;
-	width:inherit;
-	text-align:left;
-}
-
-
 .treeDragDrop li.tdd-collapsed{
 	background: url(collapsed.png) no-repeat 8px 10px;
 }
@@ -82,3 +75,13 @@ li.ui-draggable-dragging, .ui-draggable-dragging li{
 body.cursorGrabbing{
 	cursor: url(cursorGrabbing.png), move;
 }
+
+.treeDragDrop .tdd-tree i{
+	cursor: pointer;
+}
+
+
+.treeDragDrop .tdd-tree i:hover{
+	color:#A753CC;
+}
+
