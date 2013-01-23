@@ -7,11 +7,11 @@
  */
 
 if ($appconf['Scripts']['jquery_source'] === 'local') {
-	echo "<script src=\"/js/jquery-1.7.1.min.js\"></script>\n";
+	$page->add_script ('/js/jquery-1.7.1.min.js');
 } elseif ($appconf['Scripts']['jquery_source'] === 'google') {
-	echo "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js\"></script>\n";
+	$page->add_script ('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>');
 } else {
-	echo '<script src="' . $appconf['Scripts']['jquery_source'] . "\"></script>\n";
+	$page->add_script ('<script src="' . $appconf['Scripts']['jquery_source'] . '"></script>');
 }
 
 if (User::is_valid () && User::is ('admin') && $page->preview == false) {
