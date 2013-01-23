@@ -42,5 +42,13 @@ $this->run ('admin/util/modal');
 $page->add_style ('/apps/filemanager/css/filebrowser.css');
 $page->add_script ('/apps/filemanager/js/filemanager.js');
 $page->add_script ('/apps/filemanager/js/jquery.filebrowser.js');
+$page->add_script (
+	I18n::export (
+		array (
+			'Choose a file',
+			'New file'
+		)
+	)
+);
 
 ?>

@@ -47,7 +47,7 @@ var filemanager = (function ($) {
 		}
 
 		$.get (
-			self.prefix + 'ls/' + encodeURIComponent (opts.path),
+			self.prefix + 'ls/' + opts.path,
 			callback
 		);
 	};
@@ -71,7 +71,7 @@ var filemanager = (function ($) {
 		}
 
 		$.get (
-			self.prefix + 'mkdir/' + encodeURIComponent (opts.path) + '/' + encodeURIComponent (opts.name),
+			self.prefix + 'mkdir/' + opts.path + '/' + opts.name,
 			callback
 		);
 	};
@@ -83,7 +83,7 @@ var filemanager = (function ($) {
 		}
 
 		$.get (
-			self.prefix + 'rm/' + encodeURIComponent (opts.path),
+			self.prefix + 'rm/' + opts.path,
 			callback
 		);
 	};
@@ -99,7 +99,7 @@ var filemanager = (function ($) {
 		}
 
 		$.get (
-			self.prefix + 'rm/' + encodeURIComponent (opts.path)
+			self.prefix + 'rm/' + opts.path
 				+ '?rename=' + encodeURIComponent (opts.rename),
 			callback
 		);
@@ -120,7 +120,7 @@ var filemanager = (function ($) {
 		}
 
 		$.get (
-			self.prefix + 'prop/' + encodeURIComponent (opts.path)
+			self.prefix + 'prop/' + opts.path
 				+ '?prop=' + encodeURIComponent (opts.prop)
 				+ '&value=' + encodeURIComponent (opts.value),
 			callback

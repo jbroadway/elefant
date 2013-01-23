@@ -112,6 +112,11 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 			$expected,
 			I18n::export (array ('One', 'Don\'t'))
 		);
+
+		$this->assertEquals (
+			$expected,
+			I18n::export ('One', 'Don\'t')
+		);
 	}
 
 	function test_date () {
