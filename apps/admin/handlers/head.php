@@ -7,9 +7,9 @@
  */
 
 if ($appconf['Scripts']['jquery_source'] === 'local') {
-	$page->add_script ('/js/jquery-1.7.1.min.js');
+	$page->add_script ('/js/jquery-1.8.3.min.js');
 } elseif ($appconf['Scripts']['jquery_source'] === 'google') {
-	$page->add_script ('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>');
+	$page->add_script ('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>');
 } else {
 	$page->add_script ('<script src="' . $appconf['Scripts']['jquery_source'] . '"></script>');
 }
