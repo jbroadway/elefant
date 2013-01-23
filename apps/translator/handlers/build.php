@@ -72,6 +72,26 @@ foreach ($sources as $source) {
 					);
 				}
 			}
+
+			// parse for I18n::export syntax
+			preg_match_all ('/I18n::export\s+?\(([^\)]+)\)/s', $data, $matches);
+			foreach ($matches[1] as $match) {
+				if (! preg_match ('/array\s+?\(/', $match)) {
+					$match = 'array (' . $match;
+				}
+				$match = '<?php $__tmp__ = ' . $match . ');?>';
+
+				$tokens = token_get_all ($match);
+				foreach ($tokens as $tok) {
+					if ($tok[0] === T_CONSTANT_ENCAPSED_STRING) {
+						$str = stripslashes (trim ($tok[1], '"\''));
+						$list[$str] = array (
+							'orig' => $str,
+							'src' => $file
+						);
+					}
+				}
+			}
 		}
 	}
 }
