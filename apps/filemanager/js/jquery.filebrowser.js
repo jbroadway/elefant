@@ -136,9 +136,19 @@
 		return false;
 	};
 
-	// Prompt to upload a file
-	self.upload_file = function () {
-		return false;
+	// Return an array of allowed mime types
+	self.allowed_mimes = function () {
+		if (self.opts.allowed.length === 0) {
+			return [];
+		}
+
+		var mimes = [];
+		for (var i = 0; i < self.opts.allowed.length; i++) {
+			if (self.opts.mimes[self.opts.allowed[i]]) {
+				mimes.push (self.opts.mimes[self.opts.allowed[i]]);
+			}
+		}
+		return mimes;
 	};
 
 	$.filebrowser = function (opts) {
@@ -148,8 +158,32 @@
 			set_value: null,
 			title: $.i18n ('Choose a file'),
 			new_file: $.i18n ('New file'),
+			uploading_text: $.i18n ('Uploading...'),
 			thumbs: false,
-			path: ''
+			path: '',
+			uploading: 0,
+			mimes: {
+				jpg: 'image/jpeg',
+				jpeg: 'image/jpeg',
+				png: 'image/png',
+				gif: 'image/gif',
+				mp4: 'video/mp4',
+				m4v: 'video/x-m4v',
+				flv: 'video/x-flv',
+				f4v: 'video/mp4',
+				mp3: 'audio/mpeg',
+				pdf: 'application/pdf',
+				doc: 'application/msword',
+				docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+				xls: 'application/vnd.ms-excel',
+				xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+				ppt: 'application/vnd.ms-powerpoint',
+				pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+				txt: 'text/plain',
+				html: 'text/html',
+				js: 'text/javascript',
+				css: 'text/css'
+			}
 		};
 
 		self.opts = $.extend (defaults, opts);
@@ -164,9 +198,22 @@
 
 		$.open_dialog (
 			self.opts.title,
-			'<a href="#" id="filebrowser-upload">' + self.opts.new_file + '</a>' +
-			'<select id="filebrowser-dirs"><option value="">files</option></select>' +
-			'<div id="filebrowser-list"></div>'
+			'<div id="filebrowser-dropzone">' +
+				'<form method="post" enctype="multipart/form-data">' +
+					'<div id="filebrowser-upload">' +
+						'<div id="filebrowser-upload-form">' +
+							self.opts.new_file + ': ' +
+							'<input type="file" name="file[]" id="filebrowser-file" multiple="multiple" />' +
+						'</div>' +
+						'<div id="filebrowser-upload-progress">' +
+							'<div id="filebrowser-upload-progress-bar"></div>' +
+							'<div id="filebrowser-upload-progress-text">' + self.opts.uploading_text + '</div>' +
+						'</div>' +
+					'</div>' +
+					'<select id="filebrowser-dirs"><option value="">files</option></select>' +
+					'<div id="filebrowser-list"></div>' +
+				'</form>' +
+			'</div>'
 		);
 
 		self.dirs = $('#filebrowser-dirs');
@@ -174,9 +221,105 @@
 		self.upload = $('#filebrowser-upload');
 
 		self.dirs.change (self.fetch_list);
-		self.upload.click (self.upload_file);
 
 		filemanager.dirs (self.update_dirs);
 		filemanager.ls ({path: self.opts.path}, self.update_list);
+
+		// Implements drag and drop file upload support,
+		// for browsers that support it, with fallback
+		// for those that don't.
+		$('#filebrowser-dropzone').filedrop ({
+			fallback_id: 'filebrowser-file',
+			url: '/filemanager/upload/drop',
+			paramname: 'file',
+			withCredentials: true,
+			data: {
+				path: function () {
+					return self.opts.path;
+				}
+			},
+			error: function (err, file) {
+				$('#filebrowser-dropzone').removeClass ('filebrowser-over');
+
+				// Reset the upload progress bar
+				$('#filebrowser-upload-progress-bar').css ('width', '5%');
+				$('#filebrowser-upload-progress').hide ();
+				$('#filebrowser-upload-form').show ();
+
+				switch (err) {
+					case 'FileTypeNotAllowed':
+						alert (
+							$.i18n ('Please upload one of the following file types')
+							+ ': ' +
+							self.opts.allowed.join (', ')
+						);
+						break;
+					case 'BrowserNotSupported':
+						alert ($.i18n ('Your browser does not support drag and drop file uploads.'));
+						break;
+					case 'TooManyFiles':
+						alert ($.i18n ('Please upload fewer files at a time.'));
+						break;
+					case 'FileTooLarge':
+						alert (
+							$.i18n ('The following file is too large to upload')
+							+ ': ' +
+							file.name
+						);
+						break;
+				}
+			},
+			allowedfiletypes: self.allowed_mimes (),
+			maxfiles: 12,
+			queuefiles: 2,
+			dragOver: function () {
+				$('#filebrowser-dropzone').addClass ('filebrowser-over');
+			},
+			dragLeave: function () {
+				$('#filebrowser-dropzone').removeClass ('filebrowser-over');
+			},
+			docLeave: function () {
+				$('#filebrowser-dropzone').removeClass ('filebrowser-over');
+			},
+			drop: function () {
+				$('#filebrowser-dropzone').removeClass ('filebrowser-over');
+			},
+			uploadStarted: function (i, file, len) {
+				// Save the total so we only notify at the end
+				self.opts.uploading = len;
+				
+				// Replace the upload field with a progress bar
+				$('#filebrowser-upload-form').hide ();
+				$('#filebrowser-upload-progress').show ();
+			},
+			uploadFinished: function (i, file, res, time) {
+				if (! res.success) {
+					alert (res.error);
+
+					// Reset the upload progress bar
+					$('#filebrowser-upload-progress-bar').css ('width', '5%');
+					$('#filebrowser-upload-progress').hide ();
+					$('#filebrowser-upload-form').show ();
+
+				} else {
+					if (i === self.opts.uploading - 1) {
+						// This is the last file, add notification
+						$.add_notification (res.data);
+
+						// Update the file list
+						filemanager.ls ({path: self.opts.path}, self.update_list);
+
+						// Reset the upload progress bar
+						$('#filebrowser-upload-progress-bar').css ('width', '5%');
+						$('#filebrowser-upload-progress').hide ();
+						$('#filebrowser-upload-form').show ();
+					}
+				}
+			},
+			progressUpdated: function (i, file, progress) {
+				// Update the progress bar
+				$('#filebrowser-upload-progress-bar').css ('width', progress + '%');
+			}
+		});
 	};
 })(jQuery);

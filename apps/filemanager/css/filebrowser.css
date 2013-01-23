@@ -1,3 +1,12 @@
+#filebrowser-dropzone {
+	height: 100%;
+	border: 2px solid #fff;
+}
+
+	#filebrowser-dropzone.filebrowser-over {
+		border: 2px dashed #ddd;
+	}
+
 #filebrowser-list {
 	margin-top: 8px;
 }
@@ -31,4 +40,28 @@
 
 #filebrowser-upload {
 	float: right;
+}
+
+#filebrowser-upload-progress {
+	display: none;
+	width: 150px;
+	border: 1px solid #ddd;
+}
+
+#filebrowser-upload-progress-bar {
+	display: inline-block;
+	background-color: #ddd;
+	height: 18px;
+	width: 5%;
+	z-index: 0;
+}
+
+#filebrowser-upload-progress-text {
+	z-index: 1;
+	margin-top: -24px;
+	margin-left: 2px;
+}
+
+#filebrowser-file {
+	outline-width: 0;
 }

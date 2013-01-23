@@ -40,13 +40,19 @@
 $this->run ('admin/util/modal');
 
 $page->add_style ('/apps/filemanager/css/filebrowser.css');
+$page->add_script ('/apps/filemanager/js/jquery.filedrop.js');
 $page->add_script ('/apps/filemanager/js/filemanager.js');
 $page->add_script ('/apps/filemanager/js/jquery.filebrowser.js');
 $page->add_script (
 	I18n::export (
 		array (
 			'Choose a file',
-			'New file'
+			'New file',
+			'Please upload one of the following file types',
+			'Your browser does not support drag and drop file uploads.',
+			'Please upload fewer files at a time.',
+			'The following file is too large to upload',
+			'Uploading...'
 		)
 	)
 );
