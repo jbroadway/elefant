@@ -11,11 +11,14 @@
 	// The folder prefix for file paths
 	self.prefix = '/files/';
 
-	// jQuery reference to #filemanager-dirs
+	// jQuery reference to #filebrowser-dirs
 	self.dirs = null;
 
-	// jQuery reference to #filemanager-list
+	// jQuery reference to #filebrowser-list
 	self.list = null;
+	
+	// jQuery reference to #filebrowser-upload
+	self.upload = null;
 
 	// A regular expression matching any of the allowed file extensions
 	self.extensions = null;
@@ -112,7 +115,8 @@
 	// Fetch folder of files
 	self.fetch_list = function () {
 		$('#filebrowser-dirs option:selected').each (function () {
-			filemanager.ls ({path: $(this).val ()}, self.update_list);
+			self.opts.path = $(this).val ();
+			filemanager.ls ({path: self.opts.path}, self.update_list);
 		});
 	};
 
@@ -132,12 +136,18 @@
 		return false;
 	};
 
+	// Prompt to upload a file
+	self.upload_file = function () {
+		return false;
+	};
+
 	$.filebrowser = function (opts) {
 		var defaults = {
 			allowed: [],
 			callback: null,
 			set_value: null,
-			title: 'Choose a file',
+			title: $.i18n ('Choose a file'),
+			new_file: $.i18n ('New file'),
 			thumbs: false,
 			path: ''
 		};
@@ -154,13 +164,17 @@
 
 		$.open_dialog (
 			self.opts.title,
-			'<select id="filebrowser-dirs"><option value="">files</option></select><div id="filebrowser-list"></div>'
+			'<a href="#" id="filebrowser-upload">' + self.opts.new_file + '</a>' +
+			'<select id="filebrowser-dirs"><option value="">files</option></select>' +
+			'<div id="filebrowser-list"></div>'
 		);
 
 		self.dirs = $('#filebrowser-dirs');
 		self.list = $('#filebrowser-list');
+		self.upload = $('#filebrowser-upload');
 
 		self.dirs.change (self.fetch_list);
+		self.upload.click (self.upload_file);
 
 		filemanager.dirs (self.update_dirs);
 		filemanager.ls ({path: self.opts.path}, self.update_list);

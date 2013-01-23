@@ -28,3 +28,7 @@
 	max-width: 100px;
 	border: 1px solid #ddd;
 }
+
+#filebrowser-upload {
+	float: right;
+}
