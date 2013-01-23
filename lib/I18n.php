@@ -369,8 +369,16 @@ class I18n {
 	 * `$.i18n_add()` which can be passed to `$page->add_script()`.
 	 * Can also be called from a view template on an array of strings
 	 * like this: `{{ my_array|I18n::export }}`.
+	 *
+	 * Note that you may pass either a single array, or each string
+	 * as a separate parameter, which allows you to omit the `array()`
+	 * wrapper when calling it in PHP code.
 	 */
 	public static function export ($strings) {
+		if (func_num_args () > 1) {
+			$strings = func_get_args ();
+		}
+
 		$out = "<script>\$(function(){\$.i18n_append({\n";
 		$sep = '';
 		foreach ($strings as $string) {
