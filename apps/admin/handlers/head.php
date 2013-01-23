@@ -15,7 +15,13 @@ if ($appconf['Scripts']['jquery_source'] === 'local') {
 }
 
 if (User::is_valid () && User::is ('admin') && $page->preview == false) {
-	echo $tpl->render ('admin/head');
+	$page->add_style ('/apps/admin/css/jquery.jgrowl.css');
+	$page->add_style ('/apps/admin/css/top-bar.css');
+
+	$page->add_script ("<script>$(function(){\$.elefant_version='" . ELEFANT_VERSION . "';});</script>");
+	$page->add_script ('/apps/admin/js/jquery.jgrowl.min.js');
+	$page->add_script ('/js/jquery.cookie.js');
+	$page->add_script ('/apps/admin/js/top-bar.js');
 }
 
 ?>
