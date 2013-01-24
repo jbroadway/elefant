@@ -57,6 +57,10 @@ if ($data['desc'] === 'yes') {
 
 // display style
 if ($data['style'] === 'lightbox') {
+	$page->add_style ('/apps/filemanager/css/gallery.css');
+	$page->add_style ('/apps/filemanager/css/colorbox/colorbox.css');
+	$page->add_script ('/apps/filemanager/js/jquery.colorbox.min.js');
+
 	$template = 'filemanager/gallery';
 } else {
 	$template = 'filemanager/gallery/embedded';
