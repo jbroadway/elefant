@@ -28,9 +28,9 @@ $(function () {
 <p>
 <table width="100%">
 	<tr>
-		<th width="40%">{"Layout"}</th>
-		<th width="20%">{"Last Modified"}</th>
-		<th width="20%">{"File Size"}</th>
+		<th width="45%">{"Layout"}</th>
+		<th width="25%">{"Last Modified"}</th>
+		<th width="10%">{"File Size"}</th>
 		<th width="20%">&nbsp;</th>
 	</tr>
 {% foreach layouts %}
@@ -64,17 +64,17 @@ $(function () {
 <p>
 <table width="100%">
 	<tr>
-		<th width="40%">{"Stylesheet"}</th>
+		<th width="45%">{"Stylesheet"}</th>
 		<th width="25%">{"Last Modified"}</th>
-		<th width="20%">{"File Size"}</th>
-		<th width="15%">&nbsp;</th>
+		<th width="10%">{"File Size"}</th>
+		<th width="20%">&nbsp;</th>
 	</tr>
 {% foreach stylesheets %}
 	<tr>
 		<td><a href="/{{ loop_value }}" class="preview iframe">{{ loop_value }}</a></td>
 		<td>{{ loop_value|filemtime|I18n::date_time }}</td>
 		<td>{{ loop_value|filesize|format_filesize }}</td>
-		<td>
+		<td style="text-align: right">
 			{% if locks[$data->loop_value] %}
 			{"Editing Locked"}
 			{% else %}
