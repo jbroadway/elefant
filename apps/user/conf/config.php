@@ -38,7 +38,9 @@ block_attempts_for = 900
 ; The value "admin" is short for "type:admin".
 
 ; To specify a custom access level for a custom user type, enter
-; "client = type:client" or simply "client = client".
+; "client = type:client" or simply "client = client". To enter
+; multiple user types, separate each value with a comma, e.g.,
+; "shared = group_a, group_b, group_c".
 
 public = all
 member = login
