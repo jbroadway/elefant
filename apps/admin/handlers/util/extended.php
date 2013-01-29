@@ -59,7 +59,6 @@ if ($data['fields'] || count ($data['fields']) === 0) {
 
 	if ($load_assets) {
 		$this->run ('filemanager/util/browser');
-		$this->run ('admin/util/fontawesome');
 	}
 
 	echo $tpl->render ('admin/util/extended', $data);
