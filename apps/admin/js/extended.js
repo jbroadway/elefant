@@ -164,6 +164,7 @@ var extended = (function ($) {
 		field.textarea = (field.type === 'textarea') ? true : false;
 		field.select = (field.type === 'select') ? true : false;
 		field.file = (field.type === 'file') ? true : false;
+		field.image = (field.type === 'image') ? true : false;
 		e.div.append (e.render.field (field));
 
 		$('#' + field.id + '-type').on ('change', e.toggle_field_options);

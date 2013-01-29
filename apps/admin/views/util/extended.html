@@ -53,12 +53,30 @@
 					class="wysiwyg-file-input"
 					size="30"
 			/>
-			<span	class="wysiwyg-fileManager"
-					id="{{field->name}}-fileManager"
-					title="{'Browse...'}"
-					onclick="return filemanager_{{field->name}} ()"
-					style="float: none; display: inline-block; margin: 4px 2px -4px 2px"
-			></span>
+			<input	type="submit"
+					id="{{field->name}}-filebrowser"
+					value="{'Browse...'}"
+					onclick="return filebrowser_{{field->name}} ()"
+			/>
+			{% if field->required %}
+				<span class="notice" id="_extended_{{field->name}}_notice">{{field->label|__}} {"is required"}.</span>
+			{% end %}
+		</p>
+	{% elseif field->type === 'image' %}
+		<p>
+			{{field->label|__}}:<br />
+			<input	type="text"
+					name="_extended[{{field->name}}]"
+					id="_extended_{{field->name}}"
+					value="{{field->value|quotes}}"
+					class="wysiwyg-file-input"
+					size="30"
+			/>
+			<input	type="submit"
+					id="{{field->name}}-filebrowser"
+					value="{'Browse...'}"
+					onclick="return imagebrowser_{{field->name}} ()"
+			/>
 			{% if field->required %}
 				<span class="notice" id="_extended_{{field->name}}_notice">{{field->label|__}} {"is required"}.</span>
 			{% end %}
@@ -70,9 +88,17 @@
 <script>
 {% foreach fields as field %}
 	{% if field->type === 'file' %}
-		function filemanager_{{field->name}} () {
-			$.wysiwyg.fileManager.init (function (file) {
-				$('#_extended_{{field->name}}').val (file);
+		function filebrowser_{{field->name}} () {
+			$.filebrowser ({
+				set_value: '#_extended_{{field->name}}'
+			});
+			return false;
+		}
+	{% elseif field->type === 'image' %}
+		function imagebrowser_{{field->name}} () {
+			$.filebrowser ({
+				set_value: '#_extended_{{field->name}}',
+				thumbs: true
 			});
 			return false;
 		}
@@ -86,10 +112,6 @@ $(function () {
 	});
 
 	{% foreach fields as field %}
-		{% if field->type === 'file' %}
-			$.wysiwyg.fileManager.setAjaxHandler ('//{{$_SERVER.HTTP_HOST}}/filemanager/embed');
-		{% end %}
-
 		{% if field->required %}
 			$('form').on ('submit', function () {
 				var val = $('#_extended_{{field->name}}').val ();
