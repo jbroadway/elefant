@@ -171,7 +171,7 @@
 				m4v: 'video/x-m4v',
 				flv: 'video/x-flv',
 				f4v: 'video/mp4',
-				mp3: 'audio/mpeg',
+				mp3: 'audio/mp3',
 				pdf: 'application/pdf',
 				doc: 'application/msword',
 				docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -271,6 +271,7 @@
 			},
 			allowedfiletypes: self.allowed_mimes (),
 			maxfiles: 12,
+			maxfilesize: filebrowser_max_filesize ? filebrowser_max_filesize : 2,
 			queuefiles: 2,
 			dragOver: function () {
 				$('#filebrowser-dropzone').addClass ('filebrowser-over');

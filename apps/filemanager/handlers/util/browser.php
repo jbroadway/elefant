@@ -44,6 +44,12 @@ $page->add_script ('/apps/filemanager/js/jquery.filedrop.js');
 $page->add_script ('/apps/filemanager/js/filemanager.js');
 $page->add_script ('/apps/filemanager/js/jquery.filebrowser.js');
 $page->add_script (
+	sprintf (
+		'<script>var filebrowser_max_filesize = %s;</script>',
+		(int) ini_get ('upload_max_filesize')
+	)
+);
+$page->add_script (
 	I18n::export (
 		array (
 			'Choose a file',
