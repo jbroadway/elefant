@@ -58,10 +58,7 @@ if ($data['fields'] || count ($data['fields']) === 0) {
 	}
 
 	if ($load_assets) {
-		$page->add_style ('/css/wysiwyg/jquery.wysiwyg.css');
-		$page->add_style ('/css/files/wysiwyg.fileManager.css');
-		$page->add_script ('/js/wysiwyg/jquery.wysiwyg.js');
-		$page->add_script ('/js/wysiwyg/plugins/wysiwyg.fileManager.js');
+		$this->run ('filemanager/util/browser');
 	}
 
 	echo $tpl->render ('admin/util/extended', $data);

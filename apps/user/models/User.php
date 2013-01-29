@@ -306,26 +306,36 @@ class User extends ExtendedModel {
 			return FALSE;
 		}
 
-		if (self::$acl[$access] === 'all') {
-			return TRUE;
+		if (! is_array (self::$acl[$access])) {
+			if (strpos (self::$acl[$access], ',') !== false) {
+				self::$acl[$access] = preg_split ('/, ?/', self::$acl[$access]);
+			} else {
+				self::$acl[$access] = array (self::$acl[$access]);
+			}
 		}
 
-		if (self::$acl[$access] === 'login' && self::is_valid ()) {
-			return TRUE;
-		}
+		foreach (self::$acl[$access] as $access_level) {
+			if ($access_level === 'all') {
+				return TRUE;
+			}
 
-		if (self::$acl[$access] === 'admin' && self::is ('admin')) {
-			return TRUE;
-		}
+			if ($access_level === 'login' && self::is_valid ()) {
+				return TRUE;
+			}
 
-		if (strpos (self::$acl[$access], 'type:') === 0) {
-			$type = str_replace ('type:', '', self::$acl[$access]);
-		} else {
-			$type = self::$acl[$access];
-		}
+			if ($access_level === 'admin' && self::is ('admin')) {
+				return TRUE;
+			}
 
-		if (self::is ($type)) {
-			return TRUE;
+			if (strpos ($access_level, 'type:') === 0) {
+				$type = str_replace ('type:', '', $access_level);
+			} else {
+				$type = $access_level;
+			}
+
+			if (self::is ($type)) {
+				return TRUE;
+			}
 		}
 
 		return FALSE;

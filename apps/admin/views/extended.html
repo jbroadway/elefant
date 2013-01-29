@@ -18,6 +18,7 @@
 				<option value="textarea">{"Paragraph text"}</option>
 				<option value="select">{"Drop down"}</option>
 				<option value="file">{"File link"}</option>
+				<option value="image">{"Image link"}</option>
 			</select>
 			&nbsp;<span class="vertical-hr">|</span>&nbsp;
 			<input type="checkbox" name="required" value="1" /> {"Required"}
@@ -53,6 +54,7 @@
 					<option value="textarea"\{{#if textarea}} selected\{{/if}}>{"Paragraph text"}</option>
 					<option value="select"\{{#if select}} selected\{{/if}}>{"Drop down"}</option>
 					<option value="file"\{{#if file}} selected\{{/if}}>{"File link"}</option>
+					<option value="image"\{{#if image}} selected\{{/if}}>{"Image link"}</option>
 				</select>
 				&nbsp;<span class="vertical-hr">|</span>&nbsp;
 				<input type="checkbox" name="required" value="1"\{{#if required}} checked\{{/if}} /> {"Required"}
