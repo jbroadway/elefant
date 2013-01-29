@@ -152,14 +152,13 @@ body {
 }
 
 .admin-options a {
-	display: block;
+	display: inline-block;
 	position: relative;
 	margin: 0;
 	padding: 0;
 	border: 0;
 	width: 26px;
 	height: 24px;
-	float: left;
 	background-color: rgba(0,0,0,.75);
 	background-repeat: no-repeat;
 	background-image: url(/apps/admin/css/admin/editable-sprite.png);
