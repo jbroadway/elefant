@@ -157,26 +157,42 @@ body {
 	margin: 0;
 	padding: 0;
 	border: 0;
-	height: 23px;
+	width: 26px;
+	height: 24px;
 	float: left;
-	background: rgba(0,0,0,.75);
+	background-color: rgba(0,0,0,.75);
+	background-repeat: no-repeat;
+	background-image: url(/apps/admin/css/admin/editable-sprite.png);
 }
 
 .admin-options a:hover {
 	background: rgba(0,0,0,.9);
+	background-image: url(/apps/admin/css/admin/editable-sprite.png);
 	text-decoration: none !important;
 	margin: 0;
 	padding: 0;
 	border: 0;
 }
 
-.admin-options a img {
-	height: 16px;
-	width: 16px;
-	margin: 0;
-	padding: 3px 5px 5px 5px;
-	border: 0;
-}
+	.admin-options a.editable-add {
+		background-position: 0px 0px;
+	}
+
+	.admin-options a.editable-edit {
+		background-position: -26px 0px;
+	}
+
+	.admin-options a.editable-delete {
+		background-position: -52px 0px;
+	}
+
+	.admin-options a.editable-versions {
+		background-position: -78px 0px;
+	}
+
+	.admin-options a.editable-lock {
+		background-position: -104px 0px;
+	}
 
 .admin-tooltip {
 	position: absolute;
