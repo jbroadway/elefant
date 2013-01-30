@@ -31,7 +31,7 @@ jQuery.confirm_and_post = function (el, msg) {
 	}
 
 	var $el = $(el),
-		params = $el.data ()
+		params = $el.data (),
 		url = $el.attr ('href'),
 		$form = $('<form>')
 			.attr ('method', 'post')
