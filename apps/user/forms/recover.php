@@ -3,6 +3,6 @@
 [email]
 
 email = 1
-not unique = "user.email"
+not unique = "#prefix#user.email"
 
 ; */ ?>
