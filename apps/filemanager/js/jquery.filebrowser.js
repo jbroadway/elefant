@@ -1,5 +1,5 @@
 /**
- * Used by the filemanager/browse handler to provide a file
+ * Used by the filemanager/util/browser handler to provide a file
  * browser for app developers.
  */
 ;(function ($) {
