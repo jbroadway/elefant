@@ -19,6 +19,9 @@
 				<option value="select">{"Drop down"}</option>
 				<option value="file">{"File link"}</option>
 				<option value="image">{"Image link"}</option>
+{% foreach custom as field_id, field_name %}
+				<option value="{{field_id}}">{{field_name|__}}</option>
+{% end %}
 			</select>
 			&nbsp;<span class="vertical-hr">|</span>&nbsp;
 			<input type="checkbox" name="required" value="1" /> {"Required"}
@@ -55,6 +58,9 @@
 					<option value="select"\{{#if select}} selected\{{/if}}>{"Drop down"}</option>
 					<option value="file"\{{#if file}} selected\{{/if}}>{"File link"}</option>
 					<option value="image"\{{#if image}} selected\{{/if}}>{"Image link"}</option>
+{% foreach custom as field_id, field_name %}
+					<option value="{{field_id}}"\{{#if {{field_id}}\}} selected \{{/if}}>{{field_name|__}}</option>
+{% end %}
 				</select>
 				&nbsp;<span class="vertical-hr">|</span>&nbsp;
 				<input type="checkbox" name="required" value="1"\{{#if required}} checked\{{/if}} /> {"Required"}
@@ -87,7 +93,8 @@ $(function () {
 			field_updated: '{"Field updated."}',
 			field_delete: '{"Field deleted."}',
 			order_updated: '{"Field order has been updated."}'
-		}
+		},
+		custom: {{custom|json_encode}}
 	});
 });
 </script>
