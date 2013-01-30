@@ -8,6 +8,22 @@
 	// Current list of options
 	self.opts = {};
 
+	// List of embeddable handlers
+	self.list = [];
+
+	// Initialized
+	self.initialized = false;
+
+	self.init = function () {
+		$.get (
+			'/admin/embed',
+			function (res) {
+				self.list = res;
+				self.initialized = true;
+			}
+		);
+	};
+
 	// Build an embed string from a handler and data
 	self.build_embed_string = function (handler, data) {
 		var i, sep = '?', embed = handler;
@@ -63,14 +79,31 @@
 		var defaults = {
 			callback: null,
 			set_value: null,
+			current: null,
 			title: $.i18n ('Dynamic Objects')
 		};
 		
 		self.opts = $.extend (defaults, opts);
 		
-		$.open_dialog (
-			self.opts.title,
-			'<div></div>'
-		);
+		if (! self.initialized) {
+			alert ($.i18n ('Unable to load the dynamic object list.'));
+			return;
+		}
+
+		var html = '<div id="dynamicobjects-wrapper">' +
+			'<div class="dynamicobjects-content clearfix">' +
+				'<ul class="dynamicobjects-list clearfix"></ul>' +
+			'</div>' +
+			'<div class="dynamicobjects-form"></div>' +
+			'<br clear="both" />' +
+		'</div>';
+
+		var current = (self.opts.current !== null)
+			? self.parse_embed_string (self.opts.current)
+			: false;
+
+		$.open_dialog (self.opts.title, html);
 	};
+
+	self.init ();
 })(jQuery);

@@ -29,6 +29,7 @@
  * - callback:  A function to call with the resulting embed code.
  * - set_value: The selector of an input field to update with the
  *   resulting embed code.
+ * - current:   Current embed code, for updating existing values.
  */
 
 $this->run ('admin/util/modal');
@@ -37,7 +38,8 @@ $page->add_script ('/apps/admin/js/jquery.dynamicobjects.js');
 $page->add_script (
 	I18n::export (
 		array (
-			'Dynamic Objects'
+			'Dynamic Objects',
+			'Unable to load the dynamic object list.'
 		)
 	)
 );
