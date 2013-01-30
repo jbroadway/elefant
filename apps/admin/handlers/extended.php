@@ -54,7 +54,7 @@ $data['custom'] = array ();
 foreach ($res as $file) {
 	$fields = parse_ini_file ($file, true);
 	foreach ($fields as $field => $settings) {
-		$data['custom'][preg_replace ('/[^a-zA-Z_]+/', '_', $field)] = $settings['name'];
+		$data['custom'][$field] = $settings['name'];
 	}
 }
 

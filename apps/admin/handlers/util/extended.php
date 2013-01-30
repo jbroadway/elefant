@@ -54,6 +54,16 @@ if ($data['fields'] || count ($data['fields']) === 0) {
 			$data['fields'][$k]->options = preg_split ("/[\r\n]+/", $field->options);
 		} elseif ($field->type === 'file') {
 			$load_assets = true;
+		} elseif (strpos ($field->type, '_') !== false) {
+			list ($app, $extra) = explode ('_', $field->type);
+			$fields = parse_ini_file ('apps/'. $app . '/conf/fields.php', true);
+			if (isset ($fields[$field->type])) {
+				$settings = $fields[$field->type];
+				if ($settings['type'] === 'select') {
+					$data['fields'][$k]->type = 'select';
+					$data['fields'][$k]->options = call_user_func ($settings['callback']);
+				}
+			}
 		}
 	}
 
