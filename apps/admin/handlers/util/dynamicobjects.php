@@ -32,14 +32,19 @@
  * - current:   Current embed code, for updating existing values.
  */
 
+$this->run ('admin/util/fontawesome');
 $this->run ('admin/util/modal');
 
+$page->add_style ('/apps/admin/css/dynamicobjects.css');
+$page->add_script ('/js/jquery.quickpager.js');
 $page->add_script ('/apps/admin/js/jquery.dynamicobjects.js');
 $page->add_script (
 	I18n::export (
 		array (
 			'Dynamic Objects',
-			'Unable to load the dynamic object list.'
+			'Unable to load the dynamic object list.',
+			'Embed',
+			'Back'
 		)
 	)
 );

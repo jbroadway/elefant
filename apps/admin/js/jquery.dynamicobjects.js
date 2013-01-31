@@ -58,9 +58,9 @@
 	};
 
 	// Submit the chosen handler and data
-	self.return_object = function () {
-		var handler = $(this).data ('handler'),
-			data = $(this).data,
+	self.return_object = function (handler, data) {
+		var handler = handler ? handler : $(this).data ('handler'),
+			data = data ? data : $(this).data,
 			embed_code = self.build_embed_string (handler, data);
 		
 		if (self.opts.set_value) {
@@ -80,7 +80,9 @@
 			callback: null,
 			set_value: null,
 			current: null,
-			title: $.i18n ('Dynamic Objects')
+			title: $.i18n ('Dynamic Objects'),
+			embed_button: $.i18n ('Embed'),
+			back_button: $.i18n ('Back')
 		};
 		
 		self.opts = $.extend (defaults, opts);
@@ -90,6 +92,7 @@
 			return;
 		}
 
+		// the base html
 		var html = '<div id="dynamicobjects-wrapper">' +
 			'<div class="dynamicobjects-content clearfix">' +
 				'<ul class="dynamicobjects-list clearfix"></ul>' +
@@ -98,11 +101,93 @@
 			'<br clear="both" />' +
 		'</div>';
 
+		// current is an existing object choice
 		var current = (self.opts.current !== null)
 			? self.parse_embed_string (self.opts.current)
 			: false;
 
 		$.open_dialog (self.opts.title, html);
+
+		// build the 
+		var ui = ''
+			list = $('.dynamicobjects-list');
+
+		for (var i = 0; i < self.list.length; i++) {
+			var item = self.list[i],
+				icon = '';
+
+			if (item.icon) {
+				if (item.icon.indexOf ('/') === -1) {
+					icon = 'class="icon-' + item.icon + '"';
+				} else {
+					icon = 'style="background: url(' + item.icon + ') no-repeat"';
+				}
+			} else {
+				icon = 'style="background: url(/apps/admin/css/admin/dynamic-icon.png) no-repeat"';
+			}
+
+			ui += '<li>' +
+				'<a href="javascript:void(0)" class="dynamicobjects-object" id="dynamicobjects-object-' + i + '" data-handler="' + i + '">' +
+					'<i ' + icon + '></i>' + item.label +
+				'</a>' +
+			'</li>';
+		}
+
+		// page the list of handlers
+		list.html (ui).quickPager ();
+
+		// handle choosing a handler from the list
+		$('.dynamicobjects-object').click (function () {
+			var i = 0,
+				num = $(this).data ('handler'),
+				obj = self.list[num],
+				f = $('.dynamicobjects-form'),
+				html = '';
+
+				if (obj.fields.length === 0) {
+					// no parameters, return handler
+					self.return_object (obj.handler, {});
+				}
+
+				// generate the form screen
+				$('.dynamicobjects-object').removeClass ('current');
+				$(this).addClass ('current');
+				$('.dynamicobjects-content').hide ();
+				$('.dynamicobjects-form').show ();
+
+				html = '<form id="dynamicobjects-form">' +
+					'<input type="hidden" name="handler" value="' + obj.handler + '" />' +
+					'<h2>' + obj.label + '</h2>' +
+					'<div class="clearfix">';
+
+				for (var i in obj.fields) {
+				}
+
+				html += '</div><div>' +
+					'<input type="submit" class="dynamicobjects-submit" value="' + self.opts.embed_button + '" />' +
+					'<input type="button" class="dynamicobjects-back clearfix" value="' + self.opts.back_button + '" />' +
+				'</div><br clear="both" /></form>';
+
+				f.html (html);
+
+				if (obj.columns == '2') {
+					$('.dynamicobjects-form').addClass ('columns-2');
+				} else {
+					$('.dynamicobjects-form').removeClass ('columns-2');
+				}
+
+				// back button handler
+				$('.dynamicobjects-back', '#dynamicobjects-form')
+					.unbind ('click')
+					.click (function () {
+						$('.dynamicobjects-form').hide ();
+						$('.dynamicobjects-content').show ();
+					});
+
+				// selecting a file
+
+				// submit button handler
+		});
 	};
 
 	self.init ();
