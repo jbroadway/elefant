@@ -1,9 +1,8 @@
 <?php
 
 /**
- * Provides modal dialog capabilities to admin screens.
- * Loads and initializes the jQuery SimpleModal plugin,
- * and wraps it in a $.open_dialog(title, html) function.
+ * Provides modal dialog capabilities to app developers.
+ * Supports nested dialogs too.
  *
  * Usage:
  *
@@ -24,9 +23,13 @@
  * use the $.close_dialog() function:
  *
  *     $.close_dialog ();
+ *
+ * Valid options are width and height. Note that $.open_dialog()
+ * returns the current dialog number. A more top level dialog
+ * number can be passed to $.close_dialog() and it will cascade
+ * the close action to all child dialogs too.
  */
 
-$page->add_script ('/apps/admin/js/jquery.simplemodal.1.4.2.min.js');
 $page->add_script ('/apps/admin/js/modal.js');
 $page->add_style ('/apps/admin/css/modal.css');
 

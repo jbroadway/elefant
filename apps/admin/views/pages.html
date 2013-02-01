@@ -13,17 +13,17 @@
 <p>
 <table width="100%">
 	<tr>
-		<th width="30%">{"ID"}</th>
-		<th width="30%">{"Title"}</th>
-		<th width="20%">{"Access"}</th>
-		<th width="20%">&nbsp;</th>
+		<th width="38%">{"ID"}</th>
+		<th width="38%">{"Title"}</th>
+		<th width="12%">{"Access"}</th>
+		<th width="12%">&nbsp;</th>
 	</tr>
 {% foreach pages %}
 	<tr>
 		<td><a href="/{{ loop_value->id }}" target="_blank">{{ loop_value->id }}</a></td>
 		<td>{{ loop_value->title }}</td>
 		<td>{{ loop_value->access|ucfirst }}</td>
-		<td>
+		<td style="text-align: right">
 			{% if loop_value->locked %}
 			{"Editing Locked"}
 			{% else %}

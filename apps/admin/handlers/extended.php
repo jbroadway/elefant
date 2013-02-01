@@ -48,6 +48,16 @@ if (! is_array ($data['fields'])) {
 	$data['fields'] = array ();
 }
 
+$res = glob ('apps/*/conf/fields.php');
+$res = is_array ($res) ? $res : array ();
+$data['custom'] = array ();
+foreach ($res as $file) {
+	$fields = parse_ini_file ($file, true);
+	foreach ($fields as $field => $settings) {
+		$data['custom'][$field] = $settings['name'];
+	}
+}
+
 echo $tpl->render ('admin/extended', $data);
 
 ?>

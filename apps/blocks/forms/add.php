@@ -4,7 +4,7 @@
 
 not empty = 1
 regex = "/^[a-zA0-9_-]+$/"
-unique = "blocks.id"
+unique = "#prefix#blocks.id"
 
 [title]
 
