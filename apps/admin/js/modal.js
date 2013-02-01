@@ -36,6 +36,30 @@ $(function () {
 		});
 	}
 
+	// disable scrolling
+	function disable_scrolling () {
+		var html = $('html'),
+			scrollpos = [
+				self.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft,
+				self.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+			];
+
+		html.data ('scroll-pos', scrollpos)
+			.data ('prev-overflow', html.css ('overflow'))
+			.css ('overflow', 'hidden');
+
+		window.scrollTo (scrollpos[0], scrollpos[1]);
+	}
+
+	// re-enable scrolling
+	function enable_scrolling () {
+		var html = $('html'),
+			scrollpos = html.data ('scroll-pos');
+
+		html.css ('overflow', html.data ('prev-overflow'));
+		window.scrollTo (scrollpos[0], scrollpos[1]);
+	}
+
 	// open a new modal dialog
 	$.open_dialog = function (title, html, opts) {
 		var defaults = {
@@ -61,12 +85,16 @@ $(function () {
 
 		if (opts.height) {
 			modal.css ({height: opts.height + 'px'});
-			modal.children ('.modal-content').css ({height: (opts.height - 98) + 'px'});
+			modal.children ('.modal-content').css ({height: (opts.height - 72) + 'px'});
 		}
 
 		center_modal (num);
 
 		$('#modal-close-' + num).click ($.close_dialog);
+
+		if (num === 1) {
+			disable_scrolling ();
+		}
 
 		return num;
 	};
@@ -86,6 +114,10 @@ $(function () {
 
 		// adjust active number
 		n = num - 1;
+
+		if (n === 0) {
+			enable_scrolling ();
+		}
 
 		return false;
 	}
