@@ -34,8 +34,10 @@
 
 $this->run ('admin/util/fontawesome');
 $this->run ('admin/util/modal');
+$this->run ('filemanager/util/browser');
 
 $page->add_style ('/apps/admin/css/dynamicobjects.css');
+$page->add_script ('/js/jquery.verify_values.js');
 $page->add_script ('/js/jquery.quickpager.js');
 $page->add_script ('/apps/admin/js/jquery.dynamicobjects.js');
 $page->add_script (
