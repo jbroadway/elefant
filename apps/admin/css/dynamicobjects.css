@@ -12,11 +12,6 @@
 	float:left;
 	padding:0px;
 	margin:0.25%;
-	
-}
-
-.dynamicobjects-list li{
-	float: left;	
 	width:49%;
 }
 
@@ -100,6 +95,7 @@
 	background: #eee;
 	color: #333;
 	padding: 1.5%;
+	min-height: 46px;
 }
 
 .dynamicobjects-form label {
@@ -110,7 +106,7 @@
 .dynamicobjects-form input[type=text], .dynamicobjects-form textarea, .dynamicobjects-form select {
 	margin: 0;
 	padding: 0.25%;
-	width: 99.5%;
+	width: 98%;
 }
 
 .dynamicobjects-form.columns-2 label {
@@ -136,6 +132,6 @@
 }
 
 .dynamicobjects-form input[type=text].wysiwyg-file-input {
-	float: left;	
-	width: 90%;	
+	/*float: left;*/
+	width: 85%;	
 }

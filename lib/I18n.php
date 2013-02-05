@@ -348,7 +348,14 @@ class I18n {
 			}
 
 		} elseif ($method === 'url') {
-			if (preg_match ('/^\/(' . join ('|', array_keys ($this->languages)) . ')\//', $_SERVER['REQUEST_URI'], $matches)) {
+			if (preg_match ('/^\/(' . join ('|', array_keys ($this->languages)) . ')\/?$/', $_SERVER['REQUEST_URI'], $matches)) {
+				// matched /lang or /lang/ -> /lang [language=lang]
+				$this->url_includes_lang = true;
+				$this->new_request_uri = rtrim ($_SERVER['REQUEST_URI'], '/');
+				$this->prefix = '';
+				return $matches[1];
+			} elseif (preg_match ('/^\/(' . join ('|', array_keys ($this->languages)) . ')\//', $_SERVER['REQUEST_URI'], $matches)) {
+				// matched /lang/page-id -> /page-id [language=lang]
 				$this->url_includes_lang = true;
 				$this->new_request_uri = preg_replace ('/^\/' . $matches[1] . '/', '', $_SERVER['REQUEST_URI']);
 				$this->prefix = '/' . $matches[1];

@@ -1,0 +1,81 @@
+#userchooser-search {
+	text-align: right;
+	width: 100%;
+	padding-bottom: 7px;
+	margin-bottom: 7px;
+	border-bottom: 1px solid #ccc;
+}
+
+#userchooser-list {
+	margin: 0;
+	padding: 0;
+}
+
+#userchooser-list li {
+	list-style-type: none;
+	display: block;
+	float: left;
+	padding: 0;
+	margin: 0.25%;
+	width: 49%;
+}
+
+#userchooser-list li a {
+	display: block;
+	padding: 3%;
+	background: #eee;
+	color: #333;
+	text-decoration: none;
+	line-height: 16px;
+	vertical-align: top;
+	height: 16px;
+}
+
+#userchooser-list li a i {
+	margin: 0px 5px 0px 2px;
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	color: #8A5AB5;
+	font-size: 16px;
+	line-height: 16px;
+}
+
+#userchooser-list li a:hover {
+	background: #ddd;
+	color: #333;
+}
+
+#userchooser-wrapper .simplePagerNav {
+	list-style-type: none;
+	margin-top: 15px;
+	margin-left: 0px;
+	padding-left: 0px;
+}
+
+#userchooser-wrapper .simplePagerNav li {
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 0px;
+	display: inline
+}
+
+#userchooser-wrapper .simplePagerNav li a {
+	display: block;
+	float: left;
+	margin:0.25%;
+	padding: 3px 6px 3px 6px;
+	background: #eee;
+	color: #333;
+	text-decoration: none;
+}
+
+#userchooser-wrapper .simplePagerNav li.currentPage a {
+	display: block;
+	float: left;
+	padding: 3px 6px 3px 6px;
+	background: #8A5AB5;
+	color: #fff;
+	text-decoration: none;
+}
+

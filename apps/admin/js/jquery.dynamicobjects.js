@@ -82,13 +82,14 @@
 			current: null,
 			title: $.i18n ('Dynamic Objects'),
 			embed_button: $.i18n ('Embed'),
-			back_button: $.i18n ('Back')
+			back_button: $.i18n ('Back'),
+			browse_button: $.i18n ('Browse')
 		};
 		
 		self.opts = $.extend (defaults, opts);
 		
 		if (! self.initialized) {
-			alert ($.i18n ('Unable to load the dynamic object list.'));
+			alert ($.i18n ('Unable to load the dynamic object list. Please try again in a few seconds.'));
 			return;
 		}
 
@@ -108,8 +109,8 @@
 
 		$.open_dialog (self.opts.title, html);
 
-		// build the 
-		var ui = ''
+		// build the list of handlers
+		var ui = '',
 			list = $('.dynamicobjects-list');
 
 		for (var i = 0; i < self.list.length; i++) {
@@ -161,6 +162,62 @@
 					'<div class="clearfix">';
 
 				for (var i in obj.fields) {
+					if (! obj.fields[i].initial) {
+						obj.fields[i].initial = '';
+					}
+					
+					if (obj.fields[i].type == 'select') {
+						html += '<p><label for="' + obj.fields[i].name + '">' + obj.fields[i].label + '</label><select name="' + obj.fields[i].name + '">';
+						for (var o in obj.fields[i].values) {
+							if (obj.fields[i].values[o].hasOwnProperty ('key') && obj.fields[i].values[o].hasOwnProperty ('value')) {
+								if (obj.fields[i].initial == obj.fields[i].values[o].key) {
+									html += '<option value="' + obj.fields[i].values[o].key + '" selected>' + obj.fields[i].values[o].value + '</option>';
+								} else {
+									html += '<option value="' + obj.fields[i].values[o].key + '">' + obj.fields[i].values[o].value + '</option>';
+								}
+							} else {
+								if (obj.fields[i].initial == obj.fields[i].values[o]) {
+									html += '<option value="' + obj.fields[i].values[o] + '" selected>' + obj.fields[i].values[o] + '</option>';
+								} else {
+									html += '<option value="' + obj.fields[i].values[o] + '">' + obj.fields[i].values[o] + '</option>';
+								}
+							}
+						}
+						if (obj.fields[i].message) {
+							html += '</select><span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span></p>';
+						} else {
+							html += '</select></p>';
+						}
+					} else if (obj.fields[i].type == 'textarea') {
+						html += '<p><label for="' + obj.fields[i].name + '">' + obj.fields[i].label + '</label><textarea name="' + obj.fields[i].name + '" rows="6">' + obj.fields[i].initial + '</textarea>';
+						if (obj.fields[i].message) {
+							html += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span></p>';
+						} else {
+							html += '</p>';
+						}
+					} else if (obj.fields[i].type == 'file') {
+						html += '<p><label for="' + obj.fields[i].name + '" >' + obj.fields[i].label + '</label>';
+						html += '<input type="text" class="wysiwyg-file-input" name="' + obj.fields[i].name + '" id="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
+
+						// add the File Manager icon:
+						html += '&nbsp;<button class="wysiwyg-fileManager" id="' + obj.fields[i].name + '-fileManager">' + self.opts.browse_button + '</button>';
+						html += "<br clear:both />"
+
+						if (obj.fields[i].message) {
+							html += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span>';
+						} 
+							
+						html += '</p>';
+						
+					} else {
+						html += '<p><label for="' + obj.fields[i].name + '">' + obj.fields[i].label + '</label><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
+						if (obj.fields[i].message) {
+							html += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span></p>';
+							
+						} else {
+							html += '</p>';
+						}
+					}
 				}
 
 				html += '</div><div>' +
@@ -185,8 +242,79 @@
 					});
 
 				// selecting a file
+				for (var i in obj.fields) {
+					if (obj.fields[i].type == 'file') {
+						$('#' + obj.fields[i].name + '-fileManager').bind ('click', function () {
+							$.filebrowser ({
+								set_value: '#' + obj.fields[i].name
+								// todo: limit by file type
+							});
+							return false;
+						});
+					}
+				}
 
 				// submit button handler
+				$('.dynamicobjects-submit').click (function (evt) {
+					evt.preventDefault ();
+
+					var i = 0,
+						fields = obj.fields,
+						label = obj.label,
+						form = $(this)[0].form,
+						out = form.elements.handler.value,
+						key_list = ['name', 'label', 'type', 'initial', 'message', 'require', 'callback', 'values', 'filter'],
+						filters = false;
+
+					// validate form
+					for (var i in fields) {
+						var rules = [];
+						for (var r in fields[i]) {
+							var in_key_list = false;
+							for (var k = 0; k < key_list.length; k++) {
+								if (r == key_list[k]) {
+									in_key_list = true;
+									break;
+								}
+							}
+							if (! in_key_list) {
+								// it's a rule!
+								if (! $(form.elements[i]).verify_value ({form:form, type:r, validator: fields[i][r]})) {
+									$('#' + i + '-msg').show ();
+									return false;
+								}
+							}
+						}
+					}
+
+					// are there any filters?
+					for (var i in fields) {
+						if (fields[i].hasOwnProperty ('filter')) {
+							filters = true;
+						}
+					}
+
+					// build an array of valid data from the fields
+					var unfiltered = {};
+					for (var i = 0; i < form.elements.length; i++) {
+						if (form.elements[i].name == 'handler' || ! form.elements[i].name) {
+							continue;
+						}
+						unfiltered[form.elements[i].name] = form.elements[i].value;
+					}
+
+					if (filters) {
+						// apply filters server-side then submit the form with the returned values
+						$.post ('/admin/embed/filters', {handler: out, data: unfiltered}, function (res) {
+							self.return_object (out, res.data);
+						});
+					} else {
+						// no filters, submit the form now
+						self.return_object (out, unfiltered);
+					}
+
+					return false;
+				});
 		});
 	};
 
