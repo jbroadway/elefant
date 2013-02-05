@@ -89,7 +89,7 @@
 		self.opts = $.extend (defaults, opts);
 		
 		if (! self.initialized) {
-			alert ($.i18n ('Unable to load the dynamic object list.'));
+			alert ($.i18n ('Unable to load the dynamic object list. Please try again in a few seconds.'));
 			return;
 		}
 
@@ -110,7 +110,7 @@
 		$.open_dialog (self.opts.title, html);
 
 		// build the list of handlers
-		var ui = ''
+		var ui = '',
 			list = $('.dynamicobjects-list');
 
 		for (var i = 0; i < self.list.length; i++) {

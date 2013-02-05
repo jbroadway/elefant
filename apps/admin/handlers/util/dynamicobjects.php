@@ -42,12 +42,10 @@ $page->add_script ('/js/jquery.quickpager.js');
 $page->add_script ('/apps/admin/js/jquery.dynamicobjects.js');
 $page->add_script (
 	I18n::export (
-		array (
-			'Dynamic Objects',
-			'Unable to load the dynamic object list.',
-			'Embed',
-			'Back'
-		)
+		'Dynamic Objects',
+		'Unable to load the dynamic object list. Please try again in a few seconds.',
+		'Embed',
+		'Back'
 	)
 );
 
