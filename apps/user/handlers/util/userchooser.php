@@ -28,6 +28,8 @@
  * Options:
  *
  * - callback:        A function to call with the user id, name, and email.
+ * - chosen:          A list of users that shouldn't be selectable.
+ * - chosen_visible:  Whether to display the disabled chosen users or hide them.
  * - set_id_value:    The selector of an input or element to update with the user id.
  * - set_name_value:  The selector of an input or element to update with the user name.
  * - set_email_value: The selector of an input or element to update with the user email.

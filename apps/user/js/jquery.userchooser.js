@@ -27,23 +27,31 @@
 	self.search_users = function () {
 		var q = this.elements['userchooser-input'].value.toLowerCase ();
 
-		var list = $('#userchooser-list').html ('');
+		$('.simplePagerNav, .simplePagerContainer').remove ();
+		var list = $('<ul id="userchooser-list" class="clearfix"></ul>');
 		
 		for (var i = 0; i < self.users.length; i++) {
 			if (q === '' || self.users[i].name.toLowerCase ().match (q)) {
-				list.append (
-					$('<li></li>').append (
-						$('<a href="#"></a>')
-							.addClass ('userchooser-user')
-							.data ('id', self.users[i].id)
-							.data ('name', self.users[i].name)
-							.data ('email', self.users[i].email)
-							.html ('<i class="icon-user"></i> ' + self.users[i].name)
-					)
-				);
+				if ($.inArray (parseInt (self.users[i].id), self.opts.chosen) > -1) {
+					if (self.opts.chosen_visible) {
+						list.append ('<li><span class="userchooser-disabled"><i class="icon-user"></i> ' + self.users[i].name + '</span></li>');
+					}
+				} else {
+					list.append (
+						$('<li></li>').append (
+							$('<a href="#"></a>')
+								.addClass ('userchooser-user')
+								.data ('id', self.users[i].id)
+								.data ('name', self.users[i].name)
+								.data ('email', self.users[i].email)
+								.html ('<i class="icon-user"></i> ' + self.users[i].name)
+						)
+					);
+				}
 			}
 		}
 
+		$('#userchooser-wrapper').append (list);
 		list.quickPager ();
 		
 		$('.userchooser-user').click (self.return_user);
@@ -105,7 +113,9 @@
 			set_name_value: null,
 			set_email_value: null,
 			set_mailto: null,
-			title: $.i18n ('Choose a User')
+			title: $.i18n ('Choose a User'),
+			chosen: [],
+			chosen_visible: true
 		};
 	
 		self.opts = $.extend (defaults, opts);
@@ -122,24 +132,30 @@
 					'<input type="submit" value="' + $.i18n ('Search') + '" />' +
 				'</form>' +
 			'</div>' +
-			'<ul id="userchooser-list"></ul>' +
+			'<ul id="userchooser-list" class="clearfix"></ul>' +
 		'</div>';
 
-		$.open_dialog (self.opts.title, html);
+		$.open_dialog (self.opts.title, html, {height: 325});
 
 		var list = $('#userchooser-list');
 		
 		for (var i = 0; i < self.users.length; i++) {
-			list.append (
-				$('<li></li>').append (
-					$('<a href="#"></a>')
-						.addClass ('userchooser-user')
-						.data ('id', self.users[i].id)
-						.data ('name', self.users[i].name)
-						.data ('email', self.users[i].email)
-						.html ('<i class="icon-user"></i> ' + self.users[i].name)
-				)
-			);
+			if ($.inArray (parseInt (self.users[i].id), self.opts.chosen) > -1) {
+				if (self.opts.chosen_visible) {
+					list.append ('<li><span class="userchooser-disabled"><i class="icon-user"></i> ' + self.users[i].name + '</span></li>');
+				}
+			} else {
+				list.append (
+					$('<li></li>').append (
+						$('<a href="#"></a>')
+							.addClass ('userchooser-user')
+							.data ('id', self.users[i].id)
+							.data ('name', self.users[i].name)
+							.data ('email', self.users[i].email)
+							.html ('<i class="icon-user"></i> ' + self.users[i].name)
+					)
+				);
+			}
 		}
 
 		list.quickPager ();
