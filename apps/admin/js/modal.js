@@ -75,8 +75,8 @@ $(function () {
 
 		$('#modal-title-' + num).html (title);
 		$('#modal-content-' + num).html (html);
-		$('#modal-overlay-' + num).show ().css ({'z-index': num * 1000});
-		modal.show ().css ({'z-index': (num * 1000) + 1});
+		$('#modal-overlay-' + num).show ().css ({'z-index': num * 100000});
+		modal.show ().css ({'z-index': (num * 100000) + 1});
 
 		if (opts.width) {
 			modal.css ({width: opts.width + 'px'});
@@ -85,7 +85,7 @@ $(function () {
 
 		if (opts.height) {
 			modal.css ({height: opts.height + 'px'});
-			modal.children ('.modal-content').css ({height: (opts.height - 72) + 'px'});
+			modal.children ('.modal-content').css ({height: (opts.height - 67) + 'px'});
 		}
 
 		center_modal (num);
