@@ -126,7 +126,7 @@
 					icon = 'style="background: url(' + item.icon + ') no-repeat"';
 				}
 			} else {
-				icon = 'style="background: url(/apps/admin/css/admin/dynamic-icon.png) no-repeat"';
+				icon = 'class="icon-cog"';
 			}
 
 			ui += '<li>' +
