@@ -2,7 +2,7 @@
 div.jGrowl {
 	padding: 			10px;
 	z-index: 			9999;
-	color: 				#fff;
+	color: 				#222;
 	font-size: 			12px;
 }
 
@@ -81,10 +81,10 @@ div.center div.jGrowl-notification, div.center div.jGrowl-closer {
 }
 
 div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
-	background-color: 		#000;
-	opacity: 				.75;
-    -ms-filter: 			"progid:DXImageTransform.Microsoft.Alpha(Opacity=85)"; 
-    filter: 				progid:DXImageTransform.Microsoft.Alpha(Opacity=85); 
+	background-color: 		#e5e5e5;
+	opacity: 				.95;
+    -ms-filter: 			"progid:DXImageTransform.Microsoft.Alpha(Opacity=95)"; 
+    filter: 				progid:DXImageTransform.Microsoft.Alpha(Opacity=95); 
 	zoom: 					1;
 	width: 					235px;
 	padding: 				10px;
@@ -94,8 +94,13 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	font-size: 				1em;
 	text-align: 			left;
 	display: 				none;
-	-moz-border-radius: 	5px;
-	-webkit-border-radius:	5px;
+	border:					1px solid #bbb;
+	border-radius:			3px;
+	-moz-border-radius: 	3px;
+	-webkit-border-radius:	3px;
+	-webkit-box-shadow: 0px 1px 1px rgba(0,0,0,.5);
+	-moz-box-shadow: 0px 1px 1px rgba(0,0,0,.5);
+	box-shadow: 0px 1px 1px rgba(0,0,0,.5);
 }
 
 div.jGrowl div.jGrowl-notification {
