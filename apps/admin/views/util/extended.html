@@ -108,7 +108,7 @@ $(function () {
 	$.expanded_section ({
 		header: '#extended-header',
 		section: '#extended-fields',
-		visible: false
+		visible: {% if open %}true{% else %}false{% end %}
 	});
 
 	{% foreach fields as field %}

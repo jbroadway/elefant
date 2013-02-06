@@ -41,6 +41,7 @@ if (! class_exists ($class)) {
 }
 
 $data['fields'] = ExtendedFields::for_class ($class);
+$data['open'] = false;
 
 $load_assets = false;
 
@@ -64,6 +65,10 @@ if ($data['fields'] || count ($data['fields']) === 0) {
 					$data['fields'][$k]->options = call_user_func ($settings['callback']);
 				}
 			}
+		}
+		
+		if ($data['fields'][$k]->required) {
+			$data['open'] = true;
 		}
 	}
 
