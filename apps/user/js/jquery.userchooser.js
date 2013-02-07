@@ -88,11 +88,12 @@
 
 		// highlight the newly added user
 		var i = 0;
-		$('.userchooser-user').each (function () {
+		$('.userchooser-user, .userchooser-disabled').each (function () {
 			if ($(this).data ('id') === id) {
 				$(this).addClass ('user-added');
-				$('.simplePageNav' + Math.ceil (i / 10) + ' a').click ();
-				return false;
+				$('.simplePageNav' + Math.ceil ((i + 1) / 10) + ' a').click ();
+			} else {
+				$(this).removeClass ('user-added');
 			}
 			i++;
 		});
