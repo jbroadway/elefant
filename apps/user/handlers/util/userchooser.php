@@ -41,9 +41,12 @@ $this->run ('admin/util/modal');
 
 $page->add_style ('/apps/user/css/userchooser.css');
 $page->add_script ('/js/jquery.quickpager.js');
+$page->add_script ('/js/jquery.verify_values.js');
+$page->add_script ('/apps/user/js/jquery.adduser.js');
 $page->add_script ('/apps/user/js/jquery.userchooser.js');
 $page->add_script (
 	I18n::export (
+		'Add User',
 		'Choose a User',
 		'Search',
 		'Unable to load the user list. Please try again in a few seconds.'

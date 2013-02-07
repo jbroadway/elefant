@@ -1,3 +1,8 @@
+#userchooser-add-link {
+	float: left;
+	margin-top: 7px;
+}
+
 #userchooser-search {
 	text-align: right;
 	width: 100%;
@@ -30,6 +35,11 @@
 	vertical-align: top;
 	height: 16px;
 }
+
+	#userchooser-list li a.user-added {
+		font-weight: bold;
+		background-color: rgba(147, 39, 143, .15) !important;
+	}
 
 #userchooser-list li a i {
 	margin: 0px 5px 0px 2px;

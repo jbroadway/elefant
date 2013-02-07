@@ -25,7 +25,7 @@
 	};
 
 	self.search_users = function () {
-		var q = this.elements['userchooser-input'].value.toLowerCase ();
+		var q = $('#userchooser-input').val ().toLowerCase ();
 
 		$('.simplePagerNav, .simplePagerContainer').remove ();
 		var list = $('<ul id="userchooser-list" class="clearfix"></ul>');
@@ -57,6 +57,45 @@
 		$('.userchooser-user').click (self.return_user);
 
 		return false;
+	};
+
+	self.open_add_user = function () {
+		$.add_user ({
+			callback: self.add_user
+		});
+		return false;
+	};
+
+	self.add_user = function (id, name, email) {
+		self.users.push ({id: id, name: name, email: email});
+		self.users.sort (function (a, b) {
+			if (typeof b === 'boolean') {
+				return -1;
+			}
+
+			var a_name = a.name.toLowerCase (),
+				b_name = b.name.toLowerCase ();
+
+			if (a_name < b_name) {
+				return -1;
+			} else if (a_name > b_name) {
+				return 1;
+			}
+			return 0;
+		});
+
+		self.search_users ();
+
+		// highlight the newly added user
+		var i = 0;
+		$('.userchooser-user').each (function () {
+			if ($(this).data ('id') === id) {
+				$(this).addClass ('user-added');
+				$('.simplePageNav' + Math.ceil (i / 10) + ' a').click ();
+				return false;
+			}
+			i++;
+		});
 	};
 
 	self.return_user = function () {
@@ -126,9 +165,10 @@
 		}
 
 		var html = '<div id="userchooser-wrapper">' +
+			'<a href="#" id="userchooser-add-link" class="clearfix">' + $.i18n ('Add User') + '</a>' +
 			'<div id="userchooser-search">' +
 				'<form id="userchooser-form">' +
-					'<input type="text" name="userchooser-input" size="30" />' +
+					'<input type="text" name="userchooser-input" id="userchooser-input" size="30" />' +
 					'<input type="submit" value="' + $.i18n ('Search') + '" />' +
 				'</form>' +
 			'</div>' +
@@ -162,6 +202,7 @@
 		
 		$('#userchooser-form').submit (self.search_users);
 		$('.userchooser-user').click (self.return_user);
+		$('#userchooser-add-link').click (self.open_add_user);
 	};
 
 	self.init ();
