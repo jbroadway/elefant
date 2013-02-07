@@ -21,9 +21,17 @@
 }
 
 .modal-titlebar {
-	background: #333;
-	border: 1px solid #333;
-	color: #fff;
+	background: #eeeeee; /* Old browsers */
+	background: -moz-linear-gradient(top,  #eeeeee 0%, #dddddd 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#dddddd)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #eeeeee 0%,#dddddd 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #eeeeee 0%,#dddddd 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #eeeeee 0%,#dddddd 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #eeeeee 0%,#dddddd 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#dddddd',GradientType=0 ); /* IE6-9 */
+	border-bottom: 1px solid #aaa;
+	border-top: 1px solid #aaa;
+	color: #444;
 	padding: 5px 10px 5px 10px;
 	position: relative;
 }
@@ -37,33 +45,33 @@
 }
 
 .modal-close-button {
-	color: #fff;
+	color: #444;
 	text-decoration: none;
 	position: absolute;
-	right: 6px;
-	top: 6px;
+	right: 7px;
+	top: 7px;
 	display: block;
-	padding: 6px 10px 6px 10px;
-	background: #333;
+	padding: 1px 5px 1px 5px;
+	border: 1px solid #aaa;
 	line-height: normal;
 }
 
 .modal-close-button:hover {
-	background: #666;
-	color: #fff;
+	background: #ccc;
+	color: #222;
 	text-decoration: none;
 }
 
 .modal-title {
-	font-size: 20px;
+	font-size: 16px;
 	font-weight: normal;
 }
 
 .modal-content {
-	background: #fff;
-	border: 1px solid #fff;
+	background: #fafafa;
+	border: 1px solid #fafafa;
 	border-top: 0px none;
 	padding: 15px;
-	height: 232px;
+	height: 233px;
 	overflow-y: auto;
 }

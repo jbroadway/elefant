@@ -5,15 +5,15 @@ body {
 }
 
 a {
-	color: #8A5AB5;
+	color: #93278f;
 }
 
 a:hover {
-	color: #A753CC;
+	color: #B347AF;
 }
 
 h1, h2 {
-	color: #222;
+	color: #444;
 }
 
 h4 {
@@ -58,7 +58,7 @@ tt {
 }
 
 .notice {
-	color: #8A5AB5;
+	color: #1C75BC;
 	display: none;
 }
 
@@ -121,9 +121,9 @@ tt {
 	}
 
 	.pager-current {
-		background: #8A5AB5;
+		background: #93278f;
 		color: #f5f5f5;
-		border: 1px solid #8A5AB5;
+		border: 1px solid #93278f;
 	}
 
 	.pager-first, .pager-last {
@@ -298,7 +298,7 @@ input[type=submit]:hover, .wysiwyg-embed-object-back:hover {
 	width:16px;
 	height:16px;
 	display:inline-block;
-	color:#8A5AB5;
+	color:#93278f;
 	font-size:16px;
 	line-height:16px;
 }
@@ -335,7 +335,7 @@ input[type=submit]:hover, .wysiwyg-embed-object-back:hover {
 	display: block;
 	float: left;
 	padding: 3px 6px 3px 6px;
-	background: #8A5AB5;
+	background: #93278f;
 	color: #fff;
 	text-decoration: none;
 }
@@ -413,7 +413,7 @@ span.wysiwyg-fileManager {
 }
 
 #wrapper {
-	padding-top: 40px;
+	padding-top: 50px;
 }
 
 .nav {
@@ -430,8 +430,8 @@ span.wysiwyg-fileManager {
 	}
 
 	.nav a:hover {
-		color: #A753CC;
-		border-top: 3px solid #A753CC;
+		color: #B347AF;
+		border-top: 3px solid #B347AF;
 		padding-top: 2px;
 	}
 
@@ -458,7 +458,7 @@ span.wysiwyg-fileManager {
 	}
 	
 	#head h1 em {
-		color: #A753CC;
+		color: #B347AF;
 		font-style: italic;
 		margin-right: -3px;
 	}

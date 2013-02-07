@@ -1,17 +1,17 @@
 body {
-	padding-top: 20px;
+	padding-top: 30px;
 }
 
 #admin-bar {
 	position: absolute;
 	top: 0;
 	left: 0;
-	height: 32px;
+	height: 35px;
 	width: 100%;
 	z-index: 100000;
-	background: #404040;
-	background: rgba(0,0,0,.75);
-	color: #f5f5f5;
+	background: #eee;
+	background: rgba(240,240,240,.8);
+	color: #222;
 	position: fixed;
 	margin: 0px;
 	padding: 0px 10px 0px 10px;
@@ -19,6 +19,19 @@ body {
 	font-weight: bold;
 	font-family: Helvetica, Arial, sans-serif !important;
 	text-align: left;
+
+	background: #eeeeee; /* Old browsers */
+	background: -moz-linear-gradient(top,  #eeeeee 0%, #dddddd 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#dddddd)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #eeeeee 0%,#dddddd 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #eeeeee 0%,#dddddd 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #eeeeee 0%,#dddddd 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #eeeeee 0%,#dddddd 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#dddddd',GradientType=0 ); /* IE6-9 */
+
+	-webkit-box-shadow: 0px 1px 2px rgba(0,0,0,.5);
+	-moz-box-shadow: 0px 1px 2px rgba(0,0,0,.5);
+	box-shadow: 0px 1px 2px rgba(0,0,0,.5);
 }
 
 	#admin-bar img {
@@ -38,24 +51,31 @@ body {
 		display: block;
 		float: left;
 		margin: 0;
-		height: 25px;
-		padding: 7px 8px 0px 8px;
+		height: 26px;
+		padding: 9px 8px 0px 8px;
 		font-weight: normal;
-		color: #f5f5f5;
+		color: #222;
 		position: relative;
 	}
 
 		#admin-links>span:hover {
-			color: #A753CC;
-			background: #101010;
-			background: rgba(0,0,0,.9);
+			color: #93278f;
+
+			background: #dddddd; /* Old browsers */
+			background: -moz-linear-gradient(top,  #dddddd 0%, #cccccc 100%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dddddd), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* IE10+ */
+			background: linear-gradient(to bottom,  #dddddd 0%,#cccccc 100%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dddddd', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
+
 			text-decoration: none;
 		}
 
 		#admin-tools>strong {
 			font-weight: normal;
-			background: #5a5a5a;
-			border: 1px solid #777;
+			border: 1px solid #444;
 			-webkit-border-radius: 12px;
 			-moz-border-radius: 12px;
 			border-radius: 12px;
@@ -63,26 +83,33 @@ body {
 		}
 
 		#admin-tools:hover>strong {
-			background: #404040;
-			background: rgba(167,83,204,.4);
-			border: 1px solid #A753CC;
+			background: #ccc;
+			border: 1px solid #93278f;
 		}
 
 	#admin-links a {
 		display: block;
 		float: left;
 		margin: 0;
-		height: 25px;
-		padding: 7px 8px 0px 8px;
+		height: 26px;
+		padding: 9px 8px 0px 8px;
 		font-weight: normal;
-		color: #f5f5f5;
+		color: #222;
 		text-decoration: none;
 	}
 
 		#admin-links a:hover {
-			color: #A753CC;
-			background: #101010;
-			background: rgba(0,0,0,.9);
+			color: #93278f;
+
+			background: #dddddd; /* Old browsers */
+			background: -moz-linear-gradient(top,  #dddddd 0%, #cccccc 100%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dddddd), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* IE10+ */
+			background: linear-gradient(to bottom,  #dddddd 0%,#cccccc 100%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dddddd', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
+
 			text-decoration: none;
 		}
 
@@ -90,12 +117,15 @@ body {
 		display: none;
 		position: absolute;
 		left: 0;
-		top: 32px;
+		top: 35px;
 		margin: 0;
 		padding: 0;
 		float: left;
 		border: 0;
 		list-style: none;
+		-webkit-box-shadow: 0px 1px 2px rgba(0,0,0,.3);
+		-moz-box-shadow: 0px 1px 2px rgba(0,0,0,.3);
+		box-shadow: 0px 1px 2px rgba(0,0,0,.3);
 	}
 
 	#admin-tools-list li {
@@ -110,25 +140,38 @@ body {
 		text-decoration: none;
 		padding: 5px 0 0 5px;
 		margin: 0;
-		color: #fff;
-		background: #404040;
-		background: rgba(0,0,0,.7);
-		border-bottom: 1px solid rgba(255,255,255,.35);
+		color: #222;
+		background: #ddd;
+		background: rgba(235,235,235,.95);
+		margin-top: 0px;
+		border-bottom: 1px solid #ccc;
+		z-index: 99990 !important;
 	}
 
+		#admin-tools-list li:first-child a {
+			margin-top: 2px;
+		}
+
 		#admin-tools-list li a.not-installed, #admin-tools-list li a.needs-upgrade {
-			background: #8A5AB5;
-			background: rgba(138,90,181,.95);
+			color: #fff;
+			background: #93278f;
+			background: rgba(147,39,143,.95);
+		}
+
+		#admin-tools-list li a.not-installed:hover, #admin-tools-list li a.needs-upgrade:hover {
+			color: #fff;
+			background: #B347AF;
+			background: rgba(147,39,143,.85);
 		}
 
 	#admin-tools-list li a:hover {
 		text-decoration: none;
-		background: #101010;
-		background: rgba(0,0,0,.8);
+		background: #ddd;
+		background: rgba(220,220,220,.95);
 	}
 
 	#admin-update-available {
-		color: #fff;
+		color: #93278f;
 		font-size: 12px;
 		font-weight: normal;
 		text-decoration: underline;
@@ -141,14 +184,15 @@ body {
 	}
 
 	#admin-update-available:hover {
-		color: #A753CC;
+		color: #B347AF;
 	}
 
 .admin-options {
+	display: inline-block;
 	margin: 0;
 	padding: 0;
-	border: 0;
-	height: 23px;
+	border: 1px solid #ccc;
+	height: 24px;
 }
 
 .admin-options a {
@@ -159,18 +203,17 @@ body {
 	border: 0;
 	width: 26px;
 	height: 24px;
-	background-color: rgba(0,0,0,.75);
+	background-color: #f5f5f5;
 	background-repeat: no-repeat;
-	background-image: url(/apps/admin/css/admin/editable-sprite.png);
+	background-image: url(/apps/admin/css/admin/editable-sprite-dark.png);
 }
 
 .admin-options a:hover {
-	background: rgba(0,0,0,.9);
-	background-image: url(/apps/admin/css/admin/editable-sprite.png);
+	background: #ddd;
+	background-image: url(/apps/admin/css/admin/editable-sprite-dark.png);
 	text-decoration: none !important;
 	margin: 0;
 	padding: 0;
-	border: 0;
 }
 
 	.admin-options a.editable-add {
@@ -197,7 +240,7 @@ body {
 	position: absolute;
 	z-index: 25;
 	display: none;
-	top: 23px;
+	top: 25px;
 	min-width:100px;
 }
 
@@ -214,8 +257,8 @@ body {
 		font-size: 12px;
 		color: #222;
 		font-weight: bold;
-		background-color: #fff;
-		border: 1px solid #222;		
+		background-color: #f5f5f5;
+		border: 1px solid #555;		
 		text-align: center;
 		margin-top:7px;		
 		margin-left: -25%;

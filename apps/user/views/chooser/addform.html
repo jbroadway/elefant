@@ -1,6 +1,6 @@
-<div class="form">
+<p class="notice" id="adduser-error" style="font-weight: bold"></p>
 
-<form method="POST" id="add-form">
+<form method="POST" id="adduser-form">
 <p>{"Name"}:<br /><input type="text" name="name" size="40" value="{{ name }}" />
 <span class="notice" id="name-notice">{"You must enter a name."}</span></p>
 <p>{"Email"}:<br /><input type="text" name="email" size="40" value="{{ email }}" />
@@ -20,16 +20,13 @@
 
 <p>
 	<input type="submit" value="{"Add User"}" />&nbsp;
-	<a href="javascript:history.go(-1)" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
+	<a href="javascript:void(0)" id="adduser-cancel">{"Cancel"}</a>
 </p>
 </form>
 
-</div>
-
-<script type="text/javascript" src="/js/jquery.verify_values.js"></script>
 <script type="text/javascript">
 $(function () {
-	$('#add-form').verify_values ({
+	$('#adduser-form').verify_values ({
 		handler: 'user/add',
 		callback: function (failed) {
 			// highlight the failed elements

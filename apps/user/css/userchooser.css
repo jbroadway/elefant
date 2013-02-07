@@ -1,3 +1,8 @@
+#userchooser-add-link {
+	float: left;
+	margin-top: 7px;
+}
+
 #userchooser-search {
 	text-align: right;
 	width: 100%;
@@ -31,12 +36,17 @@
 	height: 16px;
 }
 
+	#userchooser-list li a.user-added {
+		font-weight: bold;
+		background-color: rgba(147, 39, 143, .15) !important;
+	}
+
 #userchooser-list li a i {
 	margin: 0px 5px 0px 2px;
 	width: 16px;
 	height: 16px;
 	display: inline-block;
-	color: #8A5AB5;
+	color: #93278f;
 	font-size: 16px;
 	line-height: 16px;
 }
@@ -44,6 +54,27 @@
 #userchooser-list li a:hover {
 	background: #ddd;
 	color: #333;
+}
+
+#userchooser-list li span.userchooser-disabled {
+	display: block;
+	padding: 3%;
+	background: #eee;
+	color: #999;
+	text-decoration: none;
+	line-height: 16px;
+	vertical-align: top;
+	height: 16px;
+}
+
+#userchooser-list li span.userchooser-disabled i {
+	margin: 0px 5px 0px 2px;
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	color: #999;
+	font-size: 16px;
+	line-height: 16px;
 }
 
 #userchooser-wrapper .simplePagerNav {
@@ -74,7 +105,7 @@
 	display: block;
 	float: left;
 	padding: 3px 6px 3px 6px;
-	background: #8A5AB5;
+	background: #93278f;
 	color: #fff;
 	text-decoration: none;
 }

@@ -98,7 +98,9 @@
 			'<div class="dynamicobjects-content clearfix">' +
 				'<ul class="dynamicobjects-list clearfix"></ul>' +
 			'</div>' +
-			'<div class="dynamicobjects-form"></div>' +
+			'<div class="dynamicobjects-form">' +
+				'<form id="dynamicobjects-form"></form>' +
+			'</div>' +
 			'<br clear="both" />' +
 		'</div>';
 
@@ -124,7 +126,7 @@
 					icon = 'style="background: url(' + item.icon + ') no-repeat"';
 				}
 			} else {
-				icon = 'style="background: url(/apps/admin/css/admin/dynamic-icon.png) no-repeat"';
+				icon = 'class="icon-cog"';
 			}
 
 			ui += '<li>' +
@@ -142,7 +144,7 @@
 			var i = 0,
 				num = $(this).data ('handler'),
 				obj = self.list[num],
-				f = $('.dynamicobjects-form'),
+				f = $('#dynamicobjects-form'),
 				html = '';
 
 				if (obj.fields.length === 0) {
@@ -156,7 +158,7 @@
 				$('.dynamicobjects-content').hide ();
 				$('.dynamicobjects-form').show ();
 
-				html = '<form id="dynamicobjects-form">' +
+				html = '' +
 					'<input type="hidden" name="handler" value="' + obj.handler + '" />' +
 					'<h2>' + obj.label + '</h2>' +
 					'<div class="clearfix">';
@@ -223,7 +225,7 @@
 				html += '</div><div>' +
 					'<input type="submit" class="dynamicobjects-submit" value="' + self.opts.embed_button + '" />' +
 					'<input type="button" class="dynamicobjects-back clearfix" value="' + self.opts.back_button + '" />' +
-				'</div><br clear="both" /></form>';
+				'</div><br clear="both" />';
 
 				f.html (html);
 
@@ -316,6 +318,47 @@
 					return false;
 				});
 		});
+
+		if (current) {
+			for (var i = 0; i < self.list.length; i++) {
+				if (self.list[i].handler === current.handler) {
+					$('#dynamicobjects-object-' + i).addClass ('current');
+
+					if (! $.isEmptyObject (current.data)) {
+						var c = 0;
+						for (k in current.data) {
+							if (current.data.hasOwnProperty (k)) {
+								c++;
+							}
+						}
+
+						if (c > 0) {
+							// simulate selection
+							$('#dynamicobjects-object-' + i).click ();
+
+							// fill with original values
+							var f = $('#dynamicobjects-form').get (0);
+							for (var k in current.data) {
+								if (f.elements[k]) {
+									if (self.list[i].fields[k].hasOwnProperty ('filter')) {
+										var data = {};
+										data[k] = current.data[k];
+										$.post ('/admin/embed/filters', {handler: current.handler, data: data, reverse: 'yes'}, function (res) {
+											$(f.elements[k]).val (res.data[k]);
+										});
+									} else {
+										$(f.elements[k]).val (current.data[k]);
+									}
+								}
+							}
+						}
+					}
+
+					$('.simplePageNav' + Math.ceil (i / 10) + ' a').click ();
+					break;
+				}
+			}
+		}
 	};
 
 	self.init ();

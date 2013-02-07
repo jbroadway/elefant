@@ -44,4 +44,11 @@ function translator_completed ($lang) {
 	return $t->completed ($lang);
 }
 
+/**
+ * Filter &apos; back to single quotes.
+ */
+function translator_filter_apos ($text) {
+	return str_replace ('&apos;', '\'', $text);
+}
+
 ?>
