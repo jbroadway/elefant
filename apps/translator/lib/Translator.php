@@ -76,7 +76,7 @@ class Translator extends Restful {
 				"%s\t'%s' => '%s'",
 				$sep,
 				str_replace ('\'', '\\\'', stripslashes ($k)),
-				str_replace ('\'', '\\\'', stripslashes ($v))
+				str_replace ('\'', '&apos;', stripslashes ($v))
 			);
 			$sep = ",\r";
 		}
