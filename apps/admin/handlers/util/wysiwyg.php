@@ -13,6 +13,8 @@
  */
 
 $this->run ('admin/util/fontawesome');
+$this->run ('admin/util/dynamicobjects');
+$this->run ('filemanager/util/browser');
 
 $page->add_style ('/js/jquery-ui/jquery-ui.css');
 $page->add_style ('/apps/admin/js/redactor/redactor.css');
