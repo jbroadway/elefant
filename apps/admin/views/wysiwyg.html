@@ -41,11 +41,11 @@ $(function () {
 		});
 
 	function undo (obj, evt, key) {
-		obj.execCommand ('undo');
+		obj.exec.command.call (obj, 'undo');
 	}
 
 	function redo (obj, evt, key) {
-		obj.execCommand ('redo');
+		obj.exec.command.call (obj, 'redo');
 	}
 
 	function upload_error (obj, json) {
