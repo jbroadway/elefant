@@ -1,20 +1,24 @@
 {! admin/util/dates !}
 {! admin/util/modal !}
 
-<script type="text/javascript" src="/js/urlify.js"></script>
-<script type="text/javascript" src="/apps/filemanager/js/jquery.tmpl.beta1.min.js"></script>
-<script type="text/javascript" src="/apps/filemanager/js/jquery.filemanager.js"></script>
+<style>
+.draggable {
+	cursor: move !important;
+}
+</style>
+
 <script type="text/x-jquery-tmpl" id="tpl_dir">
 	<tr>
-		<td><img src="/apps/admin/css/admin/folder.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/filemanager?path=${path}">${name}</a></td>
+		<td><div class="dropzone draggable" data-folder="${path}"><img src="/apps/admin/css/admin/folder.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/filemanager?path=${path}">${name}</a></div></td>
 		<td>\{{html mtime}}</td>
 		<td>&nbsp;</td>
 		<td style="text-align: right"><a href="#" onclick="return $.filemanager ('mv', {file: '${path}', name: '${name}'})">{"Rename"}</a></td>
 	</tr>
 </script>
+
 <script type="text/x-jquery-tmpl" id="tpl_file">
 	<tr>
-		<td><img src="/apps/admin/css/admin/file.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/files/${path}" target="_blank">${name}</a></td>
+		<td><div class="draggable" data-file="${_path}"><img src="/apps/admin/css/admin/file.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/files/${path}" target="_blank">${name}</a></div></td>
 		<td>\{{html mtime}}</td>
 		<td>${fsize}</td>
 		<td style="text-align: right">
@@ -30,9 +34,11 @@
 		</td>
 	</tr>
 </script>
+
 <script type="text/x-jquery-tmpl" id="tpl_edit_txt">
 	<textarea cols="70" rows="20" id="tpl-edit-txt">\{{html txt}}</textarea>
 </script>
+
 <script type="text/javascript">
 $(function () {
 	$.filemanager_init ({
@@ -51,12 +57,12 @@ var i18n = {
 {% if path == '' %}
 	{"Files"}
 {% else %}
-	<a href="/filemanager">{"Files"}</a>
+	<a href="/filemanager" class="dropzone" data-folder="">{"Files"}</a>
 	{% foreach parts %}
 		{% if loop_index == $data->lastpath %}
 			/ {{ loop_index }}
 		{% else %}
-			/ <a href="/filemanager?path={{ loop_value }}">{{ loop_index }}</a>
+			/ <a href="/filemanager?path={{ loop_value }}" class="dropzone" data-folder="{{ loop_value }}">{{ loop_index }}</a>
 		{% end %}
 	{% end %}
 {% end %}

@@ -105,6 +105,23 @@ var filemanager = (function ($) {
 		);
 	};
 
+	// Move a file into a different folder
+	self.drop = function (opts, callback) {
+		if (! _has (opts, 'path')) {
+			throw new Error ('filemanager.drop() - Missing parameter: path');
+		}
+
+		if (! _has (opts, 'folder')) {
+			throw new Error ('filemanager.drop() - Missing parameter: folder');
+		}
+
+		$.get (
+			self.prefix + 'drop/' . opts.path
+				+ '?folder=' + encodeURIComponent (opts.folder),
+			callback
+		);
+	};
+
 	// Update a property value for a file
 	self.prop = function (opts, callback) {
 		if (! _has (opts, 'path')) {

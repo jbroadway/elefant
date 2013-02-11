@@ -49,6 +49,11 @@ if ($appconf['General']['aviary_key']) {
 	$o->aviary_key = false;
 }
 
+$page->add_script ('/js/jquery-ui/jquery-ui.min.js');
+$page->add_script ('/js/urlify.js');
+$page->add_script ('/apps/filemanager/js/jquery.tmpl.beta1.min.js');
+$page->add_script ('/apps/filemanager/js/jquery.filemanager.js');
+
 echo $tpl->render ('filemanager/index', $o);
 
 ?>
