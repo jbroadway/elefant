@@ -7,15 +7,21 @@
  */
 
 if ($appconf['Scripts']['jquery_source'] === 'local') {
-	echo "<script src=\"/js/jquery-1.8.2.min.js\"></script>\n";
+	$page->add_script ('/js/jquery-1.8.3.min.js');
 } elseif ($appconf['Scripts']['jquery_source'] === 'google') {
-	echo "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js\"></script>\n";
+	$page->add_script ('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>');
 } else {
-	echo '<script src="' . $appconf['Scripts']['jquery_source'] . "\"></script>\n";
+	$page->add_script ('<script src="' . $appconf['Scripts']['jquery_source'] . '"></script>');
 }
 
 if (User::is_valid () && User::is ('admin') && $page->preview == false) {
-	echo $tpl->render ('admin/head');
+	$page->add_style ('/apps/admin/css/jquery.jgrowl.css');
+	$page->add_style ('/apps/admin/css/top-bar.css');
+
+	$page->add_script ("<script>$(function(){\$.elefant_version='" . ELEFANT_VERSION . "';});</script>");
+	$page->add_script ('/apps/admin/js/jquery.jgrowl.min.js');
+	$page->add_script ('/js/jquery.cookie.js');
+	$page->add_script ('/apps/admin/js/top-bar.js');
 }
 
 ?>

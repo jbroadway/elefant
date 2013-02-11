@@ -1,0 +1,137 @@
+.dynamicobjects-content {
+}
+
+.dynamicobjects-list {
+	padding: 0px;
+	margin: 0px;
+}
+
+.dynamicobjects-list li {
+	list-style-type: none;
+	display: block;	
+	float:left;
+	padding:0px;
+	margin:0.25%;
+	width:49%;
+}
+
+.dynamicobjects-list li a {
+	display: block;	
+	padding: 3%;
+	background: #eee;
+	color: #333;
+	text-decoration: none;
+	line-height:16px;
+	vertical-align:top;
+	height:16px;
+}
+
+.dynamicobjects-object i {
+	margin:0px 5px 0 2px;
+	width:16px;
+	height:16px;
+	display:inline-block;
+	color:#93278f;
+	font-size:16px;
+	line-height:16px;
+}
+
+.dynamicobjects-list li a.current, .dynamicobjects-list li a:hover{
+	background: #ddd;
+	color: #333;
+}
+.dynamicobjects-content .simplePagerNav {
+	list-style-type: none;
+	margin-top: 15px;
+	margin-left: 0px;
+	padding-left: 0px;
+}
+
+.dynamicobjects-content .simplePagerNav li {
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 0px;
+	display: inline
+}
+
+.dynamicobjects-content .simplePagerNav li a {
+	display: block;
+	float: left;
+	margin:0.25%;
+	padding: 3px 6px 3px 6px;
+	background: #eee;
+	color: #333;
+	text-decoration: none;
+}
+
+.dynamicobjects-content .simplePagerNav li.currentPage a {
+	display: block;
+	float: left;
+	padding: 3px 6px 3px 6px;
+	background: #93278f;
+	color: #fff;
+	text-decoration: none;
+}
+
+.dynamicobjects-back {
+	float: left;
+	margin-top: 15px;
+}
+
+.dynamicobjects-submit {
+	float: right;
+	margin-top: 15px;
+}
+
+.dynamicobjects-form h2 {
+	margin: 0;
+	font-size: 16px;
+	color: #333;
+	padding: 5px;
+}
+
+.dynamicobjects-form p {
+	margin: 0.5% 0.25%;
+	background: #eee;
+	color: #333;
+	padding: 1.5%;
+	min-height: 46px;
+}
+
+.dynamicobjects-form label {
+	display: block;
+	padding: 0.5% 0.25% 0.25% 0.25%;
+	margin: 0 0.5% 0 0;
+}
+.dynamicobjects-form input[type=text], .dynamicobjects-form textarea, .dynamicobjects-form select {
+	margin: 0;
+	padding: 0.25%;
+	width: 98%;
+}
+
+.dynamicobjects-form.columns-2 label {
+	float: left;
+	display: block;
+	padding: 1% 0 0.5% 0;
+}
+.dynamicobjects-form.columns-2 input[type=text], .dynamicobjects-form.columns-2 select {
+	float: left;
+	margin: 0 0 0.5% 0;
+	padding: 1%;
+	width: 95%;
+}
+
+.dynamicobjects-form.columns-2 p {
+	float: left;	
+	width: 46%;	
+	margin: 0.25%;
+}
+
+.dynamicobjects-form p.dynamicobjects-form-submit-wrapper {
+	background: #fff;
+}
+
+.dynamicobjects-form input[type=text].wysiwyg-file-input {
+	/*float: left;*/
+	width: 85%;	
+}

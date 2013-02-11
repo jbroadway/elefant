@@ -348,7 +348,14 @@ class I18n {
 			}
 
 		} elseif ($method === 'url') {
-			if (preg_match ('/^\/(' . join ('|', array_keys ($this->languages)) . ')\//', $_SERVER['REQUEST_URI'], $matches)) {
+			if (preg_match ('/^\/(' . join ('|', array_keys ($this->languages)) . ')\/?$/', $_SERVER['REQUEST_URI'], $matches)) {
+				// matched /lang or /lang/ -> /lang [language=lang]
+				$this->url_includes_lang = true;
+				$this->new_request_uri = rtrim ($_SERVER['REQUEST_URI'], '/');
+				$this->prefix = '';
+				return $matches[1];
+			} elseif (preg_match ('/^\/(' . join ('|', array_keys ($this->languages)) . ')\//', $_SERVER['REQUEST_URI'], $matches)) {
+				// matched /lang/page-id -> /page-id [language=lang]
 				$this->url_includes_lang = true;
 				$this->new_request_uri = preg_replace ('/^\/' . $matches[1] . '/', '', $_SERVER['REQUEST_URI']);
 				$this->prefix = '/' . $matches[1];
@@ -362,6 +369,30 @@ class I18n {
 		}
 
 		return $this->default;
+	}
+
+	/**
+	 * Export an array of strings into a JavaScript block that calls
+	 * `$.i18n_add()` which can be passed to `$page->add_script()`.
+	 * Can also be called from a view template on an array of strings
+	 * like this: `{{ my_array|I18n::export }}`.
+	 *
+	 * Note that you may pass either a single array, or each string
+	 * as a separate parameter, which allows you to omit the `array()`
+	 * wrapper when calling it in PHP code.
+	 */
+	public static function export ($strings) {
+		if (func_num_args () > 1) {
+			$strings = func_get_args ();
+		}
+
+		$out = "<script>\$(function(){\$.i18n_append({\n";
+		$sep = '';
+		foreach ($strings as $string) {
+			$out .= $sep . "\t'" . str_replace ("'", "\\'", $string) . "': '" . str_replace ("'", "\\'", __ ($string)) . "'";
+			$sep = ",\n";
+		}
+		return $out . "\n});});</script>\n";
 	}
 
 	/**

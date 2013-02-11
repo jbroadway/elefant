@@ -32,23 +32,21 @@
 	list-style:none;
 	margin:0;
 	padding:10px 10px 10px 25px;
-	border:solid #EEE 1px;
+	border:solid #ddd 1px;
+	border-top: 0px;
 	font-size:13px;
 	line-height:20px;
 	display:block;
 	cursor:move;
 }
 
+.treeDragDrop li:first-child, .tdd-dragContainer li:first-child {
+	border-top: 1px solid #ddd;
+}
+
 body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 	cursor: url(cursorGrab.png), move;
 }
-
-.treeDragDrop li [class^="icon-"], .treeDragDrop  li [class*=" icon-"]{
-	display:block;
-	width:inherit;
-	text-align:left;
-}
-
 
 .treeDragDrop li.tdd-collapsed{
 	background: url(collapsed.png) no-repeat 8px 10px;
@@ -62,7 +60,7 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 	height:6px;
 	margin:0;
 	/* border:solid #E4426B 1px; */
-	background:#A753CC;
+	background:#93278f;
 	width:100px;
 }
 
@@ -82,3 +80,13 @@ li.ui-draggable-dragging, .ui-draggable-dragging li{
 body.cursorGrabbing{
 	cursor: url(cursorGrabbing.png), move;
 }
+
+.treeDragDrop .tdd-tree i{
+	cursor: pointer;
+}
+
+
+.treeDragDrop .tdd-tree i:hover{
+	color:#93278f;
+}
+

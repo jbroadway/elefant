@@ -17,6 +17,11 @@ var extended = (function ($) {
 	e.fields = {};
 
 	/**
+	 * List of custom field types to add to the list.
+	 */
+	e.custom = {};
+
+	/**
 	 * The class that the fields are extending.
 	 */
 	e.extends = '';
@@ -129,6 +134,7 @@ var extended = (function ($) {
 		e.extends = data.extends;
 		e.fields = data.fields;
 		e.strings = data.strings;
+		e.custom = data.custom;
 
 		e.div = $('#fields');
 		e.render.field = Handlebars.compile ($('#field-tpl').html ());
@@ -164,6 +170,10 @@ var extended = (function ($) {
 		field.textarea = (field.type === 'textarea') ? true : false;
 		field.select = (field.type === 'select') ? true : false;
 		field.file = (field.type === 'file') ? true : false;
+		field.image = (field.type === 'image') ? true : false;
+		for (var field_id in e.custom) {
+			field[field_id] = (field.type === field_id) ? true : false;
+		}
 		e.div.append (e.render.field (field));
 
 		$('#' + field.id + '-type').on ('change', e.toggle_field_options);

@@ -41,6 +41,7 @@ if (! class_exists ($class)) {
 }
 
 $data['fields'] = ExtendedFields::for_class ($class);
+$data['open'] = false;
 
 $load_assets = false;
 
@@ -54,14 +55,25 @@ if ($data['fields'] || count ($data['fields']) === 0) {
 			$data['fields'][$k]->options = preg_split ("/[\r\n]+/", $field->options);
 		} elseif ($field->type === 'file') {
 			$load_assets = true;
+		} elseif (strpos ($field->type, '_') !== false) {
+			list ($app, $extra) = explode ('_', $field->type);
+			$fields = parse_ini_file ('apps/'. $app . '/conf/fields.php', true);
+			if (isset ($fields[$field->type])) {
+				$settings = $fields[$field->type];
+				if ($settings['type'] === 'select') {
+					$data['fields'][$k]->type = 'select';
+					$data['fields'][$k]->options = call_user_func ($settings['callback']);
+				}
+			}
+		}
+		
+		if ($data['fields'][$k]->required) {
+			$data['open'] = true;
 		}
 	}
 
 	if ($load_assets) {
-		$page->add_style ('/css/wysiwyg/jquery.wysiwyg.css');
-		$page->add_style ('/css/files/wysiwyg.fileManager.css');
-		$page->add_script ('/js/wysiwyg/jquery.wysiwyg.js');
-		$page->add_script ('/js/wysiwyg/plugins/wysiwyg.fileManager.js');
+		$this->run ('filemanager/util/browser');
 	}
 
 	echo $tpl->render ('admin/util/extended', $data);

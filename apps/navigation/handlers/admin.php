@@ -14,11 +14,7 @@ $page->layout = 'admin';
 
 $page->add_script ('<script src="/apps/navigation/js/tree-drag-drop/jquery-ui-1.9.1.custom.min.js"></script>', 'tail');
 $page->add_script ('<script src="/apps/navigation/js/tree-drag-drop/tree-drag-drop.js"></script>', 'tail');
-
-if (detect ('msie 7')) {
-	$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome-ie7.css');
-}
-$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome.css');
+$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome.min.css');
 
 // get ids already in tree to skip
 $nav = new Navigation;

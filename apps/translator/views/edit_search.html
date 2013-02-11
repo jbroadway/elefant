@@ -42,7 +42,7 @@
 					id="textarea-{{ loop_index|translator_field_id }}"
 					onblur="$.save_element (this)"
 					{% if empty ($data->loop_value[trans]) %} class="empty"{% end %}
-				>{{ loop_value[trans] }}</textarea>
+				>{{ loop_value[trans]|translator_filter_apos }}</textarea>
 				<span id="saving-{{ loop_index|translator_field_id }}" class="notice" style="float: left; margin-left: 7px">{"Saving..."}</span>
 			</td>
 		</tr>

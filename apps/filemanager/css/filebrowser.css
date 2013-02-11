@@ -1,0 +1,67 @@
+#filebrowser-dropzone {
+	height: 100%;
+	border: 2px solid #fafafa;
+}
+
+	#filebrowser-dropzone.filebrowser-over {
+		border: 2px dashed #ddd;
+	}
+
+#filebrowser-list {
+	margin-top: 8px;
+}
+
+#filebrowser-col-a, #filebrowser-col-b {
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 0px;
+	width: 50%;
+	float: left;
+}
+
+#filebrowser-col-a li, #filebrowser-col-b li {
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 0px;
+	padding-bottom: 5px;
+}
+
+.filebrowser-thumb {
+	display: inline-block;
+	vertical-align: bottom;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+.filebrowser-thumb img {
+	max-width: 100px;
+	border: 1px solid #ddd;
+}
+
+#filebrowser-upload {
+	float: right;
+}
+
+#filebrowser-upload-progress {
+	display: none;
+	width: 150px;
+	border: 1px solid #ddd;
+}
+
+#filebrowser-upload-progress-bar {
+	display: inline-block;
+	background-color: #ddd;
+	height: 18px;
+	width: 5%;
+	z-index: 0;
+}
+
+#filebrowser-upload-progress-text {
+	z-index: 1;
+	margin-top: -24px;
+	margin-left: 2px;
+}
+
+#filebrowser-file {
+	outline-width: 0;
+}

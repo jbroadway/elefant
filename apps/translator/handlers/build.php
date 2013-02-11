@@ -46,6 +46,7 @@ set_time_limit (90);
 
 foreach ($sources as $source) {
 	$files = glob ($source);
+	$files = is_array ($files) ? $files : array ();
 	foreach ($files as $file) {
 		$data = file_get_contents ($file);
 		if (preg_match ('/\.html/', $file)) {
@@ -69,6 +70,26 @@ foreach ($sources as $source) {
 						'orig' => $str,
 						'src' => $file
 					);
+				}
+			}
+
+			// parse for I18n::export syntax
+			preg_match_all ('/I18n::export\s+?\(([^\)]+)\)/s', $data, $matches);
+			foreach ($matches[1] as $match) {
+				if (! preg_match ('/array\s+?\(/', $match)) {
+					$match = 'array (' . $match;
+				}
+				$match = '<?php $__tmp__ = ' . $match . ');?>';
+
+				$tokens = token_get_all ($match);
+				foreach ($tokens as $tok) {
+					if ($tok[0] === T_CONSTANT_ENCAPSED_STRING) {
+						$str = stripslashes (trim ($tok[1], '"\''));
+						$list[$str] = array (
+							'orig' => $str,
+							'src' => $file
+						);
+					}
 				}
 			}
 		}

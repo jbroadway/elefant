@@ -50,6 +50,16 @@
 						});
 					}
 					break;
+				case 'drop':
+					$.get (options.root + cmd + '/' + options.file + '?folder=' + options.folder, function (res) {
+						if (res.success) {
+							$.add_notification (res.data.msg);
+							$.filemanager ('ls', {file: filemanager.path});
+						} else {
+							$.add_notification (res.error);
+						}
+					});
+					break;
 				case 'rm':
 					if (confirm ('Are you sure you want to delete this file?')) {
 						$.get (options.root + cmd + '/' + options.file, function (res) {
@@ -86,7 +96,33 @@
 									$.tmpl ('tpl_file', res.data.files[i]).appendTo (tbody);
 								}
 							}
+
 							$.localize_dates ();
+
+							$('.draggable').draggable ({
+								cursor: 'move',
+								revert: 'invalid'
+							});
+
+							$('.dropzone').droppable ({
+								accept: '.draggable',
+								tolerance: 'pointer',
+								drop: function (event, ui) {
+									var type = event.srcElement.nodeName.toLowerCase (),
+										src = $(event.srcElement),
+										folder = $(event.target).data ('folder');
+
+									if (type === 'a' || type === 'img') {
+										src = src.parent ();
+									}
+
+									var file = src.data ('file');
+									file = file ? file : src.data ('folder');
+
+									//console.log (file + ' -> ' + folder);									
+									$.filemanager ('drop', {file: file, folder: folder});
+								}
+							});
 						}
 					});
 					break;

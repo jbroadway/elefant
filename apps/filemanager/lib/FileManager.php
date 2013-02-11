@@ -94,6 +94,14 @@ class FileManager extends Restful {
 	}
 
 	/**
+	 * Handle a directories request (/filemanager/api/dirs).
+	 */
+	public function get_dirs () {
+		require_once ('apps/filemanager/lib/Functions.php');
+		return filemanager_list_folders ();
+	}
+
+	/**
 	 * Handle remove file requests (/filemanager/api/rm).
 	 */
 	public function get_rm () {
@@ -149,6 +157,33 @@ class FileManager extends Restful {
 				));
 				return array ('msg' => __ ('File renamed.'), 'data' => $new);
 			}
+		}
+		return $this->error (__ ('File not found'));
+	}
+
+	/**
+	 * Handle drop requests (/filemanager/api/drop), which move files between
+	 * folders.
+	 */
+	public function get_drop () {
+		$file = urldecode (join ('/', func_get_args ()));
+		
+		if (self::verify_file ($file, $this->root)) {
+			if (! self::verify_folder ($_GET['folder'])) {
+				return $this->error (__ ('Invalid folder'));
+			}
+
+			$new = $_GET['folder'] . '/' . basename ($file);
+			if (! rename ($this->root . $file, $this->root . $new)) {
+				return $this->error (__ ('Unable to move') . ' ' . $file);
+			}
+			FileManager::prop_rename ($file, $new);
+			$this->controller->hook ('filemanager/drop', array (
+				'file' => $file,
+				'folder' => $_GET['folder'],
+				'new' => $new
+			));
+			return array ('msg' => __ ('File moved.'), 'data' => $new);
 		}
 		return $this->error (__ ('File not found'));
 	}

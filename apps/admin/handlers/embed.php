@@ -18,7 +18,10 @@ if (! User::require_admin ()) {
 $files = glob ('apps/*/conf/embed.php');
 $embeds = array ();
 foreach ($files as $file) {
-	$embeds = array_merge ($embeds, parse_ini_file ($file, true));
+	$ini = parse_ini_file ($file, true);
+	if (is_array ($ini)) {
+		$embeds = array_merge ($embeds, $ini);
+	}
 }
 
 function admin_embed_sort ($a, $b) {
@@ -41,7 +44,12 @@ foreach ($embeds as $k => $e) {
 			if ($opt == 'require') {
 				require_once ($val);
 			} elseif ($opt == 'callback') {
-				$embeds[$k]['fields'][$field]['values'] = call_user_func ($val);
+				try {
+					$embeds[$k]['fields'][$field]['values'] = call_user_func ($val);
+				} catch (Exception $e) {
+					error_log (sprintf ('Invalid embed callback %s() for handler %s', $val, $k));
+					unset ($embeds[$k]);
+				}
 			} else {
 				$embeds[$k]['fields'][$field][$opt] = $val;
 			}

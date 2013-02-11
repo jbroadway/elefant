@@ -39,13 +39,23 @@ if (! DB::single ('select count(*) from #prefix#extended_fields')) {
 $page->layout = 'admin';
 $page->title = __ ('Custom Fields') . ': ' . __ ($_GET['name']);
 $page->add_script ('/apps/admin/js/handlebars-1.0.rc.1.js');
-$page->add_script ('/apps/admin/js/jquery-ui.min.js');
+$page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/apps/admin/js/extended.js');
 
 $data = array ('extends' => $_GET['extends']);
 $data['fields'] = ExtendedFields::for_class ($_GET['extends']);
 if (! is_array ($data['fields'])) {
 	$data['fields'] = array ();
+}
+
+$res = glob ('apps/*/conf/fields.php');
+$res = is_array ($res) ? $res : array ();
+$data['custom'] = array ();
+foreach ($res as $file) {
+	$fields = parse_ini_file ($file, true);
+	foreach ($fields as $field => $settings) {
+		$data['custom'][$field] = $settings['name'];
+	}
 }
 
 echo $tpl->render ('admin/extended', $data);
