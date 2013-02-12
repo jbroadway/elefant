@@ -8,7 +8,7 @@ if (typeof RedactorPlugins === 'undefined') var RedactorPlugins = {};
 RedactorPlugins.filebrowser = {
 	// Initialize the plugin
 	init: function () {
-		this.button.add.call (this, 'filebrowser', $.i18n ('Insert File'), $.proxy (this.open_dialog, this));
+		this.button.addAfter.call (this, 'imagebrowser', 'filebrowser', $.i18n ('Insert File'), $.proxy (this.open_dialog, this));
 	},
 	
 	open_dialog: function (self, evt, button) {

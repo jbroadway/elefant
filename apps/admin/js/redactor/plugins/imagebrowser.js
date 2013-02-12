@@ -8,7 +8,7 @@ if (typeof RedactorPlugins === 'undefined') var RedactorPlugins = {};
 RedactorPlugins.imagebrowser = {
 	// Initialize the plugin
 	init: function () {
-		this.button.add.call (this, 'imagebrowser', $.i18n ('Insert Image'), $.proxy (this.open_dialog, this));
+		this.button.addAfter.call (this, 'link', 'imagebrowser', $.i18n ('Insert Image'), $.proxy (this.open_dialog, this));
 	},
 	
 	open_dialog: function (self, evt, button) {
