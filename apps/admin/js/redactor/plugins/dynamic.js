@@ -4,7 +4,7 @@
  * capability.
  */
 
-if (typeof ReactorPlugins === 'undefined') var RedactorPlugins = {};
+if (typeof RedactorPlugins === 'undefined') var RedactorPlugins = {};
 
 RedactorPlugins.dynamic = {
 	// Initialize the plugin
