@@ -1,11 +1,11 @@
 .redactor_box {
 	border: 0;
-	background: #f5f5f5;
+	background: inherit;
 }
 
 .redactor_toolbar {
 	border: 0;
-	background: #f5f5f5;
+	background: inherit;
 }
 
 .redactor_toolbar li.redactor_separator {
@@ -33,6 +33,7 @@
 .redactor_editor:focus {
 	height: 418px !important;
 	padding: 5px !important;
+	margin-top: -1px !important;
 }
 
 .redactor_toolbar li a.redactor_btn_undo {
