@@ -17,7 +17,6 @@ RedactorPlugins.dynamic = {
 	add_handler: function (self, evt, button, current) {
 		console.log ('add_handler()');
 		this._current = current ? this._current : null;
-		this.selection.save.call (this);
 		$.dynamicobjects ({
 			callback: $.proxy (this.insert_object, this),
 			current: current ? current : null
@@ -28,9 +27,27 @@ RedactorPlugins.dynamic = {
 	edit_handler: function (evt) {
 		console.log ('edit_handler()');
 		this._current = evt.currentTarget;
-		var current = $(evt.currentTarget).data ('embed');
+		var current = $(evt.currentTarget).data ('embed'),
+			body = document.body, range, sel;
 
 		console.log (this._current);								// <span class="embedded"...
+
+		if (document.createRange && window.getSelection) {
+			range = document.createRange ();
+			sel = window.getSelection ();
+			sel.removeAllRanges ();
+			try {
+				range.selectNodeContents (evt.currentTarget);
+				sel.addRange (range);
+			} catch (e) {
+				range.selectNode (evt.currentTarget);
+				sel.addRange (range);
+			}
+		} else if (body.createTextRange) {
+			range = body.createTextRange ();
+			range.moveToElementText (evt.currentTarget);
+			range.select ();
+		}
 
 		// I've got the node in evt.currentTarget, but how
 		// do I turn it into a selection in the editor?

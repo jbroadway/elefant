@@ -10,6 +10,19 @@
  * In a view template, call it like this:
  *
  *     {! admin/util/wysiwyg?field_id=my_field !}
+ *
+ * Alternately, you can disable the auto-initialization and call
+ * it manually on an element like this:
+ *
+ *     {! admin/util/wysiwyg?field_id=0 !}
+ *     
+ *     <textarea id="edit-me"></textarea>
+ *     
+ *     <script>
+ *     $(function () {
+ *         $('#edit-me').wysiwyg ();
+ *     });
+ *     </script>
  */
 
 $this->run ('admin/util/fontawesome');
@@ -25,7 +38,9 @@ $page->add_script ('/apps/admin/js/redactor/plugins/filebrowser.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/imagebrowser.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/dynamic.js');
 
-$data['field_id'] = isset ($data['field_id']) ? $data['field_id'] : 'webpage-body';
-$page->add_script ($tpl->render ('admin/wysiwyg', $data));
+$data['field_id'] = isset ($data['field_id'])
+	? (($data['field_id'] === '0' || empty ($data['field_id'])) ? false : $data['field_id'])
+	: 'webpage-body';
+$page->add_script ($tpl->render ('admin/util/wysiwyg', $data));
 
 ?>

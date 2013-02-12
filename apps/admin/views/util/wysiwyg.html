@@ -1,0 +1,56 @@
+<script>
+$(function () {
+	/**
+	 * This initializes the Redactor editor with the integration
+	 * points/plugins that tie into Elefant's pages, files, and
+	 * dynamic objects embedding.
+	 */
+	$.fn.extend ({
+		wysiwyg: function (options) {
+			var defaults = {
+				lang: '{{i18n.language|none}}',
+				plugins: ['imagebrowser', 'filebrowser', 'dynamic'],
+				buttons: [
+					'formatting', '|', 'bold', 'italic', 'deleted', '|',
+					'alignment', 'horizontalrule', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
+					'link', 'imagebrowser', 'filebrowser', 'table', '|',
+					'undo', 'html', 'dynamic'
+				],
+				buttonsCustom: {
+					undo: {
+						title: '{"Undo"}',
+						dropdown: {
+							point1: {
+								title: '{"Undo"}',
+								callback: undo
+							},
+							point2: {
+								title: '{"Redo"}',
+								callback: redo
+							}
+						}
+					}
+				}
+			};
+
+			options = $.extend (defaults, options);
+
+			return this.each (function () {
+				$(this).redactor (options);
+			});
+		}
+	});
+
+	{% if field_id %}
+	$('#{{ field_id }}').wysiwyg ();
+	{% end %}
+
+	function undo (obj, evt, key) {
+		obj.exec.command.call (obj, 'undo');
+	}
+
+	function redo (obj, evt, key) {
+		obj.exec.command.call (obj, 'redo');
+	}
+});
+</script>
