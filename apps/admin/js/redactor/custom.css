@@ -16,6 +16,10 @@
 	width: 1px;
 }
 
+.redactor_editor {
+	margin-top: -1px !important;
+}
+
 .redactor_editor, .redactor_box textarea {
 	border: 1px solid #999;
 	-webkit-border-radius: 2px;
