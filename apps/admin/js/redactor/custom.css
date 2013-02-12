@@ -37,6 +37,14 @@
 	background-position: 0px 0px;
 }
 
+.redactor_toolbar li a.redactor_btn_filebrowser {
+	background-position: -250px;
+}
+
+.redactor_toolbar li a.redactor_btn_imagebrowser {
+	background-position: -200px;
+}
+
 .redactor_toolbar li a.redactor_btn_dynamic {
 	background-image: url(/apps/admin/css/admin/dynamic-icon.png);
 	background-repeat: no-repeat;

@@ -11,11 +11,11 @@ $(function () {
 		.removeAttr ('rows')
 		.redactor ({
 			lang: '{{i18n.language|none}}',
-			plugins: ['dynamic'],
+			plugins: ['imagebrowser', 'filebrowser', 'dynamic'],
 			buttons: [
 				'formatting', '|', 'bold', 'italic', 'deleted', '|',
 				'alignment', 'horizontalrule', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
-				'link', 'image', 'file', 'table', '|',
+				'link', 'imagebrowser', 'filebrowser', 'table', '|',
 				'undo', 'html', 'dynamic'
 			],
 			buttonsCustom: {

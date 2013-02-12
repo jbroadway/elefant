@@ -23,6 +23,8 @@ $page->add_style ('/apps/admin/js/redactor/custom.css');
 $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/js/jquery.quickpager.js');
 $page->add_script ('/apps/admin/js/redactor/redactor.min.js');
+$page->add_script ('/apps/admin/js/redactor/plugins/filebrowser.js');
+$page->add_script ('/apps/admin/js/redactor/plugins/imagebrowser.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/dynamic.js');
 
 $data['field_id'] = isset ($data['field_id']) ? $data['field_id'] : 'webpage-body';
