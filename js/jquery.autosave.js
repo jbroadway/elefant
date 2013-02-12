@@ -103,7 +103,7 @@ var autosave_interval = null,
 
 						if (opts.form.elements[vals[i].name].getAttribute ('id') == 'webpage-body') {
 							// Set the contents of wysiwyg editor
-							$('#webpage-body').redactor ('code.set', vals[i].value, false);
+							$('#webpage-body').redactor ('code.set', vals[i].value);
 						} else if (opts.form.elements[vals[i].name].getAttribute ('id') == 'code-body') {
 							// Set the contents of codemirror editor
 							_codemirror.setValue (vals[i].value);
