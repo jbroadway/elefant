@@ -1,6 +1,6 @@
 /*
-	Redactor v9.0 beta
-	Updated: January 31, 2013
+	Redactor v9.0 beta 2
+	Updated: February 13, 2013
 
 	http://redactorjs.com/
 
@@ -169,7 +169,8 @@ var RLANG = {
 			keyupCallback: false, // function
 			keydownCallback: false, // function
 			execCommandCallback: false,  // function
-			syncCallback: false,  // function
+			syncBeforeCallback: false,  // function
+			syncAfterCallback: false,  // function
 
 			focus: false,
 			tabindex: false,
@@ -179,6 +180,8 @@ var RLANG = {
 			plugins: false, // array
 
 			air: false,
+			airButtons: ['formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'fontcolor', 'backcolor'],
+
 			mobile: true,
 			wym: false,
 			cleanup: true,
@@ -212,6 +215,7 @@ var RLANG = {
 			imageUpload: false, // url
 			imageUploadCallback: false, // function
 			imageUploadErrorCallback: false, // function
+			imageDeleteCallback: false, // function
 
 			fileUpload: false, // url
 			fileUploadCallback: false, // function
@@ -225,7 +229,7 @@ var RLANG = {
 
 			allowedTags: false,
 			deniedTags: false,
-			clearTags: ['script', 'html', 'head', 'title', 'link', 'body', 'style', 'meta'],
+			clearTags: ['script', 'html', 'head', 'title', 'link', 'body', 'style', 'meta', 'applet'],
 
 			boldTag: 'strong',
 			italicTag: 'em',
@@ -235,8 +239,6 @@ var RLANG = {
 			buttons: ['html', '|', 'formatting', '|', 'bold', 'italic', 'deleted', 'underline', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
 					'image', 'video', 'file', 'table', 'link', '|',
 					'fontcolor', 'backcolor', '|', 'alignment', '|', 'horizontalrule'], // 'underline', 'alignleft', 'aligncenter', 'alignright', 'justify'
-
-			airButtons: ['formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'fontcolor', 'backcolor'],
 
 			formattingTags: ['p', 'blockquote', 'pre', 'h1', 'h2', 'h3', 'h4'],
 
@@ -661,6 +663,7 @@ var RLANG = {
 			this.height = this.$el.css('height');
 			this.width = this.$el.css('width');
 
+			this.opts.buffer = this.opts.rebuffer = [];
 			this.codeactions = false;
 
 			rdocument = this.document = document;
@@ -800,23 +803,22 @@ var RLANG = {
 			{
 				this.$editor.bind('paste.redactor', $.proxy(function(e)
 				{
-					if (this.opts.cleanup === false)
-					{
-						return true;
-					}
+					if (this.opts.cleanup === false) return true;
 
 					this.pasteRunning = true;
-
 					this.selection.save.call(this);
 
-					if (this.opts.autoresize === true)
+					if (!this.selectall)
 					{
-						this.$editor.height(this.$editor.height());
-						this.saveScroll = this.document.body.scrollTop;
-					}
-					else
-					{
-						this.saveScroll = this.$editor.scrollTop();
+						if (this.opts.autoresize === true)
+						{
+							this.$editor.height(this.$editor.height());
+							this.saveScroll = this.document.body.scrollTop;
+						}
+						else
+						{
+							this.saveScroll = this.$editor.scrollTop();
+						}
 					}
 
 					var frag = this.utils.extractContent.call(this);
@@ -851,42 +853,23 @@ var RLANG = {
 				var pre = false;
 				var ctrl = e.ctrlKey || e.metaKey;
 
-
 				// callback keydown
 				if (typeof this.opts.keydownCallback === 'function')
 				{
 					this.opts.keydownCallback(this, e);
 				}
 
-				//if (this.opts.linebreaks === false and this.utils.
-				//console.log(parent);
-
-				// down
 				if ((parent && $(parent).get(0).tagName === 'PRE') || (current && $(current).get(0).tagName === 'PRE'))
 				{
 					pre = true;
-
-					if (key === 40)
-					{
-						this.format.insertAfterLastElement.call(this, current);
-					}
-
+					if (key === 40) this.format.insertAfterLastElement.call(this, current);
 				}
 
-				if (parent && $(parent).get(0).tagName === 'BLOCKQUOTE')
+				// down
+				if (key === 40)
 				{
-					if (key === 40)
-					{
-						this.format.insertAfterLastElement.call(this, parent);
-					}
-				}
-
-				if (current && $(current).get(0).tagName === 'BLOCKQUOTE')
-				{
-					if (key === 40)
-					{
-						this.format.insertAfterLastElement.call(this, current);
-					}
+					if (parent && $(parent).get(0).tagName === 'BLOCKQUOTE') this.format.insertAfterLastElement.call(this, parent);
+					if (current && $(current).get(0).tagName === 'BLOCKQUOTE') this.format.insertAfterLastElement.call(this, current);
 				}
 
 				// Enter pre
@@ -912,9 +895,31 @@ var RLANG = {
 
 					var element = this.selection.getNode.call(this);
 
-					// Inserting br on Enter
-					if ($(element).closest('h1, h2, h3, h4, h5, h6, ol, ul, li, p, td', this.$editor[0]).size() == 0 && !this.utils.browser.call(this, 'mozilla'))
+	 				if (this.opts.linebreaks === false && parent === false && current === false)
+ 					{
+	 					e.preventDefault();
+	 					var text = this.utils.getObjectText.call(this, element);
+						var node1 = $('<p>' + text + '</p>');
+
+						if (text != '')
+						{
+							var node2 = $('<p>' + this.opts.invisibleSpace + '</p>');
+							$(element).replaceWith(node1);
+							node1.after(node2);
+							this.selection.start.call(this, node2);
+						}
+						else
+						{
+							$(element).replaceWith(node1);
+							this.selection.end.call(this, node1);
+						}
+
+						this.sync();
+						return false;
+					}
+					else if ($(element).closest('h1, h2, h3, h4, h5, h6, ol, ul, li, p, td', this.$editor[0]).size() == 0 && !this.utils.browser.call(this, 'mozilla'))
 					{
+						// Inserting br on Enter
 						e.preventDefault();
 						this.format.insertLineBreak.call(this);
 						return false;
@@ -933,9 +938,20 @@ var RLANG = {
 					this.format.insertLineBreak.call(this);
 				}
 
+
 				// SHORCTCUTS
-				if (ctrl && this.opts.shortcuts)
+				if (ctrl)
 				{
+					if (key == 65)
+					{
+						this.selectall = true;
+					}
+					else if (key != 91 && key != 17)
+					{
+						this.selectall = false;
+					}
+
+
 					this.shortcuts.set.call(this, e, key);
 				}
 
@@ -1058,21 +1074,33 @@ var RLANG = {
 			{
 				if (key === 90)
 				{
-					if (this.opts.buffer !== false)
+					if (this.opts.buffer.length != 0)
 					{
 						e.preventDefault();
 						this.buffer.get.call(this);
 					}
-					else if (e.shiftKey) this.shortcuts.load.call(this, e, 'redo'); // Ctrl + Shift + z
+					else if (e.shiftKey)
+					{
+						if (this.opts.rebuffer.length != 0)
+						{
+							e.preventDefault();
+							this.buffer.redo.call(this);
+						}
+						else this.shortcuts.load.call(this, e, 'redo'); // Ctrl + Shift + z
+					}
 					else this.shortcuts.load.call(this, e, 'undo'); // Ctrl + z
 				}
-				else if (key === 77) this.shortcuts.load.call(this, e, 'removeFormat'); // Ctrl + m
-				else if (key === 66) this.shortcuts.load.call(this, e, 'bold'); // Ctrl + b
-				else if (key === 73) this.shortcuts.load.call(this, e, 'italic'); // Ctrl + i
-				else if (key === 74) this.shortcuts.load.call(this, e, 'insertunorderedlist'); // Ctrl + j
-				else if (key === 75) this.shortcuts.load.call(this, e, 'insertorderedlist'); // Ctrl + k
-				else if (key === 76) this.shortcuts.load.call(this, e, 'superscript'); // Ctrl + l
-				else if (key === 72) this.shortcuts.load.call(this, e, 'subscript'); // Ctrl + h
+
+				if (this.opts.shortcuts)
+				{
+					if (key === 77) this.shortcuts.load.call(this, e, 'removeFormat'); // Ctrl + m
+					else if (key === 66) this.shortcuts.load.call(this, e, 'bold'); // Ctrl + b
+					else if (key === 73) this.shortcuts.load.call(this, e, 'italic'); // Ctrl + i
+					else if (key === 74) this.shortcuts.load.call(this, e, 'insertunorderedlist'); // Ctrl + j
+					else if (key === 75) this.shortcuts.load.call(this, e, 'insertorderedlist'); // Ctrl + k
+					else if (key === 76) this.shortcuts.load.call(this, e, 'superscript'); // Ctrl + l
+					else if (key === 72) this.shortcuts.load.call(this, e, 'subscript'); // Ctrl + h
+				}
 
 			},
 			load: function(e, cmd)
@@ -1310,7 +1338,7 @@ var RLANG = {
 
 				var html = this.content.replace(/&#x200b;|<br>|<br \/>/gi, '');
 
-				if (html !== '' && html !== '<p></p>') this.opts.placeholder = false;
+				if (html !== '' && html !== '<p></p>') return false;
 				if (this.opts.placeholder === false || this.opts.placeholder === '') return false;
 
 				this.opts.focus = false;
@@ -1328,6 +1356,7 @@ var RLANG = {
 			},
 			focus: function()
 			{
+
 				var ph = this.$editor.find('.redactor_placeholder')
 				if (this.opts.linebreaks === false && ph.size() != 0)
 				{
@@ -1449,15 +1478,42 @@ var RLANG = {
 			set: function()
 			{
 				this.selection.saveDynamic.call(this);
-				this.opts.buffer = this.$editor.html();
+				this.opts.buffer.push(this.$editor.html());
 			},
 			get: function()
 			{
-				if (this.opts.buffer === false) return false;
-				this.$editor.html(this.opts.buffer);
+				if (this.opts.buffer.length == 0)
+				{
+					this.focus.set.call(this);
+					return false;
+				}
+
+				var len = this.opts.buffer.length-1;
+
+				// rebuffer
+				this.opts.rebuffer.push(this.$editor.html());
+
+				this.$editor.html(this.opts.buffer[len]);
 				this.selection.restoreDynamic.call(this);
 				setTimeout($.proxy(this.observe.start, this), 1);
-				this.opts.buffer = false;
+
+				this.opts.buffer.splice(this.opts.buffer.len, 1);
+			},
+			redo: function()
+			{
+				if (this.opts.rebuffer.length == 0)
+				{
+					this.focus.set.call(this);
+					return false;
+				}
+
+				var len = this.opts.rebuffer.length-1;
+
+				this.$editor.html(this.opts.rebuffer[len]);
+				this.selection.restoreDynamic.call(this);
+				setTimeout($.proxy(this.observe.start, this), 1);
+
+				this.opts.rebuffer.splice(this.opts.rebuffer.len, 1);
 			}
 		},
 
@@ -2145,11 +2201,17 @@ var RLANG = {
 		sync: function()
 		{
 			var html = this.code.get.call(this);
+
+			if (typeof this.opts.syncBeforeCallback === 'function')
+			{
+				html = this.opts.syncBeforeCallback(this, html);
+			}
+
 			this.$el.val(html);
 
-			if (typeof this.opts.syncCallback === 'function')
+			if (typeof this.opts.syncAfterCallback === 'function')
 			{
-				this.opts.syncCallback(this, html);
+				this.opts.syncAfterCallback(this, html);
 			}
 
 		},
@@ -2162,6 +2224,7 @@ var RLANG = {
 				this.$editor.removeAttr('contenteditable').removeAttr('dir');
 				var html = this.utils.outerHtml.call(this, this.$frame.contents().children());
 				this.$editor.attr('contenteditable', true).attr('dir', this.opts.direction);
+
 				return html;
 			},
 			get: function()
@@ -2182,6 +2245,7 @@ var RLANG = {
 
 				// remove space
 				html = html.replace(/&#x200b;/gi, '');
+				html = html.replace(/&#8203;/gi, '');
 
 				// php code fix
 				html = html.replace('<!--?php', '<?php');
@@ -2195,6 +2259,9 @@ var RLANG = {
 				else html = html.replace(/<em>([\w\W]*?)<\/em>/gi, '<i>$1</i>');
 
 				html = html.replace(/<strike>([\w\W]*?)<\/strike>/gi, '<del>$1</del>');
+
+				// script support
+				html = html.replace(/<title type="text\/javascript" style="display: none;" class="redactor-script-tag">([\w\W]*?)<\/title>/gi, '<script type="text/javascript">$1</script>');
 
 				html = this.clean.convertInlineTags.call(this, html);
 
@@ -2215,6 +2282,7 @@ var RLANG = {
 			},
 			setEditor: function(html, strip)
 			{
+
 				if (strip !== false)
 				{
 					html = this.clean.stripTags.call(this, html);
@@ -2233,6 +2301,11 @@ var RLANG = {
 			},
 			set: function(html, strip)
 			{
+				html = html.toString();
+
+				// script support
+				html = html.replace(/<script(.*?)>([\w\W]*?)<\/script>/gi, '<title type="text/javascript" style="display: none;" class="redactor-script-tag">$2</title>');
+
 				if (this.opts.fullpage) this.code.setIframe.call(this, html);
 				else this.code.setEditor.call(this, html, strip);
 			}
@@ -2248,10 +2321,13 @@ var RLANG = {
 				if (this.opts.linebreaks === false)
 				{
 					var current = this.selection.getBlock.call(this);
-					var blockhtml = $.trim(current.innerHTML.replace(/<br\s?\/?>/gi, ''));
+					if (current !== false)
+					{
+						var blockhtml = $.trim(current.innerHTML.replace(/<br\s?\/?>/gi, ''));
+					}
 				}
 
-				if (this.opts.linebreaks === false && current.tagName === 'P' && blockhtml == '')
+				if (this.opts.linebreaks === false && current !== false && current.tagName === 'P' && blockhtml == '')
 				{
 					var tmphtml = $(html);
 					$(current).replaceWith(tmphtml);
@@ -2260,8 +2336,6 @@ var RLANG = {
 				}
 				else
 				{
-					//this.document.execCommand('inserthtml', false, html);
-
 					var sel, range;
 					if (this.window.getSelection)
 					{
@@ -2304,6 +2378,18 @@ var RLANG = {
 					this.sync();
 				}
 
+			},
+			text: function(html)
+			{
+				html = $(html).text();
+				this.document.execCommand('inserthtml', false, html);
+			},
+			exec: function(html)
+			{
+				this.$editor.focus();
+				this.document.execCommand('inserthtml', false, html);
+				this.observe.start.call(this);
+				this.sync();
 			},
 			force: function(html)
 			{
@@ -2418,6 +2504,30 @@ var RLANG = {
 					});
 				}
 
+				// save script
+				var scriptbuffer = [];
+				var script = html.match(/<script(.*?)>([\w\W]*?)<\/script>/gi);
+				if (script !== null)
+				{
+					$.each(script, function(i,s)
+					{
+						html = html.replace(s, 'scriptbuffer_' + i);
+						scriptbuffer.push(s);
+					});
+				}
+
+				// save title
+				var titlebuffer = [];
+				var title = html.match(/<title(.*?)>([\w\W]*?)<\/title>/gi);
+				if (title !== null)
+				{
+					$.each(title, function(i,s)
+					{
+						html = html.replace(s, 'titlebuffer_' + i);
+						titlebuffer.push(s);
+					});
+				}
+
 				html = html.replace(/\s{2,}/g, ' ');
 				html = html.replace(/\n/g, ' ');
 				html = html.replace(/[\t]*/g, '');
@@ -2426,17 +2536,23 @@ var RLANG = {
 				html = html.replace(/[\s\n]*$/g, '');
 				html = html.replace(/>\s+</g, '><');
 
-				if (prebuffer)
-				{
-					$.each(prebuffer, function(i,s)
-					{
-						html = html.replace('prebuffer_' + i, s);
-					});
-
-					prebuffer = [];
-				}
+				html = this.clean.replacer.call(this, prebuffer, 'prebuffer', html);
+				html = this.clean.replacer.call(this, scriptbuffer, 'scriptbuffer', html);
+				html = this.clean.replacer.call(this, titlebuffer, 'titlebuffer', html);
 
 				html = html.replace(/\n\n/g, "\n");
+
+				return html;
+			},
+			replacer: function(arr, name, html)
+			{
+				if (arr)
+				{
+					$.each(arr, function(i,s)
+					{
+						html = html.replace(name + '_' + i, s);
+					});
+				}
 
 				return html;
 			},
@@ -2456,7 +2572,7 @@ var RLANG = {
 			addBefore: function(html)
 			{
 				var lb = '\r\n';
-				var btags = ["<p", "<form","</ul>", '</ol>', "<fieldset","<legend","<object","<embed","<select","<option","<input","<textarea","<pre","<blockquote","<ul","<ol","<li","<dl","<dt","<dd","<table", "<thead","<tbody","<caption","</caption>","<th","<tr","<td","<figure"];
+				var btags = ["<p", "<form","</ul>", '</ol>', "<fieldset","<legend","<object","<embed","<select","<option","<input","<textarea","<pre","<blockquote","<ul","<ol","<li","<dl","<dt","<dd","<table", "<thead","<tbody","<caption","</caption>","<th","<tr","<td","<figure", "<body", "<head>", "<meta", "<title>", "<link", "<script", "</head>"];
 				for (var i = 0; i < btags.length; ++i)
 				{
 					var eee = btags[i];
@@ -2468,7 +2584,7 @@ var RLANG = {
 			addAfter: function(html)
 			{
 				var lb = '\r\n';
-				var atags = ['</p>', '</div>', '</h1>', '</h2>', '</h3>', '</h4>', '</h5>', '</h6>', '<br>', '<br />', '</dl>', '</dt>', '</dd>', '</form>', '</blockquote>', '</pre>', '</legend>', '</fieldset>', '</object>', '</embed>', '</textarea>', '</select>', '</option>', '</table>', '</thead>', '</tbody>', '</tr>', '</td>', '</th>', '</figure>'];
+				var atags = ['</p>', '</div>', '</h1>', '</h2>', '</h3>', '</h4>', '</h5>', '</h6>', '<br>', '<br />', '</dl>', '</dt>', '</dd>', '</form>', '</blockquote>', '</pre>', '</legend>', '</fieldset>', '</object>', '</embed>', '</textarea>', '</select>', '</option>', '</table>', '</thead>', '</tbody>', '</tr>', '</td>', '</th>', '</figure>', '</script>', '</title>', '</body>'];
 				for (var i = 0; i < atags.length; ++i)
 				{
 					var aaa = atags[i];
@@ -2534,7 +2650,7 @@ var RLANG = {
 
 				for (i in htmls)
 				{
-					if ( htmls[i].search('{replace') === -1) html += '<p>' + htmls[i].replace(/^\n+|\n+$/g, "") + "</p>";
+					if (htmls[i].search('{replace') == -1) html += '<p>' + htmls[i].replace(/^\n+|\n+$/g, "") + "</p>";
 					else html += htmls[i];
 				}
 
@@ -2705,7 +2821,7 @@ var RLANG = {
 				}
 
 				// remove span
-				html = html.replace(/<span>([\w\W]*?)<\/span>/gi, '$1');
+				html = html.replace(/<span(.*?)>([\w\W]*?)<\/span>/gi, '$2');
 
 				html = html.replace(/\n{3,}/gi, '\n');
 
@@ -2740,7 +2856,17 @@ var RLANG = {
 			},
 			insert: function(html)
 			{
-				this.insert.html.call(this, html);
+				if (this.selectall)
+				{
+					if (this.opts.linebreaks === false)
+					{
+						this.$editor.html(this.opts.emptyHtml);
+					}
+					this.focus.set.call(this);
+				}
+
+				this.insert.exec.call(this, html);
+				this.selectall = false;
 
 				if (this.opts.autoresize === true) $(this.document.body).scrollTop(this.saveScroll);
 				else this.$editor.scrollTop(this.saveScroll);
@@ -2839,7 +2965,7 @@ var RLANG = {
 
 				if (parent[0].tagName == 'LI')
 				{
-					this.document.execCommand(cmd, false, false);
+					this.exec.command.call(this, cmd, false);
 				}
 				else
 				{
@@ -2927,6 +3053,52 @@ var RLANG = {
 					}
 
 					var parent;
+
+					// lists
+					if (!this.utils.browser.call(this, 'mozilla'))
+					{
+						if (cmd === 'insertunorderedlist' || cmd === 'insertorderedlist')
+						{
+							this.buffer.set.call(this);
+							setTimeout($.proxy(function()
+							{
+								this.selection.saveDynamic.call(this);
+								var html = this.$editor.html();
+
+								html = html.replace(/<p(.*?)><ul>([\w\W]*?)<\/ul><\/p>/gi, '<ul$1>$2</ul>');
+								html = html.replace(/<p(.*?)><ol>([\w\W]*?)<\/ol><\/p>/gi, '<ol$1>$2</ol>');
+
+								this.$editor.html(html);
+								this.selection.restoreDynamic.call(this);
+							}, this), 1);
+						}
+
+						if (cmd === 'outdent' || cmd === 'indent')
+						{
+							this.buffer.set.call(this);
+							setTimeout($.proxy(function()
+							{
+								this.selection.saveDynamic.call(this);
+								var html = this.$editor.html();
+
+								html = html.replace(/<\/li><ul(.*?)>([\w\W]*?)<\/ul>/gi, '<ul$1>$2</ul></li>');
+								html = html.replace(/<\/li><ol(.*?)>([\w\W]*?)<\/ol>/gi, '<ol$1>$2</ol></li>');
+
+								this.$editor.html(html);
+								this.selection.restoreDynamic.call(this);
+							}, this), 1);
+						}
+					}
+
+					if (cmd === 'insertunorderedlist')
+					{
+						this.button.inactive.call(this, 'orderedlist');
+					}
+					else if (cmd === 'insertorderedlist')
+					{
+						this.button.inactive.call(this, 'unorderedlist');
+					}
+
 					if (cmd === 'inserthtml')
 					{
 						this.insert.html.call(this, param, false);
@@ -2962,7 +3134,7 @@ var RLANG = {
 						}
 					}
 
-					if (pre && this.opts.formattingPre && (cmd === 'italic' || cmd === 'bold' || cmd === 'strikethrough'))
+					if (pre && this.opts.formattingPre && (cmd === 'italic' || cmd === 'bold' || cmd === 'strikethrough'|| cmd === 'underline'))
 					{
 						return false;
 					}
@@ -2971,7 +3143,7 @@ var RLANG = {
 
 					if (typeof this.opts.execCommandCallback === 'function')
 					{
-						this.opts.execCommandCallback(this, cmd);
+						this.opts.execCommandCallback(this, cmd, param);
 					}
 
 					if (this.opts.air)
@@ -3103,12 +3275,8 @@ var RLANG = {
 			{
 				var html = $.trim(this.$editor.html());
 
-				if (this.utils.browser.call(this, 'mozilla'))
-				{
-					html = html.replace(/<br\s\/?>/i, '');
-				}
-
-				var thtml = html.replace(/<(?:.|\n)*?>/gm, '');
+				html = html.replace(/<br\s?\/?>/i, '');
+				var thtml = html.replace(/<p>\s?<\/p>/gi, '');
 
 				if (html === '' || thtml === '')
 				{
@@ -3552,12 +3720,13 @@ var RLANG = {
 				$(this.$editor.find('span#' + id + '1')).remove();
 				$(this.$editor.find('span#' + id + '2')).remove();
 
-				this.selection.save.call(this);
 				var node1 = $('<span id="' + id + '1">')[0];
 				var node2 = $('<span id="' + id + '2">')[0];
 				this.insert.beforeCaret.call(this, node1);
 				this.insert.afterCaret.call(this, node2);
-				this.selection.restore.call(this);
+
+				this.$editor.focus();
+				this.selection.set.call(this, node1, 0, node2, 0);
 			},
 			restoreDynamic: function()
 			{
@@ -3687,7 +3856,7 @@ var RLANG = {
 				{
 					var range = this.document.createRange();
 					range.selectNodeContents(el);
-					var textNodes = this.getTextNodesIn(el);
+					var textNodes = this.selection.getTextNodesIn.call(this, el);
 					var foundStart = false;
 					var charCount = 0, endCharCount;
 
@@ -4068,17 +4237,23 @@ var RLANG = {
 			},
 			deleteTable: function()
 			{
+				this.buffer.set.call(this);
+
 				$(this.$table).remove();
 				this.$table = false;
 				this.sync();
 			},
 			deleteRow: function()
 			{
+				this.buffer.set.call(this);
+
 				$(this.$current_tr).remove();
 				this.sync();
 			},
 			deleteColumn: function()
 			{
+				this.buffer.set.call(this);
+
 				var index = $(this.$current_td).get(0).cellIndex;
 
 				$(this.$table).find('tr').each(function()
@@ -4090,6 +4265,8 @@ var RLANG = {
 			},
 			addHead: function()
 			{
+				this.buffer.set.call(this);
+
 				if ($(this.$table).find('thead').size() !== 0)
 				{
 					this.table.deleteHead.call(this);
@@ -4106,6 +4283,8 @@ var RLANG = {
 			},
 			deleteHead: function()
 			{
+				this.buffer.set.call(this);
+
 				$(this.$thead).remove();
 				this.$thead = false;
 				this.sync();
@@ -4128,6 +4307,8 @@ var RLANG = {
 			},
 			insertRow: function(type)
 			{
+				this.buffer.set.call(this);
+
 				var new_tr = $(this.$current_tr).clone();
 				new_tr.find('td').html(this.opts.invisibleSpace);
 				if (type === 'after')
@@ -4143,6 +4324,8 @@ var RLANG = {
 			},
 			insertColumn: function(type)
 			{
+				this.buffer.set.call(this);
+
 				var index = 0;
 
 				this.$current_tr.find('td').each($.proxy(function(i,s)
@@ -4368,7 +4551,21 @@ var RLANG = {
 			},
 			remove: function(el)
 			{
+				var parent = $(el).parent();
 				$(el).remove();
+
+				if (parent.size() != 0 && parent[0].tagName === 'P')
+				{
+					this.$editor.focus();
+					this.selection.start.call(this, parent);
+				}
+
+				// delete callback
+				if (typeof this.opts.imageDeleteCallback === 'function')
+				{
+					this.opts.imageDeleteCallback(this, el);
+				}
+
 				this.modal.close.call(this);
 				this.sync();
 			},
@@ -4860,9 +5057,12 @@ var RLANG = {
 				this.$editor.keyup(this.hdlModalClose);
 
 				// set content
+				this.modalcontent = false;
 				if (content.indexOf('#') == 0)
 				{
-					$('#redactor_modal_inner').empty().append($(content).html());
+					this.modalcontent = $(content);
+					$('#redactor_modal_inner').empty().append(this.modalcontent.html());
+					this.modalcontent.html('');
 				}
 				else
 				{
@@ -4939,6 +5139,12 @@ var RLANG = {
 				$('#redactor_modal_close').unbind('click', this.modal.close);
 				$('#redactor_modal').fadeOut('fast', $.proxy(function()
 				{
+					if (this.modalcontent !== false)
+					{
+						this.modalcontent.html($('#redactor_modal_inner').html());
+						this.modalcontent = false;
+					}
+
 					$('#redactor_modal_inner').html('');
 
 					if (this.opts.overlay)
@@ -5280,6 +5486,10 @@ var RLANG = {
 			outerHtml: function(s)
 			{
 				return $('<div>').append($(s).eq(0).clone()).html();
+			},
+			getObjectText: function(obj)
+			{
+				return obj.textContent ? obj.textContent : obj.innerText;
 			},
 			oldIE: function()
 			{
