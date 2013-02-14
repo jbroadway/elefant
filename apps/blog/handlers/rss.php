@@ -4,7 +4,7 @@
  * Renders the RSS feed for the blog.
  */
 
-$res = $cache->get ('_blog_rss');
+$res = $cache->get ('blog_rss');
 if (! $res) {
 	require_once ('apps/blog/lib/Filters.php');
 
@@ -18,7 +18,7 @@ if (! $res) {
 	}
 
 	$res = $tpl->render ('blog/rss', $page);
-	$cache->set ('_blog_rss', $res, 1800); // half an hour
+	$cache->set ('blog_rss', $res, 1800); // half an hour
 }
 $page->layout = FALSE;
 header ('Content-Type: text/xml');
