@@ -1,11 +1,14 @@
+{! user/util/userchooser !}
+
 <div class="form">
 
 <p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
 
 <form method="POST" id="edit-form">
-<p>{"Title"}:<br /><input type="text" name="title" size="50" value="{{ title|quotes }}" />
+<p>{"Title"}:<br /><input type="text" name="title" size="80" value="{{ title|quotes }}" />
 <span class="notice" id="title-notice">{"You must enter a title."}</span></p>
-<p>{"Author"}:<br /><input type="text" name="author" size="30" value="{{ author|quotes }}" />
+<p>{"Author"}:<br /><input type="text" name="author" id="author" size="30" value="{{ author|quotes }}" />
+<input type="submit" value="{"Choose"}" id="users" />
 <span class="notice" id="author-notice">{"You must enter an author."}</span></p>
 <p>{"Date/Time"}:<br /><input type="text" name="ts" id="ts" size="30" value="{{ ts }}" />
 <span class="notice" id="ts-notice">{"You must select a date/time."}</span></p>
@@ -44,3 +47,14 @@
 
 </div>
 <div class="clear"></div>
+
+<script>
+$(function () {
+	$('#users').click (function () {
+		$.userchooser ({
+			set_name_value: '#author'
+		});
+		return false;
+	});
+});
+</script>
