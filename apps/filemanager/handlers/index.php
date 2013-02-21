@@ -49,10 +49,20 @@ if ($appconf['General']['aviary_key']) {
 	$o->aviary_key = false;
 }
 
+$page->add_style ('/apps/filemanager/css/filemanager.css');
 $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/js/urlify.js');
+$page->add_script ('/apps/filemanager/js/jquery.filedrop.js');
 $page->add_script ('/apps/filemanager/js/jquery.tmpl.beta1.min.js');
 $page->add_script ('/apps/filemanager/js/jquery.filemanager.js');
+$page->add_script (I18n::export (
+	'New folder name:',
+	'Rename:',
+	'Are you sure you want to delete this file?',
+	'Your browser does not support drag and drop file uploads.',
+	'Please upload fewer files at a time.',
+	'The following file is too large to upload'
+));
 
 echo $tpl->render ('filemanager/index', $o);
 

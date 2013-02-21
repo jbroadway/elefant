@@ -1,11 +1,6 @@
 {! admin/util/dates !}
 {! admin/util/modal !}
-
-<style>
-.draggable {
-	cursor: move !important;
-}
-</style>
+{! admin/util/fontawesome !}
 
 <script type="text/x-jquery-tmpl" id="tpl_dir">
 	<tr>
@@ -43,7 +38,8 @@
 $(function () {
 	$.filemanager_init ({
 		path: '{{path}}',
-		aviary_key: {% if aviary_key %}'{{ aviary_key }}'{% else %}false{% end %}
+		aviary_key: {% if aviary_key %}'{{ aviary_key }}'{% else %}false{% end %},
+		max_filesize: {{ (int) ini_get ('upload_max_filesize')}}
 
 	});
 });
@@ -68,16 +64,26 @@ var i18n = {
 {% end %}
 </h2>
 
+<div id="filemanager-dropzone">
+
 <p>
 	<form action="/filemanager/upload" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="path" value="{{ path }}" />
 	<a href="#" onclick="return $.filemanager ('mkdir', {file: '{{ path }}'})">{"New folder"}</a>
 	&nbsp;|&nbsp;
+	<span id="filemanager-upload-form">
 	{"New file"} ({"max"} {{ ini_get ('upload_max_filesize')}}B): <input type="file" name="file[]" id="file-upload" multiple="multiple" /> <input type="submit" value="{"Upload"}" onclick="err = $.filemanager_verify_files ($('#file-upload')[0].files); if (err) { alert (i18n[err]); return false; } this.value = 'Uploading...'; this.disabled = true; this.form.submit ()" />
+	</span>
+	<span id="filemanager-upload-progress">
+		<div id="filemanager-upload-progress-bar"></div>
+		<div id="filemanager-upload-progress-text">{"Uploading..."}</div>
+	</span>
 	&nbsp;|&nbsp;
 	<a href="/filemanager/multi?path=/{{ path }}">{"Multi-file uploader"}</a>
 	</form>
 </p>
+
+</div>
 
 <p>
 <table width="100%">
