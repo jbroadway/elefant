@@ -6,7 +6,11 @@
 
 <div class="blog-post block">
 <h3><a href="{{ url }}">{{ title }}</a></h3>
-<p class="blog-info info">{{ ts|I18n::date_time }} - {" by "} <a href="/blog/by/{{ author }}">{{ author }}</a></p>
+<p class="blog-info info">{{ ts|I18n::date_time }} - {" by "} <a href="/blog/by/{{ author }}">{{ author }}</a>
+{% if User::require_admin () %}
+&nbsp;|&nbsp; <a href="/blog/edit?id={{ id }}">{"Edit Post"}</a>
+{% end %}
+</p>
 {{ body|none }}
 <div class="blog-tags info">
 {"Tags"}: 
