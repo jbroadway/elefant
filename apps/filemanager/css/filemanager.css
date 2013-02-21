@@ -40,12 +40,12 @@
 
 #filemanager-upload-form {
 	display: inline-block;
-	width: 435px;
+	width: 450px;
 }
 
 #filemanager-upload-progress {
 	display: none;
-	width: 435px;
+	width: 450px;
 	border: 1px solid #ddd;
 }
 
