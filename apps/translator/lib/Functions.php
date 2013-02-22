@@ -51,4 +51,12 @@ function translator_filter_apos ($text) {
 	return str_replace ('&apos;', '\'', $text);
 }
 
+/**
+ * Filter sources into a list.
+ */
+function translator_filter_sources ($sources) {
+	$sources = is_array ($sources) ? $sources : array ($sources);
+	return "\n- " . join ("\n- ", $sources);
+}
+
 ?>

@@ -56,8 +56,16 @@ foreach ($sources as $source) {
 				if (! isset ($list[$str])) {
 					$list[$str] = array (
 						'orig' => $str,
-						'src' => $file
+						'src' => array ($file)
 					);
+				} else {
+					$list[$str]['src'] = is_array ($list[$str]['src'])
+						? $list[$str]['src']
+						: array ($list[$str]['src']);
+
+					if (! in_array ($file, $list[$str]['src'])) {
+						$list[$str]['src'][] = $file;
+					}
 				}
 			}
 		} else {
@@ -68,8 +76,16 @@ foreach ($sources as $source) {
 				if (! isset ($list[$str])) {
 					$list[$str] = array (
 						'orig' => $str,
-						'src' => $file
+						'src' => array ($file)
 					);
+				} else {
+					$list[$str]['src'] = is_array ($list[$str]['src'])
+						? $list[$str]['src']
+						: array ($list[$str]['src']);
+
+					if (! in_array ($file, $list[$str]['src'])) {
+						$list[$str]['src'][] = $file;
+					}
 				}
 			}
 
@@ -85,10 +101,20 @@ foreach ($sources as $source) {
 				foreach ($tokens as $tok) {
 					if ($tok[0] === T_CONSTANT_ENCAPSED_STRING) {
 						$str = stripslashes (trim ($tok[1], '"\''));
-						$list[$str] = array (
-							'orig' => $str,
-							'src' => $file
-						);
+						if (! isset ($list[$str])) {
+							$list[$str] = array (
+								'orig' => $str,
+								'src' => array ($file)
+							);
+						} else {
+							$list[$str]['src'] = is_array ($list[$str]['src'])
+								? $list[$str]['src']
+								: array ($list[$str]['src']);
+
+							if (! in_array ($file, $list[$str]['src'])) {
+								$list[$str]['src'][] = $file;
+							}
+						}
 					}
 				}
 			}
