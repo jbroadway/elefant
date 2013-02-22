@@ -1,0 +1,64 @@
+.draggable {
+	cursor: move !important;
+}
+
+#filemanager-dropzone {
+	height: 100%;
+	border: 2px dashed #e5e5e5;
+	margin: -8px 0px -8px 0px;
+	padding: 16px 0px 16px 16px;
+}
+
+	#filemanager-dropzone form, #filemanager-dropzone p {
+		padding: 0;
+		margin: 0;
+	}
+
+	#filemanager-dropzone:after {
+		font-family: 'FontAwesome';
+		content: "\f01b";
+		color: #e5e5e5;
+		font-size: 48px;
+		float: right;
+		margin-top: -50px;
+		padding-right: 16px;
+	}
+
+	#filemanager-dropzone.filemanager-over {
+		border: 2px dashed #ccc;
+	}
+
+	#filemanager-dropzone.filemanager-over:after {
+		font-family: 'FontAwesome';
+		content: "\f01b";
+		color: #ccc;
+		font-size: 48px;
+		float: right;
+		margin-top: -50px;
+		padding-right: 16px;
+	}
+
+#filemanager-upload-form {
+	display: inline-block;
+	width: 450px;
+}
+
+#filemanager-upload-progress {
+	display: none;
+	width: 450px;
+	border: 1px solid #ddd;
+}
+
+#filemanager-upload-progress-bar {
+	display: inline-block;
+	background-color: #ddd;
+	height: 18px;
+	width: 5%;
+	z-index: 0;
+}
+
+#filemanager-upload-progress-text {
+	z-index: 1;
+	margin-top: -24px;
+	margin-left: 2px;
+}
