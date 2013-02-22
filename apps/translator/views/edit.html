@@ -1,3 +1,5 @@
+{! admin/util/modal !}
+
 <form style="display: inline" method="GET" action="/translator/edit/{{ lang }}">
 <div style="float: right; margin-top: -5px">
 <select name="source" onchange="this.form.elements['contains'].value = ''; this.form.submit ()">
@@ -31,7 +33,7 @@
 	</tr>
 {% foreach items %}
 	<tr id="tr-{{ loop_index|translator_field_id }}">
-		<td class="original" title="{"Source"}: {{ loop_value[src]|translator_filter_sources }}">{{ loop_index }}</td>
+		<td class="original" title="{"Source"}: {{ loop_value[src]|translator_filter_sources }}" data-string="{{ loop_index|quotes }}">{{ loop_index }}</td>
 		<td class="translate">
 			<textarea
 				rows="1" style="float:left; width: 85%; height: 100%"
@@ -60,6 +62,20 @@ $(function () {
 			$(this).addClass ('empty');
 		}
 	});
+
+	$('.original').click (function () {
+		var string = $(this).data ('string'),
+			title = (string.length > 65)
+				? string.substring (0, 62) + '...'
+				: string;
+		$.get ('/translator/sources?string=' + encodeURIComponent (string), function (res) {
+			$.open_dialog (
+				title,
+				res,
+				{ height: 450 }
+			);
+		});
+	});
 });
 
 $.save_element = function (el) {
@@ -86,5 +102,8 @@ $.save_element = function (el) {
 <style>
 .empty {
 	background: #ffd;
+}
+.original:hover {
+	cursor: pointer;
 }
 </style>

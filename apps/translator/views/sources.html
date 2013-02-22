@@ -1,0 +1,27 @@
+{% foreach contexts as context %}
+<div class="context">
+	<p><b>{{context->file}}</b></p>
+	<pre><code>{{context->code|none}}</code></pre>
+</div>
+{% end %}
+
+<style>
+.context p {
+	margin-bottom: 5px;
+}
+.context pre {
+	border: 1px solid #ddd;
+	background: #fff;
+	color: #444;
+	border-radius: 3px;
+	padding: 3px;
+	overflow-x: scroll;
+}
+.line-number {
+	color: #999;
+}
+.trans-text {
+	font-weight: bold;
+	color: #396;
+}
+</style>
