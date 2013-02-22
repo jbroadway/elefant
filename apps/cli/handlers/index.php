@@ -36,6 +36,7 @@ Commands:
   crud-app <modelname> <fieldlist> Build the scaffolding for a CRUD app
   generate-password <length(8)>    Generate a random password
   encrypt-password <password>      Encrypt a password for the db
+  bundle-translations <appname>    Bundle translations into an app
   version                          Output the Elefant version number
   help                             Print this help output
 
