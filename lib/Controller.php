@@ -344,13 +344,13 @@ class Controller {
 	 * or externally from a browser request.
 	 */
 	public function handle ($handler, $internal = true, $data = array ()) {
-		// Note: We use three globals here. This may raise some flags in
+		// Note: We use four globals here. This may raise some flags in
 		// you as a developer, but hear me out. These are global singletons
 		// that the front controller creates for us, and I want to be able
 		// to use them in handlers directly without first instantiating them,
 		// through a `::getInstance()` call or otherwise. I know it's bad
 		// form in general, but this is *by design* to save typing in handlers
-		// and happens for these three objects only.
+		// and happens for these objects only.
 		//
 		// I also could have simply added them as properties of `$this`, but
 		// that would add typing too (e.g., `$this->view->render` vs
@@ -358,7 +358,7 @@ class Controller {
 		// deliberately making an ordinary script act like a controller, minus
 		// the class wrapping it. It's a stylistic decision, and if it's not
 		// your cup of tea, that's cool. It is mine, however :)
-		global $page, $tpl, $cache;
+		global $page, $tpl, $cache, $i18n;
 
 		// Check for a cached copy of this handler's output
 		$cache_uri = '_c_' . str_replace ('/', '_', $this->uri);
@@ -395,6 +395,9 @@ class Controller {
 			} catch (Exception $e) {
 				// Do nothing because self::$appconf[$this->app] is already set
 			}
+
+			// Load app-specific language files now too
+			$i18n->initApp ($this->app);
 		}
 		$appconf = self::$appconf[$this->app];
 
