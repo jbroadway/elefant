@@ -109,9 +109,9 @@
 								accept: '.draggable',
 								tolerance: 'pointer',
 								drop: function (event, ui) {
-									var type = event.srcElement.nodeName.toLowerCase (),
-										src = $(event.srcElement),
-										folder = $(event.target).data ('folder');
+									var type = ui.draggable[0].nodeName.toLowerCase (),
+										src = ui.draggable,
+										folder = $(this).data ('folder');
 
 									if (type === 'a' || type === 'img') {
 										src = src.parent ();

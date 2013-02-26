@@ -116,7 +116,7 @@ var filemanager = (function ($) {
 		}
 
 		$.get (
-			self.prefix + 'drop/' . opts.path
+			self.prefix + 'drop/' + opts.path
 				+ '?folder=' + encodeURIComponent (opts.folder),
 			callback
 		);
