@@ -266,34 +266,60 @@ class Controller {
 	 * Constructor method. Receives a list of hooks as well
 	 * as a Page and I18n object.
 	 */
-	public function __construct ($hooks = array (), $page, $i18n) {
+	public function __construct ($hooks = array ()) {
 		if (defined ('STDIN')) {
 			$this->cli = true;
 		}
-		$this->_page = $page;
-		$this->_i18n = $i18n;
 		self::$hooks = $hooks;
 	}
 
 	/**
-	 * Set the template object dependency.
+	 * Get or set the template object.
 	 */
-	public function template ($tpl) {
-		$this->_tpl = $tpl;
+	public function template ($tpl = false) {
+		if ($tpl) {
+			$this->_tpl = $tpl;
+		}
+		return $this->_tpl;
 	}
 
 	/**
-	 * Set the cache object dependency.
+	 * Get or set the cache object.
 	 */
-	public function cache ($cache) {
-		$this->_cache = $cache;
+	public function cache ($cache = false) {
+		if ($cache) {
+			$this->_cache = $cache;
+		}
+		return $this->_cache;
+	}
+
+	/**
+	 * Get or set the page object.
+	 */
+	public function page ($page = false) {
+		if ($page) {
+			$this->_page = $page;
+		}
+		return $this->_page;
+	}
+
+	/**
+	 * Get or set the i18n object.
+	 */
+	public function i18n ($i18n = false) {
+		if ($i18n) {
+			$this->_i18n = $i18n;
+		}
+		return $this->_i18n;
 	}
 
 	/**
 	 * Run an internal request from one handler to another.
 	 */
 	public function run ($uri, $data = array ()) {
-		$c = new Controller (conf ('Hooks'), $this->_page, $this->_i18n);
+		$c = new Controller (conf ('Hooks'));
+		$c->page ($this->_page);
+		$c->i18n ($this->_i18n);
 		$c->template ($this->_tpl);
 		$c->cache ($this->_cache);
 		$handler = $c->route ($uri);

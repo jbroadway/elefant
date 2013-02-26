@@ -14,8 +14,6 @@ $this->require_admin ();
 
 $page->layout = 'admin';
 
-global $i18n;
-
 $lang = $i18n->languages[$_GET['lang']];
 
 $page->title = i18n_get ('Language settings') . ': ' . $lang['name'];
@@ -38,7 +36,7 @@ echo $form->handle (function ($form) {
 		$lang = $_POST['code'];
 	}
 
-	global $i18n;
+	$i18n = $this->controller->i18n ();
 
 	if ($lang !== $_GET['lang']) {
 		// Language has changed ids

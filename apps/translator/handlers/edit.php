@@ -14,8 +14,6 @@ if (! file_exists ('lang/_index.php')) {
 
 $page->layout = 'admin';
 
-global $i18n;
-
 $lang = $this->params[0];
 
 $empty = (isset ($_GET['empty']) && $_GET['empty'] == 1) ? true : false;

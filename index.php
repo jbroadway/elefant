@@ -112,8 +112,10 @@ if (defined ('STDIN')) {
  */
 $i18n = new I18n ('lang', conf ('I18n'));
 $page = new Page;
-$controller = new Controller (conf ('Hooks'), $page, $i18n);
+$controller = new Controller (conf ('Hooks'));
 $tpl = new Template (conf ('General', 'charset'), $controller);
+$controller->page ($page);
+$controller->i18n ($i18n);
 $controller->template ($tpl);
 View::init ($tpl);
 

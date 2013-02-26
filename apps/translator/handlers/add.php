@@ -27,7 +27,7 @@ echo $form->handle (function ($form) {
 		$lang = $_POST['code'];
 	}
 
-	global $i18n;
+	$i18n = $this->controller->i18n ();
 
 	$i18n->languages[$lang] = array (
 		'name' => $_POST['name'],

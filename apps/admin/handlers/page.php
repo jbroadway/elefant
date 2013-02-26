@@ -13,7 +13,10 @@ $id = count ($this->params) ? $this->params[0] : 'index';
 // check if cached
 $res = $cache->get ('_admin_page_' . $id);
 if ($res) {
-	$page = (is_object ($res)) ? $res : unserialize ($res);
+	$pg = (is_object ($res)) ? $res : unserialize ($res);
+	foreach ($pg as $key => $value) {
+		$page->{$key} = $value;
+	}
 
 	// show admin edit buttons
 	if (User::is_valid () && User::is ('admin')) {

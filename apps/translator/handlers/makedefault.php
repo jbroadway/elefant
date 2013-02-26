@@ -6,8 +6,6 @@
 
 $this->require_admin ();
 
-global $i18n;
-
 require_once ('apps/translator/lib/Functions.php');
 
 if (isset ($i18n->languages[$_GET['lang']])) {
