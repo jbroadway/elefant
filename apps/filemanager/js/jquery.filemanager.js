@@ -190,9 +190,7 @@
 				$('#filemanager-dropzone').removeClass ('filemanager-over');
 
 				// Reset the upload progress bar
-				$('#filemanager-upload-progress-bar').css ('width', '5%');
-				$('#filemanager-upload-progress').css ({display: 'none'});
-				$('#filemanager-upload-form').show ();
+				hide_progress_bar ();
 
 				switch (err) {
 					case 'BrowserNotSupported':
@@ -230,17 +228,14 @@
 				filemanager._upload_total = len;
 
 				// Replace the upload field with a progress bar
-				$('#filemanager-upload-form').css ({display: 'none'});
-				$('#filemanager-upload-progress').css ({display: 'inline-block'});
+				show_progress_bar ();
 			},
 			uploadFinished: function (i, file, res, time) {
 				if (! res.success) {
 					alert (res.error);
 
 					// Reset the upload progress bar
-					$('#filemanager-upload-progress-bar').css ('width', '5%');
-					$('#filemanager-upload-progress').css ({display: 'none'});
-					$('#filemanager-upload-form').css ({display: 'inline-block'});
+					hide_progress_bar ();
 				
 				} else {
 					if (i === filemanager._upload_total - 1) {
@@ -251,9 +246,7 @@
 						$.filemanager ('ls', {file: filemanager.path});
 						
 						// Reset the upload progress bar
-						$('#filemanager-upload-progress-bar').css ('width', '5%');
-						$('#filemanager-upload-progress').css ({display: 'none'});
-						$('#filemanager-upload-form').css ({display: 'inline-block'});
+						hide_progress_bar ();
 					}
 				}
 			},
@@ -263,6 +256,21 @@
 			}
 		});
 	};
+
+	function show_progress_bar () {
+		$('#filemanager-upload-form').css ({display: 'none'});
+		$('#filemanager-upload-progress-bar').css ({display: 'inline-block'});
+		$('#filemanager-upload-progress-text').css ({display: 'inline-block'});
+		$('#filemanager-upload-progress').css ({display: 'inline-block'});
+	}
+
+	function hide_progress_bar () {
+		$('#filemanager-upload-progress-bar').css ('width', '5%');
+		$('#filemanager-upload-progress-bar').css ({display: 'none'});
+		$('#filemanager-upload-progress-text').css ({display: 'none'});
+		$('#filemanager-upload-progress').css ({display: 'none'});
+		$('#filemanager-upload-form').css ({display: 'inline-block'});
+	}
 
 	$.filemanager_prop = function (form) {
 		var file = form.elements.file.value,

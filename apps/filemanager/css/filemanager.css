@@ -46,10 +46,16 @@
 #filemanager-upload-progress {
 	display: none;
 	width: 450px;
+	height: 18px;
 	border: 1px solid #ddd;
+	position: relative;
 }
 
 #filemanager-upload-progress-bar {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
 	display: inline-block;
 	background-color: #ddd;
 	height: 18px;
@@ -58,7 +64,9 @@
 }
 
 #filemanager-upload-progress-text {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 2px;
 	z-index: 1;
-	margin-top: -24px;
-	margin-left: 2px;
 }
