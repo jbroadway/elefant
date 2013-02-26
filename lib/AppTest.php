@@ -161,9 +161,11 @@ class AppTest extends PHPUnit_Framework_TestCase {
 
 		$i18n = new I18n ('lang', array ('negotiation_method' => 'http'));
 		$page = new Page;
-		self::$c = new Controller ();
+		self::$c = new Controller (array (), $page, $i18n);
 		$tpl = new Template ('utf-8', self::$c);
 		$cache = Cache::init (array ());
+		self::$c->template ($tpl);
+		self::$c->cache ($cache);
 	}
 
 	/**
