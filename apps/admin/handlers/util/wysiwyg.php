@@ -27,8 +27,8 @@ $page->add_script ('/js/wysiwyg/plugins/wysiwyg.fileManager.js');
 $page->add_script ('/js/jquery.quickpager.js');
 $page->add_script ('/js/wysiwyg/plugins/wysiwyg.embed.js');
 $page->add_script ('/js/wysiwyg/plugins/wysiwyg.i18n.js');
-if (file_exists ('js/wysiwyg/i18n/lang.' . $GLOBALS['i18n']->language . '.js')) {
-	$page->add_script ('/js/wysiwyg/i18n/lang.' . $GLOBALS['i18n']->language . '.js');
+if (file_exists ('js/wysiwyg/i18n/lang.' . $i18n->language . '.js')) {
+	$page->add_script ('/js/wysiwyg/i18n/lang.' . $i18n->language . '.js');
 }
 
 $page->add_script ($tpl->render ('admin/wysiwyg', $data));

@@ -11,7 +11,7 @@ $url = isset ($data['to']) ? $data['to'] : $_GET['to'];
 if (User::is_valid () && User::is ('admin')) {
 	printf (
 		'<p>%s:</p><p><a href="%s">%s</a></p>',
-		i18n_get ('This page forwards visitors to the following link'),
+		__ ('This page forwards visitors to the following link'),
 		$url,
 		$url
 	);

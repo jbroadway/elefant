@@ -205,6 +205,21 @@ class I18n {
 	}
 
 	/**
+	 * Includes the language index for an app.
+	 */
+	public function initApp ($app) {
+		if ((! empty ($this->language)) && (file_exists ('apps/' . $app . '/lang/' . $this->language . '.php'))) {
+			include_once ('apps/' . $app . '/lang/' . $this->language . '.php');
+		}
+
+		foreach ($this->hash_order as $curlang) {
+			if (file_exists ('apps/' . $app . '/lang/' . $curlang . '.php')) {
+				include_once ('apps/' . $app . '/lang/' . $curlang . '.php');
+			}
+		}
+	}
+
+	/**
 	 * Takes a string, serializes it to generate a key, and performs
 	 * a key/value lookup on the `$lang_hash` array.  Returns the value found,
 	 * or the original string if not found.  This is the method used in I18n

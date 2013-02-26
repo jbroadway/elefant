@@ -23,7 +23,7 @@ foreach ($blocks as $k => $b) {
 	$blocks[$k]->locked = $lock->exists ('Block', $b->id);
 }
 
-$page->title = i18n_get ('Blocks');
+$page->title = __ ('Blocks');
 echo $tpl->render ('blocks/admin', array (
 	'limit' => $limit,
 	'total' => $count,

@@ -16,8 +16,8 @@ $o = new StdClass;
 
 if (isset ($_GET['path'])) {
 	if (! FileManager::verify_folder ($_GET['path'], $root)) {
-		$page->title = i18n_get ('Invalid Path');
-		echo '<p><a href="/filemanager">' . i18n_get ('Back') . '</a></p>';
+		$page->title = __ ('Invalid Path');
+		echo '<p><a href="/filemanager">' . __ ('Back') . '</a></p>';
 		return;
 	}
 	$o->path = trim ($_GET['path'], '/');
@@ -33,13 +33,13 @@ if (isset ($_GET['path'])) {
 		$o->parts[$part] = $joined;
 		$o->lastpath = $part;
 	}
-	$page->window_title = i18n_get ('Files') . '/' . $o->path;
+	$page->window_title = __ ('Files') . '/' . $o->path;
 } else {
 	$o->path = '';
 	$o->fullpath = $root;
 	$o->parts = array ();
 	$o->lastpath = '';
-	$page->window_title = i18n_get ('Files');
+	$page->window_title = __ ('Files');
 }
 
 if ($appconf['General']['aviary_key']) {

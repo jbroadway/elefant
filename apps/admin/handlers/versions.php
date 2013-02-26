@@ -39,12 +39,12 @@ if (isset ($_GET['type'])) {
 function admin_filter_user_name ($id) {
 	$u = new User ($id);
 	if ($u->error) {
-		return i18n_get ('Nobody');
+		return __ ('Nobody');
 	}
 	return $u->name;
 }
 
-$page->title = i18n_get ('Versions of') . ' ' . Template::sanitize ($_GET['type']);
+$page->title = __ ('Versions of') . ' ' . Template::sanitize ($_GET['type']);
 if (! empty ($_GET['id'])) {
 	$page->title .= ' / ' . Template::sanitize ($_GET['id']);
 }

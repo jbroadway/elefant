@@ -8,7 +8,7 @@ $page->layout = 'admin';
 
 $this->require_admin ();
 
-$page->title = i18n_get ('Install App/Theme');
+$page->title = __ ('Install App/Theme');
 
 require_once ('apps/designer/lib/Functions.php');
 
@@ -16,7 +16,8 @@ $form = new Form ('post', $this);
 $page->installer_error = false;
 
 echo $form->handle (function ($form) {
-	global $page, $tpl;
+	$page = $this->controller->page ();
+	$tpl = $this->controller->template ();
 
 	if (! empty ($_POST['github'])) {
 		if (github_is_zip ($_POST['github'])) {
@@ -42,7 +43,7 @@ echo $form->handle (function ($form) {
 
 			// Zip successfully installed
 			ZipInstaller::clean ();
-			$page->title = i18n_get ('Install completed');
+			$page->title = __ ('Install completed');
 			echo $tpl->render ('designer/installed', $res);
 		} else {
 			// Import from Github
@@ -54,7 +55,7 @@ echo $form->handle (function ($form) {
 			}
 	
 			// App/theme successfully installed
-			$page->title = i18n_get ('Install completed');
+			$page->title = __ ('Install completed');
 			echo $tpl->render ('designer/installed', $res);
 		}
 	} elseif (is_uploaded_file ($_FILES['zipfile']['tmp_name'])) {
@@ -71,7 +72,7 @@ echo $form->handle (function ($form) {
 
 		// Zip successfully installed
 		ZipInstaller::clean ();
-		$page->title = i18n_get ('Install completed');
+		$page->title = __ ('Install completed');
 		echo $tpl->render ('designer/installed', $res);
 	} else {
 		$form->failed = array ('other');

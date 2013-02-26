@@ -193,7 +193,7 @@
  *
  * This will be replaced with a call to:
  *
- *     i18n_get('Text here')
+ *     __ ('Text here')
  */
 class Template {
 	/**
@@ -525,7 +525,7 @@ class Template {
 	}
 
 	/**
-	 * Replace strings with calls to `i18n_get()` for multilingual sites.
+	 * Replace strings with calls to `__ ()` for multilingual sites.
 	 * Translatable strings take the following form using either double
 	 * or single quotes:
 	 *
@@ -533,7 +533,7 @@ class Template {
 	 *     {' some text here '}
 	 */
 	public function replace_strings ($val) {
-		return '<?php echo i18n_get (\'' . str_replace ('\'', '\\\'', $val) . '\'); ?>';
+		return '<?php echo __ (\'' . str_replace ('\'', '\\\'', $val) . '\'); ?>';
 	}
 
 	/**

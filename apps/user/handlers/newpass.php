@@ -24,18 +24,18 @@ if ($data['recover'] == $_GET['recover'] && $data['recover_expires'] > time () +
 		$_POST['username'] = $u->email;
 		User::require_login ();
 
-		$page->title = i18n_get ('Password updated');
-		echo '<p><a href="/user">' . i18n_get ('Continue') . '</a></p>';
+		$page->title = __ ('Password updated');
+		echo '<p><a href="/user">' . __ ('Continue') . '</a></p>';
 	} else {
 		$u = new StdClass;
 		$u = $f->merge_values ($u);
 		$u->failed = $f->failed;
-		$page->title = i18n_get ('Choose a new password');
+		$page->title = __ ('Choose a new password');
 		echo $tpl->render ('user/newpass', $u);
 	}
 } else {
-	$page->title = i18n_get ('Invalid or expired recovery link');
-	echo '<p><a href="/">' . i18n_get ('Continue') . '</a></p>';
+	$page->title = __ ('Invalid or expired recovery link');
+	echo '<p><a href="/">' . __ ('Continue') . '</a></p>';
 }
 
 ?>

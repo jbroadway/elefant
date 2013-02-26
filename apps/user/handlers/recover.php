@@ -19,7 +19,7 @@ if ($f->submit ()) {
 	try {
 		Mailer::send (array (
 			'to' => array ($u->email, $u->name),
-			'subject' => i18n_get ('Password recovery'),
+			'subject' => __ ('Password recovery'),
 			'text' => $tpl->render ('user/email/recover', array (
 				'recover' => $data['recover'],
 				'email' => $u->email,
@@ -28,20 +28,20 @@ if ($f->submit ()) {
 		));
 	} catch (Exception $e) {
 		@error_log ('Email failed (user/recover): ' . $_POST['email']);
-		$page->title = i18n_get ('An Error Occurred');
-		echo '<p>' . i18n_get ('Please try again later.') . '</p>';
-		echo '<p><a href="/">' . i18n_get ('Back') . '</a></p>';
+		$page->title = __ ('An Error Occurred');
+		echo '<p>' . __ ('Please try again later.') . '</p>';
+		echo '<p><a href="/">' . __ ('Back') . '</a></p>';
 		return;
 	}
 
-	$page->title = i18n_get ('Check your inbox');
-	echo '<p>' . i18n_get ('An email has been sent with a link to reset your password.') . '</p>';
+	$page->title = __ ('Check your inbox');
+	echo '<p>' . __ ('An email has been sent with a link to reset your password.') . '</p>';
 } else {
 	$u = new StdClass;
 	$u->email = '';
 	$u = $f->merge_values ($u);
 	$u->failed = $f->failed;
-	$page->title = i18n_get ('Forgot your password?');
+	$page->title = __ ('Forgot your password?');
 	echo $tpl->render ('user/recover', $u);
 }
 

@@ -6,7 +6,7 @@
 
 if ($appconf['Custom Handlers']['blog/index'] != 'blog/index') {
 	if (! $appconf['Custom Handlers']['blog/index']) {
-		echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));
+		echo $this->error (404, __ ('Not found'), __ ('The page you requested could not be found.'));
 		return;
 	}
 	$extra = (count ($this->params) > 0) ? '/' . $this->params[0] : '';
@@ -30,13 +30,13 @@ $page->more = ($page->count > $page->last) ? true : false;
 $page->next = $page->num + 2;
 
 if (! is_array ($posts) || count ($posts) === 0) {
-	echo '<p>' . i18n_get ('No posts yet... :(') . '</p>';
+	echo '<p>' . __ ('No posts yet... :(') . '</p>';
 	if (User::require_admin ()) {
-		echo '<p><a href="/blog/add">' . i18n_get ('Add Blog Post') . '</a></p>';
+		echo '<p><a href="/blog/add">' . __ ('Add Blog Post') . '</a></p>';
 	}
 } else {
 	if (User::require_admin ()) {
-		echo '<p><a href="/blog/add">' . i18n_get ('Add Blog Post') . '</a></p>';
+		echo '<p><a href="/blog/add">' . __ ('Add Blog Post') . '</a></p>';
 	}
 
 	foreach ($posts as $post) {

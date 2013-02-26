@@ -5,7 +5,7 @@
  */
 
 if (! $appconf['Custom Handlers']['user/signup']) {
-	echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));
+	echo $this->error (404, __ ('Not found'), __ ('The page you requested could not be found.'));
 	return;
 }
 
@@ -39,12 +39,12 @@ if ($f->submit ()) {
 	@error_log ('Error creating profile: ' . $u->error);
 	$page->title = 'An Error Occurred';
 	echo '<p>Please try again later.</p>';
-	echo '<p><a href="/">' . i18n_get ('Back') . '</a></p>';
+	echo '<p><a href="/">' . __ ('Back') . '</a></p>';
 } else {
 	$u = new User;
 	$u = $f->merge_values ($u);
 	$u->failed = $f->failed;
-	$page->title = i18n_get ('New User');
+	$page->title = __ ('New User');
 	echo $tpl->render ('user/login/newuser', $u);
 }
 

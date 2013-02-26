@@ -14,8 +14,6 @@ if (! file_exists ('lang/_index.php')) {
 
 $page->layout = 'admin';
 
-global $i18n;
-
 $lang = $this->params[0];
 
 $empty = (isset ($_GET['empty']) && $_GET['empty'] == 1) ? true : false;
@@ -25,7 +23,7 @@ if (! $empty) {
 
 $info = $i18n->languages[$lang];
 
-$page->title = i18n_get ('Editing language') . ': ' . $info['name'];
+$page->title = __ ('Editing language') . ': ' . $info['name'];
 
 $all = unserialize (file_get_contents ('lang/_index.php'));
 $sources = Translator::get_sources ($all);

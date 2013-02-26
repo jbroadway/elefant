@@ -9,7 +9,7 @@ if (! User::require_admin ()) {
 	$this->redirect ('/admin');
 }
 
-$page->title = i18n_get ('Navigation');
+$page->title = __ ('Navigation');
 $page->layout = 'admin';
 
 $page->add_script ('<script src="/apps/navigation/js/tree-drag-drop/jquery-ui-1.9.1.custom.min.js"></script>', 'tail');

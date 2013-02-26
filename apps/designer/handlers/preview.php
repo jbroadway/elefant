@@ -6,7 +6,7 @@
 
 $this->require_admin ();
 
-$page->title = i18n_get ('Page title');
+$page->title = __ ('Page title');
 $page->preview = true;
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -21,6 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$page->layout = $_POST['layout'];
 }
 
-echo '<p>' . i18n_get ('This is a preview of how your layout will look.') . '</p>';
+echo '<p>' . __ ('This is a preview of how your layout will look.') . '</p>';
 
 ?>

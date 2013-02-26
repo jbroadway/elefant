@@ -164,6 +164,10 @@ class AppTest extends PHPUnit_Framework_TestCase {
 		self::$c = new Controller ();
 		$tpl = new Template ('utf-8', self::$c);
 		$cache = Cache::init (array ());
+		self::$c->template ($tpl);
+		self::$c->cache ($cache);
+		self::$c->page ($page);
+		self::$c->i18n ($i18n);
 	}
 
 	/**

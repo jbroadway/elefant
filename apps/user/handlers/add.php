@@ -24,12 +24,12 @@ if ($f->submit ()) {
 	$u->put ();
 	Versions::add ($u);
 	if (! $u->error) {
-		$this->add_notification (i18n_get ('User added.'));
+		$this->add_notification (__ ('User added.'));
 		$this->hook ('user/add', $_POST);
 		$this->redirect ('/user/admin');
 	}
-	$page->title = i18n_get ('An Error Occurred');
-	echo i18n_get ('Error Message') . ': ' . $u->error;
+	$page->title = __ ('An Error Occurred');
+	echo __ ('Error Message') . ': ' . $u->error;
 } else {
 	$u = new User;
 	$u->type = 'admin';
@@ -37,7 +37,7 @@ if ($f->submit ()) {
 
 	$u->failed = $f->failed;
 	$u = $f->merge_values ($u);
-	$page->title = i18n_get ('Add User');
+	$page->title = __ ('Add User');
 	echo $tpl->render ('user/add', $u);
 }
 

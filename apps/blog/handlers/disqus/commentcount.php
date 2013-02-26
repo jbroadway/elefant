@@ -15,7 +15,7 @@ printf (
 	'<a href="%s#disqus_thread" data-disqus-identifier="%s">%s</a>',
 	$data['url'],
 	$data['id'],
-	i18n_get ('comments')
+	__ ('comments')
 );
 
 ?>

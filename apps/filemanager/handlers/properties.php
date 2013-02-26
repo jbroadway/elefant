@@ -11,7 +11,7 @@ header ('Content-Type: application/json');
 $file = urldecode (join ('/', $this->params));
 
 $out = array (
-	'title' => i18n_get ('Properties'),
+	'title' => __ ('Properties'),
 	'body' => $tpl->render (
 		'filemanager/properties',
 		array (

@@ -21,12 +21,12 @@ class GithubInstaller extends Installer {
 			if ($item->path === 'elefant.json') {
 				$data = $github->get ($item);
 				if (! $data) {
-					self::$error = i18n_get ('Unable to fetch configuration file.');
+					self::$error = __ ('Unable to fetch configuration file.');
 					return false;
 				}
 				$conf = json_decode ($data);
 				if (! $conf) {
-					self::$error = i18n_get ('Verification failed: Invalid configuration file.');
+					self::$error = __ ('Verification failed: Invalid configuration file.');
 					return false;
 				}
 				if (! self::verify ($conf)) {
@@ -38,7 +38,7 @@ class GithubInstaller extends Installer {
 			}
 		}
 		if (! $found) {
-			self::$error = i18n_get ('Configuration file not found.');
+			self::$error = __ ('Configuration file not found.');
 			return false;
 		}
 
@@ -46,13 +46,13 @@ class GithubInstaller extends Installer {
 		if ($conf->type === 'app') {
 			$dest = 'apps/' . $conf->folder;
 			if (! mkdir ($dest)) {
-				self::$error = i18n_get ('Unable to write to apps folder.');
+				self::$error = __ ('Unable to write to apps folder.');
 				return false;
 			}
 		} else {
 			$dest = 'layouts/' . $conf->folder;
 			if (! mkdir ($dest)) {
-				self::$error = i18n_get ('Unable to write to layouts folder.');
+				self::$error = __ ('Unable to write to layouts folder.');
 				return false;
 			}
 		}
@@ -67,7 +67,7 @@ class GithubInstaller extends Installer {
 			} else {
 				$data = $github->get ($item);
 				if ($data === false) {
-					self::$error = i18n_get ('Unable to fetch file') . ' ' . $item->path;
+					self::$error = __ ('Unable to fetch file') . ' ' . $item->path;
 					rmdir_recursive ($dest);
 					return false;
 				}

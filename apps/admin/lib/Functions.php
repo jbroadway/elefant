@@ -75,11 +75,11 @@ function admin_status_codes () {
 	return array (
 		(object) array (
 			'key' => 301,
-			'value' => i18n_get ('Permanent (best for SEO)')
+			'value' => __ ('Permanent (best for SEO)')
 		),
 		(object) array (
 			'key' => 302,
-			'value' => i18n_get ('Temporary')
+			'value' => __ ('Temporary')
 		)
 	);
 }
@@ -93,7 +93,7 @@ function admin_user_groups () {
 	foreach ($list as $access) {
 		$out[] = (object) array (
 			'key' => $access,
-			'value' => i18n_get (ucfirst ($access))
+			'value' => __ (ucfirst ($access))
 		);
 	}
 	return $out;
