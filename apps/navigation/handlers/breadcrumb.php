@@ -28,7 +28,7 @@
 
 $n = new Navigation;
 $path = $n->path ($page->id, true);
-$home = array ('index' => i18n_get ('Home'));
+$home = array ('index' => __ ('Home'));
 $path = ($path) ? $path : $home;
 if (! in_array ('index', array_keys ($path))) {
 	$path = array_merge ($home, $path);

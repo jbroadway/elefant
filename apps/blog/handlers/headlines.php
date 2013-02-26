@@ -6,7 +6,7 @@
 
 if (! $this->internal) {
 	$page->layout = $appconf['Blog']['layout'];
-	$page->title = i18n_get ('Latest Posts');
+	$page->title = __ ('Latest Posts');
 }
 
 require_once ('apps/blog/lib/Filters.php');

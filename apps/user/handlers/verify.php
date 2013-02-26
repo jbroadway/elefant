@@ -15,11 +15,11 @@ if ($row && isset ($data->verifier) && $data->verifier == $_GET['verifier']) {
 	$row->userdata = $data;
 	$row->put ();
 
-	$page->title = i18n_get ('Account Verified');
-	echo '<p><a href="/user">' . i18n_get ('Continue') . '</a></p>';
+	$page->title = __ ('Account Verified');
+	echo '<p><a href="/user">' . __ ('Continue') . '</a></p>';
 } else {
-	$page->title = i18n_get ('Invalid Verifier');
-	echo '<p><a href="/">' . i18n_get ('Continue') . '</a></p>';
+	$page->title = __ ('Invalid Verifier');
+	echo '<p><a href="/">' . __ ('Continue') . '</a></p>';
 }
 
 ?>

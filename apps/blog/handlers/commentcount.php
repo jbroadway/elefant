@@ -13,7 +13,7 @@ switch ($appconf['Blog']['comments']) {
 			'<a href="%s">%s %s</a>',
 			$data['url'],
 			$this->run ('social/facebook/commentcount', $data),
-			i18n_get ('comments')
+			__ ('comments')
 		);
 		break;
 }

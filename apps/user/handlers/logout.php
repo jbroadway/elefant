@@ -7,7 +7,7 @@
 
 if ($appconf['Custom Handlers']['user/logout'] != 'user/logout') {
 	if (! $appconf['Custom Handlers']['user/logout']) {
-		echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));
+		echo $this->error (404, __ ('Not found'), __ ('The page you requested could not be found.'));
 		return;
 	}
 	echo $this->run ($appconf['Custom Handlers']['user/logout'], $data);

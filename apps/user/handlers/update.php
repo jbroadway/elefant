@@ -6,7 +6,7 @@
 
 if ($appconf['Custom Handlers']['user/update'] != 'user/update') {
 	if (! $appconf['Custom Handlers']['user/update']) {
-		echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));
+		echo $this->error (404, __ ('Not found'), __ ('The page you requested could not be found.'));
 		return;
 	}
 	echo $this->run ($appconf['Custom Handlers']['user/update'], $data);
@@ -14,7 +14,7 @@ if ($appconf['Custom Handlers']['user/update'] != 'user/update') {
 }
 
 if (! User::require_login ()) {
-	$page->title = i18n_get ('Members');
+	$page->title = __ ('Members');
 	echo $this->run ('user/login');
 	return;
 }
@@ -31,19 +31,19 @@ if ($f->submit ()) {
 	$u->put ();
 	Versions::add ($u);
 	if (! $u->error) {
-		$page->title = i18n_get ('Profile Updated');
-		echo '<p><a href="/user">' . i18n_get ('Continue') . '</a></p>';
+		$page->title = __ ('Profile Updated');
+		echo '<p><a href="/user">' . __ ('Continue') . '</a></p>';
 		return;
 	}
 	@error_log ('Error updating profile (#' . $u->id . '): ' . $u->error);
-	$page->title = i18n_get ('An Error Occurred');
-	echo '<p>' . i18n_get ('Please try again later.') . '</p>';
-	echo '<p><a href="/user">' . i18n_get ('Back') . '</a></p>';
+	$page->title = __ ('An Error Occurred');
+	echo '<p>' . __ ('Please try again later.') . '</p>';
+	echo '<p><a href="/user">' . __ ('Back') . '</a></p>';
 } else {
 	$u->password = '';
 	$u = $f->merge_values ($u);
 	$u->failed = $f->failed;
-	$page->title = i18n_get ('Update Profile');
+	$page->title = __ ('Update Profile');
 	echo $tpl->render ('user/update', $u);
 }
 

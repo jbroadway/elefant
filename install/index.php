@@ -101,17 +101,17 @@ switch ($_GET['step']) {
 		$apache = ($_SERVER['SERVER_SOFTWARE'] == 'Apache') ? true : (strpos (php_sapi_name (), 'apache') === 0) ? true : false;
 		$data = array (
 			'req' => array (
-				i18n_get ('PHP version must be 5.3+') => PHP_VERSION > '5.3',
-				i18n_get ('.htaccess file is missing from the site root. Please save the following file to your server:') . '</p><p><a href="https://raw.github.com/jbroadway/elefant/master/.htaccess" target="_blank">https://raw.github.com/jbroadway/elefant/master/.htaccess</a>' => (! $apache || ($apache && @file_exists ('../.htaccess'))),
-				i18n_get ('apps folder is not writeable. Please run:</p><p><tt>chmod 775 apps</tt>') => is_writeable ('../apps'),
-				i18n_get ('cache folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>') => is_writeable ('../cache'),
-				i18n_get ('conf folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>') => is_writeable ('../conf'),
-				i18n_get ('css folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>') => is_writeable ('../css'),
-				i18n_get ('files folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>') => is_writeable ('../files'),
-				i18n_get ('lang folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>') => is_writeable ('../lang'),
-				i18n_get ('layouts folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>') => is_writeable ('../layouts'),
-				i18n_get ('PHP PDO extension is missing.') => extension_loaded ('pdo'),
-				i18n_get ('Apache mod_rewrite extension must be installed.') => (php_sapi_name () != 'apache2handler' || ! function_exists ('apache_get_modules') || in_array ('mod_rewrite', apache_get_modules ()))
+				__ ('PHP version must be 5.3+') => PHP_VERSION > '5.3',
+				__ ('.htaccess file is missing from the site root. Please save the following file to your server:') . '</p><p><a href="https://raw.github.com/jbroadway/elefant/master/.htaccess" target="_blank">https://raw.github.com/jbroadway/elefant/master/.htaccess</a>' => (! $apache || ($apache && @file_exists ('../.htaccess'))),
+				__ ('apps folder is not writeable. Please run:</p><p><tt>chmod 775 apps</tt>') => is_writeable ('../apps'),
+				__ ('cache folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>') => is_writeable ('../cache'),
+				__ ('conf folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>') => is_writeable ('../conf'),
+				__ ('css folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>') => is_writeable ('../css'),
+				__ ('files folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>') => is_writeable ('../files'),
+				__ ('lang folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>') => is_writeable ('../lang'),
+				__ ('layouts folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>') => is_writeable ('../layouts'),
+				__ ('PHP PDO extension is missing.') => extension_loaded ('pdo'),
+				__ ('Apache mod_rewrite extension must be installed.') => (php_sapi_name () != 'apache2handler' || ! function_exists ('apache_get_modules') || in_array ('mod_rewrite', apache_get_modules ()))
 			),
 			'passed' => 0
 		);
@@ -162,7 +162,7 @@ switch ($_GET['step']) {
 					$dbinfo = $tpl->render ('dbinfo', $_POST);
 					$config = preg_replace ('/\[Database\].*\[Mongo\]/s', $dbinfo, $config);
 					if (! file_put_contents ('../conf/config.php', $config)) {
-						$data['error'] = i18n_get ('Failed to write to conf/config.php');
+						$data['error'] = __ ('Failed to write to conf/config.php');
 					} else {
 						$data['ready'] = true;
 					}
@@ -190,7 +190,7 @@ switch ($_GET['step']) {
 			$config = preg_replace ('/site_name = .*/', 'site_name = "' . $_POST['site_name'] . '"', $config, 1);
 			$config = preg_replace ('/email_from = .*/', 'email_from = "' . $_POST['email_from'] . '"', $config, 1);
 			if (! file_put_contents ('../conf/config.php', $config)) {
-				$data['error'] = i18n_get ('Failed to write to conf/config.php');
+				$data['error'] = __ ('Failed to write to conf/config.php');
 			} else {
 				// create the admin user now
 				$conf = parse_ini_file ('../conf/config.php', true);

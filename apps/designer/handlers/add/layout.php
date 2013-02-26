@@ -14,14 +14,14 @@ $f = new Form ('post', 'designer/addlayout');
 $f->verify_csrf = false;
 if ($f->submit ()) {
 	if (@file_put_contents ('layouts/' . $_POST['name'] . '.html', $_POST['body'])) {
-		$this->add_notification (i18n_get ('Layout added.'));
+		$this->add_notification (__ ('Layout added.'));
 		@chmod ('layouts/' . $_POST['name'] . '.html', 0666);
 		$this->redirect ('/designer');
 	}
-	$page->title = i18n_get ('Saving Layout Failed');
-	echo '<p>' . i18n_get ('Check that your permissions are correct and try again.') . '</p>';
+	$page->title = __ ('Saving Layout Failed');
+	echo '<p>' . __ ('Check that your permissions are correct and try again.') . '</p>';
 } else {
-	$page->window_title = i18n_get ('New Layout');
+	$page->window_title = __ ('New Layout');
 }
 
 $o = new StdClass;

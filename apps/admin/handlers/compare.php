@@ -32,7 +32,7 @@ foreach ((array) $cur->orig () as $key => $value) {
 	);
 }
 
-$page->title = i18n_get ('Comparing') . ' ' . $ver->class . ' / ' . $ver->pkey;
+$page->title = __ ('Comparing') . ' ' . $ver->class . ' / ' . $ver->pkey;
 
 echo $tpl->render ('admin/compare', array (
 	'fields' => $data,

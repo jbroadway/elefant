@@ -7,7 +7,7 @@
 $this->require_admin ();
 
 $page->layout = 'admin';
-$page->title = i18n_get ('All Pages');
+$page->title = __ ('All Pages');
 
 $limit = 20;
 $num = isset ($_GET['offset']) ? $_GET['offset'] : 1;

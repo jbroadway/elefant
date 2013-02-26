@@ -16,7 +16,7 @@ if (! preg_match ('/^(css|layouts|layouts\/[a-z0-9_-]+)\/[a-z0-9_-]+\.css$/i', $
 
 $lock = new Lock ('Designer', $_GET['file']);
 if ($lock->exists ()) {
-	$page->title = i18n_get ('Editing Locked');
+	$page->title = __ ('Editing Locked');
 	echo $tpl->render ('admin/locked', $lock->info ());
 	return;
 } else {
@@ -27,17 +27,17 @@ $f = new Form ('post', 'designer/editstylesheet');
 $f->verify_csrf = false;
 if ($f->submit ()) {
 	if (@file_put_contents ($_GET['file'], $_POST['body'])) {
-		$this->add_notification (i18n_get ('Stylesheet saved.'));
+		$this->add_notification (__ ('Stylesheet saved.'));
 		try {
 			@chmod ($_GET['file'], 0666);
 		} catch (Exception $e) {}
 		$lock->remove ();
 		$this->redirect ('/designer');
 	}
-	$page->title = i18n_get ('Saving Stylesheet Failed');
-	echo '<p>' . i18n_get ('Check that your permissions are correct and try again.') . '</p>';
+	$page->title = __ ('Saving Stylesheet Failed');
+	echo '<p>' . __ ('Check that your permissions are correct and try again.') . '</p>';
 } else {
-	$page->title = i18n_get ('Edit Stylesheet') . ': ' . $_GET['file'];
+	$page->title = __ ('Edit Stylesheet') . ': ' . $_GET['file'];
 }
 
 $o = new StdClass;

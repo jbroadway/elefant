@@ -19,13 +19,13 @@ if ($f->submit ()) {
 	$wp->put ();
 	Versions::add ($wp);
 	if (! $wp->error) {
-		$this->add_notification (i18n_get ('Page created.'));
+		$this->add_notification (__ ('Page created.'));
 		$_POST['page'] = $_POST['id'];
 		$this->hook ('admin/add', $_POST);
 		$this->redirect ('/' . $_POST['id']);
 	}
-	$page->title = i18n_get ('An Error Occurred');
-	echo i18n_get ('Error Message') . ': ' . $wp->error;
+	$page->title = __ ('An Error Occurred');
+	echo __ ('Error Message') . ': ' . $wp->error;
 } else {
 	$pg = new Page;
 	$pg->layout = 'default';
@@ -33,7 +33,7 @@ if ($f->submit ()) {
 	$pg->layouts = admin_get_layouts ();
 	$pg->failed = $f->failed;
 	$pg = $f->merge_values ($pg);
-	$page->title = i18n_get ('Add Page');
+	$page->title = __ ('Add Page');
 	$this->run ('admin/util/wysiwyg');
 	echo $tpl->render ('admin/add/head', $pg);
 	echo $tpl->render ('admin/add', $pg);

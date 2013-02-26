@@ -17,7 +17,7 @@ $users = User::query ('id, name, email, type')
 	->fetch_orig ($limit, $offset);
 $count = User::query ()->count ();
 
-$page->title = i18n_get ('Users');
+$page->title = __ ('Users');
 echo $tpl->render ('user/admin', array (
 	'limit' => $limit,
 	'total' => $count,

@@ -31,7 +31,7 @@ foreach ($posts as $post) {
 	echo $tpl->render ('blog/post', $post);
 }
 
-$page->title = i18n_getf ('Tagged: %s', $tpl->sanitize ($page->tag));
+$page->title = __ ('Tagged: %s', $tpl->sanitize ($page->tag));
 
 $page->add_script (sprintf (
 	'<link rel="alternate" type="application/rss+xml" href="http://%s/blog/rss" />',

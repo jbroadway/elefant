@@ -14,14 +14,14 @@ $f = new Form ('post', 'designer/addstylesheet');
 $f->verify_csrf = false;
 if ($f->submit ()) {
 	if (@file_put_contents ('css/' . $_POST['name'] . '.css', $_POST['body'])) {
-		$this->add_notification (i18n_get ('Stylesheet added.'));
+		$this->add_notification (__ ('Stylesheet added.'));
 		@chmod ('layouts/' . $_POST['name'] . '.html', 0666);
 		$this->redirect ('/designer');
 	}
-	$page->title = i18n_get ('Saving Stylesheet Failed');
-	echo '<p>' . i18n_get ('Check that your permissions are correct and try again.') . '</p>';
+	$page->title = __ ('Saving Stylesheet Failed');
+	echo '<p>' . __ ('Check that your permissions are correct and try again.') . '</p>';
 } else {
-	$page->window_title = i18n_get ('New Stylesheet');
+	$page->window_title = __ ('New Stylesheet');
 }
 
 $o = new StdClass;

@@ -6,7 +6,7 @@
 
 if (! $this->internal) {
 	$page->layout = $appconf['Blog']['layout'];
-	$page->title = i18n_get ('Tags');
+	$page->title = __ ('Tags');
 }
 
 $pg = new stdClass;

@@ -17,24 +17,24 @@ if ($f->submit ()) {
 	$b->put ();
 	Versions::add ($b);
 	if (! $b->error) {
-		$this->add_notification ('Block added.');
+		$this->add_notification (__ ('Block added.'));
 		$this->hook ('blocks/add', $_POST);
 		if (isset ($_GET['return'])) {
 			$this->redirect ($_GET['return']);
 		}
 		$this->redirect ('/blocks/admin');
 	}
-	$page->title = i18n_get ('An Error Occurred');
-	echo i18n_get ('Error Message') . ': ' . $b->error;
+	$page->title = __ ('An Error Occurred');
+	echo __ ('Error Message') . ': ' . $b->error;
 } else {
 	$b = new Block;
 	$b->id = $_GET['id'];
 	$b->access = 'public';
-	$b->yes_no = array ('yes' => i18n_get ('Yes'), 'no' => i18n_get ('No'));
+	$b->yes_no = array ('yes' => __ ('Yes'), 'no' => __ ('No'));
 
 	$b->failed = $f->failed;
 	$b = $f->merge_values ($b);
-	$page->title = i18n_get ('Add Block');
+	$page->title = __ ('Add Block');
 	$this->run ('admin/util/wysiwyg');
 	echo $tpl->render ('blocks/add/head', $b);
 	echo $tpl->render ('blocks/add', $b);

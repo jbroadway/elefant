@@ -5,12 +5,12 @@ $page->layout = 'admin';
 $this->require_admin ();
 
 if ($this->installed ('user', $appconf['Admin']['version']) === true) {
-	$page->title = i18n_get ('Upgrade completed');
-	echo '<p><a href="/user/admin">' . i18n_get ('Continue') . '</a></p>';
+	$page->title = __ ('Upgrade completed');
+	echo '<p><a href="/user/admin">' . __ ('Continue') . '</a></p>';
 	return;
 }
 
-$page->title = i18n_get ('Upgrading User App');
+$page->title = __ ('Upgrading User App');
 
 $db = DB::get_connection (1);
 $dbtype = $db->getAttribute (PDO::ATTR_DRIVER_NAME);
@@ -45,7 +45,7 @@ switch ($dbtype) {
 		break;
 }
 
-echo '<p>' . i18n_get ('Done.') . '</p>';
+echo '<p>' . __ ('Done.') . '</p>';
 
 $this->mark_installed ('user', $appconf['Admin']['version']);
 

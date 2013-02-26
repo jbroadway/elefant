@@ -813,7 +813,7 @@ class Controller {
 	 * should be performed.
 	 */
 	public function installed ($app, $version) {
-		$v = db_shift ('select version from #prefix#apps where name = ?', $app);
+		$v = DB::shift ('select version from #prefix#apps where name = ?', $app);
 		if (! $v) {
 			return false;
 		}
@@ -827,11 +827,11 @@ class Controller {
 	 * Mark an app and version as installed.
 	 */
 	public function mark_installed ($app, $version) {
-		$v = db_shift ('select version from #prefix#apps where name = ?', $app);
+		$v = DB::shift ('select version from #prefix#apps where name = ?', $app);
 		if ($v) {
-			return db_execute ('update #prefix#apps set version = ? where name = ?', $version, $app);
+			return DB::execute ('update #prefix#apps set version = ? where name = ?', $version, $app);
 		}
-		return db_execute ('insert into #prefix#apps (name, version) values (?, ?)', $app, $version);
+		return DB::execute ('insert into #prefix#apps (name, version) values (?, ?)', $app, $version);
 	}
 }
 

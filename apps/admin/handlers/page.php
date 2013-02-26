@@ -35,19 +35,19 @@ $wp = new Webpage ($id);
 
 // page not found
 if ($wp->error) {
-	echo $this->error (404, i18n_get ('Page not found'), '<p>' . i18n_get ('Hmm, we can\'t seem to find the page you wanted at the moment.') . '</p>');
+	echo $this->error (404, __ ('Page not found'), '<p>' . __ ('Hmm, we can\'t seem to find the page you wanted at the moment.') . '</p>');
 	return;
 }
 
 // access control
 if ($wp->access !== 'public' && ! User::is ('admin')) {
 	if (! User::require_login ()) {
-		$page->title = i18n_get ('Login required');
+		$page->title = __ ('Login required');
 		echo $this->run ('user/login');
 		return;
 	}
 	if (! User::access ($wp->access)) {
-		$page->title = i18n_get ('Login required');
+		$page->title = __ ('Login required');
 		echo $this->run ('user/login');
 		return;
 	}

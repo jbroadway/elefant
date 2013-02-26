@@ -16,7 +16,7 @@ $page->layout = 'admin';
 
 $lang = $i18n->languages[$_GET['lang']];
 
-$page->title = i18n_get ('Language settings') . ': ' . $lang['name'];
+$page->title = __ ('Language settings') . ': ' . $lang['name'];
 
 $form = new Form ('post', $this);
 
@@ -65,7 +65,7 @@ echo $form->handle (function ($form) {
 		return false;
 	}
 
-	$form->controller->add_notification (i18n_get ('Language updated.'));
+	$form->controller->add_notification (__ ('Language updated.'));
 	$form->controller->redirect ('/translator/index');
 });
 

@@ -13,7 +13,7 @@ class ZipInstaller extends Installer {
 		try {
 			Zipper::unzip ($source['tmp_name']);
 		} catch (Exception $e) {
-			self::$error = i18n_get ('Could not unzip the file.');
+			self::$error = __ ('Could not unzip the file.');
 			return false;
 		}
 
@@ -21,13 +21,13 @@ class ZipInstaller extends Installer {
 
 		// Get config and verify it
 		if (! file_exists ($folder . '/elefant.json')) {
-			self::$error = i18n_get ('Verification failed: No configuration file found.');
+			self::$error = __ ('Verification failed: No configuration file found.');
 			return false;
 		}
 
 		$conf = json_decode (file_get_contents ($folder . '/elefant.json'));
 		if ($conf === false) {
-			self::$error = i18n_get ('Verification failed: Invalid configuration file.');
+			self::$error = __ ('Verification failed: Invalid configuration file.');
 			return false;
 		}
 
@@ -39,13 +39,13 @@ class ZipInstaller extends Installer {
 		// Move files over
 		if ($conf->type === 'app') {
 			if (! rename ($folder, 'apps/' . $conf->folder)) {
-				self::$error = i18n_get ('Unable to write to apps folder.');
+				self::$error = __ ('Unable to write to apps folder.');
 				return false;
 			}
 			chmod_recursive ('apps/' . $conf->folder, 0777);
 		} else {
 			if (! rename ($folder, 'layouts/' . $conf->folder)) {
-				self::$error = i18n_get ('Unable to write to layouts folder.');
+				self::$error = __ ('Unable to write to layouts folder.');
 			}
 			chmod_recursive ('layouts/' . $conf->folder, 0777);
 		}
@@ -108,12 +108,12 @@ class ZipInstaller extends Installer {
 		$res = curl_exec ($ch);
 		curl_close ($ch);
 		if ($res === false) {
-			self::$error = i18n_get ('Failed to retrieve the file at the specified link.');
+			self::$error = __ ('Failed to retrieve the file at the specified link.');
 			return false;
 		}
 
 		if (! file_put_contents ($tmp, $res)) {
-			self::$error = i18n_get ('Unable to write to cache folder.');
+			self::$error = __ ('Unable to write to cache folder.');
 			return false;
 		}
 		chmod ($tmp, 0777);

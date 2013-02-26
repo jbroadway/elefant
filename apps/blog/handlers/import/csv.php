@@ -7,7 +7,7 @@
 $this->require_admin ();
 
 $page->layout = 'admin';
-$page->title = i18n_get ('CSV Importer');
+$page->title = __ ('CSV Importer');
 
 $f = new Form ('post');
 
@@ -34,10 +34,10 @@ if ($f->submit ()) {
 			));
 			return;
 		} else {
-			echo '<p><strong>' . i18n_get ('Unable to parse the uploaded file.') . '</strong></p>';
+			echo '<p><strong>' . __ ('Unable to parse the uploaded file.') . '</strong></p>';
 		}
 	} else {
-		echo '<p><strong>' . i18n_get ('Error uploading file.') . '</strong></p>';
+		echo '<p><strong>' . __ ('Error uploading file.') . '</strong></p>';
 	}
 }
 

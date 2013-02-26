@@ -67,15 +67,15 @@ function filemanager_gallery_order () {
 	return array (
 		array (
 			'key' => 'desc',
-			'value' => i18n_get ('Newest first')
+			'value' => __ ('Newest first')
 		),
 		array (
 			'key' => 'asc',
-			'value' => i18n_get ('Oldest first')
+			'value' => __ ('Oldest first')
 		),
 		array (
 			'key' => 'alpha',
-			'value' => i18n_get ('Alphabetical')
+			'value' => __ ('Alphabetical')
 		)
 	);
 }
@@ -87,11 +87,11 @@ function filemanager_yes_no () {
 	return array (
 		array (
 			'key' => 'no',
-			'value' => i18n_get ('No')
+			'value' => __ ('No')
 		),
 		array (
 			'key' => 'yes',
-			'value' => i18n_get ('Yes')
+			'value' => __ ('Yes')
 		)
 	);
 }
@@ -103,11 +103,11 @@ function filemanager_style_list () {
 	return array (
 		array (
 			'key' => 'lightbox',
-			'value' => i18n_get ('Lightbox')
+			'value' => __ ('Lightbox')
 		),
 		array (
 			'key' => 'embedded',
-			'value' => i18n_get ('Embedded')
+			'value' => __ ('Embedded')
 		)
 	);
 }

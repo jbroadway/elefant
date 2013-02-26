@@ -44,8 +44,6 @@ foreach ($index as $string) {
 }
 
 // Include and export each language
-global $i18n;
-
 foreach ($i18n->languages as $lang) {
 	$code = (! empty ($lang['locale']))
 		? $lang['code'] . '_' . $lang['locale']

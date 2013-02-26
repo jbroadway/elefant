@@ -7,7 +7,7 @@
 
 if ($appconf['Custom Handlers']['user/login'] != 'user/login') {
 	if (! $appconf['Custom Handlers']['user/login']) {
-		echo $this->error (404, i18n_get ('Not found'), i18n_get ('The page you requested could not be found.'));
+		echo $this->error (404, __ ('Not found'), __ ('The page you requested could not be found.'));
 		return;
 	}
 	echo $this->run ($appconf['Custom Handlers']['user/login'], $data);
@@ -15,7 +15,7 @@ if ($appconf['Custom Handlers']['user/login'] != 'user/login') {
 }
 
 if (! $this->internal) {
-	$page->title = i18n_get ('Members');
+	$page->title = __ ('Members');
 }
 
 if (isset ($_GET['redirect'])) {
@@ -35,7 +35,7 @@ if (! Validator::validate ($_POST['redirect'], 'header')) {
 
 if (! User::require_login ()) {
 	if (! $this->internal && ! empty ($_POST['username'])) {
-		echo '<p>' . i18n_get ('Incorrect email or password, please try again.') . '</p>';
+		echo '<p>' . __ ('Incorrect email or password, please try again.') . '</p>';
 	}
 	$_POST['signup_handler'] = $appconf['Custom Handlers']['user/signup'];
 	echo $tpl->render ('user/login', $_POST);

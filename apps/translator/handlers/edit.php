@@ -23,7 +23,7 @@ if (! $empty) {
 
 $info = $i18n->languages[$lang];
 
-$page->title = i18n_get ('Editing language') . ': ' . $info['name'];
+$page->title = __ ('Editing language') . ': ' . $info['name'];
 
 $all = unserialize (file_get_contents ('lang/_index.php'));
 $sources = Translator::get_sources ($all);

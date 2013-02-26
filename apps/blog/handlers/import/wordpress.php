@@ -7,7 +7,7 @@
 $this->require_admin ();
 
 $page->layout = 'admin';
-$page->title = i18n_get ('Wordpress importer');
+$page->title = __ ('Wordpress importer');
 
 $f = new Form ('post');
 
@@ -43,15 +43,15 @@ if ($f->submit ()) {
 				}
 			}
 			
-			echo '<p>' . i18n_getf ('Imported %d posts.', $imported) . '</p>';
-			echo '<p><a href="/blog/admin">' . i18n_get ('Continue') . '</a></p>';
+			echo '<p>' . __ ('Imported %d posts.', $imported) . '</p>';
+			echo '<p><a href="/blog/admin">' . __ ('Continue') . '</a></p>';
 		} catch (Exception $e) {
-			echo '<p><strong>' . i18n_get ('Error importing file') . ': ' . $e->getMessage () . '</strong></p>';
-			echo '<p><a href="/blog/admin">' . i18n_get ('Back') . '</a></p>';
+			echo '<p><strong>' . __ ('Error importing file') . ': ' . $e->getMessage () . '</strong></p>';
+			echo '<p><a href="/blog/admin">' . __ ('Back') . '</a></p>';
 		}
 		return;
 	} else {
-		echo '<p><strong>' . i18n_get ('Error uploading file.') . '</strong></p>';
+		echo '<p><strong>' . __ ('Error uploading file.') . '</strong></p>';
 	}
 }
 

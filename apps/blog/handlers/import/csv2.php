@@ -7,22 +7,22 @@
 $this->require_admin ();
 
 $page->layout = 'admin';
-$page->title = i18n_get ('CSV Importer');
+$page->title = __ ('CSV Importer');
 
 $imported = 0;
 
 $file = 'cache/blog_csv_import.csv';
 
 if (! file_exists ($file)) {
-	echo '<p>' . i18n_get ('Uploaded CSV file not found.') . '</p>';
-	echo '<p><a href="/blog/import">' . i18n_get ('Back') . '</a></p>';
+	echo '<p>' . __ ('Uploaded CSV file not found.') . '</p>';
+	echo '<p><a href="/blog/import">' . __ ('Back') . '</a></p>';
 	return;
 }
 
 $res = blog\CsvParser::parse ($file);
 if (! $res) {
-	echo '<p>' . i18n_get ('Unable to parse the uploaded file.') . '</p>';
-	echo '<p><a href="/blog/import">' . i18n_get ('Back') . '</a></p>';
+	echo '<p>' . __ ('Unable to parse the uploaded file.') . '</p>';
+	echo '<p><a href="/blog/import">' . __ ('Back') . '</a></p>';
 	return;
 }
 
@@ -60,7 +60,7 @@ foreach ($res as $row) {
 	}
 }
 
-echo '<p>' . i18n_getf ('Imported %d posts.', $imported) . '</p>';
-echo '<p><a href="/blog/admin">' . i18n_get ('Continue') . '</a></p>';
+echo '<p>' . __ ('Imported %d posts.', $imported) . '</p>';
+echo '<p><a href="/blog/admin">' . __ ('Continue') . '</a></p>';
 
 ?>

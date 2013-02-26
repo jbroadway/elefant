@@ -27,11 +27,11 @@ if (! User::require_admin ()) {
 		Product::logo_login (),
 		Product::name ()
 	);
-	$page->window_title = i18n_get ('Please log in to continue.');
+	$page->window_title = __ ('Please log in to continue.');
 	if (! empty ($_POST['username'])) {
-		echo '<p>' . i18n_get ('Incorrect email or password, please try again.') . '</p>';
+		echo '<p>' . __ ('Incorrect email or password, please try again.') . '</p>';
 	} else {
-		echo '<p>' . i18n_get ('Please log in to continue.') . '</p>';
+		echo '<p>' . __ ('Please log in to continue.') . '</p>';
 	}
 	echo $tpl->render ('admin/index');
 	return;
