@@ -5,7 +5,11 @@ require_once ('lib/Autoloader.php');
 
 class ControllerTest extends PHPUnit_Framework_TestCase {
 	function setUp () {
-		$this->c = new Controller ();
+		$this->c = new Controller (
+			array (),
+			new Page,
+			new I18n ('lang', array ('negotiation_method' => 'http'))
+		);
 		$GLOBALS['conf'] = parse_ini_file ('conf/config.php', true);
 	}
 
