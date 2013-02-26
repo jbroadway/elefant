@@ -243,20 +243,59 @@ class Controller {
 	public $cache = false;
 
 	/**
-	 * Constructor method.
+	 * Page object.
 	 */
-	public function __construct ($hooks = array ()) {
+	private $_page;
+
+	/**
+	 * I18n object.
+	 */
+	private $_i18n;
+
+	/**
+	 * Cache object.
+	 */
+	private $_cache;
+
+	/**
+	 * Template object.
+	 */
+	private $_tpl;
+
+	/**
+	 * Constructor method. Receives a list of hooks as well
+	 * as a Page and I18n object.
+	 */
+	public function __construct ($hooks = array (), $page, $i18n) {
 		if (defined ('STDIN')) {
 			$this->cli = true;
 		}
+		$this->_page = $page;
+		$this->_i18n = $i18n;
 		self::$hooks = $hooks;
+	}
+
+	/**
+	 * Set the template object dependency.
+	 */
+	public function template ($tpl) {
+		$this->_tpl = $tpl;
+	}
+
+	/**
+	 * Set the cache object dependency.
+	 */
+	public function cache ($cache) {
+		$this->_cache = $cache;
 	}
 
 	/**
 	 * Run an internal request from one handler to another.
 	 */
 	public function run ($uri, $data = array ()) {
-		$c = new Controller (conf ('Hooks'));
+		$c = new Controller (conf ('Hooks'), $this->_page, $this->_i18n);
+		$c->template ($this->_tpl);
+		$c->cache ($this->_cache);
 		$handler = $c->route ($uri);
 
 		if (! isset (self::$called[$uri])) {
@@ -344,21 +383,12 @@ class Controller {
 	 * or externally from a browser request.
 	 */
 	public function handle ($handler, $internal = true, $data = array ()) {
-		// Note: We use four globals here. This may raise some flags in
-		// you as a developer, but hear me out. These are global singletons
-		// that the front controller creates for us, and I want to be able
-		// to use them in handlers directly without first instantiating them,
-		// through a `::getInstance()` call or otherwise. I know it's bad
-		// form in general, but this is *by design* to save typing in handlers
-		// and happens for these objects only.
-		//
-		// I also could have simply added them as properties of `$this`, but
-		// that would add typing too (e.g., `$this->view->render` vs
-		// `$tpl->render`). I'm opting for conciseness. And as it is, I'm
-		// deliberately making an ordinary script act like a controller, minus
-		// the class wrapping it. It's a stylistic decision, and if it's not
-		// your cup of tea, that's cool. It is mine, however :)
-		global $page, $tpl, $cache, $i18n;
+		// Create local references to the page, template, cache, and i18n objects
+		// for easier reference in handlers (e.g., simply `$tpl->render()`).
+		$page = $this->_page;
+		$tpl = $this->_tpl;
+		$cache = $this->_cache;
+		$i18n = $this->_i18n;
 
 		// Check for a cached copy of this handler's output
 		$cache_uri = '_c_' . str_replace ('/', '_', $this->uri);
@@ -603,8 +633,7 @@ class Controller {
 	 */
 	public function restful ($obj) {
 		// Disable page layout and set JSON header.
-		global $page, $cache;
-		$page->layout = false;
+		$this->_page->layout = false;
 		header ('Content-Type: application/json');
 
 		// Verify an action has been specified.
@@ -624,7 +653,7 @@ class Controller {
 
 		// Assign the controller and cache to the object.
 		$obj->controller = $this;
-		$obj->cache = $cache;
+		$obj->cache = $this->_cache;
 
 		// Call the method with the extra URL parameters.
 		$params = $this->params;

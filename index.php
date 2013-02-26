@@ -112,8 +112,9 @@ if (defined ('STDIN')) {
  */
 $i18n = new I18n ('lang', conf ('I18n'));
 $page = new Page;
-$controller = new Controller (conf ('Hooks'));
+$controller = new Controller (conf ('Hooks'), $page, $i18n);
 $tpl = new Template (conf ('General', 'charset'), $controller);
+$controller->template ($tpl);
 View::init ($tpl);
 
 /**
@@ -133,6 +134,7 @@ if (file_exists ('bootstrap.php')) {
 if (! isset ($cache) || ! is_object ($cache)) {
 	$cache = Cache::init (conf ('Cache'));
 }
+$controller->cache ($cache);
 
 /**
  * Route the request to the appropriate handler and get
