@@ -1,0 +1,31 @@
+.multi-file-preview {
+	border: 1px dashed #ccc;
+	width: 500px;
+	padding: 5px;
+}
+ 
+#multi-file-list {
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 0px;
+	margin-bottom: 5px;
+}
+
+#multi-file-list li {
+	list-style-type: none;
+	margin-left: 10px;
+	padding-left: 0px;
+}
+
+#multi-file-list a {
+	margin-right: 5px;
+	text-decoration: none;
+}
+
+#multi-file-list a:hover {
+	text-decoration: none;
+}
+
+#multi-file-button {
+	display: block;
+}
