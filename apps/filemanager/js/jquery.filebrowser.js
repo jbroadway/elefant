@@ -37,11 +37,15 @@
 		}
 
 		for (var i in res.data) {
-			self.dirs.append (
-				$('<option></option>')
-					.attr ('value', res.data[i])
-					.text ('files/' + res.data[i])
-			);
+			var option = $('<option></option>')
+				.attr ('value', res.data[i])
+				.text ('files/' + res.data[i]);
+
+			if (self.opts.path === res.data[i]) {
+				option.attr ('selected', 'selected');
+			}
+
+			self.dirs.append (option);
 		}
 	};
 
@@ -307,13 +311,22 @@
 						// This is the last file, add notification
 						$.add_notification (res.data);
 
-						// Update the file list
-						filemanager.ls ({path: self.opts.path}, self.update_list);
-
 						// Reset the upload progress bar
 						$('#filebrowser-upload-progress-bar').css ('width', '5%');
 						$('#filebrowser-upload-progress').hide ();
 						$('#filebrowser-upload-form').show ();
+
+						if (i === 0) {
+							// Only one file, auto-select it
+							$('<a></a>')
+								.data ('file', self.opts.path + '/' + file.name)
+								.click (self.select_file)
+								.click ();
+							return;
+						}
+
+						// Update the file list
+						filemanager.ls ({path: self.opts.path}, self.update_list);
 					}
 				}
 			},
