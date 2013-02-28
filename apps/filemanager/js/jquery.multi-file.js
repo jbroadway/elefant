@@ -7,6 +7,8 @@
 
 	self.opts = {};
 
+	self.last_path = null;
+
 	// Get the file list as an array from the field
 	self.get_files = function () {
 		var files = $(self.opts.field).val ();
@@ -30,6 +32,8 @@
 	// Add a file from the chooser
 	self.add_file = function (file) {
 		var files = self.get_files ();
+
+		self.last_path = self.dirname (file).replace (/^\/files\//, '');
 
 		// avoid duplicates
 		if ($.inArray (file, files) !== -1) {
@@ -80,6 +84,11 @@
 		}
 	};
 
+	// From http://phpjs.org/functions/dirname/
+	self.dirname = function (path) {
+		return path.replace(/\\/g, '/').replace(/\/[^\/]*\/?$/, '');
+	};
+
 	$.multi_file = function (opts) {
 		var defaults = {
 			field: '#files',
@@ -104,10 +113,16 @@
 		self.update_preview (files);
 
 		$('#multi-file-button').click (function () {
-			$.filebrowser ({
+			var fb_opts = {
 				callback: self.add_file,
 				allowed: self.opts.allowed
-			});
+			};
+
+			if (self.last_path !== null) {
+				fb_opts.path = self.last_path;
+			}
+
+			$.filebrowser (fb_opts);
 			return false;
 		});
 	};
