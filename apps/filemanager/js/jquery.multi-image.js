@@ -83,10 +83,12 @@
 	$.multi_image = function (opts) {
 		var defaults = {
 			field: '#images',
-			preview: '#images-preview'
+			preview: '#images-preview',
+			path: null
 		};
 
 		self.opts = $.extend (defaults, opts);
+		self.last_path = self.opts.path;
 
 		$(self.opts.preview)
 			.addClass ('multi-image-preview')

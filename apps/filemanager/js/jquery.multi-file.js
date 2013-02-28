@@ -93,10 +93,12 @@
 		var defaults = {
 			field: '#files',
 			preview: '#files-preview',
-			allowed: []
+			allowed: [],
+			path: null
 		};
 
 		self.opts = $.extend (defaults, opts);
+		self.last_path = self.opts.path;
 
 		$(self.opts.preview)
 			.addClass ('multi-file-preview')
