@@ -424,12 +424,12 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		// get his books
 		$books = $author->books ();
 		$this->assertEquals (2, count ($books));
-		$this->assertEquals ('Jamaican Me Crazy', $books[1]->name);
+		$this->assertEquals ('Jamaican Me Crazy', $books[0]->name);
 
 		// now get all authors from a book
 		$authors = $books[1]->authors ();
 		$this->assertEquals (2, count ($authors));
-		$this->assertEquals ('Frankie Bazzar', $authors[1]->name);
+		$this->assertEquals ('Frankie Bazzar', $authors[0]->name);
 	}
 
 	function test_table () {
