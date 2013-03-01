@@ -7,6 +7,8 @@
 
 	self.opts = {};
 
+	self.last_path = null;
+
 	// Get the image list as an array from the field
 	self.get_images = function () {
 		var images = $(self.opts.field).val ();
@@ -30,6 +32,8 @@
 	// Add an image from the chooser
 	self.add_image = function (file) {
 		var images = self.get_images ();
+
+		self.last_path = self.dirname (file).replace (/^\/files\//, '');
 
 		// avoid duplicates
 		if ($.inArray (file, images) !== -1) {
@@ -71,13 +75,20 @@
 		}
 	};
 
+	// From http://phpjs.org/functions/dirname/
+	self.dirname = function (path) {
+		return path.replace(/\\/g, '/').replace(/\/[^\/]*\/?$/, '');
+	};
+
 	$.multi_image = function (opts) {
 		var defaults = {
 			field: '#images',
-			preview: '#images-preview'
+			preview: '#images-preview',
+			path: null
 		};
 
 		self.opts = $.extend (defaults, opts);
+		self.last_path = self.opts.path;
 
 		$(self.opts.preview)
 			.addClass ('multi-image-preview')
@@ -94,10 +105,16 @@
 		self.update_preview (images);
 
 		$('#multi-image-button').click (function () {
-			$.filebrowser ({
+			var fb_opts = {
 				thumbs: true,
 				callback: self.add_image
-			});
+			};
+
+			if (self.last_path !== null) {
+				fb_opts.path = self.last_path;
+			}
+
+			$.filebrowser (fb_opts);
 			return false;
 		});
 	};

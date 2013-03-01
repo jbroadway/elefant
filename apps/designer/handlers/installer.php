@@ -15,10 +15,7 @@ require_once ('apps/designer/lib/Functions.php');
 $form = new Form ('post', $this);
 $page->installer_error = false;
 
-echo $form->handle (function ($form) {
-	$page = $this->controller->page ();
-	$tpl = $this->controller->template ();
-
+echo $form->handle (function ($form) use ($page, $tpl) {
 	if (! empty ($_POST['github'])) {
 		if (github_is_zip ($_POST['github'])) {
 			ZipInstaller::clean ();
