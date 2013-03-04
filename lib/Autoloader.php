@@ -80,6 +80,10 @@ function elefant_autoloader ($class) {
 			return true;
 		}
 	}
+	if (count (spl_autoload_functions ()) > 1) {
+		// Leave it to another autoloader
+		return false;
+	}
 	throw new LogicException ("Class '$orig' not found.");
 }
 

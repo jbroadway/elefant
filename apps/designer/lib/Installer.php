@@ -35,7 +35,7 @@ class Installer {
 			return false;
 		}
 
-		if (! preg_match ('/^[a-z0-9_-]+$/i', $config->folder)) {
+		if (! preg_match ('/^[a-z0-9\._-]+$/i', $config->folder)) {
 			// No folder or invalid name (e.g., spaces)
 			self::$error = __ ('Verification failed: Invalid folder name.');
 			return false;
