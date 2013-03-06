@@ -18,13 +18,13 @@ function navigation_print_context ($tree, $path) {
 	echo '<ul>';
 	foreach ($tree as $item) {
 		if ($item->attr->id == $path[count ($path) - 1]) {
-			printf ('<li class="current"><a href="/%s">%s</a>', $item->attr->id, $item->data);
+			echo '<li class="current">' . Link::make ($item->attr->id, $item->data);
 			if (isset ($item->children)) {
 				navigation_print_context ($item->children, $path);
 			}
 			echo '</li>';
 		} elseif (in_array ($item->attr->id, $path)) {
-			printf ('<li class="parent"><a href="/%s">%s</a>', $item->attr->id, $item->data);
+			echo '<li class="parent">' . Link::make ($item->attr->id, $item->data);
 			if (isset ($item->children)) {
 				navigation_print_context ($item->children, $path);
 			}
@@ -42,7 +42,27 @@ function navigation_print_context ($tree, $path) {
 function navigation_print_level ($tree) {
 	echo '<ul>';
 	foreach ($tree as $item) {
-		printf ('<li><a href="/%s">%s</a>', $item->attr->id, $item->data);
+		echo '<li>' . Link::make ($item->attr->id, $item->data);
+		if (isset ($item->children)) {
+			navigation_print_level ($item->children);
+		}
+		echo '</li>';
+	}
+	echo '</ul>';
+}
+
+/**
+ * Prints the site tree for the navigation/dropmenu handler.
+ */
+function navigation_print_dropmenu ($tree, $id = false) {
+	if ($id) {
+		echo '<ul id="' . $id . '" class="dropmenu">';
+	} else {
+		echo '<ul class="dropmenu">';
+	}
+
+	foreach ($tree as $item) {
+		echo '<li>' . Link::make ($item->attr->id, $item->data);
 		if (isset ($item->children)) {
 			navigation_print_level ($item->children);
 		}

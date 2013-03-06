@@ -6,30 +6,17 @@
  * `<li>` element for custom styling.
  */
 
-$res = $cache->get ('_navigation_top');
-if ($res) {
-	echo str_replace (
-		sprintf ('<li><a href="/%s">', $page->id),
-		sprintf ('<li class="current"><a href="/%s">', $page->id),
-		$res
-	);
+if (conf ('I18n', 'multilingual')) {
+	echo $this->run ('navigation/section', array ('section' => $i18n->language));
 	return;
 }
 
-$n = new Navigation;
+$n = Link::nav ();
 
-$out = '<ul>';
+echo '<ul>';
 foreach ($n->tree as $item) {
-	$out .= sprintf ('<li><a href="/%s">%s</a></li>', $item->attr->id, $item->data);
+	echo Link::single ($item->attr->id, $item->data);
 }
-$out .= '</ul>';
-
-$cache->set ('_navigation_top', $out);
-
-echo str_replace (
-	sprintf ('<li><a href="/%s">', $page->id),
-	sprintf ('<li class="current"><a href="/%s">', $page->id),
-	$out
-);
+echo '</ul>';
 
 ?>

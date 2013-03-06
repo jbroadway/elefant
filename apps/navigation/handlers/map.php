@@ -5,11 +5,17 @@
  * bulleted list.
  */
 
-$n = new Navigation;
+$n = Link::nav ();
 
 require_once ('apps/navigation/lib/Functions.php');
-navigation_print_level ($n->tree);
 
-$this->cache = true;
+if (conf ('I18n', 'multilingual')) {
+	$section = $n->node ($i18n->language);
+	if (is_array ($section->children)) {
+		navigation_print_level ($section->children);
+	}
+} else {
+	navigation_print_level ($n->tree);
+}
 
 ?>
