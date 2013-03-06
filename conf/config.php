@@ -41,7 +41,7 @@ compress_output = On
 ; page URLs appear as they are in your navigation tree, for
 ; example /products/flowbee/benefits. Default is flat.
 
-page_url_style = nested
+page_url_style = flat
 
 ; For development, turn debugging on and Elefant will output
 ; helpful information on errors.
