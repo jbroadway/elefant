@@ -8,7 +8,13 @@
  */
 
 // determine page id
-$id = count ($this->params) ? $this->params[0] : 'index';
+$id = count ($this->params)
+    ? $this->params[
+            (conf ('General', 'page_url_style') === 'flat')
+                ? 0
+                : count ($this->params) - 1
+        ]
+    : 'index';
 
 // check if cached
 $res = $cache->get ('_admin_page_' . $id);
