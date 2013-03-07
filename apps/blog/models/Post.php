@@ -95,6 +95,21 @@ class Post extends \ExtendedModel {
 	public static function tags () {
 		return \DB::pairs ('select tag_id, count(*) as posts from #prefix#blog_post_tag group by tag_id order by tag_id asc');
 	}
+
+	/**
+	 * Generate a list of pages for the sitemaps app.
+	 */
+	public static function sitemap () {
+		$posts = self::query ()
+			->where ('published', 'yes')
+			->fetch_orig ();
+		
+		$urls = array ();
+		foreach ($posts as $post) {
+			$urls[] = '/blog/post/' . $post->id . '/' . \URLify::filter ($post->title);
+		}
+		return $urls;
+	}
 }
 
 ?>

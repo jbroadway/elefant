@@ -63,6 +63,21 @@ class Webpage extends Model {
 		}
 		return parent::__get ($key);
 	}
+
+	/**
+	 * Generate a list of pages for the sitemaps app.
+	 */
+	public static function sitemap () {
+		$pages = self::query ()
+			->where ('access', 'public')
+			->fetch_orig ();
+		
+		$urls = array ();
+		foreach ($pages as $page) {
+			$urls[] = Link::href ($page->id);
+		}
+		return $urls;
+	}
 }
 
 ?>
