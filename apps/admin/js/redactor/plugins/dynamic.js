@@ -15,7 +15,6 @@ RedactorPlugins.dynamic = {
 
 	// Open the dialog when the button is clicked
 	add_handler: function (self, evt, button, current) {
-		console.log ('add_handler()');
 		this._current = current ? this._current : null;
 		$.dynamicobjects ({
 			callback: $.proxy (this.insert_object, this),
@@ -25,66 +24,31 @@ RedactorPlugins.dynamic = {
 
 	// Reopen the dialog to edit an existing embed
 	edit_handler: function (evt) {
-		console.log ('edit_handler()');
-		this._current = evt.currentTarget;
-		var current = $(evt.currentTarget).data ('embed'),
-			body = document.body, range, sel;
-
-		console.log (this._current);								// <span class="embedded"...
-
-		if (document.createRange && window.getSelection) {
-			range = document.createRange ();
-			sel = window.getSelection ();
-			sel.removeAllRanges ();
-			try {
-				range.selectNodeContents (evt.currentTarget);
-				sel.addRange (range);
-			} catch (e) {
-				range.selectNode (evt.currentTarget);
-				sel.addRange (range);
-			}
-		} else if (body.createTextRange) {
-			range = body.createTextRange ();
-			range.moveToElementText (evt.currentTarget);
-			range.select ();
-		}
-
-		// I've got the node in evt.currentTarget, but how
-		// do I turn it into a selection in the editor?
-
-		//this.selection.element.call (this, evt.currentTarget);	// Uncaught Error: TYPE_MISMATCH_ERR: DOM Exception 17
-		//this.selection.caret.call (this, evt.currentTarget, 0);	// TypeError: Object #<Object> has no method 'getTextNodesIn'
-		//this.selection.start.call (this, evt.currentTarget);		// Uncaught Error: TYPE_MISMATCH_ERR: DOM Exception 17
-
-		console.log (this.selection.html.call (this));				// "", hoping for <span class="embedded"...
-		console.log (this.selection.getElement.call (this));		// false, hoping for <span class="embedded"...
-
-		this.add_handler (this, evt, 'dynamic', current);
+		this._current = evt.target;
+		this.add_handler (this, evt, 'dynamic', $(evt.target).data ('embed'));
 		return false;
 	},
 
 	// Insert/replace an embed code in the editor
 	insert_object: function (embed_code, handler, params, label) {
-		console.log ('insert_object()');
-		console.log (embed_code);									// "myapp/myhandler?foo=bar"
-		console.log (handler);										// "myapp/myhandler"
-		console.log (params);										// {"foo": "bar"}
-		console.log (label);										// "MyApp: My Handler"
-
 		if (this._current) {
 			// update existing embed
-			this.selection.restore.call (this);
-
-			console.log (this._current);							// <span class="embedded"...
-			console.log (this.selection.html.call (this));			// "", hoping for <span class="embedded"...
-			console.log (this.selection.getElement.call (this));	// false, hoping for <span class="embedded"...
+			$(this._current).replaceWith (
+				'<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>'
+			);
 		} else {
 			// enter a new embed
-			//this.insert.html.call (this, '<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>'); // Uncaught Error: INDEX_SIZE_ERR: DOM Exception 1
-			//this.insert.force.call (this, '<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>'); // Uncaught Error: INDEX_SIZE_ERR: DOM Exception 1
-
-			// this one works:
-			this.exec.command.call (this, 'inserthtml', '<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>');
+			if (typeof this.selection.getElement.call (this) === 'object') {
+				$(this.selection.getElement.call (this)).append (
+					'<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>'
+				);
+			} else {
+				this.exec.command.call (
+					this,
+					'inserthtml',
+					'<p><span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span></p>'
+				);
+			}
 		}
 	}
 };
