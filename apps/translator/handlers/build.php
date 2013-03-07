@@ -11,9 +11,9 @@ $page->layout = 'admin';
 
 if (! isset ($this->params[0])) {
 	if (! file_exists ('lang/_index.php')) {
-		$page->title = i18n_get ('Building index');
+		$page->title = __ ('Building index');
 	} else {
-		$page->title = i18n_get ('Rebuilding index');
+		$page->title = __ ('Rebuilding index');
 	}
 
 	echo 'Please wait...';
@@ -56,8 +56,16 @@ foreach ($sources as $source) {
 				if (! isset ($list[$str])) {
 					$list[$str] = array (
 						'orig' => $str,
-						'src' => $file
+						'src' => array ($file)
 					);
+				} else {
+					$list[$str]['src'] = is_array ($list[$str]['src'])
+						? $list[$str]['src']
+						: array ($list[$str]['src']);
+
+					if (! in_array ($file, $list[$str]['src'])) {
+						$list[$str]['src'][] = $file;
+					}
 				}
 			}
 		} else {
@@ -68,8 +76,16 @@ foreach ($sources as $source) {
 				if (! isset ($list[$str])) {
 					$list[$str] = array (
 						'orig' => $str,
-						'src' => $file
+						'src' => array ($file)
 					);
+				} else {
+					$list[$str]['src'] = is_array ($list[$str]['src'])
+						? $list[$str]['src']
+						: array ($list[$str]['src']);
+
+					if (! in_array ($file, $list[$str]['src'])) {
+						$list[$str]['src'][] = $file;
+					}
 				}
 			}
 
@@ -85,10 +101,20 @@ foreach ($sources as $source) {
 				foreach ($tokens as $tok) {
 					if ($tok[0] === T_CONSTANT_ENCAPSED_STRING) {
 						$str = stripslashes (trim ($tok[1], '"\''));
-						$list[$str] = array (
-							'orig' => $str,
-							'src' => $file
-						);
+						if (! isset ($list[$str])) {
+							$list[$str] = array (
+								'orig' => $str,
+								'src' => array ($file)
+							);
+						} else {
+							$list[$str]['src'] = is_array ($list[$str]['src'])
+								? $list[$str]['src']
+								: array ($list[$str]['src']);
+
+							if (! in_array ($file, $list[$str]['src'])) {
+								$list[$str]['src'][] = $file;
+							}
+						}
 					}
 				}
 			}
@@ -99,8 +125,8 @@ asort ($list);
 file_put_contents ('lang/_index.php', serialize ($list));
 chmod ('lang/_index.php', 0666);
 
-$page->title = i18n_get ('Indexing completed');
+$page->title = __ ('Indexing completed');
 
-echo '<p><a href="/translator/index">' . i18n_get ('Continue') . '</a></p>';
+echo '<p><a href="/translator/index">' . __ ('Continue') . '</a></p>';
 
 ?>

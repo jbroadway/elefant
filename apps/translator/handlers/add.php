@@ -9,7 +9,7 @@ $this->require_admin ();
 
 $page->layout = 'admin';
 
-$page->title = i18n_get ('Add language');
+$page->title = __ ('Add language');
 
 $form = new Form ('post', $this);
 
@@ -27,7 +27,7 @@ echo $form->handle (function ($form) {
 		$lang = $_POST['code'];
 	}
 
-	global $i18n;
+	$i18n = $this->controller->i18n ();
 
 	$i18n->languages[$lang] = array (
 		'name' => $_POST['name'],
@@ -47,7 +47,7 @@ echo $form->handle (function ($form) {
 		return false;
 	}
 
-	$form->controller->add_notification (i18n_get ('Language added.'));
+	$form->controller->add_notification (__ ('Language added.'));
 	$form->controller->redirect ('/translator/index');
 });
 

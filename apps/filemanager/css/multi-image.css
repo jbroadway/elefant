@@ -1,0 +1,35 @@
+.multi-image-preview {
+	border: 1px dashed #ccc;
+	width: 500px;
+	padding: 5px;
+}
+ 
+#multi-image-list {
+	display: block;
+	min-height: 52px;
+}
+
+#multi-image-list div {
+	float: left;
+	height: 52px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+ 
+#multi-image-list img {
+	width: auto;
+	height: auto;
+	max-width: 50px;
+	max-height: 50px;
+	border: 1px solid #999;
+}
+ 
+#multi-image-list img:hover {
+	cursor: pointer;
+}
+
+#multi-image-button {
+	display: block;
+	margin-top: 5px;
+	clear: both;
+}

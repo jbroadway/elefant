@@ -205,6 +205,21 @@ class I18n {
 	}
 
 	/**
+	 * Includes the language index for an app.
+	 */
+	public function initApp ($app) {
+		if ((! empty ($this->language)) && (file_exists ('apps/' . $app . '/lang/' . $this->language . '.php'))) {
+			include_once ('apps/' . $app . '/lang/' . $this->language . '.php');
+		}
+
+		foreach ($this->hash_order as $curlang) {
+			if (file_exists ('apps/' . $app . '/lang/' . $curlang . '.php')) {
+				include_once ('apps/' . $app . '/lang/' . $curlang . '.php');
+			}
+		}
+	}
+
+	/**
 	 * Takes a string, serializes it to generate a key, and performs
 	 * a key/value lookup on the `$lang_hash` array.  Returns the value found,
 	 * or the original string if not found.  This is the method used in I18n
@@ -352,7 +367,7 @@ class I18n {
 				// matched /lang or /lang/ -> /lang [language=lang]
 				$this->url_includes_lang = true;
 				$this->new_request_uri = rtrim ($_SERVER['REQUEST_URI'], '/');
-				$this->prefix = '';
+				$this->prefix = '/' . $matches[1];
 				return $matches[1];
 			} elseif (preg_match ('/^\/(' . join ('|', array_keys ($this->languages)) . ')\//', $_SERVER['REQUEST_URI'], $matches)) {
 				// matched /lang/page-id -> /page-id [language=lang]

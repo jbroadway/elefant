@@ -20,7 +20,7 @@ if ($f->submit ()) {
 	$p->put ();
 	Versions::add ($p);
 	if (! $p->error) {
-		$this->add_notification (i18n_get ('Blog post added.'));
+		$this->add_notification (__ ('Blog post added.'));
 
 		// add tags
 		if ($_POST['published'] == 'yes' && ! empty ($_POST['tags'])) {
@@ -53,19 +53,19 @@ if ($f->submit ()) {
 		$this->hook ('blog/add', $_POST);
 		$this->redirect ('/blog/admin');
 	}
-	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $p->error;
+	$page->title = __ ('An Error Occurred');
+	echo __ ('Error Message') . ': ' . $p->error;
 } else {
 	$p = new blog\Post;
 	$p->author = User::val ('name');
 	$p->ts = gmdate ('Y-m-d H:i:s');
-	$p->yes_no = array ('yes' => i18n_get ('Yes'), 'no' => i18n_get ('No'));
+	$p->yes_no = array ('yes' => __ ('Yes'), 'no' => __ ('No'));
 	$p->autopost_pom = 'yes';
 
 	$p->failed = $f->failed;
 	$p = $f->merge_values ($p);
 	$p->tag_list = explode (',', $p->tags);
-	$page->title = i18n_get ('Add Blog Post');
+	$page->title = __ ('Add Blog Post');
 	$this->run ('admin/util/wysiwyg');
 	echo $tpl->render ('blog/add/head', $p);
 	echo $tpl->render ('blog/add', $p);

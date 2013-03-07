@@ -14,9 +14,7 @@ require_once ('apps/translator/lib/Functions.php');
 
 $page->layout = 'admin';
 
-$page->title = i18n_get ('Languages');
-
-global $i18n;
+$page->title = __ ('Languages');
 
 echo $tpl->render ('translator/index', $i18n);
 

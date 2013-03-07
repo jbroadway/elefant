@@ -87,28 +87,28 @@ switch ($_GET['action']) {
 			}
 		}
 		if ($ok < 3) {
-			echo i18n_get ('Invalid directory');
+			echo __ ('Invalid directory');
 			return;
 		}
 		if (! isset ($_POST['newName'])) {
-			echo i18n_get ('No name specified');
+			echo __ ('No name specified');
 			break;
 		}
 		if (strpos ($_POST['newName'], '..') !== false || strpos ($_POST['newName'], '/') !== false) {
-			echo i18n_get ('Invalid name');
+			echo __ ('Invalid name');
 			return;
 		}
 		$dest = ltrim ($_POST['dir'], '/') . '/' . $_POST['newName'];
 		if (file_exists ($dest)) {
-			echo i18n_get ('File already exists');
+			echo __ ('File already exists');
 			return;
 		}
 		if (! is_uploaded_file ($_FILES['handle']['tmp_name'])) {
-			echo i18n_get ('File upload failed');
+			echo __ ('File upload failed');
 			return;
 		}
 		if (! move_uploaded_file ($_FILES['handle']['tmp_name'], $dest)) {
-			echo i18n_get ('File save failed');
+			echo __ ('File save failed');
 			return;
 		}
 		echo 'File uploaded successfully';

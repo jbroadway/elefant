@@ -54,7 +54,7 @@
  *
  *     // Send unauth users to myapp/login view
  *     if (! User::require_login ()) {
- *         $page->title = i18n_get ('Members');
+ *         $page->title = __ ('Members');
  *         echo $this->run ('user/login');
  *         return;
  *     }
@@ -291,7 +291,7 @@ class User extends ExtendedModel {
 			$appconf = parse_ini_file ('apps/user/conf/config.php', TRUE);
 			self::$acl = $appconf['Access'];
 			// make the default access levels translatable
-			i18n_get ('Public'); i18n_get ('Member'); i18n_get ('Private');
+			__ ('Public'); __ ('Member'); __ ('Private');
 		}
 	}
 

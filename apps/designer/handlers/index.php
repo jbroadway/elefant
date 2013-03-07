@@ -46,7 +46,7 @@ if ($out['stylesheets']) {
 
 require_once ('apps/designer/lib/Functions.php');
 
-$page->title = i18n_get ('Designer');
+$page->title = __ ('Designer');
 echo $tpl->render ('designer/index', $out);
 
 ?>

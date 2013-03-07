@@ -12,7 +12,7 @@ if (! User::require_admin ()) {
 
 $lock = new Lock ('Blog', $_GET['id']);
 if ($lock->exists ()) {
-	$page->title = i18n_get ('Editing Locked');
+	$page->title = __ ('Editing Locked');
 	echo $tpl->render ('admin/locked', $lock->info ());
 	return;
 } else {
@@ -45,7 +45,7 @@ if ($f->submit ()) {
 	$p->put ();
 	Versions::add ($p);
 	if (! $p->error) {
-		$this->add_notification (i18n_get ('Blog post saved.'));
+		$this->add_notification (__ ('Blog post saved.'));
 
 		// update tags
 		if ($_POST['published'] == 'yes') {
@@ -80,16 +80,16 @@ if ($f->submit ()) {
 		$this->hook ('blog/edit', $_POST);
 		$this->redirect ('/blog/admin');
 	}
-	$page->title = 'An Error Occurred';
-	echo 'Error Message: ' . $p->error;
+	$page->title = __ ('An Error Occurred');
+	echo __ ('Error Message') . ': ' . $p->error;
 } else {
-	$p->yes_no = array ('yes' => i18n_get ('Yes'), 'no' => i18n_get ('No'));
+	$p->yes_no = array ('yes' => __ ('Yes'), 'no' => __ ('No'));
 	$p->autopost_pom = 'yes';
 	$p->tag_list = explode (',', $p->tags);
 
 	$p->failed = $f->failed;
 	$p = $f->merge_values ($p);
-	$page->title = i18n_get ('Edit Blog Post') . ': ' . $p->title;
+	$page->title = __ ('Edit Blog Post') . ': ' . $p->title;
 	$this->run ('admin/util/wysiwyg');
 	echo $tpl->render ('blog/edit/head', $p);
 	echo $tpl->render ('blog/edit', $p);

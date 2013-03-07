@@ -6,8 +6,6 @@
 
 $this->require_admin ();
 
-global $i18n;
-
 require_once ('apps/translator/lib/Functions.php');
 
 if (isset ($i18n->languages[$_GET['lang']])) {
@@ -21,7 +19,7 @@ if (isset ($i18n->languages[$_GET['lang']])) {
 	Ini::write ($i18n->languages, 'lang/languages.php');
 }
 
-$this->add_notification (i18n_get ('Default language updated.'));
+$this->add_notification (__ ('Default language updated.'));
 $this->redirect ('/translator/index');
 
 ?>

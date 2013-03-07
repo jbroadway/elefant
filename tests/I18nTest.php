@@ -28,7 +28,7 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 		$i18n->lang_hash['en'] = array (
 			'Hello' => 'Bonjour',
 		);
-		$this->assertEquals (i18n_get ('Hello'), 'Bonjour');
+		$this->assertEquals (__ ('Hello'), 'Bonjour');
 	}
 
 	function test_getf () {
@@ -37,7 +37,7 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 		$i18n->lang_hash['en'] = array (
 			'Hello %s' => 'Bonjour %s'
 		);
-		$this->assertEquals (i18n_getf ('Hello %s', 'world'), 'Bonjour world');
+		$this->assertEquals (__ ('Hello %s', 'world'), 'Bonjour world');
 	}
 
 	function test_underscore () {
@@ -102,8 +102,8 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 			'Back' => 'Retournez'
 		);
 
-		$this->assertEquals ('Maison', i18n_get ('Home'));
-		$this->assertEquals ('Retournez', i18n_get ('Back'));
+		$this->assertEquals ('Maison', __ ('Home'));
+		$this->assertEquals ('Retournez', __ ('Back'));
 	}
 
 	function test_export () {

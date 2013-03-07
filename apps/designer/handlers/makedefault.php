@@ -16,7 +16,7 @@ $confdata = str_replace (
 );
 file_put_contents ('conf/config.php', $confdata);
 
-$this->add_notification (i18n_get ('Default layout updated.'));
+$this->add_notification (__ ('Default layout updated.'));
 $this->redirect ('/designer');
 
 ?>

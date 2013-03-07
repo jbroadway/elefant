@@ -9,6 +9,7 @@
 		aviary_current: false,
 		text_file: /\.(txt|html?|xml|md|csv|css|js|json)$/,
 		img_file: /\.(gif|png|jpe?g)$/,
+		max_filesize: 2,
 		strings: {
 			
 		}
@@ -25,7 +26,7 @@
 			
 			switch (cmd) {
 				case 'mkdir':
-					var name = downcode ( prompt ('New folder name:', ''), dir_length );
+					var name = downcode ( prompt ($.i18n ('New folder name:'), ''), dir_length );
 					if (name) {
 						$.get (options.root + cmd + '/' + options.file + '/' + name, function (res) {
 							if (res.success) {
@@ -38,7 +39,7 @@
 					}
 					break;
 				case 'mv':
-					var name = downcode ( prompt ('Rename:', options.name), dir_length);
+					var name = downcode ( prompt ($.i18n ('Rename:'), options.name), dir_length);
 					if (name) {
 						$.get (options.root + cmd + '/' + options.file + '?rename=' + name, function (res) {
 							if (res.success) {
@@ -61,7 +62,7 @@
 					});
 					break;
 				case 'rm':
-					if (confirm ('Are you sure you want to delete this file?')) {
+					if (confirm ($.i18n ('Are you sure you want to delete this file?'))) {
 						$.get (options.root + cmd + '/' + options.file, function (res) {
 							if (res.success) {
 								$.add_notification (res.data.msg);
@@ -108,9 +109,9 @@
 								accept: '.draggable',
 								tolerance: 'pointer',
 								drop: function (event, ui) {
-									var type = event.srcElement.nodeName.toLowerCase (),
-										src = $(event.srcElement),
-										folder = $(event.target).data ('folder');
+									var type = ui.draggable[0].nodeName.toLowerCase (),
+										src = ui.draggable,
+										folder = $(this).data ('folder');
 
 									if (type === 'a' || type === 'img') {
 										src = src.parent ();
@@ -154,6 +155,8 @@
 	$.filemanager_init = function (options) {
 		filemanager = $.extend (filemanager, options);
 
+		$.filemanager ('ls', {file: filemanager.path});
+
 		if (filemanager.aviary_key) {
 			filemanager.aviary = new Aviary.Feather ({
 				apiKey: filemanager.aviary_key,
@@ -173,8 +176,101 @@
 			});
 		}
 
-		$.filemanager ('ls', {file: filemanager.path});
+		$('#filemanager-dropzone').filedrop ({
+			fallback_id: 'file-upload',
+			url: '/filemanager/upload/drop',
+			paramname: 'file',
+			withCredentials: true,
+			data: {
+				path: function () {
+					return filemanager.path
+				}
+			},
+			error: function (err, file) {
+				$('#filemanager-dropzone').removeClass ('filemanager-over');
+
+				// Reset the upload progress bar
+				hide_progress_bar ();
+
+				switch (err) {
+					case 'BrowserNotSupported':
+						alert ($.i18n ('Your browser does not support drag and drop file uploads.'));
+						break;
+					case 'TooManyFiles':
+						alert ($.i18n ('Please upload fewer files at a time.'));
+						break;
+					case 'FileTooLarge':
+						alert (
+							$.i18n ('The following file is too large to upload')
+							+ ': ' +
+							file.name
+						);
+						break;
+				}
+			},
+			maxfiles: 12,
+			maxfilesize: filemanager.max_filesize,
+			queuefiles: 2,
+			dragOver: function () {
+				$('#filemanager-dropzone').addClass ('filemanager-over');
+			},
+			dragLeave: function () {
+				$('#filemanager-dropzone').removeClass ('filemanager-over');
+			},
+			dropLeave: function () {
+				$('#filemanager-dropzone').removeClass ('filemanager-over');
+			},
+			drop: function () {
+				$('#filemanager-dropzone').removeClass ('filemanager-over');
+			},
+			uploadStarted: function (i, file, len) {
+				// Save the total so we only notify at the end
+				filemanager._upload_total = len;
+
+				// Replace the upload field with a progress bar
+				show_progress_bar ();
+			},
+			uploadFinished: function (i, file, res, time) {
+				if (! res.success) {
+					alert (res.error);
+
+					// Reset the upload progress bar
+					hide_progress_bar ();
+				
+				} else {
+					if (i === filemanager._upload_total - 1) {
+						// This is the last file, add notification
+						$.add_notification (res.data);
+						
+						// Update the file list
+						$.filemanager ('ls', {file: filemanager.path});
+						
+						// Reset the upload progress bar
+						hide_progress_bar ();
+					}
+				}
+			},
+			progressUpdated: function (i, file, progress) {
+				// Update the progress bar
+				$('#filemanager-upload-progress-bar').css ('width', progress + '%');
+			}
+		});
 	};
+
+	function show_progress_bar () {
+		$('#filemanager-upload-form').css ({display: 'none'});
+		$('#filemanager-upload-progress-bar').css ({display: 'inline-block'});
+		$('#filemanager-upload-progress-text').css ({display: 'inline-block'});
+		$('#filemanager-upload-progress').css ({display: 'inline-block'});
+	}
+
+	function hide_progress_bar () {
+		$('#filemanager-upload-progress-bar').css ('width', '5%');
+		$('#filemanager-upload-progress-bar').css ({display: 'none'});
+		$('#filemanager-upload-progress-text').css ({display: 'none'});
+		$('#filemanager-upload-progress').css ({display: 'none'});
+		$('#filemanager-upload-form').css ({display: 'inline-block'});
+	}
 
 	$.filemanager_prop = function (form) {
 		var file = form.elements.file.value,

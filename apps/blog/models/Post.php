@@ -56,42 +56,37 @@ class Post extends \ExtendedModel {
 	 * Get the most recently published posts.
 	 */
 	public static function latest ($limit = 10, $offset = 0) {
-		$p = new Post;
-		return $p->query ()->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
+		return self::query ()->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
 	}
 
 	/**
 	 * Get posts by the specified author.
 	 */
 	public static function by ($author, $limit = 10, $offset = 0) {
-		$p = new Post;
-		return $p->query ()->where ('published', 'yes')->where ('author', $author)->order ('ts desc')->fetch_orig ($limit, $offset);
+		return self::query ()->where ('published', 'yes')->where ('author', $author)->order ('ts desc')->fetch_orig ($limit, $offset);
 	}
 
 	/**
 	 * Get the latest headlines only.
 	 */
 	public static function headlines ($limit = 10) {
-		$p = new Post;
-		return $p->query (array ('id', 'ts', 'title'))->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit);
+		return self::query (array ('id', 'ts', 'title'))->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit);
 	}
 
 	/**
 	 * Get posts by a certain tag.
 	 */
 	public static function tagged ($tag, $limit = 10, $offset = 0) {
-		$p = new Post;
 		$ids = \DB::shift_array ('select post_id from #prefix#blog_post_tag where tag_id = ?', $tag);
-		return $p->query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
+		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
 	}
 
 	/**
 	 * Count posts by a certain tag.
 	 */
 	public static function count_by_tag ($tag, $limit = 10, $offset = 0) {
-		$p = new Post;
 		$ids = \DB::shift_array ('select post_id from #prefix#blog_post_tag where tag_id = ?', $tag);
-		return $p->query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->count ();
+		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->count ();
 	}
 
 	/**
@@ -99,6 +94,21 @@ class Post extends \ExtendedModel {
 	 */
 	public static function tags () {
 		return \DB::pairs ('select tag_id, count(*) as posts from #prefix#blog_post_tag group by tag_id order by tag_id asc');
+	}
+
+	/**
+	 * Generate a list of pages for the sitemaps app.
+	 */
+	public static function sitemap () {
+		$posts = self::query ()
+			->where ('published', 'yes')
+			->fetch_orig ();
+		
+		$urls = array ();
+		foreach ($posts as $post) {
+			$urls[] = '/blog/post/' . $post->id . '/' . \URLify::filter ($post->title);
+		}
+		return $urls;
 	}
 }
 

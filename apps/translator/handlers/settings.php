@@ -14,11 +14,9 @@ $this->require_admin ();
 
 $page->layout = 'admin';
 
-global $i18n;
-
 $lang = $i18n->languages[$_GET['lang']];
 
-$page->title = i18n_get ('Language settings') . ': ' . $lang['name'];
+$page->title = __ ('Language settings') . ': ' . $lang['name'];
 
 $form = new Form ('post', $this);
 
@@ -38,7 +36,7 @@ echo $form->handle (function ($form) {
 		$lang = $_POST['code'];
 	}
 
-	global $i18n;
+	$i18n = $this->controller->i18n ();
 
 	if ($lang !== $_GET['lang']) {
 		// Language has changed ids
@@ -67,7 +65,7 @@ echo $form->handle (function ($form) {
 		return false;
 	}
 
-	$form->controller->add_notification (i18n_get ('Language updated.'));
+	$form->controller->add_notification (__ ('Language updated.'));
 	$form->controller->redirect ('/translator/index');
 });
 

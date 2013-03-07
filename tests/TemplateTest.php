@@ -22,7 +22,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 	function test_replace_strings () {
 		$t = new Template ('UTF-8');
 
-		$this->assertEquals ($t->replace_strings ('Don\'t'), '<?php echo i18n_get (\'Don\\\'t\'); ?>');
+		$this->assertEquals ($t->replace_strings ('Don\'t'), '<?php echo __ (\'Don\\\'t\'); ?>');
 	}
 
 	function test_replace_blocks () {
@@ -73,7 +73,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 			. '<?php if ($data->loop_index == 1) { ?><?php echo $data->loop_value; ?>'
 			. '<?php } ?><?php } ?>';
 		$this->assertEquals ($t->parse_template ($data), $out);
-		$this->assertEquals ($t->parse_template ('{" Hello "}'), '<?php echo i18n_get (\'Hello\'); ?>');
+		$this->assertEquals ($t->parse_template ('{" Hello "}'), '<?php echo __ (\'Hello\'); ?>');
 	}
 
 	function test_sanitize () {

@@ -6,7 +6,7 @@
 
 $this->require_admin ();
 
-$page->title = i18n_get ('Page title');
+$page->title = __ ('Page title');
 $page->preview = true;
 $page->layout = false;
 
@@ -42,6 +42,6 @@ if ($page->layout === false) {
 	$page->layout = file_get_contents ('layouts/default.html');
 }
 
-echo '<p>' . i18n_get ('This is a preview of how your layout will look.') . '</p>';
+echo '<p>' . __ ('This is a preview of how your layout will look.') . '</p>';
 
 ?>

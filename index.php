@@ -114,6 +114,9 @@ $i18n = new I18n ('lang', conf ('I18n'));
 $page = new Page;
 $controller = new Controller (conf ('Hooks'));
 $tpl = new Template (conf ('General', 'charset'), $controller);
+$controller->page ($page);
+$controller->i18n ($i18n);
+$controller->template ($tpl);
 View::init ($tpl);
 
 /**
@@ -133,6 +136,7 @@ if (file_exists ('bootstrap.php')) {
 if (! isset ($cache) || ! is_object ($cache)) {
 	$cache = Cache::init (conf ('Cache'));
 }
+$controller->cache ($cache);
 
 /**
  * Route the request to the appropriate handler and get

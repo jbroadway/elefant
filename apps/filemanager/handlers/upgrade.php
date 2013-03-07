@@ -5,12 +5,12 @@ $page->layout = 'admin';
 $this->require_admin ();
 
 if ($this->installed ('filemanager', $appconf['Admin']['version']) === true) {
-	$page->title = i18n_get ('Upgrade completed');
-	echo '<p><a href="/filemanager/index">' . i18n_get ('Continue') . '</a></p>';
+	$page->title = __ ('Upgrade completed');
+	echo '<p><a href="/filemanager/index">' . __ ('Continue') . '</a></p>';
 	return;
 }
 
-$page->title = i18n_get ('Upgrading Files App');
+$page->title = __ ('Upgrading Files App');
 
 $db = DB::get_connection (1);
 $dbtype = $db->getAttribute (PDO::ATTR_DRIVER_NAME);
@@ -33,7 +33,7 @@ switch ($dbtype) {
 		DB::execute ('create index #prefix#filemanager_prop_name on #prefix#filemanager_prop (prop)');
 		break;
 }
-echo '<p>' . i18n_get ('Done.') . '</p>';
+echo '<p>' . __ ('Done.') . '</p>';
 
 $this->mark_installed ('filemanager', $appconf['Admin']['version']);
 

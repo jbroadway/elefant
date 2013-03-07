@@ -19,7 +19,7 @@ if (! User::require_admin ()) {
 	return;
 }
 
-$tools = array ('admin/pages' => array ('handler' => 'admin/pages', 'name' => i18n_get ('All Pages'), 'class' => false));
+$tools = array ('admin/pages' => array ('handler' => 'admin/pages', 'name' => __ ('All Pages'), 'class' => false));
 $res = glob ('apps/*/conf/config.php');
 $apps = DB::pairs ('select * from #prefix#apps');
 foreach ($res as $file) {
@@ -34,12 +34,12 @@ foreach ($res as $file) {
 				$tools[$appconf['Admin']['handler']]['class'] = false;
 			} elseif ($ver === false) {
 				// not installed
-				$appconf['Admin']['name'] .= ' (' . i18n_get ('click to install') . ')';
+				$appconf['Admin']['name'] .= ' (' . __ ('click to install') . ')';
 				$tools[$appconf['Admin']['install']] = $appconf['Admin'];
 				$tools[$appconf['Admin']['install']]['class'] = 'not-installed';
 			} else {
 				// needs upgrade
-				$appconf['Admin']['name'] .= ' (' . i18n_get ('click to upgrade') . ')';
+				$appconf['Admin']['name'] .= ' (' . __ ('click to upgrade') . ')';
 				$tools[$appconf['Admin']['upgrade']] = $appconf['Admin'];
 				$tools[$appconf['Admin']['upgrade']]['class'] = 'needs-upgrade';
 			}

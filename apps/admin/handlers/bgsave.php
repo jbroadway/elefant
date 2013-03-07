@@ -11,7 +11,7 @@ header ('Content-Type: application/json');
 if (! User::require_admin ()) {
 	$res = new StdClass;
 	$res->success = false;
-	$res->error = i18n_get ('Authorization required.');
+	$res->error = __ ('Authorization required.');
 	echo json_encode ($res);
 	return;
 }

@@ -30,7 +30,10 @@ class Translator extends Restful {
 	public static function get_sources ($items) {
 		$sources = array ();
 		foreach ($items as $k => $v) {
-			$sources[$v['src']] = $v['src'];
+			$v['src'] = is_array ($v['src']) ? $v['src'] : array ($v['src']);
+			foreach ($v['src'] as $src) {
+				$sources[$src] = $src;
+			}
 		}
 		asort ($sources);
 		return $sources;
@@ -42,7 +45,8 @@ class Translator extends Restful {
 	public static function get_by_source ($items, $source) {
 		$out = array ();
 		foreach ($items as $k => $v) {
-			if ($v['src'] === $source) {
+			$v['src'] = is_array ($v['src']) ? $v['src'] : array ($v['src']);
+			if (in_array ($source, $v['src'])) {
 				$out[$k] = $v;
 			}
 		}

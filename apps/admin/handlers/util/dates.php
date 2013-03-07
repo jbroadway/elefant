@@ -29,15 +29,13 @@
 
 $abbr_months = explode (
 	' ',
-	i18n_get ('Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec')
+	__ ('Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec')
 );
 
 $full_months = explode (
 	' ',
-	i18n_get ('January February March April May June July August September October November December')
+	__ ('January February March April May June July August September October November December')
 );
-
-global $i18n;
 
 $page->add_script ('/js/jquery.localize.min.js');
 $page->add_script ('<script>

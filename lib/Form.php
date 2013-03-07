@@ -259,7 +259,8 @@ class Form {
 		}
 
 		// Render the view and return its output
-		global $page, $tpl;
+		$page = $this->controller->page ();
+		$tpl = $this->controller->template ();
 
 		// Take the initial form data from $this->data or a new StdClass
 		if ($this->data === false) {

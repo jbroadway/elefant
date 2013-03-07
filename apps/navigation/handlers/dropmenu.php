@@ -12,32 +12,22 @@
  * 2. Customize the menu in your design stylesheet.
  */
 
-$n = new Navigation;
+$n = Link::nav ();
 
 $data['id'] = isset ($data['id']) ? $data['id'] : 'dropmenu';
 
 $page->add_style ('/apps/navigation/css/dropmenu.css');
 $page->add_script ('/apps/navigation/js/dropmenu.js');
 
-function navigation_print_level ($tree, $id = false) {
-	if ($id) {
-		echo '<ul id="' . $id . '" class="dropmenu">';
-	} else {
-		echo '<ul class="dropmenu">';
-	}
+require_once ('apps/navigation/lib/Functions.php');
 
-	foreach ($tree as $item) {
-		printf ('<li><a href="/%s">%s</a>', $item->attr->id, $item->data);
-		if (isset ($item->children)) {
-			navigation_print_level ($item->children);
-		}
-		echo '</li>';
+if (conf ('I18n', 'multilingual')) {
+	$section = $n->node ($i18n->language);
+	if (is_array ($section->children)) {
+		navigation_print_dropmenu ($section->children, $data['id']);
 	}
-	echo '</ul>';
+} else {
+	navigation_print_dropmenu ($n->tree, $data['id']);
 }
-
-navigation_print_level ($n->tree, $data['id']);
-
-$this->cache = true;
 
 ?>
