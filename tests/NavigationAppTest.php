@@ -64,28 +64,26 @@ class NavigationAppTest extends AppTest {
 	}
 
 	public function test_top () {
-		$page = self::$c->page ();
-
-		$page->id = 'index';
+		Link::reset ();
+		Link::current ('index');
 		$res = $this->get ('navigation/top');
 		$this->assertContains ('<li class="current"><a href="/index">Home', $res);
 		$this->assertContains ('<li><a href="/other">Other', $res);
 		
-		$page->id = 'other';
+		Link::current ('other');
 		$res = $this->get ('navigation/top');
 		$this->assertContains ('<li><a href="/index">Home', $res);
 		$this->assertContains ('<li class="current"><a href="/other">Other', $res);
 	}
 
 	public function test_section () {
-		$page = self::$c->page ();
-		
-		$page->id = 'about';
+		Link::reset ();
+		Link::current ('about');
 		$res = $this->get ('navigation/section', array ('section' => 'en'));
 		$this->assertContains ('<li class="current"><a href="/about">About', $res);
 		$this->assertContains ('<li><a href="/contact-us">Contact us', $res);
 		
-		$page->id = 'a-propos';
+		Link::current ('a-propos');
 		$res = $this->get ('navigation/section', array ('section' => 'fr'));
 		$this->assertContains ('<li class="current"><a href="/a-propos">À propos', $res);
 		$this->assertContains ('<li><a href="/contactez-nous">Contactez-nous', $res);

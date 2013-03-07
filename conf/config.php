@@ -36,6 +36,13 @@ error_handler = "admin/error"
 
 compress_output = On
 
+; Set this to 'flat' to have all pages appear at the top-level,
+; for example /about-us, /products. Set this to 'nested' to have
+; page URLs appear as they are in your navigation tree, for
+; example /products/flowbee/benefits. Default is flat.
+
+page_url_style = flat
+
 ; For development, turn debugging on and Elefant will output
 ; helpful information on errors.
 
@@ -47,6 +54,13 @@ debug = Off
 display_errors = Off
 
 [I18n]
+
+; Turn this on if your site is multilingual. This will change
+; the behaviour of the site navigation so that the appropriate
+; language's section of the site tree is shown, depending on
+; the user's language choice.
+
+multilingual = Off
 
 ; This is the method for determining which language to show the
 ; current visitor. Options are: url (e.g., /fr/), subdomain

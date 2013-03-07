@@ -20,7 +20,7 @@
 	</tr>
 {% foreach pages %}
 	<tr>
-		<td><a href="/{{ loop_value->id }}" target="_blank">{{ loop_value->id }}</a></td>
+		<td><a href="{{ loop_value->id|Link::href }}" target="_blank">{{ loop_value->id }}</a></td>
 		<td>{{ loop_value->title }}</td>
 		<td>{{ loop_value->access|ucfirst }}</td>
 		<td style="text-align: right">
