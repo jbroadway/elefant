@@ -1,7 +1,8 @@
 <form method="POST" id="{{ _form }}" enctype="multipart/form-data" onsubmit="$('#submit').attr ('disabled', 'disabled')">
 <input type="hidden" name="other" />
 
-<p><strong><em>{"Important: Only install apps or themes from trusted sources."}</em></strong></p>
+<p><strong><em>{"Important: Only install apps or themes from trusted sources."}<br />
+{"Also note that Github limits you to installing one app per hour."}</em></strong></p>
 
 {% if ! extension_loaded ('curl') %}
 <p class="visible-notice">{"Note: Installing from links has been disabled because the PHP cURL extension is missing."}</p>

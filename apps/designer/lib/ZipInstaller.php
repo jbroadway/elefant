@@ -95,18 +95,23 @@ class ZipInstaller extends Installer {
 			chmod ('cache/zip', 0777);
 		}
 
-		$ch = curl_init ();
-		curl_setopt ($ch, CURLOPT_HEADER, 0);
-		curl_setopt ($ch, CURLOPT_VERBOSE, 0);
-		curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt ($ch, CURLOPT_MAXREDIRS, 3);
-		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
-		curl_setopt ($ch, CURLOPT_FAILONERROR, 0);
-		curl_setopt ($ch, CURLOPT_URL, $url);
-		$res = curl_exec ($ch);
-		curl_close ($ch);
+		if (extension_loaded ('curl')) {
+			$ch = curl_init ();
+			curl_setopt ($ch, CURLOPT_HEADER, 0);
+			curl_setopt ($ch, CURLOPT_VERBOSE, 0);
+			curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt ($ch, CURLOPT_MAXREDIRS, 3);
+			curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
+			curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
+			curl_setopt ($ch, CURLOPT_FAILONERROR, 0);
+			curl_setopt ($ch, CURLOPT_URL, $url);
+			$res = curl_exec ($ch);
+			curl_close ($ch);
+		} else {
+			$res = file_get_contents ($url);
+		}
+
 		if ($res === false) {
 			self::$error = __ ('Failed to retrieve the file at the specified link.');
 			return false;
