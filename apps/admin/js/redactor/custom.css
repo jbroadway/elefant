@@ -42,6 +42,10 @@
 	background-position: 0px 0px;
 }
 
+.redactor_toolbar li a.redactor_btn_link_unlink {
+	background-position: -300px;
+}
+
 .redactor_toolbar li a.redactor_btn_filebrowser {
 	background-position: -250px;
 }
@@ -133,4 +137,33 @@
 	padding: 15px;
 	height: 233px;
 	overflow-y: auto;
+}
+
+.links-btn {
+	display: inline-block;
+	padding-right: 8px;
+	padding-left: 8px;
+	border-left: 1px solid #ccc;
+	margin-bottom: 3px;
+}
+
+.links-btn:first-child {
+	border-left: 0;
+	padding-left: 0;
+}
+
+.links-btn:hover {
+	cursor: pointer;
+}
+
+.links-btn.active {
+	font-weight: bold;
+}
+
+#links-page {
+	min-width: 175px;
+}
+
+#links-url, #links-email {
+	display: none;
 }

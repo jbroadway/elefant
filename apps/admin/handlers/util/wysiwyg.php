@@ -36,7 +36,21 @@ $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/js/jquery.quickpager.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/filebrowser.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/imagebrowser.js');
+$page->add_script ('/apps/admin/js/redactor/plugins/links.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/dynamic.js');
+
+$page->add_script (I18n::export (
+	'Dynamic Objects',
+	'Link',
+	'Page',
+	'Insert',
+	'URL',
+	'Email',
+	'Text',
+	'Open link in new tab',
+	'Cancel',
+	'- select -'
+));
 
 $data['field_id'] = isset ($data['field_id'])
 	? (($data['field_id'] === '0' || empty ($data['field_id'])) ? false : $data['field_id'])

@@ -9,11 +9,11 @@ $(function () {
 		wysiwyg: function (options) {
 			var defaults = {
 				lang: '{{i18n.language|none}}',
-				plugins: ['imagebrowser', 'filebrowser', 'dynamic'],
+				plugins: ['links', 'imagebrowser', 'filebrowser', 'dynamic'],
 				buttons: [
 					'formatting', '|', 'bold', 'italic', 'deleted', '|',
 					'alignment', 'horizontalrule', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
-					'link', 'imagebrowser', 'filebrowser', 'table', '|',
+					'link_unlink', 'imagebrowser', 'filebrowser', 'table', '|',
 					'undo', 'html', 'dynamic'
 				],
 				buttonsCustom: {
@@ -27,6 +27,19 @@ $(function () {
 							point2: {
 								title: '{"Redo"}',
 								callback: redo
+							}
+						}
+					},
+					link_unlink: {
+						title: '{"Link"}',
+						dropdown: {
+							point1: {
+								title: '{"Insert Link"}',
+								callback: RedactorPlugins.links.insert
+							},
+							point2: {
+								title: '{"Unlink"}',
+								exec: 'unlink'
 							}
 						}
 					}
