@@ -82,6 +82,19 @@
 					)
 			);
 		}
+
+		// Allow files ot be sorted via drag and drop
+		$('#multi-file-list').sortable ({
+			distance: 5,
+			tolerance: 'pointer',
+			update: function (evt, ui) {
+				var files = [];
+				$('#multi-file-list li a').each (function () {
+					files.push ($(this).attr ('href'));
+				});
+				self.set_files (files);
+			}
+		});
 	};
 
 	// From http://phpjs.org/functions/dirname/

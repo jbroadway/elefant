@@ -34,7 +34,7 @@
 }
  
 #multi-image-list img:hover {
-	cursor: pointer;
+	cursor: move;
 }
 
 #multi-image-button {
