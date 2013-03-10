@@ -79,6 +79,7 @@
 		$('#multi-image-list').sortable ({
 			placeholder: 'multi-image-placeholder',
 			distance: 5,
+			helper: 'clone',
 			tolerance: 'pointer',
 			update: function (evt, ui) {
 				var images = [];
