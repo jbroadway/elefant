@@ -68,11 +68,26 @@
 				$('<div></div>').append (
 					$('<img>')
 						.attr ('src', images[i])
-						.attr ('title', $.i18n ('Click to remove'))
+						.attr ('title', $.i18n ('Click to remove, drag to re-order'))
+						.addClass ('sortable')
 						.click (self.remove_image)
 				)
 			);
 		}
+
+		// Allow images to be sorted via drag and drop
+		$('#multi-image-list').sortable ({
+			placeholder: 'multi-image-placeholder',
+			distance: 5,
+			tolerance: 'pointer',
+			update: function (evt, ui) {
+				var images = [];
+				$('#multi-image-list div img').each (function () {
+					images.push ($(this).attr ('src'));
+				});
+				self.set_images (images);
+			}
+		});
 	};
 
 	// From http://phpjs.org/functions/dirname/
