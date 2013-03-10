@@ -88,6 +88,7 @@
 							}
 							if (res.data.files) {
 								for (var i = 0; i < res.data.files.length; i++) {
+									res.data.files[i].is_img = res.data.files[i].name.match (filemanager.img_file);
 									res.data.files[i].image_file = (filemanager.aviary !== null)
 										? res.data.files[i].name.match (filemanager.img_file)
 										: false;
