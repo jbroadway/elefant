@@ -315,7 +315,7 @@ class FileManager extends Restful {
 			$res = self::prop ($file, $prop);
 			if ($res === $value) {
 				return $value;
-			} elseif (! $res) {
+			} elseif ($res === false || $res === null) {
 				// doesn't exist yet
 				if (! DB::execute (
 					'insert into #prefix#filemanager_prop (file, prop, value) values (?, ?, ?)',
