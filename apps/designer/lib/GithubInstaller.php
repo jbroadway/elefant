@@ -13,6 +13,11 @@ class GithubInstaller extends Installer {
 		list ($user, $project) = github_parse_url ($source);
 		$github = new GithubFetcher ($user, $project);
 		$tree = $github->tree ();
+		
+		if (! is_array ($tree)) {
+			self::$error = __ ('Unable to fetch configuration file.');
+			return false;
+		}
 
 		// Get config and verify it
 		$found = false;
@@ -20,7 +25,7 @@ class GithubInstaller extends Installer {
 		foreach ($tree as $item) {
 			if ($item->path === 'elefant.json') {
 				$data = $github->get ($item);
-				if (! $data) {
+				if (! $data || strlen ($data) !== $item->size) {
 					self::$error = __ ('Unable to fetch configuration file.');
 					return false;
 				}
@@ -66,7 +71,7 @@ class GithubInstaller extends Installer {
 				mkdir ($dest . '/' . $item->path);
 			} else {
 				$data = $github->get ($item);
-				if ($data === false) {
+				if ($data === false || strlen ($data) !== $item->size) {
 					self::$error = __ ('Unable to fetch file') . ' ' . $item->path;
 					rmdir_recursive ($dest);
 					return false;

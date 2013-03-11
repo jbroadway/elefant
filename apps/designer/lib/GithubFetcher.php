@@ -56,17 +56,20 @@ class GithubFetcher {
 	 * Uses CURL to perform a GET request to the Github API v3.
 	 */
 	public static function _fetch ($url) {
-		$ch = curl_init ();
-		curl_setopt ($ch, CURLOPT_HEADER, 0);
-		curl_setopt ($ch, CURLOPT_VERBOSE, 0);
-		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
-		curl_setopt ($ch, CURLOPT_FAILONERROR, 0);
-		curl_setopt ($ch, CURLOPT_URL, $url);
-		$res = curl_exec ($ch);
-		curl_close ($ch);
-		return $res;
+		if (extension_loaded ('curl')) {
+			$ch = curl_init ();
+			curl_setopt ($ch, CURLOPT_HEADER, 0);
+			curl_setopt ($ch, CURLOPT_VERBOSE, 0);
+			curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
+			curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
+			curl_setopt ($ch, CURLOPT_FAILONERROR, 0);
+			curl_setopt ($ch, CURLOPT_URL, $url);
+			$res = curl_exec ($ch);
+			curl_close ($ch);
+			return $res;
+		}
+		return file_get_contents ($url);
 	}
 
 	public static function parse_url ($url) {

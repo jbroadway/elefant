@@ -70,3 +70,18 @@
 	left: 2px;
 	z-index: 1;
 }
+
+.file-img {
+	position: relative;
+}
+
+.file-img-preview {
+	position: absolute;
+	top: 20px;
+	left: 30px;
+	max-width: 200px;
+	max-height: 105px;
+	border: 1px solid #999;
+	background-color: #fefefe;
+	z-index: 1000;
+}

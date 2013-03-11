@@ -13,7 +13,7 @@
 
 <script type="text/x-jquery-tmpl" id="tpl_file">
 	<tr>
-		<td><div class="draggable" data-file="${_path}"><img src="/apps/admin/css/admin/file.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/files/${path}" target="_blank">${name}</a></div></td>
+		<td><div class="draggable" data-file="${_path}"><img src="/apps/admin/css/admin/file.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/files/${path}" target="_blank"\{{if is_img}} class="file-img"\{{/if}}>${name}</a></div></td>
 		<td>\{{html mtime}}</td>
 		<td>${fsize}</td>
 		<td style="text-align: right">
@@ -42,6 +42,28 @@ $(function () {
 		max_filesize: {{ (int) ini_get ('upload_max_filesize')}}
 
 	});
+
+	// Image preview on hover
+	$(document).on (
+		'mouseenter',
+		'.file-img',
+		function () {
+			$(this).append (
+				$('<img>')
+					.attr ('src', $(this).attr ('href'))
+					.addClass ('file-img-preview')
+			);
+		}
+	);
+
+	// Remove image preview
+	$(document).on (
+		'mouseleave',
+		'.file-img',
+		function () {
+			$(this).children ('.file-img-preview').remove ();
+		}
+	);
 });
 var i18n = {
 	no_files: '{"Please select a file to upload."}',

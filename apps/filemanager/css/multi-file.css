@@ -17,6 +17,10 @@
 	padding-left: 0px;
 }
 
+#multi-file-list li:hover {
+	cursor: move;
+}
+
 #multi-file-list a {
 	margin-right: 5px;
 	text-decoration: none;

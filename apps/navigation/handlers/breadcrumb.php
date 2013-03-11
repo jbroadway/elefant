@@ -26,20 +26,21 @@
  *     }
  */
 
-$n = new Navigation;
+$n = Link::nav ();
 $path = $n->path ($page->id, true);
-$home = array ('index' => __ ('Home'));
+$home_id = conf ('I18n', 'multilingual') ? $i18n->language : 'index';
+$home = array ($home_id => __ ('Home'));
 $path = ($path) ? $path : $home;
-if (! in_array ('index', array_keys ($path))) {
+if (! in_array ($home_id, array_keys ($path))) {
 	$path = array_merge ($home, $path);
 }
 
 echo "<ul class=\"breadcrumb\">\n";
 foreach ($path as $id => $title) {
 	if ($id != $page->id) {
-		printf ("<li><a href=\"/%s\">%s</a> <span class=\"divider\">/</span></li>\n", $id, $title);
+		printf ("<li>%s <span class=\"divider\">/</span></li>\n", Link::make ($id, $title));
 	} else {
-		printf ("<li class=\"active\">%s</li>\n", $title);
+		printf ("<li class=\"current\">%s</li>\n", $title);
 	}
 }
 echo '</ul>';

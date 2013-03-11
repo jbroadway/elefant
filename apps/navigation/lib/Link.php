@@ -178,7 +178,7 @@ class Link {
 	public static function make ($id, $title) {
 		return sprintf (
 			'<a href="%s">%s</a>',
-			Link::href ($id),
+			self::href ($id),
 			$title
 		);
 	}
