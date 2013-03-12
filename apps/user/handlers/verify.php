@@ -10,8 +10,8 @@ $row = User::query ()
 
 $data = $row->userdata;
 
-if ($row && isset ($data->verifier) && $data->verifier == $_GET['verifier']) {
-	unset ($data->verifier);
+if ($row && isset ($data['verifier']) && $data['verifier'] == $_GET['verifier']) {
+	unset ($data['verifier']);
 	$row->userdata = $data;
 	$row->put ();
 
