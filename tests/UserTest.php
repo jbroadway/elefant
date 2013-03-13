@@ -71,6 +71,15 @@ class UserTest extends PHPUnit_Framework_TestCase {
 			User::$user->data['userdata']
 		);
 	}
+
+	function test_current () {
+		$user = User::$user;
+		$u2 = User::current ();
+		$this->assertEquals ($user, $u2);
+		User::current ($u2);
+		$u3 = User::current ();
+		$this->assertEquals ($user, $u3);
+	}
 }
 
 ?>
