@@ -159,7 +159,7 @@ RedactorPlugins.links = {
 	handle: function () {
 		console.log ('handle()');
 		console.log (this);
-		this.selection.restore.call (this);
+		$(this.editor_id).redactor ('selection.restore');
 		
 		var active = this.links_active,
 			page = $('#links-page').find (':selected').val (),
@@ -192,12 +192,12 @@ RedactorPlugins.links = {
 			}
 			html += '>' + text + '</a>';
 			console.log ('inserting ' + html);
-			if (this.has_selected_text) {
+			if (! this.has_selected_text) {
 				console.log ('nodeAtCaret');
-				this.insert.nodeAtCaret.call (this, $(html));
+				$(this.editor_id).redactor ('insert.nodeAtCaret', $(html));
 			} else {
 				console.log ('inserthtml');
-				this.exec.command.call (this, 'inserthtml', html);
+				$(this.editor_id).redactor ('exec.command', 'inserthtml', html);
 			}
 		}
 		this.sync ();

@@ -58,6 +58,8 @@ $(function () {
 	$('#{{ field_id }}').wysiwyg ();
 	{% end %}
 
+	RedactorPlugins.links.editor_id = '#{{ field_id }}';
+
 	function undo (obj, evt, key) {
 		obj.exec.command.call (obj, 'undo');
 	}

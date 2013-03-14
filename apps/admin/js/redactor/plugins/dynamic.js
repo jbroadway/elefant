@@ -10,7 +10,8 @@ RedactorPlugins.dynamic = {
 	// Initialize the plugin
 	init: function () {
 		$('.redactor_editor').on ('click', '.embedded', {plugin: this}, $.proxy (this.edit_handler, this));
-		this.button.add.call (this, 'dynamic', $.i18n ('Dynamic Objects'), $.proxy (this.add_handler, this));
+		this.addBtn ('dynamic', $.i18n ('Dynamic Objects'), $.proxy (this.add_handler, this));
+		//this.button.add.call (this, 'dynamic', $.i18n ('Dynamic Objects'), $.proxy (this.add_handler, this));
 	},
 
 	// Open the dialog when the button is clicked
@@ -38,15 +39,18 @@ RedactorPlugins.dynamic = {
 			);
 		} else {
 			// enter a new embed
-			if (typeof this.selection.getElement.call (this) === 'object') {
-				$(this.selection.getElement.call (this)).append (
+			if (typeof this.getCurrentNode () === 'object') {
+			//if (typeof this.selection.getElement.call (this) === 'object') {
+				$(this.getCurrentNode ()).append (
+				//$(this.selection.getElement.call (this)).append (
 					'<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>'
 				);
 			} else {
-				this.exec.command.call (
-					this,
-					'inserthtml',
-					'<p><span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span></p>'
+				this.insertHtml (
+				//this.exec.command.call (
+				//	this,
+				//	'inserthtml',
+					'<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>'
 				);
 			}
 		}
