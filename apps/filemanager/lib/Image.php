@@ -24,12 +24,12 @@ class Image {
 	 * This makes first requests to a gallery page expensive, but
 	 * subsequent requests much faster.
 	 */
-	public static function resize ($file, $width = 140, $height = 105, $style = "cover") {
+	public static function resize ($file, $width = 140, $height = 105, $style = 'cover', $format = 'jpg') {
 		if (strpos ($file, '/') === 0) {
 			$file = ltrim ($file, '/');
 		}
 
-		$cache_file = 'cache/thumbs/' . md5 ($file) . '-'. $style ."-" . $width . 'x' . $height . '.jpg';
+		$cache_file = 'cache/thumbs/' . md5 ($file) . '-'. $style ."-" . $width . 'x' . $height . '.' . $format;
 		if (@file_exists ($cache_file) && @filemtime ($cache_file) > @filemtime ($file)) {
 			return $cache_file;
 		}
@@ -86,9 +86,21 @@ class Image {
 		}
 	
 		$new = @imagecreatetruecolor ($width, $height);
-		@imagecopyresampled ($new, $orig, 0, 0, $woffset, $hoffset, $width, $height, $w, $h);
-	
-		@imagejpeg ($new, $cache_file);
+
+		if ($format === 'png') {
+			@imagealphablending ($new, false);
+			@imagesavealpha ($new, true);
+			@imagecopyresampled ($new, $orig, 0, 0, $woffset, $hoffset, $width, $height, $w, $h);
+			@imagepng ($new, $cache_file);
+		} elseif ($format === 'gif') {
+			$black = imagecolorallocate ($new, 0, 0, 0);
+			@imagecolortransparent ($new, $black);
+			@imagecopyresampled ($new, $orig, 0, 0, $woffset, $hoffset, $width, $height, $w, $h);
+			@imagegif ($new, $cache_file);
+		} else {
+			@imagecopyresampled ($new, $orig, 0, 0, $woffset, $hoffset, $width, $height, $w, $h);
+			@imagejpeg ($new, $cache_file);
+		}
 		@imagedestroy ($orig);
 		@imagedestroy ($new);
 		return $cache_file;

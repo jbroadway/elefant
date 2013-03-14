@@ -283,7 +283,7 @@ class Validator {
 					}
 				}
 				if ($type === 'filetype') {
-					$extensions = preg_split ('/, ?', trim (strtolower ($validator)));
+					$extensions = preg_split ('/, ?/', trim (strtolower ($validator)));
 					if ($extensions === false) {
 						$extensions = array ($validator);
 					}

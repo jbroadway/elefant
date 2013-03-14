@@ -284,6 +284,16 @@ class User extends ExtendedModel {
 	}
 
 	/**
+	 * Fetch or set the currently active user.
+	 */
+	public static function current (User $current = null) {
+		if ($current !== null) {
+			self::$user = $current;
+		}
+		return self::$user;
+	}
+
+	/**
 	 * Loads the access control list for the `access()` method.
 	 */
 	private static function load_acl () {
