@@ -3,13 +3,12 @@
 <head>
 	<title>{{ conf('General', 'site_name') }} - {{ window_title|none }}</title>
 	<meta charset="{{ i18n.charset }}" />
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,300" />
 	{% if detect('mobile') %}
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
 		<link rel="stylesheet" type="text/css" href="/css/mobile.css" />
 	{% else %}
-		<link rel="stylesheet" type="text/css" href="/css/reset.css" />
-		<link rel="stylesheet" type="text/css" href="/css/text.css" />
-		<link rel="stylesheet" type="text/css" href="/css/960.css" />
+		<link rel="stylesheet" type="text/css" href="/css/960_compiled.css" />
 		<link rel="stylesheet" type="text/css" href="/css/style.css" />
 	{% end %}
 	{! admin/head !}
@@ -19,7 +18,7 @@
 <div id="wrapper" class="container_12">
 	<div id="head" class="grid_12">
 		<div class="grid_6 alpha">
-			<h1>{{ conf('General', 'site_name') }}</h1>
+			<h1><a href="/">{{ conf('General', 'site_name') }}</a></h1>
 		</div>
 		<div class="grid_6 omega menu">
 			{! navigation/top !}
