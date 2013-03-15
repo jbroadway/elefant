@@ -29,4 +29,12 @@ icon = /apps/navigation/css/icon-nav-contextual.png
 
 label = "Navigation: Breadcrumb"
 
+[navigation/languages]
+
+label = "Navigation: Languages"
+
+[navigation/redirect]
+
+label = "Multilingual Homepage Redirect"
+
 ; */ ?>
