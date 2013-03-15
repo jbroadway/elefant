@@ -26,40 +26,35 @@ RedactorPlugins.links = {
 	insert: function (self, evt, button) {
 		self.insert_link_node = false;
 		self.has_selected_text = false;
-		var sel = self.selection.get.call (self)
+		var sel = self.getCurrentNode (),
+		//var sel = self.selection.get.call (self)
 			url = '', text = '', target = '',
 			page_matched = false,
 			base = window.location.origin
 				? window.location.origin
 				: window.location.protocol + '//' + window.location.host;
 
-		// Based on Redactor core's link dialog
-		if (self.utils.browser.call (self, 'msie')) {
-			var parent = self.selection.getElement.call (self);
+		if (sel && sel.anchorNode && sel.anchorNode.parentNode.tagName === 'A') {
+			self.insert_link_node = sel.anchorNode.parentNode;
+			url = sel.anchorNode.parentNode.href;
+			text = sel.anchorNode.parentNode.text;
+			target = sel.anchorNode.parentNode.target;
+		} else if (sel.tagName && sel.tagName === 'A') {
+			self.insert_link_node = sel;
+			url = sel.href;
+			text = sel.text;
+			target = sel.target;
+		} else {
+			var parent = self.getParentNode ();
 			if (parent.nodeName === 'A') {
 				self.insert_link_node = $(parent);
 				text = self.insert_link_node.text ();
 				url = self.insert_link_node.attr ('href');
 				target = self.insert_link_node.attr ('target');
+			} else if (self.oldIE ()) {
+				text = sel.text;
 			} else {
-				if (self.utils.oldIE.call (self)) {
-					text = sel.text;
-				} else {
-					text = sel.toString ();
-				}
-			}
-		} else {
-			if (sel && sel.anchorNode && sel.anchorNode.parentNode.tagName === 'A') {
-				self.insert_link_node = sel.anchorNode.parentNode;
-				url = sel.anchorNode.parentNode.href;
-				text = sel.anchorNode.parentNode.text;
-				target = sel.anchorNode.parentNode.target;
-				
-				if (sel.toString () === '') {
-					self.insert_link_node = sel.anchorNode.parentNode;
-				}
-			} else {
-				text = sel.toString ();
+				text = self.getSelectedHtml ();
 			}
 		}
 		
@@ -71,7 +66,8 @@ RedactorPlugins.links = {
 			url = url.replace (base, '');
 		}
 
-		self.selection.save.call (self);
+		//self.selection.save.call (self);
+		self.saveSelection ();
 
 		$.open_dialog (
 			$.i18n ('Link'),
@@ -157,9 +153,8 @@ RedactorPlugins.links = {
 
 	// Insert or update the link
 	handle: function () {
-		console.log ('handle()');
-		console.log (this);
-		$(this.editor_id).redactor ('selection.restore');
+		//$(this.editor_id).redactor ('selection.restore');
+		this.restoreSelection ();
 		
 		var active = this.links_active,
 			page = $('#links-page').find (':selected').val (),
@@ -191,16 +186,8 @@ RedactorPlugins.links = {
 				html += ' target="_blank"';
 			}
 			html += '>' + text + '</a>';
-			console.log ('inserting ' + html);
-			if (! this.has_selected_text) {
-				console.log ('nodeAtCaret');
-				$(this.editor_id).redactor ('insert.nodeAtCaret', $(html));
-			} else {
-				console.log ('inserthtml');
-				$(this.editor_id).redactor ('exec.command', 'inserthtml', html);
-			}
+			this.insertHtml (html);
 		}
-		this.sync ();
 
 		$.close_dialog ();
 	},
