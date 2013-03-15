@@ -10,27 +10,51 @@
  * In a view template, call it like this:
  *
  *     {! admin/util/wysiwyg?field_id=my_field !}
+ *
+ * Alternately, you can disable the auto-initialization and call
+ * it manually on an element like this:
+ *
+ *     {! admin/util/wysiwyg?field_id=0 !}
+ *     
+ *     <textarea id="edit-me"></textarea>
+ *     
+ *     <script>
+ *     $(function () {
+ *         $('#edit-me').wysiwyg ();
+ *     });
+ *     </script>
  */
 
 $this->run ('admin/util/fontawesome');
+$this->run ('admin/util/dynamicobjects');
+$this->run ('filemanager/util/browser');
+$this->run ('admin/util/redactor');
 
 $page->add_style ('/js/jquery-ui/jquery-ui.css');
-$page->add_style ('/css/wysiwyg/jquery.wysiwyg.css');
-$page->add_style ('/css/files/wysiwyg.fileManager.css');
 
 $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
-$page->add_script ('/js/wysiwyg/jquery.wysiwyg.js');
-$page->add_script ('/js/wysiwyg/controls/wysiwyg.image2.js');
-$page->add_script ('/js/wysiwyg/controls/wysiwyg.link2.js');
-$page->add_script ('/js/wysiwyg/controls/wysiwyg.table.js');
-$page->add_script ('/js/wysiwyg/plugins/wysiwyg.fileManager.js');
 $page->add_script ('/js/jquery.quickpager.js');
-$page->add_script ('/js/wysiwyg/plugins/wysiwyg.embed.js');
-$page->add_script ('/js/wysiwyg/plugins/wysiwyg.i18n.js');
-if (file_exists ('js/wysiwyg/i18n/lang.' . $i18n->language . '.js')) {
-	$page->add_script ('/js/wysiwyg/i18n/lang.' . $i18n->language . '.js');
-}
+$page->add_script ('/apps/admin/js/redactor/plugins/filebrowser.js');
+$page->add_script ('/apps/admin/js/redactor/plugins/imagebrowser.js');
+$page->add_script ('/apps/admin/js/redactor/plugins/links.js');
+$page->add_script ('/apps/admin/js/redactor/plugins/dynamic.js');
 
-$page->add_script ($tpl->render ('admin/wysiwyg', $data));
+$page->add_script (I18n::export (
+	'Dynamic Objects',
+	'Link',
+	'Page',
+	'Insert',
+	'URL',
+	'Email',
+	'Text',
+	'Open link in new tab',
+	'Cancel',
+	'- select -'
+));
+
+$data['field_id'] = isset ($data['field_id'])
+	? (($data['field_id'] === '0' || empty ($data['field_id'])) ? false : $data['field_id'])
+	: 'webpage-body';
+$page->add_script ($tpl->render ('admin/util/wysiwyg', $data));
 
 ?>
