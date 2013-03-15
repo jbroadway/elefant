@@ -236,7 +236,7 @@ input[disabled] {
 	background: #eee;
 }
 
-input[type=submit], .wysiwyg-embed-object-back {
+input[type=submit], .dynamic-embed-object-back {
     font-size: 12px;
 	border: 1px solid #ddd;
     background: #e5e5e5;
@@ -249,9 +249,10 @@ input[type=submit], .wysiwyg-embed-object-back {
     color: #555;
     padding: 5px 10px;
     text-shadow: 0 1px 0 #fff;
+    margin-bottom: 16px;
 }
 
-input[type=submit]:hover, .wysiwyg-embed-object-back:hover {
+input[type=submit]:hover, .dynamic-embed-object-back:hover {
 	color: #333;
 	border: 1px solid #999;
     -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
@@ -259,16 +260,12 @@ input[type=submit]:hover, .wysiwyg-embed-object-back:hover {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
-.wysiwyg-embed-objects {
-
-}
-
-.wysiwyg-embed-object-list {
+.dynamic-embed-object-list {
 	padding: 0px;
 	margin: 0px;
 }
 
-.wysiwyg-embed-object-list li {
+.dynamic-embed-object-list li {
 	list-style-type: none;
 	display: block;	
 	float:left;
@@ -277,15 +274,15 @@ input[type=submit]:hover, .wysiwyg-embed-object-back:hover {
 	
 }
 
-.wysiwyg-embed-object-list li{
+.dynamic-embed-object-list li {
 	float: left;	
 	width:49%;
 }
 
-.wysiwyg-embed-object-list li a {
+.dynamic-embed-object-list li a {
 	display: block;	
 	padding: 3%;
-	background: #eee;
+	background: transparent;
 	color: #333;
 	text-decoration: none;
 	line-height:16px;
@@ -293,7 +290,7 @@ input[type=submit]:hover, .wysiwyg-embed-object-back:hover {
 	height:16px;
 }
 
-.wysiwyg-embed-object i{
+.dynamic-embed-object i {
 	margin:0px 5px 0 2px;
 	width:16px;
 	height:16px;
@@ -303,35 +300,39 @@ input[type=submit]:hover, .wysiwyg-embed-object-back:hover {
 	line-height:16px;
 }
 
-.wysiwyg-embed-object-list li a.current, .wysiwyg-embed-object-list li a:hover{
+.dynamic-embed-object-list li a.current, .dynamic-embed-object-list li a:hover{
 	background: #ddd;
 	color: #333;
 }
-.wysiwyg-embed-objects .simplePagerNav {
+.dynamic-embed-objects .simplePagerNav {
 	list-style-type: none;
 	margin-top: 15px;
 	margin-left: 0px;
 	padding-left: 0px;
 }
 
-.wysiwyg-embed-objects .simplePagerNav li {
+.dynamic-embed-objects .simplePagerNav li {
 	list-style-type: none;
 	margin-left: 0px;
 	padding-left: 0px;
 	display: inline
 }
 
-.wysiwyg-embed-objects .simplePagerNav li a {
+.dynamic-embed-objects .simplePagerNav li a {
 	display: block;
 	float: left;
-	margin:0.25%;
-	padding: 3px 6px 3px 6px;
-	background: #eee;
+	margin: 1px;
+	padding: 3px 8px 3px 8px;
+	background: #f5f5f5;
 	color: #333;
 	text-decoration: none;
 }
 
-.wysiwyg-embed-objects .simplePagerNav li.currentPage a {
+.dynamic-embed-objects .simplePagerNav li a:hover {
+	background: #ddd;
+}
+
+.dynamic-embed-objects .simplePagerNav li.currentPage a {
 	display: block;
 	float: left;
 	padding: 3px 6px 3px 6px;
@@ -340,69 +341,69 @@ input[type=submit]:hover, .wysiwyg-embed-object-back:hover {
 	text-decoration: none;
 }
 
-.wysiwyg-embed-object-back {
+.dynamic-embed-object-back {
 	float: left;
 	margin-top: 15px;
 }
 
-.wysiwyg-embed-object-form-submit {
+.dynamic-embed-object-form-submit {
 	float: right;
 	margin-top: 15px;
 }
 
-.wysiwyg-embed-object-form h2 {
+.dynamic-embed-object-form h2 {
 	margin: 0;
 	font-size: 16px;
 	color: #333;
 	padding: 5px;
 }
 
-.wysiwyg-embed-object-form p {
+.dynamic-embed-object-form p {
 	margin: 0.5% 0.25%;
 	background: #eee;
 	color: #333;
 	padding: 1.5%;
 }
 
-.wysiwyg-embed-object-form label {
+.dynamic-embed-object-form label {
 	display: block;
 	padding: 0.5% 0.25% 0.25% 0.25%;
 	margin: 0 0.5% 0 0;
 }
-.wysiwyg-embed-object-form input[type=text], .wysiwyg-embed-object-form textarea, .wysiwyg-embed-object-form select {
+.dynamic-embed-object-form input[type=text], .dynamic-embed-object-form textarea, .dynamic-embed-object-form select {
 	margin: 0;
 	padding: 0.25%;
 	width: 99.5%;
 }
 
-.wysiwyg-embed-object-form.columns-2 label {
+.dynamic-embed-object-form.columns-2 label {
 	float: left;
 	display: block;
 	padding: 1% 0 0.5% 0;
 }
-.wysiwyg-embed-object-form.columns-2 input[type=text], .wysiwyg-embed-object-form.columns-2 select {
+.dynamic-embed-object-form.columns-2 input[type=text], .dynamic-embed-object-form.columns-2 select {
 	float: left;
 	margin: 0 0 0.5% 0;
 	padding: 1%;
 	width: 95%;
 }
 
-.wysiwyg-embed-object-form.columns-2 p {
+.dynamic-embed-object-form.columns-2 p {
 	float: left;	
 	width: 46%;	
 	margin: 0.25%;
 }
 
-.wysiwyg-embed-object-form p.wysiwyg-embed-object-form-submit-wrapper {
+.dynamic-embed-object-form p.dynamic-embed-object-form-submit-wrapper {
 	background: #fff;
 }
 
-.wysiwyg-embed-object-form input[type=text].wysiwyg-file-input {
+.dynamic-embed-object-form input[type=text].dynamic-file-input {
 	float: left;	
 	width: 90%;	
 }
 
-span.wysiwyg-fileManager { 
+span.dynamic-fileManager { 
 	background: url('/css/files/icon.png');
 	float: left;
 	width: 16px; 

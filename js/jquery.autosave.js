@@ -52,6 +52,7 @@ var autosave_interval = null,
 (function ($) {
 	if ($.jStorage.get (autosave_key_name)) {
 		setTimeout (function () {
+			var vals = $.parseJSON (lzw_decode ($.jStorage.get (autosave_key_name)));
 			$('.autosave-notice').show ();
 		}, 100);
 	}
@@ -102,7 +103,7 @@ var autosave_interval = null,
 
 						if (opts.form.elements[vals[i].name].getAttribute ('id') == 'webpage-body') {
 							// Set the contents of wysiwyg editor
-							$('#webpage-body').wysiwyg ('setContent', vals[i].value);
+							$('#webpage-body').redactor ('code.set', vals[i].value);
 						} else if (opts.form.elements[vals[i].name].getAttribute ('id') == 'code-body') {
 							// Set the contents of codemirror editor
 							_codemirror.setValue (vals[i].value);
@@ -152,7 +153,13 @@ var autosave_interval = null,
 						// Unnamed fields can be ignored (submit buttons)
 						continue;
 					}
-					if (opts.form.elements[i].getAttribute ('id') == 'code-body') {
+					if (opts.form.elements[i].getAttribute ('id') == 'webpage-body') {
+						// Get the contents from Redactor editor
+						vals[i] = {
+							name: opts.form.elements[i].name,
+							value: $('#webpage-body').redactor ('code.get')
+						};
+					} else if (opts.form.elements[i].getAttribute ('id') == 'code-body') {
 						// Get the contents from codemirror editor
 						vals[i] = {
 							name: opts.form.elements[i].name,

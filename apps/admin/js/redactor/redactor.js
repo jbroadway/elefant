@@ -1,10 +1,10 @@
 /*
-	Redactor v8.2.0
-	Updated: November 8, 2012
+	Redactor v8.2.3
+	Updated: March 6, 2013
 
 	http://redactorjs.com/
 
-	Copyright (c) 2009-2012, Imperavi Inc.
+	Copyright (c) 2009-2013, Imperavi Inc.
 	License: http://redactorjs.com/license/
 
 	Usage: $('#content').redactor();
@@ -170,8 +170,10 @@ var RLANG = {
 			observeImages: true,
 			overlay: true, // modal overlay
 
-			allowedTags: ["form", "code", "span", "div", "label", "a", "br", "p", "b", "i", "del", "strike", "u",
-					"img", "video", "audio", "iframe", "object", "embed", "param", "blockquote",
+			allowedTags: ["form", "input", "button", "select", "option", "datalist", "output", "textarea", "fieldset", "legend",
+					"section", "header", "hgroup", "aside", "footer", "article", "details", "nav", "progress", "time", "canvas",
+					"code", "span", "div", "label", "a", "br", "p", "b", "i", "del", "strike", "u",
+					"img", "video", "source", "track", "audio", "iframe", "object", "embed", "param", "blockquote",
 					"mark", "cite", "small", "ul", "ol", "li", "hr", "dl", "dt", "dd", "sup", "sub",
 					"big", "pre", "code", "figure", "figcaption", "strong", "em", "table", "tr", "td",
 					"th", "tbody", "thead", "tfoot", "h1", "h2", "h3", "h4", "h5", "h6"],
@@ -696,9 +698,9 @@ var RLANG = {
 
 				// paste
 				var oldsafari = false;
-				if ($.browser.webkit && navigator.userAgent.indexOf('Chrome') === -1)
+				if (this.browser('webkit') && navigator.userAgent.indexOf('Chrome') === -1)
 				{
-					var arr = $.browser.version.split('.');
+					var arr = this.browser('version').split('.');
 					if (arr[0] < 536) oldsafari = true;
 				}
 
@@ -753,11 +755,15 @@ var RLANG = {
 				}
 
 				// observers
-				this.observeImages();
-				this.observeTables();
+				setTimeout($.proxy(function()
+				{
+					this.observeImages();
+					this.observeTables();
+
+				}, this), 1);
 
 				// FF fix
-				if ($.browser.mozilla)
+				if (this.browser('mozilla'))
 				{
 					this.$editor.click($.proxy(function()
 					{
@@ -814,7 +820,7 @@ var RLANG = {
 			{
 				var key = e.keyCode || e.which;
 
-				if ($.browser.mozilla && !this.pasteRunning)
+				if (this.browser('mozilla') && !this.pasteRunning)
 				{
 					this.saveSelection();
 				}
@@ -835,7 +841,7 @@ var RLANG = {
 				// new line p
 				if (key === 13 && !e.shiftKey && !e.ctrlKey && !e.metaKey)
 				{
-					if ($.browser.webkit)
+					if (this.browser('webkit'))
 					{
 						this.formatNewLine(e);
 					}
@@ -963,7 +969,7 @@ var RLANG = {
 				}
 
 				// safari shift key + enter
-				if ($.browser.webkit && navigator.userAgent.indexOf('Chrome') === -1)
+				if (this.browser('webkit') && navigator.userAgent.indexOf('Chrome') === -1)
 				{
 					return this.safariShiftKeyEnter(e, key);
 				}
@@ -1313,7 +1319,7 @@ var RLANG = {
 
 			this.$editor.find('img').each($.proxy(function(i,s)
 			{
-				if ($.browser.msie)
+				if (this.browser('msie'))
 				{
 					$(s).attr('unselectable', 'on');
 				}
@@ -1367,7 +1373,7 @@ var RLANG = {
 
 			this.$editor.html(this.opts.buffer);
 
-			if (!$.browser.msie)
+			if (!this.browser('msie'))
 			{
 				this.restoreSelection();
 			}
@@ -1393,7 +1399,7 @@ var RLANG = {
 
 				if (cmd === 'inserthtml')
 				{
-					if ($.browser.msie)
+					if (this.browser('msie'))
 					{
 						this.$editor.focus();
 						this.document.selection.createRange().pasteHTML(param);
@@ -1465,7 +1471,7 @@ var RLANG = {
 					parent = this.getCurrentNode();
 					if ($(parent).get(0).tagName === 'BLOCKQUOTE')
 					{
-						if ($.browser.msie)
+						if (this.browser('msie'))
 						{
 							var node = $('<p>' + $(parent).html() + '</p>');
 							$(parent).replaceWith(node);
@@ -1486,7 +1492,7 @@ var RLANG = {
 						}
 						else
 						{
-							if ($.browser.msie)
+							if (this.browser('msie'))
 							{
 								var node = $('<blockquote>' + $(parent).html() + '</blockquote>');
 								$(parent).replaceWith(node);
@@ -1517,12 +1523,12 @@ var RLANG = {
 				}
 				else
 				{
-					if (cmd === 'inserthorizontalrule' && $.browser.msie)
+					if (cmd === 'inserthorizontalrule' && this.browser('msie'))
 					{
 						this.$editor.focus();
 					}
 
-					if (cmd === 'formatblock' && $.browser.mozilla)
+					if (cmd === 'formatblock' && this.browser('mozilla'))
 					{
 						this.$editor.focus();
 					}
@@ -1556,7 +1562,7 @@ var RLANG = {
 		},
 		execRun: function(cmd, param)
 		{
-			if (cmd === 'formatblock' && $.browser.msie)
+			if (cmd === 'formatblock' && this.browser('msie'))
 			{
 				param = '<' + param + '>';
 			}
@@ -1604,12 +1610,8 @@ var RLANG = {
 		{
 			var html = $.trim(this.$editor.html());
 
-			if ($.browser.mozilla)
-			{
-				html = html.replace(/<br>/i, '');
-			}
-
-			var thtml = html.replace(/<(?:.|\n)*?>/gm, '');
+			html = html.replace(/<br\s?\/?>/i, '');
+			var thtml = html.replace(/<p>\s?<\/p>/gi, '');
 
 			if (html === '' || thtml === '')
 			{
@@ -1799,7 +1801,7 @@ var RLANG = {
 			html = html.replace(/<\/p><\/p>/gi, '</p>');
 
 			// FF fix
-			if ($.browser.mozilla)
+			if (this.browser('mozilla'))
 			{
 				html = html.replace(/<br>$/gi, '');
 			}
@@ -1934,7 +1936,7 @@ var RLANG = {
 				this.$content.hide();
 
 				html = this.$editor.html();
-				html = $.trim(this.formatting(html));
+				//html = $.trim(this.formatting(html));
 
 				this.$el.height(height).val(html).show().focus();
 
@@ -1946,10 +1948,10 @@ var RLANG = {
 				this.$el.hide();
 				var html = this.$el.val();
 
-				html = this.savePreCode(html);
+				//html = this.savePreCode(html);
 
 				// clean up
-				html = this.stripTags(html);
+				//html = this.stripTags(html);
 
 				// set code
 				this.$editor.html(html).show();
@@ -2059,7 +2061,7 @@ var RLANG = {
 						this.setBtnActive(key);
 					}
 
-					if ($.browser.mozilla)
+					if (this.browser('mozilla'))
 					{
 						this.$editor.focus();
 						//this.restoreSelection();
@@ -2153,7 +2155,7 @@ var RLANG = {
 			var mode;
 			if (key === 'backcolor')
 			{
-				if ($.browser.msie)
+				if (this.browser('msie'))
 				{
 					mode = 'BackColor';
 				}
@@ -2191,7 +2193,7 @@ var RLANG = {
 						});
 					}
 
-					if ($.browser.msie && mode === 'BackColor')
+					if (_self.browser('msie') && mode === 'BackColor')
 					{
 						_self.$editor.find('font').replaceWith(function() {
 
@@ -2458,14 +2460,14 @@ var RLANG = {
 				}
 				else
 				{
-					if ($.browser.opera)
+					if (this.browser('opera'))
 					{
 						this.$editor.focus();
 					}
 
 					this.setSelection(this.savedSel[0], this.savedSel[1], this.savedSelObj[0], this.savedSelObj[1]);
 
-					if ($.browser.mozilla)
+					if (this.browser('mozilla'))
 					{
 						this.$editor.focus();
 					}
@@ -2652,7 +2654,7 @@ var RLANG = {
 				var s = this.window.getSelection();
 				if (s.rangeCount > 0)
 				{
-					return this.getSelection().getRangeAt(0).startContainer;
+					return this.getSelection().getRangeAt(0).commonAncestorContainer;
 				}
 				else
 				{
@@ -2832,6 +2834,7 @@ var RLANG = {
 			$(resize).mouseup($.proxy(function(e)
 			{
 				clicked = false;
+				$(resize).css('cursor','');
 				this.syncCode();
 
 			}, this));
@@ -3349,7 +3352,7 @@ var RLANG = {
 				var sel = this.getSelection();
 				var url = '', text = '', target = '';
 
-				if ($.browser.msie)
+				if (this.browser('msie'))
 				{
 					var parent = this.getParentNode();
 					if (parent.nodeName === 'A')
@@ -3434,26 +3437,29 @@ var RLANG = {
 		insertLink: function()
 		{
 			var tab_selected = $('#redactor_tab_selected').val();
-			var link = '', text = '', target = '';
+			var link = '', text = '', targettext = '', target = '';
 
 			if (tab_selected === '1') // url
 			{
 				link = $('#redactor_link_url').val();
 				text = $('#redactor_link_url_text').val();
 
-				if ($('#redactor_link_blank').attr('checked'))
+				if ($('#redactor_link_blank').prop('checked'))
 				{
-					target = ' target="_blank"';
+					targettext = ' target="_blank"';
+					target = '_blank';
 				}
 
 				// test url
-				var pattern = '((xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}';
+				var pattern = '/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/';
+				//var pattern = '((xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}';
 				var re = new RegExp('^(http|ftp|https)://' + pattern,'i');
 				var re2 = new RegExp('^' + pattern,'i');
 				if (link.search(re) == -1 && link.search(re2) == 0 && this.opts.protocol !== false)
 				{
 					link = this.opts.protocol + link;
 				}
+
 			}
 			else if (tab_selected === '2') // mailto
 			{
@@ -3466,7 +3472,7 @@ var RLANG = {
 				text = $('#redactor_link_anchor_text').val();
 			}
 
-			this._insertLink('<a href="' + link + '"' + target + '>' +  text + '</a>', $.trim(text), link, target);
+			this._insertLink('<a href="' + link + '"' + targettext + '>' +  text + '</a>', $.trim(text), link, target);
 
 		},
 		_insertLink: function(a, text, link, target)
@@ -3562,7 +3568,7 @@ var RLANG = {
 				var link = '<a href="' + json.filelink + '">' + text + '</a>';
 
 				// chrome fix
-				if ($.browser.webkit && !!this.window.chrome)
+				if (this.browser('webkit') && !!this.window.chrome)
 				{
 					link = link + '&nbsp;';
 				}
@@ -3776,7 +3782,7 @@ var RLANG = {
 			var d = this.document.createElement('div');
 			var iframe = '<iframe style="display:none" id="'+this.id+'" name="'+this.id+'"></iframe>';
 			d.innerHTML = iframe;
-			this.document.body.appendChild(d);
+			$(d).appendTo("body");
 
 			// Start
 			if (this.uploadOptions.start)
@@ -3806,7 +3812,7 @@ var RLANG = {
 							v = $(v).val();
 						}
 
-						var hidden = $('<input type="hidden" name="' + k + '" value="' + v + '">');
+						var hidden = $('<input/>', {'type': "hidden", 'name': k, 'value': v});
 						$(this.form).append(hidden);
 
 					}, this));
@@ -3837,7 +3843,7 @@ var RLANG = {
 		},
 		uploadLoaded : function()
 		{
-			var i = $('#' + this.id);
+			var i = $('#' + this.id)[0];
 			var d;
 
 			if (i.contentDocument)
@@ -3886,9 +3892,26 @@ var RLANG = {
 		},
 
 		// UTILITY
+		browser: function(browser)
+		{
+			var ua = navigator.userAgent.toLowerCase();
+			var match = /(chrome)[ \/]([\w.]+)/.exec(ua) || /(webkit)[ \/]([\w.]+)/.exec(ua) || /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) || /(msie) ([\w.]+)/.exec(ua) || ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) || [];
+
+			if (browser == 'version')
+			{
+				return match[2];
+			}
+
+			if (browser == 'webkit')
+			{
+				return (match[1] == 'chrome' || match[1] == 'webkit');
+			}
+
+			return match[1] == browser;
+		},
 		oldIE: function()
 		{
-			if ($.browser.msie && parseInt($.browser.version, 10) < 9)
+			if (this.browser('msie') && parseInt(this.browser('version'), 10) < 9)
 			{
 				return true;
 			}
@@ -4023,7 +4046,7 @@ var RLANG = {
 	Construct.prototype = {
 		init: function()
 		{
-			if (!$.browser.msie)
+			if (navigator.userAgent.search("MSIE") === -1)
 			{
 				this.droparea = $('<div class="redactor_droparea"></div>');
 				this.dropareabox = $('<div class="redactor_dropareabox">' + this.opts.text + '</div>');
@@ -4177,8 +4200,87 @@ var RLANG = {
 
 /* jQuery plugin textselect
  * version: 0.9
- * author: Josef Moravec, josef.moravec@gmail.com
+ * author: Josef Moravec
  * updated: Imperavi Inc.
  *
  */
-eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('(5($){$.1.4.7={t:5(0,v){$(2).0("8",c);$(2).0("r",0);$(2).l(\'g\',$.1.4.7.b)},u:5(0){$(2).w(\'g\',$.1.4.7.b)},b:5(1){9 0=$(2).0("r");9 3=$.1.4.7.f(0).h();6(3!=\'\'){$(2).0("8",x);1.j="7";1.3=3;$.1.i.m(2,k)}},f:5(0){9 3=\'\';6(q.e)3=q.e();o 6(d.e) 3=d.e();o 6(d.p)3=d.p.B().3;A 3}};$.1.4.a={t:5(0,v){$(2).0("n",0);$(2).0("8",c);$(2).l(\'g\',$.1.4.a.b);$(2).l(\'D\',$.1.4.a.s)},u:5(0){$(2).w(\'g\',$.1.4.a.b)},b:5(1){6($(2).0("8")){9 0=$(2).0("n");9 3=$.1.4.7.f(0).h();6(3==\'\'){$(2).0("8",c);1.j="a";$.1.i.m(2,k)}}},s:5(1){6($(2).0("8")){9 0=$(2).0("n");9 3=$.1.4.7.f(0).h();6((1.y=z)&&(3==\'\')){$(2).0("8",c);1.j="a";$.1.i.m(2,k)}}}}})(C);',40,40,'data|event|this|text|special|function|if|textselect|textselected|var|textunselect|handler|false|rdocument|getSelection|getSelectedText|mouseup|toString|handle|type|arguments|bind|apply|rttt|else|selection|rwindow|ttt|handlerKey|setup|teardown|namespaces|unbind|true|keyCode|27|return|createRange|jQuery|keyup'.split('|'),0,{}))
+(function ($) {
+    $.event.special.textselect =
+    {
+        setup: function (data, namespaces)
+        {
+
+            $(this).data("textselected", false);
+            $(this).data("ttt", data);
+            $(this).on('mouseup', $.event.special.textselect.handler)
+        },
+        teardown: function (data)
+        {
+            $(this).off('mouseup', $.event.special.textselect.handler)
+        },
+        handler: function (event)
+        {
+            var data = $(this).data("ttt");
+            var text = $.event.special.textselect.getSelectedText(data).toString();
+
+            if (text != '')
+            {
+                $(this).data("textselected", true);
+                event.type = "textselect";
+                event.text = text;
+
+                $.event.dispatch.apply(this, arguments)
+            }
+        },
+        getSelectedText: function (data)
+        {
+            var text = '';
+            if (rwindow.getSelection) text = rwindow.getSelection();
+            else if (rdocument.getSelection) text = rdocument.getSelection();
+            else if (rdocument.selection) text = rdocument.selection.createRange().text;
+            return text
+        }
+    };
+    $.event.special.textunselect =
+    {
+        setup: function (data, namespaces)
+        {
+            $(this).data("rttt", data);
+            $(this).data("textselected", false);
+            $(this).on('mouseup', $.event.special.textunselect.handler);
+            $(this).on('keyup', $.event.special.textunselect.handlerKey)
+        },
+        teardown: function (data)
+        {
+            $(this).unbind('mouseup', $.event.special.textunselect.handler)
+        },
+        handler: function (event)
+        {
+            if ($(this).data("textselected"))
+            {
+                var data = $(this).data("rttt");
+                var text = $.event.special.textselect.getSelectedText(data).toString();
+                if (text == '')
+                {
+                    $(this).data("textselected", false);
+                    event.type = "textunselect";
+                    $.event.dispatch.apply(this, arguments)
+                }
+            }
+        },
+        handlerKey: function (event)
+        {
+            if ($(this).data("textselected"))
+            {
+                var data = $(this).data("rttt");
+                var text = $.event.special.textselect.getSelectedText(data).toString();
+                if ((event.keyCode = 27) && (text == ''))
+                {
+                    $(this).data("textselected", false);
+                    event.type = "textunselect";
+                    $.event.dispatch.apply(this, arguments)
+                }
+            }
+        }
+    }
+})(jQuery);

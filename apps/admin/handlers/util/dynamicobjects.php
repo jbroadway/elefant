@@ -17,10 +17,11 @@
  *
  *      $.dynamicobjects ({
  *          set_value: '#field-id',
- *          callback: function (embed_code, handler, params) {
+ *          callback: function (embed_code, handler, params, label) {
  *              console.log (embed_code);
  *              console.log (handler);
  *              console.log (params);
+ *              console.log (label);
  *          }
  *     });
  *

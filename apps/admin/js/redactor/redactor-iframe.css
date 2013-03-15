@@ -1,0 +1,184 @@
+html {
+	padding: 0;
+	margin: 0;
+}
+body {
+	font-family: Arial, Helvetica, Verdana, Tahoma, sans-serif;
+	margin: 0;
+	padding: 15px;
+}
+
+code,
+pre {
+	font-family: Menlo, Monaco, monospace, sans-serif;
+}
+
+div,
+p,
+ul,
+ol,
+table,
+dl,
+blockquote,
+pre {
+	font-size: 15px;
+	line-height: 1.45em;
+}
+
+a {
+	color: #15c;
+	text-decoration: underline;
+}
+.redactor_placeholder {
+	color: #999 !important;
+}
+
+object,
+embed,
+video,
+img {
+	width: auto;
+	max-width: 100%;
+}
+video,
+img {
+	height: auto;
+}
+
+div,
+p,
+ul,
+ol,
+table,
+dl,
+blockquote,
+pre {
+	box-shadow: none;
+	background: none;
+	margin: 0;
+	margin-bottom: 15px;
+	border: none;
+}
+iframe,
+object,
+hr {
+	margin-bottom: 15px;
+}
+blockquote {
+	margin-left: 3em;
+	font-style: italic;
+	color: #777;
+}
+ul,
+ol {
+	padding-left: 2em;
+}
+ul ul,
+ol ol,
+ul ol,
+ol ul {
+	border: none;
+	margin: 2px;
+	padding: 0;
+	padding-left: 2em;
+}
+dl dt { font-weight: bold; }
+dd { margin-left: 1em;}
+
+table {
+	border-collapse: collapse;
+	font-size: 1em;
+}
+table td {
+	border: 1px solid #ddd;
+	padding: 5px;
+	vertical-align: top;
+}
+table thead td {
+	border-bottom: 2px solid #000;
+	font-weight: bold;
+}
+code {
+	background-color: #d8d7d7;
+}
+pre {
+	font-size: 90%;
+	background: #f8f8f8;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1em;
+	white-space: pre;
+	overflow: auto;
+}
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+	color: #000;
+	background: none;
+	margin: 0;
+	padding: 0;
+	font-weight: bold;
+}
+
+h1 {
+	font-size: 36px;
+	line-height: 40px;
+	margin-bottom: 10px;
+}
+h2 {
+	font-size: 30px;
+	line-height: 38px;
+	margin-bottom: 15px;
+}
+h3 {
+	font-size: 24px;
+	line-height: 30px;
+	margin-bottom: 10px;
+}
+h4 {
+	font-size: 18px;
+	line-height: 24px;
+	margin-bottom: 10px;
+}
+h5 {
+	font-size: 1em;
+	margin-bottom: 10px;
+}
+
+body.redactor_editor_wym {
+	background: #f6f6f6;
+}
+.redactor_editor_wym div,
+.redactor_editor_wym p,
+.redactor_editor_wym ul,
+.redactor_editor_wym ol,
+.redactor_editor_wym table,
+.redactor_editor_wym dl,
+.redactor_editor_wym pre,
+.redactor_editor_wym h1,
+.redactor_editor_wym h2,
+.redactor_editor_wym h3,
+.redactor_editor_wym h4,
+.redactor_editor_wym h5,
+.redactor_editor_wym blockquote {
+	background-color: #fff;
+	border: 1px solid #e4e4e4;
+	padding: 10px;
+	margin: 10px 0;
+}
+.redactor_editor_wym pre {
+	border: 2px dashed #e4e4e4;
+}
+.redactor_editor_wym ul,
+.redactor_editor_wym ol {
+	padding-left: 2em;
+}
