@@ -175,10 +175,11 @@ class Link {
 	/**
 	 * Generates a link tag for the specified page ID and title.
 	 */
-	public static function make ($id, $title) {
+	public static function make ($id, $title, $href = null) {
+		$href = ($href !== null) ? $href : self::href ($id);
 		return sprintf (
 			'<a href="%s">%s</a>',
-			self::href ($id),
+			$href,
 			$title
 		);
 	}
@@ -186,7 +187,7 @@ class Link {
 	/**
 	 * Generates a single navigation link as a list item.
 	 */
-	public static function single ($id, $title) {
+	public static function single ($id, $title, $href = null) {
 		// Set class="current" if page is current
 		$current = (self::current () === $id) ? ' class="current"' : '';
 
@@ -198,8 +199,19 @@ class Link {
 		return sprintf (
 			"<li%s>%s</li>\n",
 			$current,
-			self::make ($id, $title)
+			self::make ($id, $title, $href)
 		);
+	}
+
+	/**
+	 * Get the domain minus any subdomain.
+	 */
+	public static function base_domain () {
+		$parts = explode ('.', $_SERVER['HTTP_HOST']);
+		if (count ($parts) === 3) {
+			array_shift ($parts);
+		}
+		return join ('.', $parts);
 	}
 }
 
