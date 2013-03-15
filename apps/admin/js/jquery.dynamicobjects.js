@@ -58,17 +58,18 @@
 	};
 
 	// Submit the chosen handler and data
-	self.return_object = function (handler, data) {
+	self.return_object = function (handler, data, label) {
 		var handler = handler ? handler : $(this).data ('handler'),
 			data = data ? data : $(this).data,
-			embed_code = self.build_embed_string (handler, data);
+			embed_code = self.build_embed_string (handler, data),
+			label = label ? label : $(this).data ('label');
 		
 		if (self.opts.set_value) {
 			$(self.opts.set_value).val (embed_code);
 		}
 
 		if (self.opts.callback) {
-			self.opts.callback (embed_code, handler, data);
+			self.opts.callback (embed_code, handler, data, label);
 		}
 
 		$.close_dialog ();
@@ -149,7 +150,7 @@
 
 				if (obj.fields.length === 0) {
 					// no parameters, return handler
-					self.return_object (obj.handler, {});
+					self.return_object (obj.handler, {}, obj.label);
 				}
 
 				// generate the form screen
@@ -160,6 +161,7 @@
 
 				html = '' +
 					'<input type="hidden" name="handler" value="' + obj.handler + '" />' +
+					'<input type="hidden" name="label" value="' + obj.label + '" />' +
 					'<h2>' + obj.label + '</h2>' +
 					'<div class="clearfix">';
 
@@ -265,6 +267,7 @@
 						label = obj.label,
 						form = $(this)[0].form,
 						out = form.elements.handler.value,
+						label = form.elements.label.value,
 						key_list = ['name', 'label', 'type', 'initial', 'message', 'require', 'callback', 'values', 'filter'],
 						filters = false;
 
@@ -308,11 +311,11 @@
 					if (filters) {
 						// apply filters server-side then submit the form with the returned values
 						$.post ('/admin/embed/filters', {handler: out, data: unfiltered}, function (res) {
-							self.return_object (out, res.data);
+							self.return_object (out, res.data, label);
 						});
 					} else {
 						// no filters, submit the form now
-						self.return_object (out, unfiltered);
+						self.return_object (out, unfiltered, label);
 					}
 
 					return false;

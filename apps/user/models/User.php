@@ -121,6 +121,20 @@ class User extends ExtendedModel {
 	}
 
 	/**
+	 * Takes a length and returns a random string of characters of that
+	 * length for use in passwords. String may contain any number, lower
+	 * or uppercase letters, or common symbols.
+	 */
+	public static function generate_pass ($length = 8) {
+		$list = '123467890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_-+=~:;|<>[]{}?"\'';
+		$pass = '';
+		while (strlen ($pass) < $length) {
+			$pass .= substr ($list, mt_rand (0, strlen ($list)), 1);
+		}
+		return $pass;
+	}
+
+	/**
 	 * Verifies a username/password combo against the database.
 	 * Username is matched to the email field. If things check out,
 	 * a session_id is generated and initialized in the database
