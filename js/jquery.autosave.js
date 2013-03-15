@@ -103,7 +103,8 @@ var autosave_interval = null,
 
 						if (opts.form.elements[vals[i].name].getAttribute ('id') == 'webpage-body') {
 							// Set the contents of wysiwyg editor
-							$('#webpage-body').redactor ('code.set', vals[i].value);
+							//$('#webpage-body').redactor ('code.set', vals[i].value);
+							$('#webpage-body').setCode (vals[i].value);
 						} else if (opts.form.elements[vals[i].name].getAttribute ('id') == 'code-body') {
 							// Set the contents of codemirror editor
 							_codemirror.setValue (vals[i].value);
@@ -157,7 +158,8 @@ var autosave_interval = null,
 						// Get the contents from Redactor editor
 						vals[i] = {
 							name: opts.form.elements[i].name,
-							value: $('#webpage-body').redactor ('code.get')
+							//value: $('#webpage-body').redactor ('code.get')
+							value: $('#webpage-body').getCode ()
 						};
 					} else if (opts.form.elements[i].getAttribute ('id') == 'code-body') {
 						// Get the contents from codemirror editor

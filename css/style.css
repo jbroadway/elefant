@@ -6,6 +6,8 @@ body {
 h1, h2, h3, h4, h5, h6 {
 	color: #222;
 	margin-bottom: 8px;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300;
 }
 
 p, ul, ol {
@@ -31,23 +33,34 @@ a:hover {
 }
 
 #wrapper {
-	margin: 25px auto 25px auto;
+	margin: 0px auto 25px auto;
 	padding: 20px 15px 0px 15px;
+	border-top: 4px solid #1C75BC;
 	background-color: #fff;
-	-moz-box-shadow: 0px 0px 4px #aaa;
-	-webkit-box-shadow: 0px 0px 4px #aaa;
-	box-shadow: 0px 0px 4px #aaa;
+	-moz-box-shadow: 0px 0px 12px #aaa;
+	-webkit-box-shadow: 0px 0px 12px #aaa;
+	box-shadow: 0px 0px 12px #aaa;
 }
 
 #head {
-	border-bottom: 4px solid #ddd;
+	border-bottom: 3px solid #ddd;
 }
 
 	#head h1 {
+		font-family: 'Roboto', sans-serif;
+		font-weight: 400;
 		padding-bottom: 10px;
 		margin-bottom: 0px;
 		color: #444;
 	}
+
+		#head h1 a {
+			color: #444;
+		}
+
+		#head h1 a:hover {
+			text-decoration: none;
+		}
 
 	#head .menu {
 		text-align: right;
@@ -69,21 +82,30 @@ a:hover {
 	}
 
 	#head .menu ul li a {
+		border-top: 3px solid #ddd;
 		padding: 5px 12px 5px 12px;
-		font-weight: bold;
+		text-decoration: none;
+	}
+
+	#head .menu ul li.current a {
+		border-top: 3px solid #1C75BC;
 		text-decoration: none;
 	}
 
 	#head .menu ul li a:hover {
+		border-top: 3px solid #1C75BC;
 		background: #1C75BC;
 		color: #fff;
-		font-weight: bold;
 		text-decoration: none;
 	}
 
 #body {
 	padding-top: 15px;
 }
+
+	#body img {
+		max-width: 620px;
+	}
 
 	.block {
 		padding-bottom: 20px;
@@ -117,7 +139,8 @@ a:hover {
 		margin-bottom: -2px;
 	}
 
-.index-body #slideshow-homepage img {
+#body.index-body #slideshow-homepage img {
+	max-width: 940px;
 	width: 940px;
 }
 
@@ -136,8 +159,12 @@ a:hover {
 	padding-top: 15px;
 }
 
+	#sidebar img {
+		max-width: 300px;
+	}
+
 #footer {
-	border-top: 4px solid #ddd;
+	border-top: 3px solid #ddd;
 	padding-top: 5px;
 	margin-bottom: 0px;
 	padding-bottom: 0px;

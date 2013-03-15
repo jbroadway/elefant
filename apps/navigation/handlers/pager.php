@@ -58,6 +58,7 @@ $o->limit = $data['limit']; // number of results per set
 $o->total = $data['total']; // total number of results
 $o->count = $data['count']; // count of results in this set
 $o->url = str_replace ('&amp;', '&', $data['url']); // the url format for building pager links
+if (isset ($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"]) $o->url .= '?'.$_SERVER["QUERY_STRING"];
 
 // the page number from the current url, or zero
 $url = str_replace ('%d', '([0-9]+)', preg_quote ($o->url));
