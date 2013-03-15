@@ -31,7 +31,9 @@ $path = $n->path ($page->id, true);
 $home_id = conf ('I18n', 'multilingual') ? $i18n->language : 'index';
 $home = array ($home_id => __ ('Home'));
 $path = ($path) ? $path : $home;
-if (! in_array ($home_id, array_keys ($path))) {
+if (isset ($path[$home_id])) {
+	$path[$home_id] = __ ('Home');
+} else {
 	$path = array_merge ($home, $path);
 }
 
