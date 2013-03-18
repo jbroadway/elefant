@@ -343,7 +343,7 @@
 							var f = $('#dynamicobjects-form').get (0);
 							for (var k in current.data) {
 								if (f.elements[k]) {
-									if (self.list[i].fields[k].hasOwnProperty ('filter')) {
+									if (self.list[i].fields[k] && self.list[i].fields[k].hasOwnProperty ('filter')) {
 										var data = {};
 										data[k] = current.data[k];
 										$.post ('/admin/embed/filters', {handler: current.handler, data: data, reverse: 'yes'}, function (res) {

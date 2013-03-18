@@ -17,6 +17,7 @@ RedactorPlugins.dynamic = {
 	// Open the dialog when the button is clicked
 	add_handler: function (self, evt, button, current) {
 		this._current = current ? this._current : null;
+		this.saveSelection ();
 		$.dynamicobjects ({
 			callback: $.proxy (this.insert_object, this),
 			current: current ? current : null
@@ -32,6 +33,7 @@ RedactorPlugins.dynamic = {
 
 	// Insert/replace an embed code in the editor
 	insert_object: function (embed_code, handler, params, label) {
+		this.restoreSelection ();
 		if (this._current) {
 			// update existing embed
 			$(this._current).replaceWith (
@@ -39,20 +41,12 @@ RedactorPlugins.dynamic = {
 			);
 		} else {
 			// enter a new embed
-			if (typeof this.getCurrentNode () === 'object') {
-			//if (typeof this.selection.getElement.call (this) === 'object') {
-				$(this.getCurrentNode ()).append (
-				//$(this.selection.getElement.call (this)).append (
-					'<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>'
-				);
-			} else {
-				this.insertHtml (
-				//this.exec.command.call (
-				//	this,
-				//	'inserthtml',
-					'<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>'
-				);
-			}
+			this.insertHtml (
+			//this.exec.command.call (
+			//	this,
+			//	'inserthtml',
+				'<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>'
+			);
 		}
 	}
 };
