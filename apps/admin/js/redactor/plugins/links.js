@@ -79,12 +79,12 @@ RedactorPlugins.links = {
 					'<br />' +
 					'<select id="links-page">' +
 					'</select>' +
-					'<input type="text" id="links-url" size="70" placeholder="http://" />' +
-					'<input type="email" id="links-email" size="70" placeholder="you@example.com" />' +
+					'<input type="text" id="links-url" size="65" placeholder="http://" />' +
+					'<input type="email" id="links-email" size="65" placeholder="you@example.com" />' +
 				'</p>' +
 				'<p>' +
 					$.i18n ('Text') + '<br />' +
-					'<input type="text" id="links-text" size="70" />' +
+					'<input type="text" id="links-text" size="65" />' +
 				'</p>' +
 				'<p>' +
 					'<input type="checkbox" id="links-tab"> ' +

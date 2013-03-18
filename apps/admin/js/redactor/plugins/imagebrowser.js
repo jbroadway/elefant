@@ -13,6 +13,7 @@ RedactorPlugins.imagebrowser = {
 	},
 	
 	open_dialog: function (self, evt, button) {
+		self.saveSelection ();
 		$.filebrowser ({
 			thumbs: true,
 			callback: $.proxy (this.insert_image, this)
@@ -20,6 +21,7 @@ RedactorPlugins.imagebrowser = {
 	},
 	
 	insert_image: function (file) {
+		this.restoreSelection ();
 		this.insertHtml ('<img src="' + file + '" alt="" style="" />');
 		//this.exec.command.call (this, 'inserthtml', '<img src="' + file + '" alt="" style="" />');
 	}

@@ -13,12 +13,14 @@ RedactorPlugins.filebrowser = {
 	},
 	
 	open_dialog: function (self, evt, button) {
+		self.saveSelection ();
 		$.filebrowser ({
 			callback: $.proxy (this.insert_file, this)
 		});
 	},
 	
 	insert_file: function (file) {
+		this.restoreSelection ();
 		if (file.match (/\.(jpg|png|gif)$/i)) {
 			this.insertHtml ('<img src="' + file + '" alt="" style="" />');
 			//this.exec.command.call (this, 'inserthtml', '<img src="' + file + '" alt="" style="" />');

@@ -464,7 +464,8 @@ class MongoModel {
 	 *       ok: 1
 	 *     }
 	 */
-	public function group ($keys, $initial, $reduce, $options = array ()) {
+	public function group ($keys, $initial, $reduce, $options = null) {
+		$options = is_null ($options) ? array ('condition' => array ()) : $options;
 		$cur = $this->collection->group (
 			$keys,
 			$initial,

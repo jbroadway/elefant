@@ -25,19 +25,35 @@
  */
 
 /**
- * Provides the JSON API for the admin file manager/browser, as well as functions
- * to verify files and folders.
+ * Provides an API for managing common file operations such as listing directory
+ * contents, renaming, and deleting files. Using this class, extended file
+ * properties will be correctly re-linked to files that are renamed or moved,
+ * and file and folder names and paths will be verified to be correct.
+ *
+ * Also note that file and folder paths are specified relative to `FileManager::root()`.
+ *
+ * Usage:
+ *
+ *     <?php
+ *     
+ *     // Get listing of files/homepage directory
+ *     $list = FileManager::dir ('homepage');
+ *     
+ *     // Delete files/homepage/photo1.jpg
+ *     $res = FileManager::unlink ('homepage/photo1.jpg');
+ *     
+ *     ?>
  */
-class FileManager extends Restful {
+class FileManager {
 	/**
 	 * The path to the root directory to store files.
 	 */
-	public $root;
+	public static $root = null;
 
 	/**
 	 * The web path to the root directory.
 	 */
-	public $webroot = '/files/';
+	public static $webroot = '/files/';
 
 	/**
 	 * The error message if an error occurs in one of the static methods.
@@ -45,45 +61,55 @@ class FileManager extends Restful {
 	public static $error;
 
 	/**
-	 * The controller object for the current request.
+	 * Returns the $root. Sets $root if not yet set.
 	 */
-	public $controller;
-
-	/**
-	 * Constructor sets $root.
-	 */
-	public function __construct ($controller) {
-		$this->controller = $controller;
-		$this->root = getcwd () . $this->webroot;
+	public static function root () {
+		if (self::$root === null) {
+			self::$root = getcwd () . self::$webroot;
+		}
+		return self::$root;
 	}
 
 	/**
-	 * Handle list directory requests (/filemanager/api/ls).
+	 * Returns the last error message.
 	 */
-	public function get_ls () {
-		$file = urldecode (join ('/', func_get_args ()));
+	public static function error () {
+		return self::$error;
+	}
 
-		if (! self::verify_folder ($file, $this->root)) {
-			return $this->error (__ ('Invalid folder name'));
+	/**
+	 * List all directories and files in a directory. Returns an array
+	 * with 'dirs' and 'files'. Each directory has a 'name', 'path',
+	 * and 'mtime'. Each file also has 'fsize'.
+	 */
+	public static function dir ($path = '') {
+		if (! self::verify_folder ($path)) {
+			self::$error = __ ('Invalid folder name');
+			return false;
 		}
 
-		$d = dir ($this->root . $file);
+		$d = dir (self::root () . $path);
+		if (! $d) {
+			self::$error = __ ('Unable to read folder');
+			return false;
+		}
+
 		$out = array ('dirs' => array (), 'files' => array ());
 		while (false !=  ($entry = $d->read ())) {
 			if (preg_match ('/^\./', $entry)) {
 				continue;
-			} elseif (@is_dir ($this->root . $file . '/' . $entry)) {
+			} elseif (is_dir (self::root () . $path . '/' . $entry)) {
 				$out['dirs'][] = array (
 					'name' => $entry,
-					'path' => ltrim ($file . '/' . $entry, '/'),
-					'mtime' => I18n::date_time (filemtime ($this->root . $file . '/' . $entry))
+					'path' => ltrim ($path . '/' . $entry, '/'),
+					'mtime' => filemtime (self::root () . $path . '/' . $entry)
 				);
 			} else {
 				$out['files'][] = array (
 					'name' => $entry,
-					'path' => ltrim ($file . '/' . $entry, '/'),
-					'mtime' => I18n::date_time (filemtime ($this->root . $file . '/' . $entry)),
-					'fsize' => format_filesize (filesize ($this->root . $file . '/' . $entry))
+					'path' => ltrim ($path . '/' . $entry, '/'),
+					'mtime' => filemtime (self::root () . $path . '/' . $entry),
+					'fsize' => filesize (self::root () . $path . '/' . $entry)
 				);
 			}
 		}
@@ -94,146 +120,206 @@ class FileManager extends Restful {
 	}
 
 	/**
-	 * Handle a directories request (/filemanager/api/dirs).
+	 * Delete a file.
 	 */
-	public function get_dirs () {
-		require_once ('apps/filemanager/lib/Functions.php');
-		return filemanager_list_folders ();
-	}
-
-	/**
-	 * Handle remove file requests (/filemanager/api/rm).
-	 */
-	public function get_rm () {
-		$file = urldecode (join ('/', func_get_args ()));
-
-		if (self::verify_folder ($file, $this->root)) {
-			return $this->error (__ ('Unable to delete folders'));
-		} elseif (! self::verify_file ($file, $this->root)) {
-			return $this->error (__ ('File not found'));
-		} elseif (! unlink ($this->root . $file)) {
-			return $this->error (__ ('Unable to delete') . ' ' . $file);
+	public static function unlink ($file) {
+		if (self::verify_folder ($file)) {
+			self::$error = __ ('Unable to delete folders');
+			return false;
+		} elseif (! self::verify_file ($file)) {
+			self::$error = __ ('File not found');
+			return false;
+		} elseif (! unlink (self::root () . $file)) {
+			self::$error = __ ('Unable to delete') . ' ' . $file;
+			return false;
 		}
-		FileManager::prop_delete ($file);
-		$this->controller->hook ('filemanager/delete', array (
-			'file' => $file
-		));
-		return array ('msg' => __ ('File deleted.'), 'data' => $file);
+		self::prop_delete ($file);
+		return true;
 	}
 
 	/**
-	 * Handle rename requests (/filemanager/api/mv).
+	 * Rename a file or folder.
 	 */
-	public function get_mv () {
-		$file = urldecode (join ('/', func_get_args ()));
-		
-		if (self::verify_folder ($file, $this->root)) {
-			if (! self::verify_folder_name ($_GET['rename'])) {
-				return $this->error (__ ('Invalid folder name'));
-			} else {
-				$parts = explode ('/', $file);
-				$old = array_pop ($parts);
-				$new = preg_replace ('/' . preg_quote ($old) . '$/', $_GET['rename'], $file);
-				if (! rename ($this->root . $file, $this->root . $new)) {
-					return $this->error (__ ('Unable to rename') . ' ' . $file);
-				}
-				FileManager::prop_rename ($file, $new, true);
-				return array ('msg' => __ ('Folder renamed.'), 'data' => $new);
+	public static function rename ($file, $new_name) {
+		if (self::verify_folder ($file)) {
+			if (! self::verify_folder_name ($new_name)) {
+				self::$error = __ ('Invalid folder name');
+				return false;
 			}
-		} elseif (self::verify_file ($file, $this->root)) {
-			if (! self::verify_file_name ($_GET['rename'])) {
-				return $this->error (__ ('Invalid file name'));
-			} else {
-				$parts = explode ('/', $file);
-				$old = array_pop ($parts);
-				$new = preg_replace ('/' . preg_quote ($old) . '$/', $_GET['rename'], $file);
-				if (! rename ($this->root . $file, $this->root . $new)) {
-					return $this->error (__ ('Unable to rename') . ' ' . $file);
-				}
-				FileManager::prop_rename ($file, $new);
-				$this->controller->hook ('filemanager/rename', array (
-					'file' => $file,
-					'renamed' => $new
-				));
-				return array ('msg' => __ ('File renamed.'), 'data' => $new);
+			$parts = explode ('/', $file);
+			$old = array_pop ($parts);
+			$new = preg_replace ('/' . preg_quote ($old) . '$/', $new_name, $file);
+			if (! rename (self::root () . $file, self::root () . $new)) {
+				self::$error = __ ('Unable to rename') . ' ' . $file;
+				return false;
 			}
-		}
-		return $this->error (__ ('File not found'));
-	}
-
-	/**
-	 * Handle drop requests (/filemanager/api/drop), which move files between
-	 * folders.
-	 */
-	public function get_drop () {
-		$file = urldecode (join ('/', func_get_args ()));
-		
-		if (self::verify_file ($file, $this->root)) {
-			if (! self::verify_folder ($_GET['folder'])) {
-				return $this->error (__ ('Invalid folder'));
+			self::prop_rename ($file, $new, true);
+			return true;
+		} elseif (self::verify_file ($file)) {
+			if (! self::verify_file_name ($new_name)) {
+				self::$error = __ ('Invalid file name');
+				return false;
 			}
-
-			$new = $_GET['folder'] . '/' . basename ($file);
-			if (! rename ($this->root . $file, $this->root . $new)) {
-				return $this->error (__ ('Unable to move') . ' ' . $file);
+			$parts = explode ('/', $file);
+			$old = array_pop ($parts);
+			$new = preg_replace ('/' . preg_quote ($old) . '$/', $new_name, $file);
+			if (! rename (self::root () . $file, self::root () . $new)) {
+				self::$error = __ ('Unable to rename') . ' ' . $file;
+				return false;
 			}
 			FileManager::prop_rename ($file, $new);
-			$this->controller->hook ('filemanager/drop', array (
-				'file' => $file,
-				'folder' => $_GET['folder'],
-				'new' => $new
-			));
-			return array ('msg' => __ ('File moved.'), 'data' => $new);
+			return true;
 		}
-		return $this->error (__ ('File not found'));
+		self::$error = __ ('File not found');
+		return false;
 	}
 
 	/**
-	 * Handle make directory requests (/filemanager/api/mkdir).
+	 * Move a file to a new folder.
 	 */
-	public function get_mkdir () {
-		$file = urldecode (join ('/', func_get_args ()));
-		
-		$parts = explode ('/', $file);
+	public static function move ($file, $folder) {
+		if (! self::verify_file ($file)) {
+			self::$error = __ ('File not found');
+			return false;
+		}
+
+		if (! self::verify_folder ($folder)) {
+			self::$error = __ ('Invalid folder');
+			return false;
+		}
+
+		$new = $folder . '/' . basename ($file);
+		if (! rename (self::root () . $file, self::root () . $new)) {
+			self::$error = __ ('Unable to move') . ' ' . $file;
+			return false;
+		}
+
+		self::prop_rename ($file, $new);
+		return true;
+	}
+
+	/**
+	 * Touch a file. If it exists, updates its modification
+	 * time. If not, creates a blank file.
+	 */
+	public static function touch ($file) {
+		if (! self::verify_file ($file)) {
+			$basename = basename ($file);
+			$path = pathinfo ($file, PATHINFO_DIRNAME);
+			if (! self::verify_folder ($path)) {
+				self::$error = __ ('Invalid folder');
+				return false;
+			}
+			if (! self::verify_file_name ($basename)) {
+				self::$error = __ ('Invalid file name');
+				return false;
+			}
+		}
+
+		return touch (self::root () . $file);
+	}
+
+	/**
+	 * Make a new folder.
+	 */
+	public static function mkdir ($folder) {
+		$parts = explode ('/', $folder);
 		$newdir = array_pop ($parts);
-		$path = preg_replace ('/\/?' . preg_quote ($newdir) . '$/', '', $file);
-		if (! self::verify_folder ($path, $this->root)) {
-			return $this->error (__ ('Invalid location'));
+		$path = preg_replace ('/\/?' . preg_quote ($newdir) . '$/', '', $folder);
+		if (! self::verify_folder ($path)) {
+			self::$error = __ ('Invalid location');
+			return false;
 		} elseif (! self::verify_folder_name ($newdir)) {
-			return $this->error (__ ('Invalid folder name'));
-		} elseif (@is_dir ($this->root . $file)) {
-			return $this->error (__ ('Folder already exists') . ' ' . $file);
-		} elseif (! mkdir ($this->root . $file)) {
-			return $this->error (__ ('Unable to create folder') . ' ' . $file);
+			self::$error = __ ('Invalid folder name');
+			return false;
+		} elseif (is_dir (self::root () . $folder)) {
+			self::$error = __ ('Folder already exists') . ' ' . $folder;
+			return false;
+		} elseif (! mkdir (self::root () . $folder)) {
+			self::$error = __ ('Unable to create folder') . ' ' . $folder;
+			return false;
 		}
-		chmod ($this->root . $file, 0777);
-		return array ('msg' => __ ('Folder created.'), 'data' => $file);
+		chmod (self::root () . $folder, 0777);
+		return true;
 	}
 
 	/**
-	 * Handle property update requests (/filemanager/api/prop).
+	 * Remove a folder. The folder must be empty, or recursive
+	 * must be set to true to remove non-empty folders.
 	 */
-	public function get_prop () {
-		$file = urldecode (join ('/', func_get_args ()));
-		if (! self::verify_file ($file, $this->root)) {
-			return $this->error (__ ('Invalid file name'));
+	public static function rmdir ($folder, $recursive = false) {
+		if (! self::verify_folder ($folder)) {
+			self::$error = __ ('Invalid folder name');
+			return false;
 		}
-		if (! isset ($_GET['prop'])) {
-			return $this->error (__ ('Missing property name'));
+
+		$list = self::dir ($folder);
+		if (! $list) {
+			self::$error = __ ('Unable to verify folder');
+			return false;
 		}
-		if (isset ($_GET['value'])) {
-			// update and fetch
-			$res = self::prop ($file, $_GET['prop'], $_GET['value']);
+		
+		if (! $recursive) {
+			if (count ($list['dirs']) > 0 || count ($list['files']) > 0) {
+				self::$error = __ ('Folder must be empty');
+				return false;
+			}
+			if (! rmdir (self::root () . $folder)) {
+				self::$error = __ ('Unable to delete folder');
+				return false;
+			}
+			return true;
+		}
+
+		return self::rmdir_recursive (self::root () . $folder);
+	}
+
+	/**
+	 * Handles recursively deleting folders for `FileManager::rmdir()`.
+	 */
+	private static function rmdir_recursive ($path) {
+		if (preg_match ('|/\.+$|', $path)) {
+			return;
+		}
+		return is_file ($path)
+			? unlink ($path)
+			: array_map (array ('FileManager', 'rmdir_recursive'), glob ($path . '/{,.}*', GLOB_BRACE)) == rmdir ($path);
+	}
+
+	/**
+	 * Returns a list of folders recursively under the specified
+	 * folder path.
+	 */
+	public static function list_folders ($path = '') {
+		$folders = array ();
+
+		if (! empty ($path)) {
+			$rpath = 'files/' . $path;
+			$epath = $path . '/';
 		} else {
-			// fetch
-			$res = self::prop ($file, $_GET['prop']);
+			$rpath = 'files';
+			$epath = '';
 		}
-		return array (
-			'file' => $file,
-			'prop' => $_GET['prop'],
-			'value' => $res,
-			'msg' => __ ('Properties saved.')
-		);
+		$d = dir ($rpath);
+		if (! $d) {
+			return array ();
+		}
+		while (false !== ($file = $d->read ())) {
+			$files[] = $file;
+		}
+		$d->close ();
+
+		foreach ($files as $file) {
+			if (strpos ($file, '.') === 0 || ! @is_dir ($rpath . '/' . $file)) {
+				continue;
+			}
+			$folders[] = $epath . $file;
+			$subs = self::list_folders ($epath . $file);
+			foreach ($subs as $sub) {
+				$folders[] = $sub;
+			}
+		}
+		return $folders;
 	}
 
 	/**
@@ -241,7 +327,7 @@ class FileManager extends Restful {
 	 * inside a certain root folder.
 	 */
 	public static function verify_folder ($path, $root = false) {
-		$root = ($root) ? rtrim ($root) : getcwd () . '/files';
+		$root = ($root) ? rtrim ($root) : rtrim (self::root ());
 		$path = trim ($path, '/');
 		if (strpos ($path, '..') !== false) {
 			return false;
@@ -257,7 +343,7 @@ class FileManager extends Restful {
 	 * inside a certain root folder.
 	 */
 	public static function verify_file ($path, $root = false) {
-		$root = ($root) ? rtrim ($root) : getcwd () . '/files';
+		$root = ($root) ? rtrim ($root) : rtrim (self::root ());
 		$path = trim ($path, '/');
 		if (strpos ($path, '..') !== false) {
 			return false;
