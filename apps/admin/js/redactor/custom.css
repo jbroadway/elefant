@@ -27,12 +27,12 @@
 	border-radius: 2px;
 	width: 654px !important;
 	height: 418px !important;
-	padding: 5px !important;
+	padding: 10px 5px 5px 5px !important;
 }
 
 .redactor_editor:focus {
 	height: 418px !important;
-	padding: 5px !important;
+	padding: 10px 5px 5px 5px !important;
 	margin-top: -1px !important;
 }
 
