@@ -2,7 +2,7 @@
 
 /**
  * Apply filters for dynamic embed data.
- * Called by js/wysiwyg/plugins/wysiwyg.embed.js
+ * Called by apps/admin/js/jquery.dynamicobjects.js
  */
 
 $page->layout = false;
@@ -14,6 +14,11 @@ if (! User::require_admin ()) {
 }
 
 list ($app, $extra) = explode ('/', $_POST['handler']);
+
+if (! file_exists ('apps/' . $app . '/conf/embed.php')) {
+	echo json_encode ((object) array ('success' => false, 'error' => 'Embed file not found', 'data' => $_POST['data']));
+	return;
+}
 
 $rules = parse_ini_file ('apps/' . $app . '/conf/embed.php', true);
 
