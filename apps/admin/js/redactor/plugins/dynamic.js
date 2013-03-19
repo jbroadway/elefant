@@ -39,6 +39,7 @@ RedactorPlugins.dynamic = {
 			$(this._current).replaceWith (
 				'<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>'
 			);
+			this.syncCode();
 		} else {
 			// enter a new embed
 			this.insertHtml (
