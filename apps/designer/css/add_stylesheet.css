@@ -38,6 +38,7 @@ br.preview {
 .CodeMirror {
 	border: 1px solid #ccc;
 	background: #fff;
+	max-width: 1022px;
 }
 .CodeMirror-scroll {
 	height: 240px;
