@@ -226,7 +226,7 @@
 
 				html += '</div><div>' +
 					'<input type="submit" class="dynamicobjects-submit" value="' + self.opts.embed_button + '" />' +
-					'<input type="button" class="dynamicobjects-back clearfix" value="' + self.opts.back_button + '" />' +
+					'<input type="submit" class="dynamicobjects-back clearfix" value="' + self.opts.back_button + '" />' +
 				'</div><br clear="both" />';
 
 				f.html (html);
