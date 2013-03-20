@@ -1,9 +1,5 @@
 <?php
 
-define ('ELEFANT_ENV', 'config');
-require_once ('lib/Functions.php');
-require_once ('lib/Autoloader.php');
-
 class LockTest extends PHPUnit_Framework_TestCase {
 	protected static $lock;
 
@@ -26,6 +22,7 @@ class LockTest extends PHPUnit_Framework_TestCase {
 
 	static function tearDownAfterClass () {
 		User::$user = false;
+		DB::execute ('drop table #prefix#lock');
 	}
 
 	function test_construct () {

@@ -1,7 +1,5 @@
 <?php
 
-require_once ('lib/Autoloader.php');
-
 class MyModel extends ExtendedModel {
 	public $_extended_field = 'extra';
 	public $verify = array (

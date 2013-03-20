@@ -1,7 +1,5 @@
 <?php
 
-require_once ('lib/Autoloader.php');
-
 class MockController {
 	public $data;
 

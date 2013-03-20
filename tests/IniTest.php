@@ -1,7 +1,5 @@
 <?php
 
-require_once ('lib/Autoloader.php');
-
 class IniTest extends PHPUnit_Framework_TestCase {
 	function test_parse () {
 		$str = "one = two\nthree = four";

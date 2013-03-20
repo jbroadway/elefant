@@ -1,7 +1,5 @@
 <?php
 
-require_once ('lib/Functions.php');
-require_once ('lib/Autoloader.php');
 require_once ('apps/admin/lib/Functions.php');
 
 class AdminFunctionsTest extends PHPUnit_Framework_TestCase {

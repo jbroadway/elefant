@@ -1,8 +1,5 @@
 <?php
 
-require_once ('lib/Functions.php');
-require_once ('lib/Autoloader.php');
-
 class Qwerty extends Model {
 	var $key = 'foo';
 }

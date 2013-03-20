@@ -1,7 +1,5 @@
 <?php
 
-require_once ('lib/Autoloader.php');
-
 class ValidatorTest extends PHPUnit_Framework_TestCase {
 	protected $backupGlobalsBlacklist = array ('user');
 

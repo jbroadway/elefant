@@ -1,7 +1,5 @@
 <?php
 
-require_once ('lib/Autoloader.php');
-
 class CacheTest extends PHPUnit_Framework_TestCase {
 	function test_set_get () {
 		$c = new Cache ();

@@ -1,7 +1,5 @@
 <?php
 
-require_once ('lib/Autoloader.php');
-
 class BlogAppTest extends AppTest {
 	function test_index () {
 		// Test the default output with no posts

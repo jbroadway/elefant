@@ -1,8 +1,5 @@
 <?php
 
-require_once ('lib/Functions.php');
-require_once ('lib/Autoloader.php');
-
 class ControllerTest extends PHPUnit_Framework_TestCase {
 	function setUp () {
 		$this->c = new Controller ();
@@ -47,6 +44,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse ($this->c->is_https ());
 		$_SERVER['HTTPS'] = 'on';
 		$this->assertTrue ($this->c->is_https ());
+		$_SERVER['HTTPS'] = 'off';
 	}
 
 	function test_absolutize () {

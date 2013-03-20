@@ -1,7 +1,5 @@
 <?php
 
-require_once ('lib/Autoloader.php');
-
 class Foobar extends Model {}
 
 class VersionsTest extends PHPUnit_Framework_TestCase {

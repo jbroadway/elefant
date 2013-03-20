@@ -1,7 +1,5 @@
 <?php
 
-require_once ('lib/Autoloader.php');
-
 class AnalogTest extends PHPUnit_Framework_TestCase {
 	public static $log = '';
 

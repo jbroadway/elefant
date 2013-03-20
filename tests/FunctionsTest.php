@@ -1,7 +1,5 @@
 <?php
 
-require_once ('lib/Functions.php');
-
 class FunctionsTest extends PHPUnit_Framework_TestCase {
 	function test_simple_auth () {
 		$verifier = function ($user, $pass) {
