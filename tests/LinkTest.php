@@ -1,7 +1,5 @@
 <?php
 
-require_once ('lib/Autoloader.php');
-
 class LinkTest extends PHPUnit_Framework_TestCase {
 	function setUp () {
 		$nav = new Navigation;

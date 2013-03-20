@@ -1,7 +1,5 @@
 <?php
 
-require_once ('lib/Autoloader.php');
-
 class AclTest extends PHPUnit_Framework_TestCase {
 	protected static $acl;
 

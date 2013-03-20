@@ -1,7 +1,5 @@
 <?php
 
-require_once ('lib/Autoloader.php');
-
 class DiffTest extends PHPUnit_Framework_TestCase {
 	function test_compare () {
 		$diff = new Diff (DIFF_SPACE);

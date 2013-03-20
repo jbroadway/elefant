@@ -1,8 +1,5 @@
 <?php
 
-require_once ('lib/Functions.php');
-require_once ('lib/Autoloader.php');
-
 class DBTest extends PHPUnit_Framework_TestCase {
 	function setUp () {
 		$this->bad_conf = array (

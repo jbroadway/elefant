@@ -1,9 +1,6 @@
 <?php
 
-require_once ('lib/Autoloader.php');
-require_once ('lib/Functions.php');
 require_once ('lib/I18n.php');
-define ('ELEFANT_ENV', 'config');
 
 class FileManagerTest extends PHPUnit_Framework_TestCase {
 	static function setUpBeforeClass () {

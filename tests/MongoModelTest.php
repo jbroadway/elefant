@@ -1,8 +1,5 @@
 <?php
 
-require_once ('lib/Functions.php');
-require_once ('lib/Autoloader.php');
-
 if (extension_loaded ('mongo')) {
 	class MTest extends MongoModel {
 		var $name = 'foo';

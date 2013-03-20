@@ -2,8 +2,6 @@
 
 namespace blog;
 
-require_once ('lib/Autoloader.php');
-
 class CsvParserTest extends \PHPUnit_Framework_TestCase {
 	function test_determine_delimiter () {
 		$string = "One\tTwo\tThree";

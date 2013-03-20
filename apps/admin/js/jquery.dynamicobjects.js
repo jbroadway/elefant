@@ -226,7 +226,7 @@
 
 				html += '</div><div>' +
 					'<input type="submit" class="dynamicobjects-submit" value="' + self.opts.embed_button + '" />' +
-					'<input type="button" class="dynamicobjects-back clearfix" value="' + self.opts.back_button + '" />' +
+					'<input type="submit" class="dynamicobjects-back clearfix" value="' + self.opts.back_button + '" />' +
 				'</div><br clear="both" />';
 
 				f.html (html);
@@ -302,7 +302,7 @@
 					// build an array of valid data from the fields
 					var unfiltered = {};
 					for (var i = 0; i < form.elements.length; i++) {
-						if (form.elements[i].name == 'handler' || ! form.elements[i].name) {
+						if (form.elements[i].name == 'handler' || form.elements[i].name == 'label' || ! form.elements[i].name) {
 							continue;
 						}
 						unfiltered[form.elements[i].name] = form.elements[i].value;

@@ -78,7 +78,7 @@ master[file] = "conf/site.db"
 
 ; The database table name prefix.
 
-prefix = ""
+prefix = "elefant_"
 
 [Mongo]
 

@@ -4,7 +4,7 @@ phps:
   - 5.4
 services: mongodb
 before_script: phpenv config-add tests/travis_conf.ini
-script: phpunit tests
+script: phpunit
 branches:
   only:
     - master

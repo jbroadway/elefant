@@ -1,7 +1,5 @@
 <?php
 
-require_once ('lib/Autoloader.php');
-
 class AdminAppTest extends AppTest {
 	public function test_forward () {
 		$res = $this->get ('admin/forward', array ('to' => '/test'));

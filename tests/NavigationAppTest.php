@@ -1,8 +1,5 @@
 <?php
 
-require_once ('lib/Autoloader.php');
-require_once ('lib/Functions.php');
-
 class NavigationAppTest extends AppTest {
 	static function setUpBeforeClass () {
 		parent::setUpBeforeClass ();

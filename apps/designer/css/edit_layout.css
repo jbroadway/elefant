@@ -18,7 +18,7 @@ form {
 }
 #tags {
 	background: #f1f1f1;
-	margin-top: 12px;
+	margin-top: 5px;
 	border: 1px solid #ccc;
 	border-bottom: 0px;
 	-webkit-border-top-left-radius: 2px;
@@ -43,6 +43,7 @@ form br {
 .CodeMirror {
 	border: 1px solid #ccc;
 	background: #fff;
+	max-width: 1022px;
 }
 .CodeMirror-scroll {
 	height: 240px;
