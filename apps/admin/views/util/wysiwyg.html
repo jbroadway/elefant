@@ -61,11 +61,13 @@ $(function () {
 	RedactorPlugins.links.editor_id = '#{{ field_id }}';
 
 	function undo (obj, evt, key) {
-		obj.exec.command.call (obj, 'undo');
+		//obj.exec.command.call (obj, 'undo');
+		obj.execCommand ('undo');
 	}
 
 	function redo (obj, evt, key) {
-		obj.exec.command.call (obj, 'redo');
+		//obj.exec.command.call (obj, 'redo');
+		obj.execCommand ('redo');
 	}
 });
 </script>
