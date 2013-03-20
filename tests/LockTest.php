@@ -5,6 +5,7 @@ class LockTest extends PHPUnit_Framework_TestCase {
 
 	static function setUpBeforeClass () {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
+		DB::execute ('drop table #prefix#lock');
 		DB::execute ('create table `#prefix#lock` (
 			id integer primary key,
 			user int not null,
