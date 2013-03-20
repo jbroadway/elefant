@@ -302,7 +302,7 @@
 					// build an array of valid data from the fields
 					var unfiltered = {};
 					for (var i = 0; i < form.elements.length; i++) {
-						if (form.elements[i].name == 'handler' || ! form.elements[i].name) {
+						if (form.elements[i].name == 'handler' || form.elements[i].name == 'label' || ! form.elements[i].name) {
 							continue;
 						}
 						unfiltered[form.elements[i].name] = form.elements[i].value;
