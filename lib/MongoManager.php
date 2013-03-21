@@ -95,6 +95,7 @@ class MongoManager {
 				}
 			} catch (Exception $e) {
 				self::$error = $e->getMessage ();
+				return false;
 			}
 		}
 		return self::$conn;
@@ -104,7 +105,11 @@ class MongoManager {
 	 * Get the MongoDB database object.
 	 */
 	public static function get_database () {
-		return MongoManager::get_connection ()->{conf ('Mongo', 'name')};
+		$conn = MongoManager::get_connection ();
+		if (! $conn) {
+			return false;
+		}
+		return $conn->{conf ('Mongo', 'name')};
 	}
 }
 
