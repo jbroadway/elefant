@@ -243,6 +243,7 @@
 					.click (function () {
 						$('.dynamicobjects-form').hide ();
 						$('.dynamicobjects-content').show ();
+						return false;
 					});
 
 				// selecting a file
