@@ -29,6 +29,7 @@ if (! @is_dir ('files/' . $path)) {
 $name = str_replace ('/', '-', $path);
 
 $files = glob ('files/' . $path . '/*.{jpg,jpeg,gif,png,JPG,JPEG,GIF,PNG}', GLOB_BRACE);
+$files = is_array ($files) ? $files : array ();
 
 // rewrite if proxy is set
 if ($appconf['General']['proxy_handler']) {
