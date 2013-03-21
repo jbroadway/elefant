@@ -30,6 +30,7 @@ if (! @is_dir ('files/' . $path)) {
 
 // fetch the files
 $files = glob ('files/' . $path . '/*.{jpg,jpeg,gif,png,JPG,JPEG,GIF,PNG}', GLOB_BRACE);
+$files = is_array ($files) ? $files : array ();
 
 // sorting order
 if ($data['order'] === 'desc') {
