@@ -36,6 +36,7 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 
 	function test_construct () {
 		$t = new MTest ();
+		$this->assertFalse ($t->error);
 		$this->assertInstanceOf ('MongoCollection', $t->collection);
 		$this->assertTrue ($t->is_new);
 		$this->assertEquals ('foo', $t->name);

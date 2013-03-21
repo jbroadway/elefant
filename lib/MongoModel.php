@@ -191,9 +191,11 @@ class MongoModel {
 		$this->name = ($this->name === '') ? strtolower (get_class ($this)) : $this->name;
 
 		$this->db = MongoManager::get_database ();
-		if ($this->db) {
-			$this->collection = $this->db->{$this->name};
+		if (! $this->db) {
+			$this->error = MongoManager::$error;
+			return;
 		}
+		$this->collection = $this->db->{$this->name};
 
 		if (is_object ($vals)) {
 			if (get_class ($vals) !== 'MongoId') {
