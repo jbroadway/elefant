@@ -42,6 +42,9 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ('foo', $t->name);
 	}
 
+	/**
+	 * @depends test_construct
+	 */
 	function test_put () {
 		$t = new MTest (array ('foo' => 'bar'));
 		$t->put ();
@@ -52,6 +55,9 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 		self::$id = $t->keyval;
 	}
 
+	/**
+	 * @depends test_put
+	 */
 	function test_get () {
 		$t = new MTest (self::$id);
 		$this->assertEquals ('bar', $t->data['foo']);
@@ -63,11 +69,17 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ('bar', $t->data['foo']);
 	}
 
+	/**
+	 * @depends test_get
+	 */
 	function test_keyval () {
 		$t = new MTest (self::$id);
 		$this->assertEquals (new MongoId ($t->keyval ()), $t->keyval);
 	}
 
+	/**
+	 * @depends test_keyval
+	 */
 	function test_orig () {
 		$t = new MTest (self::$id);
 		$o = $t->orig ();
@@ -75,6 +87,9 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ('bar', $o->foo);
 	}
 
+	/**
+	 * @depends test_orig
+	 */
 	function test_remove () {
 		$t = new MTest (self::$id);
 		$this->assertEquals ('bar', $t->data['foo']);
@@ -84,6 +99,9 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ('No object by that ID.', $t->error);
 	}
 
+	/**
+	 * @depends test_remove
+	 */
 	function test_fetch () {
 		$t = new MTest (array ('foo' => 'bar'));
 		$t->put ();
@@ -101,6 +119,9 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertNotEmpty ($row->keyval ());
 	}
 
+	/**
+	 * @depends test_fetch
+	 */
 	function test_fetch_orig () {
 		$t = new MTest (array ('foo' => 'qwerty'));
 		$t->put ();
@@ -118,6 +139,9 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertNotEmpty ($row->_id);
 	}
 
+	/**
+	 * @depends test_fetch_orig
+	 */
 	function test_fetch_assoc () {
 		$res = MTest::query ()
 			->order ('foo asc')
@@ -130,6 +154,9 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ('qwerty', array_shift ($res));
 	}
 
+	/**
+	 * @depends test_fetch_assoc
+	 */
 	function test_fetch_field () {
 		$res = MTest::query ()
 			->order ('foo asc')
@@ -142,6 +169,9 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ('qwerty', array_shift ($res));
 	}
 
+	/**
+	 * @depends test_fetch_field
+	 */
 	function test_count () {
 		$res = MTest::query ()
 			->count ();
@@ -149,6 +179,9 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (4, $res);
 	}
 
+	/**
+	 * @depends test_count
+	 */
 	function test_single () {
 		$res = MTest::query ()
 			->order ('foo desc')
@@ -157,6 +190,9 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ('qwerty', $res->foo);
 	}
 
+	/**
+	 * @depends test_single
+	 */
 	function test_group () {
 		$res = MTest::query ()
 			->fetch (2);
