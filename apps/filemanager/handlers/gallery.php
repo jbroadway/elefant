@@ -50,9 +50,11 @@ foreach ($files as $key => $file) {
 
 // fetch descriptions
 if ($data['desc'] === 'yes') {
-	$descriptions = FileManager::prop (array_keys ($list), 'desc');
-	foreach ($descriptions as $file => $desc) {
-		$list[$file]->desc = $desc;
+	if (!empty ($list)) {
+		$descriptions = FileManager::prop (array_keys ($list), 'desc');
+		foreach ($descriptions as $file => $desc) {
+			$list[$file]->desc = $desc;
+		}
 	}
 }
 
