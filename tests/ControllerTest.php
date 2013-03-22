@@ -3,7 +3,7 @@
 class ControllerTest extends PHPUnit_Framework_TestCase {
 	function setUp () {
 		$this->c = new Controller ();
-		$GLOBALS['conf'] = parse_ini_file ('conf/config.php', true);
+		$GLOBALS['conf'] = parse_ini_file ('conf/test.php', true);
 	}
 
 	function test_route () {
