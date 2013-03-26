@@ -727,19 +727,32 @@ class Controller {
 		$this->_page->layout = false;
 		header ('Content-Type: application/json');
 
-		// Verify an action has been specified.
-		if (! isset ($this->params[0])) {
-			return $obj->error ('No action specified');
-		}
-
-		// Method names are the request method plus the first parameter
-		// after the handler name, e.g. GET /myapp/api/action_name would
-		// call get_action_name().
-		$method = strtolower ($this->request_method ()) . '_' . $this->params[0];
+		// Try to determine a method to call from the HTTP request method
+		// and the first extra parameter of the URL, or `_default`. For
+		// example:
+		//
+		//     GET /myapp/api -> get__default()
+		//     GET /myapp/api/foo -> get_foo()
+		$request_method = strtolower ($this->request_method ());
+		$action = isset ($this->params[0]) ? $this->params[0] : '_default';
+		$method = $request_method . '_' . $action;
 
 		// Verify the method exists.
 		if (! method_exists ($obj, $method)) {
-			return $obj->error ('Invalid action name');
+			if ($action !== '_default') {
+				// The default hasn't been tried yet, so try that as a
+				// fallback.
+				$action = '_default';
+				$method = $request_method . '_' . $action;
+
+				// No fallback exists
+				if (! method_exists ($obj, $method)) {
+					return $obj->error ('Invalid action name');
+				}
+			} else {
+				// Default was already tried, no go.
+				return $obj->error ('Invalid action name');
+			}
 		}
 
 		// Assign the controller and cache to the object.
@@ -748,7 +761,9 @@ class Controller {
 
 		// Call the method with the extra URL parameters.
 		$params = $this->params;
-		array_shift ($params);
+		if ($action !== '_default') {
+			array_shift ($params);
+		}
 		try {
 			$res = call_user_func_array (array ($obj, $method), $params);
 		} catch (ErrorException $e) {
