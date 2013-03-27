@@ -15,6 +15,8 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($t->replace_vars ('$_POST[value]|none'), '<?php echo $_POST[value]; ?>');
 		$this->assertEquals ($t->replace_vars ('$_POST[\'value\']|none'), '<?php echo $_POST[\'value\']; ?>');
 		$this->assertEquals ($t->replace_vars ('$_POST.value|none'), '<?php echo $_POST[\'value\']; ?>');
+		$this->assertEquals ($t->replace_vars ('foo = true'), '<?php $data->foo = true; ?>');
+		$this->assertEquals ($t->replace_vars ('foo = "bar"'), '<?php $data->foo = "bar"; ?>');
 	}
 
 	function test_replace_strings () {
