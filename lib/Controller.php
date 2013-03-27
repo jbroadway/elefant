@@ -377,9 +377,11 @@ class Controller {
 		if (! isset (self::$hooks[$type])) {
 			return false;
 		}
+		$out = '';
 		foreach (self::$hooks[$type] as $handler) {
-			$this->run ($handler, $data);
+			$out .= $this->run ($handler, $data);
 		}
+		return $out;
 	}
 
 	/**
