@@ -117,7 +117,7 @@ class Page {
 	 * layout template at all, and if so, which one. Also determines
 	 * whether to render as a preview or as a real page.
 	 */
-	public function render ($tpl) {
+	public function render ($tpl, $controller) {
 		if ($this->layout === false) {
 			// No layout, return the body as-is
 			return $this->body;
@@ -139,9 +139,13 @@ class Page {
 
 		// Determine render method (preview or real)
 		if ($this->preview) {
-			return $tpl->render_preview ($this->layout, $this);
+			$out = $tpl->render_preview ($this->layout, $this);
+			$res = $controller->hook ('page/render', array ('html' => $out));
+			return ($res) ? $res : $out;
 		}
-		return $tpl->render ($this->layout, $this);
+		$out = $tpl->render ($this->layout, $this);
+		$res = $controller->hook ('page/render', array ('html' => $out));
+		return ($res) ? $res : $out;
 	}
 
 	/**

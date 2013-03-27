@@ -153,7 +153,7 @@ $page->body = $controller->handle ($handler, false);
  * Render and send the output to the client, using gzip
  * compression if conf[General][compress_output] is true.
  */
-$out = $page->render ($tpl);
+$out = $page->render ($tpl, $controller);
 if (conf ('General', 'compress_output') && extension_loaded ('zlib')) {
 	ob_start ('ob_gzhandler');
 }
