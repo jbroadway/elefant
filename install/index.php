@@ -80,7 +80,7 @@ $steps = array (
 	'settings',
 	'finished'
 );
-$_GET['step'] = in_array ($_GET['step'], $steps) ? $_GET['step'] : 'introduction';
+$_GET['step'] = (isset ($_GET['step']) && in_array ($_GET['step'], $steps)) ? $_GET['step'] : 'introduction';
 
 $data = array ();
 
