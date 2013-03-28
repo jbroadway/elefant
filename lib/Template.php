@@ -391,6 +391,11 @@ class Template {
 			$val = '$data->' . $val;
 		}
 
+		// Does it have an assignment?
+		if (strstr ($val, '=')) {
+			return '<?php ' . $val . '; ?>';
+		}
+
 		// Apply default filter or none
 		if (count ($filters) === 0) {
 			return '<?php echo Template::sanitize (' . $val . ', \'' . $this->charset . '\'); ?>';
