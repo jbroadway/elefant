@@ -1,6 +1,6 @@
 /*
-	Redactor v8.2.3
-	Updated: March 6, 2013
+	Redactor v8.2.4
+	Updated: March 19, 2013
 
 	http://redactorjs.com/
 
@@ -3099,7 +3099,17 @@ var RLANG = {
 		},
 		imageDelete: function(el)
 		{
-			$(el).remove();
+			var parent = $(el).parent();
+			if (parent.size() != 0 && parent[0].tagName == 'A')
+			{
+				// image's link remove
+				parent.remove();
+			}
+			else
+			{
+				$(el).remove();
+			}
+
 			this.modalClose();
 			this.syncCode();
 		},
