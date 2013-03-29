@@ -40,26 +40,31 @@ class Image {
 		if (! extension_loaded ('gd')) {
 			return $file . '#gd-missing';
 		}
-		if ($ext === 'jpg' || $ext === 'jpeg') {
-			if (@imagetypes () & IMG_JPG) {
-				$orig = @imagecreatefromjpeg ($file);
+		
+		try {
+			if ($ext === 'jpg' || $ext === 'jpeg') {
+				if (@imagetypes () & IMG_JPG) {
+					$orig = @imagecreatefromjpeg ($file);
+				} else {
+					return $file . '#libjpg-missing';
+				}
+			} elseif ($ext === 'png') {
+				if (@imagetypes () & IMG_PNG) {
+					$orig = @imagecreatefrompng ($file);
+				} else {
+					return $file . '#libpng-missing';
+				}
+			} elseif ($ext === 'gif') {
+				if (@imagetypes () & IMG_GIF) {
+					$orig = @imagecreatefromgif ($file);
+				} else {
+					return $file . '#libgif-missing';
+				}
 			} else {
-				return $file . '#libjpg-missing';
+				return $file . '#unsupported-format';
 			}
-		} elseif ($ext === 'png') {
-			if (@imagetypes () & IMG_PNG) {
-				$orig = @imagecreatefrompng ($file);
-			} else {
-				return $file . '#libpng-missing';
-			}
-		} elseif ($ext === 'gif') {
-			if (@imagetypes () & IMG_GIF) {
-				$orig = @imagecreatefromgif ($file);
-			} else {
-				return $file . '#libgif-missing';
-			}
-		} else {
-			return $file . '#unsupported-format';
+		} catch (Exception $e) {
+			return $file . '#exception-caught';
 		}
 
 		if (! @is_dir ('cache/thumbs')) {
