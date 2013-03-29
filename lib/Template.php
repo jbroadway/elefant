@@ -137,7 +137,7 @@
  *
  * In a foreach:
  *
- *     {% foreach Oject::some_method () %}
+ *     {% foreach Object::some_method () %}
  *
  * Calling a superglobal:
  *
