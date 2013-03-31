@@ -92,8 +92,8 @@ function navigation_get_other_pages ($ids) {
         $apps = glob('apps/*/conf/config.php');
         foreach ($apps as $app) {
             $ini = parse_ini_file($app);
-            if (key_exists('title',$ini) && $ini['title']!=''
-                && !(key_exists('no_nav',$ini) && (bool)$ini['no_nav'])) {
+             if (array_key_exists ('include_in_nav', $ini) && $ini['include_in_nav']
+            		&& array_key_exists ('title', $ini) && $ini['title'] != '') {
                 $appObj = new stdClass();
                 $appPath = explode('/',$app);
                 $appObj->id = $appPath[1];
