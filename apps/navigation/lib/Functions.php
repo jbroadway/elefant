@@ -89,16 +89,16 @@ function navigation_get_other_pages ($ids) {
 	$res = DB::fetch ('select id, title, menu_title from #prefix#webpage where access = "public"');
 
         //Adds apps to Navigation
-        $apps = glob('apps/*/conf/config.php');
+        $apps = glob ('apps/*/conf/config.php');
         foreach ($apps as $app) {
-            $ini = parse_ini_file($app);
+            $ini = parse_ini_file ($app);
              if (array_key_exists ('include_in_nav', $ini) && $ini['include_in_nav']
             		&& array_key_exists ('title', $ini) && $ini['title'] != '') {
-                $appObj = new stdClass();
-                $appPath = explode('/',$app);
+                $appObj = new stdClass ();
+                $appPath = explode ('/',$app);
                 $appObj->id = $appPath[1];
                 $appObj->title = $ini['title'];
-                $appObj->menu_title = key_exists('menu_title',$ini) ? $ini['menu_title'] : $ini['title'];
+                $appObj->menu_title = array_key_exists ('menu_title', $ini) ? $ini['menu_title'] : $ini['title'];
                 $res[] = $appObj;
             }
         }
