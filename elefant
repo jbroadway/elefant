@@ -78,6 +78,9 @@ if (count ($argv) === 0) {
 }
 
 // Run the command through Elefant's CLI handling
+foreach ($argv as $k => $v) {
+	$argv[$k] = escapeshellarg ($v);
+}
 system ('php index.php ' . $handler . ' ' . join (' ', $argv));
 
 ?>
