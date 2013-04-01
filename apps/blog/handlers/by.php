@@ -4,6 +4,7 @@
  * Displays a list of blog posts by author.
  */
 
+$page->id = 'blog';
 $page->layout = $appconf['Blog']['layout'];
 
 require_once ('apps/blog/lib/Filters.php');

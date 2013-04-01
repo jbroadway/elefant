@@ -5,6 +5,7 @@
  */
 
 if (! $this->internal) {
+	$page->id = 'blog';
 	$page->layout = $appconf['Blog']['layout'];
 	$page->title = __ ('Latest Posts');
 }
