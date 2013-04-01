@@ -14,6 +14,11 @@ layout = default
 
 post_layout = default
 
+; Whether to include this app in the list of pages
+; available to the Tools > Navigation tree.
+
+include_in_nav = On
+
 ; Here you can choose a service to use for blog comments.
 ; Supported platforms are Facebook and Disqus. Set it
 ; to Off to disable comments. For Disqus, you also need
