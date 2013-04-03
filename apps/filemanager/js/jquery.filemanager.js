@@ -7,8 +7,8 @@
 		aviary: null,
 		aviary_key: false,
 		aviary_current: false,
-		text_file: /\.(txt|html?|xml|md|csv|css|js|json)$/,
-		img_file: /\.(gif|png|jpe?g)$/,
+		text_file: /\.(txt|html?|xml|md|csv|css|js|json)$/i,
+		img_file: /\.(gif|png|jpe?g)$/i,
 		max_filesize: 2,
 		strings: {
 			
