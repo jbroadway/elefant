@@ -1,6 +1,6 @@
 /*
-	Redactor v8.2.4
-	Updated: March 19, 2013
+	Redactor v8.2.5
+	Updated: April 2, 2013
 
 	http://redactorjs.com/
 
@@ -704,7 +704,7 @@ var RLANG = {
 					if (arr[0] < 536) oldsafari = true;
 				}
 
-				if (this.isMobile(true) === false && oldsafari === false)
+				if (this.isMobile(true) === false && oldsafari === false && this.browser('opera') === false)
 				{
 					this.$editor.bind('paste', $.proxy(function(e)
 					{
@@ -736,6 +736,7 @@ var RLANG = {
 							this.restoreSelection();
 
 							var html = this.getFragmentHtml(pastedFrag);
+
 							this.pasteCleanUp(html);
 							this.pasteRunning = false;
 

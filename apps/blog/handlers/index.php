@@ -14,6 +14,7 @@ if ($appconf['Custom Handlers']['blog/index'] != 'blog/index') {
 	return;
 }
 
+$page->id = 'blog';
 $page->layout = $appconf['Blog']['layout'];
 
 require_once ('apps/blog/lib/Filters.php');
