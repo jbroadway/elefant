@@ -169,6 +169,36 @@ class FileManagerTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue ($res);
 		$this->assertFalse (is_dir ('files/rmdir_recursive_test'));
 	}
+
+	function test_add_webroot () {
+		$this->assertEquals (
+			'/files/foobar.txt',
+			FileManager::add_webroot ('foobar.txt')
+		);
+		$this->assertEquals (
+			'/files/foobar.txt',
+			FileManager::add_webroot ('/files/foobar.txt')
+		);
+		$this->assertEquals (
+			'/files/foo/files/bar.txt',
+			FileManager::add_webroot ('/foo/files/bar.txt')
+		);
+	}
+
+	function test_strip_webroot () {
+		$this->assertEquals (
+			'foobar.txt',
+			FileManager::strip_webroot ('/files/foobar.txt')
+		);
+		$this->assertEquals (
+			'foobar.txt',
+			FileManager::strip_webroot ('foobar.txt')
+		);
+		$this->assertEquals (
+			'/foo/bar/files/asdf.txt',
+			FileManager::strip_webroot ('/foo/bar/files/asdf.txt')
+		);
+	}
 }
 
 ?>

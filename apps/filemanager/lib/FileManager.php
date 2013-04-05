@@ -71,6 +71,23 @@ class FileManager {
 	}
 
 	/**
+	 * Adds the $webroot to a file/folder path, if not present.
+	 */
+	public static function add_webroot ($path) {
+		if (! preg_match ('/^' . preg_quote (self::$webroot, '/') . '/', $path)) {
+			$path = self::$webroot . ltrim ($path, '/');
+		}
+		return $path;
+	}
+
+	/**
+	 * Removes the $webroot from a file/folder path.
+	 */
+	public static function strip_webroot ($path) {
+		return preg_replace ('/^' . preg_quote (self::$webroot, '/') . '/', '', $path);
+	}
+
+	/**
 	 * Returns the last error message.
 	 */
 	public static function error () {
