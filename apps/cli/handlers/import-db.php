@@ -21,30 +21,6 @@ if (! file_exists ($file)) {
 	die;
 }
 
-$conf = parse_ini_file ('conf/config.php', true);
-date_default_timezone_set ($conf['General']['timezone']);// connect to the database
-
-$connected = false;
-foreach (array_keys ($conf['Database']) as $key) {
-	if ($key == 'master') {
-		$conf['Database'][$key]['master'] = true;
-		if (! DB::open ($conf['Database'][$key])) {
-			echo "** Error: Could not connect to the database. Please check the\n";
-			echo "          settings in conf/config.php and try again.\n";
-			echo "\n";
-			echo "          " . DB::error () . "\n";
-			return;
-		}
-		$connected = true;
-		break;
-	}
-}
-if (! $connected) {
-	echo "** Error: Could not find a master database. Please check the\n";
-	echo "          settings in conf/config.php and try again.\n";
-	return;
-}
-
 // import the database schema
 $sqldata = sql_split (file_get_contents ($file));
 
