@@ -67,6 +67,9 @@ if ($data['style'] === 'lightbox') {
 	$template = 'filemanager/gallery';
 } else {
 	$template = 'filemanager/gallery/embedded';
+    if (User::require_admin ()) {
+        $page->add_script ('/apps/filemanager/js/jquery.filemanager.js');
+    }
 }
 
 // rewrite if proxy is set
