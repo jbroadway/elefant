@@ -177,7 +177,15 @@ class FileManagerTest extends PHPUnit_Framework_TestCase {
 		);
 		$this->assertEquals (
 			'/files/foobar.txt',
+			FileManager::add_webroot ('/foobar.txt')
+		);
+		$this->assertEquals (
+			'/files/foobar.txt',
 			FileManager::add_webroot ('/files/foobar.txt')
+		);
+		$this->assertEquals (
+			'/files/foobar.txt',
+			FileManager::add_webroot ('files/foobar.txt')
 		);
 		$this->assertEquals (
 			'/files/foo/files/bar.txt',
@@ -189,6 +197,10 @@ class FileManagerTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (
 			'foobar.txt',
 			FileManager::strip_webroot ('/files/foobar.txt')
+		);
+		$this->assertEquals (
+			'foobar.txt',
+			FileManager::strip_webroot ('files/foobar.txt')
 		);
 		$this->assertEquals (
 			'foobar.txt',
