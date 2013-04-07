@@ -18,17 +18,25 @@ class MongoModelTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 
-	protected function setUp () {
-		if (! extension_loaded ('mongo')) {
-			$this->markTestSkipped ('The Mongo extension is not available');
+	protected function setUp()
+	{
+		if (!extension_loaded('mongo')) {
+			$this->markTestSkipped('The Mongo extension is not available');
+		} else {
+			$t = new MTest ();
+			if ($t->error) {
+				$this->markTestSkipped('Unable to reach MongoDb server');
+			}
 		}
 	}
 
 	static function tearDownAfterClass () {
 		if (extension_loaded ('mongo')) {
 			$t = new MTest ();
-			foreach ($t->fetch () as $row) {
-				$row->remove ();
+			if (! $t->error) {
+				foreach ($t->fetch() as $row) {
+					$row->remove();
+				}
 			}
 			unset ($GLOBALS['conf']);
 		}
