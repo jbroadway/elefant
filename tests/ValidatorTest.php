@@ -22,6 +22,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue (Validator::validate (5, 'range', '1-10'));
 		$this->assertFalse (Validator::validate (15, 'range', '1-10'));
 		$this->assertTrue (Validator::validate ('', 'empty'));
+		$this->assertFalse (Validator::validate ('0', 'empty'));
 		$this->assertFalse (Validator::validate ('asdf', 'empty'));
 		$this->assertTrue (Validator::validate ('foo@bar.com', 'email'));
 		$this->assertFalse (Validator::validate ('@foo@bar.com', 'email'));
