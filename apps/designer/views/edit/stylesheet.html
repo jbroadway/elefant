@@ -12,10 +12,10 @@
 <p><textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea>
 <br />{"Preview with layout"}: <select name="layout" id="layout">
 {% foreach layouts %}
-	<option value="{{ loop_value }}"{% if loop_value == 'default' %} selected{% end %}>{{ loop_value }}</option>
+	<option value="{{ loop_value }}"{% if $data->loop_value == conf('General', 'default_layout') %} selected{% end %}>{{ loop_value }}</option>
 {% end %}
 </select><br />
-<iframe src="/designer/csspreview?layout=default&css={{ file }}" id="preview" frameborder="0" width="1022" height="300" style="border: 1px solid #ccc"></iframe></p>
+<iframe src="/designer/csspreview?layout={{conf('General', 'default_layout')}}&css={{ file }}" id="preview" frameborder="0" width="1022" height="300" style="border: 1px solid #ccc"></iframe></p>
 </form>
 
 <link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/lib/codemirror.css" />

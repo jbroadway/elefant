@@ -397,7 +397,7 @@ class I18n {
 	 * wrapper when calling it in PHP code.
 	 */
 	public static function export ($strings) {
-		if (func_num_args () > 1) {
+		if (func_num_args () > 1 || ! is_array ($strings)) {
 			$strings = func_get_args ();
 		}
 

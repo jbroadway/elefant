@@ -13,12 +13,11 @@ if (isset ($_GET['redirect'])) {
 	$_POST['redirect'] = $_GET['redirect'];
 }
 
-if (! isset ($_POST['redirect']) || empty ($_POST['redirect'])) {
-	$_POST['redirect'] = '/';
-}
-
-if (! Validator::validate ($_POST['redirect'], 'header')) {
-	$_POST['redirect'] = '/';
+if (! isset ($_POST['redirect'])
+	|| empty ($_POST['redirect'])
+	|| ! Validator::validate ($_POST['redirect'], 'header')
+) {
+	$_POST['redirect'] = $appconf['General']['login_redirect'];
 }
 
 if (! User::require_admin ()) {

@@ -159,6 +159,9 @@ class Validator {
 				return (($min <= $value) && ($value <= $max));
 
 			case 'empty':
+				if ($value === '0') {
+					return false;
+				}
 				return empty ($value);
 
 			case 'length':
