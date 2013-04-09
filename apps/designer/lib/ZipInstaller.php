@@ -13,7 +13,7 @@ class ZipInstaller extends Installer {
 		try {
 			Zipper::unzip ($source['tmp_name']);
 		} catch (Exception $e) {
-			self::$error = __ ('Could not unzip the file.');
+			self::$error = $e->getMessage();
 			return false;
 		}
 
