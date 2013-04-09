@@ -14,8 +14,8 @@ $(function () {
 
 <div id="tabs">
 	<ul>
-		<li><a href="#layouts">{"Layouts"}</a></li>
-		<li><a href="#stylesheets">{"Stylesheets"}</a></li>
+		<li data-tab="0"><a href="#layouts">{"Layouts"}</a></li>
+		<li data-tab="1"><a href="#stylesheets">{"Stylesheets"}</a></li>
 	</ul>
 	<div id="layouts">
 
@@ -102,7 +102,7 @@ $(function () {
 
 .ui-tabs-nav {
 	list-style: none;
-	border-bottom: 1px solid #8A5AB5;
+	border-bottom: 1px solid #93278f;
 	padding: 0px;
 	margin: 0px;
 	padding-bottom: 2px;
@@ -120,32 +120,60 @@ $(function () {
 		line-height: 20px;
 		padding: 5px 10px 5px 10px;
 		background: #e5e5e5;
+		color: #222;
 		border-right: 1px solid #ccc;
 		outline: none;
 	}
 	
 	.ui-state-default a:hover {
-		background: #e8d8ed;
-		color: #8A5AB5;
+		background: #dddddd; /* Old browsers */
+		background: -moz-linear-gradient(top,  #dddddd 0%, #cccccc 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dddddd), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* IE10+ */
+		background: linear-gradient(to bottom,  #dddddd 0%,#cccccc 100%); /* W3C */
+		color: #93278f;
 	}
 
-	.ui-tabs-selected a {
-		background: #8A5AB5;
-		color: #f5f5f5;
+	.ui-state-active a {
+		background: #dddddd; /* Old browsers */
+		background: -moz-linear-gradient(top,  #dddddd 0%, #cccccc 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dddddd), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* IE10+ */
+		background: linear-gradient(to bottom,  #dddddd 0%,#cccccc 100%); /* W3C */
+		color: #93278f;
 		border-right: 0px;
 		outline: none;
 	}
 	
-	.ui-tabs-selected a:hover {
-		background: #8A5AB5;
-		color: #f5f5f5;
+	.ui-state-active a:hover {
+		background: #dddddd; /* Old browsers */
+		background: -moz-linear-gradient(top,  #dddddd 0%, #cccccc 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dddddd), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* IE10+ */
+		background: linear-gradient(to bottom,  #dddddd 0%,#cccccc 100%); /* W3C */
+		color: #93278f;
 	}
 
 </style>
 <script src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script src="/js/jstorage.js"></script>
 <script>
 $(function () {
-	$('#tabs').tabs ();
+	var key = 'elefant-designer-tab',
+		open = $.jStorage.get (key) || 0;
+
+	$('#tabs').tabs ({
+		active: open,
+		activate: function (event, ui) {
+			$.jStorage.set (key, ui.newTab.data ('tab'));
+		}
+	});
 });
 </script>
 
