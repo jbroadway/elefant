@@ -216,7 +216,7 @@ class User extends ExtendedModel {
 				$tld = array_pop ($parts);
 				$domain = '.' . array_pop ($parts) . '.' . $tld;
 			}
-			@session_set_cookie_params (time () + 2592000, '/', $domain);
+			@session_set_cookie_params (time () + conf ('General', 'session_duration'), '/', $domain);
 			@session_start ();
 		}
 

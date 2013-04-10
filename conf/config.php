@@ -51,6 +51,10 @@ page_url_style = flat
 
 session_domain = full
 
+; Session duration in seconds. Default is 2592000, or 30 days.
+
+session_duration = 2592000
+
 ; For development, turn debugging on and Elefant will output
 ; helpful information on errors.
 
