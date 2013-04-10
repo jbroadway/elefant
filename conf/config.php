@@ -52,6 +52,8 @@ page_url_style = flat
 session_domain = full
 
 ; Session duration in seconds. Default is 2592000, or 30 days.
+; Set this to 0 for the session to expire when the user closes
+; their browser.
 
 session_duration = 2592000
 
