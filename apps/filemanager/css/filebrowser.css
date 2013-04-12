@@ -65,3 +65,7 @@
 #filebrowser-file {
 	outline-width: 0;
 }
+
+.filebrowser-selected {
+	border: 2px solid black;
+}

@@ -30,17 +30,18 @@
 	};
 
 	// Add a file from the chooser
-	self.add_file = function (file) {
+	self.add_file = function (new_files) {
 		var files = self.get_files ();
 
-		self.last_path = self.dirname (file).replace (/^\/files\//, '');
+		for (var i in new_files) {
+			file = new_files[i];
+			self.last_path = self.dirname (file).replace (/^\/files\//, '');
 
-		// avoid duplicates
-		if ($.inArray (file, files) !== -1) {
-			return;
+			// avoid duplicates
+			if ($.inArray (file, files) === -1) {
+				files.push (file);
+			}
 		}
-
-		files.push (file);
 
 		self.set_files (files);
 		self.update_preview (files);
@@ -130,6 +131,7 @@
 		$('#multi-file-button').click (function () {
 			var fb_opts = {
 				callback: self.add_file,
+				multiple: true,
 				allowed: self.opts.allowed
 			};
 
