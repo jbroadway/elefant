@@ -33,8 +33,7 @@
 	self.add_image = function (file) {
 		var images = self.get_images ();
 
-		self.last_path = self.dirname (file).replace (/^\/files\//, '');
-
+		self.last_path = self.dirname (file).replace (RegExp("^\/" + filebrowser_root + "\/*"), '');
 		// avoid duplicates
 		if ($.inArray (file, images) !== -1) {
 			return;

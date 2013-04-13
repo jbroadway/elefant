@@ -53,14 +53,14 @@
  *
  *     $n->remove ('blog');
  *
- *     // save to conf/navigation.json
+ *     // save to conf/navigation.json or the file configured in conf/config.php
  *     $n->save ();
  */
 class Navigation {
 	/**
 	 * The file that contained the JSON navigation structure.
 	 */
-	public $file = 'conf/navigation.json';
+	public $file = null;
 
 	/**
 	 * The navigation tree structure.
@@ -76,8 +76,9 @@ class Navigation {
 	 * Constructor method. Decodes the navigation tree from the specified
 	 * file in JSON format.
 	 */
-	public function __construct ($file = 'conf/navigation.json') {
-		$this->file = $file;
+	public function __construct ($file = null) {
+		$file = $file !== null ? $file : conf('Navigation','json_file');
+                $this->file = $file;
 		$this->tree = json_decode (file_exists ($file) ? file_get_contents ($file) : '[]');
 		if ( (json_last_error () != JSON_ERROR_NONE) ||
 			 !(is_array ($this->tree)) ) {
