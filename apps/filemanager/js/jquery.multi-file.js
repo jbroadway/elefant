@@ -33,7 +33,7 @@
 	self.add_file = function (file) {
 		var files = self.get_files ();
 
-		self.last_path = self.dirname (file).replace (/^\/files\//, '');
+		self.last_path = self.dirname (file).replace (RegExp("^\/" + filebrowser_root + "\/*"), '');
 
 		// avoid duplicates
 		if ($.inArray (file, files) !== -1) {

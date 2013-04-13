@@ -18,15 +18,18 @@ if (! FileManager::verify_file ($_GET['file'])) {
 
 $form = new Form ('post', $this);
 
+$root = conf('FileManager','root') .'/';
+$form->root = $root;
+
 $form->data = array (
-	'body' => file_get_contents ('files/' . $_GET['file'])
+	'body' => file_get_contents ($root . $_GET['file'])
 );
 
 $page->title = __ ('Edit file') . ': ' . basename ($_GET['file']);
 $page->layout = 'admin';
 
 echo $form->handle (function ($form) {
-	if (! file_put_contents ('files/' . $_GET['file'], $_POST['body'])) {
+	if (! file_put_contents ($form->root . $_GET['file'], $_POST['body'])) {
 		$form->controller->add_notification (__ ('Unable to write to the file. Please check your folder permissions and try again.'));
 		return false;
 	}

@@ -41,7 +41,7 @@ if (! $res) {
 	return;
 }
 
-if (! file_put_contents ('files/' . $_GET['file'], $res)) {
+if (! file_put_contents (conf('FileManager','root') . '/' . $_GET['file'], $res)) {
 	echo json_encode (array (
 		'success' => false,
 		'error' => __ ('Unable to write to the file. Please check your folder permissions and try again.')

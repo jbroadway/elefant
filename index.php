@@ -65,6 +65,12 @@ require ('lib/Functions.php');
 date_default_timezone_set(conf ('General', 'timezone'));
 
 /**
+ * Sets the default file storage location to '/files/' if one isn't
+ * configured in the config.php (or whatever config file is in use)
+ */
+conf('FileManager','root', conf('FileManager', 'root') ? trim(conf('FileManager','root'),'/') : 'files');
+
+/**
  * Set the default error reporting level to All except Notices,
  * and turn off displaying errors. Error handling/debugging can
  * be done by setting conf[General][debug] to true, causing full

@@ -10,7 +10,7 @@ if (! User::require_admin ()) {
 	$this->redirect ('/admin');
 }
 
-$root = getcwd () . '/files/';
+$root = getcwd () . '/' . conf('FileManager','root') .'/';
 
 $o = new StdClass;
 
@@ -50,6 +50,12 @@ if ($appconf['General']['aviary_key']) {
 }
 
 $page->add_style ('/apps/filemanager/css/filemanager.css');
+$page->add_script (
+    sprintf (
+        '<script>var conf_root = "%s";</script>',
+        conf('FileManager','root')
+    )
+);
 $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/js/urlify.js');
 $page->add_script ('/apps/filemanager/js/jquery.filedrop.js');
