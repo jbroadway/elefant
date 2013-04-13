@@ -66,6 +66,10 @@
 	outline-width: 0;
 }
 
-.filebrowser-selected {
-	border: 2px solid black;
+.filebrowser-file.filebrowser-selected {
+	background-color: #ccc;
+}
+
+.filebrowser-selected img {
+	border: 1px solid #333;
 }

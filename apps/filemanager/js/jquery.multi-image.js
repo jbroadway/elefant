@@ -126,7 +126,9 @@
 			var fb_opts = {
 				multiple: true,
 				thumbs: true,
-				callback: self.add_image
+				callback: self.add_image,
+				new_file: $.i18n ('New images'),
+				title: $.i18n ('Choose images')
 			};
 
 			if (self.last_path !== null) {

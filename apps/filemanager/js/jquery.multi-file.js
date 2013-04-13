@@ -132,7 +132,9 @@
 			var fb_opts = {
 				callback: self.add_file,
 				multiple: true,
-				allowed: self.opts.allowed
+				allowed: self.opts.allowed,
+				new_file: $.i18n ('New files'),
+				title: $.i18n ('Choose files')
 			};
 
 			if (self.last_path !== null) {
