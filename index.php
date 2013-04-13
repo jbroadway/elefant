@@ -65,11 +65,13 @@ require ('lib/Functions.php');
 date_default_timezone_set(conf ('General', 'timezone'));
 
 /**
- * Sets the default file storage location to '/files/' if one isn't
- * configured in the config.php (or whatever config file is in use)
+ * Sets the default file storage location to '/files/' and the default
+ * Navigation menu file to 'navigation.json' when they are not
+ * configured in config.php (or alternative configuration file - see
+ * ELEFANT_ENV above).
  */
 conf('FileManager','root', conf('FileManager', 'root') ? trim(conf('FileManager','root'),'/') : 'files');
-
+conf('Navigation','json_file', conf('Navigation', 'json_file') ? trim(conf('Navigation','json_file'),'/') : 'conf/navigation.json');
 /**
  * Set the default error reporting level to All except Notices,
  * and turn off displaying errors. Error handling/debugging can

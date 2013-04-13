@@ -3,3 +3,24 @@ conf/app.*
 conf/installed
 install/cache/*
 install/installed
+/conf/config.php
+/conf/nelly.php
+/ChromePhp.php
+/files/BH0003-Sweetpea-Handtied.jpg
+/apps/fmtest/conf/config.php
+/apps/fmtest/handlers/admin.php
+/apps/fmtest/handlers/index.php
+/apps/fmtest/views/index.html
+/apps/testfiles/conf/config.php
+/apps/testfiles/handlers/admin.php
+/apps/testfiles/handlers/index.php
+/apps/testfiles/views/index.html
+/nbproject/private/private.properties
+/nbproject/private/private.xml
+/nbproject/project.properties
+/nbproject/project.xml
+/nelly-files/Admin Console Modification.txt
+/nelly-files/BH0004-Pink-Lilac-Ivory-Handtied.jpg
+/nelly-files/BH0009a-Purple-Lilac-Handtied.jpg
+/nelly-files/Screenshot from 2013-03-24 15:06:47.png
+/nelly-files/test-folder/BH0009a-Purple-Lilac-Handtied.jpg
