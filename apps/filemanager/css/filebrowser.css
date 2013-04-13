@@ -65,3 +65,11 @@
 #filebrowser-file {
 	outline-width: 0;
 }
+
+.filebrowser-file.filebrowser-selected {
+	background-color: #ccc;
+}
+
+.filebrowser-selected img {
+	border: 1px solid #333;
+}
