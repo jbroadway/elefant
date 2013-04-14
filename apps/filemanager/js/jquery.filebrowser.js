@@ -350,6 +350,7 @@
 					$('#filebrowser-upload-form').show ();
 
 				} else {
+					self.opts.files.push (self.opts.path + '/' + file.name)
 					if (i === self.opts.uploading - 1) {
 						// This is the last file, add notification
 						$.add_notification (res.data);
@@ -365,6 +366,9 @@
 								.data ('file', self.opts.path + '/' + file.name)
 								.click (self.select_file)
 								.click ();
+							return;
+						} else {
+							self.select_files();
 							return;
 						}
 
