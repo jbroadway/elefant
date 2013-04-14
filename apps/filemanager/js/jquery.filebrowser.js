@@ -251,7 +251,7 @@
 					'<select id="filebrowser-dirs"><option value="">files</option></select>' +
 					'<div id="filebrowser-list"></div>';
 		if (self.opts.multiple) {
-			form += '<input type="submit" id="filebrowser-select" value="Submit">';
+			form += '<input type="submit" id="filebrowser-select" value="' + $.i18n ('Select') + '">';
 		}
 		form +=
 				'</form>' +

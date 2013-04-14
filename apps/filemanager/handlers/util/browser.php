@@ -58,7 +58,8 @@ $page->add_script (
 			'Your browser does not support drag and drop file uploads.',
 			'Please upload fewer files at a time.',
 			'The following file is too large to upload',
-			'Uploading...'
+			'Uploading...',
+			'Select'
 		)
 	)
 );
