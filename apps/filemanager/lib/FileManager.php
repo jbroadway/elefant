@@ -53,7 +53,7 @@ class FileManager {
 	/**
 	 * The web path to the root directory.
 	 */
-	public static $webroot = '/files/';
+	public static $webroot = null;
 
 	/**
 	 * The error message if an error occurs in one of the static methods.
@@ -64,6 +64,7 @@ class FileManager {
 	 * Returns the $root. Sets $root if not yet set.
 	 */
 	public static function root () {
+                self::$webroot = self::$webroot ? self::$webroot : '/' . conf('Paths','filemanager_path') . '/';
 		if (self::$root === null) {
 			self::$root = getcwd () . '/' . conf('Paths','filemanager_path') . '/';
 		}
@@ -78,6 +79,7 @@ class FileManager {
 	 *     /foo.txt -> /files/foo.txt
 	 */
 	public static function add_webroot ($path) {
+                self::$webroot = self::$webroot ? self::$webroot : '/' . conf('Paths','filemanager_path') . '/';
 		$path = (strpos ($path, '/') === 0) ? $path : '/' . $path;
 		if (! preg_match ('/^' . preg_quote (self::$webroot, '/') . '/', $path)) {
 			$path = self::$webroot . ltrim ($path, '/');
@@ -93,6 +95,7 @@ class FileManager {
 	 *     files/foo.txt  -> foo.txt
 	 */
 	public static function strip_webroot ($path) {
+                self::$webroot = self::$webroot ? self::$webroot : '/' . conf('Paths','filemanager_path') . '/';
 		$root = preg_quote (self::$webroot, '/');
 		$root = preg_replace ('|^\\\/|', '\\/?', $root);
 		return preg_replace ('/^' . $root . '/', '', $path);
