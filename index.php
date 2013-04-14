@@ -64,15 +64,6 @@ require ('lib/Autoloader.php');
 require ('lib/Functions.php');
 date_default_timezone_set(conf ('General', 'timezone'));
 
- /**
- * Sets the default file storage location to '/files/' if one isn't
- * configured in config.php.
- * Sets the default navigation json file to 'conf/navigation.json' if
- * one isn't configured in config.php.
- */
-conf('Paths','filemanager_path', conf('Paths','filemanager_path') ? trim(conf('Paths','filemanager_path'),'/') : 'files');
-conf('Paths','navigation_json', conf('Paths','navigation_json') ? trim(conf('Paths','navigation_json'),'/') : 'conf/navigation.json');
-
 /**
  * Set the default error reporting level to All except Notices,
  * and turn off displaying errors. Error handling/debugging can
