@@ -11,7 +11,7 @@ if (! User::require_admin ()) {
 	return;
 }
 
-$root = getcwd () . '/files/';
+$root = getcwd () . '/' . conf('Paths','filemanager_path') . '/';
 
 if (! FileManager::verify_folder ($_POST['path'], $root)) {
 	echo json_encode (array ('success' => false, 'error' => __ ('Invalid path')));

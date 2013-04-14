@@ -9,7 +9,7 @@
 	self.opts = {};
 
 	// The folder prefix for file paths
-	self.prefix = '/files/';
+	self.prefix = '/' + filemanager_path + '/';
 
 	// jQuery reference to #filebrowser-dirs
 	self.dirs = null;

@@ -65,7 +65,7 @@ class FileManager {
 	 */
 	public static function root () {
 		if (self::$root === null) {
-			self::$root = getcwd () . self::$webroot;
+			self::$root = getcwd () . '/' . conf('Paths','filemanager_path') . '/';
 		}
 		return self::$root;
 	}
@@ -320,12 +320,12 @@ class FileManager {
 	 */
 	public static function list_folders ($path = '') {
 		$folders = array ();
-
+                $root = conf('Paths','filemanager_path');
 		if (! empty ($path)) {
-			$rpath = 'files/' . $path;
+			$rpath = $root . "/" . $path;
 			$epath = $path . '/';
 		} else {
-			$rpath = 'files';
+			$rpath = $root;
 			$epath = '';
 		}
 		$d = dir ($rpath);

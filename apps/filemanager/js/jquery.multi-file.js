@@ -35,7 +35,7 @@
 
 		for (var i in new_files) {
 			file = new_files[i];
-			self.last_path = self.dirname (file).replace (/^\/files\//, '');
+			self.last_path = self.dirname (file).replace (RegExp('^\/' + filemanager_path + '\/?'), '');
 
 			// avoid duplicates
 			if ($.inArray (file, files) === -1) {

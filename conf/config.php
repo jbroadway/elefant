@@ -83,6 +83,16 @@ multilingual = Off
 
 negotiation_method = http
 
+[Paths]
+
+; The path to your navigation structure file.
+
+;navigation_json = conf/navigation.json
+
+; The path to your file uploads
+
+;filemanager_path = /files/
+
 [Database]
 
 ; Database settings go here. Driver must be a valid PDO driver.
