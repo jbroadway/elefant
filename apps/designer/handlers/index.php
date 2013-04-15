@@ -17,6 +17,7 @@ $out = array (
 	'layouts2' => glob ('layouts/*/*.html'),
 	'stylesheets' => glob ('css/*.css'),
 	'stylesheets2' => glob ('layouts/*/*.css'),
+	'stylesheets3' => glob ('layouts/*/*/*.css'),
 	'locks' => array ()
 );
 
@@ -30,6 +31,12 @@ if ($out['stylesheets2']) {
   foreach ($out['stylesheets2'] as $name) {
 	  $out['stylesheets'][] = $name;
   }
+}
+
+if ($out['stylesheets3']) {
+	foreach ($out['stylesheets3'] as $name) {
+		$out['stylesheets'][] = $name;
+	}
 }
 
 if ($out['layouts']) {

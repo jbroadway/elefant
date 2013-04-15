@@ -62,6 +62,20 @@
 	margin-left: 2px;
 }
 
+#filebrowser-select {
+	clear: both;
+}
+
 #filebrowser-file {
 	outline-width: 0;
+}
+
+.filebrowser-file.filebrowser-selected {
+	font-weight: bold;
+	color: #B347AF;
+}
+
+.filebrowser-selected img {
+	border-collapse: collapse;
+	border: 2px solid #B347AF;
 }

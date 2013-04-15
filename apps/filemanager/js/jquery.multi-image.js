@@ -30,17 +30,19 @@
 	};
 
 	// Add an image from the chooser
-	self.add_image = function (file) {
+	self.add_image = function (files) {
 		var images = self.get_images ();
 
-		self.last_path = self.dirname (file).replace (/^\/files\//, '');
+		for (var i in files) {
+			file = files[i];
+			self.last_path = self.dirname (file).replace (RegExp('^\/' + self.escape_RegExp(filemanager_path) + '\/?'), '');
 
-		// avoid duplicates
-		if ($.inArray (file, images) !== -1) {
-			return;
+			// avoid duplicates
+			if ($.inArray (file, images) === -1) {
+				images.push (file);
+			}
+
 		}
-
-		images.push (file);
 
 		self.set_images (images);
 		self.update_preview (images);
@@ -95,6 +97,10 @@
 	self.dirname = function (path) {
 		return path.replace(/\\/g, '/').replace(/\/[^\/]*\/?$/, '');
 	};
+        
+        self.escape_RegExp = function (str) {
+          return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+        }
 
 	$.multi_image = function (opts) {
 		var defaults = {
@@ -122,8 +128,11 @@
 
 		$('#multi-image-button').click (function () {
 			var fb_opts = {
+				multiple: true,
 				thumbs: true,
-				callback: self.add_image
+				callback: self.add_image,
+				new_file: $.i18n ('New images'),
+				title: $.i18n ('Choose images')
 			};
 
 			if (self.last_path !== null) {

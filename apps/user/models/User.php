@@ -208,9 +208,18 @@ class User extends ExtendedModel {
 	 */
 	public static function method ($callback) {
 		if (! isset ($_SESSION)) {
-			@session_set_cookie_params (time () + 2592000);
+			$domain = conf ('General', 'session_domain');
+			if ($domain === 'full') {
+				$domain = $_SERVER['HTTP_HOST'];
+			} elseif ($domain === 'top') {
+				$parts = explode ('.', $_SERVER['HTTP_HOST']);
+				$tld = array_pop ($parts);
+				$domain = '.' . array_pop ($parts) . '.' . $tld;
+			}
+			@session_set_cookie_params (time () + conf ('General', 'session_duration'), '/', $domain);
 			@session_start ();
 		}
+
 		if (isset ($_POST['username']) && isset ($_POST['password'])) {
 			return call_user_func ($callback, $_POST['username'], $_POST['password']);
 		} elseif (isset ($_SESSION['session_id'])) {

@@ -9,7 +9,7 @@
 	self.opts = {};
 
 	// The folder prefix for file paths
-	self.prefix = '/files/';
+	self.prefix = '/' + filemanager_path + '/';
 
 	// jQuery reference to #filebrowser-dirs
 	self.dirs = null;
@@ -124,19 +124,52 @@
 		});
 	};
 
-	// Select and return a file
+	// Select a file; return it if not multiple
 	self.select_file = function () {
 		var file = $(this).data ('file');
 
-		if (self.opts.set_value) {
-			$(self.opts.set_value).val (self.prefix + file);
-		}
+		if (self.opts.multiple) {
+			if (self.opts.files.indexOf (file) === -1) {
+				self.opts.files.push (file);
+				$(this).addClass ('filebrowser-selected');
+			} else {
+				var index = self.opts.files.indexOf(file);
+				self.opts.files.splice(index, 1);
+				$(this).removeClass ('filebrowser-selected');
+			}
+		} else {
+			if (self.opts.set_value) {
+				$(self.opts.set_value).val (self.prefix + file);
+			}
 
-		if (self.opts.callback) {
-			self.opts.callback (self.prefix + file);
-		}
+			if (self.opts.callback) {
+				self.opts.callback (self.prefix + file);
+			}
 
-		$.close_dialog ();
+			$.close_dialog ();
+		}
+		return false;
+	};
+
+	// Select and return multiple files
+	self.select_files = function () {
+		if (self.opts.files.length) {
+			for (var i in self.opts.files) {
+				self.opts.files[i] = self.prefix + self.opts.files[i];
+			}
+
+			if (self.opts.set_value) {
+				$(self.opts.set_value).val (self.opts.files);
+			}
+
+			if (self.opts.callback) {
+				self.opts.callback (self.opts.files);
+			}
+
+			$.close_dialog ();
+		} else {
+			alert ("No files selected.");
+		}
 		return false;
 	};
 
@@ -164,6 +197,8 @@
 			new_file: $.i18n ('New file'),
 			uploading_text: $.i18n ('Uploading...'),
 			thumbs: false,
+			multiple: false,
+			files: [],
 			path: '',
 			uploading: 0,
 			mimes: {
@@ -200,8 +235,7 @@
 			? new RegExp ('\.(' + self.opts.allowed.join ('|') + ')$', 'i')
 			: null;
 
-		$.open_dialog (
-			self.opts.title,
+		var form =
 			'<div id="filebrowser-dropzone">' +
 				'<form method="post" enctype="multipart/form-data">' +
 					'<div id="filebrowser-upload">' +
@@ -215,9 +249,16 @@
 						'</div>' +
 					'</div>' +
 					'<select id="filebrowser-dirs"><option value="">files</option></select>' +
-					'<div id="filebrowser-list"></div>' +
+					'<div id="filebrowser-list"></div>';
+		if (self.opts.multiple) {
+			form += '<input type="submit" id="filebrowser-select" value="' + $.i18n ('Select') + '">';
+		}
+		form +=
 				'</form>' +
-			'</div>'
+			'</div>';
+		$.open_dialog (
+			self.opts.title,
+			form
 		);
 
 		self.dirs = $('#filebrowser-dirs');
@@ -228,6 +269,8 @@
 
 		filemanager.dirs (self.update_dirs);
 		filemanager.ls ({path: self.opts.path}, self.update_list);
+
+		$('#filebrowser-select').one ('click', self.select_files);
 
 		// Implements drag and drop file upload support,
 		// for browsers that support it, with fallback

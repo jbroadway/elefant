@@ -17,8 +17,12 @@ if (! User::require_admin ()) {
 
 $error = false;
 
-if (! preg_match ('/^(css|layouts|layouts\/[a-z0-9_-]+)\/[a-z0-9_-]+\.(html|css)$/i', $_GET['file'])) {
-	$this->redirect ('/designer');
+if (! preg_match ('/^(css|layouts|layouts\/[a-z0-9_-]+|layouts\/[a-z0-9_-]+\/[a-z0-9_-]+)\/[a-z0-9_-]+\.(html|css)$/i', $_GET['file'])) {
+	$res = new StdClass;
+	$res->success = false;
+	$res->error = 'Invalid file path';
+	echo json_encode ($res);
+	return;
 }
 
 if (! @file_put_contents ($_GET['file'], $_POST['body'])) {

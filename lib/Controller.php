@@ -198,12 +198,9 @@ class Controller {
 	public $uri;
 
 	/**
-	 * When a handler is loaded, if there is a `conf/config.php` for that
-	 * app, its contents will be loaded into `$appconf['appname']` once
-	 * the first time it is called, and accessible thereafter by any
-	 * handler in that app directly via `$appconf`.
+	 * Tracks which apps have been loaded.
 	 */
-	public static $appconf = array ();
+	public static $loaded = array ();
 
 	/**
 	 * This will be set the first time `chunked()` is called, so the controller
@@ -435,34 +432,12 @@ class Controller {
 		$data = (array) $data;
 		$this->data = $data;
 
-		// Load the app's configuration settings if available
-		if (! isset (self::$appconf[$this->app])) {
-			try {
-				// First load the default configuration
-				self::$appconf[$this->app] = file_exists ('apps/' . $this->app . '/conf/config.php')
-					? parse_ini_file ('apps/' . $this->app . '/conf/config.php', TRUE)
-					: array ();
-			} catch (Exception $e) {
-				// Catch and set to empty
-				self::$appconf[$this->app] = array ();
-			}
-
-			try {
-				// Now check for a custom configuration
-				self::$appconf[$this->app] = file_exists ('conf/app.' . $this->app . '.' . ELEFANT_ENV . '.php')
-					? array_replace_recursive (
-						self::$appconf[$this->app],
-						parse_ini_file ('conf/app.' . $this->app . '.' . ELEFANT_ENV . '.php', true)
-					  )
-					: self::$appconf[$this->app];
-			} catch (Exception $e) {
-				// Do nothing because self::$appconf[$this->app] is already set
-			}
-
-			// Load app-specific language files now too
+		if (! in_array ($this->app, self::$loaded)) {
+			// Load app-specific language files on first call to app
 			$i18n->initApp ($this->app);
 		}
-		$appconf = self::$appconf[$this->app];
+		// Load the app's configuration settings
+		$appconf = Appconf::get ($this->app);
 
 		// Run the handler and get its output
 		ob_start ();

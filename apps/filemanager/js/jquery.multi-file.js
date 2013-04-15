@@ -30,17 +30,18 @@
 	};
 
 	// Add a file from the chooser
-	self.add_file = function (file) {
+	self.add_file = function (new_files) {
 		var files = self.get_files ();
 
-		self.last_path = self.dirname (file).replace (/^\/files\//, '');
+		for (var i in new_files) {
+			file = new_files[i];
+			self.last_path = self.dirname (file).replace (RegExp('^\/' + self.escape_RegExp(filemanager_path,'/') + '\/?'), '');
 
-		// avoid duplicates
-		if ($.inArray (file, files) !== -1) {
-			return;
+			// avoid duplicates
+			if ($.inArray (file, files) === -1) {
+				files.push (file);
+			}
 		}
-
-		files.push (file);
 
 		self.set_files (files);
 		self.update_preview (files);
@@ -102,6 +103,10 @@
 		return path.replace(/\\/g, '/').replace(/\/[^\/]*\/?$/, '');
 	};
 
+        self.escape_RegExp = function (str) {
+          return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+        }
+
 	$.multi_file = function (opts) {
 		var defaults = {
 			field: '#files',
@@ -130,7 +135,10 @@
 		$('#multi-file-button').click (function () {
 			var fb_opts = {
 				callback: self.add_file,
-				allowed: self.opts.allowed
+				multiple: true,
+				allowed: self.opts.allowed,
+				new_file: $.i18n ('New files'),
+				title: $.i18n ('Choose files')
 			};
 
 			if (self.last_path !== null) {

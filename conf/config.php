@@ -43,6 +43,20 @@ compress_output = On
 
 page_url_style = flat
 
+; The domain to set the session cookie for. If set to 'full'
+; (the default) it will set it to the full domain of the current
+; request, including subdomain. If set to 'top', it will set
+; the session cookie to '.domain.com' so that it will work
+; across subdomains of the site.
+
+session_domain = full
+
+; Session duration in seconds. Default is 2592000, or 30 days.
+; Set this to 0 for the session to expire when the user closes
+; their browser.
+
+session_duration = 2592000
+
 ; For development, turn debugging on and Elefant will output
 ; helpful information on errors.
 
@@ -68,6 +82,18 @@ multilingual = Off
 ; or cookie.
 
 negotiation_method = http
+
+[Paths]
+
+; The path to your navigation structure file.
+; Note: Leave the leading slash out of the path.
+
+navigation_json = conf/navigation.json
+
+; The path to your file uploads. Note: Leave
+; the leading and trailing slashes out of the path.
+
+filemanager_path = files
 
 [Database]
 

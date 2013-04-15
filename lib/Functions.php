@@ -79,8 +79,16 @@ function conf ($section, $value = false, $update = null) {
 	if ($conf === null) {
 		if (isset ($GLOBALS['conf'])) {
 			$conf =& $GLOBALS['conf'];
+		} elseif (defined ('ELEFANT_ENV') && ELEFANT_ENV !== 'config') {
+			$conf = parse_ini_file ('conf/config.php', true);
+			$conf = file_exists ('conf/' . ELEFANT_ENV . '.php')
+				? array_replace_recursive (
+					$conf,
+					parse_ini_file ('conf/' . ELEFANT_ENV . '.php', true)
+				  )
+				: $conf;
 		} else {
-			$conf = parse_ini_file ('conf/' . ELEFANT_ENV . '.php', true);
+			$conf = parse_ini_file ('conf/config.php', true);
 		}
 	}
 	if ($value) {

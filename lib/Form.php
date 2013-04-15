@@ -369,8 +369,18 @@ class Form {
 	public function initialize_csrf () {
 		if ($this->verify_csrf) {
 			// Start a session
-			@session_set_cookie_params (time () + 2592000);
-			@session_start ();
+			if (! isset ($_SESSION)) {
+				$domain = conf ('General', 'session_domain');
+				if ($domain === 'full') {
+					$domain = $_SERVER['HTTP_HOST'];
+				} elseif ($domain === 'top') {
+					$parts = explode ('.', $_SERVER['HTTP_HOST']);
+					$tld = array_pop ($parts);
+					$domain = '.' . array_pop ($parts) . '.' . $tld;
+				}
+				@session_set_cookie_params (time () + conf ('General', 'session_duration'), '/', $domain);
+				@session_start ();
+			}
 
 			if (isset ($_SESSION['csrf_token']) && $_SESSION['csrf_expires'] > time ()) {
 				// Get an existing token

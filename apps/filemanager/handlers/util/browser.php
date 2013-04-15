@@ -40,6 +40,12 @@
 $this->run ('admin/util/modal');
 
 $page->add_style ('/apps/filemanager/css/filebrowser.css');
+$page->add_script (
+	sprintf (
+		'<script>var filemanager_path = "%s";</script>',
+		conf('Paths','filemanager_path')
+	)
+);
 $page->add_script ('/apps/filemanager/js/jquery.filedrop.js');
 $page->add_script ('/apps/filemanager/js/filemanager.js');
 $page->add_script ('/apps/filemanager/js/jquery.filebrowser.js');
@@ -58,7 +64,8 @@ $page->add_script (
 			'Your browser does not support drag and drop file uploads.',
 			'Please upload fewer files at a time.',
 			'The following file is too large to upload',
-			'Uploading...'
+			'Uploading...',
+			'Select'
 		)
 	)
 );
