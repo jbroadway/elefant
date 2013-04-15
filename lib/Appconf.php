@@ -109,11 +109,11 @@ class Appconf {
 	 *     Appconf::appname ($section = null, $setting = null, $new_value = null);
 	 */
 	public static function __callStatic ($app, $args) {
-		list ($section, $setting, $new_value) = $args;
-		if ($new_value !== null) {
-			return self::set ($app, $section, $setting, $new_value);
+		array_unshift ($args, $app);
+		if (count ($args) === 4 && $args[3] !== null) {
+			return call_user_func_array ('self::set', $args);
 		}
-		return self::get ($app, $section, $setting);
+		return call_user_func_array ('self::get', $args);
 	}
 
 	/**
