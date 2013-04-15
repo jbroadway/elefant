@@ -1,0 +1,163 @@
+<?php
+
+/**
+ * Elefant CMS - http://www.elefantcms.com/
+ *
+ * Copyright (c) 2011 Johnny Broadway
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
+ * This class manages access to the configuration settings for all apps.
+ * In the usage example, both forms of each are equivalent, with the
+ * former being the recommended style for brevity.
+ *
+ * Usage:
+ *
+ *     <?php
+ *     
+ *     // get all settings for the myapp app
+ *     info (Appconf::myapp ());
+ *     info (Appconf::get ('myapp'));
+ *     
+ *     // get the 'Admin' section of myapp's settings
+ *     info (Appconf::myapp ('Admin'));
+ *     info (Appconf::get ('myapp', 'Admin'));
+ *     
+ *     // get the version of myapp
+ *     info (Appconf::myapp ('Admin', 'version'));
+ *     info (Appconf::get ('myapp', 'Admin', 'version'));
+ *     
+ *     // update the version setting
+ *     Appconf::myapp ('Admin', 'version', '1.2.0');
+ *     Appconf::set ('myapp', 'Admin', 'version', '1.2.0');
+ *     
+ *     ?>
+ */
+class Appconf {
+	/**
+	 * The settings array for all apps.
+	 */
+	protected static $appconf = array ();
+
+	/**
+	 * Get the configuration settings for an app.
+	 * Returns an array of all settings.
+	 */
+	private static function _conf ($app) {
+		if (! isset (self::$appconf[$app])) {
+			try {
+				// First load the default configuration
+				self::$appconf[$app] = file_exists ('apps/' . $app . '/conf/config.php')
+					? parse_ini_file ('apps/' . $app . '/conf/config.php', true)
+					: array ();
+			} catch (Exception $e) {
+				// Catch and set to empty
+				self::$appconf[$app] = array ();
+			}
+			
+			try {
+				// Now check for custom configuration for default environment
+				self::$appconf[$app] = file_exists ('conf/app.' . $app . '.config.php')
+					? array_replace_recursive (
+						self::$appconf[$app],
+						parse_ini_file ('conf/app.' . $app . '.config.php', true)
+					  )
+					: self::$appconf[$app];
+			} catch (Exception $e) {
+				// Do nothing because self::$appconf[$app] is already set
+			}
+			
+			if (defined ('ELEFANT_ENV') && ELEFANT_ENV !== 'config') {
+				// Check for custom configuration for alternate environemnt
+				try {
+					self::$appconf[$app] = file_exists ('conf/app.' . $app . '.' . ELEFANT_ENV . '.php')
+						? array_replace_recursive (
+							self::$appconf[$app],
+							parse_ini_file ('conf/app.' . $app . '.' . ELEFANT_ENV . '.php', true)
+						  )
+						: self::$appconf[$app];
+				} catch (Exception $e) {
+					// Do nothing
+				}
+			}
+		}
+		return self::$appconf[$app];
+	}
+
+	/**
+	 * Get/set a configuration value for a given app. Use the app
+	 * name as the method name, using the form:
+	 *
+	 *     Appconf::appname ($section = null, $setting = null, $new_value = null);
+	 */
+	public static function __callStatic ($app, $args) {
+		list ($section, $setting, $new_value) = $args;
+		if ($new_value !== null) {
+			return self::set ($app, $section, $setting, $new_value);
+		}
+		return self::get ($app, $section, $setting);
+	}
+
+	/**
+	 * Get a configuration value for an app. Can retrieve
+	 * the entire app's settings, a section of the settings, or
+	 * an individual value.
+	 *
+	 * - $app is the app name
+	 * - $section is the section of the settings
+	 * - $setting is the individiual setting name
+	 *
+	 * If no $section is specified, the entire configuration for
+	 * the app will be returned as an array.
+	 *
+	 * If no $setting is specified, the section will be returned
+	 * as an array.
+	 */
+	public static function get ($app, $section = null, $setting = null) {
+		$conf = self::_conf ($app);
+		if ($setting && $section) {
+			return $conf[$section][$setting];
+		}
+		if ($section) {
+			return $conf[$section];
+		}
+		return $conf;
+	}
+
+	/**
+	 * Set a configuration value for an app. Note that this does
+	 * not save the changes permanently, only for the current
+	 * request.
+	 *
+	 * - $app is the app name
+	 * - $section is the section of the settings
+	 * - $setting is the individiual setting name
+	 * - $new_value is the value to update the setting with
+	 */
+	public static function set ($app, $section, $setting, $new_value) {
+		$conf = self::_conf ($app);
+		$conf[$section][$setting] = $new_value;
+		self::$appconf[$app] = $conf;
+		return $new_value;
+	}
+}
+
+?>

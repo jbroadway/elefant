@@ -1,6 +1,14 @@
 <?php
 
 class FunctionsTest extends PHPUnit_Framework_TestCase {
+	function test_conf () {
+		$this->assertEquals ('Your Site Name', conf ('General', 'site_name'));
+		$this->assertEquals ('Site Name', conf ('General', 'site_name', 'Site Name'));
+		$this->assertEquals ('Site Name', conf ('General', 'site_name'));
+		$this->assertEquals ('Your Site Name', conf ('General', 'site_name', 'Your Site Name'));
+		$this->assertEquals (array (), conf ('Cache'));
+	}
+
 	function test_simple_auth () {
 		$verifier = function ($user, $pass) {
 			return true;
