@@ -8,7 +8,7 @@ $page->layout = false;
 
 $this->require_admin ();
 
-$root = getcwd () . '/files/';
+$root = getcwd () . '/' . conf('Paths','filemanager_path') . '/';
 
 if (! isset ($_FILES['file'])) {
 	echo json_encode (array ('error' => __ ('File upload field not set.')));
@@ -49,7 +49,7 @@ if (@move_uploaded_file ($_FILES['file']['tmp_name'], $root . $_FILES['file']['n
 	echo stripslashes (
 		json_encode (
 			array (
-				'filelink' => '/files/' . $_FILES['file']['name'],
+				'filelink' => '/' . conf('Paths','filemanager_path') . '/' . $_FILES['file']['name'],
 				'filename' => $_FILES['file']['name']
 			)
 		)

@@ -13,7 +13,7 @@
 
 <script type="text/x-jquery-tmpl" id="tpl_file">
 	<tr>
-		<td><div class="draggable" data-file="${_path}"><img src="/apps/admin/css/admin/file.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/files/${path}" target="_blank"\{{if is_img}} class="file-img"\{{/if}}>${name}</a></div></td>
+		<td><div class="draggable" data-file="${_path}"><img src="/apps/admin/css/admin/file.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="${conf_root}${path}" target="_blank"\{{if is_img}} class="file-img"\{{/if}}>${name}</a></div></td>
 		<td>\{{html mtime}}</td>
 		<td>${fsize}</td>
 		<td style="text-align: right">
