@@ -95,6 +95,7 @@
 									res.data.files[i].text_file = res.data.files[i].name.match (filemanager.text_file);
 									res.data.files[i]._name = res.data.files[i].name.replace (/'/g, '\\\'');
 									res.data.files[i]._path = res.data.files[i].path.replace (/'/g, '\\\'');
+                                                                        res.data.files[i].conf_root = conf_root + '/';
 									$.tmpl ('tpl_file', res.data.files[i]).appendTo (tbody);
 								}
 							}
@@ -120,8 +121,7 @@
 
 									var file = src.data ('file');
 									file = file ? file : src.data ('folder');
-
-									//console.log (file + ' -> ' + folder);									
+								
 									$.filemanager ('drop', {file: file, folder: folder});
 								}
 							});
@@ -139,7 +139,7 @@
 					break;
 				case 'img':
 					// edit an image
-					var url = window.location.href.split ('/filemanager')[0] + '/files/' + options.file;
+					var url = window.location.href.split ('/filemanager')[0] + '/' + filemanager_path + '/' + options.file;
 					filemanager.aviary_current = options.file;
 					$('#aviary-tmp').attr ('src', url);
 

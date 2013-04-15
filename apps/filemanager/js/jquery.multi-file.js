@@ -35,7 +35,7 @@
 
 		for (var i in new_files) {
 			file = new_files[i];
-			self.last_path = self.dirname (file).replace (/^\/files\//, '');
+			self.last_path = self.dirname (file).replace (RegExp('^\/' + self.escape_RegExp(filemanager_path,'/') + '\/?'), '');
 
 			// avoid duplicates
 			if ($.inArray (file, files) === -1) {
@@ -102,6 +102,10 @@
 	self.dirname = function (path) {
 		return path.replace(/\\/g, '/').replace(/\/[^\/]*\/?$/, '');
 	};
+
+        self.escape_RegExp = function (str) {
+          return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+        }
 
 	$.multi_file = function (opts) {
 		var defaults = {

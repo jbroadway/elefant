@@ -10,7 +10,7 @@ if (! User::require_admin ()) {
 	$this->redirect ('/admin');
 }
 
-$root = getcwd () . '/files/';
+$root = getcwd () . '/' . conf('Paths','filemanager_path') . '/';
 
 if (! FileManager::verify_folder ($_POST['path'], $root)) {
 	$page->title = __ ('Invalid Path');

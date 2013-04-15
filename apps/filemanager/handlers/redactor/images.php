@@ -10,11 +10,13 @@ $this->require_admin ();
 
 $images = array ();
 
+$root = conf('Paths','filemanager_path');
+
 $glob = array (
-	glob ('files/*.{png,jpg,gif,jpeg}', GLOB_BRACE),
-	glob ('files/*/*.{png,jpg,gif,jpeg}', GLOB_BRACE),
-	glob ('files/*/*/*.{png,jpg,gif,jpeg}', GLOB_BRACE),
-	glob ('files/*/*/*/*.{png,jpg,gif,jpeg}', GLOB_BRACE)
+	glob ($root . '/*.{png,jpg,gif,jpeg}', GLOB_BRACE),
+	glob ($root . '/*/*.{png,jpg,gif,jpeg}', GLOB_BRACE),
+	glob ($root . '/*/*/*.{png,jpg,gif,jpeg}', GLOB_BRACE),
+	glob ($root . '/*/*/*/*.{png,jpg,gif,jpeg}', GLOB_BRACE)
 );
 
 foreach ($glob as $list) {

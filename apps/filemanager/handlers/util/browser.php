@@ -40,6 +40,12 @@
 $this->run ('admin/util/modal');
 
 $page->add_style ('/apps/filemanager/css/filebrowser.css');
+$page->add_script (
+	sprintf (
+		'<script>var filemanager_path = "%s";</script>',
+		conf('Paths','filemanager_path')
+	)
+);
 $page->add_script ('/apps/filemanager/js/jquery.filedrop.js');
 $page->add_script ('/apps/filemanager/js/filemanager.js');
 $page->add_script ('/apps/filemanager/js/jquery.filebrowser.js');
