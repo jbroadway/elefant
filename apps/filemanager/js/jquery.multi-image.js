@@ -31,7 +31,7 @@
 
 	// Add an image from the chooser
 	self.add_image = function (files) {
-		var images = self.get_images ();
+		var images = [];//self.get_images ();
 
 		for (var i in files) {
 			file = files[i];

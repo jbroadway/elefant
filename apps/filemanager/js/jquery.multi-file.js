@@ -31,7 +31,7 @@
 
 	// Add a file from the chooser
 	self.add_file = function (new_files) {
-		var files = self.get_files ();
+		var files = [];//self.get_files ();
 
 		for (var i in new_files) {
 			file = new_files[i];
