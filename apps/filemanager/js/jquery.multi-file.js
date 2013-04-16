@@ -103,9 +103,9 @@
 		return path.replace(/\\/g, '/').replace(/\/[^\/]*\/?$/, '');
 	};
 
-        self.escape_RegExp = function (str) {
-          return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-        }
+	self.escape_RegExp = function (str) {
+		return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+	}
 
 	$.multi_file = function (opts) {
 		var defaults = {
@@ -138,12 +138,19 @@
 				multiple: true,
 				allowed: self.opts.allowed,
 				new_file: $.i18n ('New files'),
-				title: $.i18n ('Choose files')
+				title: $.i18n ('Choose files'),
+				files: []
 			};
 
 			if (self.last_path !== null) {
 				fb_opts.path = self.last_path;
 			}
+
+			var files = self.get_files ();
+			for (var i in files) {
+				files[i] = files[i].replace (RegExp('^\/' + self.escape_RegExp(filemanager_path,'/') + '\/?'), '');
+			}
+			fb_opts.files = files;
 
 			$.filebrowser (fb_opts);
 			return false;

@@ -31,6 +31,7 @@
 	vertical-align: bottom;
 	margin-right: 10px;
 	margin-bottom: 10px;
+	border: 1px solid #fafafa;
 }
 
 .filebrowser-thumb img {
@@ -62,7 +63,7 @@
 	margin-left: 2px;
 }
 
-#filebrowser-select {
+#filebrowser-select-block {
 	clear: both;
 }
 
@@ -73,6 +74,10 @@
 .filebrowser-file.filebrowser-selected {
 	font-weight: bold;
 	color: #B347AF;
+}
+
+.filebrowser-selected {
+	border: 0;
 }
 
 .filebrowser-selected img {

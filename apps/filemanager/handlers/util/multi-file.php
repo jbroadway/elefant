@@ -45,6 +45,12 @@ $this->run ('filemanager/util/browser');
 $this->run ('admin/util/fontawesome');
 
 $page->add_style ('/apps/filemanager/css/multi-file.css');
+$page->add_script (
+	sprintf (
+		'<script>var filemanager_path = "%s";</script>',
+		conf('Paths','filemanager_path')
+	)
+);
 $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/apps/filemanager/js/jquery.multi-file.js');
 $page->add_script (I18n::export (
