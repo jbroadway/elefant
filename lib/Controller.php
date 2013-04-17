@@ -318,7 +318,7 @@ class Controller {
 	/**
 	 * Run an internal request from one handler to another.
 	 */
-	public function run ($uri, $data = array ()) {
+	public function run ($uri, $data = array (), $internal = true) {
 		$c = new Controller (conf ('Hooks'));
 		$c->page ($this->_page);
 		$c->i18n ($this->_i18n);
@@ -332,7 +332,7 @@ class Controller {
 			self::$called[$uri]++;
 		}
 
-		return $c->handle ($handler, true, $data);
+		return $c->handle ($handler, $internal, $data);
 	}
 
 	/**
