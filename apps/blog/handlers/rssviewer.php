@@ -5,14 +5,19 @@
  * Caches the feed for 30 minutes between updates.
  */
 
-$feed = new SimplePie ($data['url']);
+require_once ('apps/blog/lib/simplepie/autoloader.php');
+
+$feed = new SimplePie ();
+$feed->set_feed_url ($data['url']);
 $feed->set_cache_duration (1800);
 $feed->set_item_limit (10);
-$feed->limit = 10;
+$feed->item_limit = 10;
+$feed->init ();
 $feed->handle_content_type ();
 
 $items = array ();
-foreach ($feed->get_items (0, 10) as $item) {
+$list = $feed->get_items (0, 10);
+foreach ($list as $item) {
 	$items[$item->get_permalink ()] = $item->get_title ();
 }
 

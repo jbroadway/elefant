@@ -30,6 +30,14 @@
 			: name.substr (0, 17) + '...' + name.slice (-9);
 	};
 
+	// Return the path if any.
+	self.path = function () {
+		if (self.opts.path.length === 0) {
+			return '';
+		}
+		return self.opts.path + '/';
+	};
+
 	// Callback to update list of folders
 	self.update_dirs = function (res) {
 		if (! res.success) {
@@ -39,7 +47,7 @@
 		for (var i in res.data) {
 			var option = $('<option></option>')
 				.attr ('value', res.data[i])
-				.text ('files/' + res.data[i]);
+				.text (filemanager_path + '/' + res.data[i]);
 
 			if (self.opts.path === res.data[i]) {
 				option.attr ('selected', 'selected');
@@ -80,6 +88,18 @@
 					list = $('#filebrowser-col-b');
 				}
 
+				var a = $('<a></a>')
+					.attr ('href', '#')
+					.attr ('class', 'filebrowser-file')
+					.attr ('title', res.data.files[i].name)
+					.data ('file', res.data.files[i].path)
+					.text (self.shorten (res.data.files[i].name))
+					.click (self.select_file);
+
+				if (self.opts.files.indexOf (res.data.files[i].path) !== -1) {
+					a.addClass ('filebrowser-selected');
+				}
+
 				list.append (
 					$('<li></li>')
 						.append (
@@ -90,28 +110,24 @@
 									'margin-top': '-2px'
 								})
 						)
-						.append (
-							$('<a></a>')
-								.attr ('href', '#')
-								.attr ('class', 'filebrowser-file')
-								.attr ('title', res.data.files[i].name)
-								.data ('file', res.data.files[i].path)
-								.text (self.shorten (res.data.files[i].name))
-								.click (self.select_file)
-						)
+						.append (a)
 				);
 
 			} else {
 				// Create thumbnails
-				self.list.append (
-					$('<a></a>')
-						.attr ('href', '#')
-						.attr ('class', 'filebrowser-thumb')
-						.attr ('title', res.data.files[i].name)
-						.data ('file', res.data.files[i].path)
-						.click (self.select_file)
-						.append ('<img src="' + self.prefix + res.data.files[i].path + '" />')
-				);
+				var a = $('<a></a>')
+					.attr ('href', '#')
+					.attr ('class', 'filebrowser-thumb')
+					.attr ('title', res.data.files[i].name)
+					.data ('file', res.data.files[i].path)
+					.click (self.select_file)
+					.append ('<img src="' + self.prefix + res.data.files[i].path + '" />');
+
+				if (self.opts.files.indexOf (res.data.files[i].path) !== -1) {
+					a.addClass ('filebrowser-selected');
+				}
+
+				self.list.append (a);
 			}
 		}
 	};
@@ -251,7 +267,7 @@
 					'<select id="filebrowser-dirs"><option value="">files</option></select>' +
 					'<div id="filebrowser-list"></div>';
 		if (self.opts.multiple) {
-			form += '<input type="submit" id="filebrowser-select" value="' + $.i18n ('Select') + '">';
+			form += '<div id="filebrowser-select-block"><input type="submit" id="filebrowser-select" value="' + $.i18n ('Select') + '"></div>';
 		}
 		form +=
 				'</form>' +
@@ -350,6 +366,7 @@
 					$('#filebrowser-upload-form').show ();
 
 				} else {
+					self.opts.files.push (self.path () + file.name)
 					if (i === self.opts.uploading - 1) {
 						// This is the last file, add notification
 						$.add_notification (res.data);
@@ -359,10 +376,10 @@
 						$('#filebrowser-upload-progress').hide ();
 						$('#filebrowser-upload-form').show ();
 
-						if (i === 0) {
+						if (i === 0 && ! self.opts.multiple) {
 							// Only one file, auto-select it
 							$('<a></a>')
-								.data ('file', self.opts.path + '/' + file.name)
+								.data ('file', self.path () + file.name)
 								.click (self.select_file)
 								.click ();
 							return;
