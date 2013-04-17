@@ -36,6 +36,13 @@ if ($res) {
 	return;
 }
 
+// let apps handle sub-page requests
+// e.g., /company/blog -> blog app
+if (conf ('General', 'page_url_style') === 'nested' && is_dir ('apps/' . $id)) {
+	echo $this->run ($id, $data, false);
+	return;
+}
+
 // get it from the database
 $wp = new Webpage ($id);
 
