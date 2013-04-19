@@ -4,18 +4,12 @@
  * Displays the main blog page.
  */
 
-if ($appconf['Custom Handlers']['blog/index'] != 'blog/index') {
-	if (! $appconf['Custom Handlers']['blog/index']) {
-		echo $this->error (404, __ ('Not found'), __ ('The page you requested could not be found.'));
-		return;
-	}
-	$extra = (count ($this->params) > 0) ? '/' . $this->params[0] : '';
-	echo $this->run ($appconf['Custom Handlers']['blog/index'] . $extra, $data);
-	return;
-}
+// Check for a custom handler override
+$res = $this->override ('blog/post');
+if ($res) { echo $res; return; }
 
 $page->id = 'blog';
-$page->layout = $appconf['Blog']['layout'];
+$page->layout = Appconf::blog ('Blog', 'layout');
 
 require_once ('apps/blog/lib/Filters.php');
 
@@ -43,14 +37,14 @@ if (! is_array ($posts) || count ($posts) === 0) {
 	foreach ($posts as $post) {
 		$post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
 		$post->tag_list = explode (',', $post->tags);
-		$post->social_buttons = $appconf['Social Buttons'];
+		$post->social_buttons = Appconf::blog ('Social Buttons');
 		$post->body = $tpl->run_includes ($post->body);
 		echo $tpl->render ('blog/post', $post);
 	}
 }
 
 if (! $this->internal) {
-	$page->title = $appconf['Blog']['title'];
+	$page->title = Appconf::blog ('Blog', 'title');
 }
 
 $page->add_script (sprintf (

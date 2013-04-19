@@ -512,6 +512,45 @@ class Controller {
 		$this->uri = $uri;
 		return $route;
 	}
+	
+	/**
+	 * Looks for an override of the current handler in the app
+	 * configuration in a `[Custom Handlers]` section. Overrides
+	 * are handlers that should be called transparently in place
+	 * of the current handler, overriding its behaviour without
+	 * modifying the original handler.
+	 * 
+	 * An override setting's key should be the app/handler name,
+	 * and the value can be either the same app/handler name
+	 * (meaning no override), another app/handler name (meaning
+	 * override with that handler), or Off (meaning disable the
+	 * handler). A handler that has been disabled will return a
+	 * 404 error.
+	 *
+	 * If the response is false, there was no override or disabling,
+	 * and the handler should continue running, otherwise the
+	 * response will contain the output of the override handler
+	 * which should be echoed and the original handler should
+	 * return and stop further execution.
+	 */
+	public function override ($handler) {
+		list ($app) = explode ('/', $handler);
+		$custom = Appconf::get ($app, 'Custom Handlers', $handler);
+		
+		if (! $custom) {
+			// disable this handler
+			return $this->error (404, __ ('Not found'), __ ('The page you requested could not be found.'));
+		}
+		
+		if ($custom !== $handler) {
+			// override the handler
+			$override = count ($this->params) ? $custom . '/' . join ('/', $this->params) : $custom;
+			return $this->run ($override, $this->data, $this->internal);
+		}
+		
+		// no override
+		return false;
+	}
 
 	/**
 	 * Is this URL clean of any directory manipulation attempts?
