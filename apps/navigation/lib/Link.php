@@ -166,6 +166,9 @@ class Link {
 			if (is_array ($path)) {
 				$id = join ('/', $path);
 			}
+		} elseif ($id === 'index') {
+			// remove 'index' from end of url
+			$id = '';
 		}
 
 		// Render and return
