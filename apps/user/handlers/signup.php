@@ -4,14 +4,9 @@
  * Default user sign up form.
  */
 
-if ($appconf['Custom Handlers']['user/signup'] != 'user/signup') {
-	if (! $appconf['Custom Handlers']['user/signup']) {
-		echo $this->error (404, __ ('Not found'), __ ('The page you requested could not be found.'));
-		return;
-	}
-	echo $this->run ($appconf['Custom Handlers']['user/signup'], $data);
-	return;
-}
+// Check for a custom handler override
+$res = $this->override ('user/signup');
+if ($res) { echo $res; return; }
 
 $f = new Form ('post', 'user/signup');
 if ($f->submit ()) {
