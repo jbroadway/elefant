@@ -104,7 +104,7 @@ class User extends ExtendedModel {
 	public static $user = FALSE;
 
 	/**
-	 * Acl object for `require_auth()` method. Get and set via `User::acl()`.
+	 * Acl object for `require_acl()` method. Get and set via `User::acl()`.
 	 */
 	public static $acl = null;
 
@@ -261,7 +261,7 @@ class User extends ExtendedModel {
 	}
 
 	/**
-	 * Alias of `require_auth('admin')`. Simplifies authorization
+	 * Alias of `require_acl('admin')`. Simplifies authorization
 	 * for general admin access down to:
 	 *
 	 *     <?php
@@ -273,14 +273,14 @@ class User extends ExtendedModel {
 	 *     ?>
 	 */
 	public static function require_admin () {
-		return self::require_auth ('admin');
+		return self::require_acl ('admin');
 	}
 
 	/**
 	 * Determine whether the current user is allowed to access
 	 * a given resource.
 	 */
-	public static function require_auth ($resource) {
+	public static function require_acl ($resource) {
 		if (! User::is_valid ()) {
 			return false;
 		}
@@ -319,14 +319,14 @@ class User extends ExtendedModel {
 	}
 
 	/**
-	 * Alias of `require_auth('content/' . $access)`, prepending the
+	 * Alias of `require_acl('content/' . $access)`, prepending the
 	 * `content/` string to the resource name before comparing it.
-	 * Where `User::require_auth('resource')` is good for validating
+	 * Where `User::require_acl('resource')` is good for validating
 	 * access to any resource type, `User::access('member')` is used
 	 * for content access levels.
 	 */
 	public static function access ($access) {
-		self::require_auth ('content/' . $access);
+		self::require_acl ('content/' . $access);
 	}
 
 	/**
