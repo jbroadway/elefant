@@ -6,9 +6,7 @@
 
 $page->layout = 'admin';
 
-if (! User::require_admin ()) {
-	$this->redirect ('/admin');
-}
+$this->require_acl ('admin', 'designer');
 
 if (! preg_match ('/^(css|layouts|layouts\/[a-z0-9_-]+|layouts\/[a-z0-9_-]+\/[a-z0-9_-]+)\/[a-z0-9_-]+\.css$/i', $_GET['file'])) {
 	$this->redirect ('/designer');

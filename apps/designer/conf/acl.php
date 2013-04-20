@@ -1,6 +1,6 @@
 ; <?php /*
 
 designer = "Edit design themes"
-designer/install = "Install new apps/themes"
+designer/installer = "Install new apps/themes"
 
 ; */ ?>

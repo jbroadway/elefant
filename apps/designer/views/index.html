@@ -21,8 +21,10 @@ $(function () {
 
 <p>
 	<a href="/designer/add/layout">{"New Layout"}</a>
+	{% if User::require_acl ('designer/installer') %}
 	&nbsp;|&nbsp;
 	<a href="/designer/installer">{"Install App/Theme"}</a>
+	{% end %}
 </p>
 
 <p>
@@ -59,7 +61,13 @@ $(function () {
 	</div>
 	<div id="stylesheets">
 
-<p><a href="/designer/add/stylesheet">{"New Stylesheet"}</a></p>
+<p>
+	<a href="/designer/add/stylesheet">{"New Stylesheet"}</a>
+	{% if User::require_acl ('designer/installer') %}
+	&nbsp;|&nbsp;
+	<a href="/designer/installer">{"Install App/Theme"}</a>
+	{% end %}
+</p>
 
 <p>
 <table width="100%">
