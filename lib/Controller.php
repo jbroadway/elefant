@@ -903,6 +903,24 @@ class Controller {
 	}
 
 	/**
+	 * Require the user to have access to one or more resources. Accepts
+	 * any number of parameters, which should be resource names. If any
+	 * resource fails, it will redirect to the `/admin` login screen.
+	 *
+	 * Usage:
+	 *
+	 *     $this->require_acl ('admin', 'admin/edit');
+	 */
+	public function require_acl ($resource) {
+		$args = func_get_args ();
+		foreach ($args as $resource) {
+			if (! User::require_acl ($resource)) {
+				$this->redirect ('/admin');
+			}
+		}
+	}
+
+	/**
 	 * Require authentication via custom callbacks that are passed to `simple_auth()`.
 	 * If the second callback is missing, the first will be assumed to be an array
 	 * containing the two callbacks.
