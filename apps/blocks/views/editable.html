@@ -3,9 +3,9 @@
 	{% if locked %}
 		<a href="javascript:void(0)" title="{"Editing Locked"}" class="ediable-lock"></a>
 	{% else %}
-		{% if new_id %}<a href="/blocks/add?id={{ new_id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Add Page-Specific Block"}" class="editable-add"></a>{% end %}<a href="/blocks/edit?id={{ id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Edit Block"}" class="editable-edit"></a><a href="/admin/versions?type=Block&id={{ id }}" title="{"Versions"}" class="editable-versions"></a><a href="/blocks/delete" data-id="{{ id }}" data-return="{{ $_SERVER.REQUEST_URI }}" title="{"Delete Block"}" onclick="return $.confirm_and_post {% if new_id %}(this, '{"Are you sure you want to delete the default block? This will remove it from all pages using this block"}'){% else %} (this, '{"Are you sure you want to delete the current block?"}') {% end %};" class="editable-delete"></a>
+		{% if User::require_acl ('admin', 'admin/edit', 'blocks') %}{% if new_id %}<a href="/blocks/add?id={{ new_id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Add Page-Specific Block"}" class="editable-add"></a>{% end %}<a href="/blocks/edit?id={{ id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Edit Block"}" class="editable-edit"></a>{% end %}{% if User::require_acl ('admin', 'admin/versions', 'blocks') %}<a href="/admin/versions?type=Block&id={{ id }}" title="{"Versions"}" class="editable-versions"></a>{% end %}{% if User::require_acl ('admin', 'admin/delete', 'blocks') %}<a href="/blocks/delete" data-id="{{ id }}" data-return="{{ $_SERVER.REQUEST_URI }}" title="{"Delete Block"}" onclick="return $.confirm_and_post {% if new_id %}(this, '{"Are you sure you want to delete the default block? This will remove it from all pages using this block"}'){% else %} (this, '{"Are you sure you want to delete the current block?"}') {% end %};" class="editable-delete"></a>{% end %}
 	{% end %}
 {% else %}
-	<a href="/blocks/add?id={{ id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Add Block"}" class="editable-add"></a>
+	{% if User::require_acl ('admin', 'admin/edit', 'blocks') %}<a href="/blocks/add?id={{ id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Add Block"}" class="editable-add"></a>{% end %}
 {% end %}
 </p>

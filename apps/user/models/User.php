@@ -285,8 +285,11 @@ class User extends ExtendedModel {
 			return false;
 		}
 		$acl = self::acl ();
-		if (! $acl->allowed ($resource, self::$user)) {
-			return false;
+		$resources = func_get_args ();
+		foreach ($resources as $resource) {
+			if (! $acl->allowed ($resource, self::$user)) {
+				return false;
+			}
 		}
 		return true;
 	}
