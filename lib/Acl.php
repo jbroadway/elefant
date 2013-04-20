@@ -83,6 +83,11 @@ class Acl {
 	 * The access control rules as an array of roles and their permissions.
 	 */
 	public $rules = array ();
+	
+	/**
+	 * A list of resources defined by the installed apps.
+	 */
+	public $resources = null;
 
 	/**
 	 * Constructor will call `init()` if a file is provided, or simply
@@ -121,6 +126,7 @@ class Acl {
 	 */
 	public function allowed ($resource, $user = false) {
 		$type = $user ? $user->type : User::$user->type;
+		error_log ("Is $type allowed to access $resource?");
 
 		return isset ($this->rules[$type][$resource])
 			? $this->rules[$type][$resource]
@@ -155,6 +161,26 @@ class Acl {
 			$this->add_role ($role);
 		}
 		$this->rules[$role][$resource] = true;
+	}
+
+	/**
+	 * Find all resources defined by the installed apps.
+	 */
+	public function resources () {
+		if ($this->resources === null) {
+			$files = glob ('apps/*/conf/acl.php');
+			$files = is_array ($files) ? $files : array ();
+			$this->resources = array ();
+			foreach ($files as $file) {
+				$resources = parse_ini_file ($file);
+				if (! is_array ($resources)) {
+					continue;
+				}
+				$this->resources = array_merge ($this->resources, $resources);
+			}
+			asort ($this->resources);
+		}
+		return $this->resources;
 	}
 }
 

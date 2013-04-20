@@ -8,7 +8,7 @@ $this->require_admin ();
 
 $u = new User;
 $u->type = 'admin';
-$u->types = preg_split ('/, ?/', $appconf['User']['user_types']);
+$u->types = array_keys (User::acl ()->rules);
 
 $page->layout = false;
 

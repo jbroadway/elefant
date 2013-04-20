@@ -95,6 +95,12 @@ navigation_json = conf/navigation.json
 
 filemanager_path = files
 
+; The path to your role definitions and their access
+; rules. Note: Leave the leading slash out of the
+; path.
+
+access_control_list = conf/acl.php
+
 [Database]
 
 ; Database settings go here. Driver must be a valid PDO driver.

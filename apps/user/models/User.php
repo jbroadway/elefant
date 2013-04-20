@@ -104,9 +104,9 @@ class User extends ExtendedModel {
 	public static $user = FALSE;
 
 	/**
-	 * Access control list for `access()` method.
+	 * Acl object for `require_auth()` method. Get and set via `User::acl()`.
 	 */
-	public static $acl = FALSE;
+	public static $acl = null;
 
 	/**
 	 * Generates a random salt and encrypts a password using MD5.
@@ -261,7 +261,8 @@ class User extends ExtendedModel {
 	}
 
 	/**
-	 * Simplifies authorization for admins down to:
+	 * Alias of `require_auth('admin')`. Simplifies authorization
+	 * for general admin access down to:
 	 *
 	 *     <?php
 	 *
@@ -272,21 +273,22 @@ class User extends ExtendedModel {
 	 *     ?>
 	 */
 	public static function require_admin () {
-		if (is_object (self::$user)) {
-			if (self::$user->session_id == $_SESSION['session_id']) {
-				if (self::$user->type == 'admin') {
-					return TRUE;
-				}
-				return FALSE;
-			}
-		} else {
-			$class = get_called_class ();
-			$res = simple_auth (array ($class, 'verifier'), array ($class, 'method'));
-			if ($res && self::$user->type == 'admin') {
-				return TRUE;
-			}
+		return self::require_auth ('admin');
+	}
+
+	/**
+	 * Determine whether the current user is allowed to access
+	 * a given resource.
+	 */
+	public static function require_auth ($resource) {
+		if (! User::is_valid ()) {
+			return false;
 		}
-		return FALSE;
+		$acl = self::acl ();
+		if (! $acl->allowed ($resource, self::$user)) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -317,69 +319,58 @@ class User extends ExtendedModel {
 	}
 
 	/**
-	 * Loads the access control list for the `access()` method.
-	 */
-	private static function load_acl () {
-		if (self::$acl === FALSE) {
-			$appconf = parse_ini_file ('apps/user/conf/config.php', TRUE);
-			self::$acl = $appconf['Access'];
-			// make the default access levels translatable
-			__ ('Public'); __ ('Member'); __ ('Private');
-		}
-	}
-
-	/**
-	 * Verify a user can access the specified access level based
-	 * on their user type.
+	 * Alias of `require_auth('content/' . $access)`, prepending the
+	 * `content/` string to the resource name before comparing it.
+	 * Where `User::require_auth('resource')` is good for validating
+	 * access to any resource type, `User::access('member')` is used
+	 * for content access levels.
 	 */
 	public static function access ($access) {
-		self::load_acl ();
-
-		if (! isset (self::$acl[$access])) {
-			return FALSE;
-		}
-
-		if (! is_array (self::$acl[$access])) {
-			if (strpos (self::$acl[$access], ',') !== false) {
-				self::$acl[$access] = preg_split ('/, ?/', self::$acl[$access]);
-			} else {
-				self::$acl[$access] = array (self::$acl[$access]);
-			}
-		}
-
-		foreach (self::$acl[$access] as $access_level) {
-			if ($access_level === 'all') {
-				return TRUE;
-			}
-
-			if ($access_level === 'login' && self::is_valid ()) {
-				return TRUE;
-			}
-
-			if ($access_level === 'admin' && self::is ('admin')) {
-				return TRUE;
-			}
-
-			if (strpos ($access_level, 'type:') === 0) {
-				$type = str_replace ('type:', '', $access_level);
-			} else {
-				$type = $access_level;
-			}
-
-			if (self::is ($type)) {
-				return TRUE;
-			}
-		}
-
-		return FALSE;
+		self::require_auth ('content/' . $access);
 	}
 
 	/**
-	 * Returns the list of access levels.
+	 * Returns the list of access levels for content. This is a list
+	 * of resources that begin with `content/` e.g., `content/private`,
+	 * with keys as the resource and values as a display name for that
+	 * resource:
+	 *
+	 *     array (
+	 *         'public'  => 'Public',
+	 *         'member'  => 'Member',
+	 *         'private' => 'Private'
+	 *     )
+	 *
+	 * Note: Public is hard-coded, since there's no need to verify
+	 * access to public resources, but you still need an access level
+	 * to specify it.
 	 */
 	public static function access_list () {
-		self::load_acl ();
-		return array_keys (self::$acl);
+		$acl = self::acl ();
+		$resources = $acl->resources ();
+		$access = array ('public' => __ ('Public'));
+		foreach ($resources as $key => $value) {
+			if (strpos ($key, 'content/') === 0) {
+				$resource = str_replace ('content/', '', $key);
+				$access[$resource] = __ (ucfirst ($resource));
+			}
+		}
+		return $access;
+	}
+
+	/**
+	 * Get or set the Acl object.
+	 */
+	public static function acl ($acl = null) {
+		if ($acl !== null) {
+			self::$acl = $acl;
+		}
+
+		if (self::$acl === null) {
+			self::$acl = new Acl (conf ('Paths', 'access_control_list'));
+		}
+
+		return self::$acl;
 	}
 
 	/**

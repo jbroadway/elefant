@@ -33,7 +33,7 @@ if ($f->submit ()) {
 	echo __ ('Error Message') . ': ' . $u->error;
 } else {
 	$u->password = '';
-	$u->types = preg_split ('/, ?/', $appconf['User']['user_types']);
+	$u->types = array_keys (User::acl ()->rules);
 
 	$u->failed = $f->failed;
 	$u = $f->merge_values ($u);
