@@ -6,7 +6,7 @@
 
 $page->layout = false;
 
-if (! User::require_admin ()) {
+if (! User::require_acl ('admin') || ! User::require_acl ('filemanager')) {
 	echo json_encode (array ('success' => false, 'error' => __ ('Must be logged in to upload')));
 	return;
 }

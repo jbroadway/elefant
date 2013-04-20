@@ -6,9 +6,7 @@
 
 $page->layout = 'admin';
 
-if (! User::require_admin ()) {
-	$this->redirect ('/admin');
-}
+$this->require_acl ('admin', 'admin/edit');
 
 $lock = new Lock ('Webpage', $_GET['page']);
 if ($lock->exists ()) {

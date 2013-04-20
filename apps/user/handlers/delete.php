@@ -6,9 +6,7 @@
 
 $page->layout = 'admin';
 
-if (! User::require_admin ()) {
-	$this->redirect ('/admin');
-}
+$this->require_acl ('admin', 'user');
 
 $u = new User ($_GET['id']);
 

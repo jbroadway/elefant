@@ -4,7 +4,7 @@
  * Block delete handler.
  */
 
-$this->require_admin ();
+$this->require_acl ('admin', 'admin/delete', 'blocks');
 
 $page->layout = 'admin';
 

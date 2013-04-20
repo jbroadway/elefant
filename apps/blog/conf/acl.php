@@ -1,5 +1,5 @@
 ; <?php /*
 
-blocks = "Post to the blog"
+blog = "Post to the blog"
 
 ; */ ?>

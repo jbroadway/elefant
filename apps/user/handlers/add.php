@@ -6,9 +6,7 @@
 
 $page->layout = 'admin';
 
-if (! User::require_admin ()) {
-	$this->redirect ('/admin');
-}
+$this->require_acl ('admin', 'user');
 
 $f = new Form ('post', 'user/add');
 $f->verify_csrf = false;

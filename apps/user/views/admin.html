@@ -1,11 +1,15 @@
 <p>
 	<a href="/user/add">{"Add User"}</a>
+	{% if User::require_acl ('user/roles') %}
 	&nbsp;|&nbsp;
 	<a href="/user/roles">{"Roles"}</a>
+	{% end %}
+	{% if User::require_acl ('settings') %}
 	&nbsp;|&nbsp;
 	<a href="/user/settings">{"Settings"}</a>
 	&nbsp;|&nbsp;
 	<a href="/admin/extended?extends=User&name=Users">{"Custom Fields"}</a>
+	{% end %}
 </p>
 
 <p style="float: left">
