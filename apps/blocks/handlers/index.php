@@ -32,7 +32,7 @@ if (isset ($data['id'])) {
  	$fallback_id = (isset ($data['fallback'])) ? $data['fallback'] : false;
 } 
 if (! $id) {
-	if (User::is_valid () && User::is ('admin')) {
+	if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
 		echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false));
 	}
 	return;
@@ -48,7 +48,7 @@ if ($b->error) {
 		$b->new_id = $id;
 	}
 	if ($b->error) {
-		if (User::is_valid () && User::is ('admin')) {
+		if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
 			$fallback_id = $id;
 			echo $tpl->render ('blocks/editable', (object) array ('id' => $fallback_id, 'locked' => false, 'title' => false));
 		}
@@ -72,7 +72,7 @@ if ($b->show_title == 'yes') {
 
 $b->locked = $lock->exists ();
 
-if (User::is_valid () && User::is ('admin')) {
+if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
 	echo $tpl->render ('blocks/editable', $b);
 }
 
