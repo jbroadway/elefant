@@ -14,7 +14,7 @@ if ($appconf['Scripts']['jquery_source'] === 'local') {
 	$page->add_script ('<script src="' . $appconf['Scripts']['jquery_source'] . '"></script>');
 }
 
-if (User::is_valid () && User::is ('admin') && $page->preview == false) {
+if (User::require_admin () && $page->preview == false) {
 	$page->add_style ('/apps/admin/css/jquery.jgrowl.css');
 	$page->add_style ('/apps/admin/css/top-bar.css');
 
