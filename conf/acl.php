@@ -8,11 +8,12 @@ default = On
 
 default = Off
 admin = On
-private = On
-designer = Off
-navigation = Off
-translator = Off
-user = Off
+admin/edit = On
+admin/delete = On
+content/private = On
+blog = On
+blocks = On
+filemanager = On
 
 [member]
 
