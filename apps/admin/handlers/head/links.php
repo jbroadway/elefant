@@ -24,6 +24,9 @@ $res = glob ('apps/*/conf/config.php');
 $apps = DB::pairs ('select * from #prefix#apps');
 foreach ($res as $file) {
 	$app = preg_replace ('/^apps\/(.*)\/conf\/config\.php$/i', '\1', $file);
+	if (! User::require_acl ($app)) {
+		continue;
+	}
 	$appconf = parse_ini_file ($file, true);
 	if (isset ($appconf['Admin']['handler'])) {
 		if (isset ($appconf['Admin']['install'])) {
