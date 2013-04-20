@@ -5,7 +5,7 @@
  * code, locale, character set, and fallback.
  */
 
-$this->require_admin ();
+$this->require_acl ('admin', 'translator');
 
 $page->layout = 'admin';
 

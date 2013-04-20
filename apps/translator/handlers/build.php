@@ -5,7 +5,7 @@
  * and templates on the site.
  */
 
-$this->require_admin ();
+$this->require_acl ('admin', 'translator');
 
 $page->layout = 'admin';
 

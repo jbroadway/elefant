@@ -4,7 +4,7 @@
  * List of languages.
  */
 
-$this->require_admin ();
+$this->require_acl ('admin', 'translator');
 
 if (! file_exists ('lang/_index.php')) {
 	$this->redirect ('/translator/build');
