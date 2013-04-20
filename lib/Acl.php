@@ -126,7 +126,6 @@ class Acl {
 	 */
 	public function allowed ($resource, $user = false) {
 		$type = $user ? $user->type : User::$user->type;
-		error_log ("Is $type allowed to access $resource?");
 
 		return isset ($this->rules[$type][$resource])
 			? $this->rules[$type][$resource]

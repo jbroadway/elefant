@@ -10,6 +10,7 @@ default = Off
 admin = On
 admin/edit = On
 admin/delete = On
+content/member = On
 content/private = On
 blog = On
 blocks = On
