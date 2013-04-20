@@ -1,0 +1,20 @@
+<p>
+	<a href="/user/admin">&laquo; {"Back"}</a>
+	&nbsp;|&nbsp;
+	<a href="/user/role/add">{"Add role"}</a>
+</p>
+
+<p>
+<table width="100%">
+	<tr>
+		<th width="85%">{"Name"}</th>
+		<th width="15%">&nbsp;</th>
+	</tr>
+{% foreach roles %}
+	<tr>
+		<td>{{ loop_value|ucfirst }}</td>
+		<td style="text-align: right"><a href="/user/role/edit?role={{ loop_value }}">{"Edit"}</a> | <a href="/user/role/delete?role={{ loop_value }}" onclick="return confirm ('{"Are you sure you want to delete this role?"}');">{"Delete"}</a></td>
+	</tr>
+{% end %}
+</table>
+</p>

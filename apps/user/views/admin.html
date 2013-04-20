@@ -1,6 +1,8 @@
 <p>
 	<a href="/user/add">{"Add User"}</a>
 	&nbsp;|&nbsp;
+	<a href="/user/roles">{"Roles"}</a>
+	&nbsp;|&nbsp;
 	<a href="/user/settings">{"Settings"}</a>
 	&nbsp;|&nbsp;
 	<a href="/admin/extended?extends=User&name=Users">{"Custom Fields"}</a>
@@ -29,7 +31,7 @@
 		<td>{{ loop_value->name }}</td>
 		<td>{{ loop_value->email }}</td>
 		<td>{{ loop_value->type|ucfirst }}</td>
-		<td><a href="/user/edit?id={{ loop_value->id }}">{"Edit"}</a> | <a href="/user/delete?id={{ loop_value->id }}" onclick="return confirm ('{"Are you sure you want to delete this user?"}');">{"Delete"}</a></td>
+		<td style="text-align: right"><a href="/user/edit?id={{ loop_value->id }}">{"Edit"}</a> | <a href="/user/delete?id={{ loop_value->id }}" onclick="return confirm ('{"Are you sure you want to delete this user?"}');">{"Delete"}</a></td>
 	</tr>
 {% end %}
 </table>
