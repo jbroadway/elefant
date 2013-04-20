@@ -53,7 +53,7 @@ if ($wp->error) {
 }
 
 // access control
-if ($wp->access !== 'public' && ! User::is ('admin')) {
+if ($wp->access !== 'public' && ! User::require_admin ()) {
 	if (! User::require_login ()) {
 		$page->title = __ ('Login required');
 		echo $this->run ('user/login');

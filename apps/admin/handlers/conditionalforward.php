@@ -10,7 +10,7 @@
 $url = isset ($data['to']) ? $data['to'] : $_GET['to'];
 $user_type = isset ($data['user_type']) ? $data['user_type'] : $_GET['user_type'];
 
-if (User::is_valid () && User::is ('admin')) {
+if (User::require_admin ()) {
 	printf (
 		'<p>%s:</p><p><a href="%s">%s</a></p>',
 		__ ('This page forwards members of the %s group to the following link', $user_type),
