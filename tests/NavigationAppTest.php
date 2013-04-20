@@ -64,12 +64,12 @@ class NavigationAppTest extends AppTest {
 		Link::reset ();
 		Link::current ('index');
 		$res = $this->get ('navigation/top');
-		$this->assertContains ('<li class="current"><a href="/index">Home', $res);
+		$this->assertContains ('<li class="current"><a href="/">Home', $res);
 		$this->assertContains ('<li><a href="/other">Other', $res);
 		
 		Link::current ('other');
 		$res = $this->get ('navigation/top');
-		$this->assertContains ('<li><a href="/index">Home', $res);
+		$this->assertContains ('<li><a href="/">Home', $res);
 		$this->assertContains ('<li class="current"><a href="/other">Other', $res);
 	}
 
