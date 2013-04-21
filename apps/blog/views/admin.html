@@ -1,12 +1,10 @@
 {! admin/util/dates !}
 
 <p>
-	{% if User::require_acl ('admin/edit') %}
 	<a href="/blog/add">{"New Post"}</a>
 	&nbsp;|&nbsp;
 	<a href="/blog/import">{"Import Posts"}</a>
 	&nbsp;|&nbsp;
-	{% end %}
 	{% if User::require_acl ('settings') %}
 	<a href="/blog/settings">{"Settings"}</a>
 	&nbsp;|&nbsp;
@@ -43,9 +41,7 @@
 			{% if loop_value->locked %}
 			{"Editing Locked"}
 			{% else %}
-				{% if User::require_acl ('admin/edit') %}
 				<a href="/blog/edit?id={{ loop_value->id }}">{"Edit"}</a>
-				{% end %}
 				{% if User::require_acl ('admin/delete') %}
 				|
 				<a href="/blog/delete" data-id="{{ loop_value->id }}" onclick="return $.confirm_and_post (this, '{"Are you sure you want to delete this post?"}');">{"Delete"}</a>

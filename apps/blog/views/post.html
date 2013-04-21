@@ -7,7 +7,7 @@
 <div class="blog-post block">
 <h3><a href="{{ url }}">{{ title }}</a></h3>
 <p class="blog-info info">{{ ts|I18n::date_time }} - {" by "} <a href="/blog/by/{{ author }}">{{ author }}</a>
-{% if User::require_acl ('admin', 'admin/edit', 'blog') %}
+{% if User::require_acl ('admin', 'blog') %}
 &nbsp;|&nbsp; <a href="/blog/edit?id={{ id }}">{"Edit Post"}</a>
 {% end %}
 </p>

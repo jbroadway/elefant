@@ -6,7 +6,7 @@
 
 $page->layout = 'admin';
 
-$this->require_acl ('admin', 'admin/edit', 'blog');
+$this->require_acl ('admin', 'blog');
 
 $f = new Form ('post', 'blog/add');
 $f->verify_csrf = false;

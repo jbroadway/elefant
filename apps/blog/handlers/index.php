@@ -26,11 +26,11 @@ $page->next = $page->num + 2;
 
 if (! is_array ($posts) || count ($posts) === 0) {
 	echo '<p>' . __ ('No posts yet... :(') . '</p>';
-	if (User::require_acl ('admin', 'admin/edit', 'blog')) {
+	if (User::require_acl ('admin', 'blog')) {
 		echo '<p><a href="/blog/add">' . __ ('Add Blog Post') . '</a></p>';
 	}
 } else {
-	if (User::require_acl ('admin', 'admin/edit', 'blog')) {
+	if (User::require_acl ('admin', 'blog')) {
 		echo '<p><a href="/blog/add">' . __ ('Add Blog Post') . '</a></p>';
 	}
 

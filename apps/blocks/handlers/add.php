@@ -6,7 +6,7 @@
 
 $page->layout = 'admin';
 
-$this->require_acl ('admin', 'admin/edit', 'blocks');
+$this->require_acl ('admin', 'blocks');
 
 $f = new Form ('post', 'blocks/add');
 $f->verify_csrf = false;

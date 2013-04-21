@@ -6,7 +6,7 @@
 
 $page->layout = 'admin';
 
-$this->require_acl ('admin', 'admin/edit', 'blog');
+$this->require_acl ('admin', 'blog');
 
 $lock = new Lock ('Blog', $_GET['id']);
 if ($lock->exists ()) {
