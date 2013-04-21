@@ -1,0 +1,69 @@
+<div class="form">
+
+<form method="POST" id="{{_form}}">
+
+<p>
+	{"Role name"}: <span class="notice" id="name-notice">{"Required and must be unique."}</span><br />
+	<input type="text" name="name" id="name-input" value="{{name|quotes}}" size="30" />
+</p>
+
+<p>
+<table width="100%">
+	<tr>
+		<th>{"Permissions"}:</th>
+	</tr>
+	<tr>
+		<td><input type="checkbox" name="resources[default]" id="resources-default" value="on" /> <label for="resources-default">{"Default access for this role"} <span class="notice" style="display: inline">({"Note: Selected means allow everything by default"})</span></label></td>
+	</tr>
+	{% foreach _resources as resource, label %}
+	<tr>
+		<td><input type="checkbox" name="resources[{{resource}}]" id="resources-{{resource|user\Filter::resource_id}}" value="on" /> <label for="resources-{{resource}}" style="display: inline-block; width: 95%">{{label|__}}</label></td>
+	</tr>
+	{% end %}
+</table>
+</p>
+
+<p>
+	<input type="submit" value="{"Add Role"}" />&nbsp;
+	<a href="javascript:history.go(-1)" onclick="return confirm ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
+</p>
+
+</form>
+
+</div>
+
+<script>
+$(function () {
+	// re-check on re-render
+	var resources = {{resources|json_encode}};
+	for (var resource in resources) {
+		$('#resources-' + resource.replace ('/', '-'))[0].checked = true;
+	}
+	
+	// check all if default is checked because
+	// then you can subtract resources to deny
+	$('#resources-default').change (function () {
+		$('input[type="checkbox"]').each (function () {
+			this.checked = true;
+		});
+	});
+	
+	// make the name lowercase
+	$('#name-input').blur (function () {
+		$(this).val ($(this).val ().toLowerCase ());
+	});
+});
+</script>
+
+<style>
+label {
+	display: inline-block;
+	width: 95%;
+	height: 29px;
+	line-height: 29px;
+}
+td {
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+}
+</style>
