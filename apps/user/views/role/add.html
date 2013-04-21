@@ -17,7 +17,7 @@
 	</tr>
 	{% foreach _resources as resource, label %}
 	<tr>
-		<td><input type="checkbox" name="resources[{{resource}}]" id="resources-{{resource|user\Filter::resource_id}}" value="on" /> <label for="resources-{{resource}}" style="display: inline-block; width: 95%">{{label|__}}</label></td>
+		<td><input type="checkbox" name="resources[{{resource}}]" id="resources-{{resource|user\Filter::resource_id}}" value="on" /> <label for="resources-{{resource|user\Filter::resource_id}}" style="display: inline-block; width: 95%">{{label|__}}</label></td>
 	</tr>
 	{% end %}
 </table>
