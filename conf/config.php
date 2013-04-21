@@ -60,12 +60,12 @@ session_duration = 2592000
 ; For development, turn debugging on and Elefant will output
 ; helpful information on errors.
 
-debug = On
+debug = Off
 
 ; For development, turn display_errors on and Elefant will
 ; output fatal error messages in addition to the debugger.
 
-display_errors = On
+display_errors = Off
 
 [I18n]
 

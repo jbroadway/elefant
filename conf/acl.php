@@ -2,29 +2,23 @@
 
 [admin]
 
-default                 = On
+default = On
 
 [editor]
 
-default                 = Off
-admin                   = On
-admin/delete            = On
-blocks                  = On
-admin/edit              = On
-blog                    = On
-filemanager             = On
-content/member          = On
-content/private         = On
+default = Off
+admin = On
+admin/edit = On
+admin/delete = On
+content/member = On
+content/private = On
+blog = On
+blocks = On
+filemanager = On
 
 [member]
 
-default                 = Off
-content/member          = On
-
-[test]
-
-default                 = On
-user                    = Off
-blog                    = Off
+default = Off
+member = On
 
 ; */ ?>
