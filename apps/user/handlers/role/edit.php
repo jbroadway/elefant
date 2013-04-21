@@ -67,6 +67,8 @@ echo $form->handle (function ($form) use ($page) {
 	
 	// save the file
 	$acl = User::acl ();
+	unset ($acl->rules[$_GET['role']]);
+	unset ($acl->rules[$_POST['name']]);
 	$acl->add_role ($_POST['name'], $_POST['resources']['default']);
 	foreach ($_POST['resources'] as $resource => $allow) {
 		if ($allow) {
