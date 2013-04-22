@@ -288,112 +288,116 @@
 
 		$('#filebrowser-select').one ('click', self.select_files);
 
-		// Implements drag and drop file upload support,
-		// for browsers that support it, with fallback
-		// for those that don't.
-		$('#filebrowser-dropzone').filedrop ({
-			fallback_id: 'filebrowser-file',
-			url: '/filemanager/upload/drop',
-			paramname: 'file',
-			withCredentials: true,
-			data: {
-				path: function () {
-					return self.opts.path;
-				}
-			},
-			error: function (err, file) {
-				$('#filebrowser-dropzone').removeClass ('filebrowser-over');
-
-				// Reset the upload progress bar
-				$('#filebrowser-upload-progress-bar').css ('width', '5%');
-				$('#filebrowser-upload-progress').hide ();
-				$('#filebrowser-upload-form').show ();
-
-				switch (err) {
-					case 'FileTypeNotAllowed':
-						alert (
-							$.i18n ('Please upload one of the following file types')
-							+ ': ' +
-							self.opts.allowed.join (', ')
-						);
-						break;
-					case 'BrowserNotSupported':
-						alert ($.i18n ('Your browser does not support drag and drop file uploads.'));
-						break;
-					case 'TooManyFiles':
-						alert ($.i18n ('Please upload fewer files at a time.'));
-						break;
-					case 'FileTooLarge':
-						alert (
-							$.i18n ('The following file is too large to upload')
-							+ ': ' +
-							file.name
-						);
-						break;
-				}
-			},
-			allowedfiletypes: self.allowed_mimes (),
-			maxfiles: 12,
-			maxfilesize: filebrowser_max_filesize ? filebrowser_max_filesize : 2,
-			queuefiles: 2,
-			dragOver: function () {
-				$('#filebrowser-dropzone').addClass ('filebrowser-over');
-			},
-			dragLeave: function () {
-				$('#filebrowser-dropzone').removeClass ('filebrowser-over');
-			},
-			docLeave: function () {
-				$('#filebrowser-dropzone').removeClass ('filebrowser-over');
-			},
-			drop: function () {
-				$('#filebrowser-dropzone').removeClass ('filebrowser-over');
-			},
-			uploadStarted: function (i, file, len) {
-				// Save the total so we only notify at the end
-				self.opts.uploading = len;
-				
-				// Replace the upload field with a progress bar
-				$('#filebrowser-upload-form').hide ();
-				$('#filebrowser-upload-progress').show ();
-			},
-			uploadFinished: function (i, file, res, time) {
-				if (! res.success) {
-					alert (res.error);
+		if (! filemanager_upload) {
+			$('#filebrowser-upload').hide ();
+		} else {
+			// Implements drag and drop file upload support,
+			// for browsers that support it, with fallback
+			// for those that don't.
+			$('#filebrowser-dropzone').filedrop ({
+				fallback_id: 'filebrowser-file',
+				url: '/filemanager/upload/drop',
+				paramname: 'file',
+				withCredentials: true,
+				data: {
+					path: function () {
+						return self.opts.path;
+					}
+				},
+				error: function (err, file) {
+					$('#filebrowser-dropzone').removeClass ('filebrowser-over');
 
 					// Reset the upload progress bar
 					$('#filebrowser-upload-progress-bar').css ('width', '5%');
 					$('#filebrowser-upload-progress').hide ();
 					$('#filebrowser-upload-form').show ();
 
-				} else {
-					self.opts.files.push (self.path () + file.name)
-					if (i === self.opts.uploading - 1) {
-						// This is the last file, add notification
-						$.add_notification (res.data);
+					switch (err) {
+						case 'FileTypeNotAllowed':
+							alert (
+								$.i18n ('Please upload one of the following file types')
+								+ ': ' +
+								self.opts.allowed.join (', ')
+							);
+							break;
+						case 'BrowserNotSupported':
+							alert ($.i18n ('Your browser does not support drag and drop file uploads.'));
+							break;
+						case 'TooManyFiles':
+							alert ($.i18n ('Please upload fewer files at a time.'));
+							break;
+						case 'FileTooLarge':
+							alert (
+								$.i18n ('The following file is too large to upload')
+								+ ': ' +
+								file.name
+							);
+							break;
+					}
+				},
+				allowedfiletypes: self.allowed_mimes (),
+				maxfiles: 12,
+				maxfilesize: filebrowser_max_filesize ? filebrowser_max_filesize : 2,
+				queuefiles: 2,
+				dragOver: function () {
+					$('#filebrowser-dropzone').addClass ('filebrowser-over');
+				},
+				dragLeave: function () {
+					$('#filebrowser-dropzone').removeClass ('filebrowser-over');
+				},
+				docLeave: function () {
+					$('#filebrowser-dropzone').removeClass ('filebrowser-over');
+				},
+				drop: function () {
+					$('#filebrowser-dropzone').removeClass ('filebrowser-over');
+				},
+				uploadStarted: function (i, file, len) {
+					// Save the total so we only notify at the end
+					self.opts.uploading = len;
+				
+					// Replace the upload field with a progress bar
+					$('#filebrowser-upload-form').hide ();
+					$('#filebrowser-upload-progress').show ();
+				},
+				uploadFinished: function (i, file, res, time) {
+					if (! res.success) {
+						alert (res.error);
 
 						// Reset the upload progress bar
 						$('#filebrowser-upload-progress-bar').css ('width', '5%');
 						$('#filebrowser-upload-progress').hide ();
 						$('#filebrowser-upload-form').show ();
 
-						if (i === 0 && ! self.opts.multiple) {
-							// Only one file, auto-select it
-							$('<a></a>')
-								.data ('file', self.path () + file.name)
-								.click (self.select_file)
-								.click ();
-							return;
-						}
+					} else {
+						self.opts.files.push (self.path () + file.name)
+						if (i === self.opts.uploading - 1) {
+							// This is the last file, add notification
+							$.add_notification (res.data);
 
-						// Update the file list
-						filemanager.ls ({path: self.opts.path}, self.update_list);
+							// Reset the upload progress bar
+							$('#filebrowser-upload-progress-bar').css ('width', '5%');
+							$('#filebrowser-upload-progress').hide ();
+							$('#filebrowser-upload-form').show ();
+
+							if (i === 0 && ! self.opts.multiple) {
+								// Only one file, auto-select it
+								$('<a></a>')
+									.data ('file', self.path () + file.name)
+									.click (self.select_file)
+									.click ();
+								return;
+							}
+
+							// Update the file list
+							filemanager.ls ({path: self.opts.path}, self.update_list);
+						}
 					}
+				},
+				progressUpdated: function (i, file, progress) {
+					// Update the progress bar
+					$('#filebrowser-upload-progress-bar').css ('width', progress + '%');
 				}
-			},
-			progressUpdated: function (i, file, progress) {
-				// Update the progress bar
-				$('#filebrowser-upload-progress-bar').css ('width', progress + '%');
-			}
-		});
+			});
+		}
 	};
 })(jQuery);
