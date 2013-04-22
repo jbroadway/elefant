@@ -4,7 +4,7 @@
  * Blog post delete handler.
  */
 
-$this->require_admin ();
+$this->require_acl ('admin', 'admin/delete', 'blog');
 
 $page->layout = 'admin';
 

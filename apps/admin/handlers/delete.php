@@ -4,7 +4,7 @@
  * Deletes a web page.
  */
 
-$this->require_admin ();
+$this->require_acl ('admin', 'admin/delete');
 
 $page->layout = 'admin';
 

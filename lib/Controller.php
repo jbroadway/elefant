@@ -318,7 +318,7 @@ class Controller {
 	/**
 	 * Run an internal request from one handler to another.
 	 */
-	public function run ($uri, $data = array ()) {
+	public function run ($uri, $data = array (), $internal = true) {
 		$c = new Controller (conf ('Hooks'));
 		$c->page ($this->_page);
 		$c->i18n ($this->_i18n);
@@ -332,7 +332,7 @@ class Controller {
 			self::$called[$uri]++;
 		}
 
-		return $c->handle ($handler, true, $data);
+		return $c->handle ($handler, $internal, $data);
 	}
 
 	/**
@@ -511,6 +511,45 @@ class Controller {
 		$this->app = $app;
 		$this->uri = $uri;
 		return $route;
+	}
+	
+	/**
+	 * Looks for an override of the current handler in the app
+	 * configuration in a `[Custom Handlers]` section. Overrides
+	 * are handlers that should be called transparently in place
+	 * of the current handler, overriding its behaviour without
+	 * modifying the original handler.
+	 * 
+	 * An override setting's key should be the app/handler name,
+	 * and the value can be either the same app/handler name
+	 * (meaning no override), another app/handler name (meaning
+	 * override with that handler), or Off (meaning disable the
+	 * handler). A handler that has been disabled will return a
+	 * 404 error.
+	 *
+	 * If the response is false, there was no override or disabling,
+	 * and the handler should continue running, otherwise the
+	 * response will contain the output of the override handler
+	 * which should be echoed and the original handler should
+	 * return and stop further execution.
+	 */
+	public function override ($handler) {
+		list ($app) = explode ('/', $handler);
+		$custom = Appconf::get ($app, 'Custom Handlers', $handler);
+		
+		if (! $custom) {
+			// disable this handler
+			return $this->error (404, __ ('Not found'), __ ('The page you requested could not be found.'));
+		}
+		
+		if ($custom !== $handler) {
+			// override the handler
+			$override = count ($this->params) ? $custom . '/' . join ('/', $this->params) : $custom;
+			return $this->run ($override, $this->data, $this->internal);
+		}
+		
+		// no override
+		return false;
 	}
 
 	/**
@@ -860,6 +899,24 @@ class Controller {
 	public function require_admin ($redirect = '/admin') {
 		if (! User::require_admin ()) {
 			$this->redirect ($redirect . '?redirect=' . urlencode ($_SERVER['REQUEST_URI']));
+		}
+	}
+
+	/**
+	 * Require the user to have access to one or more resources. Accepts
+	 * any number of parameters, which should be resource names. If any
+	 * resource fails, it will redirect to the `/admin` login screen.
+	 *
+	 * Usage:
+	 *
+	 *     $this->require_acl ('admin', 'admin/edit');
+	 */
+	public function require_acl ($resource) {
+		$args = func_get_args ();
+		foreach ($args as $resource) {
+			if (! User::require_acl ($resource)) {
+				$this->redirect ('/admin');
+			}
 		}
 	}
 

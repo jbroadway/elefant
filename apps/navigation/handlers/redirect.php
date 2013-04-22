@@ -6,7 +6,7 @@
 
 $url = Link::href ($i18n->language);
 
-if (User::is_valid () && User::is ('admin')) {
+if (User::require_admin ()) {
 	printf (
 		'<p>%s:</p><p><a href="%s">%s</a></p>',
 		__ ('This page forwards visitors to the following link'),

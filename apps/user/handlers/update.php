@@ -4,14 +4,9 @@
  * Enables a user to update their profile information.
  */
 
-if ($appconf['Custom Handlers']['user/update'] != 'user/update') {
-	if (! $appconf['Custom Handlers']['user/update']) {
-		echo $this->error (404, __ ('Not found'), __ ('The page you requested could not be found.'));
-		return;
-	}
-	echo $this->run ($appconf['Custom Handlers']['user/update'], $data);
-	return;
-}
+// Check for a custom handler override
+$res = $this->override ('user/update');
+if ($res) { echo $res; return; }
 
 if (! User::require_login ()) {
 	$page->title = __ ('Members');

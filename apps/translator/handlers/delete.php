@@ -4,7 +4,7 @@
  * Delete a language.
  */
 
-$this->require_admin ();
+$this->require_acl ('admin', 'translator');
 
 require_once ('apps/translator/lib/Functions.php');
 

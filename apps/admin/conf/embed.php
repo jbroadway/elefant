@@ -28,7 +28,7 @@ to[initial] = "http://"
 to[regex] = "|^(http:/)?/.+$|"
 to[message] = Please enter a valid URL.
 
-user_type[label] = Access
+user_type[label] = User role
 user_type[type] = select
 user_type[require] = "apps/admin/lib/Functions.php"
 user_type[callback] = "admin_user_groups"

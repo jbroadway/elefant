@@ -31,7 +31,7 @@
 
 	// Add an image from the chooser
 	self.add_image = function (files) {
-		var images = self.get_images ();
+		var images = [];//self.get_images ();
 
 		for (var i in files) {
 			file = files[i];
@@ -98,9 +98,9 @@
 		return path.replace(/\\/g, '/').replace(/\/[^\/]*\/?$/, '');
 	};
         
-        self.escape_RegExp = function (str) {
-          return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-        }
+	self.escape_RegExp = function (str) {
+		return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+	}
 
 	$.multi_image = function (opts) {
 		var defaults = {
@@ -132,12 +132,19 @@
 				thumbs: true,
 				callback: self.add_image,
 				new_file: $.i18n ('New images'),
-				title: $.i18n ('Choose images')
+				title: $.i18n ('Choose images'),
+				files: []
 			};
 
 			if (self.last_path !== null) {
 				fb_opts.path = self.last_path;
 			}
+
+			var files = self.get_images ();
+			for (var i in files) {
+				files[i] = files[i].replace (RegExp('^\/' + self.escape_RegExp(filemanager_path,'/') + '\/?'), '');
+			}
+			fb_opts.files = files;
 
 			$.filebrowser (fb_opts);
 			return false;

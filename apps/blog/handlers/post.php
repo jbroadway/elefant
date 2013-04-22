@@ -4,34 +4,29 @@
  * Displays a single blog post.
  */
 
-if ($appconf['Custom Handlers']['blog/post'] != 'blog/post') {
-	if (! $appconf['Custom Handlers']['blog/post']) {
-		echo $this->error (404, __ ('Not found'), __ ('The page you requested could not be found.'));
-		return;
-	}
-	echo $this->run ($appconf['Custom Handlers']['blog/post'] . '/' . $this->params[0], $data);
-	return;
-}
+// Check for a custom handler override
+$res = $this->override ('blog/post');
+if ($res) { echo $res; return; }
 
 $page->id = 'blog';
-$page->layout = $appconf['Blog']['post_layout'];
+$page->layout = Appconf::blog ('Blog', 'post_layout');
 
 require_once ('apps/blog/lib/Filters.php');
 
 $p = new blog\Post ($this->params[0]);
 
-$page->title = $appconf['Blog']['title'];
+$page->title = Appconf::blog ('Blog', 'title');
 
 $post = $p->orig ();
 $post->full = true;
 $post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
 $post->tag_list = explode (',', $post->tags);
 $post->body = $tpl->run_includes ($post->body);
-$post->social_buttons = $appconf['Social Buttons'];
+$post->social_buttons = Appconf::blog ('Social Buttons');
 
 echo $tpl->render ('blog/post', $post);
 
-switch ($appconf['Blog']['comments']) {
+switch (Appconf::blog ('Blog', 'comments')) {
 	case 'disqus':
 		echo $this->run ('blog/disqus/comments', $post);
 		break;

@@ -58,7 +58,7 @@ class LinkTest extends PHPUnit_Framework_TestCase {
 
 		$i18n->prefix = '';
 		Link::current ('index');
-		$expected = "<li class=\"current\"><a href=\"/index\">Home</a></li>\n";
+		$expected = "<li class=\"current\"><a href=\"/\">Home</a></li>\n";
 		$this->assertEquals ($expected, Link::single ('index', 'Home'));
 
 		$i18n->prefix = '/fr';
@@ -115,11 +115,11 @@ class LinkTest extends PHPUnit_Framework_TestCase {
 
 		$i18n->prefix = '';
 		Link::current ('index');
-		$expected = "<li class=\"current\"><a href=\"/index\">Home</a></li>\n";
+		$expected = "<li class=\"current\"><a href=\"/\">Home</a></li>\n";
 		$this->assertEquals ($expected, Link::single ('index', 'Home'));
 		
 		$i18n->prefix = '/en';
-		$expected = "<li class=\"current\"><a href=\"/en/index\">Home</a></li>\n";
+		$expected = "<li class=\"current\"><a href=\"/en/\">Home</a></li>\n";
 		$this->assertEquals ($expected, Link::single ('index', 'Home'));
 		// Note: This would have presumably forwarded to /{$i18n->language} in any case
 

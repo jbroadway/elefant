@@ -25,7 +25,7 @@ if ($res) {
 	}
 
 	// show admin edit buttons
-	if (User::is_valid () && User::is ('admin')) {
+	if (User::require_acl ('admin', 'admin/edit')) {
 		$lock = new Lock ('Webpage', $id);
 		$page->locked = $lock->exists ();
 		echo $tpl->render ('admin/editable', $page);
@@ -33,6 +33,13 @@ if ($res) {
 
 	// output the page body
 	echo $page->body;
+	return;
+}
+
+// let apps handle sub-page requests
+// e.g., /company/blog -> blog app
+if (conf ('General', 'page_url_style') === 'nested' && is_dir ('apps/' . $id)) {
+	echo $this->run ($id, $data, false);
 	return;
 }
 
@@ -46,7 +53,7 @@ if ($wp->error) {
 }
 
 // access control
-if ($wp->access !== 'public' && ! User::is ('admin')) {
+if ($wp->access !== 'public' && ! User::require_admin ()) {
 	if (! User::require_login ()) {
 		$page->title = __ ('Login required');
 		echo $this->run ('user/login');
@@ -71,7 +78,7 @@ $page->layout = $wp->layout;
 $page->head = $wp->head;
 
 // show admin edit buttons
-if (User::is_valid () && User::is('admin')) {
+if (User::require_acl ('admin', 'admin/edit')) {
 	$lock = new Lock ('Webpage', $id);
 	$page->locked = $lock->exists ();
 	echo $tpl->render ('admin/editable', $page);

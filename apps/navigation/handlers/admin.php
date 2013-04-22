@@ -5,9 +5,7 @@
  * and reorganize them in the site tree.
  */
 
-if (! User::require_admin ()) {
-	$this->redirect ('/admin');
-}
+$this->require_acl ('admin', 'navigation');
 
 $page->title = __ ('Navigation');
 $page->layout = 'admin';

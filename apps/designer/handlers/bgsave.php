@@ -7,7 +7,7 @@
 $page->layout = false;
 header ('Content-Type: application/json');
 
-if (! User::require_admin ()) {
+if (! User::require_acl ('admin') || ! User::require_acl ('designer')) {
 	$res = new StdClass;
 	$res->success = false;
 	$res->error = 'Authorization required.';

@@ -6,7 +6,7 @@
 
 $page->layout = 'admin';
 
-$this->require_admin ();
+$this->require_acl ('admin', 'blog');
 
 require_once ('apps/blog/lib/Filters.php');
 

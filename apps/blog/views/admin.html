@@ -5,9 +5,11 @@
 	&nbsp;|&nbsp;
 	<a href="/blog/import">{"Import Posts"}</a>
 	&nbsp;|&nbsp;
+	{% if User::require_acl ('settings') %}
 	<a href="/blog/settings">{"Settings"}</a>
 	&nbsp;|&nbsp;
 	<a href="/admin/extended?extends=blog\Post&name=Blog+Posts">{"Custom Fields"}</a>
+	{% end %}
 </p>
 
 <p style="float: left">
@@ -39,7 +41,11 @@
 			{% if loop_value->locked %}
 			{"Editing Locked"}
 			{% else %}
-			<a href="/blog/edit?id={{ loop_value->id }}">{"Edit"}</a> | <a href="/blog/delete" data-id="{{ loop_value->id }}" onclick="return $.confirm_and_post (this, '{"Are you sure you want to delete this post?"}');">{"Delete"}</a>
+				<a href="/blog/edit?id={{ loop_value->id }}">{"Edit"}</a>
+				{% if User::require_acl ('admin/delete') %}
+				|
+				<a href="/blog/delete" data-id="{{ loop_value->id }}" onclick="return $.confirm_and_post (this, '{"Are you sure you want to delete this post?"}');">{"Delete"}</a>
+				{% end %}
 			{% end %}
 		</td>
 	</tr>

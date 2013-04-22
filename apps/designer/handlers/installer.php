@@ -6,7 +6,7 @@
 
 $page->layout = 'admin';
 
-$this->require_admin ();
+$this->require_acl ('admin', 'designer', 'designer/installer');
 
 $page->title = __ ('Install App/Theme');
 

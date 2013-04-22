@@ -42,8 +42,9 @@ $this->run ('admin/util/modal');
 $page->add_style ('/apps/filemanager/css/filebrowser.css');
 $page->add_script (
 	sprintf (
-		'<script>var filemanager_path = "%s";</script>',
-		conf('Paths','filemanager_path')
+		'<script>var filemanager_path = "%s", filemanager_upload = %d;</script>',
+		conf('Paths','filemanager_path'),
+		(int) User::require_acl ('admin', 'filemanager')
 	)
 );
 $page->add_script ('/apps/filemanager/js/jquery.filedrop.js');

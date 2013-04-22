@@ -6,7 +6,7 @@
 
 $page->layout = 'admin';
 
-$this->require_admin ();
+$this->require_acl ('admin', 'user');
 
 $limit = 20;
 $num = isset ($_GET['offset']) ? $_GET['offset'] : 1;

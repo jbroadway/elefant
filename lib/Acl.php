@@ -69,9 +69,24 @@
  * given role. The naming convention `user/admin` signifies a feature within an
  * app as opposed to the app itself.
  *
- * Note that Elefant doesn't use Acl in its own features, just `require_admin()`
- * and `require_login()`. This class is intended for custom applications built on
- * top of the framework.
+ * To easily include access control in a handler, you can use the Controller's
+ * `require_acl()` method like this:
+ *
+ *     $this->require_acl ('admin', 'myapp');
+ *
+ * Which says: Verify they can access the `admin` resource, as well as the `myapp`
+ * resource. You can also retrieve the Acl object for the currently active user
+ * via the `User::acl()` method like this:
+ *
+ *     $acl = User::acl ();
+ *
+ * To define new resources that your custom app will use, create a `conf/acl.php`
+ * in your app and define your resources like this:
+ *
+ *     myapp = "My application"
+ *     myapp/feature-x = "Access feature X"
+ *
+ * This will automatically include them in the Elefant role editor.
  */
 class Acl {
 	/**
@@ -83,6 +98,11 @@ class Acl {
 	 * The access control rules as an array of roles and their permissions.
 	 */
 	public $rules = array ();
+	
+	/**
+	 * A list of resources defined by the installed apps.
+	 */
+	public $resources = null;
 
 	/**
 	 * Constructor will call `init()` if a file is provided, or simply
@@ -155,6 +175,26 @@ class Acl {
 			$this->add_role ($role);
 		}
 		$this->rules[$role][$resource] = true;
+	}
+
+	/**
+	 * Find all resources defined by the installed apps.
+	 */
+	public function resources () {
+		if ($this->resources === null) {
+			$files = glob ('apps/*/conf/acl.php');
+			$files = is_array ($files) ? $files : array ();
+			$this->resources = array ();
+			foreach ($files as $file) {
+				$resources = parse_ini_file ($file);
+				if (! is_array ($resources)) {
+					continue;
+				}
+				$this->resources = array_merge ($this->resources, $resources);
+			}
+			asort ($this->resources);
+		}
+		return $this->resources;
 	}
 }
 

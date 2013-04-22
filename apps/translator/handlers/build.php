@@ -5,7 +5,7 @@
  * and templates on the site.
  */
 
-$this->require_admin ();
+$this->require_acl ('admin', 'translator');
 
 $page->layout = 'admin';
 
@@ -33,6 +33,7 @@ $sources = array (
 	'apps/*/handlers/*/*/*.php',
 	'apps/*/lib/*.php',
 	'apps/*/models/*.php',
+	'apps/*/conf/acl.php',
 	'install/*.php',
 	'install/layouts/*.html'
 );
@@ -63,6 +64,24 @@ foreach ($sources as $source) {
 						? $list[$str]['src']
 						: array ($list[$str]['src']);
 
+					if (! in_array ($file, $list[$str]['src'])) {
+						$list[$str]['src'][] = $file;
+					}
+				}
+			}
+		} elseif (preg_match ('|^apps/.*/conf/acl\.php$|', $file)) {
+			$strings = parse_ini_string ($data);
+			foreach ($strings as $str) {
+				if (! isset ($list[$str])) {
+					$list[$str] = array (
+						'orig' => $str,
+						'str' => array ($file)
+					);
+				} else {
+					$list[$str]['src'] = is_array ($list[$str]['src'])
+						? $list[$str]['src']
+						: array ($list[$str]['src']);
+					
 					if (! in_array ($file, $list[$str]['src'])) {
 						$list[$str]['src'][] = $file;
 					}

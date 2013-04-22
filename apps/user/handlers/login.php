@@ -5,14 +5,9 @@
  * to send them to after logging in.
  */
 
-if ($appconf['Custom Handlers']['user/login'] != 'user/login') {
-	if (! $appconf['Custom Handlers']['user/login']) {
-		echo $this->error (404, __ ('Not found'), __ ('The page you requested could not be found.'));
-		return;
-	}
-	echo $this->run ($appconf['Custom Handlers']['user/login'], $data);
-	return;
-}
+// Check for a custom handler override
+$res = $this->override ('user/login');
+if ($res) { echo $res; return; }
 
 if (! $this->internal) {
 	$page->title = __ ('Members');
@@ -37,7 +32,7 @@ if (! User::require_login ()) {
 	if (! $this->internal && ! empty ($_POST['username'])) {
 		echo '<p>' . __ ('Incorrect email or password, please try again.') . '</p>';
 	}
-	$_POST['signup_handler'] = $appconf['Custom Handlers']['user/signup'];
+	$_POST['signup_handler'] = Appconf::user ('Custom Handlers', 'user/signup');
 	echo $tpl->render ('user/login', $_POST);
 } elseif (! $this->internal) {
 	$this->redirect ($_POST['redirect']);

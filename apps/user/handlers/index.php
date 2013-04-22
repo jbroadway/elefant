@@ -4,14 +4,9 @@
  * Default user profile view. If not logged in, will show a log in form.
  */
 
-if ($appconf['Custom Handlers']['user/index'] != 'user/index') {
-	if (! $appconf['Custom Handlers']['user/index']) {
-		echo $this->error (404, __ ('Not found'), __ ('The page you requested could not be found.'));
-		return;
-	}
-	echo $this->run ($appconf['Custom Handlers']['user/index'], $data);
-	return;
-}
+// Check for a custom handler override
+$res = $this->override ('user/index');
+if ($res) { echo $res; return; }
 
 if (! $this->params[0]) {
 	if (! User::require_login ()) {

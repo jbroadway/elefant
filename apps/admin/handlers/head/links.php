@@ -24,8 +24,17 @@ $res = glob ('apps/*/conf/config.php');
 $apps = DB::pairs ('select * from #prefix#apps');
 foreach ($res as $file) {
 	$app = preg_replace ('/^apps\/(.*)\/conf\/config\.php$/i', '\1', $file);
+	if (! User::require_acl ($app)) {
+		// Can't access this app
+		continue;
+	}
 	$appconf = parse_ini_file ($file, true);
 	if (isset ($appconf['Admin']['handler'])) {
+		if (! preg_match ('/\/(admin|index)$/', $appconf['Admin']['handler']) && ! User::require_acl ($appconf['Admin']['handler'])) {
+			// A non /admin or /index handler should get an additional
+			// access check (e.g., admin/versions).
+			continue;
+		}
 		if (isset ($appconf['Admin']['install'])) {
 			$ver = $this->installed ($app, $appconf['Admin']['version']);
 			if ($ver === true) {

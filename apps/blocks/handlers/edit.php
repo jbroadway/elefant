@@ -6,9 +6,7 @@
 
 $page->layout = 'admin';
 
-if (! User::require_admin ()) {
-	$this->redirect ('/admin');
-}
+$this->require_acl ('admin', 'blocks');
 
 $lock = new Lock ('Block', $_GET['id']);
 if ($lock->exists ()) {

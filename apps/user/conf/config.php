@@ -7,12 +7,6 @@
 
 logout_redirect = "/"
 
-; This is a list of user types available on your site.
-; The admin and member types are required, but you can
-; add new ones here.
-
-user_types = "admin, member"
-
 ; You can enable or disable alternative login methods here.
 ; Each name corresponds to a handler in apps/user/handlers/login.
 
@@ -26,25 +20,6 @@ login_methods[] = google
 
 login_attempt_limit = 5
 block_attempts_for = 900
-
-[Access]
-
-; You can add your own access levels here. The public, member,
-; and private values should be left as defaults since they are
-; used by the CMS.
-
-; The value "all" means any user type including anonymous users.
-; The value "login" means any logged in user.
-; The value "admin" is short for "type:admin".
-
-; To specify a custom access level for a custom user type, enter
-; "client = type:client" or simply "client = client". To enter
-; multiple user types, separate each value with a comma, e.g.,
-; "shared = group_a, group_b, group_c".
-
-public = all
-member = login
-private = admin
 
 [Custom Handlers]
 

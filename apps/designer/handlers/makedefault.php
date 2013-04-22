@@ -4,9 +4,7 @@
  * Changes the default layout template.
  */
 
-if (! User::require_admin ()) {
-	$this->redirect ('/admin');
-}
+$this->require_acl ('admin', 'designer');
 
 $confdata = file_get_contents ('conf/config.php');
 $confdata = str_replace (

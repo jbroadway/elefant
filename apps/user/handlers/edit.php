@@ -6,9 +6,7 @@
 
 $page->layout = 'admin';
 
-if (! User::require_admin ()) {
-	$this->redirect ('/admin');
-}
+$this->require_acl ('admin', 'user');
 
 $u = new User ($_GET['id']);
 
@@ -33,7 +31,7 @@ if ($f->submit ()) {
 	echo __ ('Error Message') . ': ' . $u->error;
 } else {
 	$u->password = '';
-	$u->types = preg_split ('/, ?/', $appconf['User']['user_types']);
+	$u->types = array_keys (User::acl ()->rules);
 
 	$u->failed = $f->failed;
 	$u = $f->merge_values ($u);
