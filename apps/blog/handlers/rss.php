@@ -6,8 +6,6 @@
 
 $res = $cache->get ('blog_rss');
 if (! $res) {
-	require_once ('apps/blog/lib/Filters.php');
-
 	$p = new blog\Post;
 	$page->posts = $p->latest (10, 0);
 	$page->title = $appconf['Blog']['title'];
