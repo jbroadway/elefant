@@ -17,6 +17,61 @@ if (! $this->cli) {
 
 $page->layout = false;
 
+if (isset ($_SERVER['argv'][2])) {
+	// Install an app
+	$url = $_SERVER['argv'][2];
+	if (strpos ($url, '://') === false && file_exists ($url)) {
+		// Install from local zip file
+		ZipInstaller::clean ();
+
+		// Import from Zip
+		$res = ZipInstaller::install ($url);
+		if (! $res) {
+			ZipInstaller::clean ();
+			echo 'Error: ' . ZipInstaller::$error . "\n";
+			return;
+		}
+		ZipInstaller::clean ();
+		echo "Install completed.\n";
+		return;
+	}
+
+	require_once ('apps/designer/lib/Functions.php');
+
+	if (github_is_zip ($url)) {
+		ZipInstaller::clean ();
+		
+		// Retrieve zip file
+		$info = ZipInstaller::fetch ($url);
+		if (! $info) {
+			ZipInstaller::clean ();
+			echo 'Error: ' . ZipInstaller::$error . "\n";
+			return;
+		}
+		
+		$res = ZipInstaller::install ($info);
+		if (! $res) {
+			ZipInstaller::clean ();
+			echo 'Error: ' . ZipInstaller::$error . "\n";
+			return;
+		}
+		
+		ZipInstaller::clean ();
+		echo "Install completed.\n";
+		return;
+	} else {
+		// Import from Github
+		$res = GithubInstaller::install ($url);
+		if (! $res) {
+			echo 'Error: ' . GithubInstaller::$error . "\n";
+			return;
+		}
+		
+		echo "Install completed.\n";
+		return;
+	}
+}
+
 if (@file_exists ('conf/installed')) {
 	echo "** Error: Installer has already been run.\n";
 	return;

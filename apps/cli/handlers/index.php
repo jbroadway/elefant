@@ -28,6 +28,7 @@ Usage:
 Commands:
 
   install                          Run the command line installer
+  install <url-or-zip>             Install a new app or theme
   update                           Check for and apply Elefant updates
   backup <path>                    Save a backup of the site and db
   export-db <file>                 Export the db to a file or STDOUT
