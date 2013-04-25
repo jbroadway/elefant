@@ -9,6 +9,5 @@
 	},
 	"config": {
 		"process-timeout": 600
-	},
-	"minimum-stability": "dev"
+	}
 }
