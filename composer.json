@@ -2,7 +2,7 @@
 	"name": "elefant/cms",
 	"description": "The Elefant CMS",
 	"keywords": ["cms", "content management", "wysiwyg", "elefant"],
-	"homepage": "http://www.elefantcms.com/"
+	"homepage": "http://www.elefantcms.com/",
 	"require": {
 		"php": ">=5.3.2"
 	},
