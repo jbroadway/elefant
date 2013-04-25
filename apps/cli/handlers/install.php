@@ -82,11 +82,13 @@ require_once ('apps/cli/lib/Functions.php');
 $conf = parse_ini_file ('conf/config.php', true);
 
 // set the necessary folder permissions
-system ('chmod -R 755 cache conf css files lang layouts');
-system ('chmod 755 apps');
+system ('chmod -R 777 cache conf css files lang layouts');
+system ('chmod 777 apps');
 
 // connect to the database
 $connected = false;
+DB::$prefix = isset ($conf['Database']['prefix']) ? $conf['Database']['prefix'] : '';
+unset ($conf['Database']['prefix']);
 foreach (array_keys ($conf['Database']) as $key) {
 	if ($key == 'master') {
 		$conf['Database'][$key]['master'] = true;
