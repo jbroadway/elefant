@@ -82,8 +82,8 @@ require_once ('apps/cli/lib/Functions.php');
 $conf = parse_ini_file ('conf/config.php', true);
 
 // set the necessary folder permissions
-system ('chmod -R 777 cache conf css files lang layouts');
-system ('chmod 777 apps');
+system ('chmod -R 755 cache conf css files lang layouts');
+system ('chmod 755 apps');
 
 // connect to the database
 $connected = false;

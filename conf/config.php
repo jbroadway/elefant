@@ -67,6 +67,11 @@ debug = Off
 
 display_errors = Off
 
+; Check for updates and display an update notice in the top bar
+; when new updates are available for the CMS.
+
+check_for_updates = On
+
 [I18n]
 
 ; Turn this on if your site is multilingual. This will change

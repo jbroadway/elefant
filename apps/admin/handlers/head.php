@@ -18,7 +18,8 @@ if (User::require_admin () && $page->preview == false) {
 	$page->add_style ('/apps/admin/css/jquery.jgrowl.css');
 	$page->add_style ('/apps/admin/css/top-bar.css');
 
-	$page->add_script ("<script>$(function(){\$.elefant_version='" . ELEFANT_VERSION . "';});</script>");
+	$page->add_script ("<script>$(function(){\$.elefant_version='" . ELEFANT_VERSION . "';});</script>\n");
+	$page->add_script ("<script>$(function(){\$.elefant_updates=" . (int) conf ('General', 'check_for_updates') . ";});</script>\n");
 	$page->add_script ('/apps/admin/js/jquery.jgrowl.min.js');
 	$page->add_script ('/js/jquery.cookie.js');
 	$page->add_script ('/apps/admin/js/top-bar.js');

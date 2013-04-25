@@ -185,7 +185,7 @@ $(function () {
 	);
 
 	// check for and display elefant updates if available
-	if (! $.cookie ('elefant_update_checked')) {
+	if ($.elefant_updates && ! $.cookie ('elefant_update_checked')) {
 		var major_minor = $.elefant_version.replace (/\.[0-9]+$/, '');
 		$.getJSON ('http://www.elefantcms.com/updates/check.php?v=' + major_minor + '&callback=?', function (res) {
 			if (res.latest > $.elefant_version) {
