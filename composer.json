@@ -1,9 +1,6 @@
 {
 	"name": "elefant/cms",
 	"description": "The Elefant CMS",
-	"repositories": [
-		{"type": "git", "url": "http://github.com/jbroadway/elefant"}
-	],
 	"require": {
 		"php": ">=5.3.2"
 	},
