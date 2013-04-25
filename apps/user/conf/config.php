@@ -14,6 +14,7 @@ login_methods[] = openid
 login_methods[] = google
 ;login_methods[] = twitter
 ;login_methods[] = facebook
+;login_methods[] = persona
 
 ; Limit the number of login attempts, and how long to stop them (in seconds)
 ; from trying again if they exceed the limit.

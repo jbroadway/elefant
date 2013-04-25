@@ -16,10 +16,13 @@
 	{% if in_array ('openid', $data->login_methods) %}
 		<a href="/user/login/openid?redirect={{ $_SERVER.REQUEST_URI }}"><img src="/apps/user/pix/openid.png" alt="OpenID" /></a>
 	{% end %}
+	{% if in_array ('persona', $data->login_methods) %}
+		<a href="/user/login/persona?redirect={{ $_SERVER.REQUEST_URI }}" id="persona-login"><img src="/apps/user/pix/persona.png" alt="Persona" /></a>
+	{% end %}
 	</div>
 	{% end %}
 {% else %}
 <h3>{{ User::val ('name') }}</h3>
 <p><a href="/user">{"View profile"}</a><br />
-<a href="/user/logout?redirect=/">{"Log out"}</a></p>
+<a href="/user/logout?redirect=/"{% if in_array ('persona', $data->login_methods) %} id="persona-logout"{% end %}>{"Log out"}</a></p>
 {% end %}

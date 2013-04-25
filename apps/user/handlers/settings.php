@@ -25,7 +25,8 @@ $form->data = array (
 	'login_openid' => in_array ('openid', $appconf['User']['login_methods']),
 	'login_google' => in_array ('google', $appconf['User']['login_methods']),
 	'login_facebook' => in_array ('facebook', $appconf['User']['login_methods']),
-	'login_twitter' => in_array ('twitter', $appconf['User']['login_methods'])
+	'login_twitter' => in_array ('twitter', $appconf['User']['login_methods']),
+	'login_persona' => in_array ('persona', $appconf['User']['login_methods'])
 );
 
 echo $form->handle (function ($form) {
@@ -41,6 +42,9 @@ echo $form->handle (function ($form) {
 	}
 	if ($_POST['login_twitter'] === 'yes') {
 		$login_methods[] = 'twitter';
+	}
+	if ($_POST['login_persona'] === 'yes') {
+		$login_methods[] = 'persona';
 	}
 	if (count ($login_methods) === 0) {
 		$login_methods = false;
