@@ -8,6 +8,7 @@
 		"php": ">=5.3.2"
 	},
 	"config": {
-		"process-timeout": 600
+		"process-timeout": 600,
+		"vendor-dir": "lib/vendor"
 	}
 }
