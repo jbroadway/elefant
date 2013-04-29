@@ -21,6 +21,8 @@ if ($lock->exists ()) {
 
 $b = new Block ($_POST['id']);
 
+$_POST = array_merge ($_POST, (array) $b->orig ());
+
 if (! $b->remove ()) {
 	$page->title = __ ('An Error Occurred');
 	echo __ ('Error Message') . ': ' . $b->error;

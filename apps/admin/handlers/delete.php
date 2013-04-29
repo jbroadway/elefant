@@ -21,6 +21,8 @@ if ($lock->exists ()) {
 
 $wp = new Webpage ($_POST['page']);
 
+$_POST = array_merge ($_POST, (array) $wp->orig ());
+
 if (! $wp->remove ()) {
 	$page->title = __ ('An Error Occurred');
 	echo __ ('Error Message') . ': ' . $wp->error;
