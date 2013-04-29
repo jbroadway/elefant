@@ -338,7 +338,7 @@ class Validator {
 						'field' => $name,
 						'type'  => $type,
 						'validator' => $validator,
-						'value' => $values[$name]
+						'value' => isset ($values[$name]) ? $values[$name] : null
 					);
 					break;
 				}
