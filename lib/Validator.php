@@ -50,6 +50,12 @@
  */
 class Validator {
 	/**
+	 * The full details of which rules failed in a call to
+	 * `Validator::validate_list()`.
+	 */
+	public static $invalid = array ();
+	
+	/**
 	 * Verifies the specified value, useful for input validation.
 	 * Pass the value, a type of validation, and a validator.
 	 * Types include:
@@ -275,11 +281,18 @@ class Validator {
 			$validations = parse_ini_file ($validations, true);
 		}
 		$failed = array ();
+		self::$invalid = array ();
 		foreach ($validations as $name => $validators) {
 			foreach ($validators as $type => $validator) {
 				if ($type === 'file') {
 					if (! is_uploaded_file ($_FILES[$name]['tmp_name'])) {
 						$failed[] = $name;
+						self::$invalid[$name] = array (
+							'field' => $name,
+							'type'  => $type,
+							'validator' => $validator,
+							'value' => $_FILES[$name]['name']
+						);
 						break;
 					} else {
 						continue;
@@ -293,6 +306,12 @@ class Validator {
 					$extension = strtolower (pathinfo ($_FILES[$name]['name'], PATHINFO_EXTENSION));
 					if (! in_array ($extension, $extensions)) {
 						$failed[] = $name;
+						self::$invalid[$name] = array (
+							'field' => $name,
+							'type'  => $type,
+							'validator' => $validator,
+							'value' => $_FILES[$name]['name']
+						);
 						break;
 					} else {
 						continue;
@@ -315,6 +334,12 @@ class Validator {
 				}
 				if (! isset ($values[$name]) || ! Validator::validate ($values[$name], $type, $validator)) {
 					$failed[] = $name;
+					self::$invalid[$name] = array (
+						'field' => $name,
+						'type'  => $type,
+						'validator' => $validator,
+						'value' => $values[$name]
+					);
 					break;
 				}
 			}
