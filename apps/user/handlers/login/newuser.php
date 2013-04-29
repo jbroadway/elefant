@@ -43,6 +43,7 @@ if ($f->submit ()) {
 } else {
 	$u = new User;
 	$u = $f->merge_values ($u);
+	$u = $u->orig ();
 	$u->failed = $f->failed;
 	$page->title = __ ('New User');
 	echo $tpl->render ('user/login/newuser', $u);

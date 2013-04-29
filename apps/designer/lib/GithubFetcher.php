@@ -58,6 +58,7 @@ class GithubFetcher {
 	public static function _fetch ($url) {
 		if (extension_loaded ('curl')) {
 			$ch = curl_init ();
+			curl_setopt ($ch, CURLOPT_USERAGENT, 'Elefant CMS/' . ELEFANT_VERSION);
 			curl_setopt ($ch, CURLOPT_HEADER, 0);
 			curl_setopt ($ch, CURLOPT_VERBOSE, 0);
 			curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);

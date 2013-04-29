@@ -534,6 +534,15 @@ class Controller {
 	 * return and stop further execution.
 	 */
 	public function override ($handler) {
+		static $overridden = array ();
+
+		if (in_array ($handler, $overridden)) {
+			// don't override the same handler
+			// twice to prevent infinite loops
+			return false;
+		}
+		$overridden[] = $handler;
+
 		list ($app) = explode ('/', $handler);
 		$custom = Appconf::get ($app, 'Custom Handlers', $handler);
 		

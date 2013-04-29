@@ -96,6 +96,17 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 			)
 		);
 		$this->assertEquals (array ('asdf'), Validator::validate_list ($values, $validations));
+		$this->assertEquals (
+			array (
+				'asdf' => array (
+					'field' => 'asdf',
+					'type' => 'empty',
+					'validator' => 1,
+					'value' => 'qwerty'
+				)
+			),
+			Validator::$invalid
+		);
 
 		$validations = array (
 			'foo' => array (
@@ -108,10 +119,25 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 			'asdf' => 'qwerty'
 		);
 		$this->assertEquals (array (), Validator::validate_list ($values, $validations));
+		$this->assertEquals (array (), Validator::$invalid);
+
 		$values['foo'] = 'foobar';
 		$this->assertEquals (array ('foo'), Validator::validate_list ($values, $validations));
+		$this->assertEquals (
+			array (
+				'foo' => array (
+					'field' => 'foo',
+					'type' => 'contains',
+					'validator' => 'asdf',
+					'value' => 'foobar'
+				)
+			),
+			Validator::$invalid
+		);
+		
 		$values['foo'] = 'asdf';
 		$this->assertEquals (array (), Validator::validate_list ($values, $validations));
+		$this->assertEquals (array (), Validator::$invalid);
 
 		$validations = array (
 			'foo' => array (
@@ -122,10 +148,35 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		);
 		$values = array ('foo' => 'asdf'); // Not an array
 		$this->assertEquals (array ('foo'), Validator::validate_list ($values, $validations));
+		$this->assertEquals (
+			array (
+				'foo' => array (
+					'field' => 'foo',
+					'type' => 'type',
+					'validator' => 'array',
+					'value' => 'asdf'
+				)
+			),
+			Validator::$invalid
+		);
+
 		$values = array ('foo' => array ('bar', '')); // Contains should fail
 		$this->assertEquals (array ('foo'), Validator::validate_list ($values, $validations));
+		$this->assertEquals (
+			array (
+				'foo' => array (
+					'field' => 'foo',
+					'type' => 'each contains',
+					'validator' => 'asdf',
+					'value' => array ('bar')
+				)
+			),
+			Validator::$invalid
+		);
+
 		$values = array ('foo' => array ('', '')); // All empty should pass
 		$this->assertEquals (array (), Validator::validate_list ($values, $validations));
+		$this->assertEquals (array (), Validator::$invalid);
 	}
 }
 

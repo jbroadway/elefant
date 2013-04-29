@@ -154,6 +154,12 @@ class Form {
 	 * The reason `submit()` failed to pass.
 	 */
 	public $error = false;
+	
+	/**
+	 * The full details of which rules failed in a call to
+	 * `Validator::validate_list()`.
+	 */
+	public $invalid = array ();
 
 	/**
 	 * Whether `handle()` should include the default JavaScript validation
@@ -283,6 +289,7 @@ class Form {
 		$o = $this->merge_values ($o);
 		$o->_form = str_replace ('/', '-', $this->view) . '-form';
 		$o->_failed = $this->failed;
+		$o->_invalid = $this->invalid;
 		$o->_rules = $this->_rules;
 		$page->add_script ('/js/jquery.verify_values.js');
 		if ($this->js_validation) {
@@ -461,7 +468,9 @@ class Form {
 	 * Alias of `Validator::validate_list()`.
 	 */
 	public function verify_values ($values, $validations = array ()) {
-		return Validator::validate_list ($values, $validations);
+		$failed = Validator::validate_list ($values, $validations);
+		$this->invalid = Validator::$invalid;
+		return $failed;
 	}
 }
 

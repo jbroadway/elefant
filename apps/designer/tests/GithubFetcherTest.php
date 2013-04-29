@@ -1,6 +1,7 @@
 <?php
 
 require_once ('lib/Autoloader.php');
+require_once ('conf/version.php');
 
 class GithubFetcherTest extends PHPUnit_Framework_TestCase {
 	public static $g;
