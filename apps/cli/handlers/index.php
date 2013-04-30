@@ -35,6 +35,7 @@ Commands:
   import-db <file>                 Import a schema file into the db
   build-app <appname>              Build the scaffolding for an app
   crud-app <modelname> <fieldlist> Build the scaffolding for a CRUD app
+  clear-cache                      Clear the cache and compiled templates
   generate-password <length(8)>    Generate a random password
   encrypt-password <password>      Encrypt a password for the db
   bundle-translations <appname>    Bundle translations into an app
