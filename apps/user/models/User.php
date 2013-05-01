@@ -329,7 +329,7 @@ class User extends ExtendedModel {
 	 * for content access levels.
 	 */
 	public static function access ($access) {
-		self::require_acl ('content/' . $access);
+		return self::require_acl ('content/' . $access);
 	}
 
 	/**
