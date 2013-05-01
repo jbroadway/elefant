@@ -60,7 +60,7 @@ if ($wp->access !== 'public' && ! User::require_admin ()) {
 		return;
 	}
 	if (! User::access ($wp->access)) {
-		$page->title = __ ('You do not have enough access privileges for this operation');
+		echo $this->error (403, __ ('Access denied'), '<p>' . __ ('You do not have enough access privileges for this operation.') . '</p>');
 		return;
 	}
 }
