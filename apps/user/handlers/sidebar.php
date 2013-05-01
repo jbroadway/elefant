@@ -3,6 +3,9 @@
 /**
  * User login/registration sidebar handler.
  */
+$appconf['User']['login_methods'] = is_array ($appconf['User']['login_methods'])
+	? $appconf['User']['login_methods']
+	: array ();
 
 if (in_array ('persona', $appconf['User']['login_methods'])) {
 	header ('X-UA-Compatible: IE=Edge');
