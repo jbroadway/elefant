@@ -60,8 +60,7 @@ if ($wp->access !== 'public' && ! User::require_admin ()) {
 		return;
 	}
 	if (! User::access ($wp->access)) {
-		$page->title = __ ('Login required');
-		echo $this->run ('user/login');
+		$page->title = __ ('You do not have enough access privileges for this operation');
 		return;
 	}
 }
