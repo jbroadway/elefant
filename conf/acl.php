@@ -19,6 +19,6 @@ filemanager             = On
 [member]
 
 default                 = Off
-member                  = On
+content/member          = On
 
 ; */ ?>
