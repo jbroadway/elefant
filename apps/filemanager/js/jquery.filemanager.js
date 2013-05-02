@@ -95,7 +95,7 @@
 									res.data.files[i].text_file = res.data.files[i].name.match (filemanager.text_file);
 									res.data.files[i]._name = res.data.files[i].name.replace (/'/g, '\\\'');
 									res.data.files[i]._path = res.data.files[i].path.replace (/'/g, '\\\'');
-                                                                        res.data.files[i].conf_root = conf_root + '/';
+                                    res.data.files[i].conf_root = conf_root + '/';
 									$.tmpl ('tpl_file', res.data.files[i]).appendTo (tbody);
 								}
 							}
