@@ -265,3 +265,13 @@ body {
 	.admin-tooltip-body {
 		text-decoration: none !important;
 	}
+
+@media screen and (max-width: 480px) {
+	#admin-bar {
+		-webkit-text-size-adjust: 100%;
+	}
+
+	#admin-bar img, #admin-update-available {
+		display: none;
+	}
+}
