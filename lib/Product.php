@@ -60,6 +60,14 @@ class Product {
 		$info = Product::get_info ();
 		return $info['stylesheet'];
 	}
+
+	/**
+	 * Returns the `toolbar_stylesheet` value.
+	 */
+	public static function toolbar_stylesheet () {
+		$info = Product::get_info ();
+		return $info['toolbar_stylesheet'];
+	}
 }
 
 ?>
