@@ -53,7 +53,7 @@ if ($data['fields'] || count ($data['fields']) === 0) {
 
 		if ($field->type === 'select') {
 			$data['fields'][$k]->options = preg_split ("/[\r\n]+/", $field->options);
-		} elseif ($field->type === 'file') {
+		} elseif ($field->type === 'file' || $field->type === 'image') {
 			$load_assets = true;
 		} elseif (strpos ($field->type, '_') !== false) {
 			list ($app, $extra) = explode ('_', $field->type);

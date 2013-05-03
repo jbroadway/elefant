@@ -37,6 +37,8 @@ if ($data['order'] === 'desc') {
 	usort ($files, 'filemanager_sort_mtime_desc');
 } elseif ($data['order'] === 'asc') {
 	usort ($files, 'filemanager_sort_mtime_asc');
+} elseif ($data['order'] === 'alpha') {
+	sort ($files);
 }
 
 // remove 'files/' from paths and create output list

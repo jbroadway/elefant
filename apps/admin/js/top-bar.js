@@ -215,4 +215,27 @@ $(function () {
 	}
 
 	jgrowl_interval ();
+
+	// Set left column headers for responsive tables
+	if ($(window).width () <= 480) {
+		var th = [];
+
+		$('th').each (function () {
+			th.push ($(this).text ());
+		});
+
+		var n = 0;
+		$('td').each (function () {
+			var orig = $(this).html ();
+			$(this).html (
+				'<div class="before">' + th[n] + '</div>' +
+				'<div class="after">' + orig + '</div>' +
+				'<div class="clear"></div>'
+			);
+			n++;
+			if (n >= th.length) {
+				n = 0;
+			}
+		});
+	}
 });

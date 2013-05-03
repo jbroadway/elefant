@@ -16,7 +16,7 @@ if ($appconf['Scripts']['jquery_source'] === 'local') {
 
 if (User::require_admin () && $page->preview == false) {
 	$page->add_style ('/apps/admin/css/jquery.jgrowl.css');
-	$page->add_style ('/apps/admin/css/top-bar.css');
+	$page->add_style (Product::toolbar_stylesheet ());
 
 	$page->add_script ("<script>$(function(){\$.elefant_version='" . ELEFANT_VERSION . "';});</script>\n");
 	$page->add_script ("<script>$(function(){\$.elefant_updates=" . (int) conf ('General', 'check_for_updates') . ";});</script>\n");

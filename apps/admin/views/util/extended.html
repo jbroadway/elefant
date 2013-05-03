@@ -65,11 +65,16 @@
 	{% elseif field->type === 'image' %}
 		<p>
 			{{field->label|__}}:<br />
+			{% if file_exists (substr ($data->field->value, 1)) && getimagesize (substr ($data->field->value, 1)) %}
+				<img src="{{field->value|quotes}}" id="{{field->name}}-image-preview" style="max-height: 100px; max-width: 100px; margin-bottom: 5px" /><br />
+			{% else %}
+				<img src="/apps/admin/css/admin/blank.png" id="{{field->name}}-image-preview" style="max-height: 100px; max-width: 100px; margin-bottom: 5px" /><br />
+			{% end %}
 			<input	type="text"
 					name="_extended[{{field->name}}]"
 					id="_extended_{{field->name}}"
 					value="{{field->value|quotes}}"
-					class="wysiwyg-file-input"
+					class="wysiwyg-image-input"
 					size="30"
 			/>
 			<input	type="submit"
@@ -98,7 +103,10 @@
 		function imagebrowser_{{field->name}} () {
 			$.filebrowser ({
 				set_value: '#_extended_{{field->name}}',
-				thumbs: true
+				thumbs: true,
+				callback: function (file) {
+					$('#{{field->name}}-image-preview').attr ('src', file);
+				}
 			});
 			return false;
 		}

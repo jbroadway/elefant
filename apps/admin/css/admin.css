@@ -474,3 +474,97 @@ span.dynamic-fileManager {
 	.copyright {
 		text-align: right;
 	}
+
+@media screen and (max-width: 480px) {
+	body, th, td {
+		-webkit-text-size-adjust: 100%;
+		font-size: 13px !important;
+	}
+	
+	body, .form {
+		width: 100% !important;
+		min-width: inherit !important;
+	}
+
+	#wrapper {
+		width: 95% !important;
+		min-width: inherit !important;
+		max-width: inherit !important;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	
+	.container_12, .container_12 .grid_12, .container_12 .grid_9, .container_12 .grid_6, .container_12 .grid_4, .container_12 .grid_3 {
+		width: 100%;
+		clear: both;
+		margin: 0;
+		padding: 0;
+	}
+
+	input:not([type='submit']), select, textarea {
+		width: 97%;
+	}
+	
+	.redactor_box, .redactor_editor, .redactor_box textarea {
+		width: 98% !important;
+		max-height: 240px !important;
+		min-width: 98% !important;
+		max-width: 98% !important;
+	}
+
+	/* responsive tables */
+	table {
+		clear:both;
+		position: relative;
+		border: 0;
+	}
+	
+	table, thead, tbody, th, td, tr {
+		display: block;
+	}
+	
+	th {
+		display: none;
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr {
+		border-top: 1px solid #666;
+	}
+
+	tr:first-child {
+		border-top: 0;
+	}
+	
+	td {
+		position: relative;
+		min-height: 15px;
+	}
+	
+	td:last-child {
+		border-bottom: 0;
+	}
+	
+	td div.before {
+		position: absolute;
+		top: 3px;
+		left: 0;
+		width: 35%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-align: left;
+		font-weight: bold;
+	}
+
+	td div.after {
+		position: absolute;
+		top: 3px;
+		right: 0;
+		width: 65%;
+		white-space: nowrap;
+		overflow: scroll;
+		text-align: left;
+	}
+}

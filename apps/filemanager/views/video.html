@@ -1,4 +1,4 @@
-<video width="480" height="270" controls="controls" preload="none">
+<video width="480" height="270"{% if poster %} poster="{{poster}}"{% end %} controls="controls" preload="none">
     <source type="video/mp4" src="{{file}}" />
     <object width="480" height="270" type="application/x-shockwave-flash" data="/apps/filemanager/js/flashmediaelement.swf">
         <param name="movie" value="/apps/filemanager/js/flashmediaelement.swf" />
