@@ -60,7 +60,7 @@ if (get_magic_quotes_gpc ()) {
  */
 define ('ELEFANT_ENV', getenv ('ELEFANT_ENV') ? getenv ('ELEFANT_ENV') : 'config');
 require ('conf/version.php');
-require ('lib/Autoloader.php');
+require ('lib/vendor/autoload.php');
 require ('lib/Functions.php');
 date_default_timezone_set(conf ('General', 'timezone'));
 
