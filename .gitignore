@@ -3,3 +3,4 @@ conf/app.*
 conf/installed
 install/cache/*
 install/installed
+lib/vendor
