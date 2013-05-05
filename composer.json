@@ -21,5 +21,12 @@
             "lib/",
             "apps/"
         ]
-	}
+	},
+	  "scripts": {
+        "post-install-cmd": [
+            "chmod -R 755 cache conf css files install lang layouts",
+            "chmod 755 apps",
+            "phpunit"
+        ]
+    }
 }
