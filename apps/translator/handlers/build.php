@@ -89,7 +89,7 @@ foreach ($sources as $source) {
 			}
 		} else {
 			// parse for i18n_getf?() syntax
-			preg_match_all ('/(i18n_getf?|__) ?\([\'"](.*?)[\'"]\)/', $data, $matches);
+			preg_match_all ('/(i18n_getf?|__) ?\([\'"](.*?)[\'"]/', $data, $matches);
 			foreach ($matches[2] as $str) {
 				$str = stripslashes ($str);
 				if (! isset ($list[$str])) {
