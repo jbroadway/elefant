@@ -88,7 +88,7 @@ switch ($conf['Database']['master']['driver']) {
 		break;
 
 	default:
-		echo "** Error: Unable to determine database driver from site config.\n";
+		Cli::out ('** Error: Unable to determine database driver from site config.', 'error');
 		break;
 }
 

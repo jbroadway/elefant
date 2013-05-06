@@ -11,13 +11,13 @@ if (! $this->cli) {
 $page->layout = false;
 
 if (! isset ($_SERVER['argv'][2])) {
-	echo "Usage: elefant bundle-translations <appname>\n";
+	Cli::out ('Usage: elefant bundle-translations <appname>', 'info');
 	die;
 }
 
 $app = $_SERVER['argv'][2];
 if (! is_dir ('apps/' . $app)) {
-	printf ("App not found: %s\n", $app);
+	Cli::out ('App not found: ' . $app, 'error');
 	die;
 }
 
@@ -26,7 +26,7 @@ if (! is_dir ('apps/' . $app . '/lang')) {
 }
 
 if (! file_exists ('lang/_index.php')) {
-	echo "Translation index file not found.\n";
+	Cli::out ('Translation index file not found.', 'error');
 	die;
 }
 
@@ -80,6 +80,6 @@ foreach ($i18n->languages as $lang) {
 	file_put_contents ('apps/' . $app . '/lang/' . $code . '.php', $out);
 }
 
-printf ("Translations exported to apps/%s/lang/\n", $app);
+Cli::out (sprintf ('Translations exported to apps/%s/lang', $app), 'success');
 
 ?>

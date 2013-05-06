@@ -11,13 +11,13 @@ if (! $this->cli) {
 $page->layout = false;
 
 if (! isset ($_SERVER['argv'][2])) {
-	echo "Usage: elefant import-db <file>\n";
+	Cli::out ('Usage: elefant import-db <file>', 'info');
 	die;
 }
 
 $file = $_SERVER['argv'][2];
 if (! file_exists ($file)) {
-	echo "** Error: File not found: $file\n";
+	Cli::out ('** Error: File not found: ' . $file, 'error');
 	die;
 }
 
@@ -27,12 +27,12 @@ $sqldata = sql_split (file_get_contents ($file));
 DB::beginTransaction ();
 foreach ($sqldata as $sql) {
 	if (! DB::execute ($sql)) {
-		echo '** Error: ' . DB::error () . "\n";
+		Cli::out ('** Error: ' . DB::error (), 'error');
 		DB::rollback ();
 		return;
 	}
 }
 DB::commit ();
-echo count ($sqldata) . " commands executed.\n";
+Cli::out (count ($sqldata) . ' commands executed.', 'success');
 
 ?>

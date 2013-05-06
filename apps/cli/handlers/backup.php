@@ -12,18 +12,18 @@ if (! $this->cli) {
 $page->layout = false;
 
 if (! isset ($_SERVER['argv'][2])) {
-	echo "Usage: elefant backup <path>\n";
+	Cli::out ('Usage: elefant backup <path>', 'info');
 	die;
 }
 
 $path = $_SERVER['argv'][2];
 
 if (! is_dir ($path)) {
-	echo "** Error: Specified path is not a folder.\n";
+	Cli::out ('** Error: Specified path is not a folder.', 'error');
 	die;
 }
 if (! is_writeable ($path)) {
-	echo "** Error: Specified folder is not writeable.\n";
+	Cli::out ('** Error: Specified folder is not writeable.', 'error');
 	die;
 }
 
@@ -47,6 +47,5 @@ exec ('gzip backup-' . $ts . '.tar');
 chdir ('..');
 exec ('mv .backups/backup-' . $ts . '.tar.gz ' . $path);
 exec ('rm -Rf .backups/backup-' . $ts);
-
 
 ?>

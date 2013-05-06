@@ -14,7 +14,7 @@ if (! $this->cli) {
 $page->layout = false;
 
 if (! isset ($_SERVER['argv'][2])) {
-	echo "Usage: elefant build-app <appname>\n";
+	Cli::out ('Usage: elefant build-app <appname>', 'info');
 	die;
 }
 
@@ -52,6 +52,6 @@ file_put_contents (
 	$tpl->render ('cli/build-app/config', $data)
 );
 
-printf ("App created in apps/%s/\n", $appname);
+Cli::out ('App created in apps/' . $appname, 'success');
 
 ?>

@@ -28,11 +28,11 @@ if (isset ($_SERVER['argv'][2])) {
 		$res = ZipInstaller::install ($url);
 		if (! $res) {
 			ZipInstaller::clean ();
-			echo 'Error: ' . ZipInstaller::$error . "\n";
+			Cli::out ('Error: ' . ZipInstaller::$error, 'error');
 			return;
 		}
 		ZipInstaller::clean ();
-		echo "Install completed.\n";
+		Cli::out ('Install completed.', 'success');
 		return;
 	}
 
@@ -45,35 +45,35 @@ if (isset ($_SERVER['argv'][2])) {
 		$info = ZipInstaller::fetch ($url);
 		if (! $info) {
 			ZipInstaller::clean ();
-			echo 'Error: ' . ZipInstaller::$error . "\n";
+			Cli::out ('Error: ' . ZipInstaller::$error, 'error');
 			return;
 		}
 		
 		$res = ZipInstaller::install ($info);
 		if (! $res) {
 			ZipInstaller::clean ();
-			echo 'Error: ' . ZipInstaller::$error . "\n";
+			Cli::out ('Error: ' . ZipInstaller::$error, 'error');
 			return;
 		}
 		
 		ZipInstaller::clean ();
-		echo "Install completed.\n";
+		Cli::out ('Install completed.', 'success');
 		return;
 	} else {
 		// Import from Github
 		$res = GithubInstaller::install ($url);
 		if (! $res) {
-			echo 'Error: ' . GithubInstaller::$error . "\n";
+			Cli::out ('Error: ' . GithubInstaller::$error, 'error');
 			return;
 		}
 		
-		echo "Install completed.\n";
+		Cli::out ('Install completed.', 'success');
 		return;
 	}
 }
 
 if (@file_exists ('conf/installed')) {
-	echo "** Error: Installer has already been run.\n";
+	Cli::out ('** Error: Installer has already been run.', 'error');
 	return;
 }
 
@@ -93,10 +93,10 @@ foreach (array_keys ($conf['Database']) as $key) {
 	if ($key == 'master') {
 		$conf['Database'][$key]['master'] = true;
 		if (! DB::open ($conf['Database'][$key])) {
-			echo "** Error: Could not connect to the database. Please check the\n";
-			echo "          settings in conf/config.php and try again.\n";
+			Cli::out ('** Error: Could not connect to the database. Please check the', 'error');
+			Cli::out ('          settings in conf/config.php and try again.', 'error');
 			echo "\n";
-			echo "          " . DB::error () . "\n";
+			Cli::out ('          ' . DB::error (), 'error');
 			return;
 		}
 		$connected = true;
@@ -104,8 +104,8 @@ foreach (array_keys ($conf['Database']) as $key) {
 	}
 }
 if (! $connected) {
-	echo "** Error: Could not find a master database. Please check the\n";
-	echo "          settings in conf/config.php and try again.\n";
+	Cli::out ('** Error: Could not find a master database. Please check the', 'error');
+	Cli::out ('          settings in conf/config.php and try again.', 'error');
 	return;
 }
 
@@ -120,7 +120,7 @@ foreach ($sqldata as $sql) {
 	}
 
 	if (! DB::execute ($sql)) {
-		echo '** Error: ' . DB::error () . "\n";
+		Cli::out ('** Error: ' . DB::error (), 'error');
 		DB::rollback ();
 		return;
 	}
@@ -134,7 +134,7 @@ if (! DB::execute (
 	$conf['General']['email_from'],
 	User::encrypt_pass ($pass)
 )) {
-	echo 'Error: ' . DB::error () . "\n";
+	Cli::out ('Error: ' . DB::error (), 'error');
 	DB::rollback ();
 	return;
 }
@@ -143,8 +143,8 @@ DB::commit ();
 
 // respond with the root password
 echo "Database created. Your initial admin account is:\n";
-echo 'Username: ' . $conf['General']['email_from'] . "\n";
-echo 'Password: ' . $pass . "\n";
+Cli::block ('Username: <info>' . $conf['General']['email_from'] . "</info>\n");
+Cli::block ('Password: <info>' . $pass . "</info>\n");
 
 // create versions entries for initial content
 $wp = new Webpage ('index');

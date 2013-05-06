@@ -28,7 +28,7 @@ $res = json_decode (
 );
 
 if (! is_object ($res)) {
-	echo "Error: Unable to fetch latest version from the server.\n";
+	Cli::out ('Error: Unable to fetch latest version from the server.');
 	return;
 }
 
@@ -51,7 +51,7 @@ if (! file_exists ('conf/updates')) {
 $res = json_decode (fetch_url ('http://www.elefantcms.com/updates/patches.php?v=' . $major_minor));
 
 if (! is_object ($res)) {
-	echo "Error: Unable to fetch patch list from the server.\n";
+	Cli::out ('Error: Unable to fetch patch list from the server.', 'error');
 	return;
 }
 
@@ -61,7 +61,7 @@ foreach ($res->patches as $patch_file) {
 		echo "Fetching new patch: {$base}\n";
 		$contents = fetch_url ($patch_file);
 		if (! $contents) {
-			printf ("Error: Unable to retrieve file %s\n", $patch_file);
+			Cli::out ('Error: Unable to retrieve file ' . $patch_file, 'error');
 			return;
 		}
 		file_put_contents ('conf/updates/' . $base, $contents);
@@ -76,7 +76,7 @@ foreach ($res->scripts as $script_file) {
 		echo "Fetching new db update: {$base}\n";
 		$contents = fetch_url ($script_file);
 		if (! $contents) {
-			printf ("Error: Unable to retrieve file %s\n", $script_file);
+			Cli::out ('Error: Unable to retrieve file ' . $script_file, 'error');
 			return;
 		}
 		file_put_contents ('conf/updates/' . $base, $contents);
@@ -93,7 +93,7 @@ foreach ($versions as $version) {
 	exec ('patch --dry-run -p1 -f -i ' . $version['patch'], $output);
 	$output = join ("\n", $output);
 	if (strpos ($output, 'FAILED')) {
-		printf ("Error applying patch %s\n", $version['patch']);
+		Cli::out ('Error applying patch ' . $version['patch'], 'error');
 		echo "See conf/updates/error.log for details.\n";
 		file_put_contents ('conf/updates/error.log', $output);
 		return;
@@ -112,7 +112,7 @@ foreach ($versions as $version) {
 			if (! DB::execute ($sql)) {
 				$error = DB::error ();
 				DB::rollback ();
-				printf ("Error applying db update: %s\n", $version['script']);
+				Cli::out ('Error applying db update: ' . $version['script'], 'error');
 				echo "See conf/updates/error.log for details.\n";
 				file_put_contents ('conf/updates/error.log', $error);
 				return;
@@ -122,6 +122,6 @@ foreach ($versions as $version) {
 	}
 }
 
-printf ("Applied %d updates.\n", count ($versions));
+Cli::out (sprintf ("Applied %d updates.", count ($versions)), 'success');
 
 ?>
