@@ -81,7 +81,7 @@ foreach ($sources as $source) {
 					$list[$str]['src'] = is_array ($list[$str]['src'])
 						? $list[$str]['src']
 						: array ($list[$str]['src']);
-					
+
 					if (! in_array ($file, $list[$str]['src'])) {
 						$list[$str]['src'][] = $file;
 					}
@@ -89,7 +89,7 @@ foreach ($sources as $source) {
 			}
 		} else {
 			// parse for i18n_getf?() syntax
-			preg_match_all ('/(i18n_getf?|__) ?\([\'"](.*?)[\'"]/', $data, $matches);
+			preg_match_all ('/(i18n_getf?|__) ?\(\s*["\']([^"\'\\\\]*(?:\\\\.[^"\'\\\\]*)*)["\'](?U).*\)/s', $data, $matches);
 			foreach ($matches[2] as $str) {
 				$str = stripslashes ($str);
 				if (! isset ($list[$str])) {
