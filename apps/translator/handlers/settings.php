@@ -36,7 +36,7 @@ echo $form->handle (function ($form) {
 		$lang = $_POST['code'];
 	}
 
-	$i18n = $this->controller->i18n ();
+	$i18n = $form->controller->i18n ();
 
 	if ($lang !== $_GET['lang']) {
 		// Language has changed ids

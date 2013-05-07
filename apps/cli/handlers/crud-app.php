@@ -15,12 +15,12 @@ if (! $this->cli) {
 $page->layout = false;
 
 if (! isset ($_SERVER['argv'][2])) {
-	echo "Usage: elefant crud-app <modelname> <fieldlist>\n";
+	Cli::out ('Usage: elefant crud-app <modelname> <fieldlist>', 'info');
 	die;
 }
 
 if (! isset ($_SERVER['argv'][3])) {
-	echo "Usage: elefant crud-app <modelname> <fieldlist>\n";
+	Cli::out ('Usage: elefant crud-app <modelname> <fieldlist>', 'info');
 	die;
 }
 
@@ -138,6 +138,6 @@ file_put_contents (
 	$tpl->render ('cli/crud-app/admin_view', $data)
 );
 
-printf ("App created in apps/%s/\n", $plural);
+Cli::out ('App created in apps/' . $plural, 'success');
 
 ?>

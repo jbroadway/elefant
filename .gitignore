@@ -1,5 +1,8 @@
 cache/*
 conf/app.*
 conf/installed
+conf/site.db
+conf/config.php
 install/cache/*
 install/installed
+lang/_index.php

@@ -7,12 +7,12 @@ body {
 }
 
 a {
-	color: #8A5AB5;
+	color: #93278f;
 	text-decoration: none;
 }
 
 a:hover {
-	color: #A753CC;
+	color: #B347AF;
 	text-decoration: underline;
 }
 
@@ -38,7 +38,7 @@ h2 {
 }
 
 .notice {
-	color: #8A5AB5;
+	color: #93278f;
 }
 
 .password_strength_1, .password_strength_2 {
@@ -81,7 +81,7 @@ h2 {
 
 	#steps ul li.active {
 		background: #f5f5f5;
-		color: #8A5AB5;
+		color: #93278f;
 		-webkit-border-top-left-radius: 5px;
 		-webkit-border-bottom-left-radius: 5px;
 		-moz-border-radius-topleft: 5px;

@@ -18,29 +18,29 @@ if ($_SERVER['argv'][1] !== 'cli/index' && $_SERVER['argv'][1] !== 'cli/help') {
 
 $help = <<<HELP
 
-== Elefant framework command line utility ==
+== Elefant CMS command line utility ==
 
 Usage:
 
-  $ cd /path/to/my/site
-  $ elefant COMMAND
+  <info>$ cd /path/to/my/site
+  $ elefant COMMAND</info>
 
 Commands:
 
-  install                          Run the command line installer
-  install <url-or-zip>             Install a new app or theme
-  update                           Check for and apply Elefant updates
-  backup <path>                    Save a backup of the site and db
-  export-db <file>                 Export the db to a file or STDOUT
-  import-db <file>                 Import a schema file into the db
-  build-app <appname>              Build the scaffolding for an app
-  crud-app <modelname> <fieldlist> Build the scaffolding for a CRUD app
-  clear-cache                      Clear the cache and compiled templates
-  generate-password <length(8)>    Generate a random password
-  encrypt-password <password>      Encrypt a password for the db
-  bundle-translations <appname>    Bundle translations into an app
-  version                          Output the Elefant version number
-  help                             Print this help output
+  <info>install</info>                          Run the command line installer
+  <info>install <url-or-zip></info>             Install a new app or theme
+  <info>update</info>                           Check for and apply Elefant updates
+  <info>backup <path></info>                    Save a backup of the site and db
+  <info>export-db <file></info>                 Export the db to a file or STDOUT
+  <info>import-db <file></info>                 Import a schema file into the db
+  <info>build-app <appname></info>              Build the scaffolding for an app
+  <info>crud-app <modelname> <fieldlist></info> Build the scaffolding for a CRUD app
+  <info>clear-cache</info>                      Clear the cache and compiled templates
+  <info>generate-password <length(8)></info>    Generate a random password
+  <info>encrypt-password <password></info>      Encrypt a password for the db
+  <info>bundle-translations <appname></info>    Bundle translations into an app
+  <info>version</info>                          Output the Elefant version number
+  <info>help</info>                             Print this help output
 
 
 HELP;
@@ -59,11 +59,11 @@ foreach ($files as $file) {
 if (count ($commands) > 0) {
 	$help .= "Extended commands:\n\n";
 	foreach ($commands as $cmd => $desc) {
-		$help .= sprintf ("  %-32s %s\n", $cmd, $desc);
+		$help .= sprintf ("  <info>%-32s</info> %s\n", $cmd, $desc);
 	}
 	$help .= "\n";
 }
 
-echo $help;
+Cli::block ($help);
 
 ?>
