@@ -19,6 +19,35 @@
 <input type="file" name="zipfile" />
 <span class="notice" id="zipfile-notice">{" Please upload a zip file. "}</span></p>
 
+<p>- {"or"} -</p>
+<p>{"Install from Composer"}:<br/>
+<select name="composer" id="composer">
+      <option value = ""></option>
+      <option value = "analytics">Analytics: Google Analytics app for the Elefant CMS</option>
+      <option value = "assetic">Assetic: Assetic app for the Elefant CMS</option>
+      <option value = "chat">Chat: Chat app for the Elefant CMS</option>
+      <option value = "cloudfront">Cloudfront: CloudFront app for the Elefant CMS</option>
+      <option value = "comments">Comments: A reusable, embeddable comments component for the Elefant CMS</option>
+      <option value = "dbman">Dbman: DB Manager app for the Elefant CMS</option>
+      <option value = "events">Events: Events calendar app for the Elefant CMS</option>
+      <option value = "faq">Faq: FAQ app for the Elefant CMS</option>
+      <option value = "filepicker">Filepicker: Filepicker app for the Elefant CMS</option>
+      <option value = "form">Form: Form builder app for the Elefant CMS</option>
+      <option value = "httpshell">Httpshell: Http Shell is an HTTP testing and debugging tool for the Elefant CMS</option>
+      <option value = "lemur">Lemur: E-learning platform for the Elefant CMS</option>
+      <option value = "loginradius">Loginradius: LoginRadius app for the Elefant CMS</option>
+      <option value = "menubuilder">Menubuilder: Menu builder app for the Elefant CMS</option>
+      <option value = "newsletter">Newsletter: Newsletter via Mailchimp app for the Elefant CMS</option>
+      <option value = "resque">Resque: PHP-Resque integration for the Elefant CMS</option>
+      <option value = "saasy">Saasy: SaaS helper app for the Elefant CMS</option>
+      <option value = "scorm">Scorm: Adds SCORM support to the Elefant CMS</option>
+      <option value = "search">Search: Search app for the Elefant CMS</option>
+      <option value = "sitemap.xml">Sitemap.xml: Google Sitemap generator app for the Elefant CMS</option>
+      <option value = "typekit">Typekit: TypeKit app for the Elefant CMS</option>
+      <option value = "visor">Visor: Visor is an API documentation browser for the Elefant CMS</option>
+      <option value = "wiki">Wiki: Wiki app for the Elefant CMS</option>
+</select>
+<span class="notice" id="composer-notice">{" Not valid composer app. "}</span></p>
 <p class="notice" id="other-notice">{" Please enter a link or upload a file. "}</p>
 
 {% if page.installer_error %}
@@ -29,6 +58,7 @@
 <p class="notice" id="github-install-notice">{"Github installation failed"}.</p>
 
 <p class="notice" id="zip-install-notice">{"Zip file was invalid or could not be installed."}</p>
+<p class="notice" id="composer-install-notice">{"Composer couldn't load the specified package."}</p>
 {% end %}
 
 <p>

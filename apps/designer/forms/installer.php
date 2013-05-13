@@ -11,4 +11,8 @@ filetype = zip
 skip_if_empty = 1
 callback = github_is_valid_url
 
+[composer]
+
+skip_if_empty = 1
+
 ; */ ?>

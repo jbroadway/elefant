@@ -50,7 +50,7 @@ echo $form->handle (function ($form) use ($page, $tpl) {
 				$page->installer_error = GithubInstaller::$error;
 				return false;
 			}
-	
+
 			// App/theme successfully installed
 			$page->title = __ ('Install completed');
 			echo $tpl->render ('designer/installed', $res);
@@ -69,6 +69,26 @@ echo $form->handle (function ($form) use ($page, $tpl) {
 
 		// Zip successfully installed
 		ZipInstaller::clean ();
+		$page->title = __ ('Install completed');
+		echo $tpl->render ('designer/installed', $res);
+	} elseif (! empty ($_POST['composer'])) {
+		$elefantApp = $_POST['composer'];
+		putenv('COMPOSER_HOME=' . $_SERVER['DOCUMENT_ROOT']);
+
+		$response = array();
+		$composer = '/usr/local/bin/composer';
+		$command = $composer . ' require ';
+		$package = '"elefant/app-' . $elefantApp . '":"dev-master"';
+		exec($command . $package, $response, $status);
+		$responsePara = ($response) ? implode("< /br>\n", $response) :"";
+		//this is too brute force
+		if (strpos($responsePara,"failed")) {
+			$form->failed = array ('composer-install');
+			$page->installer_error = $responsePara;
+			return false;
+		}
+		//this should use the $conf validation stuff from ZipInstaller::install
+		$res = json_decode (file_get_contents ("apps/$elefantApp/elefant.json"));
 		$page->title = __ ('Install completed');
 		echo $tpl->render ('designer/installed', $res);
 	} else {
