@@ -9,7 +9,7 @@
 \{% foreach items %}
 	<tr>
 {{ fields|make_fields_row (array_slice (%s, 1)) }}
-		<td>
+		<td style="text-align: right">
 			<a	href="/{{plural}}/edit?id=\{{ loop_value->id }}">\{"Edit"}</a> |
 			<a	href="/{{plural}}/delete"
 				data-id="\{{ loop_value->id }}"
