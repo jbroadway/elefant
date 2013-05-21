@@ -74,7 +74,8 @@ jQuery.expanded_section = function (options) {
 		section: '#expanded-section',
 		arrowClass: 'arrow',
 		arrowOffClass: 'arrow-off',
-		visible: false
+		visible: false,
+		modal: false
 	};
 
 	var options = $.extend (defaults, options),
@@ -102,7 +103,9 @@ jQuery.expanded_section = function (options) {
 			function (evt) {
 				if (section.css ('display') === 'none') {
 					section.slideDown ('fast', function () {
-						window.scrollTo (0, 1000);
+						if (! options.modal) {
+							window.scrollTo (0, 1000);
+						}
 					});
 					header.children ('span.' + options.arrowClass).removeClass (options.arrowOffClass);
 				} else {
