@@ -63,6 +63,8 @@ require ('conf/version.php');
 require ('lib/Autoloader.php');
 require ('lib/Functions.php');
 date_default_timezone_set(conf ('General', 'timezone'));
+ini_set ('session.cookie_httponly', 1);
+ini_set ('session.use_only_cookies', 1);
 
 /**
  * Set the default error reporting level to All except Notices,
