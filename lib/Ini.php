@@ -65,9 +65,13 @@ class Ini {
 		}
 	
 		foreach ($data as $key => $value) {
+			$value = is_object ($value) ? (array) $value : $value;
+
 			if (is_array ($value)) {
 				$out .= "\n[$key]\n\n";
 				foreach ($value as $k => $v) {
+					$v = is_object ($v) ? (array) $v : $v;
+
 					if (is_array ($v)) {
 						foreach ($v as $subkey => $val) {
 							if (is_int ($subkey)) {
