@@ -39,8 +39,7 @@ if ($res) {
 // let apps handle sub-page requests
 // e.g., /company/blog -> blog app
 if (conf ('General', 'page_url_style') === 'nested' && is_dir ('apps/' . $id)) {
-	echo $this->run ($id, $data, false);
-	return;
+	return $this->run ($id, $data, false);
 }
 
 // get it from the database
@@ -48,23 +47,19 @@ $wp = new Webpage ($id);
 
 // page not found
 if ($wp->error) {
-	echo $this->error (404, __ ('Page not found'), '<p>' . __ ('Hmm, we can\'t seem to find the page you wanted at the moment.') . '</p>');
-	return;
+	return $this->error (404, __ ('Page not found'), '<p>' . __ ('Hmm, we can\'t seem to find the page you wanted at the moment.') . '</p>');
 }
 
 // access control
 if ($wp->access !== 'public' && ! User::require_admin ()) {
 	if (! User::require_login ()) {
 		$page->title = __ ('Login required');
-		echo $this->run ('user/login');
-		return;
+		return $this->run ('user/login');
 	}
 	if (! User::access ($wp->access)) {
-		echo $this->error (403, __ ('Access denied'), '<p>' . __ ('You do not have enough access privileges for this operation.') . '</p>');
-		return;
+		return $this->error (403, __ ('Access denied'), '<p>' . __ ('You do not have enough access privileges for this operation.') . '</p>');
 	}
 }
-
 
 // set the page properties
 $page->id = $id;

@@ -441,8 +441,11 @@ class Controller {
 
 		// Run the handler and get its output
 		ob_start ();
-		require ($handler);
+		$res = require ($handler);
 		$out = ob_get_clean ();
+		if (is_string ($res) && strlen ($res) > 0) {
+			$out = $res;
+		}
 
 		// If this is a chunked request, flush and exit
 		if ($this->chunked) {
