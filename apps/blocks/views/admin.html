@@ -15,9 +15,9 @@
 <p>
 <table width="100%">
 	<tr>
-		<th width="20%">{"ID"}</th>
+		<th width="25%">{"ID"}</th>
 		<th width="40%">{"Title"}</th>
-		<th width="25%">{"Access"}</th>
+		<th width="20%">{"Access"}</th>
 		<th width="15%">&nbsp;</th>
 	</tr>
 {% foreach blocks %}
@@ -25,7 +25,7 @@
 		<td>{{ loop_value->id }}</td>
 		<td>{{ loop_value->title }}</td>
 		<td>{{ loop_value->access|ucfirst }}</td>
-		<td>
+		<td style="text-align: right">
 			{% if loop_value->locked %}
 			{"Editing Locked"}
 			{% else %}
