@@ -109,6 +109,8 @@ access_control_list = conf/acl.php
 [Database]
 
 ; Database settings go here. Driver must be a valid PDO driver.
+; For examples of various database configurations, visit:
+; http://www.elefantcms.com/wiki/Database-configuration-examples
 
 master[driver] = sqlite
 master[file] = "conf/site.db"

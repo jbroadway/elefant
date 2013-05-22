@@ -40,6 +40,12 @@ class IniTest extends PHPUnit_Framework_TestCase {
 		$ini = "; <?php /*\n\n[Section]\n\none[]                   = one\none[]                   = two\n\n; */ ?>";
 		$this->assertEquals ($ini, Ini::write ($data));
 	}
+
+	function test_write_with_assoc () {
+		$data = array ('Section' => array ('one' => array ('a' => 'one', 'b' => 'two')));
+		$ini = "; <?php /*\n\n[Section]\n\none[a]                  = one\none[b]                  = two\n\n; */ ?>";
+		$this->assertEquals ($ini, Ini::write ($data));
+	}
 }
 
 ?>

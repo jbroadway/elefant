@@ -37,7 +37,7 @@
 		<td>{{ loop_value->ts|I18n::date_time }}</td>
 		<td>{{ loop_value->author }}</td>
 		<td>{{ loop_value->published|ucfirst }}</td>
-		<td>
+		<td style="text-align: right">
 			{% if loop_value->locked %}
 			{"Editing Locked"}
 			{% else %}

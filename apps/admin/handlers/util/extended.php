@@ -41,6 +41,7 @@ if (! class_exists ($class)) {
 }
 
 $data['fields'] = ExtendedFields::for_class ($class);
+$data['modal'] = (isset ($data['modal']) && $data['modal'] !== 'false') ? true : false;
 $data['open'] = false;
 
 $load_assets = false;

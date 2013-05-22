@@ -16,6 +16,22 @@ switch ($appconf['Blog']['comments']) {
 			__ ('comments')
 		);
 		break;
+	default:
+		if ($appconf['Blog']['comments'] !== false) {
+			printf (
+				'<a href="%s">%s %s</a>',
+				$data['url'],
+				$this->run (
+					$appconf['Blog']['comments'],
+					array (
+						'identifier' => $data['url'],
+						'count' => true
+					)
+				),
+				__ ('comments')
+			);
+		}
+		break;
 }
 
 ?>

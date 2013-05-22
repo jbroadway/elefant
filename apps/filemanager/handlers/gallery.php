@@ -7,10 +7,13 @@
  *
  *     {! filemanager/gallery?path=foldername !}
  *
- * The `foldername` is a folder of images inside `/files/`.
+ * The `foldername` is a folder of images inside `/files/` or the directory set
+ * by the 'filemanager_path' option in your config file.
  */
 
 require_once ('apps/filemanager/lib/Functions.php');
+
+$root = trim (conf ('Paths','filemanager_path'), '/') . '/';
 
 if (isset ($data['path'])) {
 	$path = trim ($data['path'], '/');
@@ -24,12 +27,12 @@ if (strpos ($path, '..') !== false) {
 	return;
 }
 
-if (! @is_dir ('files/' . $path)) {
+if (! @is_dir ($root . $path)) {
 	return;
 }
 
 // fetch the files
-$files = glob ('files/' . $path . '/*.{jpg,jpeg,gif,png,JPG,JPEG,GIF,PNG}', GLOB_BRACE);
+$files = glob ($root . $path . '/*.{jpg,jpeg,gif,png,JPG,JPEG,GIF,PNG}', GLOB_BRACE);
 $files = is_array ($files) ? $files : array ();
 
 // sorting order

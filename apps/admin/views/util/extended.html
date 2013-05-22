@@ -1,6 +1,6 @@
-<h4 id="extended-header">{"Custom Fields"}</h4>
+<h4 id="extended-header-{{extends|URLify::filter}}">{"Custom Fields"}</h4>
 
-<div id="extended-fields">
+<div id="extended-fields-{{extends|URLify::filter}}">
 {% foreach fields as field %}
 	{% if field->type === 'text' %}
 		<p>
@@ -114,9 +114,10 @@
 {% end %}
 $(function () {
 	$.expanded_section ({
-		header: '#extended-header',
-		section: '#extended-fields',
-		visible: {% if open %}true{% else %}false{% end %}
+		header: '#extended-header-{{extends|URLify::filter}}',
+		section: '#extended-fields-{{extends|URLify::filter}}',
+		visible: {% if open %}true{% else %}false{% end %},
+		modal: {% if modal %}true{% else %}false{% end %}
 	});
 
 	{% foreach fields as field %}

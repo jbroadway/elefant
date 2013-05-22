@@ -33,6 +33,16 @@ switch (Appconf::blog ('Blog', 'comments')) {
 	case 'facebook':
 		echo $this->run ('social/facebook/comments', $post);
 		break;
+	default:
+		if (Appconf::blog ('Blog', 'comments') !== false) {
+			echo $this->run (
+				Appconf::blog ('Blog', 'comments'),
+				array (
+					'identifier' => $post->url
+				)
+			);
+		}
+		break;
 }
 
 $page->add_script (sprintf (

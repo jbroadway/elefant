@@ -20,13 +20,18 @@ post_layout = default
 include_in_nav = On
 
 ; Here you can choose a service to use for blog comments.
-; Supported platforms are Facebook and Disqus. Set it
-; to Off to disable comments. For Disqus, you also need
+; Supported platforms are Facebook and Disqus, or a custom
+; handler name that implements an alternate comment system.
+; Set it to Off to disable comments. For Disqus, you also need
 ; to register at disqus.com and enter your account's
 ; "shortname" value into the disqus_shortname setting.
+; For an example of a working custom comments provider, see
+; the comments/embed handler from the comments app at
+; https://github.com/jbroadway/comments
 
 comments = facebook
 ;comments = disqus
+;comments = comments/embed
 
 disqus_shortname = ""
 

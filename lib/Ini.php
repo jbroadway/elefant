@@ -65,12 +65,20 @@ class Ini {
 		}
 	
 		foreach ($data as $key => $value) {
+			$value = is_object ($value) ? (array) $value : $value;
+
 			if (is_array ($value)) {
 				$out .= "\n[$key]\n\n";
 				foreach ($value as $k => $v) {
+					$v = is_object ($v) ? (array) $v : $v;
+
 					if (is_array ($v)) {
-						foreach ($v as $val) {
-							$out .= str_pad ($k . '[]', 24) . '= ' . $write_value ($val) . "\n";
+						foreach ($v as $subkey => $val) {
+							if (is_int ($subkey)) {
+								$out .= str_pad ($k . '[]', 24) . '= ' . $write_value ($val) . "\n";
+							} else {
+								$out .= str_pad ($k . '[' . $subkey . ']', 24) . '= ' . $write_value ($val) . "\n";
+							}
 						}
 					} else {
 						$out .= str_pad ($k, 24) . '= ' . $write_value ($v) . "\n";
@@ -78,8 +86,12 @@ class Ini {
 				}
 			} else {
 				if (is_array ($value)) {
-					foreach ($value as $val) {
-						$out .= str_pad ($key . '[]', 24) . '= ' . $write_value ($val) . "\n";
+					foreach ($value as $subkey => $val) {
+						if (is_int ($subkey)) {
+							$out .= str_pad ($key . '[' . $subkey . ']', 24) . '= ' . $write_value ($val) . "\n";
+						} else {
+							$out .= str_pad ($key . '[]', 24) . '= ' . $write_value ($val) . "\n";
+						}
 					}
 				} else {
 					$out .= str_pad ($key, 24) . '= ' . $write_value ($value) . "\n";

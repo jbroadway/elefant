@@ -139,7 +139,7 @@
 					break;
 				case 'img':
 					// edit an image
-					var url = window.location.href.split ('/filemanager')[0] + '/' + filemanager_path + '/' + options.file;
+					var url = window.location.href.split ('/filemanager')[0] + '/' + conf_root + '/' + options.file;
 					filemanager.aviary_current = options.file;
 					$('#aviary-tmp').attr ('src', url);
 
