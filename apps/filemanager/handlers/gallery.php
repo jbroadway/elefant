@@ -9,31 +9,64 @@
  *
  * The `foldername` is a folder of images inside `/files/` or the directory set
  * by the 'filemanager_path' option in your config file.
+ *
+ * Alternatively, it can be used via:
+ *
+ *      {! filemanager/gallery?files=filelist !}
+ *
+ * The `filelist` is a list of images inside `/files/` or the directory set
+ * by the `filemanager_path` option in your config file.
+ * `filelist` can either be an array or a string with each file path delimited
+ * by `|`.
  */
 
 require_once ('apps/filemanager/lib/Functions.php');
 
 $root = trim (conf ('Paths','filemanager_path'), '/') . '/';
 
-if (isset ($data['path'])) {
-	$path = trim ($data['path'], '/');
-} elseif (isset ($_GET['path'])) {
-	$path = trim ($_GET['path'], '/');
+if (isset ($data['path']) or isset ($_GET['path'])) {
+
+        if (isset ($data['path'])) {
+                $path = trim ($data['path'], '/');
+        } elseif (isset ($_GET['path'])) {
+                $path = trim ($_GET['path'], '/');
+        }
+
+        if (strpos ($path, '..') !== false) {
+                return;
+        }
+
+        if ( ! @is_dir ($root . $path)) {
+                return;
+        }
+
+        // fetch the files
+        $files = glob ($root . $path . '/*.{jpg,jpeg,gif,png,JPG,JPEG,GIF,PNG}', GLOB_BRACE);
+        $files = is_array ($files) ? $files : array ();
+} elseif (isset ($data['files']) or isset ($_GET['files'])) {
+
+        if (isset ($data['files'])) {
+                $files_arg = $data['files'];
+        } elseif (isset ($_GET['files'])) {
+                $files_arg = $_GET['files'];
+        }
+
+        if (is_string ($files_arg)) {
+                $files = explode ('|', $files_arg);
+        } elseif (is_array ($files_arg)) {
+                $files = $files_arg;
+        } else {
+                return;
+        }
+
+        $files = array_map (
+                function($var) use ($root) {
+                        return ($root . trim ($var, '/'));
+                }
+                , $files);
 } else {
-	return;
+        return;
 }
-
-if (strpos ($path, '..') !== false) {
-	return;
-}
-
-if (! @is_dir ($root . $path)) {
-	return;
-}
-
-// fetch the files
-$files = glob ($root . $path . '/*.{jpg,jpeg,gif,png,JPG,JPEG,GIF,PNG}', GLOB_BRACE);
-$files = is_array ($files) ? $files : array ();
 
 // sorting order
 if ($data['order'] === 'desc') {
