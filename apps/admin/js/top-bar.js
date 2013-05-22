@@ -157,7 +157,6 @@ $(function () {
 		$('#admin-logo').attr ('src', res.logo).attr ('alt', res.name);
 		$('#admin-links').append (res.links);
 		
-		
 		$('#admin-tools').hover (
 			function () {
 				$('#admin-tools-list').stop ().css("height","auto").slideDown ('fast');
@@ -169,6 +168,15 @@ $(function () {
 		$('#admin-links a').not('#admin-tools-list a').bind("mouseover", function(){
 			$('#admin-tools-list').stop ().slideUp ('slow');
 		});
+
+		// website link should open to the last non-admin page visited
+		var last_page = $('body').data ('admin-last-page');
+		if (last_page) {
+			$('#admin-tools-website').attr ('href', last_page);
+		} else {
+			$.cookie ('elefant_last_page', window.location.pathname, { path: '/' });
+			$('#admin-tools-website').attr ('href', window.location.pathname);
+		}
 	});
 	$('.admin-options a').hover (
 		function () {
