@@ -11,7 +11,7 @@
 	{! admin/head !}
 	{{ head|none }}
 </head>
-<body>
+<body data-admin-last-page="{{ isset ($_COOKIE['elefant_last_page']) ? $_COOKIE['elefant_last_page'] : '' }}">
 <div id="wrapper" class="container_12">
 	<div id="body" class="grid_12">
 	{% if title != '' %}<h2>{{ title|none }}</h2>{% end %}
