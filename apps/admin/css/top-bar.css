@@ -317,6 +317,6 @@ body {
 }
 
 
-.is-preview .page, body.is-preview, body{
+.is-preview .page, body.is-preview{
     padding-top:0;
 }
