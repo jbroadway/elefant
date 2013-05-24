@@ -280,17 +280,6 @@ body {
 	}
 }
 
-#admin-bar a.show-preview,
-#admin-bar a.hide-preview{
-    color: whiteSmoke;
-    padding:0 10px 0 10px;
-}
-
-#admin-bar a.admin-tools-show-preview:hover,
-#admin-bar a.admin-tools-hide-preview:hover{
-    color: #A753CC;
-}
-
 .is-preview #admin-bar,
 .is-preview .admin-options,
 .is-admin #admin-links .admin-tools-show-preview,
