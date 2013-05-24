@@ -184,6 +184,7 @@ body {
 		color: #B347AF;
 	}
 
+#preview-bar a,
 .admin-options {
 	display: inline-block;
 	margin: 0;
@@ -192,6 +193,7 @@ body {
 	height: 24px;
 }
 
+#preview-bar a,
 .admin-options a {
 	display: inline-block;
 	position: relative;
@@ -205,6 +207,7 @@ body {
 	background-image: url(/apps/admin/css/admin/editable-sprite-dark.png);
 }
 
+#preview-bar a,
 .admin-options a:hover {
 	background: #ddd;
 	background-image: url(/apps/admin/css/admin/editable-sprite-dark.png);
@@ -217,7 +220,8 @@ body {
 		background-position: 0px 0px;
 	}
 
-	.admin-options a.editable-edit {
+    #preview-bar a,
+    .admin-options a.editable-edit {
 		background-position: -26px 0px;
 	}
 
@@ -274,4 +278,56 @@ body {
 	#admin-bar img, #admin-update-available {
 		display: none;
 	}
+}
+
+#admin-bar a.show-preview,
+#admin-bar a.hide-preview{
+    color: whiteSmoke;
+    padding:0 10px 0 10px;
+}
+
+#admin-bar a.admin-tools-show-preview:hover,
+#admin-bar a.admin-tools-hide-preview:hover{
+    color: #A753CC;
+}
+
+.is-preview #admin-bar,
+.is-preview .admin-options,
+.is-admin #admin-links .admin-tools-show-preview,
+#admin-links #admin-tools-website,
+#preview-bar
+{
+    display:none;
+}
+
+.is-admin #admin-links #admin-tools-website
+{
+    display:block;
+}
+
+.is-preview #preview-bar
+{
+    display:block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 35px;
+    width: 100%;
+    z-index: 100000;
+
+}
+#preview-bar a
+{
+    margin: 5px;
+    opacity: 0.3;
+}
+
+#preview-bar a:hover
+{
+   opacity: 1;
+}
+
+
+.is-preview .page, body.is-preview, body{
+    padding-top:0;
 }

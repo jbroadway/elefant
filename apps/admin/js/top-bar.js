@@ -152,7 +152,7 @@ jQuery.expanded_section = function (options) {
 
 $(function () {
 	var sliding_up = false;
-	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img id="admin-logo" src="/apps/admin/css/admin/spacer.png" alt="" /></a></div>');
+	$('body').append ('<div id="admin-bar"><a href="/"><div id="admin-links"></div><a href="/"><img id="admin-logo" src="/apps/admin/css/admin/spacer.png" alt="" /></a></div><div id="preview-bar"><a href="#" class="admin-tools-hide-preview" title="'+$.i18n("back to Edit Mode")+'"></a></div>');
 	$.get ('/admin/head/links', function (res) {
 		$('#admin-logo').attr ('src', res.logo).attr ('alt', res.name);
 		$('#admin-links').append (res.links);
@@ -177,6 +177,21 @@ $(function () {
 			$.cookie ('elefant_last_page', window.location.pathname, { path: '/' });
 			$('#admin-tools-website').attr ('href', window.location.pathname);
 		}
+
+        // toggle Preview Mode
+        // shows/hides EditButtons and adminbar
+        $('a.admin-tools-show-preview', '#admin-bar' ).click( function () {
+            console.log("test")
+            $('body').addClass("is-preview");
+            return false;
+        });
+
+        $('a.admin-tools-hide-preview', '#preview-bar').click( function () {
+            console.log("test2")
+            $('body').removeClass("is-preview");
+            return false;
+        });
+
 	});
 	$('.admin-options a').hover (
 		function () {
