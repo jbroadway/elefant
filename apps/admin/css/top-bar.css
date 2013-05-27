@@ -207,7 +207,7 @@ body {
 	background-image: url(/apps/admin/css/admin/editable-sprite-dark.png);
 }
 
-#preview-bar a,
+#preview-bar a:hover,
 .admin-options a:hover {
 	background: #ddd;
 	background-image: url(/apps/admin/css/admin/editable-sprite-dark.png);
@@ -216,11 +216,16 @@ body {
 	padding: 0;
 }
 
+#preview-bar a:hover{
+    background-image: url(/apps/admin/css/admin/editable-sprite-violett.png);
+}
+
 	.admin-options a.editable-add {
 		background-position: 0px 0px;
 	}
 
     #preview-bar a,
+    #preview-bar a:hover,
     .admin-options a.editable-edit {
 		background-position: -26px 0px;
 	}
@@ -280,11 +285,14 @@ body {
 	}
 }
 
+
+#admin-links #admin-tools-website,
+#preview-bar,
+
 .is-preview #admin-bar,
 .is-preview .admin-options,
-.is-admin #admin-links .admin-tools-show-preview,
-#admin-links #admin-tools-website,
-#preview-bar
+
+.is-admin #admin-links .admin-tools-show-preview
 {
     display:none;
 }
@@ -303,17 +311,12 @@ body {
     height: 35px;
     width: 100%;
     z-index: 100000;
-
-}
-#preview-bar a
-{
-    margin: 5px;
-    opacity: 0.3;
+    text-align: right;
 }
 
-#preview-bar a:hover
-{
-   opacity: 1;
+.is-preview #preview-bar a{
+    margin:5px;
+    border: 1px solid #ccc;
 }
 
 
