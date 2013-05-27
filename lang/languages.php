@@ -1,5 +1,16 @@
 ; <?php /*
 
+[de]
+
+name                    = Deutsch
+code                    = de
+locale                  = Off
+charset                 = UTF-8
+default                 = Off
+date_format             = d mmmm yyyy
+short_format            = d mmm
+time_format             = "HH:MM"
+
 [en]
 
 name                    = English
@@ -18,17 +29,6 @@ charset                 = UTF-8
 fallback                = Off
 default                 = Off
 
-[de]
-
-name                    = Deutsch
-code                    = de
-locale                  = Off
-charset                 = UTF-8
-default                 = Off
-date_format             = d mmmm yyyy
-short_format            = d mmm
-time_format             = "HH:MM"
-
 [it]
 
 name                    = Italiano
@@ -41,6 +41,15 @@ default                 = Off
 
 name                    = Nederlands
 code                    = nl
+charset                 = UTF-8
+fallback                = Off
+default                 = Off
+
+[sl_si]
+
+name                    = "Slovenščina"
+code                    = sl
+locale                  = si
 charset                 = UTF-8
 fallback                = Off
 default                 = Off
