@@ -164,7 +164,16 @@ $(function () {
 			function () {
 				$('#admin-tools-list').stop ().slideUp ('slow');
 			}
-		)
+		).click (
+			function () {
+				if ($('#admin-tools-list').is (':visible')) {
+					$('#admin-tools-list').stop ().slideUp ('fast');
+				} else {
+					$('#admin-tools-list').stop ().css ('height', 'auto').slideDown ('fast');
+					$('#admin-tools-list a')[0].focus ();
+				}
+			}
+		);
 		$('#admin-links a').not('#admin-tools-list a').bind("mouseover", function(){
 			$('#admin-tools-list').stop ().slideUp ('slow');
 		});
@@ -180,19 +189,24 @@ $(function () {
 
         // toggle Preview Mode
         // shows/hides EditButtons and adminbar
-        $('a.admin-tools-show-preview', '#admin-bar' ).click( function () {
-            $('body').addClass("is-preview");
-            return false;
-        });
+        var toggle_preview = function () {
+        	var b = $('body');
+        	
+        	if (b.hasClass ('is-preview')) {
+        		b.removeClass ('is-preview');
+        	} else {
+        		b.addClass ('is-preview');
+        	}
+        	return false;
+        };
 
-        $('a.admin-tools-hide-preview', '#preview-bar').click( function () {
-            $('body').removeClass("is-preview");
-            return false;
-        });
+        $('a.admin-tools-show-preview', '#admin-bar' ).click (toggle_preview);
+        $('a.admin-tools-hide-preview', '#preview-bar').click (toggle_preview);
+
+		// add keyboard shortcuts
+		$.triggers ();
 	});
 
-    //TODO fix .admin-tooltip styles to make tooltip work on the right edge of the screen
-	//$('.admin-options a, #preview-bar a').hover (
     $('.admin-options a').hover (
 		function () {
 			this.tip = this.title;
