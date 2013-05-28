@@ -1,8 +1,9 @@
+<a href="#preview" class="admin-tools-show-preview">{"Preview"}</a>
 <a href="/" id="admin-tools-website">{"Website"}</a>
 <span id="admin-tools">{"Tools"} <strong>&or;</strong>
 <ul id="admin-tools-list">
 {% foreach tools %}
-	<li><a href="/{{ loop_index }}"{% if loop_value['class'] %}class="{{ loop_value['class'] }}"{% end %}>{{ loop_value['name']|i18n_get }}</a></li>
+    <li><a href="/{{ loop_index }}"{% if loop_value['class'] %}class="{{ loop_value['class'] }}"{% end %}>{{ loop_value['name']|i18n_get }}</a></li>
 {% end %}
 </ul>
 </span>

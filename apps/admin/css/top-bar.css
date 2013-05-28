@@ -184,6 +184,7 @@ body {
 		color: #B347AF;
 	}
 
+#preview-bar a,
 .admin-options {
 	display: inline-block;
 	margin: 0;
@@ -192,6 +193,7 @@ body {
 	height: 24px;
 }
 
+#preview-bar a,
 .admin-options a {
 	display: inline-block;
 	position: relative;
@@ -205,6 +207,11 @@ body {
 	background-image: url(/apps/admin/css/admin/editable-sprite-dark.png);
 }
 
+#preview-bar a {
+	background-image: url(/apps/admin/css/admin/editable-sprite-violett.png);
+}
+
+#preview-bar a:hover,
 .admin-options a:hover {
 	background: #ddd;
 	background-image: url(/apps/admin/css/admin/editable-sprite-dark.png);
@@ -213,11 +220,17 @@ body {
 	padding: 0;
 }
 
+#preview-bar a:hover{
+    background-image: url(/apps/admin/css/admin/editable-sprite-violett.png);
+}
+
 	.admin-options a.editable-add {
 		background-position: 0px 0px;
 	}
 
-	.admin-options a.editable-edit {
+    #preview-bar a,
+    #preview-bar a:hover,
+    .admin-options a.editable-edit {
 		background-position: -26px 0px;
 	}
 
@@ -274,4 +287,67 @@ body {
 	#admin-bar img, #admin-update-available {
 		display: none;
 	}
+}
+
+#admin-links #admin-tools-website,
+#preview-bar,
+.is-preview #admin-bar,
+.is-preview .admin-options,
+.is-admin #admin-links .admin-tools-show-preview {
+    display: none;
+}
+
+.is-admin #admin-links #admin-tools-website {
+    display:block;
+}
+
+.is-preview #preview-bar {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 35px;
+    width: 100%;
+    z-index: 100000;
+}
+
+.is-preview #preview-bar a {
+    margin: 8px;
+    border: 2px solid #93278f;
+}
+
+.is-preview #preview-bar a:hover {
+	border: 2px solid #666;
+	border-right: 0px;
+	background-color: #ddd;
+	background-color: rgba(220,220,220,.95);
+    background-image: url(/apps/admin/css/admin/editable-sprite-dark.png);
+	background-position: -26px 0px;
+	position: relative;
+}
+
+.is-preview .page, body.is-preview {
+    padding-top:0;
+}
+
+.is-preview #preview-bar a:hover:after {
+	content: attr(data-title);
+	position: absolute;
+	left: 26px;
+	top: -2px;
+	min-width: 100px;
+	height: 21px;
+	padding-top: 3px;
+	padding-left: 3px;
+	padding-right: 5px;
+	background-color: #ddd;
+	background-color: rgba(220,220,220,.95);
+	border: 2px solid #666;
+	border-left: 0px;
+	color: #222;
+	white-space: nowrap;
+}
+
+.is-preview .hide-in-preview {
+	display: none;
 }
