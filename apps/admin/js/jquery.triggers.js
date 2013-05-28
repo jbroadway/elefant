@@ -23,6 +23,11 @@
 	$.trigger_list = {};
 
 	/**
+	 * The dialog number if help is open.
+	 */
+	var help_open = false;
+
+	/**
 	 * Simulate a click on an element, with ctrl, alt, shift, and cmd disabled.
 	 */
 	$.simulate_click = function (target) {
@@ -96,6 +101,12 @@
 	 * Display a list of keyboard shortcuts.
 	 */
 	$.triggers_help = function () {
+		if (help_open) {
+			$.close_dialog (help_open);
+			help_open = false;
+			return false;
+		}
+
 		var html = '<ul>',
 			keys = [];
 
@@ -113,7 +124,7 @@
 		}
 		html += '</ul>';
 
-		$.open_dialog ($.i18n ('Keyboard shortcuts'), html);
+		help_open = $.open_dialog ($.i18n ('Keyboard shortcuts'), html);
 
 		return false;
 	};
