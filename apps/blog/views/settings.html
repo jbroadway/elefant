@@ -25,6 +25,9 @@
 	<option value="none"{% if comments === false %} selected{% end %}>{"Off"}</option>
 	<option value="facebook"{% if comments === 'facebook' %} selected{% end %}>{"Facebook"}</option>
 	<option value="disqus"{% if comments === 'disqus' %} selected{% end %}>{"Disqus"}</option>
+	{% if is_dir('apps/comments') %}
+	<option value="comments/embed"{% if comments === 'comments/embed' %} selected{% end %}>{"Comments app"}</option>
+	{% end %}
 </select></p>
 
 <p id="disqus_shortname">{"Disqus shortname"}:<br />
