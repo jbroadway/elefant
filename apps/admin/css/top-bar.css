@@ -96,7 +96,7 @@ body {
 		text-decoration: none;
 	}
 
-		#admin-links a:hover {
+		#admin-links a:hover, #admin-links a:focus {
 			color: #93278f;
 
 			background: #dddddd; /* Old browsers */
@@ -108,6 +108,7 @@ body {
 			background: linear-gradient(to bottom,  #dddddd 0%,#cccccc 100%); /* W3C */
 
 			text-decoration: none;
+			outline: 0;
 		}
 
 	#admin-tools-list {
@@ -155,16 +156,22 @@ body {
 			background: rgba(147,39,143,.95);
 		}
 
-		#admin-tools-list li a.not-installed:hover, #admin-tools-list li a.needs-upgrade:hover {
+		#admin-tools-list li a.not-installed:hover, #admin-tools-list li a.needs-upgrade:hover,
+		#admin-tools-list li a.not-installed:focus, #admin-tools-list li a.needs-upgrade:focus {
 			color: #fff;
 			background: #B347AF;
 			background: rgba(147,39,143,.85);
 		}
 
-	#admin-tools-list li a:hover {
+	#admin-tools-list li a:hover, #admin-tools-list li a:focus {
 		text-decoration: none;
 		background: #ddd;
 		background: rgba(220,220,220,.95);
+	}
+
+	#admin-tools-list li a:focus {
+		color: #93278f;
+		outline: 0;
 	}
 
 	#admin-update-available {
