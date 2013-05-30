@@ -57,6 +57,13 @@ tt {
 	border-radius: 2px;
 }
 
+	.modal-dialog tt {
+		background: inherit;
+		border: 0;
+		padding: 0;
+		margin: 0;
+	}
+
 .notice {
 	color: #1C75BC;
 	display: none;
