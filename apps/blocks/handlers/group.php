@@ -14,12 +14,22 @@
  *        ?id[]=block-one
  *        &id[]=block-two
  *        &id[]=block-three !}
+ *
+ * You can also set a `level` parameter to specify which heading level
+ * to use for the block titles:
+ *
+ *     {! blocks/group
+ *        ?id[]=block-one
+ *        &id[]=block-two
+ *        &level=h2 !}
  */
 
 $ids = (count ($this->params) > 0) ? $this->params : (isset ($data['id']) ? $data['id'] : array ());
 if (! is_array ($ids)) {
 	$ids = array ($ids);
 }
+
+$level = (isset ($data['level']) && preg_match ('/^h[1-6]$/', $data['level'])) ? $data['level'] : 'h3';
 
 $qs = array ();
 foreach ($ids as $id) {
@@ -58,7 +68,7 @@ foreach ($ids as $id) {
 	}
 
 	if ($b->show_title == 'yes') {
-		printf ('<h3>%s</h3>', $b->title);
+		printf ('<' . $level . '>%s</' . $level . '>', $b->title);
 	}
 
 	$b->locked = in_array ($id, $locks);

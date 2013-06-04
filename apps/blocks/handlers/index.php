@@ -25,18 +25,25 @@
  *
  * See the API documentation for the Template class for more info on
  * `[expr]` style sub-expressions.
+ *
+ * You can also set a `level` parameter to specify which heading level
+ * to use for the block title:
+ *
+ *     {! blocks/my-block-id?level=h2 !}
  */
 
 $id = (isset ($this->params[0])) ? $this->params[0] : (isset ($data['id']) ? $data['id'] : false);
 if (isset ($data['id'])) {
  	$fallback_id = (isset ($data['fallback'])) ? $data['fallback'] : false;
-} 
+}
 if (! $id) {
 	if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
 		echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false));
 	}
 	return;
 }
+
+$level = (isset ($data['level']) && preg_match ('/^h[1-6]$/', $data['level'])) ? $data['level'] : 'h3';
 
 $lock = new Lock ('Block', $id);
 
@@ -67,7 +74,7 @@ if ($b->access !== 'public') {
 }
 
 if ($b->show_title == 'yes') {
-	printf ('<h3>%s</h3>', $b->title);
+	printf ('<' . $level . '>%s</' . $level . '>', $b->title);
 }
 
 $b->locked = $lock->exists ();
