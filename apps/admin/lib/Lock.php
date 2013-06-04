@@ -115,6 +115,22 @@ class Lock {
 		$resource = ($resource) ? $resource : $this->resource;
 		$key = ($key) ? $key : $this->key;
 
+		if (is_array ($key)) {
+			$qs = array ();
+			foreach ($key as $k) {
+				$qs[] = '?';
+			}
+
+			$args = array (
+				'select id from `#prefix#lock` where user != ? and resource = ? and resource_id in(' . join (', ', $qs) . ') and expires > ?',
+				User::val ('id'),
+				$resource
+			);
+			$args = array_merge ($args, $key);
+			$args[] = gmdate ('Y-m-d H:i:s');
+			return call_user_func_array ('DB::shift_array', $args);
+		}
+
 		return DB::shift (
 			'select id from `#prefix#lock` where user != ? and resource = ? and resource_id = ? and expires > ?',
 			User::val ('id'),

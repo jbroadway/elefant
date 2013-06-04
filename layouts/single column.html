@@ -26,26 +26,12 @@
 		</div>
 	</div>
 	<div class="clear"></div>
-{% if id === 'index' %}
-	<div id="body" class="grid_12 index-body">
-
-{! filemanager/slideshow?path=homepage !}
-
-{% if title != '' %}<h2>{{ title|none }}</h2>{% end %}
-{{ body|none }}
-
-	</div>
-{% else %}
-	<div id="body" class="grid_8">
+	<div id="body" class="grid_12 omega">
 		
 {% if title != '' %}<h2>{{ title|none }}</h2>{% end %}
 {{ body|none }}
 
 	</div>
-	<div id="sidebar" class="grid_4">
-{! blocks/index?id=sidebar-[id]&fallback=members !}
-	</div>
-{% end %}
 	<div class="clear"></div>
 	<div id="footer" class="grid_12">
 		<div class="grid_6 alpha menu">

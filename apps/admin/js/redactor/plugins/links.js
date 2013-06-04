@@ -52,7 +52,7 @@ RedactorPlugins.links = {
 				url = self.insert_link_node.attr ('href');
 				target = self.insert_link_node.attr ('target');
 			} else if (self.oldIE ()) {
-				text = sel.text;
+				text = $(sel).text ();
 			} else {
 				text = self.getSelectedHtml ();
 			}

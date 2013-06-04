@@ -156,8 +156,11 @@ $page->body = $controller->handle ($handler, false);
  * compression if conf[General][compress_output] is true.
  */
 $out = $page->render ($tpl, $controller);
-if (conf ('General', 'compress_output') && extension_loaded ('zlib')) {
-	ob_start ('ob_gzhandler');
+if (extension_loaded ('zlib') && conf ('General', 'compress_output')) {
+	$zlib_oc = ini_get ('zlib.output_compression');
+	if ($zlib_oc === '' || $zlib_oc === 'Off' || ! $zlib_oc) {
+		ob_start ('ob_gzhandler');
+	}
 }
 echo $out;
 

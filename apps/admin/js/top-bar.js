@@ -152,7 +152,7 @@ jQuery.expanded_section = function (options) {
 
 $(function () {
 	var sliding_up = false;
-	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img id="admin-logo" src="/apps/admin/css/admin/spacer.png" alt="" /></a></div>');
+	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img id="admin-logo" src="/apps/admin/css/admin/spacer.png" alt="" /></a></div><div id="preview-bar"><a href="#" class="admin-tools-hide-preview" data-title="'+$.i18n("Back to Edit Mode")+'"></a></div>');
 	$.get ('/admin/head/links', function (res) {
 		$('#admin-logo').attr ('src', res.logo).attr ('alt', res.name);
 		$('#admin-links').append (res.links);
@@ -164,7 +164,16 @@ $(function () {
 			function () {
 				$('#admin-tools-list').stop ().slideUp ('slow');
 			}
-		)
+		).click (
+			function () {
+				if ($('#admin-tools-list').is (':visible')) {
+					$('#admin-tools-list').stop ().slideUp ('fast');
+				} else {
+					$('#admin-tools-list').stop ().css ('height', 'auto').slideDown ('fast');
+					$('#admin-tools-list a')[0].focus ();
+				}
+			}
+		);
 		$('#admin-links a').not('#admin-tools-list a').bind("mouseover", function(){
 			$('#admin-tools-list').stop ().slideUp ('slow');
 		});
@@ -177,8 +186,28 @@ $(function () {
 			$.cookie ('elefant_last_page', window.location.pathname, { path: '/' });
 			$('#admin-tools-website').attr ('href', window.location.pathname);
 		}
+
+        // toggle Preview Mode
+        // shows/hides EditButtons and adminbar
+        var toggle_preview = function () {
+        	var b = $('body');
+        	
+        	if (b.hasClass ('is-preview')) {
+        		b.removeClass ('is-preview');
+        	} else {
+        		b.addClass ('is-preview');
+        	}
+        	return false;
+        };
+
+        $('a.admin-tools-show-preview', '#admin-bar' ).click (toggle_preview);
+        $('a.admin-tools-hide-preview', '#preview-bar').click (toggle_preview);
+
+		// add keyboard shortcuts
+		$.triggers ();
 	});
-	$('.admin-options a').hover (
+
+    $('.admin-options a').hover (
 		function () {
 			this.tip = this.title;
 			$(this).append (
