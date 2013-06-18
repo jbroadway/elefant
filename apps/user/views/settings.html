@@ -2,7 +2,7 @@
 
 <form method="post" id="{{_form}}">
 
-<p>{"Login methods"}:<br />
+<p><strong>{"Login methods"}:</strong><br />
 <input type="checkbox" name="login_facebook" id="login_facebook" value="yes"{% if login_facebook %} checked{% end %} /> {"Facebook"}<br />
 <input type="checkbox" name="login_google" id="login_google"value="yes"{% if login_google %} checked{% end %} /> {"Google"}<br />
 <input type="checkbox" name="login_openid" id="login_openid" value="yes"{% if login_openid %} checked{% end %} /> {"OpenID"}<br />
@@ -10,24 +10,42 @@
 <input type="checkbox" name="login_persona" id="login_persona" value="yes"{% if login_persona %} checked{% end %} /> {"Persona"}<br />
 
 <div id="facebook-info">
-<p><strong>{"Facebook"}</strong><br />
-<a href="https://developers.facebook.com/apps" target="_blank">{"Application ID"}</a>:<br />
-<input type="text" name="facebook_app_id" size="30" value="{{ facebook_app_id|quotes }}" />
+
+<p>
+	<strong>{"Facebook app settings"}</strong><br />
+	<a href="https://developers.facebook.com/apps" target="_blank">{"Register your website here to generate your Facebook credentials."}</a>
+</p>
+
+<p>{"Application ID"}:<br />
+<input type="text" name="facebook_app_id" size="40" value="{{ facebook_app_id|quotes }}" />
 </p>
 
 <p>{"Application secret"}:<br />
-<input type="text" name="facebook_app_secret" size="30" value="{{ facebook_app_secret|quotes }}" />
+<input type="text" name="facebook_app_secret" size="70" value="{{ facebook_app_secret|quotes }}" />
 </p>
 </div>
 
 <div id="twitter-info">
-<p><strong>{"Twitter"}</strong><br />
-<a href="https://dev.twitter.com/apps/new" target="_blank">{"Consumer key"}</a>:<br />
-<input type="text" name="twitter_key" size="30" value="{{ twitter_key|quotes }}" />
+
+<p>
+	<strong>{"Twitter app settings"}</strong><br />
+	<a href="https://dev.twitter.com/apps/new" target="_blank">{"Register your website here to generate your Twitter credentials."}</a>
+</p>
+
+<p>{"Consumer key"}:<br />
+<input type="text" name="twitter_key" size="40" value="{{ twitter_key|quotes }}" />
 </p>
 
 <p>{"Consumer secret"}:<br />
-<input type="text" name="twitter_secret" size="30" value="{{ twitter_secret|quotes }}" />
+<input type="text" name="twitter_secret" size="70" value="{{ twitter_secret|quotes }}" />
+</p>
+
+<p>{"Access token (optional)"}:<br />
+<input type="text" name="twitter_access_token" size="70" value="{{ twitter_access_token|quotes }}" />
+</p>
+
+<p>{"Access token secret (optional)"}:<br />
+<input type="text" name="twitter_access_token_secret" size="70" value="{{ twitter_access_token_secret|quotes }}" />
 </p>
 </div>
 
@@ -40,18 +58,3 @@
 </form>
 
 </div>
-
-<script>
-$(function () {
-	$('#facebook-info').toggle ($('#login_facebook').is (':checked'));
-	$('#twitter-info').toggle ($('#login_twitter').is (':checked'));
-
-	$('#login_facebook').click (function () {
-		$('#facebook-info').toggle (this.checked);
-	});
-
-	$('#login_twitter').click (function () {
-		$('#twitter-info').toggle (this.checked);
-	});
-});
-</script>

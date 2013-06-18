@@ -22,6 +22,8 @@ $form->data = array (
 	'facebook_app_secret' => $appconf['Facebook']['application_secret'],
 	'twitter_key' => $appconf['Twitter']['consumer_key'],
 	'twitter_secret' => $appconf['Twitter']['consumer_secret'],
+	'twitter_access_token' => $appconf['Twitter']['access_token'],
+	'twitter_access_token_secret' => $appconf['Twitter']['access_token_secret'],
 	'login_openid' => in_array ('openid', $appconf['User']['login_methods']),
 	'login_google' => in_array ('google', $appconf['User']['login_methods']),
 	'login_facebook' => in_array ('facebook', $appconf['User']['login_methods']),
@@ -61,7 +63,9 @@ echo $form->handle (function ($form) {
 			),
 			'Twitter' => array (
 				'consumer_key' => $_POST['twitter_key'],
-				'consumer_secret' => $_POST['twitter_secret']
+				'consumer_secret' => $_POST['twitter_secret'],
+				'access_token' => $_POST['twitter_access_token'],
+				'access_token_secret' => $_POST['twitter_access_token_secret']
 			)
 		),
 		'conf/app.user.' . ELEFANT_ENV . '.php'
