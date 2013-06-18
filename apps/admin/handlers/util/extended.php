@@ -8,11 +8,11 @@
  *
  * 1. Add this to your form view template:
  *
- *     {! admin/util/extended?extends=blog\Post !}
+ *     {! admin/util/extended?extends=blog\Post&name=Blog+Posts !}
  *
  * For update forms, pass the extended field values as well:
  *
- *     {! admin/util/extended?extends=blog\Post&values=[extra|none] !}
+ *     {! admin/util/extended?extends=blog\Post&name=Blog+Posts&values=[extra|none] !}
  *
  * 2. For update forms, call this in the form handler function,
  * before calling `$post->put ()`:
