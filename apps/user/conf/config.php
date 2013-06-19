@@ -49,6 +49,7 @@ application_secret = ""
 ; https://dev.twitter.com/apps/new to generate the following
 ; values for your site.
 
+twitter_id = ""
 consumer_key = ""
 consumer_secret = ""
 access_token = ""

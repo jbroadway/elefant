@@ -20,6 +20,7 @@ $appconf['User']['login_methods'] = is_array ($appconf['User']['login_methods'])
 $form->data = array (
 	'facebook_app_id' => $appconf['Facebook']['application_id'],
 	'facebook_app_secret' => $appconf['Facebook']['application_secret'],
+	'twitter_id' => $appconf['Twitter']['twitter_id'],
 	'twitter_key' => $appconf['Twitter']['consumer_key'],
 	'twitter_secret' => $appconf['Twitter']['consumer_secret'],
 	'twitter_access_token' => $appconf['Twitter']['access_token'],
@@ -62,6 +63,7 @@ echo $form->handle (function ($form) {
 				'application_secret' => $_POST['facebook_app_secret']
 			),
 			'Twitter' => array (
+				'twitter_id' => $_POST['twitter_id'],
 				'consumer_key' => $_POST['twitter_key'],
 				'consumer_secret' => $_POST['twitter_secret'],
 				'access_token' => $_POST['twitter_access_token'],
