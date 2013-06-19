@@ -80,7 +80,7 @@ if ($data['order'] === 'desc') {
 // remove 'files/' from paths and create output list
 $list = array ();
 foreach ($files as $key => $file) {
-	$list[preg_replace ('/^files\//', '', $file)] = (object) array (
+	$list[preg_replace ('/^' . preg_quote ($root, '/') . '/', '', $file)] = (object) array (
 		'path' => $file,
 		'desc' => ''
 	);
