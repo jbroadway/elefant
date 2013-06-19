@@ -76,7 +76,7 @@ if (isset ($data['path']) or isset ($_GET['path'])) {
 // rewrite if proxy is set
 if ($appconf['General']['proxy_handler']) {
         foreach ($files as $k => $file) {
-                $files[$k] = str_replace ('files/', 'filemanager/proxy/', $file);
+                $files[$k] = str_replace ($root, 'filemanager/proxy/', $file);
         }
 }
 
