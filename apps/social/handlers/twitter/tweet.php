@@ -10,7 +10,8 @@ if (! isset (self::$called['social/twitter/init'])) {
 }
 
 if (! isset ($data['via']) || empty ($data['via'])) {
-	$data['via'] = $appconf['Twitter']['id'];
+	$id = Appconf::user ('Twitter', 'twitter_id');
+	$data['via'] = (! empty ($id)) ? $id : $appconf['Twitter']['id'];
 }
 
 if (strpos ($data['url'], '/') === 0) {

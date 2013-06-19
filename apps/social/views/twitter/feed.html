@@ -1,28 +1,14 @@
-<script src="http://widgets.twimg.com/j/2/widget.js"></script>
-<script>
-new TWTR.Widget({
-  version: 2,
-  type: 'profile',
-  rpp: {{ num_of_tweets }},
-  interval: 30000,
-  width: {{ width }},
-  height: {{ height }},
-  theme: {
-    shell: {
-      background: '#{{ shellbackground }}',
-      color: '#{{ shelltext }}'
-    },
-    tweets: {
-      background: '#{{ tweetbackground }}',
-      color: '#{{ tweettext }}',
-      links: '#{{ link }}'
-    }
-  },
-  features: {
-    scrollbar: false,
-    loop: false,
-    live: false,
-    behavior: 'all'
-  }
-}).render().setUser('{{ twitter_id }}').start();
-</script>
+<ul>
+{% foreach tweets as tweet %}
+	<li>
+		{% if show_dates == 'yes' %}
+			{{tweet->created_at|strtotime|I18n::short_date}} -
+		{% end %}
+		{% if parse_links == 'yes' %}
+			{{tweet->text|social\Filter::tweet}}
+		{% else %}
+			{{tweet->text}}
+		{% end %}
+	</li>
+{% end %}
+</ul>
