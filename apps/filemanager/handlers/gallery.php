@@ -113,7 +113,7 @@ if ($data['style'] === 'lightbox') {
 // rewrite if proxy is set
 if ($appconf['General']['proxy_handler']) {
 	foreach ($list as $k => $file) {
-		$list[$k]->path = str_replace ('files/', 'filemanager/proxy/', $file->path);
+		$list[$k]->path = str_replace ($root, 'filemanager/proxy/', $file->path);
 	}
 }
 
