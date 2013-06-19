@@ -31,7 +31,7 @@ $code = $twauth->request (
 	'https://api.twitter.com/1.1/statuses/user_timeline.json',
 	array (
 		'screen_name' => $data['twitter_id'],
-		'count' => isset ($data['num_of_tweets']) ? $data['num_of_tweets'] : 5
+		'count' => $data['num_of_tweets']
 	)
 );
 
