@@ -8,10 +8,13 @@
 $res = $this->override ('blog/index');
 if ($res) { echo $res; return; }
 
+$preview_chars = Appconf::blog('Blog', 'preview_chars') ? (int) Appconf::blog('Blog', 'preview_chars') : false;
+
 $page->id = 'blog';
 $page->layout = Appconf::blog ('Blog', 'layout');
 
 require_once ('apps/blog/lib/Filters.php');
+require_once ('apps/blog/lib/TruncateHTML.php');
 
 $page->limit = 10;
 $page->num = (count ($this->params) > 0 && is_numeric ($this->params[0])) ? $this->params[0] - 1 : 0;
@@ -39,6 +42,9 @@ if (! is_array ($posts) || count ($posts) === 0) {
 		$post->tag_list = explode (',', $post->tags);
 		$post->social_buttons = Appconf::blog ('Social Buttons');
 		$post->body = $tpl->run_includes ($post->body);
+		if ($preview_chars) {
+                        $post->body = truncate ($post->body, $preview_chars);
+                }
 		echo $tpl->render ('blog/post', $post);
 	}
 }
