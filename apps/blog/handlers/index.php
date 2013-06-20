@@ -5,7 +5,7 @@
  */
 
 // Check for a custom handler override
-$res = $this->override ('blog/post');
+$res = $this->override ('blog/index');
 if ($res) { echo $res; return; }
 
 $page->id = 'blog';
