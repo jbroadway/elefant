@@ -19,6 +19,10 @@ post_layout = default
 
 include_in_nav = On
 
+; Limit the number of characters to include in the blog post previews.
+
+preview_chars = Off
+
 ; Here you can choose a service to use for blog comments.
 ; Supported platforms are Facebook and Disqus, or a custom
 ; handler name that implements an alternate comment system.

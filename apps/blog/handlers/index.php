@@ -8,6 +8,8 @@
 $res = $this->override ('blog/index');
 if ($res) { echo $res; return; }
 
+$preview_chars = (int) Appconf::blog('Blog', 'preview_chars') ? (int) Appconf::blog('Blog', 'preview_chars') : false;
+
 $page->id = 'blog';
 $page->layout = Appconf::blog ('Blog', 'layout');
 
@@ -39,6 +41,9 @@ if (! is_array ($posts) || count ($posts) === 0) {
 		$post->tag_list = explode (',', $post->tags);
 		$post->social_buttons = Appconf::blog ('Social Buttons');
 		$post->body = $tpl->run_includes ($post->body);
+		if ($preview_chars) {
+                        $post->body = blog_filter_truncate ($post->body, $preview_chars);
+                }
 		echo $tpl->render ('blog/post', $post);
 	}
 }
