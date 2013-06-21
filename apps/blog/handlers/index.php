@@ -8,7 +8,7 @@
 $res = $this->override ('blog/index');
 if ($res) { echo $res; return; }
 
-$preview_chars = Appconf::blog('Blog', 'preview_chars') ? (int) Appconf::blog('Blog', 'preview_chars') : false;
+$preview_chars = (int) Appconf::blog('Blog', 'preview_chars') ? (int) Appconf::blog('Blog', 'preview_chars') : false;
 
 $page->id = 'blog';
 $page->layout = Appconf::blog ('Blog', 'layout');
