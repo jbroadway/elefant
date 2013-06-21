@@ -19,6 +19,11 @@ callback = admin_layout_exists
 not empty = 1
 regex = "/^(facebook|disqus|comments\/embed|none)$/"
 
+[preview_chars]
+
+skip_if_empty = 1
+type = numeric
+
 [disqus_shortname]
 
 skip_if_empty = 1

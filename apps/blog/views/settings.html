@@ -30,6 +30,10 @@
 	{% end %}
 </select></p>
 
+<p>{"Limit post previews (# of chars)"}:<br />
+<input type="text" name="preview_chars" size="20" value="{{ preview_chars|quotes }}" />
+<span class="notice" id="preview_chars-notice">{"Preview must be a number of characters."}</span></p>
+
 <p id="disqus_shortname">{"Disqus shortname"}:<br />
 <input type="text" name="disqus_shortname" size="30" value="{{ disqus_shortname|quotes }}" />
 </p>
