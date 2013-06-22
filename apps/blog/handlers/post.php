@@ -20,7 +20,7 @@ $page->title = Appconf::blog ('Blog', 'title');
 $post = $p->orig ();
 $post->full = true;
 $post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
-$post->tag_list = explode (',', $post->tags);
+$post->tag_list = (strlen ($post->tags) > 0) ? explode (',', $post->tags) : array ();
 $post->body = $tpl->run_includes ($post->body);
 $post->social_buttons = Appconf::blog ('Social Buttons');
 

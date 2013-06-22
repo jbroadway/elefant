@@ -9,6 +9,8 @@ $page->layout = $appconf['Blog']['layout'];
 
 require_once ('apps/blog/lib/Filters.php');
 
+$preview_chars = (int) Appconf::blog('Blog', 'preview_chars') ? (int) Appconf::blog('Blog', 'preview_chars') : false;
+
 $page->limit = 10;
 $page->author = urldecode ($this->params[0]);
 if (! $page->author) {
@@ -26,9 +28,13 @@ $page->next = $page->num + 2;
 
 foreach ($posts as $post) {
 	$post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
-	$post->tag_list = explode (',', $post->tags);
+	$post->tag_list = (strlen ($post->tags) > 0) ? explode (',', $post->tags) : array ();
 	$post->social_buttons = $appconf['Social Buttons'];
 	$post->body = $tpl->run_includes ($post->body);
+	if ($preview_chars) {
+		$post->body = blog_filter_truncate ($post->body, $preview_chars)
+			. ' <a href="' . $post->url . '">' . __ ('Read more') . '</a>';
+	}
 	echo $tpl->render ('blog/post', $post);
 }
 
