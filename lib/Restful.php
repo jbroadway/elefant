@@ -152,6 +152,20 @@ class Restful {
 		echo json_encode ($res);
 		return null;
 	}
+
+	/**
+	 * Verify that the user is authorized to access one or more resources.
+	 * If the user is not logged in, it will also return false.
+	 */
+	public function require_acl ($resource) {
+		$args = func_get_args ();
+		foreach ($args as $resource) {
+			if (! User::require_acl ($resource)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
 
 ?>
