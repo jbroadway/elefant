@@ -205,11 +205,14 @@ function format_filesize ($size = 0) {
  * - bot
  * - mobile
  * - tablet
+ * - desktop
  *
  * Notes:
  *
  * - `mobile` and `tablet` matches are not exhaustive, they only list the common
  *   platforms.
+ *
+ * - `desktop` means not a mobile or tablet device, and may be Linux, Mac, or Windows.
  *
  * - iPad and iPod are both reported as mobile devices in the user agent string,
  *   but `detect()` corrects for this in the case of the iPad.
@@ -253,6 +256,12 @@ function detect ($browser) {
 	} elseif ($browser === 'ios') {
 		if (! preg_match ('/(ipad|iphone|ipod)/', $ua)) {
 			// Not iOS
+			return false;
+		}
+		return true;
+	} elseif ($browser === 'desktop') {
+		if (detect ('mobile') || detect ('tablet')) {
+			// Tablet or mobile
 			return false;
 		}
 		return true;

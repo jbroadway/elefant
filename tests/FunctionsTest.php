@@ -205,6 +205,14 @@ class FunctionsTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue (detect ('bot'));
 		$this->assertFalse (detect ('tablet'));
 		$this->assertFalse (detect ('mobile'));
+
+		// Desktop
+		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (iPhone; U; XXXXX like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/241 Safari/419.3';
+		$this->assertFalse (detect ('desktop'));
+		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B314 Safari/531.21.10';
+		$this->assertFalse (detect ('desktop'));
+		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/18.6.872.0 Safari/535.2 UNTRUSTED/1.0 3gpp-gba UNTRUSTED/1.0';
+		$this->assertTrue (detect ('desktop'));
 	}
 
 	function test_rmdir_recursive () {
