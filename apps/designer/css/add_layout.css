@@ -7,6 +7,7 @@
 #body {
 	position: relative;
 	width: 1024px;
+	margin-top: 5px;
 	margin-left: -32px;
 }
 form {
@@ -19,7 +20,14 @@ form {
 	margin-top: 3px;
 	margin-bottom: 0px;
 }
+#layout {
+	position: relative;
+}
 #tags {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1019px;
 	background: #f1f1f1;
 	margin-top: 5px;
 	border: 1px solid #ccc;
@@ -49,10 +57,11 @@ br.preview {
 	display: none;
 }
 .CodeMirror {
+	position: absolute;
+	top: -12px;
+	left: 0;
 	border: 1px solid #ccc;
 	background: #fff;
-	max-width: 1022px;
-}
-.CodeMirror-scroll {
+	width: 1022px;
 	height: 240px;
 }

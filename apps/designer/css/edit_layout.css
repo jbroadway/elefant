@@ -5,7 +5,9 @@
 	padding-top: 38px !important;
 }
 #body {
+	position: relative;
 	width: 1024px;
+	margin-top: 5px;
 	margin-left: -32px;
 }
 #body h2 {
@@ -16,7 +18,14 @@
 form {
 	margin-top: -48px;
 }
+#layout {
+	position: relative;
+}
 #tags {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1019px;
 	background: #f1f1f1;
 	margin-top: 5px;
 	border: 1px solid #ccc;
@@ -40,11 +49,15 @@ form br {
 #footer {
 	display: none;
 }
+.preview {
+	margin-top: 6px;
+}
 .CodeMirror {
+	position: absolute;
+	top: 0;
+	left: 0;
 	border: 1px solid #ccc;
 	background: #fff;
-	max-width: 1022px;
-}
-.CodeMirror-scroll {
+	width: 1022px;
 	height: 240px;
 }
