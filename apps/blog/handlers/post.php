@@ -15,6 +15,11 @@ require_once ('apps/blog/lib/Filters.php');
 
 $p = new blog\Post ($this->params[0]);
 
+// post not found
+if($p->error){
+        return $this->error(404, __('Post not found'), '<p>' . __('Hmm, we can\'t seem to find the post you wanted at the moment.') . '</p>');
+}
+
 $page->title = Appconf::blog ('Blog', 'title');
 
 $post = $p->orig ();
