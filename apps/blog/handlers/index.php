@@ -36,11 +36,19 @@ if (! is_array ($posts) || count ($posts) === 0) {
 		echo '<p class="hide-in-preview"><a href="/blog/add">' . __ ('Add Blog Post') . '</a></p>';
 	}
 
+	if (Appconf::blog ('Blog', 'post_format') === 'markdown') {
+		require_once ('apps/blog/lib/markdown.php');
+	}
+
 	foreach ($posts as $post) {
 		$post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
 		$post->tag_list = (strlen ($post->tags) > 0) ? explode (',', $post->tags) : array ();
 		$post->social_buttons = Appconf::blog ('Social Buttons');
-		$post->body = $tpl->run_includes ($post->body);
+		if (Appconf::blog ('Blog', 'post_format') === 'html') {
+			$post->body = $tpl->run_includes ($post->body);
+		} else {
+			$post->body = $tpl->run_includes (Markdown ($post->body));
+		}
 		if ($preview_chars) {
 			$post->body = blog_filter_truncate ($post->body, $preview_chars)
 				. ' <a href="' . $post->url . '">' . __ ('Read more') . '</a>';

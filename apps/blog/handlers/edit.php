@@ -88,7 +88,19 @@ if ($f->submit ()) {
 	$p->failed = $f->failed;
 	$p = $f->merge_values ($p);
 	$page->title = __ ('Edit Blog Post') . ': ' . $p->title;
-	$this->run ('admin/util/wysiwyg');
+	if (Appconf::blog ('Blog', 'post_format') === 'html') {
+		$this->run ('admin/util/wysiwyg');
+	} else {
+		$this->run ('admin/util/wysiwyg', array ('field_id' => false));
+		$this->run (
+			'admin/util/codemirror',
+			array (
+				'field_id' => 'webpage-body',
+				'mode' => 'markdown',
+				'lineWrapping' => true
+			)
+		);
+	}
 	echo $tpl->render ('blog/edit/head', $p);
 	echo $tpl->render ('blog/edit', $p);
 }

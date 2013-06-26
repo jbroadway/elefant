@@ -30,6 +30,13 @@
 	{% end %}
 </select></p>
 
+<p>{"Edit posts with"}:<br />
+<select name="post_format" id="post_format">
+	<option value="html"{% if post_format === 'html' %} selected{% end %}>{"WYSIWYG editor"}</option>
+	<option value="markdown"{% if post_format === 'markdown' %} selected{% end %}>{"Markdown formatting"}</option>
+</select>
+<span class="notice" id="post_format-notice">{"Please choose a post format."}</span></p>
+
 <p>{"Limit post previews (# of chars)"}:<br />
 <input type="text" name="preview_chars" size="20" value="{{ preview_chars|quotes }}" />
 <span class="notice" id="preview_chars-notice">{"Preview must be a number of characters."}</span></p>

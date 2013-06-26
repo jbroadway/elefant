@@ -64,7 +64,19 @@ if ($f->submit ()) {
 	$p = $f->merge_values ($p);
 	$p->tag_list = explode (',', $p->tags);
 	$page->title = __ ('Add Blog Post');
-	$this->run ('admin/util/wysiwyg');
+	if (Appconf::blog ('Blog', 'post_format') === 'html') {
+		$this->run ('admin/util/wysiwyg');
+	} else {
+		$this->run ('admin/util/wysiwyg', array ('field_id' => false));
+		$this->run (
+			'admin/util/codemirror',
+			array (
+				'field_id' => 'webpage-body',
+				'mode' => 'markdown',
+				'lineWrapping' => true
+			)
+		);
+	}
 	echo $tpl->render ('blog/add/head', $p);
 	echo $tpl->render ('blog/add', $p);
 }

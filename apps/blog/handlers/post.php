@@ -26,7 +26,12 @@ $post = $p->orig ();
 $post->full = true;
 $post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
 $post->tag_list = (strlen ($post->tags) > 0) ? explode (',', $post->tags) : array ();
-$post->body = $tpl->run_includes ($post->body);
+if (Appconf::blog ('Blog', 'post_format') === 'html') {
+	$post->body = $tpl->run_includes ($post->body);
+} else {
+	require_once ('apps/blog/lib/markdown.php');
+	$post->body = $tpl->run_includes (Markdown ($post->body));
+}
 $post->social_buttons = Appconf::blog ('Social Buttons');
 
 echo $tpl->render ('blog/post', $post);

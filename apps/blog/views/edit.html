@@ -56,5 +56,11 @@ $(function () {
 		});
 		return false;
 	});
+
+	{% if Appconf::blog ('Blog', 'post_format') === 'markdown' %}
+	$('.CodeMirror').before (
+		'<a href="http://daringfireball.net/projects/markdown/basics" target="_blank" id="markdown-link">' + $.i18n ('Markdown formatting') + '</a>'
+	);
+	{% end %}
 });
 </script>

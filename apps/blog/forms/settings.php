@@ -24,6 +24,11 @@ regex = "/^(facebook|disqus|comments\/embed|none)$/"
 skip_if_empty = 1
 type = numeric
 
+[post_format]
+
+not empty = 1
+regex = "/^(html|markdown)$/"
+
 [disqus_shortname]
 
 skip_if_empty = 1
