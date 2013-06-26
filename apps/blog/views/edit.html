@@ -35,7 +35,7 @@
 </p>
 </div>
 
-{! admin/util/extended?extends=blog\Post&values=[extra|none] !}
+{! admin/util/extended?extends=blog\Post&name=Blog+Posts&values=[extra|none] !}
 
 <p>
 	<input type="submit" value="{"Save Blog Post"}" class="autosave-clear" />&nbsp;
@@ -56,5 +56,11 @@ $(function () {
 		});
 		return false;
 	});
+
+	{% if Appconf::blog ('Blog', 'post_format') === 'markdown' %}
+	$('.CodeMirror').before (
+		'<a href="http://daringfireball.net/projects/markdown/basics" target="_blank" id="markdown-link">' + $.i18n ('Markdown formatting') + '</a>'
+	);
+	{% end %}
 });
 </script>

@@ -22,6 +22,29 @@
  *        ?id[]=block-one
  *        &id[]=block-two
  *        &level=h2 !}
+ *
+ * Additionally, you can set a `divs` parameter to specify that each block
+ * should be wrapped in a `<div class="block" id="block-ID"></div>` tag,
+ * where the `id` attribute's value is the block ID prefixed with `block-`:
+ *
+ *     {! blocks/group
+ *        ?id[]=sidebar-promo
+ *        &id[]=sidebar-support
+ *        &divs=on !}
+ *
+ * This will output:
+ *
+ *     <div class="block" id="block-sidebar-promo">
+ *         <h2>Block title</h2>
+ *         <p>Block contents...</p>
+ *     </div>
+ *     <div class="block" id="block-sidebar-support">
+ *         <h2>Block title</h2>
+ *         <p>Block contents...</p>
+ *     </div>
+ *
+ * In this way, blocks can easily be styled collectively or individually,
+ * making them a powerful way to build site content.
  */
 
 $ids = (count ($this->params) > 0) ? $this->params : (isset ($data['id']) ? $data['id'] : array ());
@@ -30,6 +53,7 @@ if (! is_array ($ids)) {
 }
 
 $level = (isset ($data['level']) && preg_match ('/^h[1-6]$/', $data['level'])) ? $data['level'] : 'h3';
+$divs = isset ($data['divs']) ? true : false;
 
 $qs = array ();
 foreach ($ids as $id) {
@@ -50,7 +74,7 @@ foreach ($blocks as $block) {
 foreach ($ids as $id) {
 	if (! isset ($list[$id])) {
 		if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
-			echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false));
+			echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false)) . PHP_EOL;
 		}
 		continue;
 	}
@@ -67,17 +91,25 @@ foreach ($ids as $id) {
 		}
 	}
 
+	if ($divs) {
+		printf ('<div class="block" id="block-%s">' . PHP_EOL, $b->id);
+	}
+
 	if ($b->show_title == 'yes') {
-		printf ('<' . $level . '>%s</' . $level . '>', $b->title);
+		printf ('<' . $level . '>%s</' . $level . '>' . PHP_EOL, $b->title);
 	}
 
 	$b->locked = in_array ($id, $locks);
 
 	if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
-		echo $tpl->render ('blocks/editable', $b);
+		echo $tpl->render ('blocks/editable', $b) . PHP_EOL;
 	}
 
-	echo $tpl->run_includes ($b->body);
+	echo $tpl->run_includes ($b->body) . PHP_EOL;
+	
+	if ($divs) {
+		echo '</div>' . PHP_EOL;
+	}
 }
 
 ?>

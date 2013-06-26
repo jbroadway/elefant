@@ -15,13 +15,23 @@ require_once ('apps/blog/lib/Filters.php');
 
 $p = new blog\Post ($this->params[0]);
 
+// post not found
+if($p->error){
+        return $this->error(404, __('Post not found'), '<p>' . __('Hmm, we can\'t seem to find the post you wanted at the moment.') . '</p>');
+}
+
 $page->title = Appconf::blog ('Blog', 'title');
 
 $post = $p->orig ();
 $post->full = true;
 $post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
-$post->tag_list = explode (',', $post->tags);
-$post->body = $tpl->run_includes ($post->body);
+$post->tag_list = (strlen ($post->tags) > 0) ? explode (',', $post->tags) : array ();
+if (Appconf::blog ('Blog', 'post_format') === 'html') {
+	$post->body = $tpl->run_includes ($post->body);
+} else {
+	require_once ('apps/blog/lib/markdown.php');
+	$post->body = $tpl->run_includes (Markdown ($post->body));
+}
 $post->social_buttons = Appconf::blog ('Social Buttons');
 
 echo $tpl->render ('blog/post', $post);

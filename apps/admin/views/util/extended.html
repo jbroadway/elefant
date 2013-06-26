@@ -1,6 +1,10 @@
 <h4 id="extended-header-{{extends|URLify::filter}}">{"Custom Fields"}</h4>
 
 <div id="extended-fields-{{extends|URLify::filter}}">
+{% if ! count ($data->fields) %}
+<p>{"No custom fields defined."} <a href="/admin/extended?extends={{extends}}&name={{name}}" target="_blank">{"Click here to add custom fields."}</a></p>
+{% end %}
+
 {% foreach fields as field %}
 	{% if field->type === 'text' %}
 		<p>

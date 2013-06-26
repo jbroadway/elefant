@@ -19,6 +19,16 @@ post_layout = default
 
 include_in_nav = On
 
+; Limit the number of characters to include in the blog post previews.
+
+preview_chars = Off
+
+; The format posts are written in. The default, 'html', will use
+; Elefant's wysiwyg editor, whereas 'markdown' will instead use
+; the Markdown syntax for rendering the post body.
+
+post_format = html
+
 ; Here you can choose a service to use for blog comments.
 ; Supported platforms are Facebook and Disqus, or a custom
 ; handler name that implements an alternate comment system.

@@ -1,0 +1,21 @@
+<script>
+window.codemirror = window.codemirror || {};
+
+$(function () {
+	$.codemirror = $.codemirror || {};
+	$.codemirror['{{field_id}}'] = CodeMirror.fromTextArea (
+		document.getElementById ('{{field_id}}'),
+		{
+			mode: '{{mime}}',
+			theme: '{{theme}}',
+			lineWrapping: {% if lineWrapping %}true{% else %}false{% end %},
+			onFocus: function () {
+				try {
+					$('form').autosave ();
+				} catch (e) {}
+			}
+		}
+	);
+	$('#{{field_id}}').data ('codemirror', true);
+});
+</script>

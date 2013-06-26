@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Get true/false for any of the social embedd options
+ * Get true/false for any of the social embed options
  * Dynamic Objects dialog.
  */
 function social_true_false () {
@@ -10,6 +11,20 @@ function social_true_false () {
 	);
 }
 
+/**
+ * Get yes/no for any of the social embed options
+ * Dynamic Objects dialog.
+ */
+function social_yes_no () {
+	return array (
+		(object) array ('key' => 'yes', 'value' => __ ('Yes')),
+		(object) array ('key' => 'no', 'value' => __ ('No')),
+	);
+}
+
+/**
+ * Get light/dark choice for Facebook embed options.
+ */
 function facebook_light_dark () {
 	return array (
 		(object) array ('key' => 'light', 'value' => __ ('Light')),

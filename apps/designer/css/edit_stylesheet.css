@@ -7,6 +7,7 @@
 #body {
 	position: relative;
 	width: 1024px;
+	margin-top: 5px;
 	margin-left: -32px;
 }
 #body h2 {
@@ -43,14 +44,17 @@ form {
 form br {
 	display: none;
 }
+.preview {
+	margin-top: 6px;
+}
 #footer {
 	display: none;
 }
 .CodeMirror {
+	position: relative;
+	top: -2px;
 	border: 1px solid #ccc;
 	background: #fff;
-	max-width: 1022px;
-}
-.CodeMirror-scroll {
+	width: 1022px;
 	height: 240px;
 }

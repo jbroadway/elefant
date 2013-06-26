@@ -88,24 +88,28 @@ function navigation_get_other_pages ($ids) {
 	$pages = array ();
 	$res = DB::fetch ('select id, title, menu_title from #prefix#webpage where access = "public"');
 
-        //Adds apps to Navigation
-        $apps = glob ('apps/*/conf/config.php');
-        foreach ($apps as $app) {
-            $ini = parse_ini_file ($app);
-             if (array_key_exists ('include_in_nav', $ini) && $ini['include_in_nav']
-            		&& array_key_exists ('title', $ini) && $ini['title'] != '') {
-                $appObj = new stdClass ();
-                if (! in_array ($ini['include_in_nav'], array ('1', 1, true), true)) {
-                	$appObj->id = ltrim ($ini['include_in_nav'], '/');
-                } else {
-                	$appPath = explode ('/',$app);
-	                $appObj->id = $appPath[1];
-	            }
-                $appObj->title = $ini['title'];
-                $appObj->menu_title = array_key_exists ('menu_title', $ini) ? $ini['menu_title'] : $ini['title'];
-                $res[] = $appObj;
-            }
-        }
+	//Adds apps to Navigation
+	$apps = glob ('apps/*');
+	foreach ($apps as $app) {
+		$app = str_replace ('apps/', '', $app);
+		$ini = Appconf::get ($app);
+		foreach ($ini as $section) {
+			if (array_key_exists ('include_in_nav', $section) && $section['include_in_nav']
+					&& array_key_exists ('title', $section) && $section['title'] != '') {
+				$appObj = new stdClass ();
+				if (! in_array ($section['include_in_nav'], array ('1', 1, true), true)) {
+					$appObj->id = ltrim ($section['include_in_nav'], '/');
+				} else {
+					$appPath = explode ('/',$app);
+					$appObj->id = $appPath[1];
+				}
+				$appObj->title = $section['title'];
+				$appObj->menu_title = array_key_exists ('menu_title', $section) ? $section['menu_title'] : $section['title'];
+				$res[] = $appObj;
+				break;
+			}
+		}
+	}
    	
 	foreach ($res as $p) {
 		if (in_array ($p->id, $ids)) {

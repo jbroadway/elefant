@@ -10,7 +10,8 @@ if (! isset (self::$called['social/twitter/init'])) {
 }
 
 if (! isset ($data['twitter_id'])) {
-	$data['twitter_id'] = $appconf['Twitter']['id'];
+	$id = Appconf::user ('Twitter', 'twitter_id');
+	$data['twitter_id'] = (! empty ($id)) ? $id : $appconf['Twitter']['id'];
 }
 
 echo $tpl->render ('social/twitter/follow', $data);
