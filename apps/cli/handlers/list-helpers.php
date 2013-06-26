@@ -12,10 +12,25 @@ if (! $this->cli) {
 $page->layout = false;
 
 $files = glob ('apps/*/handlers/util/*.php');
+$helpers = array ();
 
 foreach ($files as $file) {
 	preg_match ('/apps\/(.*)\/handlers\/util\/(.*)\.php$/', $file, $regs);
-	printf ("%s/util/%s\n", $regs[1], $regs[2]);
+	$helpers[sprintf ('%s/util/%s', $regs[1], $regs[2])] = null;
 }
+
+$apps = glob ('apps/*/conf/helpers.php');
+
+foreach ($apps as $file) {
+	$list = parse_ini_file ($file);
+	info ($list, true);
+	foreach ($list as $helper => $null) {
+		$helpers[$helper] = null;
+	}
+}
+
+ksort ($helpers);
+
+echo join ("\n", array_keys ($helpers)) . "\n";
 
 ?>
