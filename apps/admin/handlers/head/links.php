@@ -13,6 +13,21 @@ function admin_head_links_sort ($a, $b) {
 	return ($a['name'] < $b['name']) ? -1 : 1;
 }
 
+function is_compatible ($app, $appconf) {
+        if (isset ($appconf['Admin']['platforms'])) {
+                $device_list = explode (',', $appconf['Admin']['platforms']);
+                foreach ($device_list as $device) {
+                        if (detect ($device)) {
+                                return true;
+                        }
+                }
+        } else {
+                // No Admin/platforms conf entry so assume app is compatible
+                return true;
+        }
+        return false;
+}
+
 $page->layout = false;
 
 if (! User::require_admin ()) {
@@ -29,6 +44,10 @@ foreach ($res as $file) {
 		continue;
 	}
 	$appconf = parse_ini_file ($file, true);
+	if (! is_compatible ($app, $appconf)) {
+                // App not compatible with this platform
+                continue;
+        }
 	if (isset ($appconf['Admin']['handler'])) {
 		if (! preg_match ('/\/(admin|index)$/', $appconf['Admin']['handler']) && ! User::require_acl ($appconf['Admin']['handler'])) {
 			// A non /admin or /index handler should get an additional
