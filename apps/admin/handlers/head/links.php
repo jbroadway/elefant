@@ -13,11 +13,11 @@ function admin_head_links_sort ($a, $b) {
 	return ($a['name'] < $b['name']) ? -1 : 1;
 }
 
-function is_compatible ($app, $appconf) {
+function admin_is_compatible ($appconf) {
         if (isset ($appconf['Admin']['platforms'])) {
                 $device_list = explode (',', $appconf['Admin']['platforms']);
                 foreach ($device_list as $device) {
-                        if (detect ($device)) {
+                        if (detect (trim ($device))) {
                                 return true;
                         }
                 }
@@ -44,7 +44,7 @@ foreach ($res as $file) {
 		continue;
 	}
 	$appconf = parse_ini_file ($file, true);
-	if (! is_compatible ($app, $appconf)) {
+	if (! admin_is_compatible ($appconf)) {
                 // App not compatible with this platform
                 continue;
         }
