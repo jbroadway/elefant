@@ -184,6 +184,16 @@ tt {
 		border-radius: 2px;
 	}
 
+.CodeMirror {
+	clear: right;
+	border: 1px solid #ccc;
+}
+
+	#markdown-link {
+		float: right;
+		margin-top: -18px;
+	}
+
 #extra-options {
 	display: none;
 }

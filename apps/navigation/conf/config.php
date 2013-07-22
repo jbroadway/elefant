@@ -4,5 +4,6 @@
 
 handler = navigation/admin
 name = Navigation
+platforms = desktop
 
 ; */ ?>

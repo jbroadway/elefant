@@ -7,6 +7,7 @@
 #body {
 	position: relative;
 	width: 1024px;
+	margin-top: 5px;
 	margin-left: -32px;
 }
 form {
@@ -29,17 +30,17 @@ form {
 	float: right;
 	margin-right: 0px;
 }
-br.preview {
-	display: none;
+.preview {
+	margin-top: -20px;
 }
 #footer {
 	display: none;
 }
 .CodeMirror {
+	position: relative;
+	top: -28px;
 	border: 1px solid #ccc;
 	background: #fff;
-	max-width: 1022px;
-}
-.CodeMirror-scroll {
+	width: 1022px;
 	height: 240px;
 }

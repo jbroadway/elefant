@@ -36,6 +36,7 @@ Commands:
   <info>build-app <appname></info>              Build the scaffolding for an app
   <info>crud-app <modelname> <fieldlist></info> Build the scaffolding for a CRUD app
   <info>clear-cache</info>                      Clear the cache and compiled templates
+  <info>list-helpers</info>                     List available server-side helpers
   <info>generate-password <length(8)></info>    Generate a random password
   <info>encrypt-password <password></info>      Encrypt a password for the db
   <info>bundle-translations <appname></info>    Bundle translations into an app

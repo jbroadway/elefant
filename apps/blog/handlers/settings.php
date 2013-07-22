@@ -20,6 +20,7 @@ $form->data = array (
 	'post_layout' => $appconf['Blog']['post_layout'],
 	'comments' => $appconf['Blog']['comments'],
 	'preview_chars' => $appconf['Blog']['preview_chars'],
+	'post_format' => $appconf['Blog']['post_format'],
 	'disqus_shortname' => $appconf['Blog']['disqus_shortname'],
 	'social_twitter' => $appconf['Social Buttons']['twitter'],
 	'social_facebook' => $appconf['Social Buttons']['facebook'],
@@ -34,6 +35,7 @@ echo $form->handle (function ($form) {
 				'layout' => $_POST['layout'],
 				'post_layout' => $_POST['post_layout'],
 				'preview_chars' => (! empty ($_POST['preview_chars'])) ? (int) $_POST['preview_chars'] : false,
+				'post_format' => $_POST['post_format'],
 				'comments' => ($_POST['comments'] === 'none') ? false : $_POST['comments'],
 				'disqus_shortname' => $_POST['disqus_shortname']
 			),

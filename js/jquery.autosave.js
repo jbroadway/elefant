@@ -108,6 +108,9 @@ var autosave_interval = null,
 						} else if (opts.form.elements[vals[i].name].getAttribute ('id') == 'code-body') {
 							// Set the contents of codemirror editor
 							_codemirror.setValue (vals[i].value);
+						} else if ($(opts.form.elements[vals[i].name]).data ('codemirror')) {
+							// Set the contents of codemirror editor
+							$.codemirror[opts.form.elements[vals[i].name].getAttribute ('id')].setValue (vals[i].value);
 						} else if (opts.form.elements[vals[i].name].getAttribute ('id') == 'tags') {
 							// Set the contents of tag-it widget
 							$('#tagit').tagit ('removeAll');
@@ -156,16 +159,24 @@ var autosave_interval = null,
 					}
 					if (opts.form.elements[i].getAttribute ('id') == 'webpage-body') {
 						// Get the contents from Redactor editor
-						vals[i] = {
-							name: opts.form.elements[i].name,
-							//value: $('#webpage-body').redactor ('code.get')
-							value: $('#webpage-body').getCode ()
-						};
+						try {
+							vals[i] = {
+								name: opts.form.elements[i].name,
+								//value: $('#webpage-body').redactor ('code.get')
+								value: $('#webpage-body').getCode ()
+							};
+						} catch (e) {}
 					} else if (opts.form.elements[i].getAttribute ('id') == 'code-body') {
 						// Get the contents from codemirror editor
 						vals[i] = {
 							name: opts.form.elements[i].name,
 							value: _codemirror.getValue ()
+						};
+					} else if ($(opts.form.elements[i]).data ('codemirror')) {
+						// Get the contents from codemirror editor
+						vals[i] = {
+							name: opts.form.elements[i].name,
+							value: $.codemirror[opts.form.elements[i].getAttribute ('id')].getValue ()
 						};
 					} else if ($(opts.form.elements[i]).is (':radio') || $(opts.form.elements[i]).is (':checkbox')) {
 						if (opts.form.elements[i].checked) {

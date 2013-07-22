@@ -12,17 +12,17 @@
 <p id="name"><strong>{"New Stylesheet"}</strong> (ex: <tt>css/<strong>name</strong>.css</tt>): <input type="text" name="name" id="name-field" size="40" value="{{ name }}" /></p>
 <span class="notice" id="name-notice1">{"Please enter a name for your stylesheet."}</span>
 <span class="notice" id="name-notice2">{"Your name must be alphanumeric and not a duplicate of an existing stylesheet."}</span>
-<p class="body"><textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea>
-<br class="preview" />{"Preview with layout"}: <select name="layout" id="layout">
+<div class="body"><textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea>
+<div class="preview">{"Preview with layout"}: <select name="layout" id="layout">
 {% foreach layouts %}
 	<option value="{{ loop_value }}"{% if $data->loop_value == conf('General', 'default_layout') %} selected{% end %}>{{ loop_value }}</option>
 {% end %}
-</select><br class="preview" />
-<iframe src="/designer/csspreview?layout={{conf('General', 'default_layout')}}" id="preview" frameborder="0" width="1022" height="300" style="border: 1px solid #ccc"></iframe></p>
+</select></div>
+<iframe src="/designer/csspreview?layout={{conf('General', 'default_layout')}}" id="preview" frameborder="0" width="1022" height="300" style="border: 1px solid #ccc"></iframe></div>
 </form>
 
 <link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/lib/codemirror.css" />
-<link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/theme/default.css" />
+<!-- link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/theme/default.css" / -->
 <script type="text/javascript" src="/apps/designer/js/codemirror/lib/codemirror.js"></script>
 <script type="text/javascript" src="/apps/designer/js/codemirror/mode/css/css.js"></script>
 
@@ -84,7 +84,7 @@ $(function () {
 	{% end %}
 
 	// increase editor and preview height if window is tall enough
-	$('.CodeMirror-scroll').height ($(window).height () / 2 - 45);
+	$('.CodeMirror').height ($(window).height () / 2 - 45);
 	$('#preview').height ($(window).height () / 2 - 55);
 	$('html,body').css ({overflow: 'hidden'});
 
