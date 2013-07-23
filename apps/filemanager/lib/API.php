@@ -2,7 +2,8 @@
 
 namespace filemanager;
 
-use DB, FileManager, I18n, Restful;
+//added PropManager
+use DB, FileManager, PropManager, I18n, Restful;
 
 /**
  * Provides the JSON API for the admin file manager/browser, as well as functions
@@ -125,7 +126,7 @@ class API extends Restful {
 		if (! isset ($_GET['prop'])) {
 			return $this->error (__ ('Missing property name'));
 		}
-		if (isset ($_GET['value'])) {
+		if ((!FileManager::prop($file, $_GET['prop']) && $_GET['value'] != '') || $_GET['value'] != Filemanager::prop ($file, $_GET['prop'])) {
 			// update and fetch
 			$res = FileManager::prop ($file, $_GET['prop'], $_GET['value']);
 		} else {
@@ -138,6 +139,29 @@ class API extends Restful {
 			'value' => $res,
 			'msg' => __ ('Properties saved.')
 		);
+	}
+  
+  /**
+	* Handle property manager update requests (/filemanager/api/propman).
+	*/
+  public function get_propman () {
+		$action = urldecode (join ('/', func_get_args ()));
+		if (! isset ($_GET['id'])) {
+			return $this->error (__ ('Missing property name.'));
+    }
+    if (! preg_match ('/^[a-zA-Z0-9_]+$/', $_GET['id'])) {
+			return $this->error (__ ('Invalid property name.'));
+    }
+    if (! $action == 'delete' && ! preg_match ('/^[a-zA-Z0-9_]+$/', $_GET['label'])) {
+      return $this->error (__ ('Invalid label.'));
+    }
+    if ($action == 'add' || $action == 'edit') {
+		  // update and fetch
+			$res = PropManager::set ($_GET['id'], $_GET['type'], $_GET['label']);
+    } elseif ($action == 'delete') {
+      $res = PropManager::delete ($_GET['id']);
+    }
+		return $res;
 	}
 }
 

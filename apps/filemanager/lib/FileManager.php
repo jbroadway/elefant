@@ -415,7 +415,7 @@ class FileManager {
 	}
 
 	/**
-	 * Fetch all of the properties for the specified file.
+	 * Fetch all of the properties for the specified file. (not used anymore)
 	 */
 	public static function props ($file) {
 		return DB::pairs ('select prop, value from #prefix#filemanager_prop where file = ?', $file);
@@ -435,9 +435,8 @@ class FileManager {
 			} elseif ($res === false || $res === null) {
 				// doesn't exist yet
 				if (! DB::execute (
-					'insert into #prefix#filemanager_prop (file, prop, value) values (?, ?, ?)',
+					'insert into #prefix#filemanager_prop (file, `'.$prop.'`) values (?, ?)',
 					$file,
-					$prop,
 					$value
 				)) {
 					self::$error = DB::error ();
@@ -446,10 +445,9 @@ class FileManager {
 			} else {
 				// already exists, update
 				if (! DB::execute (
-					'update #prefix#filemanager_prop set value = ? where file = ? and prop = ?',
+					'update #prefix#filemanager_prop set `'.$prop.'` = ? where file = ?',
 					$value,
-					$file,
-					$prop
+					$file
 				)) {
 					self::$error = DB::error ();
 					return false;
@@ -461,16 +459,15 @@ class FileManager {
 			// get as a list
 			$qmarks = array_fill (0, count ($file), '?');
 			$file[] = $prop;
-			return DB::pairs (
-				'select file, value from #prefix#filemanager_prop where file in(' . join (', ', $qmarks) . ') and prop = ?',
-				$file
+			return DB::fetch (
+				'select `'.$prop.'` from #prefix#filemanager_prop where file in(' . join (', ', $qmarks) . ')',
+        $file
 			);
 		}
 		// get a single value
 		return DB::shift (
-			'select value from #prefix#filemanager_prop where file = ? and prop = ?',
-			$file,
-			$prop
+			'select `'.$prop.'` from #prefix#filemanager_prop where file = ?',
+			$file
 		);
 	}
 

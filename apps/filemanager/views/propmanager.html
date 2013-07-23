@@ -1,0 +1,20 @@
+<a href="#" onclick="return $.filemanager ('propman', {action: 'add'})">Add Property</a>
+<p>
+<table id="prop-table" width="100%">
+  <tr>
+		<th width="20%">{"ID"}</th>
+		<th width="30%">{"Type"}</th>
+		<th width="30%">{"Label"}</th>
+		<th width="20%">&nbsp;</th>
+	</tr>
+{% foreach props as prop %}
+	<tr id="{{prop['id']}}">
+		<td id="prop-id">{{ prop['id'] }}</td>
+		<td id="prop-type">{{ prop['type'] }}</td>
+		<td id="prop-label">{{ prop['label'] }}</td>
+		<td style="text-align: right"><a href="#" onclick="return $.filemanager ('propman', {action: 'edit', id: '{{prop['id']}}'})">{"Edit"}</a> | <a href="#" onclick="if (confirm('{"Are you sure you want to delete this property?"}')) { return $.propmanager('delete', '{{prop['id']}}') };">{"Delete"}</a></td>
+	</tr>
+{% end %}
+</table>
+<a style="float:right;" href="/filemanager?path={{redirect}}">Return to FileManager</a>
+</p>

@@ -1,0 +1,20 @@
+﻿<form>
+<p>
+  Property Name:<br />
+  <input type="text" name="id" maxLength="8" size="20" required/><br /><br />
+  Property Type:<br />
+	<select name="type">
+    <option value="text" label="Single Line Text" selected></option>
+    <option value="textarea" label="Multi-line Text"></option>
+  </select><br /><br />
+  Property Label:<br />
+	<input type="text" name="label" maxLength="16" size="20" required/><br />
+</p>
+ 
+<p>
+	<input type="submit" value="{"Save"}" onclick="return $.propmanager ('add', this.form)" />
+	&nbsp;
+	<a href="#" onclick="return $.close_dialog ()">{"Cancel"}</a>
+</p>
+ 
+</form>

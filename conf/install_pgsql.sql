@@ -123,12 +123,20 @@ create index #prefix#lock_resource on #prefix#lock (resource, resource_id, expir
 create index #prefix#lock_user on #prefix#lock ("user");
 
 create table #prefix#filemanager_prop (
-	file char(128) not null primary key,
-	prop char(32) not null,
-	value char(255) not null
+  file char(128) not null primary key,
+	desc char(255) not null,
 );
-
-create index #prefix#filemanager_prop_name on #prefix#filemanager_prop (prop);
+ 
+create index #prefix#filemanager_prop_name on #prefix#filemanager_prop (file);
+ 
+create table #prefix#filemanager_propman (
+	id char(8) not null primary key,
+	type char(16) not null,
+	label char(16) not null
+);
+ 
+create index #prefix#filemanager_prop_types on #prefix#filemanager_propman (id);
+insert into #prefix#filemanager_propman (id, type, label) values ('desc','textarea','Description');
 
 create table #prefix#apps (
 	name varchar(48) not null primary key,

@@ -136,7 +136,16 @@
 							res.body
 						);
 					});
-					break;
+					break; 
+				case 'propman':
+					// display properties dialogue
+					$.get ('/filemanager/propman/' + options.action + '?id=' + options.id, function (res) {
+						$.open_dialog (
+							res.title,
+							res.body
+						);
+					});
+					break; 
 				case 'img':
 					// edit an image
 					var url = window.location.href.split ('/filemanager')[0] + '/' + conf_root + '/' + options.file;
@@ -274,13 +283,47 @@
 	}
 
 	$.filemanager_prop = function (form) {
-		var file = form.elements.file.value,
-			desc = form.elements.desc.value;
-
-		$.get ('/filemanager/api/prop/' + file + '?prop=desc&value=' + encodeURIComponent (desc), function (res) {
-			$.close_dialog ();
-			$.add_notification (res.data.msg);
-		});
+		var file = form.elements.file.value, result = '', response = '';
+		$('#properties').children('.prop').each( function() {
+      $.get ('/filemanager/api/prop/' + file + '?prop=' + $(this).attr('id') + '&value=' + encodeURIComponent ($(this).attr('value')), function(res) {
+        result = res.data.value;
+        response = res.data.msg;
+      });
+    });
+    $.close_dialog ();
+    $.add_notification (response);
+		return false;
+	};
+  
+	$.propmanager = function (action, form) {
+    if (action != 'delete') {
+		  var id = form.elements.id.value;
+		  var type = form.elements.type.value;
+		  var label = form.elements.label.value;
+      $.get ('/filemanager/api/propman/' + action + '?id=' + encodeURIComponent (id) + '&type=' + type + '&label=' + encodeURIComponent (label), function(res) {
+        if (!res) {
+          return false;
+        }
+        $.close_dialog ();
+        if (action == 'add') {
+          $('#prop-table').append("<tr id=" + id + "><td id=\"prop-id\">" + id + "</td><td id=\"prop-type\">" + type + "</td><td id=\"prop-label\">" + label + "</td><td style=\"text-align: right\"><a href=\"#\" onclick=\"return $.filemanager ('propman', {action: 'edit', id: '" + id + "'})\">Edit</a> | <a href=\"#\" onclick=\"if (confirm('Are you sure you want to delete this property?')) { return $.propmanager('delete', '" + id + "') };\">Delete</a></td></tr>");
+          $.add_notification ('Property added.');
+        }
+        if (action == 'edit') {
+          $('tr#' + id + ' td#prop-type').text(type);
+          $('tr#' + id + ' td#prop-label').text(label); 
+          $.add_notification ('Property saved.');        
+        }
+      });
+    } else {
+      $.get ('/filemanager/api/propman/delete?id=' + encodeURIComponent (form), function(res) {
+        if (!res) {
+          return false;
+        }
+        $('tr#' + form).remove();
+        $.add_notification ('Property removed.');
+      });
+    }
 		return false;
 	};
 

@@ -1,15 +1,20 @@
 <form>
 <input type="hidden" name="file" value="{{file}}" />
-
-<p>
-	{"Description"}:<br />
-	<textarea id="desc" rows="4" cols="70">{{desc}}</textarea>
+<p id="properties">
+{% foreach props as prop %}
+	{{prop['label']}}:<br />
+  {% if prop['type'] == 'text' %}
+	<input type="text" id="{{prop['id']}}" class="prop" size="51" value="{{prop['value']}}"></input><br />
+  {% elseif prop['type'] == 'textarea' %}
+	<textarea id="{{prop['id']}}" class="prop" rows="5" cols="51">{{prop['value']}}</textarea><br />
+  {% end %}
+{% end %}
 </p>
-
+ 
 <p>
 	<input type="submit" value="{"Save"}" onclick="return $.filemanager_prop (this.form)" />
 	&nbsp;
 	<a href="#" onclick="return $.close_dialog ()">{"Cancel"}</a>
 </p>
-
+ 
 </form>

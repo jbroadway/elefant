@@ -1,0 +1,21 @@
+﻿<form>
+<input type="hidden" name="id" value="{{id}}" />
+<p>
+  ID:<br />
+  {{id}}<br /><br />
+  Type:<br />
+	<select name="type">
+    <option value="text" label="Text Line" {% if type == 'text' %}selected{% end %} ></option>
+    <option value="textarea" label="Text Box" {% if type == 'textarea' %}selected{% end %}></option>
+  </select><br /><br />
+  Label:<br />
+	<input name="label" type="text" size="25" maxLength="16" value="{{label}}" required></input><br />
+</p>
+ 
+<p>
+	<input type="submit" value="{"Save"}" onclick="return $.propmanager ('edit', this.form)" />
+	&nbsp;
+	<a href="#" onclick="return $.close_dialog ()">{"Cancel"}</a>
+</p>
+ 
+</form>
