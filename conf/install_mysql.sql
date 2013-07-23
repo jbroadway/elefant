@@ -103,10 +103,10 @@ create table `#prefix#lock` (
 ) default charset=utf8;
 
 create table #prefix#filemanager_prop (
-	file char(128) not null primary key,
+	file char(128) not null,
 	prop char(32) not null,
 	value char(255) not null,
-	index (prop)
+	primary key (file, prop)
 ) default charset=utf8;
 
 create table #prefix#apps (
