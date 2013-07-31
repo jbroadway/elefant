@@ -26,7 +26,7 @@ create table #prefix#block (
 
 create index #prefix#block_access on #prefix#block (id, access);
 
-insert into #prefix#block (id, title, access, body, show_title) values ('members', 'Members', 'public', '{! user/sidebar !}', 'no');
+insert into #prefix#block (id, title, access, body, show_title) values ('members', 'Members', 'public', '<p><span class="embedded" data-embed="user/sidebar" data-label="User: Sidebar" title="Click to edit."></span><br></p>', 'no');
 
 create table #prefix#user (
 	id integer primary key,
@@ -111,12 +111,11 @@ create index #prefix#lock_resource on #prefix#lock (resource, resource_id, expir
 create index #prefix#lock_user on #prefix#lock (user);
 
 create table #prefix#filemanager_prop (
-	file char(128) not null primary key,
+	file char(128) not null,
 	prop char(32) not null,
-	value char(255) not null
+	value char(255) not null,
+	primary key (file, prop)
 );
-
-create index #prefix#filemanager_prop_name on #prefix#filemanager_prop (prop);
 
 create table #prefix#apps (
 	name char(48) not null primary key,

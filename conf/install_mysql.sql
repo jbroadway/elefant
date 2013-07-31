@@ -24,7 +24,7 @@ create table #prefix#block (
 	index (access)
 ) default charset=utf8;
 
-insert into #prefix#block (id, title, access, body, show_title) values ('members', 'Members', 'public', '{! user/sidebar !}', 'no');
+insert into #prefix#block (id, title, access, body, show_title) values ('members', 'Members', 'public', '<p><span class="embedded" data-embed="user/sidebar" data-label="User: Sidebar" title="Click to edit."></span><br></p>', 'no');
 
 create table #prefix#user (
 	id int not null auto_increment primary key,
@@ -103,10 +103,10 @@ create table `#prefix#lock` (
 ) default charset=utf8;
 
 create table #prefix#filemanager_prop (
-	file char(128) not null primary key,
+	file char(128) not null,
 	prop char(32) not null,
 	value char(255) not null,
-	index (prop)
+	primary key (file, prop)
 ) default charset=utf8;
 
 create table #prefix#apps (

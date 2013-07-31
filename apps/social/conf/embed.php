@@ -152,8 +152,20 @@ icon = facetime-video
 url[label] = Link
 url[type] = text
 url[not empty] = 1
-url[regex] = "|^http://.+$|"
+url[regex] = "|^https?://.+$|"
 url[message] = Please enter a valid URL.
+
+width[label] = Player width
+width[type] = text
+width[initial] = 480
+width[not empty] = 1
+width[message] = Please enter a player width.
+
+height[label] = Player height
+height[type] = text
+height[initial] = 303
+height[not empty] = 1
+height[message] = Please enter a player height.
 
 [social/google/maps]
 
@@ -189,7 +201,19 @@ icon = facetime-video
 url[label] = Link
 url[type] = text
 url[not empty] = 1
-url[regex] = "|^http://.+$|"
+url[regex] = "|^https?://.+$|"
 url[message] = Please enter a valid URL.
+
+width[label] = Player width
+width[type] = text
+width[initial] = 480
+width[not empty] = 1
+width[message] = Please enter a player width.
+
+height[label] = Player height
+height[type] = text
+height[initial] = 270
+height[not empty] = 1
+height[message] = Please enter a player height.
 
 ; */ ?>
