@@ -134,6 +134,27 @@ class User extends ExtendedModel {
 		return $pass;
 	}
 
+	public static function init_session ($name = false, $duration = false, $path = '/', $domain = false, $secure = false, $httponly = true) {
+		$name = $name ? $name : conf ('General', 'session_name');
+		$duration = $duration ? $duration : conf ('General', 'session_duration');
+		$domain = $domain ? $domain : conf ('General', 'session_domain');
+
+		if ($domain === 'full') {
+			$domain = $_SERVER['HTTP_HOST'];
+		} elseif ($domain === 'top') {
+			$parts = explode ('.', $_SERVER['HTTP_HOST']);
+			$tld = array_pop ($parts);
+			$domain = '.' . array_pop ($parts) . '.' . $tld;
+		}
+		@session_set_cookie_params ($duration, $path, $domain, $secure, $httponly);
+		@session_name ($name);
+		@session_start ();
+
+		if (isset ($_COOKIE[$name])) {
+			setcookie ($name, $_COOKIE[$name], time() + $duration, $path, $domain, $secure, $httponly);
+		}
+	}
+
 	/**
 	 * Verifies a username/password combo against the database.
 	 * Username is matched to the email field. If things check out,
@@ -208,16 +229,7 @@ class User extends ExtendedModel {
 	 */
 	public static function method ($callback) {
 		if (! isset ($_SESSION)) {
-			$domain = conf ('General', 'session_domain');
-			if ($domain === 'full') {
-				$domain = $_SERVER['HTTP_HOST'];
-			} elseif ($domain === 'top') {
-				$parts = explode ('.', $_SERVER['HTTP_HOST']);
-				$tld = array_pop ($parts);
-				$domain = '.' . array_pop ($parts) . '.' . $tld;
-			}
-			@session_set_cookie_params (time () + conf ('General', 'session_duration'), '/', $domain);
-			@session_start ();
+			self::init_session ();
 		}
 
 		if (isset ($_POST['username']) && isset ($_POST['password'])) {

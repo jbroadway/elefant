@@ -12,8 +12,7 @@ if (! in_array ('persona', $appconf['User']['login_methods'])) {
 $page->layout = false;
 header ('Content-Type: application/json');
 
-@session_set_cookie_params (time () + conf ('General', 'session_duration'), '/', $domain);
-@session_start ();
+User::init_session ();
 
 $url = 'https://verifier.login.persona.org/verify';
 $ch = curl_init ($url);
