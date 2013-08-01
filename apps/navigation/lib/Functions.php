@@ -101,7 +101,7 @@ function navigation_get_other_pages ($ids) {
 					$appObj->id = ltrim ($section['include_in_nav'], '/');
 				} else {
 					$appPath = explode ('/',$app);
-					$appObj->id = $appPath[1];
+					$appObj->id = $appPath[0];
 				}
 				$appObj->title = $section['title'];
 				$appObj->menu_title = array_key_exists ('menu_title', $section) ? $section['menu_title'] : $section['title'];

@@ -24,7 +24,7 @@ create table #prefix#block (
 	index (access)
 ) default charset=utf8;
 
-insert into #prefix#block (id, title, access, body, show_title) values ('members', 'Members', 'public', '{! user/sidebar !}', 'no');
+insert into #prefix#block (id, title, access, body, show_title) values ('members', 'Members', 'public', '<p><span class="embedded" data-embed="user/sidebar" data-label="User: Sidebar" title="Click to edit."></span><br></p>', 'no');
 
 create table #prefix#user (
 	id int not null auto_increment primary key,
