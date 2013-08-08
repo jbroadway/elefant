@@ -343,11 +343,11 @@ class Template {
 			),
 			$val
 		);
-		$val = preg_replace ('/\{\{ ?(.*?) ?\}\}/e', '$this->replace_vars (\'\\1\')', $val);
-		$val = preg_replace ('/\{[\'"] ?(.*?) ?[\'"]\}/e', '$this->replace_strings (\'\\1\')', $val);
-		$val = preg_replace ('/\{\% ?(.*?) ?\%\}/e', '$this->replace_blocks (\'\\1\')', $val);
-		$val = preg_replace ('/\{\! ?(.*?) ?\!\}/es', '$this->replace_includes (\'\\1\')', $val);
-		$val = preg_replace ('/\{# ?(.*?) ?#\}/es', '$this->hard_codes (\'\\1\')', $val);
+		$val = preg_replace_callback ('/\{\{ ?(.*?) ?\}\}/', array ($this, 'replace_vars'), $val);
+		$val = preg_replace_callback ('/\{[\'"] ?(.*?) ?[\'"]\}/', array ($this, 'replace_strings'), $val);
+		$val = preg_replace_callback ('/\{\% ?(.*?) ?\%\}/', array ($this, 'replace_blocks'), $val);
+		$val = preg_replace_callback ('/\{\! ?(.*?) ?\!\}/s', array ($this, 'replace_includes'), $val);
+		$val = preg_replace_callback ('/\{# ?(.*?) ?#\}/s', array ($this, 'hard_codes'), $val);
 		$val = str_replace (
 			array (
 				'#EOBRACE#', '#ECBRACE#', '#EOBLOCK#', '#ECBLOCK#', '#EOQUOTE#', '#ECQUOTE#',
@@ -374,7 +374,9 @@ class Template {
 	 *     {{ some_var|my_function }}				# calling a custom function
 	 *     {{ some_var|date (%s, "F j, Y") }}		# use %s for multiple-parameter functions
 	 */
-	public function replace_vars ($val) {
+	public function replace_vars ($regs) {
+		$val = is_array ($regs) ? $regs[1] : $regs;
+
 		// Get any filters
 		$filters = explode ('|', $val);
 		$val = array_shift ($filters);
@@ -432,7 +434,9 @@ class Template {
 	 * You can also substitute sub-expressions for values using `[]` tags, like
 	 * this: `{! app/handler?param=[varname] !}`
 	 */
-	public function replace_includes ($val) {
+	public function replace_includes ($regs) {
+		$val = is_array ($regs) ? $regs[1] : $regs;
+
 		// remove spaces
 		$val = preg_replace ('/[\t\n ]+(\?|\&)/', '\1', trim ($val));
 
@@ -457,14 +461,14 @@ class Template {
 				$v = str_replace (
 					array ('<?php echo ', '; ?>'),
 					array ('', ''),
-					$this->replace_vars (substr ($v, 1, strlen ($v) - 2))
+					$this->replace_vars (array (null, substr ($v, 1, strlen ($v) - 2)))
 				);
 				$arr .= sprintf ('%s\'%s\' => %s', $sep, $k, $v);
 			} elseif (preg_match ('/\[(.*)\]/', $v, $regs)) {
 				$r = str_replace (
 					array ('<?php echo ', '; ?>'),
 					array ('\' . ', ' . \''),
-					$this->replace_vars ($regs[1])
+					$this->replace_vars (array (null, $regs[1]))
 				);
 				$v = preg_replace ('/\[(.*)\]/', $r, $v);
 				$arr .= sprintf ('%s\'%s\' => \'%s\'', $sep, $k, $v);
@@ -485,7 +489,9 @@ class Template {
 	 * a call to `Controller::run()`. Note that you cannot use sub-expressions
 	 * here like you can with the dynamic `{! app/handler !}` calls.
 	 */
-	public function hard_codes ($val) {
+	public function hard_codes ($regs) {
+		$val = is_array ($regs) ? $regs[1] : $regs;
+
 		// remove spaces
 		$val = preg_replace ('/[\t\n ]+(\?|\&)/', '\1', trim ($val));
 
@@ -510,7 +516,7 @@ class Template {
 		// normalize <span data-embed> tags to {! tags !}
 		$val = preg_replace ('/<[^>]*?data-embed="([^"]+)".*?>.*?<\/.*?>/', '{! \1 !}', $val);
 
-		$parts = preg_split ('/(\{\! ?.*? ?\!\})/e', $val, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$parts = preg_split ('/(\{\! ?.*? ?\!\})/', $val, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$out = '';
 		foreach ($parts as $part) {
 			if (strpos ($part, '{!') === 0) {
@@ -540,7 +546,9 @@ class Template {
 	 *     {" some text here "}
 	 *     {' some text here '}
 	 */
-	public function replace_strings ($val) {
+	public function replace_strings ($regs) {
+		$val = is_array ($regs) ? $regs[1] : $regs;
+
 		return '<?php echo __ (\'' . str_replace ('\'', '\\\'', $val) . '\'); ?>';
 	}
 
@@ -616,7 +624,9 @@ class Template {
 	 * If an `as` clause is specified without a key, the current loop index is available
 	 * via `{{ loop_index }}`.
 	 */
-	public function replace_blocks ($val) {
+	public function replace_blocks ($regs) {
+		$val = is_array ($regs) ? $regs[1] : $regs;
+
 		if ($val === 'end' || $val === 'endif' || $val === 'endforeach' || $val === 'endfor') {
 			return '<?php } ?>';
 		}
