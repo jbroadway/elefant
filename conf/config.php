@@ -57,6 +57,10 @@ session_domain = full
 
 session_duration = 2592000
 
+; The name of the session cookie.
+
+session_name = elefant_user
+
 ; For development, turn debugging on and Elefant will output
 ; helpful information on errors.
 

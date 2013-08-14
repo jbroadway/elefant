@@ -63,7 +63,7 @@ class Cache {
 		$dir = isset ($conf['location']) ? $conf['location'] : 'cache/datastore';
 		$backend = isset ($conf['backend']) ? $conf['backend'] : 'memcache';
 
-		if ($backend === 'apc' && extension_loaded ('apc')) {
+		if ($backend === 'apc' && (extension_loaded ('apc') || extension_loaded ('apcu'))) {
 			return new MemcacheAPC ();
 		} elseif ($backend === 'xcache' && extension_loaded ('xcache')) {
 			return new MemcacheXCache ();

@@ -385,8 +385,7 @@ class Form {
 					$tld = array_pop ($parts);
 					$domain = '.' . array_pop ($parts) . '.' . $tld;
 				}
-				@session_set_cookie_params (time () + conf ('General', 'session_duration'), '/', $domain);
-				@session_start ();
+				User::init_session ();
 			}
 
 			if (isset ($_SESSION['csrf_token']) && $_SESSION['csrf_expires'] > time ()) {

@@ -1,7 +1,6 @@
 <?php
 
-@session_set_cookie_params (time () + conf ('General', 'session_duration'), '/', $domain);
-@session_start ();
+User::init_session ();
 
 $_POST['email'] = $_SESSION['persona/email'];
 $_POST['redirect'] = $_SESSION['persona/redirect'];
