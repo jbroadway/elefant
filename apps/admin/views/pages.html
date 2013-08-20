@@ -1,4 +1,4 @@
-{% if User::require_acl ('admin/edit') %}
+{% if User::require_acl ('admin/edit', 'admin/add') %}
 <p><a href="/admin/add">{"Add Page"}</a></p>
 {% end %}
 
