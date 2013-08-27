@@ -51,6 +51,15 @@ echo $form->handle (function ($form) {
 		return;
 	}
 
+	$form->controller->run (
+		'navigation/hook/edit',
+		array (
+			'page' => 'blog',
+			'id' => 'blog',
+			'title' => $_POST['title']
+		)
+	);
+
 	$form->controller->add_notification (__ ('Settings saved.'));
 	$form->controller->redirect ('/blog/admin');
 });
