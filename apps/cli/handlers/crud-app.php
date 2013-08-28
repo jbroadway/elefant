@@ -24,6 +24,11 @@ if (! isset ($_SERVER['argv'][3])) {
 	die;
 }
 
+if (file_exists ('apps/'.$_SERVER['argv'][2])) {
+	Cli::out ('apps/'.$_SERVER['argv'][2].' already exists.  Please choose a different name for your new app.', 'info');
+	die;
+}
+
 $name = strtolower ($_SERVER['argv'][2]);
 
 // get plural name
