@@ -28,7 +28,7 @@ $(function () {
 <div id="gallery-list">
 {% foreach files %}
 <div><a href="/{{ loop_value->path }}" rel="gallery-{{ gallery }}" class="gallery" data-desc="{{ loop_value->desc }}" onclick="return $.gallery_view (this)"><img src="/{{ loop_value->path|filemanager_get_thumbnail }}" alt="" /></a>
-	{% if User::require_admin () %}
+	{% if User::require_admin () && $data->desc == 'yes' %}
 	<a href="#" onclick="return $.filemanager ('prop', {file: '/{{loop_value->path|FileManager::strip_webroot}}'})">{"Edit Caption"}</a>
 	{% end %}
 </div>

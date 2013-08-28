@@ -22,7 +22,7 @@ jQuery.add_notification = function (msg) {
  *     >Delete</a>
  */
 jQuery.confirm_and_post = function (el, msg) {
-	if (window.event) {
+	if (window.event && window.event.preventDefault) {
 		window.event.preventDefault ();
 	}
 

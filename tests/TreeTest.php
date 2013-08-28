@@ -46,9 +46,9 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 		);
 
 		/**
-		 * Add blog page.
+		 * Add blog page with title.
 		 */
-		self::$n->add (self::$blog_node, 'index');
+		self::$n->add ('blog', 'index', 'Blog');
 
 		/**
 		 * Should have second id now:
@@ -69,9 +69,15 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 		);
 
 		/**
-		 * Add about page under blog.
+		 * Add about page under blog as array.
 		 */
-		self::$n->add (self::$about_node, 'blog');
+		self::$n->add (array (
+			'data' => 'About',
+			'attr' => array (
+				'id' => 'about',
+				'sort' => 0
+			)
+		), 'blog');
 
 		/**
 		 * Should have third id now under blog:

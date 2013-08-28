@@ -203,12 +203,24 @@ class Tree {
 
 	/**
 	 * Add an object to the tree under the specified parent node.
-	 * $id can be an ID or a node object.
+	 * `$id` can be an ID or a node object. If `$data` is passed, it
+	 * it will set the `data` property to that instead of the value
+	 * of `$obj`, which would typically be used as follows:
+	 *
+	 *     $mytree->add ('id-value', 'parent-id', 'Title here');
 	 */
-	public function add ($obj, $parent = false) {
+	public function add ($obj, $parent = false, $data = false) {
+		if (is_array ($obj)) {
+			$obj = (object) $obj;
+			if (isset ($obj->attr) && is_array ($obj->attr)) {
+				$obj->attr = (object) $obj->attr;
+			}
+		}
+
 		if (! is_object ($obj)) {
+			$data = $data ? $data : $obj;
 			$obj = (object) array (
-				'data' => $obj,
+				'data' => $data,
 				'attr' => (object) array (
 					'id' => $obj,
 					'sort' => 0

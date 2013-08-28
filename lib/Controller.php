@@ -498,7 +498,7 @@ class Controller {
 		list ($app, $handler) = explode ('/', $uri, 2);
 		$route = 'apps/' . $app . '/handlers/' . $handler . '.php';
 		while (! file_exists ($route)) {
-			$route = preg_replace ('/\/([^\/]*)\.php$/e', '$this->add_param (\'\\1\')', $route);
+			$route = preg_replace_callback ('/\/([^\/]*)\.php$/', array ($this, 'add_param'), $route);
 			if ($route === 'apps/' . $app . '/handlers.php') {
 				if (file_exists ('apps/' . $app . '/handlers/index.php')) {
 					$this->app = $app;
@@ -575,6 +575,7 @@ class Controller {
 	 * Adds to the start, since `route()` parse them off the end of the URI.
 	 */
 	public function add_param ($param) {
+		$param = is_array ($param) ? $param[1] : $param;
 		array_unshift ($this->params, $param);
 		return '.php';
 	}
