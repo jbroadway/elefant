@@ -71,8 +71,8 @@ class Navigation extends Tree {
 	 * Overrides `Tree::add()` to fetch the page title from the database if only
 	 * the ID is passed.
 	 */
-	public function add ($id, $parent = false) {
-		if (! is_object ($id)) {
+	public function add ($id, $parent = false, $title = false) {
+		if (! is_object ($id) && $title === false) {
 			$pg = DB::single ('select title, menu_title from #prefix#webpage where id = ?', $id);
 			$title = (! empty ($pg->menu_title)) ? $pg->menu_title : $pg->title;
 			$id = (object) array (
@@ -84,7 +84,7 @@ class Navigation extends Tree {
 			);
 		}
 
-		parent::add ($id, $parent);
+		parent::add ($id, $parent, $title);
 	}
 }
 
