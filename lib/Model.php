@@ -742,13 +742,13 @@ class Model {
 		if (is_array ($item)) {
 			foreach ($item as $k => $v) {
 				if (strpos ($v, '`') !== 0) {
-					$item[$k] = '`' . $v . '`';
+					$item[$k] = '`' . str_replace ('.', '`.`', $v) . '`';
 				} else {
 					$item[$k] = $v; // Already has backticks
 				}
 			}
 		} elseif (strpos ($item, '`') !== 0) {
-			$item = '`' . $item . '`';
+			$item = '`' . str_replace ('.', '`.`', $item) . '`';
 		}
 		return $item;
 	}
