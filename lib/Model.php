@@ -172,7 +172,7 @@ class Model {
 	/**
 	 * A list of `having` clauses for the current query.
 	 */
-	public $having_filters = array ();
+	public $query_having = array ();
 
 	/**
 	 * An alternate table listing for the current query.
@@ -574,23 +574,23 @@ class Model {
 		if (! empty ($this->query_group)) {
 			if (! $val) {
 				if (is_array ($key)) {
-					array_push ($this->having_filters, '(');
+					array_push ($this->query_having, '(');
 					foreach ($key as $k => $v) {
 						$this->having ($k, $v);
 					}
-					array_push ($this->having_filters, ')');
+					array_push ($this->query_having, ')');
 				} elseif ($key instanceof Closure) {
-					array_push ($this->having_filters, '(');
+					array_push ($this->query_having, '(');
 					$key ($this);
-					array_push ($this->having_filters, ')');
+					array_push ($this->query_having, ')');
 				} else {
-					array_push ($this->having_filters, $key);
+					array_push ($this->query_having, $key);
 				}
 			} elseif (strpos ($key, '?') !== false) {
-				array_push ($this->having_filters, $key);
+				array_push ($this->query_having, $key);
 				array_push ($this->query_params, $val);
 			} else {
-				array_push ($this->having_filters, Model::backticks ($key) . ' = ?');
+				array_push ($this->query_having, Model::backticks ($key) . ' = ?');
 				array_push ($this->query_params, $val);
 			}
 		}
@@ -652,20 +652,20 @@ class Model {
 		}
 		if (! empty ($this->query_group)) {
 			$sql .= ' group by' . $this->query_group;
-			if (count ($this->having_filters) > 0) {
-				$sql .= ' having ';
-				$and = '';
-				foreach ($this->having_filters as $having) {
-					if ($having === '(' || $having === ' or ') {
-						$sql .= $having;
-						$and = '';
-					} elseif ($having === ')') {
-						$sql .= $having;
-						$and = ' and ';
-					} else {
-						$sql .= $and . $having;
-						$and = ' and ';
-					}
+		}
+		if (count ($this->query_having) > 0) {
+			$sql .= ' having ';
+			$and = '';
+			foreach ($this->query_having as $having) {
+				if ($having === '(' || $having === ' or ') {
+					$sql .= $having;
+					$and = '';
+				} elseif ($having === ')') {
+					$sql .= $having;
+					$and = ' and ';
+				} else {
+					$sql .= $and . $having;
+					$and = ' and ';
 				}
 			}
 		}
