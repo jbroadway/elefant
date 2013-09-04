@@ -23,7 +23,6 @@ $apps = glob ('apps/*/conf/helpers.php');
 
 foreach ($apps as $file) {
 	$list = parse_ini_file ($file);
-	info ($list, true);
 	foreach ($list as $helper => $null) {
 		$helpers[$helper] = null;
 	}

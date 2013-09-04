@@ -15,6 +15,17 @@ $offset = ($num - 1) * $limit;
 $items = {{plural}}{{backslash}}{{appname|ucfirst}}::query ()->fetch ($limit, $offset);
 $total = {{plural}}{{backslash}}{{appname|ucfirst}}::query ()->count ();
 
+// Check for error, e.g., if table hasn't been created yet
+if ($items === false) {
+	$items = array ();
+	$total = 0;
+	printf (
+		'<p class="visible-notice"><strong>%s</strong>: %s</p>',
+		__ ('Notice'),
+		__ ('It looks like you need to import your database schema for this app.')
+	);
+}
+
 // Pass our data to the view template
 echo $tpl->render (
 	'{{plural}}/admin',

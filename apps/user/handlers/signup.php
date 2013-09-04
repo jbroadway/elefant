@@ -37,7 +37,9 @@ if ($f->submit ()) {
 			));
 		} catch (Exception $e) {
 			@error_log ('Email failed (user/signup): ' . $u->error);
-			$u->userdata = array ();
+			$userdata = json_decode ($u->data['userdata'], true);
+			unset ($userdata['verifier']);
+			$u->data['userdata'] = json_encode ($userdata);
 			$u->put ();
 		}
 
