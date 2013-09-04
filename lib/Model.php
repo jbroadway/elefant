@@ -170,6 +170,11 @@ class Model {
 	public $query_params = array ();
 
 	/**
+	 * A list of `having` clauses for the current query.
+	 */
+	public $query_having = array ();
+
+	/**
 	 * An alternate table listing for the current query.
 	 */
 	public $query_from = false;
@@ -557,6 +562,42 @@ class Model {
 	}
 
 	/**
+	 * Add a having condition to the query. Can be either a field/value
+	 * combo, or if no value is present the first parameter can be one
+	 * of the following:
+	 *
+	 * - A custom having clause, e.g., `name like "%value%"`
+	 * - An associative array of clauses grouped by parentheses
+	 * - A closure function that creates one or more grouped clauses
+	 */
+	public function having ($key, $val = false) {
+		if (! empty ($this->query_group)) {
+			if (! $val) {
+				if (is_array ($key)) {
+					array_push ($this->query_having, '(');
+					foreach ($key as $k => $v) {
+						$this->having ($k, $v);
+					}
+					array_push ($this->query_having, ')');
+				} elseif ($key instanceof Closure) {
+					array_push ($this->query_having, '(');
+					$key ($this);
+					array_push ($this->query_having, ')');
+				} else {
+					array_push ($this->query_having, $key);
+				}
+			} elseif (strpos ($key, '?') !== false) {
+				array_push ($this->query_having, $key);
+				array_push ($this->query_params, $val);
+			} else {
+				array_push ($this->query_having, Model::backticks ($key) . ' = ?');
+				array_push ($this->query_params, $val);
+			}
+		}
+		return $this;
+	}
+
+	/**
 	 * Verify that the limit is false or numeric, and that the offset
 	 * is always numeric. Prevents SQL injection via these values.
 	 */
@@ -611,6 +652,22 @@ class Model {
 		}
 		if (! empty ($this->query_group)) {
 			$sql .= ' group by' . $this->query_group;
+		}
+		if (count ($this->query_having) > 0) {
+			$sql .= ' having ';
+			$and = '';
+			foreach ($this->query_having as $having) {
+				if ($having === '(' || $having === ' or ') {
+					$sql .= $having;
+					$and = '';
+				} elseif ($having === ')') {
+					$sql .= $having;
+					$and = ' and ';
+				} else {
+					$sql .= $and . $having;
+					$and = ' and ';
+				}
+			}
 		}
 		if (! empty ($this->query_order)) {
 			$sql .= ' order by' . $this->query_order;
