@@ -19,6 +19,11 @@ class GithubFetcherTest extends PHPUnit_Framework_TestCase {
 
 	function test_tree () {
 		$tree = self::$g->tree ();
+		if (! $tree) {
+			$this->markTestSkipped ();
+			return;
+		}
+
 		$this->assertEquals (3, count ($tree));
 		foreach ($tree as $item) {
 			if ($item->path === 'one') {

@@ -47,6 +47,11 @@ class GithubFetcher {
 	public $branch = 'master';
 
 	/**
+	 * The error message if Github returned one.
+	 */
+	public $error = false;
+
+	/**
 	 * Stores the SHA1 of the latest commit from the active branch
 	 * of the repository.
 	 */
@@ -129,6 +134,11 @@ class GithubFetcher {
 			return false;
 		}
 
+		if (! isset ($res->tree)) {
+			$this->error = $res->message;
+			return false;
+		}
+
 		return $res->tree;
 	}
 
@@ -143,6 +153,11 @@ class GithubFetcher {
 		$res = json_decode ($res);
 
 		if (! is_object ($res)) {
+			return false;
+		}
+
+		if (! isset ($res->content)) {
+			$this->error = $res->message;
 			return false;
 		}
 
