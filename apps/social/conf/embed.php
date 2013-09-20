@@ -193,6 +193,18 @@ country[message] = Please enter a country.
 zip[label] = Zip/Postal Code
 zip[type] = text
 
+width[label] = Map width
+width[type] = text
+width[initial] = "100%"
+width[not empty] = 1
+width[message] = Please enter a width.
+
+height[label] = Map height
+height[type] = text
+height[initial] = "400px"
+height[not empty] = 1
+height[message] = Please enter a height.
+
 [social/video/vimeo]
 
 label = "Video: Vimeo"
