@@ -44,7 +44,7 @@ switch (Appconf::blog ('Blog', 'comments')) {
 		echo $this->run ('social/facebook/comments', $post);
 		break;
 	default:
-		if (Appconf::blog ('Blog', 'comments') !== false) {
+		if (Appconf::blog ('Blog', 'comments') != false) {
 			echo $this->run (
 				Appconf::blog ('Blog', 'comments'),
 				array (
