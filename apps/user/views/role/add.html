@@ -43,9 +43,15 @@ $(function () {
 	// check all if default is checked because
 	// then you can subtract resources to deny
 	$('#resources-default').change (function () {
-		$('input[type="checkbox"]').each (function () {
-			this.checked = true;
-		});
+		if ($('#resources-default').is (':checked')) {
+			$('input[type="checkbox"]').each (function () {
+				this.checked = true;
+			});
+		} else {
+			$('input[type="checkbox"]').each (function () {
+				this.checked = false;
+			});
+		}
 	});
 	
 	// make the name lowercase
