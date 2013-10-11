@@ -17,7 +17,7 @@ switch ($appconf['Blog']['comments']) {
 		);
 		break;
 	default:
-		if ($appconf['Blog']['comments'] !== false) {
+		if ($appconf['Blog']['comments'] != false) {
 			printf (
 				'<a href="%s">%s %s</a>',
 				$data['url'],
