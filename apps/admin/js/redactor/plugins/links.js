@@ -8,7 +8,6 @@
 if (typeof RedactorPlugins === 'undefined') var RedactorPlugins = {};
 
 RedactorPlugins.links = {
-	// 
 	// Initialize the plugin
 	init: function () {
 		$.getJSON (
@@ -24,10 +23,9 @@ RedactorPlugins.links = {
 	
 	// Initialize the plugin when the button is clicked
 	insert: function (self, evt, button) {
-		self.insert_link_node = false;
-		self.has_selected_text = false;
-		var sel = self.getCurrentNode (),
-		//var sel = self.selection.get.call (self)
+		this.insert_link_node = false;
+		this.has_selected_text = false;
+		var sel = this.getCurrent (),
 			url = '', text = '', target = '',
 			page_matched = false,
 			base = window.location.origin
@@ -35,39 +33,38 @@ RedactorPlugins.links = {
 				: window.location.protocol + '//' + window.location.host;
 
 		if (sel && sel.anchorNode && sel.anchorNode.parentNode.tagName === 'A') {
-			self.insert_link_node = sel.anchorNode.parentNode;
+			this.insert_link_node = sel.anchorNode.parentNode;
 			url = sel.anchorNode.parentNode.href;
 			text = sel.anchorNode.parentNode.text;
 			target = sel.anchorNode.parentNode.target;
 		} else if (sel.tagName && sel.tagName === 'A') {
-			self.insert_link_node = sel;
+			this.insert_link_node = sel;
 			url = sel.href;
 			text = sel.text;
 			target = sel.target;
 		} else {
-			var parent = self.getParentNode ();
+			var parent = this.getParent ();
 			if (parent.nodeName === 'A') {
-				self.insert_link_node = $(parent);
-				text = self.insert_link_node.text ();
-				url = self.insert_link_node.attr ('href');
-				target = self.insert_link_node.attr ('target');
-			} else if (self.oldIE ()) {
+				this.insert_link_node = $(parent);
+				text = this.insert_link_node.text ();
+				url = this.insert_link_node.attr ('href');
+				target = this.insert_link_node.attr ('target');
+			} else if (this.browser ('msie')) {
 				text = $(sel).text ();
 			} else {
-				text = self.getSelectedHtml ();
+				text = this.getSelectionHtml ();
 			}
 		}
 		
 		if (text.length !== 0) {
-			self.has_selected_text = true;
+			this.has_selected_text = true;
 		}
 		
 		if (url.search (base) === 0) {
 			url = url.replace (base, '');
 		}
 
-		//self.selection.save.call (self);
-		self.saveSelection ();
+		this.selectionSave ();
 
 		$.open_dialog (
 			$.i18n ('Link'),
@@ -100,61 +97,60 @@ RedactorPlugins.links = {
 			'</div>'
 		);
 
-		if (self._links) {
+		if (this._links) {
 			var sel = $('#links-page');
 			sel.append (
 				$('<option>')
 					.attr ('value', '')
 					.text ($.i18n ('- select -'))
 			);
-			for (var i in self._links) {
-				if (url === self._links[i].url) {
+			for (var i in this._links) {
+				if (url === this._links[i].url) {
 					sel.append (
 						$('<option>')
-							.attr ('value', self._links[i].url)
-							.text (self._links[i].title)
+							.attr ('value', this._links[i].url)
+							.text (this._links[i].title)
 							.attr ('selected', 'selected')
 					);
 					page_matched = true;
 				} else {
 					sel.append (
 						$('<option>')
-							.attr ('value', self._links[i].url)
-							.text (self._links[i].title)
+							.attr ('value', this._links[i].url)
+							.text (this._links[i].title)
 					);
 				}
 			}
 		}
 
 		if (page_matched) {
-			self.show_pages ();
+			this.show_pages ();
 		} else if (url.search ('mailto:') === 0) {
 			$('#links-email').val (url.replace ('mailto:', ''));
-			self.show_email ();
+			this.show_email ();
 		} else if (url.length !== 0) {
 			$('#links-url').val (url);
-			self.show_url ();
+			this.show_url ();
 		} else {
-			self.show_pages ();
+			this.show_pages ();
 		}
 
 		$('#links-text').val (text);
 
-		if (target.length !== 0) {
+		if (target && target.length !== 0) {
 			$('#links-tab').attr ('checked', 'checked');
 		}
 
-		$('#links-page-btn').click ($.proxy (self.show_pages, self));
-		$('#links-url-btn').click ($.proxy (self.show_url, self));
-		$('#links-email-btn').click ($.proxy (self.show_email, self));
+		$('#links-page-btn').click ($.proxy (this.show_pages, this));
+		$('#links-url-btn').click ($.proxy (this.show_url, this));
+		$('#links-email-btn').click ($.proxy (this.show_email, this));
 		$('#links-cancel').click (function () { $.close_dialog (); });
-		$('#links-submit').click ($.proxy (self.handle, self));
+		$('#links-submit').click ($.proxy (this.handle, this));
 	},
 
 	// Insert or update the link
 	handle: function () {
-		//$(this.editor_id).redactor ('selection.restore');
-		this.restoreSelection ();
+		this.selectionRestore ();
 		
 		var active = this.links_active,
 			page = $('#links-page').find (':selected').val (),

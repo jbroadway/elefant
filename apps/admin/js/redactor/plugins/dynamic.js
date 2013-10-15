@@ -10,14 +10,13 @@ RedactorPlugins.dynamic = {
 	// Initialize the plugin
 	init: function () {
 		$('.redactor_editor').on ('click', '.embedded', {plugin: this}, $.proxy (this.edit_handler, this));
-		this.addBtn ('dynamic', $.i18n ('Dynamic Objects'), $.proxy (this.add_handler, this));
-		//this.button.add.call (this, 'dynamic', $.i18n ('Dynamic Objects'), $.proxy (this.add_handler, this));
+		this.buttonAdd ('dynamic', $.i18n ('Dynamic Objects'), $.proxy (this.add_handler, this));
 	},
 
 	// Open the dialog when the button is clicked
-	add_handler: function (self, evt, button, current) {
+	add_handler: function (button, el, self, evt, current) {
 		this._current = current ? this._current : null;
-		this.saveSelection ();
+		this.selectionSave ();
 		$.dynamicobjects ({
 			callback: $.proxy (this.insert_object, this),
 			current: current ? current : null
@@ -27,19 +26,19 @@ RedactorPlugins.dynamic = {
 	// Reopen the dialog to edit an existing embed
 	edit_handler: function (evt) {
 		this._current = evt.target;
-		this.add_handler (this, evt, 'dynamic', $(evt.target).data ('embed'));
+		this.add_handler ('dynamic', evt.target, this, evt, $(evt.target).data ('embed'));
 		return false;
 	},
 
 	// Insert/replace an embed code in the editor
 	insert_object: function (embed_code, handler, params, label) {
-		this.restoreSelection ();
+		this.selectionRestore ();
 		if (this._current) {
 			// update existing embed
 			$(this._current).replaceWith (
 				'<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>'
 			);
-			this.syncCode();
+			this.sync();
 		} else {
 			// enter a new embed
 			this.insertHtml (
