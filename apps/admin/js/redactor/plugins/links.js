@@ -49,10 +49,8 @@ RedactorPlugins.links = {
 				text = this.insert_link_node.text ();
 				url = this.insert_link_node.attr ('href');
 				target = this.insert_link_node.attr ('target');
-			} else if (this.browser ('msie')) {
-				text = $(sel).text ();
 			} else {
-				text = this.getSelectionHtml ();
+				text = this.getSelectionText ();
 			}
 		}
 		
