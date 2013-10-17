@@ -2,7 +2,9 @@
  * Finds all tags with `data-trigger="k"` and makes them accessible
  * by the specified key press (Ctrl+Shift+KEY). You can also include
  * a `title="Label"` or `data-trigger-label="Label"` attribute so
- * they might be indexed in a help info dialog.
+ * they might be indexed in a help info dialog, as well as a
+ * `data-trigger-event="touchdown"` to specify an alternate event type
+ * to trigger.
  *
  * Usage:
  *
@@ -30,11 +32,11 @@
 	/**
 	 * Simulate a click on an element, with ctrl, alt, shift, and cmd disabled.
 	 */
-	$.simulate_click = function (target) {
+	$.simulate_click = function (target, type) {
 		var event = target.ownerDocument.createEvent ('MouseEvents');
 		
 		var opts = {
-			type: 'click',
+			type: type,
 			canBubble: true,
 			cancelable: true,
 			view: target.ownerDocument.defaultView,
@@ -87,12 +89,14 @@
 		$('[data-trigger]').each (function () {
 			var el = $(this),
 				key = el.data ('trigger'),
-				title = el.data ('trigger-label') || el.attr ('title') || el.text ();
+				title = el.data ('trigger-label') || el.attr ('title') || el.text (),
+				type = el.data ('trigger-event') || 'click';
 
 			$.trigger_list[key] = {
 				key: key,
 				element: this,
-				title: title
+				title: title,
+				type: type
 			};
 		});
 	};
@@ -140,7 +144,7 @@
 			chr = String.fromCharCode (e.which || e.keyCode).toLowerCase ();
 
 		if (meta && shift && $.trigger_list[chr]) {
-			$.simulate_click ($.trigger_list[chr].element);
+			$.simulate_click ($.trigger_list[chr].element, $.trigger_list[chr].type);
 		}
 	});
 })(jQuery);
