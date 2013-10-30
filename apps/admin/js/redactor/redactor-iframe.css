@@ -1,11 +1,11 @@
 html {
-	padding: 0;
 	margin: 0;
+	padding: 0;
 }
 body {
-	font-family: Arial, Helvetica, Verdana, Tahoma, sans-serif;
 	margin: 0;
-	padding: 15px;
+	padding: 10px;
+	font-family: Arial, Helvetica, Verdana, Tahoma, sans-serif;
 }
 
 code,
@@ -22,23 +22,27 @@ dl,
 blockquote,
 pre {
 	font-size: 15px;
-	line-height: 1.45em;
+	line-height: 1.5rem;
 }
-
+div {
+	border: 1px dashed #bbb !important;
+}
 a {
 	color: #15c;
 	text-decoration: underline;
 }
 .redactor_placeholder {
 	color: #999 !important;
+	display: block !important;
+	margin-bottom: 10px !important;
 }
 
 object,
 embed,
 video,
 img {
-	width: auto;
 	max-width: 100%;
+	width: auto;
 }
 video,
 img {
@@ -53,11 +57,11 @@ table,
 dl,
 blockquote,
 pre {
-	box-shadow: none;
-	background: none;
 	margin: 0;
 	margin-bottom: 15px;
 	border: none;
+	background: none;
+	box-shadow: none;
 }
 iframe,
 object,
@@ -66,8 +70,8 @@ hr {
 }
 blockquote {
 	margin-left: 3em;
-	font-style: italic;
 	color: #777;
+	font-style: italic;
 }
 ul,
 ol {
@@ -77,10 +81,10 @@ ul ul,
 ol ol,
 ul ol,
 ol ul {
-	border: none;
 	margin: 2px;
 	padding: 0;
 	padding-left: 2em;
+	border: none;
 }
 dl dt { font-weight: bold; }
 dd { margin-left: 1em;}
@@ -90,8 +94,8 @@ table {
 	font-size: 1em;
 }
 table td {
-	border: 1px solid #ddd;
 	padding: 5px;
+	border: 1px solid #ddd;
 	vertical-align: top;
 }
 table thead td {
@@ -102,13 +106,13 @@ code {
 	background-color: #d8d7d7;
 }
 pre {
-	font-size: 90%;
-	background: #f8f8f8;
+	overflow: auto;
+	padding: 1em;
 	border: 1px solid #ddd;
 	border-radius: 3px;
-	padding: 1em;
+	background: #f8f8f8;
 	white-space: pre;
-	overflow: auto;
+	font-size: 90%;
 }
 hr {
   display: block;
@@ -122,40 +126,40 @@ h2,
 h3,
 h4,
 h5 {
-	color: #000;
-	background: none;
 	margin: 0;
 	padding: 0;
+	background: none;
+	color: #000;
 	font-weight: bold;
 }
 
 h1 {
+	margin-bottom: 10px;
 	font-size: 36px;
 	line-height: 40px;
-	margin-bottom: 10px;
 }
 h2 {
+	margin-bottom: 15px;
 	font-size: 30px;
 	line-height: 38px;
-	margin-bottom: 15px;
 }
 h3 {
+	margin-bottom: 10px;
 	font-size: 24px;
 	line-height: 30px;
-	margin-bottom: 10px;
 }
 h4 {
+	margin-bottom: 10px;
 	font-size: 18px;
 	line-height: 24px;
-	margin-bottom: 10px;
 }
 h5 {
-	font-size: 1em;
 	margin-bottom: 10px;
+	font-size: 1em;
 }
 
 body.redactor_editor_wym {
-	background: #f6f6f6;
+	background: #f4f4f4;
 }
 .redactor_editor_wym div,
 .redactor_editor_wym p,
@@ -170,15 +174,29 @@ body.redactor_editor_wym {
 .redactor_editor_wym h4,
 .redactor_editor_wym h5,
 .redactor_editor_wym blockquote {
-	background-color: #fff;
+	margin: 0 0 10px 0;
+	padding: 7px 10px;
 	border: 1px solid #e4e4e4;
-	padding: 10px;
-	margin: 10px 0;
+	background-color: #fff;
+}
+.redactor_editor_wym div {
+	border: 1px dashed #bbb !important;
 }
 .redactor_editor_wym pre {
-	border: 2px dashed #e4e4e4;
+	border: 2px dashed #e4e4e4 !important;
+	background-color: #fafafa !important;
+}
+.redactor_editor_wym code {
+	background-color: #f4f4f4 !important;
 }
 .redactor_editor_wym ul,
 .redactor_editor_wym ol {
-	padding-left: 2em;
+	padding-left: 2em !important;
 }
+.redactor_editor_wym ul li ul,
+.redactor_editor_wym ul li ol,
+.redactor_editor_wym ol li ol,
+.redactor_editor_wym ol li ul {
+	border: none !important;
+}
+

@@ -10,6 +10,7 @@ $(function () {
 			var defaults = {
 				lang: '{{i18n.language|none}}',
 				convertDivs: false,
+				observeLinks: false,
 				plugins: ['links', 'imagebrowser', 'filebrowser', 'dynamic'],
 				buttons: [
 					'formatting', '|', 'bold', 'italic', 'deleted', '|',
@@ -44,6 +45,9 @@ $(function () {
 							}
 						}
 					}
+				},
+				focusCallback: function (evt) {
+					autosave_focused = true;
 				}
 			};
 

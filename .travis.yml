@@ -1,7 +1,8 @@
 language: php
-phps:
+php:
   - 5.3
   - 5.4
+  - 5.5
 services: mongodb
 before_script: phpenv config-add tests/travis_conf.ini
 script: phpunit

@@ -110,7 +110,7 @@
 	color: #222;
 }
 
-#redactor_modal_header {
+#redactor_modal_header, #redactor_modal header {
 	background: #eeeeee; /* Old browsers */
 	background: -moz-linear-gradient(top,  #eeeeee 0%, #dddddd 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#dddddd)); /* Chrome,Safari4+ */
@@ -134,10 +134,14 @@
 	background: #fafafa;
 	border: 1px solid #fafafa;
 	border-top: 0px none;
-	padding: 15px;
+	padding: 0px;
 	height: 233px;
 	overflow-y: auto;
 }
+
+	#redactor_modal_inner section {
+		padding: 0px 15px 0px 15px;
+	}
 
 .links-btn {
 	display: inline-block;
@@ -166,4 +170,8 @@
 
 #links-url, #links-email {
 	display: none;
+}
+
+#redactor_modal label {
+	margin-bottom: 0px !important;
 }

@@ -32,7 +32,19 @@
  */
 class Pimple implements ArrayAccess
 {
-    private $values = array();
+    protected $values = array();
+
+    /**
+     * Instantiate the container.
+     *
+     * Objects and parameters can be passed as argument to the constructor.
+     *
+     * @param array $values The parameters or objects.
+     */
+    public function __construct (array $values = array())
+    {
+        $this->values = $values;
+    }
 
     /**
      * Sets a parameter or an object.
@@ -46,7 +58,7 @@ class Pimple implements ArrayAccess
      * @param string $id    The unique identifier for the parameter or object
      * @param mixed  $value The value of the parameter or a closure to defined an object
      */
-    function offsetSet($id, $value)
+    public function offsetSet($id, $value)
     {
         $this->values[$id] = $value;
     }
@@ -54,39 +66,41 @@ class Pimple implements ArrayAccess
     /**
      * Gets a parameter or an object.
      *
-     * @param  string $id The unique identifier for the parameter or object
+     * @param string $id The unique identifier for the parameter or object
      *
-     * @return mixed  The value of the parameter or an object
+     * @return mixed The value of the parameter or an object
      *
      * @throws InvalidArgumentException if the identifier is not defined
      */
-    function offsetGet($id)
+    public function offsetGet($id)
     {
         if (!array_key_exists($id, $this->values)) {
             throw new InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $id));
         }
 
-        return $this->values[$id] instanceof Closure ? $this->values[$id]($this) : $this->values[$id];
+        $isFactory = is_object($this->values[$id]) && method_exists($this->values[$id], '__invoke');
+
+        return $isFactory ? $this->values[$id]($this) : $this->values[$id];
     }
 
     /**
      * Checks if a parameter or an object is set.
      *
-     * @param  string $id The unique identifier for the parameter or object
+     * @param string $id The unique identifier for the parameter or object
      *
      * @return Boolean
      */
-    function offsetExists($id)
+    public function offsetExists($id)
     {
-        return isset($this->values[$id]);
+        return array_key_exists($id, $this->values);
     }
 
     /**
      * Unsets a parameter or an object.
      *
-     * @param  string $id The unique identifier for the parameter or object
+     * @param string $id The unique identifier for the parameter or object
      */
-    function offsetUnset($id)
+    public function offsetUnset($id)
     {
         unset($this->values[$id]);
     }
@@ -99,12 +113,12 @@ class Pimple implements ArrayAccess
      *
      * @return Closure The wrapped closure
      */
-    function share(Closure $callable)
+    public static function share(Closure $callable)
     {
         return function ($c) use ($callable) {
             static $object;
 
-            if (is_null($object)) {
+            if (null === $object) {
                 $object = $callable($c);
             }
 
@@ -121,7 +135,7 @@ class Pimple implements ArrayAccess
      *
      * @return Closure The protected closure
      */
-    function protect(Closure $callable)
+    public static function protect(Closure $callable)
     {
         return function ($c) use ($callable) {
             return $callable;
@@ -131,18 +145,58 @@ class Pimple implements ArrayAccess
     /**
      * Gets a parameter or the closure defining an object.
      *
-     * @param  string $id The unique identifier for the parameter or object
+     * @param string $id The unique identifier for the parameter or object
      *
-     * @return mixed  The value of the parameter or the closure defining an object
+     * @return mixed The value of the parameter or the closure defining an object
      *
      * @throws InvalidArgumentException if the identifier is not defined
      */
-    function raw($id)
+    public function raw($id)
     {
         if (!array_key_exists($id, $this->values)) {
             throw new InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $id));
         }
 
         return $this->values[$id];
+    }
+
+    /**
+     * Extends an object definition.
+     *
+     * Useful when you want to extend an existing object definition,
+     * without necessarily loading that object.
+     *
+     * @param string  $id       The unique identifier for the object
+     * @param Closure $callable A closure to extend the original
+     *
+     * @return Closure The wrapped closure
+     *
+     * @throws InvalidArgumentException if the identifier is not defined
+     */
+    public function extend($id, Closure $callable)
+    {
+        if (!array_key_exists($id, $this->values)) {
+            throw new InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $id));
+        }
+
+        $factory = $this->values[$id];
+
+        if (!($factory instanceof Closure)) {
+            throw new InvalidArgumentException(sprintf('Identifier "%s" does not contain an object definition.', $id));
+        }
+
+        return $this->values[$id] = function ($c) use ($callable, $factory) {
+            return $callable($factory($c), $c);
+        };
+    }
+
+    /**
+     * Returns all defined value names.
+     *
+     * @return array An array of value names
+     */
+    public function keys()
+    {
+        return array_keys($this->values);
     }
 }

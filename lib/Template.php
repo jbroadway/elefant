@@ -437,8 +437,8 @@ class Template {
 	public function replace_includes ($regs) {
 		$val = is_array ($regs) ? $regs[1] : $regs;
 
-		// remove spaces
-		$val = preg_replace ('/[\t\n ]+(\?|\&)/', '\1', trim ($val));
+		// remove spaces before ? and & for multiline includes
+		$val = preg_replace ('/\n(\t+| {2,})(\?|\&)/', '\2', trim ($val));
 
 		$url = parse_url ($val);
 		if (isset ($url['query'])) {
@@ -492,8 +492,8 @@ class Template {
 	public function hard_codes ($regs) {
 		$val = is_array ($regs) ? $regs[1] : $regs;
 
-		// remove spaces
-		$val = preg_replace ('/[\t\n ]+(\?|\&)/', '\1', trim ($val));
+		// remove spaces before ? and & for multiline includes
+		$val = preg_replace ('/\n(\t+| {2,})(\?|\&)/', '\2', trim ($val));
 
 		$url = parse_url ($val);
 		if (isset ($url['query'])) {
@@ -510,8 +510,8 @@ class Template {
 	 * style tags.
 	 */
 	public function run_includes ($val) {
-		// remove spaces
-		$val = preg_replace ('/[\t\n ]+(\?|\&)/', '\1', trim ($val));
+		// remove spaces before ? and & for multiline includes
+		$val = preg_replace ('/\n(\t+| {2,})(\?|\&)/', '\2', trim ($val));
 
 		// normalize <span data-embed> tags to {! tags !}
 		$val = preg_replace ('/<[^>]*?data-embed="([^"]+)".*?>.*?<\/.*?>/', '{! \1 !}', $val);
