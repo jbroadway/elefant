@@ -23,7 +23,7 @@ $major_minor = preg_replace ('/\.[0-9]+$/', '', ELEFANT_VERSION);
 // fetch the latest version from the server
 $res = json_decode (
 	fetch_url (
-		'http://www.elefantcms.com/updates/check.php?v=' . $major_minor
+		'https://raw.github.com/jbroadway/elefant-updates/master/releases/' . $major_minor . '.json'
 	)
 );
 
@@ -48,7 +48,7 @@ if (! file_exists ('conf/updates')) {
 }
 
 // check for and download new patch files
-$res = json_decode (fetch_url ('http://www.elefantcms.com/updates/patches.php?v=' . $major_minor));
+$res = json_decode (fetch_url ('https://raw.github.com/jbroadway/elefant-updates/master/patches.json'));
 
 if (! is_object ($res)) {
 	Cli::out ('Error: Unable to fetch patch list from the server.', 'error');
