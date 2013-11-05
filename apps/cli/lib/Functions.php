@@ -20,9 +20,9 @@ function generate_password ($length) {
  * of Elefant, specifically:
  *
  * - Minor versions can go up to 10
- * - Bug fix numbers can go up to 20
+ * - Bug fix numbers can go up to 40
  *
- * So the highest release number for the 1.x series is 1.10.20
+ * So the highest release number for the 1.x series is 1.10.40
  * before rolling over to 2.0.0.
  */
 function cli_get_versions ($current, $latest) {
@@ -40,7 +40,7 @@ function cli_get_versions ($current, $latest) {
 
 		list ($major, $minor, $fix) = explode ('.', $current);
 		$fix++;
-		if ($fix > 20) {
+		if ($fix > 40) {
 			$fix = 0;
 			$minor++;
 		}
