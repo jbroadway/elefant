@@ -150,30 +150,59 @@ jQuery.expanded_section = function (options) {
 	};
 })(jQuery);
 
+/**
+ * Displays the update notice if one is available. This is a JSONP
+ * response handler.
+ */
+function elefant_update_response (res) {
+	if (res.latest > $.elefant_version) {
+		$('#admin-bar>a').append ('<a href="http://www.elefantcms.com/download" target="_blank" id="admin-update-available">Update Available: ' + res.latest + '</a>');
+	}
+}
+
 $(function () {
+	// is the tools menu sliding up right now?
 	var sliding_up = false;
+
+	// fetch data for admin toolbar
 	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img id="admin-logo" src="/apps/admin/css/admin/spacer.png" alt="" /></a></div><div id="preview-bar"><a href="#" class="admin-tools-hide-preview" data-title="'+$.i18n("Back to Edit Mode")+'"></a></div>');
 	$.get ('/admin/head/links', function (res) {
 		$('#admin-logo').attr ('src', res.logo).attr ('alt', res.name);
 		$('#admin-links').append (res.links);
-		
-		$('#admin-tools').hover (
-			function () {
-				$('#admin-tools-list').stop ().css("height","auto").slideDown ('fast');
-			},
-			function () {
-				$('#admin-tools-list').stop ().slideUp ('slow');
+	
+		// show/hide tools menu
+		var admin_tools = $('#admin-tools'),
+			admin_tools_list = $('#admin-tools-list');
+
+		function toggle_tools_open () {
+			admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
+		}
+
+		function toggle_tools_close () {
+			admin_tools_list.stop ().slideUp ('slow');
+		}
+
+		function toggle_tools () {
+			if (admin_tools_list.is (':visible')) {
+				admin_tools_list.stop ().slideUp ('fast');
+			} else {
+				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
+				$('#admin-tools-list a')[0].focus ();
 			}
-		).click (
-			function () {
-				if ($('#admin-tools-list').is (':visible')) {
-					$('#admin-tools-list').stop ().slideUp ('fast');
-				} else {
-					$('#admin-tools-list').stop ().css ('height', 'auto').slideDown ('fast');
-					$('#admin-tools-list a')[0].focus ();
-				}
-			}
+		}
+
+		admin_tools.hover (
+			toggle_tools_open,
+			toggle_tools_close
 		);
+
+		if (navigator.pointerEnabled || navigator.msPointerEnabled) {
+			admin_tools.on ('pointerdown MSPointerDown', toggle_tools);
+		} else {
+			admin_tools.click (toggle_tools);
+		}
+
+		// hide the tools menu on hover of non-tools menu toolbar links
 		$('#admin-links a').not('#admin-tools-list a').bind("mouseover", function(){
 			$('#admin-tools-list').stop ().slideUp ('slow');
 		});
@@ -187,21 +216,21 @@ $(function () {
 			$('#admin-tools-website').attr ('href', window.location.pathname);
 		}
 
-        // toggle Preview Mode
-        // shows/hides EditButtons and adminbar
-        var toggle_preview = function () {
-        	var b = $('body');
-        	
-        	if (b.hasClass ('is-preview')) {
-        		b.removeClass ('is-preview');
-        	} else {
-        		b.addClass ('is-preview');
-        	}
-        	return false;
-        };
+		// toggle preview mode, shows/hides edit buttons and admin toolbar
+		var toggle_preview = function () {
+			var b = $('body');
+		
+			if (b.hasClass ('is-preview')) {
+				b.removeClass ('is-preview');
+			} else {
+				b.addClass ('is-preview');
+			}
+			return false;
+		};
 
-        $('a.admin-tools-show-preview', '#admin-bar' ).click (toggle_preview);
-        $('a.admin-tools-hide-preview', '#preview-bar').click (toggle_preview);
+		// attach preview toggle events
+		$('a.admin-tools-show-preview', '#admin-bar' ).click (toggle_preview);
+		$('a.admin-tools-hide-preview', '#preview-bar').click (toggle_preview);
 
 		// add keyboard shortcuts
 		$.triggers ();
@@ -227,11 +256,14 @@ $(function () {
 	// check for and display elefant updates if available
 	if ($.elefant_updates && ! $.cookie ('elefant_update_checked')) {
 		var major_minor = $.elefant_version.replace (/\.[0-9]+$/, '');
-		$.getJSON ('http://www.elefantcms.com/updates/check.php?v=' + major_minor + '&callback=?', function (res) {
-			if (res.latest > $.elefant_version) {
-				$('#admin-bar>a').append ('<a href="http://www.elefantcms.com/download" target="_blank" id="admin-update-available">Update Available: ' + res.latest + '</a>');
-			}
+
+		$.ajax ({
+			url: 'https://raw.github.com/jbroadway/elefant-updates/master/releases/' + major_minor + '.js?callback=elefant_update_response',
+			type: 'GET',
+			dataType: 'jsonp',
+			callback: 'elefant_update_response'
 		});
+
 		$.cookie ('elefant_update_checked', 1, { expires: 1, path: '/' });
 	}
 

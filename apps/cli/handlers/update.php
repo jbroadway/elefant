@@ -21,11 +21,12 @@ require_once ('apps/cli/lib/Functions.php');
 $major_minor = preg_replace ('/\.[0-9]+$/', '', ELEFANT_VERSION);
 
 // fetch the latest version from the server
-$res = json_decode (
-	fetch_url (
-		'http://www.elefantcms.com/updates/check.php?v=' . $major_minor
-	)
-);
+$data = Updater::fetch ('releases/' . $major_minor . '.json');
+if (! $data) {
+	Cli::out ('Error: ' . Updater::error () . ' releases/' . $major_minor . '.json', 'error');
+	return;
+}
+$res = json_decode ($data);
 
 if (! is_object ($res)) {
 	Cli::out ('Error: Unable to fetch latest version from the server.');
@@ -48,7 +49,12 @@ if (! file_exists ('conf/updates')) {
 }
 
 // check for and download new patch files
-$res = json_decode (fetch_url ('http://www.elefantcms.com/updates/patches.php?v=' . $major_minor));
+$data = Updater::fetch ('patches.json');
+if (! $data) {
+	Cli::out ('Error: ' . Updater::error () . ' patches.json', 'error');
+	return;
+}
+$res = json_decode ($data);
 
 if (! is_object ($res)) {
 	Cli::out ('Error: Unable to fetch patch list from the server.', 'error');
@@ -59,9 +65,9 @@ foreach ($res->patches as $patch_file) {
 	$base = basename ($patch_file);
 	if (! file_exists ('conf/updates/' . $base)) {
 		echo "Fetching new patch: {$base}\n";
-		$contents = fetch_url ($patch_file);
+		$contents = Updater::fetch ($patch_file);
 		if (! $contents) {
-			Cli::out ('Error: Unable to retrieve file ' . $patch_file, 'error');
+			Cli::out ('Error: ' . Updater::error () . ' ' . $patch_file, 'error');
 			return;
 		}
 		file_put_contents ('conf/updates/' . $base, $contents);
@@ -74,9 +80,9 @@ foreach ($res->scripts as $script_file) {
 	$base = basename ($script_file);
 	if (! file_exists ('conf/updates/' . $base)) {
 		echo "Fetching new db update: {$base}\n";
-		$contents = fetch_url ($script_file);
+		$contents = Updater::fetch ($script_file);
 		if (! $contents) {
-			Cli::out ('Error: Unable to retrieve file ' . $script_file, 'error');
+			Cli::out ('Error: ' . Updater::error () . ' ' . $script_file, 'error');
 			return;
 		}
 		file_put_contents ('conf/updates/' . $base, $contents);

@@ -16,9 +16,14 @@ function basename_html ($f) {
 
 /**
  * Parse a Github URL and return an array with the username and repository.
+ * Also accepts repository names using the shorter form `username/repository`.
  * Returns false on failure.
  */
 function github_parse_url ($url) {
+	if (preg_match ('|^([a-z0-9_-]+)/([a-z0-9_-]+)$|i', $url, $regs)) {
+		return array ($regs[1], $regs[2]);
+	}
+
 	if (strpos ($url, 'github') === false) {
 		return false;
 	}
