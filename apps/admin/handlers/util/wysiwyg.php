@@ -52,6 +52,16 @@ $page->add_script (I18n::export (
 	'- select -'
 ));
 
+if (file_exists ('apps/admin/js/redactor/lang/' . $i18n->language . '_' . $i18n->locale . '.js')) {
+	$page->add_script ('/apps/admin/js/redactor/lang/' . $i18n->language . '_' . $i18n->locale . '.js');
+	$data['language'] = $i18n->language . '_' . $i18n->locale;
+} elseif (file_exists ('apps/admin/js/redactor/lang/' . $i18n->language . '.js')) {
+	$page->add_script ('/apps/admin/js/redactor/lang/' . $i18n->language . '.js');
+	$data['language'] = $i18n->language;
+} else {
+	$data['language'] = 'en';
+}
+
 $data['field_id'] = isset ($data['field_id'])
 	? (($data['field_id'] === '0' || empty ($data['field_id'])) ? false : $data['field_id'])
 	: 'webpage-body';
