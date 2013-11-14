@@ -182,7 +182,13 @@ $(function () {
 			admin_tools_list.stop ().slideUp ('slow');
 		}
 
-		function toggle_tools () {
+		function toggle_tools (e) {
+			// fix for clicks on tools menu links
+			if ($(e.target).attr ('id') !== 'admin-tools') {
+				window.location.href = $(e.target).attr ('href');
+				return false;
+			}
+
 			if (admin_tools_list.is (':visible')) {
 				admin_tools_list.stop ().slideUp ('fast');
 			} else {
@@ -196,16 +202,16 @@ $(function () {
 			toggle_tools_close
 		);
 
-		if (navigator.pointerEnabled || navigator.msPointerEnabled) {
-			admin_tools.on ('pointerdown MSPointerDown', toggle_tools);
+		if (navigator.pointerEnabled) {
+			admin_tools.on ('pointerdown click', toggle_tools);
+		} else if (navigator.msPointerEnabled) {
+			admin_tools.on ('MSPointerDown click', toggle_tools);
 		} else {
-			admin_tools.click (toggle_tools);
+			admin_tools.on ('touchdown click', toggle_tools);
 		}
 
 		// hide the tools menu on hover of non-tools menu toolbar links
-		$('#admin-links a').not('#admin-tools-list a').bind("mouseover", function(){
-			$('#admin-tools-list').stop ().slideUp ('slow');
-		});
+		$('#admin-links a').not('#admin-tools-list a').bind("mouseover", toggle_tools_close);
 
 		// website link should open to the last non-admin page visited
 		var last_page = $('body').data ('admin-last-page');
