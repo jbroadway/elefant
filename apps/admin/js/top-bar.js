@@ -183,6 +183,8 @@ $(function () {
 		}
 
 		function toggle_tools (e) {
+			e.preventDefault ();
+
 			// fix for clicks on tools menu links
 			if ($(e.target).attr ('id') !== 'admin-tools') {
 				window.location.href = $(e.target).attr ('href');
@@ -203,9 +205,9 @@ $(function () {
 		);
 
 		if (navigator.pointerEnabled) {
-			admin_tools.on ('pointerdown click', toggle_tools);
+			admin_tools.on ('pointerdown', toggle_tools);
 		} else if (navigator.msPointerEnabled) {
-			admin_tools.on ('MSPointerDown click', toggle_tools);
+			admin_tools.on ('MSPointerDown', toggle_tools);
 		} else {
 			admin_tools.on ('touchdown click', toggle_tools);
 		}
