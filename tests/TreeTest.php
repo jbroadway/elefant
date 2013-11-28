@@ -33,7 +33,7 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 		 *
 		 * index
 		 */
-		self::$this->assertEquals (self::$n->get_all_ids (), array ('index'));
+		$this->assertEquals (self::$n->get_all_ids (), array ('index'));
 	}
 
 	function test_adding_node () {
