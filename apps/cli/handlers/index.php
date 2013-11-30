@@ -47,8 +47,8 @@ Commands:
 HELP;
 
 // Extend command list with those from apps/*/conf/cli.php
-if (glob ('apps/*/conf/cli.php')) {
-	$files = glob ('apps/*/conf/cli.php');
+$files = glob ('apps/*/conf/cli.php');
+if ($files) {
 	$commands = array ();
 	foreach ($files as $file) {
 		$parsed = parse_ini_file ($file);
