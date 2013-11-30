@@ -48,21 +48,23 @@ HELP;
 
 // Extend command list with those from apps/*/conf/cli.php
 $files = glob ('apps/*/conf/cli.php');
-$commands = array ();
-foreach ($files as $file) {
-	$parsed = parse_ini_file ($file);
-	if (! $parsed || ! isset ($parsed['commands'])) {
-		continue;
+if ($files) {
+	$commands = array ();
+	foreach ($files as $file) {
+		$parsed = parse_ini_file ($file);
+		if (! $parsed || ! isset ($parsed['commands'])) {
+			continue;
+		}
+		$commands = array_merge ($commands, $parsed['commands']);
 	}
-	$commands = array_merge ($commands, $parsed['commands']);
-}
 
-if (count ($commands) > 0) {
-	$help .= "Extended commands:\n\n";
-	foreach ($commands as $cmd => $desc) {
-		$help .= sprintf ("  <info>%-32s</info> %s\n", $cmd, $desc);
+	if (count ($commands) > 0) {
+		$help .= "Extended commands:\n\n";
+		foreach ($commands as $cmd => $desc) {
+			$help .= sprintf ("  <info>%-32s</info> %s\n", $cmd, $desc);
+		}
+		$help .= "\n";
 	}
-	$help .= "\n";
 }
 
 Cli::block ($help);
