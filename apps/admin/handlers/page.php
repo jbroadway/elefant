@@ -24,6 +24,17 @@ if ($res) {
 		$page->{$key} = $value;
 	}
 
+	// verify permissions before serving
+	if (isset ($page->access) && $page->access !== 'public' && ! User::require_login ()) {
+		if (! User::require_login ()) {
+			$page->title = __ ('Login required');
+			return $this->run ('user/login');
+		}
+		if (! User::access ($page->access)) {
+			return $this->error (403, __ ('Access denied'), '<p>' . __ ('You do not have enough access privileges for this operation.') . '</p>');
+		}
+	}
+
 	// show admin edit buttons
 	if (User::require_acl ('admin', 'admin/edit')) {
 		$lock = new Lock ('Webpage', $id);
@@ -70,6 +81,7 @@ $page->description = $wp->description;
 $page->keywords = $wp->keywords;
 $page->layout = $wp->layout;
 $page->head = $wp->head;
+$page->access = $wp->access;
 
 // show admin edit buttons
 if (User::require_acl ('admin', 'admin/edit')) {
@@ -81,8 +93,8 @@ if (User::require_acl ('admin', 'admin/edit')) {
 // execute any embedded includes
 $out = $tpl->run_includes ($wp->body);
 
-if ($wp->access == 'public' && $out === $wp->body) {
-	// public page, no includes, cacheable.
+if ($out === $wp->body) {
+	// no includes, cacheable.
 	$page->body = $out;
 	$cache->set ('_admin_page_' . $id, serialize ($page));
 }
