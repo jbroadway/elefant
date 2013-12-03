@@ -43,6 +43,24 @@ compress_output = On
 
 page_url_style = flat
 
+; The domain to set the session cookie for. If set to 'full'
+; (the default) it will set it to the full domain of the current
+; request, including subdomain. If set to 'top', it will set
+; the session cookie to '.domain.com' so that it will work
+; across subdomains of the site.
+
+session_domain = full
+
+; Session duration in seconds. Default is 2592000, or 30 days.
+; Set this to 0 for the session to expire when the user closes
+; their browser.
+
+session_duration = 2592000
+
+; The name of the session cookie.
+
+session_name = elefant_user
+
 ; For development, turn debugging on and Elefant will output
 ; helpful information on errors.
 
@@ -52,6 +70,11 @@ debug = On
 ; output fatal error messages in addition to the debugger.
 
 display_errors = On
+
+; Check for updates and display an update notice in the top bar
+; when new updates are available for the CMS.
+
+check_for_updates = On
 
 [I18n]
 
@@ -81,9 +104,17 @@ navigation_json = conf/navigation.json
 
 filemanager_path = files
 
+; The path to your role definitions and their access
+; rules. Note: Leave the leading slash out of the
+; path.
+
+access_control_list = conf/acl.php
+
 [Database]
 
 ; Database settings go here. Driver must be a valid PDO driver.
+; For examples of various database configurations, visit:
+; http://www.elefantcms.com/wiki/Database-configuration-examples
 
 master[driver] = sqlite
 master[file] = "conf/site.db"
