@@ -152,6 +152,43 @@ if ($i18n->url_includes_lang) {
 $page->body = $controller->handle ($handler, false);
 
 /**
+ * Control caching of the response
+ */
+if (conf ('Cache', 'control') && !conf ('General', 'debug')) {
+	/* Cache control is ON */
+	if (session_status () != PHP_SESSION_ACTIVE && $page->cache_control)
+	{
+		/* Allow NGINX to cache this request */
+		header ('X-Accel-Buffering: yes');
+		header ('X-Accel-Expires: ' . conf ('Cache', 'expires'));
+		
+		/* Standard http headers */
+		header ('Cache-Control: public, no-cache="set-cookie", must-revalidate, proxy-revalidate, max-age=0');
+		header ('Pragma: public');
+		header ('Expires: ' . gmdate ('D, d M Y H:i:s', time () + conf ('Cache', 'expires')) . ' GMT');
+	} else {
+		/* Do NOT allow NGINX to cache this request */
+		header ('X-Accel-Buffering: no');
+		header ('X-Accel-Expires: 0');
+
+		/* Standard http headers */
+		header ('Pragma: no-cache');
+		header ('Cache-Control: no-cache, must-revalidate');
+		header ('Expires: 0');
+	}
+} else {
+	/* Do NOT allow NGINX to cache this request by default */
+	header ('X-Accel-Buffering: no');
+	header ('X-Accel-Expires: 0');
+}
+
+// Check if a user is valid
+if ( is_object( User::current() ) ) {
+	// Get the name value and return it in the header
+	header ('Current-User: ' . User::val ('name') );
+}
+
+/**
  * Render and send the output to the client, using gzip
  * compression if conf[General][compress_output] is true.
  */

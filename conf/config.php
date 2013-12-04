@@ -168,6 +168,14 @@ admin/delete[] = navigation/hook/delete
 ;backend = memcache
 ;server[] = localhost:11211
 
+; Enable external cache control for the content
+; TODO: Add more info
+control = Off
+
+; Sets when to expire the content in the external cache, if one is used.
+; TODO: Add more info
+expires = 86400
+
 [Mailer]
 
 ; This is where you configure your settings for sending emails.
