@@ -154,7 +154,7 @@ class Form {
 	 * The reason `submit()` failed to pass.
 	 */
 	public $error = false;
-	
+
 	/**
 	 * The full details of which rules failed in a call to
 	 * `Validator::validate_list()`.
@@ -375,37 +375,14 @@ class Form {
 	 */
 	public function initialize_csrf () {
 		if ($this->verify_csrf) {
-			// Start a session
-			if (! isset ($_SESSION)) {
-				$domain = conf ('General', 'session_domain');
-				if ($domain === 'full') {
-					$domain = $_SERVER['HTTP_HOST'];
-				} elseif ($domain === 'top') {
-					$parts = explode ('.', $_SERVER['HTTP_HOST']);
-					$tld = array_pop ($parts);
-					$domain = '.' . array_pop ($parts) . '.' . $tld;
-				}
-				User::init_session ();
-			}
-
-			if (isset ($_SESSION['csrf_token']) && $_SESSION['csrf_expires'] > time ()) {
-				// Get an existing token
-				$this->csrf_token = $_SESSION['csrf_token'];
-
-				// Reset the timer on the request so it doesn't expire on the
-				// user if time is running short
-				$_SESSION['csrf_expires'] = time () + 7200;
-			} else {
-				// Generate a random token
-				$this->csrf_token = md5 (uniqid (rand (), true));
-
-				// Set the token and expiry time (2 hours)
-				$_SESSION['csrf_token'] = $this->csrf_token;
-				$_SESSION['csrf_expires'] = time () + 7200;
-			}
-
+			$timeshift = (int)( time() / 1800 ) + 1; // Token can be verified between 30 and 60 minutes 
+			$client = $_SERVER['DOCUMENT_ROOT'].$_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'];
+                        
+			$this->csrf_token = md5 ( "".$timeshift.$client );
+		
 			// Append the CSRF token Javascript if there is a page object
 			if (isset ($GLOBALS['page'])) {
+				$GLOBALS['page']->cache_control = false;
 				$GLOBALS['page']->add_script (
 					$this->generate_csrf_script (),
 					'tail'
@@ -429,15 +406,9 @@ class Form {
 	}
 
 	/**
-	 * Verify the CSRF token is present, matches the stored value in the session
-	 * data, and has not expired (2 hour limit).
+	 * Verify the CSRF token is present, matches the generated value
 	 */
 	public function verify_csrf () {
-		if (! isset ($_SESSION['csrf_token']) || ! isset ($_SESSION['csrf_expires'])) {
-			// No token in session
-			return false;
-		}
-
 		$values = ($this->method === 'post') ? $_POST : $_GET;
 
 		if (! isset ($values[$this->csrf_field_name])) {
@@ -445,15 +416,19 @@ class Form {
 			return false;
 		}
 
-		if ($_SESSION['csrf_token'] !== $values[$this->csrf_field_name]) {
-			// Token doesn't match
-			return false;
+		$timeshift = (int)( time() / 1800 ); // Token can be verified between 30 and 60 minutes 
+		$client = $_SERVER['DOCUMENT_ROOT'].$_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'];
+                        
+		$tokenA = md5 ( "".$timeshift.$client );
+		$tokenB = md5 ( "".($timeshift+1).$client );
+
+		if ( ($tokenA === $values[$this->csrf_field_name]) ||
+		     ($tokenB === $values[$this->csrf_field_name]) ) {
+			// Token is correct
+			return true;
 		}
-		if ($_SESSION['csrf_expires'] < time ()) {
-			// Timed out
-			return false;
-		}
-		return true;
+
+		return false;
 	}
 
 	/**

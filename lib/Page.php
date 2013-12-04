@@ -106,6 +106,11 @@ class Page {
 	public $is_being_rendered = false;
 
 	/**
+	 * Control caching policy for this page
+	 */
+	public $cache_control = true;
+
+	/**
 	 * This is set to true when Elefant is rendering a preview
 	 * request.
 	 */
