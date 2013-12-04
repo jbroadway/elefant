@@ -53,8 +53,7 @@ echo $form->handle (function ($form) {
 		$login_methods = false;
 	}
 
-	$conf = Appconf::user ();
-	$newconf = array (
+	$merged = Appconf::merge ('user', array (
 		'User' => array (
 			'login_methods' => $login_methods
 		),
@@ -69,8 +68,7 @@ echo $form->handle (function ($form) {
 			'access_token' => $_POST['twitter_access_token'],
 			'access_token_secret' => $_POST['twitter_access_token_secret']
 		)
-	);
-	$merged = array_replace_recursive ($conf, $newconf);
+	));
 
 	if (! Ini::write ($merged, 'conf/app.user.' . ELEFANT_ENV . '.php')) {
 		printf ('<p>%s</p>', __ ('Unable to save changes. Check your folder permissions and try again.'));
