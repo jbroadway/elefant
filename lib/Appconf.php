@@ -48,6 +48,14 @@
  *     // update the version setting
  *     Appconf::myapp ('Admin', 'version', '1.2.0');
  *     Appconf::set ('myapp', 'Admin', 'version', '1.2.0');
+ *
+ *     // merge new settings for an app
+ *     $merged = Appconf::merge ('user', array (
+ *         'User' => array (
+ *             'logout_redirect' => '/'
+ *             // etc
+ *         )
+ *     ));
  *     
  *     ?>
  */
@@ -157,6 +165,26 @@ class Appconf {
 		$conf[$section][$setting] = $new_value;
 		self::$appconf[$app] = $conf;
 		return $new_value;
+	}
+
+	/**
+	 * Get an updated configuration for an app based on its current
+	 * settings and an array of new values. This new configuration
+	 * can be saved to `conf/app.APP_NAME.ELEFANT_ENV.php` which will
+	 * override the values in the original `apps/APP_NAME/conf/config.php`
+	 * file. Note that the `[Admin]` section is omitted, since this
+	 * should not be saved to custom configuration files.
+	 *
+	 * - $app is the app name
+	 * - $new_values is the array of custom settings
+	 *
+	 * Note: Use `Ini::write()` for writing the output to disk.
+	 */
+	public static function merge ($app, $new_values) {
+		$conf = self::_conf ($app);
+		$merged = array_replace_recursive ($conf, $new_values);
+		unset ($merged['Admin']);
+		return $merged;
 	}
 }
 

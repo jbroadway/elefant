@@ -53,25 +53,26 @@ echo $form->handle (function ($form) {
 		$login_methods = false;
 	}
 
-	if (! Ini::write (
-		array (
-			'User' => array (
-				'login_methods' => $login_methods
-			),
-			'Facebook' => array (
-				'application_id' => $_POST['facebook_app_id'],
-				'application_secret' => $_POST['facebook_app_secret']
-			),
-			'Twitter' => array (
-				'twitter_id' => $_POST['twitter_id'],
-				'consumer_key' => $_POST['twitter_key'],
-				'consumer_secret' => $_POST['twitter_secret'],
-				'access_token' => $_POST['twitter_access_token'],
-				'access_token_secret' => $_POST['twitter_access_token_secret']
-			)
+	$conf = Appconf::user ();
+	$newconf = array (
+		'User' => array (
+			'login_methods' => $login_methods
 		),
-		'conf/app.user.' . ELEFANT_ENV . '.php'
-	)) {
+		'Facebook' => array (
+			'application_id' => $_POST['facebook_app_id'],
+			'application_secret' => $_POST['facebook_app_secret']
+		),
+		'Twitter' => array (
+			'twitter_id' => $_POST['twitter_id'],
+			'consumer_key' => $_POST['twitter_key'],
+			'consumer_secret' => $_POST['twitter_secret'],
+			'access_token' => $_POST['twitter_access_token'],
+			'access_token_secret' => $_POST['twitter_access_token_secret']
+		)
+	);
+	$merged = array_replace_recursive ($conf, $newconf);
+
+	if (! Ini::write ($merged, 'conf/app.user.' . ELEFANT_ENV . '.php')) {
 		printf ('<p>%s</p>', __ ('Unable to save changes. Check your folder permissions and try again.'));
 		return;
 	}

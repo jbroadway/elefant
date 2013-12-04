@@ -28,25 +28,24 @@ $form->data = array (
 );
 
 echo $form->handle (function ($form) {
-	if (! Ini::write (
-		array (
-			'Blog' => array (
-				'title' => $_POST['title'],
-				'layout' => $_POST['layout'],
-				'post_layout' => $_POST['post_layout'],
-				'preview_chars' => (! empty ($_POST['preview_chars'])) ? (int) $_POST['preview_chars'] : false,
-				'post_format' => $_POST['post_format'],
-				'comments' => ($_POST['comments'] === 'none') ? false : $_POST['comments'],
-				'disqus_shortname' => $_POST['disqus_shortname']
-			),
-			'Social Buttons' => array (
-				'twitter' => ($_POST['social_twitter'] === 'yes') ? true : false,
-				'facebook' => ($_POST['social_facebook'] === 'yes') ? true : false,
-				'google' => ($_POST['social_google'] === 'yes') ? true : false
-			)
+	$merged = Appconf::merge ('blog', array (
+		'Blog' => array (
+			'title' => $_POST['title'],
+			'layout' => $_POST['layout'],
+			'post_layout' => $_POST['post_layout'],
+			'preview_chars' => (! empty ($_POST['preview_chars'])) ? (int) $_POST['preview_chars'] : false,
+			'post_format' => $_POST['post_format'],
+			'comments' => ($_POST['comments'] === 'none') ? false : $_POST['comments'],
+			'disqus_shortname' => $_POST['disqus_shortname']
 		),
-		'conf/app.blog.' . ELEFANT_ENV . '.php'
-	)) {
+		'Social Buttons' => array (
+			'twitter' => ($_POST['social_twitter'] === 'yes') ? true : false,
+			'facebook' => ($_POST['social_facebook'] === 'yes') ? true : false,
+			'google' => ($_POST['social_google'] === 'yes') ? true : false
+		)
+	));
+
+	if (! Ini::write ($merged, 'conf/app.blog.' . ELEFANT_ENV . '.php')) {
 		printf ('<p>%s</p>', __ ('Unable to save changes. Check your folder permissions and try again.'));
 		return;
 	}
