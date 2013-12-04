@@ -156,20 +156,23 @@ $page->body = $controller->handle ($handler, false);
  */
 if (conf ('Cache', 'control') && !conf ('General', 'debug')) {
 	/* Cache control is ON */
-	if (session_status () != PHP_SESSION_ACTIVE && $page->cache_control)
+	if (session_id () === '' && $page->cache_control)
 	{
-		/* Allow NGINX to cache this request */
-		header ('X-Accel-Buffering: yes');
-		header ('X-Accel-Expires: ' . conf ('Cache', 'expires'));
-		
+		if (isset ($_SERVER["SERVER_SOFTWARE"]) && strpos ($_SERVER["SERVER_SOFTWARE"],"nginx") !== false) {
+			/* Allow NGINX to cache this request  - see http://wiki.nginx.org/X-accel */
+			header ('X-Accel-Buffering: yes');
+			header ('X-Accel-Expires: ' . conf ('Cache', 'expires'));
+		}
 		/* Standard http headers */
 		header ('Cache-Control: public, no-cache="set-cookie", must-revalidate, proxy-revalidate, max-age=0');
 		header ('Pragma: public');
 		header ('Expires: ' . gmdate ('D, d M Y H:i:s', time () + conf ('Cache', 'expires')) . ' GMT');
 	} else {
-		/* Do NOT allow NGINX to cache this request */
-		header ('X-Accel-Buffering: no');
-		header ('X-Accel-Expires: 0');
+		if (isset ($_SERVER["SERVER_SOFTWARE"]) && strpos ($_SERVER["SERVER_SOFTWARE"],"nginx") !== false) {
+			/* Do NOT allow NGINX to cache this request - see http://wiki.nginx.org/X-accel */
+			header ('X-Accel-Buffering: no');
+			header ('X-Accel-Expires: 0');
+		}
 
 		/* Standard http headers */
 		header ('Pragma: no-cache');
@@ -177,9 +180,11 @@ if (conf ('Cache', 'control') && !conf ('General', 'debug')) {
 		header ('Expires: 0');
 	}
 } else {
-	/* Do NOT allow NGINX to cache this request by default */
-	header ('X-Accel-Buffering: no');
-	header ('X-Accel-Expires: 0');
+	if (isset ($_SERVER["SERVER_SOFTWARE"]) && strpos ($_SERVER["SERVER_SOFTWARE"],"nginx") !== false) {
+		/* Do NOT allow NGINX to cache this request by default  - see http://wiki.nginx.org/X-accel */
+		header ('X-Accel-Buffering: no');
+		header ('X-Accel-Expires: 0');
+	}
 }
 
 // Check if a user is valid

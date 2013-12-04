@@ -376,7 +376,8 @@ class Form {
 	public function initialize_csrf () {
 		if ($this->verify_csrf) {
 			$timeshift = (int)( time() / 1800 ) + 1; // Token can be verified between 30 and 60 minutes 
-			$client = $_SERVER['DOCUMENT_ROOT'].$_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'];
+			$client = isset (conf ('General', 'site_key')) ? conf ('General', 'site_key') : $_SERVER['DOCUMENT_ROOT'];
+			$client .= $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'];
                         
 			$this->csrf_token = md5 ( "".$timeshift.$client );
 		
@@ -417,7 +418,8 @@ class Form {
 		}
 
 		$timeshift = (int)( time() / 1800 ); // Token can be verified between 30 and 60 minutes 
-		$client = $_SERVER['DOCUMENT_ROOT'].$_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'];
+		$client = isset (conf ('General', 'site_key')) ? conf ('General', 'site_key') : $_SERVER['DOCUMENT_ROOT'];
+		$client .= $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'];
                         
 		$tokenA = md5 ( "".$timeshift.$client );
 		$tokenB = md5 ( "".($timeshift+1).$client );

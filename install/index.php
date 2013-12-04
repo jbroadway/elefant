@@ -189,6 +189,7 @@ switch ($_GET['step']) {
 			$config = file_get_contents ('../conf/config.php');
 			$config = preg_replace ('/site_name = .*/', 'site_name = "' . $_POST['site_name'] . '"', $config, 1);
 			$config = preg_replace ('/email_from = .*/', 'email_from = "' . $_POST['email_from'] . '"', $config, 1);
+			$config = preg_replace ('/site_key = .*/', 'site_key = "' . md5 (rand ()) . '"', $config, 1);
 			if (! file_put_contents ('../conf/config.php', $config)) {
 				$data['error'] = __ ('Failed to write to conf/config.php');
 			} else {
