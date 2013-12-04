@@ -7,7 +7,7 @@ not empty = 1
 [email]
 
 email = 1
-unique = "user.email"
+unique = "#prefix#user.email"
 
 [password]
 

@@ -135,23 +135,25 @@ class User extends ExtendedModel {
 	}
 
 	public static function init_session ($name = false, $duration = false, $path = '/', $domain = false, $secure = false, $httponly = true) {
-		$name = $name ? $name : conf ('General', 'session_name');
-		$duration = $duration ? $duration : conf ('General', 'session_duration');
-		$domain = $domain ? $domain : conf ('General', 'session_domain');
+		if (! isset ($_SESSION)) {
+			$name = $name ? $name : conf ('General', 'session_name');
+			$duration = $duration ? $duration : conf ('General', 'session_duration');
+			$domain = $domain ? $domain : conf ('General', 'session_domain');
 
-		if ($domain === 'full') {
-			$domain = $_SERVER['HTTP_HOST'];
-		} elseif ($domain === 'top') {
-			$parts = explode ('.', $_SERVER['HTTP_HOST']);
-			$tld = array_pop ($parts);
-			$domain = '.' . array_pop ($parts) . '.' . $tld;
-		}
-		@session_set_cookie_params ($duration, $path, $domain, $secure, $httponly);
-		@session_name ($name);
-		@session_start ();
+			if ($domain === 'full') {
+				$domain = $_SERVER['HTTP_HOST'];
+			} elseif ($domain === 'top') {
+				$parts = explode ('.', $_SERVER['HTTP_HOST']);
+				$tld = array_pop ($parts);
+				$domain = '.' . array_pop ($parts) . '.' . $tld;
+			}
+			@session_set_cookie_params ($duration, $path, $domain, $secure, $httponly);
+			@session_name ($name);
+			@session_start ();
 
-		if (isset ($_COOKIE[$name])) {
-			setcookie ($name, $_COOKIE[$name], time() + $duration, $path, $domain, $secure, $httponly);
+			if (isset ($_COOKIE[$name])) {
+				setcookie ($name, $_COOKIE[$name], time() + $duration, $path, $domain, $secure, $httponly);
+			}
 		}
 	}
 
@@ -228,29 +230,34 @@ class User extends ExtendedModel {
 	 * valid, since we have the data already.
 	 */
 	public static function method ($callback) {
-		if (! isset ($_SESSION)) {
-			self::init_session ();
-		}
-
 		if (isset ($_POST['username']) && isset ($_POST['password'])) {
+			self::init_session ();
 			return call_user_func ($callback, $_POST['username'], $_POST['password']);
-		} elseif (isset ($_SESSION['session_id'])) {
-			$u = DB::single (
-				'select * from `#prefix#user` where session_id = ? and expires > ?',
-				$_SESSION['session_id'],
-				gmdate ('Y-m-d H:i:s')
-			);
-			if ($u) {
-				// Verify user agent as a last step (make hijacking harder)
-				global $cache;
-				$ua = $cache->get ('_user_session_agent_' . $_SESSION['session_id']);
-				if ($ua && $ua !== $_SERVER['HTTP_USER_AGENT']) {
-					return FALSE;
-				}
 
-				$class = get_called_class ();
-				self::$user = new $class ((array) $u, FALSE);
-				return TRUE;
+		} else {
+			$name = conf ('General', 'session_name');
+			if (isset ($_COOKIE[$name]) && ! isset ($_SESSION)) {
+				self::init_session ();
+			}
+
+			if (isset ($_SESSION['session_id'])) {
+				$u = DB::single (
+					'select * from `#prefix#user` where session_id = ? and expires > ?',
+					$_SESSION['session_id'],
+					gmdate ('Y-m-d H:i:s')
+				);
+				if ($u) {
+					// Verify user agent as a last step (make hijacking harder)
+					global $cache;
+					$ua = $cache->get ('_user_session_agent_' . $_SESSION['session_id']);
+					if ($ua && $ua !== $_SERVER['HTTP_USER_AGENT']) {
+						return FALSE;
+					}
+
+					$class = get_called_class ();
+					self::$user = new $class ((array) $u, FALSE);
+					return TRUE;
+				}
 			}
 		}
 		return FALSE;
@@ -408,7 +415,7 @@ class User extends ExtendedModel {
 	/**
 	 * Log out and optionally redirect to the specified URL.
 	 */
-	public static function logout ($redirect_to = FALSE) {
+	public static function logout ($redirect_to = FALSE, $path = '/', $domain = false, $secure = false, $httponly = true) {
 		if (self::$user === FALSE) {
 			self::require_login ();
 		}
@@ -417,6 +424,22 @@ class User extends ExtendedModel {
 			self::$user->put ();
 		}
 		$_SESSION['session_id'] = NULL;
+
+		$name = conf ('General', 'session_name');
+		if (isset ($_COOKIE[$name])) {
+			$domain = $domain ? $domain : conf ('General', 'session_domain');
+
+			if ($domain === 'full') {
+				$domain = $_SERVER['HTTP_HOST'];
+			} elseif ($domain === 'top') {
+				$parts = explode ('.', $_SERVER['HTTP_HOST']);
+				$tld = array_pop ($parts);
+				$domain = '.' . array_pop ($parts) . '.' . $tld;
+			}
+
+			setcookie ($name, $_COOKIE[$name], time() - 100000, $path, $domain, $secure, $httponly);
+		}
+
 		if ($redirect_to) {
 			global $controller;
 			$controller->redirect ($redirect_to);

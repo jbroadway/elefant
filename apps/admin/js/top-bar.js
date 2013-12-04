@@ -318,4 +318,9 @@ $(function () {
 			}
 		});
 	}
+
+	// focus on the first form input on load
+	try {
+		$('input, textarea').eq (0).focus ();
+	} catch (e) {}
 });
