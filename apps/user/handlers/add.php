@@ -36,6 +36,9 @@ if ($f->submit ()) {
 	$u->failed = $f->failed;
 	$u = $f->merge_values ($u);
 	$page->title = __ ('Add User');
+	$page->add_script ('/js/json2.js');
+	$page->add_script ('/js/jstorage.js');
+	$page->add_script ('/js/jquery.autosave.js');
 	echo $tpl->render ('user/add', $u);
 }
 
