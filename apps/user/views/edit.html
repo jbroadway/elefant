@@ -18,7 +18,10 @@
 
 {! admin/util/extended?extends=User&name=Users&values=[userdata|none] !}
 
-<p><input type="submit" value="{"Save User"}" /></p>
+<p>
+	<input type="submit" value="{"Save User"}" />&nbsp;
+	<a href="javascript:history.go(-1)" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
+</p>
 </form>
 
 </div>
