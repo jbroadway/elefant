@@ -21,6 +21,8 @@ RedactorPlugins.imagebrowser = {
 	
 	insert_image: function (file) {
 		this.selectionRestore ();
+		this.bufferSet ();
+
 		this.insertHtml ('<img src="' + file + '" alt="" style="" />');
 	}
 };

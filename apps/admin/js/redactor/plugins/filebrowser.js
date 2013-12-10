@@ -20,6 +20,8 @@ RedactorPlugins.filebrowser = {
 	
 	insert_file: function (file) {
 		this.selectionRestore ();
+		this.bufferSet ();
+
 		if (file.match (/\.(jpg|png|gif)$/i)) {
 			this.insertHtml ('<img src="' + file + '" alt="" style="" />');
 		} else if (file.match (/\.swf$/i)) {

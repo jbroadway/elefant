@@ -149,6 +149,7 @@ RedactorPlugins.links = {
 	// Insert or update the link
 	handle: function () {
 		this.selectionRestore ();
+		this.bufferSet ();
 		
 		var active = this.links_active,
 			page = $('#links-page').find (':selected').val (),

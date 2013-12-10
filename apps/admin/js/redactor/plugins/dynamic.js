@@ -33,18 +33,18 @@ RedactorPlugins.dynamic = {
 	// Insert/replace an embed code in the editor
 	insert_object: function (embed_code, handler, params, label) {
 		this.selectionRestore ();
+		this.bufferSet ();
+
 		if (this._current) {
 			// update existing embed
-			$(this._current).replaceWith (
-				'<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>'
-			);
+			$(this._current)
+				.attr ('data-embed', embed_code)
+				.attr ('data-label', label);
+
 			this.sync();
 		} else {
 			// enter a new embed
 			this.insertHtml (
-			//this.exec.command.call (
-			//	this,
-			//	'inserthtml',
 				'<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>'
 			);
 		}

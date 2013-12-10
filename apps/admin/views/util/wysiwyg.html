@@ -65,14 +65,14 @@ $(function () {
 
 	RedactorPlugins.links.editor_id = '#{{ field_id }}';
 
-	function undo (obj, evt, key) {
+	function undo () {
 		//obj.exec.command.call (obj, 'undo');
-		obj.execCommand ('undo');
+		$('#{{ field_id }}').redactor ('execCommand', 'undo');
 	}
 
-	function redo (obj, evt, key) {
+	function redo () {
 		//obj.exec.command.call (obj, 'redo');
-		obj.execCommand ('redo');
+		$('#{{ field_id }}').redactor ('execCommand', 'redo');
 	}
 });
 </script>
