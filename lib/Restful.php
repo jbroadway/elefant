@@ -102,6 +102,44 @@ class Restful {
 	public $wrap = true;
 
 	/**
+	 * List any custom routes in this array. Useful for complex
+	 * routes such as with nested resources. Format is as
+	 * follows:
+	 *
+	 *     public $custom_routes = array (
+	 *         'GET article/%d/comment/%d' => 'article_comment'
+	 *     );
+	 *
+	 * The key is made up of the request method and the route
+	 * pattern to match. The value is the name of the method that
+	 * handles the request.
+	 *
+	 * The request method can be specified as follows:
+	 *
+	 * - One of `GET`, `POST`, etc.
+	 * - Multiple methods combined via `GET|POST`
+	 * - All methods via `ALL`
+	 *
+	 * The route pattern matches the tail of the request URI
+	 * after the current handler's name. For example, if your
+	 * REST handler is found at `/myapp/api` and you want to
+	 * match `GET /myapp/api/custom/method` then you would specify:
+	 *
+	 *     'GET custom/method' => 'custom_method'
+	 *
+	 * Pattern matching in the route works via `sscanf()` like follows:
+	 *
+	 *     'GET article/%d/comment/%d' => 'article_comment'
+	 *
+	 * Where `article_comment()` should accept two parameters:
+	 *
+	 *     public function article_comment ($article_id, $comment_id) {
+	 *         // etc.
+	 *     }
+	 */
+	public $custom_routes = array ();
+
+	/**
 	 * Get and optionally JSON decode the PUT requests data.
 	 */
 	public function get_put_data ($decode = false) {

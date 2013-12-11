@@ -633,7 +633,7 @@ class Controller {
 	 * Redirect the current request and exit.
 	 */
 	public function redirect ($url, $exit = true) {
-		header ('Location: ' . $this->absolutize ($url));
+		$this->header ('Location: ' . $this->absolutize ($url));
 		if ($exit) {
 			$this->quit ();
 		}
@@ -643,7 +643,7 @@ class Controller {
 	 * Permanently redirect to a new address and exit.
 	 */
 	public function permanent_redirect ($url, $exit = true) {
-		header ('HTTP/1.1 301 Moved Permanently');
+		$this->header ('HTTP/1.1 301 Moved Permanently');
 		$this->redirect ($url, $exit);
 	}
 
@@ -741,7 +741,7 @@ class Controller {
 					default:  $text = (! empty ($text)) ? $text : 'Unknown'; break;
 				}
 
-				header ($protocol . ' ' . $code . ' ' . $text, true, $code);
+				$this->header ($protocol . ' ' . $code . ' ' . $text, true, $code);
 			}
 		}
 
@@ -754,7 +754,7 @@ class Controller {
 	public function restful ($obj) {
 		// Disable page layout and set JSON header.
 		$this->_page->layout = false;
-		header ('Content-Type: application/json');
+		$this->header ('Content-Type: application/json');
 
 		// Try to determine a method to call from the HTTP request method
 		// and the first extra parameter of the URL, or `_default`. For
@@ -765,6 +765,47 @@ class Controller {
 		$request_method = strtolower ($this->request_method ());
 		$action = isset ($this->params[0]) ? $this->params[0] : '_default';
 		$method = $request_method . '_' . $action;
+
+		// Check for custom routes
+		if (count ($obj->custom_routes)) {
+			// test custom routes for a match
+			$_request_uri = join ($this->params, '/');
+
+			foreach ($obj->custom_routes as $_route => $_method) {
+				// ensure method exists
+				if (! method_exists ($obj, $_method)) {
+					continue;
+				}
+
+				// split request method and path
+				list ($_req, $_path) = explode (' ', $_route, 2);
+
+				// ensure request method is allowed
+				$_req = strtolower ($_req);
+				if ($_req !== 'all') {
+					$_req = explode ('|', $_req);
+					if (! in_array ($request_method, $_req)) {
+						continue;
+					}
+				}
+
+				// turn the path into a regex
+				$_path = str_replace (
+					array ('/', '%s', '%d'),
+					array ('\\/', '(.+)', '([0-9]+)'),
+					$_path
+				);
+
+				$_path = '/' . $_path . '$/i';
+
+				// test for a match
+				if (preg_match ($_path, $_request_uri, $_match)) {
+					$method = $_method;
+					$this->params = $_match;
+					break;
+				}
+			}
+		}
 
 		// Verify the method exists.
 		if (! method_exists ($obj, $method)) {
@@ -815,7 +856,7 @@ class Controller {
 	public function restful_error ($message, $code = null) {
 		// Disable page layout and set JSON header.
 		$this->_page->layout = false;
-		header ('Content-Type: application/json');
+		$this->header ('Content-Type: application/json');
 
 		$r = new Restful;
 		$r->controller = $this;
@@ -832,9 +873,9 @@ class Controller {
 	 * It will also flush and exit prior to setting a controller-level
 	 * cache of your output.
 	 */
-	function flush ($out = false) {
+	public function flush ($out = false) {
 		if (! $this->chunked) {
-			header ('Transfer-Encoding: chunked');
+			$this->header ('Transfer-Encoding: chunked');
 			$this->chunked = true;
 		}
 		if ($out === null) {
@@ -866,6 +907,22 @@ class Controller {
 			}
 			ob_start ();
 		}
+	}
+
+	/**
+	 * Wraps `header()` with a check for `headers_sent()` to avoid
+	 * "headers already sent" errors.
+	 */
+	public function header ($header, $replace = true, $http_response_code = null) {
+		if (headers_sent ()) {
+			return false;
+		}
+		if ($http_response_code) {
+			header ($header, $replace, $http_response_code);
+		} else {
+			header ($header, $replace);
+		}
+		return true;
 	}
 
 	/**
