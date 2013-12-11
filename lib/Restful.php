@@ -127,7 +127,9 @@ class Restful {
 	 *
 	 *     'GET custom/method' => 'custom_method'
 	 *
-	 * Pattern matching in the route works via `sscanf()` like follows:
+	 * Pattern matching in the route works with `%s` for matching
+	 * strings and %d for matching numbers, which is converted into
+	 * a regular expression for evaluation. For example:
 	 *
 	 *     'GET article/%d/comment/%d' => 'article_comment'
 	 *
