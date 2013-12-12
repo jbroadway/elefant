@@ -156,7 +156,7 @@ $page->body = $controller->handle ($handler, false);
  */
 if (conf ('Cache', 'control') && !conf ('General', 'debug')) {
 	/* Cache control is ON */
-	if (session_id () === '' && $page->cache_control)
+	if (session_id () === '' && $page->cache_control && $controller->request_method () !== 'POST')
 	{
 		if (isset ($_SERVER["SERVER_SOFTWARE"]) && strpos ($_SERVER["SERVER_SOFTWARE"],"nginx") !== false) {
 			/* Allow NGINX to cache this request  - see http://wiki.nginx.org/X-accel */
