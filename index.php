@@ -156,7 +156,7 @@ $page->body = $controller->handle ($handler, false);
  */
 if (conf ('Cache', 'control') && !conf ('General', 'debug')) {
 	/* Cache control is ON */
-	if (session_id () === '' && $page->cache_control)
+	if (session_id () === 'false' && $page->cache_control)
 	{
 		if (isset ($_SERVER["SERVER_SOFTWARE"]) && strpos ($_SERVER["SERVER_SOFTWARE"],"nginx") !== false) {
 			/* Allow NGINX to cache this request  - see http://wiki.nginx.org/X-accel */
@@ -185,12 +185,6 @@ if (conf ('Cache', 'control') && !conf ('General', 'debug')) {
 		header ('X-Accel-Buffering: no');
 		header ('X-Accel-Expires: 0');
 	}
-}
-
-// Check if a user is valid
-if ( is_object( User::current() ) ) {
-	// Get the name value and return it in the header
-	header ('Current-User: ' . User::val ('name') );
 }
 
 /**
