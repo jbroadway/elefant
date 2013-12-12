@@ -156,34 +156,34 @@ $page->body = $controller->handle ($handler, false);
  */
 if (conf ('Cache', 'control') && !conf ('General', 'debug')) {
 	/* Cache control is ON */
-	if (session_id () === 'false' && $page->cache_control)
+	if (session_id () === '' && $page->cache_control)
 	{
 		if (isset ($_SERVER["SERVER_SOFTWARE"]) && strpos ($_SERVER["SERVER_SOFTWARE"],"nginx") !== false) {
 			/* Allow NGINX to cache this request  - see http://wiki.nginx.org/X-accel */
-			header ('X-Accel-Buffering: yes');
-			header ('X-Accel-Expires: ' . conf ('Cache', 'expires'));
+			$controller->header ('X-Accel-Buffering: yes');
+			$controller->header ('X-Accel-Expires: ' . conf ('Cache', 'expires'));
 		}
 		/* Standard http headers */
-		header ('Cache-Control: public, no-cache="set-cookie", must-revalidate, proxy-revalidate, max-age=0');
-		header ('Pragma: public');
-		header ('Expires: ' . gmdate ('D, d M Y H:i:s', time () + conf ('Cache', 'expires')) . ' GMT');
+		$controller->header ('Cache-Control: public, no-cache="set-cookie", must-revalidate, proxy-revalidate, max-age=0');
+		$controller->header ('Pragma: public');
+		$controller->header ('Expires: ' . gmdate ('D, d M Y H:i:s', time () + conf ('Cache', 'expires')) . ' GMT');
 	} else {
 		if (isset ($_SERVER["SERVER_SOFTWARE"]) && strpos ($_SERVER["SERVER_SOFTWARE"],"nginx") !== false) {
 			/* Do NOT allow NGINX to cache this request - see http://wiki.nginx.org/X-accel */
-			header ('X-Accel-Buffering: no');
-			header ('X-Accel-Expires: 0');
+			$controller->header ('X-Accel-Buffering: no');
+			$controller->header ('X-Accel-Expires: 0');
 		}
 
 		/* Standard http headers */
-		header ('Pragma: no-cache');
-		header ('Cache-Control: no-cache, must-revalidate');
-		header ('Expires: 0');
+		$controller->header ('Pragma: no-cache');
+		$controller->header ('Cache-Control: no-cache, must-revalidate');
+		$controller->header ('Expires: 0');
 	}
 } else {
 	if (isset ($_SERVER["SERVER_SOFTWARE"]) && strpos ($_SERVER["SERVER_SOFTWARE"],"nginx") !== false) {
 		/* Do NOT allow NGINX to cache this request by default  - see http://wiki.nginx.org/X-accel */
-		header ('X-Accel-Buffering: no');
-		header ('X-Accel-Expires: 0');
+		$controller->header ('X-Accel-Buffering: no');
+		$controller->header ('X-Accel-Expires: 0');
 	}
 }
 
