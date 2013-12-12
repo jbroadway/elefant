@@ -43,6 +43,10 @@ if (! defined ('STDIN')) {
 }
 
 // Make sure we're in an Elefant site root
+if (getcwd () !== __DIR__) {
+	chdir (__DIR__);
+}
+
 if (! file_exists ('conf/config.php')) {
 	echo "** Error: Must be run from the root of an Elefant website.\n";
 	die;
