@@ -79,11 +79,19 @@ if (@file_exists ('conf/installed')) {
 
 require_once ('apps/cli/lib/Functions.php');
 
-$conf = parse_ini_file ('conf/config.php', true);
-
 // set the necessary folder permissions
 system ('chmod -R 777 cache conf css files lang layouts');
 system ('chmod 777 apps');
+
+// update config file 
+$config_plain = file_get_contents ('conf/config.php');
+$config_plain = preg_replace ('/site_key = .*/', 'site_key = "' . md5 (uniqid (rand (), true)) . '"', $config_plain, 1);
+if (! file_put_contents ('conf/config.php', $config_plain)) {
+	// currently it is not error, just warning
+	Cli::out ('** Warning: Failed to write to conf/config.php.');
+}
+
+$conf = parse_ini_file ('conf/config.php', true);
 
 // connect to the database
 $connected = false;
