@@ -30,6 +30,7 @@ Commands:
   <info>install</info>                          Run the command line installer
   <info>install <url-or-zip></info>             Install a new app or theme
   <info>update</info>                           Check for and apply Elefant updates
+  <info>permissions</info>                      Set your filesystem permissions
   <info>backup <path></info>                    Save a backup of the site and db
   <info>export-db <file></info>                 Export the db to a file or STDOUT
   <info>import-db <file></info>                 Import a schema file into the db
