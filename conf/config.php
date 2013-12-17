@@ -76,6 +76,9 @@ display_errors = Off
 
 check_for_updates = On
 
+; Unique secret site key
+site_key = Elefant_Secret_Key
+
 [I18n]
 
 ; Turn this on if your site is multilingual. This will change
@@ -167,6 +170,15 @@ admin/delete[] = navigation/hook/delete
 
 ;backend = memcache
 ;server[] = localhost:11211
+
+; Enable external cache control for the content.
+; If On, it will allow to inform frontend proxy to cache this response
+; and use it next "expires" seconds. Currently nginx as frontend proxy is
+; supported.
+control = Off
+
+; Sets when to expire the content in the external cache, if one is used.
+expires = 86400
 
 [Mailer]
 
