@@ -108,13 +108,26 @@ class Page {
 	/**
 	 * Control caching policy for this page
 	 */
-	public $cache_control = true;
+	public $cache_control = false;
 
 	/**
 	 * This is set to true when Elefant is rendering a preview
 	 * request.
 	 */
 	public $preview = false;
+
+	/**
+	 * Constructor method
+	 */
+	public function __construct () {
+		$method = isset ($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']) ? $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] : $_SERVER['REQUEST_METHOD'];
+		$cacheable = array ('GET', 'HEAD');
+
+		if (in_array ($method, $cacheable) ) {
+			// Enable cache control only for GET and HEAD methods
+			$this->cache_control = true;
+		}
+	}
 
 	/**
 	 * Render the page in its template and layout. Uses a Template
