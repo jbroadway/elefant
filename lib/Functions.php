@@ -95,9 +95,9 @@ function conf ($section, $value = false, $update = null) {
 		if ($update !== null) {
 			$conf[$section][$value] = $update;
 		}
-		return $conf[$section][$value];
+		return @$conf[$section][$value];
 	}
-	return $conf[$section];
+	return @$conf[$section];
 }
 
 /**
