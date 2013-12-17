@@ -120,7 +120,9 @@ class AppTest extends PHPUnit_Framework_TestCase {
 		require_once ('lib/Functions.php');
 		require_once ('lib/DB.php');
 		error_reporting (E_ALL & ~E_NOTICE);
-		define ('ELEFANT_ENV', 'config');
+		if (! defined ('ELEFANT_ENV')) {
+			define ('ELEFANT_ENV', 'config');
+		}
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en';
 		$_SERVER['REQUEST_URI'] = '/';
 
