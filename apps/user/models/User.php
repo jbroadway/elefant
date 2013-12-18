@@ -402,6 +402,9 @@ class User extends ExtendedModel {
 		if ($val !== NULL) {
 			self::$user->{$key} = $val;
 		}
+		if (! is_object (self::$user)) {
+			return null;
+		}
 		return self::$user->{$key};
 	}
 
