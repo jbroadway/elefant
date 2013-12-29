@@ -450,6 +450,114 @@ class Form {
 		$this->invalid = Validator::$invalid;
 		return $failed;
 	}
+
+	/**
+	 * Generate a checkbox in a template:
+	 *
+	 *     <?= Form::checkbox ('subscribe', 'yes', __ ('Join the spamotron!'), $data) ?>
+	 *
+	 * This will generate the following HTML, with the checked attribute
+	 * dependent on the value in `$data`:
+	 *
+	 *     <label>
+	 *         <input type="checkbox" name="subscribe" value="yes" checked>
+	 *         Join the spamotron!
+	 *     </label>
+	 */
+	public static function checkbox ($name, $value, $label, $data = null) {
+		if ($data === null) {
+			$data = $label;
+			$label = $value;
+		}
+
+		$out = '<label><input type="checkbox" name="' . $name . '" value="' . Template::quotes ($value) . '"';
+		if (preg_match ('/^(.*)\[(.*)\]$/', $name, $regs) && $data->{$regs[1]}[$regs[2]] == $value) {
+			$out .= ' checked';
+		} elseif ($data->{$name} == $value) {
+			$out .= ' checked';
+		}
+		$out .= '> ' . $label . '</label>';
+		return $out;
+	}
+
+	/**
+	 * Generate a radio button in a template:
+	 *
+	 *     <?= Form::radio ('options', 'yes', __ ('Yes'), $data) ?>
+	 *
+	 * This will generate the following HTML, with the checked attribute
+	 * dependedn on the value in `$data`:
+	 *
+	 *     <label>
+	 *         <input type="radio" name="options" value="yes" checked>
+	 *         Yes
+	 *     </label>
+	 */
+	public static function radio ($name, $value, $label, $data = null) {
+		if ($data === null) {
+			$data = $label;
+			$label = $value;
+		}
+
+		$out = '<label><input type="radio" name="' . $name . '" value="' . Template::quotes ($value) . '"';
+		if (preg_match ('/^(.*)\[(.*)\]$/', $name, $regs) && $data->{$regs[1]}[$regs[2]] == $value) {
+			$out .= ' checked';
+		} elseif ($data->{$name} == $value) {
+			$out .= ' checked';
+		}
+		$out .= '> ' . $label . '</label>';
+		return $out;
+	}
+	
+	/**
+	 * Generate a text input in a template:
+	 *
+	 *     <?= Form::text ('name', $data, 20) ?>
+	 *
+	 * This will generate the following HTML:
+	 *
+	 *     <input type="text" name="name" value="Value from $data" size="20">
+	 */
+	public static function text ($name, $data, $size = null) {
+		$out = '<input type="text" name="' . $name . '" value="';
+		if (preg_match ('/^(.*)\[(.*)\]$/', $name, $regs)) {
+			$out .= Template::quotes ($data->{$regs[1]}[$regs[2]]);
+		} else {
+			$out .= Template::quotes ($data->{$name});
+		}
+		if ($size !== null) {
+			$out .= '" size="' . $size . '"';
+		}
+		$out .= '">';
+		return $out;
+	}
+	
+	/**
+	 * Generate a text input in a template:
+	 *
+	 *     <?= Form::textarea ('name', $data, 50, 4) ?>
+	 *
+	 * This will generate the following HTML:
+	 *
+	 *     <textarea name="name" cols="50" rows="4">Value from $data</textarea>
+	 */
+	public static function textarea ($name, $data, $cols = null, $rows = null) {
+		$out = '<textarea name="' . $name . '"';
+		if ($cols !== null) {
+			$out .= '" cols="' . $cols . '"';
+		}
+		if ($rows !== null) {
+			$out .= '" rows="' . $rows . '"';
+		}
+		$out .= '>';
+		if (preg_match ('/^(.*)\[(.*)\]$/', $name, $regs)) {
+			$out .= Template::sanitize ($data->{$regs[1]}[$regs[2]]);
+		} else {
+			$out .= Template::sanitize ($data->{$name});
+		}
+		$out .= '</textarea>';
+		return $out;
+	}
 }
 
 ?>
