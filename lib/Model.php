@@ -792,6 +792,22 @@ class Model {
 	}
 
 	/**
+	 * Return a single field's value for the object with the given ID.
+	 * This is often useful for filters, for example:
+	 *
+	 *     {{ user_id|User::field (%s, 'name') }}
+	 */
+	public static function field ($id, $field) {
+		error_log ($id . ': ' . $field);
+		$class = get_called_class ();
+		$obj = new $class;
+		return DB::shift (
+			'select ' . Model::backticks ($field) . ' from ' . Model::backticks ($obj->table) . ' where ' . Model::backticks ($obj->key) . ' = ?',
+			$id
+		);
+	}
+
+	/**
 	 * Add backticks to a name or list of names to prevent clashing with
 	 * reserved words in SQL.
 	 */
