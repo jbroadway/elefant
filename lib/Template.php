@@ -404,7 +404,7 @@ class Template {
 		// Apply default filter or none
 		if (count ($filters) === 0) {
 			return '<?php echo Template::sanitize (' . $val . ', \'' . $this->charset . '\'); ?>';
-		} elseif ($filters[0] === 'none') {
+		} elseif (trim ($filters[0]) === 'none') {
 			return '<?php echo ' . $val . '; ?>';
 		}
 
@@ -417,7 +417,7 @@ class Template {
 				list ($one, $two) = explode ('%s', $filter);
 				$out .= $one;
 				$end = $two . $end;
-			} elseif ($filter === 'quotes') {
+			} elseif (trim ($filter) === 'quotes') {
 				$out .= 'Template::quotes (';
 				$end = ')' . $end;
 			} else {
