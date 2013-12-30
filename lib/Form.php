@@ -457,12 +457,14 @@ class Form {
 	 *     <?= Form::checkbox ('subscribe', 'yes', __ ('Join the spamotron!'), $data) ?>
 	 *
 	 * This will generate the following HTML, with the checked attribute
-	 * dependent on the value in `$data`:
+	 * dependent on the value in `$data->{$name}`:
 	 *
 	 *     <label>
 	 *         <input type="checkbox" name="subscribe" value="yes" checked>
 	 *         Join the spamotron!
 	 *     </label>
+	 *
+	 * Also correctly handles names with square braces, e.g., `options[one]`
 	 */
 	public static function checkbox ($name, $value, $label, $data = null) {
 		if ($data === null) {
@@ -486,7 +488,7 @@ class Form {
 	 *     <?= Form::radio ('options', 'yes', __ ('Yes'), $data) ?>
 	 *
 	 * This will generate the following HTML, with the checked attribute
-	 * dependedn on the value in `$data`:
+	 * dependent on the value in `$data`:
 	 *
 	 *     <label>
 	 *         <input type="radio" name="options" value="yes" checked>
@@ -556,6 +558,25 @@ class Form {
 			$out .= Template::sanitize ($data->{$name});
 		}
 		$out .= '</textarea>';
+		return $out;
+	}
+
+	/**
+	 * Generate a radio button in a template:
+	 *
+	 *     <?= Form::option ('yes', __ ('Yes'), $data->select_name) ?>
+	 *
+	 * This will generate the following HTML, with the selected attribute
+	 * dependent on the value in `$data->{$name}`:
+	 *
+	 *     <option value="yes" selected>Yes</option>
+	 */
+	public static function option ($value, $label, $actual = null) {
+		$out = '<option value="' . Template::quotes ($value) . '"';
+		if ($actual !== null && $actual == $value) {
+			$out .= ' selected';
+		}
+		$out .= '>' . $label . '</option>';
 		return $out;
 	}
 }
