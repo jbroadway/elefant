@@ -473,7 +473,9 @@ class Form {
 		}
 
 		$out = '<label><input type="checkbox" name="' . $name . '" value="' . Template::quotes ($value) . '"';
-		if (preg_match ('/^(.*)\[(.*)\]$/', $name, $regs) && $data->{$regs[1]}[$regs[2]] == $value) {
+		if (preg_match ('/^(.*)\[\]$/', $name, $regs) && in_array ($value, $data->{$regs[1]})) {
+			$out .= ' checked';
+		} elseif (preg_match ('/^(.*)\[(.*)\]$/', $name, $regs) && $data->{$regs[1]}[$regs[2]] == $value) {
 			$out .= ' checked';
 		} elseif ($data->{$name} == $value) {
 			$out .= ' checked';
@@ -502,9 +504,7 @@ class Form {
 		}
 
 		$out = '<label><input type="radio" name="' . $name . '" value="' . Template::quotes ($value) . '"';
-		if (preg_match ('/^(.*)\[(.*)\]$/', $name, $regs) && $data->{$regs[1]}[$regs[2]] == $value) {
-			$out .= ' checked';
-		} elseif ($data->{$name} == $value) {
+		if ($data->{$name} == $value) {
 			$out .= ' checked';
 		}
 		$out .= '> ' . $label . '</label>';
@@ -522,11 +522,7 @@ class Form {
 	 */
 	public static function text ($name, $data, $size = null) {
 		$out = '<input type="text" name="' . $name . '" value="';
-		if (preg_match ('/^(.*)\[(.*)\]$/', $name, $regs)) {
-			$out .= Template::quotes ($data->{$regs[1]}[$regs[2]]);
-		} else {
-			$out .= Template::quotes ($data->{$name});
-		}
+		$out .= Template::quotes ($data->{$name});
 		if ($size !== null) {
 			$out .= '" size="' . $size . '"';
 		}
@@ -552,11 +548,7 @@ class Form {
 			$out .= '" rows="' . $rows . '"';
 		}
 		$out .= '>';
-		if (preg_match ('/^(.*)\[(.*)\]$/', $name, $regs)) {
-			$out .= Template::sanitize ($data->{$regs[1]}[$regs[2]]);
-		} else {
-			$out .= Template::sanitize ($data->{$name});
-		}
+		$out .= Template::sanitize ($data->{$name});
 		$out .= '</textarea>';
 		return $out;
 	}
