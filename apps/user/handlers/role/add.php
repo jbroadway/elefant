@@ -42,7 +42,6 @@ echo $form->handle (function ($form) use ($page) {
 		$resources['default'] = true;
 		$_POST['resources'] = $resources;
 	}
-	info ($_POST);
 	
 	// save the file
 	$acl = User::acl ();
