@@ -192,7 +192,7 @@ body {
 	}
 
 #preview-bar a,
-.admin-options {
+p.admin-options {
 	display: inline-block;
 	margin: 0;
 	padding: 0;
@@ -201,7 +201,7 @@ body {
 }
 
 #preview-bar a,
-.admin-options a {
+p.admin-options a {
 	display: inline-block;
 	position: relative;
 	margin: 0;
