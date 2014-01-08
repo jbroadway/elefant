@@ -44,6 +44,8 @@
 			return;
 		}
 
+		res.data.sort ();
+
 		for (var i in res.data) {
 			var option = $('<option></option>')
 				.attr ('value', res.data[i])
