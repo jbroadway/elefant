@@ -527,8 +527,8 @@ class Model {
 	 * - An associative array of clauses grouped by parentheses
 	 * - A closure function that creates one or more grouped clauses
 	 */
-	public function where ($key, $val = false) {
-		if (! $val) {
+	public function where ($key, $val = null) {
+		if ($val === null) {
 			if (is_array ($key)) {
 				array_push ($this->query_filters, '(');
 				foreach ($key as $k => $v) {
@@ -556,7 +556,7 @@ class Model {
 	 * Creates an or clause with additional where conditions.
 	 * Accepts the same parameters as `where()`.
 	 */
-	public function or_where ($key, $val = false) {
+	public function or_where ($key, $val = null) {
 		array_push ($this->query_filters, ' or ');
 		return $this->where ($key, $val);
 	}
@@ -570,9 +570,9 @@ class Model {
 	 * - An associative array of clauses grouped by parentheses
 	 * - A closure function that creates one or more grouped clauses
 	 */
-	public function having ($key, $val = false) {
+	public function having ($key, $val = null) {
 		if (! empty ($this->query_group)) {
-			if (! $val) {
+			if ($val === null) {
 				if (is_array ($key)) {
 					array_push ($this->query_having, '(');
 					foreach ($key as $k => $v) {
