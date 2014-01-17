@@ -1,0 +1,21 @@
+<div class="form">
+<form method="post" id="{{_form}}">
+
+<p>
+	<strong>{"Aviary image editor"}</strong><br />
+    <a href="">{"Register your website here to generate your Aviary credentials."}</a>
+</p>
+
+<p>
+	{"Aviary Key"}:<br />
+    <input type="text" name="aviary_key" value="{{ aviary_key|quotes }}" size="40" />
+</p>
+
+<p>
+    <button>{"Save Settings"}</button>
+    <a href="/filemanager/index"
+       onclick="return confirm ('{'Are you sure you want to cancel?'}')">{"Cancel"}</a>
+</p>
+
+</form>
+</div>
