@@ -3,6 +3,10 @@
 /**
  * Renders the specified RSS feed `url` as a list of links.
  * Caches the feed for 30 minutes between updates.
+ *
+ * Parameters:
+ *
+ * - `url`: The URL of the RSS feed to be displayed.
  */
 
 require_once ('apps/blog/lib/simplepie/autoloader.php');

@@ -2,6 +2,11 @@
 
 /**
  * Displays the latest blog posts as a bulleted list of links.
+ *
+ * Parameters:
+ *
+ * - `tag`: Show posts by this tag only (optional)
+ * - `dates`: Show post dates (yes, no, default=no)
  */
 
 if (! $this->internal) {

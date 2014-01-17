@@ -520,8 +520,8 @@ class Form {
 	 *
 	 *     <input type="text" name="name" value="Value from $data" size="20">
 	 */
-	public static function text ($name, $data, $size = null) {
-		$out = '<input type="text" name="' . $name . '" value="';
+	public static function text ($name, $data, $size = null, $type = 'text') {
+		$out = '<input type="' . $type . '" name="' . $name . '" value="';
 		$out .= Template::quotes ($data->{$name});
 		if ($size !== null) {
 			$out .= '" size="' . $size . '"';

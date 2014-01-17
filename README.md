@@ -136,4 +136,4 @@ A. This was my attempt at being hip and cool. No good?
 
 A. Why, yes. Yes it is.
 
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/20d52a948c8e7c7335a8a7600a121467 "githalytics.com")](http://githalytics.com/jbroadway/elefant)
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/6328ab92375adc7e82f36ed5f290ef1c "githalytics.com")](http://githalytics.com/jbroadway/elefant)

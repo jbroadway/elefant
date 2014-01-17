@@ -259,6 +259,8 @@ p.admin-options a {
 	display: none;
 	top: 25px;
 	min-width:100px;
+	font: 13px 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif;
+	line-height: 19px;
 }
 
 	.admin-tooltip-top {
