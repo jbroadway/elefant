@@ -401,7 +401,7 @@ class Form {
 	 */
 	function generate_csrf_script () {
 		return sprintf (
-			'<script>$(function(){$("form").append("<input type=\'hidden\' name=\'%s\' value=\'%s\'/>");});</script>',
+			'<script>$(function(){$("form[method=\'post\']").append("<input type=\'hidden\' name=\'%s\' value=\'%s\'/>");});</script>',
 			$this->csrf_field_name,
 			$this->csrf_token
 		);
