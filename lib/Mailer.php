@@ -27,7 +27,7 @@
 /**
  * For Zend's own inclusions.
  */
-ini_set ('include_path', ini_get ('include_path') . ':lib/vendor');
+ini_set ('include_path', ini_get ('include_path') . PATH_SEPARATOR . 'lib/vendor');
 require_once ('Zend/Mail.php');
 require_once ('Zend/Mime/Part.php');
 
