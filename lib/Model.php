@@ -225,6 +225,17 @@ class Model {
 	 * Custom caller to handle references to related models.
 	 * Handles one-to-one and one-to-many relationships via
 	 * dynamic methods based on the field names.
+	 *
+	 * Arguments are all optional, and are as follows:
+	 *
+	 * - `$reset_cache = false`
+	 * - `$limit = false`
+	 * - `$offset = 0`
+	 *
+	 * For example, to fetch the first 20 articles by author (these are
+	 * made up models):
+	 *
+	 *     $articles = $author->articles (false, 20, 0);
 	 */
 	public function __call($name, $arguments) {
 		// method not found in dynamic fields
@@ -241,8 +252,11 @@ class Model {
 			);
 		}
 
-		// if true is passed, re-fetch from the database
+		// if true is passed, re-fetch from the database.
+		// also check for limit and offset
 		$reset_cache = (count ($arguments) > 0) ? $arguments[0] : false;
+		$limit = (count ($arguments) > 1) ? $arguments[1] : false;
+		$offset = (count ($arguments) > 2) ? $arguments[2] : 0;
 
 		if (isset ($this->fields[$name]['ref'])) {
 			// for backwards compatibility
@@ -283,11 +297,11 @@ class Model {
 				$this->{'_ref_' . $name} = $class::query ()
 					->where ($field_name, $this->data[$this->key])
 					->order ($this->fields[$name]['order_by'])
-					->fetch ();
+					->fetch ($limit, $offset);
 			} else {
 				$this->{'_ref_' . $name} = $class::query ()
 					->where ($field_name, $this->data[$this->key])
-					->fetch ();
+					->fetch ($limit, $offset);
 			}
 			return $this->{'_ref_' . $name};
 
@@ -314,7 +328,7 @@ class Model {
 					->where (Model::backticks ($join_table) . '.' . Model::backticks ($that_field) . ' = ' . Model::backticks ($obj->table) . '.' . Model::backticks ($obj->key))
 					->where (Model::backticks ($join_table) . '.' . Model::backticks ($this_field), $this->id)
 					->order ($order_by[0], $order_by[1])
-					->fetch ();
+					->fetch ($limit, $offset);
 
 			} elseif ($order_by !== false) {
 				$order_by = Model::backticks ($obj->table) . '.' . Model::backticks ($order_by);
@@ -323,14 +337,14 @@ class Model {
 					->where (Model::backticks ($join_table) . '.' . Model::backticks ($that_field) . ' = ' . Model::backticks ($obj->table) . '.' . Model::backticks ($obj->key))
 					->where (Model::backticks ($join_table) . '.' . Model::backticks ($this_field), $this->id)
 					->order ($order_by)
-					->fetch ();
+					->fetch ($limit, $offset);
 
 			} else {
 				$this->{'_ref_' . $name} = $class::query (Model::backticks ($obj->table) . '.*')
 					->from (Model::backticks ($obj->table) . ', ' . Model::backticks ($join_table))
 					->where (Model::backticks ($join_table) . '.' . Model::backticks ($that_field) . ' = ' . Model::backticks ($obj->table) . '.' . Model::backticks ($obj->key))
 					->where (Model::backticks ($join_table) . '.' . Model::backticks ($this_field), $this->id)
-					->fetch ();
+					->fetch ($limit, $offset);
 			}
 
 			return $this->{'_ref_' . $name};

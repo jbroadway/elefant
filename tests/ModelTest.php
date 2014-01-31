@@ -409,6 +409,11 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 
 		// and chaining them all together
 		$this->assertEquals ('Gallery One', $items[1]->gallery ()->cover ()->gallery ()->title);
+
+		// and using limits and offsets
+		$items = $gallery->items (true, 1, 1);
+		$this->assertEquals (1, count ($items));
+		$this->assertEquals ('Item Two', $items[0]->title);
 	}
 
 	function test_many_many () {
@@ -427,6 +432,11 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$authors = $books[1]->authors ();
 		$this->assertEquals (2, count ($authors));
 		$this->assertEquals ('Frankie Bazzar', $authors[0]->name);
+
+		// and using limits and offsets
+		$authors = $books[1]->authors (true, 1, 1);
+		$this->assertEquals (1, count ($authors));
+		$this->assertEquals ('Johnny Fast Fingers', $authors[0]->name);
 	}
 
 	function test_table () {
