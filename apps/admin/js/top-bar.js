@@ -199,16 +199,16 @@ $(function () {
 			}
 		}
 
-		admin_tools.hover (
-			toggle_tools_open,
-			toggle_tools_close
-		);
-
 		if (navigator.pointerEnabled) {
 			admin_tools.on ('pointerdown', toggle_tools);
 		} else if (navigator.msPointerEnabled) {
 			admin_tools.on ('MSPointerDown', toggle_tools);
 		} else {
+			admin_tools.hover (
+				toggle_tools_open,
+				toggle_tools_close
+			);
+
 			admin_tools.on ('touchdown click', toggle_tools);
 		}
 
