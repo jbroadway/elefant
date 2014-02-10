@@ -24,11 +24,19 @@ if ($f->submit ()) {
 
 $o = new StdClass;
 $o->layouts = array ();
-foreach (glob ('layouts/*.html') as $layout) {
-	$o->layouts[] = basename ($layout, '.html');
+
+$files = glob ('layouts/*.html');
+if (is_array ($files)) {
+	foreach ($files as $layout) {
+		$o->layouts[] = basename ($layout, '.html');
+	}
 }
-foreach (glob ('layouts/*/*.html') as $layout) {
-	$o->layouts[] = basename ($layout, '.html');
+
+$files = glob ('layouts/*/*.html');
+if (is_array ($files)) {
+	foreach ($files as $layout) {
+		$o->layouts[] = basename ($layout, '.html');
+	}
 }
 
 $o->failed = $f->failed;
