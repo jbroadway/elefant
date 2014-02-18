@@ -639,6 +639,14 @@ class Template {
 		}
 
 		if ($block === 'inc' || $block === 'include') {
+			if (preg_match ('/\[(.*)\]/', $extra, $regs)) {
+				$r = str_replace (
+					array ('<?php echo ', '; ?>'),
+					array ('\' . ', ' . \''),
+					$this->replace_vars (array (null, $regs[1]))
+				);
+				$extra = preg_replace ('/\[(.*)\]/', $r, $extra);
+			}
 			return '<?php echo $this->render (\'' . $extra . '\', $data); ?>';
 		}
 
