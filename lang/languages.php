@@ -45,6 +45,18 @@ charset                 = UTF-8
 fallback                = Off
 default                 = Off
 
+[pt_br]
+
+name                    = "Português brasileiro"
+code                    = pt
+locale                  = br
+charset                 = UTF-8
+fallback                = Off
+default                 = Off
+date_format             = "mmmm d, yyyy"
+short_format            = mmm d
+time_format             = "h:MMa"
+
 [sl_si]
 
 name                    = "Slovenščina"
