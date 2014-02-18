@@ -143,7 +143,7 @@ class View {
 
 		// render and return the response
 		if (is_callable ($view)) {
-			return $view ($params);
+			return call_user_func ($view, $params);
 		}
 		return self::$tpl->render ($view, $params);
 	}

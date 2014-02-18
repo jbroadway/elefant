@@ -44,14 +44,14 @@ $o->body = @file_get_contents ($_GET['file']);
 $o->layouts = array ();
 
 $files = glob ('layouts/*.html');
-if ($files) {
+if (is_array ($files)) {
 	foreach ($files as $layout) {
 		$o->layouts[] = basename ($layout, '.html');
 	}
 }
 
 $files = glob ('layouts/*/*.html');
-if ($files) {
+if (is_array ($files)) {
 	foreach ($files as $layout) {
 		$o->layouts[] = basename ($layout, '.html');
 	}
