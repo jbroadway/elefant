@@ -13,7 +13,7 @@ if (! $this->cli) {
 
 $page->layout = false;
 
-$conf = parse_ini_file ('conf/config.php', true);
+$conf = parse_ini_file ('conf/' . ELEFANT_ENV . '.php', true);
 switch ($conf['Database']['master']['driver']) {
 	case 'sqlite':
 		if (isset ($_SERVER['argv'][2])) {

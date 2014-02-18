@@ -14,18 +14,50 @@ if (! $this->cli) {
 
 $page->layout = false;
 
+$usage = <<<USAGE
+Usage:
+
+  <info>./elefant crud-app <modelname> <fieldlist></info>
+
+Example:
+
+  <info>./elefant crud-app book id title isbn released:date \
+      description:textarea about:wysiwyg</info>
+
+See also:
+
+  <info>./elefant crud-app list-types</info>
+
+
+USAGE;
+
 if (! isset ($_SERVER['argv'][2])) {
-	Cli::out ('Usage: elefant crud-app <modelname> <fieldlist>', 'info');
+	Cli::block ($usage);
+	die;
+}
+
+$types = array (
+	'checkbox',
+	'date',
+	'datetime',
+	'email',
+	'password',
+	'pkey',
+	'radio',
+	'select',
+	'text',
+	'textarea',
+	'time',
+	'wysiwyg'
+);
+
+if ($_SERVER['argv'][2] === 'list-types') {
+	Cli::out (' - ' . join ("\n - ", $types), 'info');
 	die;
 }
 
 if (! isset ($_SERVER['argv'][3])) {
-	Cli::out ('Usage: elefant crud-app <modelname> <fieldlist>', 'info');
-	die;
-}
-
-if (file_exists ('apps/'.$_SERVER['argv'][2])) {
-	Cli::out ('apps/'.$_SERVER['argv'][2].' already exists.  Please choose a different name for your new app.', 'info');
+	Cli::block ($usage);
 	die;
 }
 
@@ -36,19 +68,66 @@ $ar = new ActiveResource;
 $plural = $ar->pluralize ($name);
 unset ($ar);
 
+if (file_exists ('apps/' . $plural)) {
+	Cli::out ('apps/' . $plural . ' already exists.  Please choose a different name for your new app.', 'info');
+	die;
+}
+
 // build list of fields
 $fields = array ();
-if ($_SERVER['argv'][3] !== 'id') {
-	$fields[] = 'id';
-}
+$pkey = false;
 for ($i = 3; $i < count ($_SERVER['argv']); $i++) {
-	$fields[] = $_SERVER['argv'][$i];
+
+	// match name:type
+	if (preg_match ('/^([a-zA-Z0-9_]+):(' . join ('|', $types) . ')$/', $_SERVER['argv'][$i], $regs)) {
+		$fields[] = (object) array (
+			'name' => $regs[1],
+			'type' => $regs[2]
+		);
+		if ($regs[2] === 'pkey') {
+			$pkey = $regs[1];
+		}
+
+	// natch name alone
+	} elseif (preg_match ('/^[a-zA-Z0-9_]+$/', $_SERVER['argv'][$i])) {
+
+		// automatically promote 'id' field to primary key if unspecified
+		if ($_SERVER['argv'][$i] === 'id') {
+			$fields[] = (object) array (
+				'name' => 'id',
+				'type' => 'pkey'
+			);
+			$pkey = 'id';
+
+		// default to type text
+		} else {
+			$fields[] = (object) array (
+				'name' => $_SERVER['argv'][$i],
+				'type' => 'text'
+			);
+		}
+
+	// invalid type
+	} else {
+		Cli::out ('Invalid type for field ' . $_SERVER['argv'][$i] . '.  Please enter a valid field type.', 'info');
+		die;
+	}	
+}
+
+// make sure there is a primary key
+if (! $pkey) {
+	array_unshift ($fields, (object) array (
+		'name' => 'id',
+		'type' => 'pkey',
+	));
+	$pkey = 'id';
 }
 
 $data = array (
 	'appname' => $name,
 	'plural' => $plural,
 	'fields' => $fields,
+	'pkey' => $pkey,
 	'open_tag' => '<?php',
 	'close_tag' => '?>',
 	'backslash' => '\\'

@@ -13,8 +13,8 @@ $form->data = new {{plural}}{{backslash}}{{appname|ucfirst}} ($_GET['id']);
 echo $form->handle (function ($form) {
 	// Update the {{appname}} 
 	${{appname}} = $form->data;
-{% for key, field in fields %}
-	${{appname}}->{{field}} = $_POST['{{field}}'];
+{% for field in fields %}
+	${{appname}}->{{field->name}} = $_POST['{{field->name}}'];
 {% end %}
 	${{appname}}->put ();
 

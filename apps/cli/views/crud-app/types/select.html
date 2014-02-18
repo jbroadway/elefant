@@ -1,0 +1,11 @@
+<p>
+	\{"{{field->name|ucfirst}}"}:<br />
+	<select name="{{field->name}}">
+		<option value="">- select -</option>
+\{% for _key, _value in array () %}
+		<option value="\{{_key|quotes}}"\{% if _key == $data->{{field->name}} %} selected\{% end %}>\{{_value}}</option>
+\{% end %}
+	</select>
+	<span class="notice" id="{{field->name}}-notice">\{"Please choose a {{field->name}}."}</span>
+</p>
+

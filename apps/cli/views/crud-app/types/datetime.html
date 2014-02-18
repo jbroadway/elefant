@@ -1,0 +1,8 @@
+\{! admin/util/datewidget !}
+
+<p>
+	\{"{{field->name|ucfirst}}"}:<br />
+	<input type="text" name="{{field->name}}" class="datewidget-datetime" value="\{{ {{field->name}}|quotes }}" />
+	<span class="notice" id="{{field->name}}-notice">\{"Please enter a {{field->name}}."}</span>
+</p>
+

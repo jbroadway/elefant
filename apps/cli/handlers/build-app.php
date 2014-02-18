@@ -14,7 +14,7 @@ if (! $this->cli) {
 $page->layout = false;
 
 if (! isset ($_SERVER['argv'][2])) {
-	Cli::out ('Usage: elefant build-app <appname>', 'info');
+	Cli::out ('Usage: ./elefant build-app <appname>', 'info');
 	die;
 }
 

@@ -11,7 +11,7 @@ if (! $this->cli) {
 $page->layout = false;
 
 if (! isset ($_SERVER['argv'][2])) {
-	Cli::out ('Usage: elefant import-db <file>', 'info');
+	Cli::out ('Usage: ./elefant import-db <file>', 'info');
 	die;
 }
 

@@ -16,7 +16,7 @@ require_once 'apps/cli/lib/Functions.php';
 
 if (isset ($_SERVER['argv'][2])) {
 	if (! is_numeric ($_SERVER['argv'][2])) {
-		Cli::out ('Usage: elefant generate-password <length|8>', 'info');
+		Cli::out ('Usage: ./elefant generate-password <length|8>', 'info');
 		die;
 	}
 	$length = $_SERVER['argv'][2];

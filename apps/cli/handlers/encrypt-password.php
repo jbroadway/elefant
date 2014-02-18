@@ -12,7 +12,7 @@ if (! $this->cli) {
 $page->layout = false;
 
 if (! isset ($_SERVER['argv'][2])) {
-	Cli::out ('Usage: elefant encrypt-password <password>', 'info');
+	Cli::out ('Usage: ./elefant encrypt-password <password>', 'info');
 	return;
 }
 

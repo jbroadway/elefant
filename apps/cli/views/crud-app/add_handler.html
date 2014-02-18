@@ -12,7 +12,7 @@ echo $form->handle (function ($form) {
 	// Create and save a new {{appname}} 
 	${{appname}} = new {{plural}}{{backslash}}{{appname|ucfirst}} (array (
 {% for key, field in fields %}
-		'{{field}}' => $_POST['{{field}}']{% if $data->key < count ($data->fields) - 1 %},{% end %} 
+		'{{field->name}}' => $_POST['{{field->name}}']{% if $data->key < count ($data->fields) - 1 %},{% end %} 
 {% end %}
 	));
 	${{appname}}->put ();

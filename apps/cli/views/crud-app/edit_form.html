@@ -1,8 +1,8 @@
 ; {{open_tag|none}} /*
 
 {% for field in fields %}
-{% if field !== 'id' %}
-[{{field}}]
+{% if field->type !== 'pkey' %}
+[{{field->name}}]
 not empty = 1
 
 {% end %}

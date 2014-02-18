@@ -1,0 +1,7 @@
+\{! admin/util/wysiwyg?field_id={{field->name}}-wysiwyg !}
+<p>
+	\{"{{field->name|ucfirst}}"}:<br />
+	<textarea name="{{field->name}}" id="{{field->name}}-wysiwyg" rows="4" cols="60">\{{ {{field->name}} }}</textarea>
+	<span class="notice" id="{{field->name}}-notice">\{"Please enter a {{field->name}}."}</span>
+</p>
+

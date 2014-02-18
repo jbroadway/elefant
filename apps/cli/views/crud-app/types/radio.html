@@ -1,0 +1,12 @@
+<p>
+	\{"{{field->name|ucfirst}}"}: <span class="notice" id="{{field->name}}-notice">\{"Please choose a {{field->name}}."}</span>
+\{% for _key, _value in array () %}
+	<br />
+	<label>
+		<input type="{{field->type}}" name="{{field->name}}" value="\{{_key|quotes}}"
+		\{% if _key == $data->{{field->name}} %} checked\{% end %}
+		/> \{{_value}}
+	</label>
+\{% end %}
+</p>
+

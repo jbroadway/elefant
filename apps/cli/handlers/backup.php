@@ -12,7 +12,7 @@ if (! $this->cli) {
 $page->layout = false;
 
 if (! isset ($_SERVER['argv'][2])) {
-	Cli::out ('Usage: elefant backup <path>', 'info');
+	Cli::out ('Usage: ./elefant backup <path>', 'info');
 	die;
 }
 
