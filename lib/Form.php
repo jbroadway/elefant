@@ -250,6 +250,11 @@ class Form {
 			// Form can be handled, capture output and return it
 			// If the function returns false, simply pass that
 			// to the handler with no output
+
+			if (isset ($_POST['_token_'])) {
+				unset ($_POST['_token_']);
+			}
+
 			ob_start ();
 			$res = $func ($this);
 			if ($res !== false) {
