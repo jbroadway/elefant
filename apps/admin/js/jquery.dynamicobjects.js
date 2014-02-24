@@ -122,12 +122,12 @@
 
 			if (item.icon) {
 				if (item.icon.indexOf ('/') === -1) {
-					icon = 'class="icon-' + item.icon + '"';
+					icon = 'class="fa fa-' + item.icon + '"';
 				} else {
 					icon = 'style="background: url(' + item.icon + ') no-repeat"';
 				}
 			} else {
-				icon = 'class="icon-cog"';
+				icon = 'class="fa fa-cog"';
 			}
 
 			ui += '<li>' +

@@ -34,7 +34,7 @@ url[message] = Please enter a valid URL.
 [blog/postsfeed]
 
 label = "Blog: Latest Posts"
-icon = time
+icon = clock-o
 
 number[label] = "Number of Posts"
 number[type] = numeric

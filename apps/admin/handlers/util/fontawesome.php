@@ -14,12 +14,9 @@
  *
  * Now you can use any Font Awesome icon:
  *
- *     <i class="icon-cogs"></i>
+ *     <i class="fa-cogs"></i>
  */
 
-if (detect ('msie 7')) {
-	$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome-ie7.min.css');
-}
 $page->add_style ('/apps/admin/css/font-awesome/css/font-awesome.min.css');
 
 ?>

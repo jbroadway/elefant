@@ -14,7 +14,7 @@ url[message] = Please enter a valid URL.
 [social/facebook/like-box]
 
 label = Facebook: Like-Box
-icon = facebook-sign
+icon = facebook-square
 columns = 2
 
 url[label] = Facebook Page URL
@@ -94,7 +94,7 @@ twitter_id[message] = Please enter your Twitter ID.
 [social/twitter/feed]
 
 label = Twitter: Feed
-icon = twitter-sign
+icon = twitter-square
 columns = 2
 
 twitter_id[label] = Twitter ID
@@ -136,7 +136,7 @@ via[type] = text
 [social/google/plusone]
 
 label = "Google: +1 Button"
-icon = google-plus-sign
+icon = google-plus-square
 
 url[label] = Link
 url[type] = text
@@ -147,7 +147,7 @@ url[message] = Please enter a valid URL.
 [social/video/youtube]
 
 label = "Video: YouTube"
-icon = facetime-video
+icon = video-camera
 
 url[label] = Link
 url[type] = text
@@ -208,7 +208,7 @@ height[message] = Please enter a height.
 [social/video/vimeo]
 
 label = "Video: Vimeo"
-icon = facetime-video
+icon = video-camera
 
 url[label] = Link
 url[type] = text
