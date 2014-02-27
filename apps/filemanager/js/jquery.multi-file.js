@@ -73,7 +73,7 @@
 						$('<a></a>')
 							.attr ('href', files[i])
 							.attr ('title', $.i18n ('Click to remove'))
-							.html ('<span class="icon-remove"></span>')
+							.html ('<span class="fa fa-times"></span>')
 							.click (self.remove_file)
 					)
 					.append (

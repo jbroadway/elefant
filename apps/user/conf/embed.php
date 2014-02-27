@@ -3,7 +3,7 @@
 [user/login]
 
 label = "User: Login"
-icon = signin
+icon = sign-in
 
 [user/sidebar]
 

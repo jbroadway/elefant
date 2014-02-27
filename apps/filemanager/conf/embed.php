@@ -3,7 +3,7 @@
 [filemanager/slideshow]
 
 label = "Images: Slideshow"
-icon = picture
+icon = picture-o
 
 path[label] = Folder
 path[type] = select
@@ -13,7 +13,7 @@ path[callback] = "filemanager_list_folders"
 [filemanager/gallery]
 
 label = "Images: Gallery"
-icon = picture
+icon = picture-o
 
 path[label] = Folder
 path[type] = select
@@ -46,7 +46,7 @@ file[type] = file
 [filemanager/video]
 
 label = "Embedded Video (MP4)"
-icon = facetime-video
+icon = video-camera
 
 file[label] = MP4 Video
 file[type] = file

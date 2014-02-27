@@ -100,8 +100,8 @@ if (typeof String.prototype.trim !== 'function') {
 		//debug($("li>ul", ctx).length);
 		//debug($("li", ctx).length);
 		
-		$("li:not(:has(ul))", ctx).children("i").removeClass(options.expandedClass).removeClass(options.collapsedClass);
-		$("li>ul", ctx).siblings("i:not(." + options.collapsedClass + ")").addClass(options.expandedClass);
+		$("li:not(:has(ul))", ctx).children("i").removeClass(options.expandedClass).removeClass(options.collapsedClass).removeClass ('fa');
+		$("li>ul", ctx).siblings("i:not(." + options.collapsedClass + ")").addClass ('fa').addClass(options.expandedClass);
 	}
 	// handlers	
 		
@@ -354,8 +354,8 @@ if (typeof String.prototype.trim !== 'function') {
 
 
 $('.treeDragDrop').treeDragDrop({
-	collapsedClass: "icon-folder-close", 
-	expandedClass: "icon-folder-open", 
+	collapsedClass: "fa-folder", 
+	expandedClass: "fa-folder-open", 
 	updateUrl: "/navigation/api/update",
 	cursorGrabbingUrl: ($.browser.msie) ? "/apps/navigation/js/tree-drag-drop/css/closedhand.cur" : "/apps/navigation/js/tree-drag-drop/css/cursorGrabbing.png"
 }); 
