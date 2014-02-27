@@ -30,6 +30,7 @@
 <p>{"Description"}:<br /><textarea name="description" cols="60" rows="4">{{ description }}</textarea></p>
 <p>{"Keywords (comma-separated)"}:<br /><textarea name="keywords" cols="60" rows="4">{{ keywords }}</textarea></p>
 </div>
+{! admin/util/extended?extends=Webpage&name=Pages&values=[extra|none] !}
 <p>
 	<input type="submit" value="{"Save Page"}" class="autosave-clear" />&nbsp;
 	<input type="submit" value="{"Save &amp; Keep Editing"}" id="bgsave" />&nbsp;

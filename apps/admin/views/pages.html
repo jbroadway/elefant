@@ -1,5 +1,11 @@
 {% if User::require_acl ('admin/edit', 'admin/add') %}
-<p><a href="/admin/add">{"Add Page"}</a></p>
+<p>
+	<a href="/admin/add">{"Add Page"}</a>
+	{% if User::require_acl ('settings') %}
+	&nbsp;|&nbsp;
+	<a href="/admin/extended?extends=Webpage&name=Pages">{"Custom Fields"}</a>
+	{% end %}
+</p>
 {% end %}
 
 <p style="float: left">

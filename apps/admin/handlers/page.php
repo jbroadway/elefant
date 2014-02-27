@@ -82,6 +82,7 @@ $page->keywords = $wp->keywords;
 $page->layout = $wp->layout;
 $page->head = $wp->head;
 $page->access = $wp->access;
+$page->extra = (object) $wp->extra;
 
 // show admin edit buttons
 if (User::require_acl ('admin', 'admin/edit')) {

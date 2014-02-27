@@ -39,12 +39,19 @@
  * description
  * keywords
  * body
+ * extra
  */
-class Webpage extends Model {
+class Webpage extends ExtendedModel {
 	/**
 	 * The database table name.
 	 */
 	public $table = '#prefix#webpage';
+
+	/**
+	 * The `extra` field can contain an arbitrary number of additional
+	 * user-defined properties.
+	 */
+	public $_extended_field = 'extra';
 
 	/**
 	 * Override the getter for head to include the description

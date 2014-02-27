@@ -33,6 +33,7 @@ if ($f->submit ()) {
 	$wp->description = $_POST['description'];
 	$wp->keywords = $_POST['keywords'];
 	$wp->body = $_POST['body'];
+	$wp->update_extended ();
 	$wp->put ();
 	if (! $wp->error) {
 		Versions::add ($wp);

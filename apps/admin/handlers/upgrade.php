@@ -12,6 +12,18 @@ if ($this->installed ('elefant', ELEFANT_VERSION) === true) {
 
 $page->title = __ ('Upgrading Elefant');
 
+if (ELEFANT_VERSION === '1.3.7') { // Add extra column to webpage
+	DB::beginTransaction ();
+
+	if (! DB::execute ('alter table `#prefix#webpage` add column `extra` text not null default "[]"')) {
+		DB::rollback ();
+		printf ('<p>Error: %s</p>', DB::error ());
+		return;
+	}
+
+	DB::commit ();
+}
+
 if (ELEFANT_VERSION === '1.3.6') { // Fix filemanager_prop primary key
 	DB::beginTransaction ();
 
