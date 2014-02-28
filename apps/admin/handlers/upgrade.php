@@ -12,7 +12,8 @@ if ($this->installed ('elefant', ELEFANT_VERSION) === true) {
 
 $page->title = __ ('Upgrading Elefant');
 
-if (ELEFANT_VERSION === '1.3.7') { // Add extra column to webpage
+DB::single ('select `extra` from `#prefix#webpage` limit 1');
+if (DB::error ()) { // Add extra column to webpage
 	DB::beginTransaction ();
 
 	if (! DB::execute ('alter table `#prefix#webpage` add column `extra` text not null default "[]"')) {
