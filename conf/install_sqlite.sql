@@ -10,7 +10,7 @@ create table #prefix#webpage (
 	description text,
 	keywords text,
 	body text,
-	extra text not null
+	extra text
 );
 
 create index #prefix#webpage_access on #prefix#webpage (access);

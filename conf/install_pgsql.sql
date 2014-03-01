@@ -10,7 +10,7 @@ create table #prefix#webpage (
 	description text,
 	keywords text,
 	body text,
-	extra text not null,
+	extra text,
 	check (access in ('public','member','private'))
 );
 
