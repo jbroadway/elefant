@@ -29,6 +29,6 @@
  * are sent here to be handled and served.
  */
 require 'lib/FrontController.php';
-FrontController::run ();
+FrontController::run ($argv);
 
 ?>
