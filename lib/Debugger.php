@@ -46,6 +46,7 @@ class Debugger {
 	 */
 	public static function start ($on = true) {
 		if ($on) {
+			error_reporting (E_ALL | E_STRICT);
 			set_error_handler (array ('Debugger', 'handle_error'));
 			set_exception_handler (array ('Debugger', 'handle_exception'));
 		} else {
