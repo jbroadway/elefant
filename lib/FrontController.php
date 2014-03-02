@@ -40,7 +40,7 @@ class FrontController {
 	 * The front controller only has one static method, `run()`, which
 	 * 
 	 */
-	public static function run ($argv) {
+	public static function run ($argv, $argc) {
 		/**
 		 * For compatibility with PHP 5.4's built-in web server, we bypass
 		 * the front controller for requests with file extensions and
