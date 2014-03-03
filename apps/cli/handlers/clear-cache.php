@@ -16,4 +16,13 @@ $page->layout = false;
 
 exec ('rm -f cache/*.php cache/datastore/* cache/navigation.json');
 
+// Also remove datastore dot-files
+$d = dir ('cache/datastore');
+while (false !== ($f = $d->read ())) {
+	if ($f === '.' || $f === '..') {
+		continue;
+	}
+	unlink ('cache/datastore/' . $f);
+}
+
 ?>
