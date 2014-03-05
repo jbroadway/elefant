@@ -39,7 +39,9 @@ foreach ($_POST['data'] as $key => $value) {
 		if (isset ($rules[$_POST['handler']][$key]['require'])) {
 			require_once ($rules[$_POST['handler']][$key]['require']);
 		}
-		$out[$key] = $rules[$_POST['handler']][$key]['filter'] ($value, $reverse);
+		if (is_callable ($rules[$_POST['handler']][$key]['filter'])) {
+			$out[$key] = call_user_func ($rules[$_POST['handler']][$key]['filter'], $value, $reverse);
+		}
 	}
 }
 
