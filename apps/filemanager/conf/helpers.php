@@ -2,6 +2,7 @@
 
 filemanager/audio = 1
 filemanager/gallery = 1
+filemanager/photo = 1
 filemanager/slideshow = 1
 filemanager/swf = 1
 filemanager/video = 1

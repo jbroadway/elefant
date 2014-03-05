@@ -350,7 +350,9 @@
 										var data = {};
 										data[k] = current.data[k];
 										$.post ('/admin/embed/filters', {handler: current.handler, data: data, reverse: 'yes'}, function (res) {
-											$(f.elements[k]).val (res.data[k]);
+											for (var _k in res.data) {
+												$(f.elements[_k]).val (res.data[_k]);
+											}
 										});
 									} else {
 										$(f.elements[k]).val (current.data[k]);

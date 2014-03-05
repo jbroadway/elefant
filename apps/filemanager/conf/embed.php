@@ -1,5 +1,21 @@
 ; <?php /*
 
+[filemanager/photo]
+
+label = "Images: Editable Photo"
+icon = picture-o
+
+key[type] = hidden
+key[filter] = "Image::generate_key"
+
+width[label] = "Width (px)"
+width[type] = text
+width[initial] = 300
+
+height[label] = "Height (px)"
+height[type] = text
+height[initial] = 200
+
 [filemanager/slideshow]
 
 label = "Images: Slideshow"

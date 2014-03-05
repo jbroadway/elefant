@@ -110,6 +110,59 @@ class Image {
 		@imagedestroy ($new);
 		return $cache_file;
 	}
+	
+	/**
+	 * Generate a unique key for embedded image spots.
+	 */
+	public static function generate_key ($key) {
+		if (! empty ($key)) {
+			return $key;
+		}
+
+		while (true) {
+			$key = md5 (uniqid (rand (), true));
+			$file = 'cache/photos/' . $key;
+			// TODO: verify uniqueness
+			if (! file_exists ($file)) {
+				touch ($file);
+				chmod ($file, 0777);
+				break;
+			}
+		}
+
+		return $key;
+	}
+	
+	/**
+	 * Get or set the image associated with a key.
+	 */
+	public static function for_key ($key, $image = null) {
+		if (! @is_dir ('cache/photos')) {
+			mkdir ('cache/photos');
+		}
+
+		if (! preg_match ('/^[a-zA-Z0-9-]+$/', $key)) {
+			// invalid key
+			return false;
+		}
+
+		$file = 'cache/photos/' . $key;
+		
+		if ($image !== null) {
+			file_put_contents ($file, $image);
+			chmod ($file, 0777);
+		}
+		
+		if (! file_exists ($file)) {
+			return false;
+		}
+		
+		$res = file_get_contents ($file);
+		if (empty ($res)) {
+			return false;
+		}
+		return $res;
+	}
 }
 
 ?>
