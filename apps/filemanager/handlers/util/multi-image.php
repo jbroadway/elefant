@@ -41,7 +41,7 @@
  * - preview: The selector of an element to use to contain the list preview.
  */
 
-$this->run ('filemanager/util/browser');
+echo $this->run ('filemanager/util/browser');
 
 $page->add_style ('/apps/filemanager/css/multi-image.css');
 $page->add_script (

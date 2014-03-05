@@ -37,7 +37,7 @@
  * - title:     A custom title for the dialog window.
  */
 
-$this->run ('admin/util/modal');
+echo $this->run ('admin/util/modal');
 
 $page->add_style ('/apps/filemanager/css/filebrowser.css');
 $page->add_script (
