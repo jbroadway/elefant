@@ -122,6 +122,15 @@ function navigation_get_other_pages ($ids) {
 			$pages[$p->id] = $p->title;
 		}
 	}
+
+	uasort ($pages, function ($a, $b) {
+		if ($a === $b) {
+			return 0;
+		}
+		
+		return ($a < $b) ? -1 : 1;
+	});
+
 	return $pages;
 }
 
