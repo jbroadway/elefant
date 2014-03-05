@@ -199,6 +199,8 @@
 						} else {
 							html += '</p>';
 						}
+					} else if (obj.fields[i].type == 'hidden') {
+						html += '<input type="hidden" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
 					} else if (obj.fields[i].type == 'file') {
 						html += '<p><label for="' + obj.fields[i].name + '" >' + obj.fields[i].label + '</label>';
 						html += '<input type="text" class="wysiwyg-file-input" name="' + obj.fields[i].name + '" id="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
