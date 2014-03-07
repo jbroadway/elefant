@@ -17,5 +17,6 @@ jquery_source = local
 handler = admin/versions
 name = Versions
 sitemap = "Webpage::sitemap"
+search = "Webpage::search"
 
 ; */ ?>

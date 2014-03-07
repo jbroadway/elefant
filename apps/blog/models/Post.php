@@ -110,6 +110,31 @@ class Post extends \ExtendedModel {
 		}
 		return $urls;
 	}
+
+	/**
+	 * Generate a list of posts for the search app,
+	 * and add them directly via `Search::add()`.
+	 */
+	public static function search () {
+		$posts = self::query ()
+			->where ('published', 'yes')
+			->fetch_orig ();
+		
+		foreach ($posts as $i => $post) {
+			$url = 'blog/post/' . $post->id . '/' . URLify::filter ($post->title);
+			if (! Search::add (
+				$url,
+				array (
+					'title' => $post->title,
+					'text' => $post->body,
+					'url' => '/' . $url
+				)
+			)) {
+				return array (false, $i);
+			}
+		}
+		return array (true, count ($posts));
+	}
 }
 
 ?>

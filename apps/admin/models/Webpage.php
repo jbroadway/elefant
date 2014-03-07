@@ -85,6 +85,30 @@ class Webpage extends ExtendedModel {
 		}
 		return $urls;
 	}
+
+	/**
+	 * Generate a list of pages for the search app,
+	 * and add them directly via `Search::add()`.
+	 */
+	public static function search () {
+		$pages = self::query ()
+			->where ('access', 'public')
+			->fetch_orig ();
+		
+		foreach ($pages as $i => $page) {
+			if (! Search::add (
+				$page->id,
+				array (
+					'title' => $page->title,
+					'text' => $page->body,
+					'url' => Link::href ($page->id)
+				)
+			)) {
+				return array (false, $i);
+			}
+		}
+		return array (true, count ($pages));
+	}
 }
 
 ?>
