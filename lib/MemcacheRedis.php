@@ -74,7 +74,11 @@ class MemcacheRedis {
 	 */
 	public function cache ($key, $timeout, $function) {
 		if (($val = $this->get ($key)) === false) {
-			$val = $function ();
+			if (is_callable ($function)) {
+				$val = call_user_func ($function);
+			} else {
+				$val = $function;
+			}
 			$this->set ($key, $val, 0, $timeout);
 		}
 		return $val;
