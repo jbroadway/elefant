@@ -222,6 +222,7 @@ class FrontController {
 			}
 		}
 		echo $out;
+		return true;
 	}
 }
 
