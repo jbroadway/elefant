@@ -13,6 +13,7 @@ $lock = new Lock ();
 $out = array (
 	'layouts' => glob ('layouts/*.html'),
 	'layouts2' => glob ('layouts/*/*.html'),
+	'layouts3' => glob ('layouts/*/*/*.html'),
 	'stylesheets' => glob ('css/*.css'),
 	'stylesheets2' => glob ('layouts/*/*.css'),
 	'stylesheets3' => glob ('layouts/*/*/*.css'),
@@ -21,6 +22,12 @@ $out = array (
 
 if ($out['layouts2']) {
   foreach ($out['layouts2'] as $name) {
+	  $out['layouts'][] = $name;
+  }
+}
+
+if ($out['layouts3']) {
+  foreach ($out['layouts3'] as $name) {
 	  $out['layouts'][] = $name;
   }
 }
