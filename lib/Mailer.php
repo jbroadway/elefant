@@ -167,6 +167,11 @@ class Mailer {
 	 * called and the `Zend_Mail` object is returned immediately.
 	 */
 	public static function send ($msg, $send = true) {
+		if ($send === true && conf ('Mailer', 'use_resque')) {
+			$GLOBALS['controller']->run ('resque/init');
+			return Resque::enqueue ('email', 'Mailer', $msg, true);
+		}
+
 		$mailer = self::getInstance ();
 		if ($mailer === false) {
 			// see Mailer::$error for info
@@ -239,6 +244,16 @@ class Mailer {
 			return $mailer->send ();
 		}
 		return $mailer;
+	}
+
+	/**
+	 * Handles jobs from a Resque queue if `use_resque = On` is set in the
+	 * `[Mailer]` configuration. Mailer will automatically queue messages
+	 * when this setting is set, and this method performs the job at a
+	 * later time.
+	 */
+	public function perform () {
+		Mailer::send ($this->args, 2);
 	}
 }
 

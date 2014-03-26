@@ -216,12 +216,10 @@ class FrontController {
 		 */
 		$out = $page->render ($tpl, $controller);
 		if (extension_loaded ('zlib') && conf ('General', 'compress_output')) {
-			$zlib_oc = ini_get ('zlib.output_compression');
-			if ($zlib_oc === '' || $zlib_oc === 'Off' || ! $zlib_oc) {
-				ob_start ('ob_gzhandler');
-			}
+			ini_set ('zlib.output_compression', 4096);
 		}
 		echo $out;
+		return true;
 	}
 }
 

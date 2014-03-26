@@ -193,6 +193,11 @@ expires = 86400
 email_from = default
 email_name = default
 
+; If you are using the Resque app, set this to On and the mailer will
+; automatically queue outgoing messages for increased scalability and
+; responsiveness to end users.
+use_resque = Off
+
 ; To send using PHP's mail() function, use this:
 transport[type] = sendmail
 

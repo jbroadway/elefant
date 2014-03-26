@@ -11,7 +11,7 @@
  *
  *     echo URLify::filter (' J\'étudie le français ');
  *     // "jetudie-le-francais"
- *     
+ *
  *     echo URLify::filter ('Lo siento, no hablo español.');
  *     // "lo-siento-no-hablo-espanol"
  */
@@ -78,7 +78,7 @@ class URLify {
 			'Ź' => 'Z', 'Ż' => 'Z'
 		),
 		'ro' => array ( /* Romanian */
-			'ă' => 'a', 'â' => 'a', 'î' => 'i', 'ș' => 's', 'ț' => 't'
+			'ă' => 'a', 'â' => 'a', 'î' => 'i', 'ș' => 's', 'ț' => 't', 'Ţ' => 'T', 'ţ' => 't'
 		),
 		'lv' => array ( /* Latvian */
 			'ā' => 'a', 'č' => 'c', 'ē' => 'e', 'ģ' => 'g', 'ī' => 'i', 'ķ' => 'k', 'ļ' => 'l', 'ņ' => 'n',
@@ -88,6 +88,33 @@ class URLify {
 		'lt' => array ( /* Lithuanian */
 			'ą' => 'a', 'č' => 'c', 'ę' => 'e', 'ė' => 'e', 'į' => 'i', 'š' => 's', 'ų' => 'u', 'ū' => 'u', 'ž' => 'z',
 			'Ą' => 'A', 'Č' => 'C', 'Ę' => 'E', 'Ė' => 'E', 'Į' => 'I', 'Š' => 'S', 'Ų' => 'U', 'Ū' => 'U', 'Ž' => 'Z'
+		),
+		'vn' => array ( /* Vietnamese */
+			'Á' => 'A', 'À' => 'A', 'Ả' => 'A', 'Ã' => 'A', 'Ạ' => 'A', 'Ă' => 'A', 'Ắ' => 'A', 'Ằ' => 'A', 'Ẳ' => 'A', 'Ẵ' => 'A', 'Ặ' => 'A', 'Â' => 'A', 'Ấ' => 'A', 'Ầ' => 'A', 'Ẩ' => 'A', 'Ẫ' => 'A', 'Ậ' => 'A',
+			'á' => 'a', 'à' => 'a', 'ả' => 'a', 'ã' => 'a', 'ạ' => 'a', 'ă' => 'a', 'ắ' => 'a', 'ằ' => 'a', 'ẳ' => 'a', 'ẵ' => 'a', 'ặ' => 'a', 'â' => 'a', 'ấ' => 'a', 'ầ' => 'a', 'ẩ' => 'a', 'ẫ' => 'a', 'ậ' => 'a',
+			'É' => 'E', 'È' => 'E', 'Ẻ' => 'E', 'Ẽ' => 'E', 'Ẹ' => 'E', 'Ê' => 'E', 'Ế' => 'E', 'Ề' => 'E', 'Ể' => 'E', 'Ễ' => 'E', 'Ệ' => 'E',
+			'é' => 'e', 'è' => 'e', 'ẻ' => 'e', 'ẽ' => 'e', 'ẹ' => 'e', 'ê' => 'e', 'ế' => 'e', 'ề' => 'e', 'ể' => 'e', 'ễ' => 'e', 'ệ' => 'e',
+			'Í' => 'I', 'Ì' => 'I', 'Ỉ' => 'I', 'Ĩ' => 'I', 'Ị' => 'I', 'í' => 'i', 'ì' => 'i', 'ỉ' => 'i', 'ĩ' => 'i', 'ị' => 'i',
+			'Ó' => 'O', 'Ò' => 'O', 'Ỏ' => 'O', 'Õ' => 'O', 'Ọ' => 'O', 'Ô' => 'O', 'Ố' => 'O', 'Ồ' => 'O', 'Ổ' => 'O', 'Ỗ' => 'O', 'Ộ' => 'O', 'Ơ' => 'O', 'Ớ' => 'O', 'Ờ' => 'O', 'Ở' => 'O', 'Ỡ' => 'O', 'Ợ' => 'O',
+			'ó' => 'o', 'ò' => 'o', 'ỏ' => 'o', 'õ' => 'o', 'ọ' => 'o', 'ô' => 'o', 'ố' => 'o', 'ồ' => 'o', 'ổ' => 'o', 'ỗ' => 'o', 'ộ' => 'o', 'ơ' => 'o', 'ớ' => 'o', 'ờ' => 'o', 'ở' => 'o', 'ỡ' => 'o', 'ợ' => 'o',
+			'Ú' => 'U', 'Ù' => 'U', 'Ủ' => 'U', 'Ũ' => 'U', 'Ụ' => 'U', 'Ư' => 'U', 'Ứ' => 'U', 'Ừ' => 'U', 'Ử' => 'U', 'Ữ' => 'U', 'Ự' => 'U',
+			'ú' => 'u', 'ù' => 'u', 'ủ' => 'u', 'ũ' => 'u', 'ụ' => 'u', 'ư' => 'u', 'ứ' => 'u', 'ừ' => 'u', 'ử' => 'u', 'ữ' => 'u', 'ự' => 'u',
+			'Ý' => 'Y', 'Ỳ' => 'Y', 'Ỷ' => 'Y', 'Ỹ' => 'Y', 'Ỵ' => 'Y', 'ý' => 'y', 'ỳ' => 'y', 'ỷ' => 'y', 'ỹ' => 'y', 'ỵ' => 'y',
+			'Đ' => 'D', 'đ' => 'd'
+		),
+		'ar' => array ( /* Arabic */
+			'أ' => 'a', 'ب' => 'b', 'ت' => 't', 'ث' => 'th', 'ج' => 'g', 'ح' => 'h', 'خ' => 'kh', 'د' => 'd',
+			'ذ' => 'th', 'ر' => 'r', 'ز' => 'z', 'س' => 's', 'ش' => 'sh', 'ص' => 's', 'ض' => 'd', 'ط' => 't',
+			'ظ' => 'th', 'ع' => 'aa', 'غ' => 'gh', 'ف' => 'f', 'ق' => 'k', 'ك' => 'k', 'ل' => 'l', 'م' => 'm',
+			'ن' => 'n', 'ه' => 'h', 'و' => 'o', 'ي' => 'y'
+		),
+		'sr' => array ( /* Serbian */
+			'ђ' => 'dj', 'ј' => 'j', 'љ' => 'lj', 'њ' => 'nj', 'ћ' => 'c', 'џ' => 'dz', 'đ' => 'dj',
+			'Ђ' => 'Dj', 'Ј' => 'j', 'Љ' => 'Lj', 'Њ' => 'Nj', 'Ћ' => 'C', 'Џ' => 'Dz', 'Đ' => 'Dj'
+		),
+		'az' => array ( /* Azerbaijani */
+			'ç' => 'c', 'ə' => 'e', 'ğ' => 'g', 'ı' => 'i', 'ö' => 'o', 'ş' => 's', 'ü' => 'u',
+			'Ç' => 'C', 'Ə' => 'E', 'Ğ' => 'G', 'İ' => 'I', 'Ö' => 'O', 'Ş' => 'S', 'Ü' => 'U'
 		)
 	);
 
@@ -174,7 +201,7 @@ class URLify {
 
 	/**
 	 * Transliterates characters to their ASCII equivalents.
-     * $language specifies a priority for a specific language. 
+     * $language specifies a priority for a specific language.
      * The latter is useful if languages have different rules for the same character.
 	 */
 	public static function downcode ($text, $language = "") {
@@ -201,13 +228,13 @@ class URLify {
 		$text = preg_replace ('/\b(' . join ('|', self::$remove_list) . ')\b/i', '', $text);
 
 		// if downcode doesn't hit, the char will be stripped here
-		$remove_pattern = ($file_name) ? '/[^-.\w\s]/' : '/[^-\w\s]/';
-		$text = preg_replace ($remove_pattern, '', $text);		// remove unneeded chars
-		$text = str_replace ('_', ' ', $text);		// treat underscores as spaces
-		$text = preg_replace ('/^\s+|\s+$/', '', $text);	// trim leading/trailing spaces
-		$text = preg_replace ('/[-\s]+/', '-', $text);		// convert spaces to hyphens
-		$text = strtolower ($text);							// convert to lowercase						
-		return trim (substr ($text, 0, $length), '-');	// trim to first $length chars
+		$remove_pattern = ($file_name) ? '/[^-.\w\s]/u' : '/[^-\w\s]/u';
+		$text = preg_replace ($remove_pattern, '', $text); // remove unneeded chars
+		$text = str_replace ('_', ' ', $text);             // treat underscores as spaces
+		$text = preg_replace ('/^\s+|\s+$/', '', $text);   // trim leading/trailing spaces
+		$text = preg_replace ('/[-\s]+/', '-', $text);     // convert spaces to hyphens
+		$text = strtolower ($text);                        // convert to lowercase
+		return trim (substr ($text, 0, $length), '-');     // trim to first $length chars
 	}
 
 	/**
@@ -217,5 +244,3 @@ class URLify {
 		return self::downcode ($text);
 	}
 }
-
-?>

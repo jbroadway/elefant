@@ -42,6 +42,12 @@
  */
 class Debugger {
 	/**
+	 * This is set to true if an error is converted into an exception
+	 * in `Debugger::handle_error()`.
+	 */
+	public static $is_error = false;
+
+	/**
 	 * Set the error and exception handlers.
 	 */
 	public static function start ($on = true) {
@@ -67,7 +73,16 @@ class Debugger {
 			get_class ($e),
 			$e->getMessage ()
 		);
-		Debugger::show_trace ($e->getTrace ());
+		$trace = $e->getTrace ();
+		if (! Debugger::$is_error) {
+			array_unshift ($trace, array (
+				'file' => $e->getFile (),
+				'line' => $e->getLine (),
+				'function' => get_class ($e),
+				'args' => array ($e->getMessage ())
+			));
+		}
+		Debugger::show_trace ($trace);
 	}
 	
 	/**
@@ -103,9 +118,14 @@ class Debugger {
 		for ($i = $start, $count = count ($trace); $i < $count; $i++) {
 			echo Debugger::show_trace_step ($trace[$i]);
 		}
+		$context = array (
+			'_COOKIE' => isset ($_COOKIE) ? $_COOKIE : array (),
+			'_SERVER' => $_SERVER
+		);
 		if (isset ($trace[0]['args']) && is_array ($trace[0]['args'][4])) {
-			Debugger::show_context ($trace[0]['args'][4]);
+			$context = array_merge ($context, $trace[0]['args'][4]);
 		}
+		Debugger::show_context ($context);
 	}
 
 	/**
@@ -115,6 +135,7 @@ class Debugger {
 		if ($errno === 8) {
 			return;
 		}
+		Debugger::$is_error = true;
 		throw new ErrorException ($errstr, 0, $errno, $errfile, $errline);
 	}
 
