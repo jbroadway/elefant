@@ -11,9 +11,25 @@ $this->require_acl ('admin', 'designer');
 $f = new Form ('post', 'designer/addstylesheet');
 $f->verify_csrf = false;
 if ($f->submit ()) {
-	if (@file_put_contents ('css/' . $_POST['name'] . '.css', $_POST['body'])) {
+	// determine file path and make any necessary new directories
+	if (strpos ($_POST['name'], '/') !== false) {
+		$file_path = 'layouts/' . $_POST['name'] . '.css';
+		$folder = join ('/', explode ('/', $_POST['name'], -1));
+		if (! is_dir ('layouts/' . $folder)) {
+			mkdir ('layouts/' . $folder, 0777, true);
+		}
+
+	// if the file is [a-z0-9_-]+ only, convert to new theme (layouts/name/style.css)
+	} else {
+		$file_path = 'layouts/' . $_POST['name'] . '/style.css';
+		if (! is_dir ('layouts/' . $_POST['name'])) {
+			mkdir ('layouts/' . $_POST['name'], 0777);
+		}
+	}
+
+	if (@file_put_contents ($file_path, $_POST['body'])) {
 		$this->add_notification (__ ('Stylesheet added.'));
-		@chmod ('css/' . $_POST['name'] . '.css', 0666);
+		@chmod ($file_path, 0666);
 		$this->redirect ('/designer');
 	}
 	$page->title = __ ('Saving Stylesheet Failed');

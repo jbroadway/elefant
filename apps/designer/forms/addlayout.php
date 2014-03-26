@@ -3,7 +3,7 @@
 [name]
 
 not empty = 1
-regex = '/^[a-z0-9_-]+$/'
+regex = '/^[a-z0-9_-]+(\/[a-z0-9_-]+)?(\/[a-z0-9_-]+)?$/'
 not exists = "layouts/%s.html"
 
 [body]
