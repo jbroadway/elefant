@@ -26,6 +26,11 @@ path[type] = select
 path[require] = "apps/filemanager/lib/Functions.php"
 path[callback] = "filemanager_list_folders"
 
+autoplay[label] = Auto-play
+autoplay[type] = select
+autoplay[require] = "apps/filemanager/lib/Functions.php"
+autoplay[callback] = "filemanager_yes_no"
+
 [filemanager/gallery]
 
 label = "Images: Gallery"

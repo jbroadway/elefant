@@ -3,7 +3,7 @@ $(window).load (function () {
 	$('#slideshow-{{name}}').cycle ({
 		fx: 'fade',
 		pager: '#slideshow-{{name}}-nav',
-		timeout: 6000,
+		timeout: {{timeout}},
 		startingSlide: Math.floor (Math.random () * 5)
 	});
 });
