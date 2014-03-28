@@ -12,7 +12,7 @@
  *
  * For update forms, pass the extended field values as well:
  *
- *     {! admin/util/extended?extends=blog\Post&name=Blog+Posts&values=[extra|none] !}
+ *     {! admin/util/extended?extends=blog\Post&name=Blog+Posts&values=[extra|none]&id=[id] !}
  *
  * 2. For update forms, call this in the form handler function,
  * before calling `$post->put ()`:
@@ -43,6 +43,7 @@ if (! class_exists ($class)) {
 $data['fields'] = ExtendedFields::for_class ($class);
 $data['modal'] = (isset ($data['modal']) && $data['modal'] !== 'false') ? true : false;
 $data['open'] = false;
+$data['id'] = isset ($data['id']) ? $data['id'] : false;
 
 $load_assets = false;
 
@@ -63,7 +64,11 @@ if ($data['fields'] || count ($data['fields']) === 0) {
 				$settings = $fields[$field->type];
 				if ($settings['type'] === 'select') {
 					$data['fields'][$k]->type = 'select';
-					$data['fields'][$k]->options = call_user_func ($settings['callback']);
+					$data['fields'][$k]->options = call_user_func (
+						$settings['callback'],
+						$class,
+						$data['id']
+					);
 				}
 			}
 		}
