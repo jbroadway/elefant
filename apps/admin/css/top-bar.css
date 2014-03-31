@@ -69,6 +69,7 @@ body {
 			background: linear-gradient(to bottom,  #dddddd 0%,#cccccc 100%); /* W3C */
 
 			text-decoration: none;
+			cursor: pointer;
 		}
 
 		#admin-tools>strong {
