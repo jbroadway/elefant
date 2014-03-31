@@ -197,6 +197,8 @@ $(function () {
 				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
 				$('#admin-tools-list a')[0].focus ();
 			}
+			
+			return false;
 		}
 
 		if (navigator.pointerEnabled) {

@@ -55,35 +55,20 @@ body {
 		font-weight: normal;
 		color: #222;
 		position: relative;
+		
+		background-image: url(/apps/admin/css/admin/tools-arrow.png);
+		background-repeat: no-repeat;
+		background-position: 85% 50%;
 	}
 
 		#admin-links>span:hover {
 			color: #93278f;
-
-			background: #dddddd; /* Old browsers */
-			background: -moz-linear-gradient(top,  #dddddd 0%, #cccccc 100%); /* FF3.6+ */
-			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dddddd), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
-			background: -webkit-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Chrome10+,Safari5.1+ */
-			background: -o-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Opera 11.10+ */
-			background: -ms-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* IE10+ */
-			background: linear-gradient(to bottom,  #dddddd 0%,#cccccc 100%); /* W3C */
-
+			background-color: #dddddd;
+			background-image: url(/apps/admin/css/admin/tools-arrow-hover.png);
+			background-repeat: no-repeat;
+			background-position: 85% 50%;
 			text-decoration: none;
 			cursor: pointer;
-		}
-
-		#admin-tools>strong {
-			font-weight: normal;
-			border: 1px solid #444;
-			-webkit-border-radius: 12px;
-			-moz-border-radius: 12px;
-			border-radius: 12px;
-			padding: 0px 3px 0px 3px;
-		}
-
-		#admin-tools:hover>strong {
-			background: #ccc;
-			border: 1px solid #93278f;
 		}
 
 	#admin-links a {
@@ -99,15 +84,7 @@ body {
 
 		#admin-links a:hover, #admin-links a:focus {
 			color: #93278f;
-
-			background: #dddddd; /* Old browsers */
-			background: -moz-linear-gradient(top,  #dddddd 0%, #cccccc 100%); /* FF3.6+ */
-			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dddddd), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
-			background: -webkit-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Chrome10+,Safari5.1+ */
-			background: -o-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Opera 11.10+ */
-			background: -ms-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* IE10+ */
-			background: linear-gradient(to bottom,  #dddddd 0%,#cccccc 100%); /* W3C */
-
+			background-color: #dddddd;
 			text-decoration: none;
 			outline: 0;
 		}

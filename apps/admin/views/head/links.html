@@ -1,6 +1,6 @@
 <a href="#preview" class="admin-tools-show-preview" data-trigger="p" data-trigger-label="{"Toggle preview mode"}">{"Preview"}</a>
 <a href="/" id="admin-tools-website" data-trigger="w" data-trigger-label="{"Go to website"}">{"Website"}</a>
-<span id="admin-tools" data-trigger="t" data-trigger-label="{"Toggle tools menu"}">{"Tools"} <strong>&or;</strong>
+<span id="admin-tools" data-trigger="t" data-trigger-label="{"Toggle tools menu"}">{"Tools"} &nbsp; &nbsp;
 <ul id="admin-tools-list">
 {% foreach tools %}
     <li><a href="/{{ loop_index }}"{% if loop_value['class'] %}class="{{ loop_value['class'] }}"{% end %}>{{ loop_value['name']|i18n_get }}</a></li>
