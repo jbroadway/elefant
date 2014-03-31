@@ -3,6 +3,9 @@ body {
 }
 
 #admin-bar {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -32,6 +35,12 @@ body {
 	-moz-box-shadow: 0px 1px 2px rgba(0,0,0,.5);
 	box-shadow: 0px 1px 2px rgba(0,0,0,.5);
 }
+
+	#admin-bar * {
+		-webkit-box-sizing: content-box;
+		-moz-box-sizing: content-box;
+		box-sizing: content-box;
+	}
 
 	#admin-bar img {
 		margin-top: 0px;
@@ -171,6 +180,9 @@ body {
 
 #preview-bar a,
 p.admin-options {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
 	display: inline-block;
 	margin: 0;
 	padding: 0;
@@ -180,6 +192,9 @@ p.admin-options {
 
 #preview-bar a,
 p.admin-options a {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
 	display: inline-block;
 	position: relative;
 	margin: 0;
@@ -205,7 +220,7 @@ p.admin-options a {
 	padding: 0;
 }
 
-#preview-bar a:hover{
+#preview-bar a:hover {
     background-image: url(/apps/admin/css/admin/editable-sprite-violett.png);
 }
 
@@ -281,15 +296,15 @@ p.admin-options a {
 .is-preview #admin-bar,
 .is-preview .admin-options,
 .is-admin #admin-links .admin-tools-show-preview {
-    display: none;
+    display: none !important;
 }
 
 .is-admin #admin-links #admin-tools-website {
-    display:block;
+    display: block !important;
 }
 
 .is-preview #preview-bar {
-    display: block;
+    display: block !important;
     position: fixed;
     top: 0;
     left: 0;
@@ -318,6 +333,9 @@ p.admin-options a {
 }
 
 .is-preview #preview-bar a:hover:after {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
 	content: attr(data-title);
 	position: absolute;
 	left: 26px;
