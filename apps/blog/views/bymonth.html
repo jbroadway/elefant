@@ -1,0 +1,9 @@
+{% for mmyy, post in posts %}
+<h4>{{mmyy}}</h4>
+
+<ul>
+	{% for p in post %}
+	<li><a href="/blog/post/{{ p->id }}/{{ p->title|URLify::filter }}">{{ p->title }}</a></li>
+	{% end %}
+</ul>
+{% end %}
