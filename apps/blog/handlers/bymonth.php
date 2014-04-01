@@ -27,7 +27,7 @@ if (isset ($data['tag']) && $data['tag'] !== '') {
 $bymonth = array ();
 foreach ($posts as $post) {
 	$time = strtotime ($post->ts);
-	$mmyy = __ (gmdate ('M')) . ' ' . gmdate ('Y');
+	$mmyy = __ (gmdate ('F')) . ' ' . gmdate ('Y');
 	if (! is_array ($bymonth[$mmyy])) {
 		$bymonth[$mmyy] = array ();
 	}
