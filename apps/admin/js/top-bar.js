@@ -155,7 +155,24 @@ jQuery.expanded_section = function (options) {
  * response handler.
  */
 function elefant_update_response (res) {
-	if (res.latest > $.elefant_version) {
+	var _old = $.elefant_version.split ('.'),
+		_new = res.latest.split ('.'),
+		is_new = false;
+
+	for (var i = 0; i < _old.length; i++) {
+		var _o = parseInt (_old[i]),
+			_n = parseInt (_new[i]);
+
+		if (_o === _n) {
+			continue;
+		} else if (_o < _n) {
+			is_new = true;
+			break;
+		}
+		break;
+	}
+
+	if (is_new) {
 		$('#admin-bar>a').append ('<a href="http://www.elefantcms.com/download" target="_blank" id="admin-update-available">Update Available: ' + res.latest + '</a>');
 	}
 }
