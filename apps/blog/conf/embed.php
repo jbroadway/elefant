@@ -50,4 +50,9 @@ number[label] = "Number of Posts"
 number[type] = numeric
 number[initial] = 5
 
+tag[label] = "Tag (optional)"
+tag[type] = select
+tag[require] = "apps/blog/lib/Functions.php"
+tag[callback] = "blog_get_tags"
+
 ; */ ?>
