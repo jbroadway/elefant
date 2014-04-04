@@ -5,15 +5,19 @@ require_once ('apps/blog/lib/Filters.php');
 $preview_chars = (int) Appconf::blog('Blog', 'preview_chars') ? (int) Appconf::blog('Blog', 'preview_chars') : false;
 
 if ($data['number'] !== '') {
-    $page->limit = $data['number'];
+    $limit = $data['number'];
 } else {
-    $page->limit = 5;
+    $limit = 5;
 }
 
-$page->offset = 0;
+$offset = 0;
 
 $p = new blog\Post;
-$posts = $p->latest ($page->limit, $page->offset);
+if (isset ($data['tag']) && $data['tag'] !== '') {
+	$posts = $p->tagged ($data['tag'], $limit, $offset);
+} else {
+	$posts = $p->latest ($limit, $offset);
+}
 $page->count = $p->query ()->where ('published', 'yes')->count ();
 
 if (Appconf::blog ('Blog', 'post_format') === 'markdown') {

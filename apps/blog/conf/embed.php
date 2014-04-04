@@ -15,6 +15,16 @@ dates[type] = select
 dates[require] = "apps/blog/lib/Functions.php"
 dates[callback] = "blog_yes_no"
 
+[blog/bymonth]
+
+label = "Blog: Headlines by Month"
+icon = rss
+
+tag[label] = "Tag (optional)"
+tag[type] = select
+tag[require] = "apps/blog/lib/Functions.php"
+tag[callback] = "blog_get_tags"
+
 [blog/tags]
 
 label = "Blog: Tag Cloud"
@@ -39,5 +49,10 @@ icon = clock-o
 number[label] = "Number of Posts"
 number[type] = numeric
 number[initial] = 5
+
+tag[label] = "Tag (optional)"
+tag[type] = select
+tag[require] = "apps/blog/lib/Functions.php"
+tag[callback] = "blog_get_tags"
 
 ; */ ?>

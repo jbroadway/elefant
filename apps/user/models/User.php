@@ -109,15 +109,13 @@ class User extends ExtendedModel {
 	public static $acl = null;
 
 	/**
-	 * Generates a random salt and encrypts a password using MD5.
+	 * Generates a random salt and encrypts a password using Blowfish.
 	 */
 	public static function encrypt_pass ($plain) {
-		$base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-		$salt = '$2a$07$';
-		for ($i = 0; $i < 22; $i++) {
-			$salt .= $base[rand (0, 61)];
+		if (defined ('PASSWORD_DEFAULT')) {
+			return password_hash ($plain, PASSWORD_BCRYPT);
 		}
-		return crypt ($plain, $salt . '$');
+		return crypt ($plain, '$2a$10$' . substr (sha1 (mt_rand ()), 0, 22) . '$');
 	}
 
 	/**

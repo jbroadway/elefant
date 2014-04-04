@@ -3,6 +3,9 @@ body {
 }
 
 #admin-bar {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -33,6 +36,12 @@ body {
 	box-shadow: 0px 1px 2px rgba(0,0,0,.5);
 }
 
+	#admin-bar * {
+		-webkit-box-sizing: content-box;
+		-moz-box-sizing: content-box;
+		box-sizing: content-box;
+	}
+
 	#admin-bar img {
 		margin-top: 0px;
 		border: 0px none;
@@ -55,34 +64,20 @@ body {
 		font-weight: normal;
 		color: #222;
 		position: relative;
+		
+		background-image: url(/apps/admin/css/admin/tools-arrow.png);
+		background-repeat: no-repeat;
+		background-position: 85% 50%;
 	}
 
 		#admin-links>span:hover {
 			color: #93278f;
-
-			background: #dddddd; /* Old browsers */
-			background: -moz-linear-gradient(top,  #dddddd 0%, #cccccc 100%); /* FF3.6+ */
-			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dddddd), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
-			background: -webkit-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Chrome10+,Safari5.1+ */
-			background: -o-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Opera 11.10+ */
-			background: -ms-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* IE10+ */
-			background: linear-gradient(to bottom,  #dddddd 0%,#cccccc 100%); /* W3C */
-
+			background-color: #dddddd;
+			background-image: url(/apps/admin/css/admin/tools-arrow-hover.png);
+			background-repeat: no-repeat;
+			background-position: 85% 50%;
 			text-decoration: none;
-		}
-
-		#admin-tools>strong {
-			font-weight: normal;
-			border: 1px solid #444;
-			-webkit-border-radius: 12px;
-			-moz-border-radius: 12px;
-			border-radius: 12px;
-			padding: 0px 3px 0px 3px;
-		}
-
-		#admin-tools:hover>strong {
-			background: #ccc;
-			border: 1px solid #93278f;
+			cursor: pointer;
 		}
 
 	#admin-links a {
@@ -98,15 +93,7 @@ body {
 
 		#admin-links a:hover, #admin-links a:focus {
 			color: #93278f;
-
-			background: #dddddd; /* Old browsers */
-			background: -moz-linear-gradient(top,  #dddddd 0%, #cccccc 100%); /* FF3.6+ */
-			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dddddd), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
-			background: -webkit-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Chrome10+,Safari5.1+ */
-			background: -o-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* Opera 11.10+ */
-			background: -ms-linear-gradient(top,  #dddddd 0%,#cccccc 100%); /* IE10+ */
-			background: linear-gradient(to bottom,  #dddddd 0%,#cccccc 100%); /* W3C */
-
+			background-color: #dddddd;
 			text-decoration: none;
 			outline: 0;
 		}
@@ -193,6 +180,9 @@ body {
 
 #preview-bar a,
 p.admin-options {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
 	display: inline-block;
 	margin: 0;
 	padding: 0;
@@ -202,6 +192,9 @@ p.admin-options {
 
 #preview-bar a,
 p.admin-options a {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
 	display: inline-block;
 	position: relative;
 	margin: 0;
@@ -227,7 +220,7 @@ p.admin-options a {
 	padding: 0;
 }
 
-#preview-bar a:hover{
+#preview-bar a:hover {
     background-image: url(/apps/admin/css/admin/editable-sprite-violett.png);
 }
 
@@ -303,15 +296,15 @@ p.admin-options a {
 .is-preview #admin-bar,
 .is-preview .admin-options,
 .is-admin #admin-links .admin-tools-show-preview {
-    display: none;
+    display: none !important;
 }
 
 .is-admin #admin-links #admin-tools-website {
-    display:block;
+    display: block !important;
 }
 
 .is-preview #preview-bar {
-    display: block;
+    display: block !important;
     position: fixed;
     top: 0;
     left: 0;
@@ -340,6 +333,9 @@ p.admin-options a {
 }
 
 .is-preview #preview-bar a:hover:after {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
 	content: attr(data-title);
 	position: absolute;
 	left: 26px;
