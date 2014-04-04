@@ -4,7 +4,7 @@
  * Renders the user add form HTML for the user chooser.
  */
 
-$this->require_admin ();
+$this->require_acl ('admin', 'user');
 
 $u = new User;
 $u->type = 'admin';

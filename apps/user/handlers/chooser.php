@@ -4,7 +4,7 @@
  * Provides a JSON list of users to the user/util/userchooser dialog.
  */
 
-$this->require_admin ();
+$this->require_acl ('admin', 'user');
 
 $page->layout = false;
 

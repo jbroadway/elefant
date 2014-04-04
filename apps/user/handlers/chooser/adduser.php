@@ -4,7 +4,7 @@
  * Adds a new user for the user chooser's new user form.
  */
 
-$this->require_admin ();
+$this->require_acl ('admin', 'user');
 
 $page->layout = false;
 
