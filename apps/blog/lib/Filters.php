@@ -61,7 +61,7 @@ function blog_filter_csv_line ($line) {
 * @param boolean $considerHtml If true, HTML tags would be handled correctly
 * @return string Trimmed string.
 */
-function blog_filter_truncate($text, $length = 100, $ending = '…', $exact = true, $considerHtml = true) {
+function blog_filter_truncate ($text, $length = 100, $ending = '…', $exact = true, $considerHtml = true) {
         if($considerHtml){
                 // if the plain text is shorter than the maximum length, return the whole text
                 if(strlen(preg_replace('/<.*?>/', '', $text)) <= $length){
@@ -153,7 +153,7 @@ function blog_filter_truncate($text, $length = 100, $ending = '…', $exact = tr
         if($considerHtml){
                 // close all unclosed html-tags
                 foreach ($open_tags as $tag) {
-                        $truncate .= '';
+                        $truncate .= '</' . $tag . '>';
                 }
         }
 
