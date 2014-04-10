@@ -677,6 +677,9 @@ class Controller {
 	 * Get the raw POST data.
 	 */
 	public function get_raw_post_data () {
+		if (! isset ($GLOBALS['HTTP_RAW_POST_DATA'])) {
+			$GLOBALS['HTTP_RAW_POST_DATA'] = http_build_query ($_POST);
+		}
 		return $GLOBALS['HTTP_RAW_POST_DATA'];
 	}
 
