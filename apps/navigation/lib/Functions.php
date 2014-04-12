@@ -62,7 +62,11 @@ function navigation_print_dropmenu ($tree, $id = false) {
 	}
 
 	foreach ($tree as $item) {
-		echo '<li>' . Link::make ($item->attr->id, $item->data);
+		$current = ($item->attr->id == Link::current()) ? ' class="current"' : '';
+		if (empty ($current)) {
+			$current = in_array ($item->attr->id, Link::active()) ? ' class="active"' : $current;
+		}
+		echo '<li' . $current . '>' . Link::make ($item->attr->id, $item->data);
 		if (isset ($item->children)) {
 			navigation_print_level ($item->children);
 		}
