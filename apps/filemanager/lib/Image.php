@@ -26,7 +26,14 @@ class Image {
 	 */
 	public static function resize ($file, $width = 140, $height = 105, $style = 'cover', $format = 'jpg') {
 		if (strpos ($file, '/') === 0) {
+			// trim slash in case we get an absolute path
 			$file = ltrim ($file, '/');
+		}
+		
+		if (strpos ($file, '#') !== false) {
+			// remove hashmark from previous Image:: call
+			$file = explode ('#', $file);
+			$file = $file[0];
 		}
 
 		$cache_file = 'cache/thumbs/' . md5 ($file) . '-'. $style ."-" . $width . 'x' . $height . '.' . $format;
@@ -109,6 +116,75 @@ class Image {
 		@imagedestroy ($orig);
 		@imagedestroy ($new);
 		return $cache_file;
+	}
+
+	/**
+	 * Fixes the orientation of a JPEG image based on its exif data.
+	 * Note: Requires the exif PHP extension, or it will simply
+	 * return the original image untouched with the following
+	 * hashmark added: #exif-missing.
+	 */
+	public static function reorient ($file) {
+		if (strpos ($file, '/') === 0) {
+			// trim slash in case we get an absolute path
+			$file = ltrim ($file, '/');
+		}
+		
+		if (strpos ($file, '#') !== false) {
+			// remove hashmark from previous Image:: call
+			$file = explode ('#', $file);
+			$file = $file[0];
+		}
+
+		$info = pathinfo ($file);
+		$ext = strtolower ($info['extension']);
+		
+		if ($ext !== 'jpg' && $ext !== 'jpeg') {
+			// only jpegs have exif data
+			return $file;
+		}
+		
+		if (! extension_loaded ('exif')) {
+			return $file . '#exif-missing';
+		}
+		
+		$exif = exif_read_data ($file);
+		$orientation = isset ($exif['Orientation']) ? $exif['Orientation'] : false;
+		if (! $orientation || $orientation === 1) {
+			// no reorientation needed :)
+			return $file;
+		}
+
+		list ($width, $height) = getimagesize ($file);
+		$new = @imagecreatetruecolor ($width, $height);
+		
+		try {
+			if (@imagetypes () & IMG_JPG) {
+				$orig = @imagecreatefromjpeg ($file);
+				@imagecopyresampled ($new, $orig, 0, 0, 0, 0, $width, $height, $width, $height);
+			} else {
+				return $file . '#libjpg-missing';
+			}
+		} catch (Exception $e) {
+			return $file . '#exception-caught';
+		}
+
+		switch ($orientation) {
+			case 3:
+				$new = @imagerotate ($new, 180, 0);
+				break;
+			case 6:
+				$new = @imagerotate ($new, -90, 0);
+				break;
+			case 8:
+				$new = @imagerotate ($new, 90, 0);
+				break;
+		}
+		
+		@imagejpeg ($new, $file);
+		@imagedestroy ($orig);
+		@imagedestroy ($new);
+		return $file;
 	}
 	
 	/**
