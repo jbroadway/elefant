@@ -14,6 +14,11 @@ if (! $this->cli) {
 
 $page->layout = false;
 
+if (isset ($_SERVER['argv'][2])) {
+	$cache->delete ($_SERVER['argv'][2]);
+	return;
+}
+
 exec ('rm -f cache/*.php cache/datastore/* cache/navigation.json');
 
 // Also remove datastore dot-files
