@@ -31,6 +31,9 @@ autoplay[type] = select
 autoplay[require] = "apps/filemanager/lib/Functions.php"
 autoplay[callback] = "filemanager_yes_no"
 
+dimensions[label] = "Dimensions (format: WIDTHxHEIGHT)"
+dimensions[type] = text
+
 [filemanager/gallery]
 
 label = "Images: Gallery"

@@ -88,12 +88,14 @@ if (isset ($data['path']) or isset ($_GET['path'])) {
 	return;
 }
 
-if (isset ($data['dimensions'])) {
+if (isset ($data['dimensions']) && strpos ($data['dimensions'], 'x')) {
 	list ($width, $height) = explode ('x', $data['dimensions']);
+	$width = (int) $width;
+	$height = (int) $height;
 	$files = array_map (
 		function ($file) use ($width, $height) {
 			Image::reorient ($file);
-			return Image::resize ($file, (int) $width, (int) $height);
+			return Image::resize ($file, $width, $height);
 		},
 		$files
 	);
