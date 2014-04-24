@@ -19,6 +19,15 @@
  * `filelist` can either be an array or a string with each file path delimited
  * by `|`.
  * `idsuffix` will be appended to the CSS id of the slideshow.
+ *
+ * To limit the photo dimensions to a certain size, add a `dimensions`
+ * parameter in the form `WIDTHxHEIGH`, for example:
+ *
+ *     {! filemanager/slideshow?path=foldername&dimensions=500x300 !}
+ *
+ * Note that this will also reorient photos that have been uploaded from
+ * devices that don't automatically correct the photo orientation, based
+ * the EXIF metadata.
  */
 $root = trim (conf ('Paths', 'filemanager_path'), '/') . '/';
 
@@ -77,6 +86,17 @@ if (isset ($data['path']) or isset ($_GET['path'])) {
 	}
 } else {
 	return;
+}
+
+if (isset ($data['dimensions'])) {
+	list ($width, $height) = explode ('x', $data['dimensions']);
+	$files = array_map (
+		function ($file) use ($width, $height) {
+			Image::reorient ($file);
+			return Image::resize ($file, (int) $width, (int) $height);
+		},
+		$files
+	);
 }
 
 // rewrite if proxy is set
