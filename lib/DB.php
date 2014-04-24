@@ -126,7 +126,10 @@ class DB {
 					if (strstr ($conf['host'], ':')) {
 						$conf['host'] = str_replace (':', ';port=', $conf['host']);
 					}
-					self::$connections[$id] = new PDO ($conf['driver'] . ':host=' . $conf['host'] . ';dbname=' . $conf['name'], $conf['user'], $conf['pass']);
+					if (!isset($conf['charset'])) {
+						$conf['charset']='utf8';
+					}
+					self::$connections[$id] = new PDO ($conf['driver'] . ':host=' . $conf['host'] . ';dbname=' . $conf['name'] . ';charset=' . $conf['charset'], $conf['user'], $conf['pass']);
 			}
 		} catch (PDOException $e) {
 			self::$error = $e->getMessage ();
