@@ -68,6 +68,14 @@ class Product {
 		$info = Product::get_info ();
 		return $info['toolbar_stylesheet'];
 	}
+
+	/**
+	 * Returns the `admin_layout` value.
+	 */
+	public static function admin_layout () {
+		$info = Product::get_info ();
+		return $info['admin_layout'];
+	}
 }
 
 ?>

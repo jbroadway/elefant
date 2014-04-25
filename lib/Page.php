@@ -153,6 +153,9 @@ class Page {
 		// Fetch the default layout setting
 		if ($this->layout === 'default') {
 			$this->layout = conf ('General', 'default_layout');
+		} elseif ($this->layout === 'admin') {
+			$admin_layout = Product::admin_layout ();
+			$this->layout = $admin_layout ? $admin_layout : 'admin';
 		}
 
 		// Determine render method (preview or real)
