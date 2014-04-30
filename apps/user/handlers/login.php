@@ -11,6 +11,8 @@ if ($res) { echo $res; return; }
 
 if (! $this->internal) {
 	$page->title = __ ('Members');
+} elseif (isset ($data['redirect'])) {
+	$_POST['redirect'] = $data['redirect'];
 }
 
 if (isset ($_GET['redirect'])) {

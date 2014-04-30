@@ -1,7 +1,15 @@
 <?php
 
 /**
- * Default user sign up form.
+ * Default user sign up form. You can specify a `redirect` value
+ * to send them to after logging in if you embed the signup into
+ * a page via:
+ *
+ *     echo $this->run ('user/signup', array ('redirect' => '/welcome'));
+ *
+ * Or in a template via:
+ *
+ *     {! user/signup?redirect=/welcome !}
  */
 
 // Check for a custom handler override
@@ -45,7 +53,8 @@ if ($f->submit ()) {
 
 		$_POST['username'] = $_POST['email'];
 		User::require_login ();
-		$this->redirect ('/user');
+		$redirect = isset ($data['redirect']) ? $data['redirect'] : '/user';
+		$this->redirect ($redirect);
 	}
 	@error_log ('Error creating profile: ' . $u->error);
 	$page->title = __ ('An Error Occurred');
