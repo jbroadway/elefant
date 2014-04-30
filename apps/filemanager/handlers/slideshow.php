@@ -70,6 +70,9 @@ if (isset ($data['path']) or isset ($_GET['path'])) {
 		if (strpos($files_arg,'|') !== false) {
 			$files = explode ('|', $files_arg);
 		} elseif (strpos($files_arg,'*') !== false || strpos($files_arg,'?') !== false) {
+			if (strpos ($files_arg, '..') !== false) {
+				return;
+			}
 			$files = glob ($root .  $files_arg, GLOB_BRACE);
 			$files = is_array ($files) ? $files : array ();
 			$addroot = false;
