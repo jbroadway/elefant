@@ -17,7 +17,7 @@
  * The `filelist` is a list of images inside `/files/` or the directory set
  * by the `filemanager_path` option in your config file.
  * `filelist` can either be an array or a string with each file path delimited
- * by `|`.
+ * by `|` or a glob pattern like 'stuff/*_light.jpg'.
  * `idsuffix` will be appended to the CSS id of the slideshow.
  *
  * To limit the photo dimensions to a certain size, add a `dimensions`
@@ -65,19 +65,33 @@ if (isset ($data['path']) or isset ($_GET['path'])) {
 		$files_arg = $_GET['files'];
 	}
 
+	$addroot = true;
 	if (is_string ($files_arg)) {
-		$files = explode ('|', $files_arg);
+		if (strpos($files_arg,'|') !== false) {
+			$files = explode ('|', $files_arg);
+		} elseif (strpos($files_arg,'*') !== false || strpos($files_arg,'?') !== false) {
+			if (strpos ($files_arg, '..') !== false) {
+				return;
+			}
+			$files = glob ($root .  $files_arg, GLOB_BRACE);
+			$files = is_array ($files) ? $files : array ();
+			$addroot = false;
+		} else {
+			return;
+		}
 	} elseif (is_array ($files_arg)) {
 		$files = $files_arg;
 	} else {
 		return;
 	}
 
-	$files = array_map (
-		function($var) use ($root) {
-			return ($root . trim ($var, '/'));
-		}
-		, $files);
+    if ($addroot) {
+        $files = array_map (
+            function($var) use ($root) {
+                return ($root . trim ($var, '/'));
+            }
+            , $files);
+    }
 
 	if (isset ($data['name'])) {
 		$name = $data['name'];
