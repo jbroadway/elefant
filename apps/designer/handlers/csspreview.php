@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 			}
 		}
 	}
-	if ($_GET['css'] && preg_match ('/^(layouts|css)\/[a-z0-9\/_-]+\.css$/i', $_GET['css'])) {
+	if ($_GET['css'] && preg_match ('/^(layouts|css)\/[a-z0-9\/ _-]+\.css$/i', $_GET['css'])) {
 		$page->layout = str_replace ('</head>', '<style>' . file_get_contents ($_GET['css']) . '</style></head>', $page->layout);
 	}
 } else {

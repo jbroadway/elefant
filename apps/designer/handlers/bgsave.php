@@ -17,7 +17,7 @@ if (! User::require_acl ('admin') || ! User::require_acl ('designer')) {
 
 $error = false;
 
-if (! preg_match ('/^(css|layouts|layouts\/[a-z0-9_-]+|layouts\/[a-z0-9_-]+\/[a-z0-9_-]+)\/[a-z0-9_-]+\.(html|css)$/i', $_GET['file'])) {
+if (! preg_match ('/^(css|layouts|layouts\/[a-z0-9 _-]+|layouts\/[a-z0-9 _-]+\/[a-z0-9 _-]+)\/[a-z0-9 _-]+\.(html|css)$/i', $_GET['file'])) {
 	$res = new StdClass;
 	$res->success = false;
 	$res->error = 'Invalid file path';
