@@ -8,7 +8,7 @@ $page->layout = 'admin';
 
 $this->require_acl ('admin', 'designer');
 
-if (! preg_match ('/^(css|layouts|layouts\/[a-z0-9_-]+|layouts\/[a-z0-9_-]+\/[a-z0-9_-]+)\/[a-z0-9\/_-]+\.(css|html)$/i', $_GET['file'])) {
+if (! preg_match ('/^(css|layouts|layouts\/[a-z0-9 _-]+|layouts\/[a-z0-9 _-]+\/[a-z0-9 _-]+)\/[a-z0-9\/ _-]+\.(css|html)$/i', $_GET['file'])) {
 	$this->redirect ('/designer');
 }
 
