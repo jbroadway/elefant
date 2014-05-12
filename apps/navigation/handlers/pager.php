@@ -72,6 +72,7 @@ $o->next = $o->num + 1; // the num for the next screen
 $o->prev = $o->num - 1; // the num for the previous screen
 $o->last_screen = ceil ($o->total / $o->limit); // the num of the last screen
 
+$o->url = preg_replace ('/%([^d])/', '%%\1', $o->url);
 $o->next_link = sprintf ($o->url, $o->next);
 $o->prev_link = sprintf ($o->url, $o->prev);
 $o->first_link = sprintf ($o->url, 1);
