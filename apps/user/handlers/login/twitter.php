@@ -14,7 +14,8 @@ $twauth = new tmhOAuth (array (
 	'consumer_secret' => $appconf['Twitter']['consumer_secret']
 ));
 
-$here = tmhUtilities::php_self ();
+$tmhu = new tmhUtilities;
+$here = $tmhu->php_self ();
 if (strpos ($here, '?redirect=') === false) {
 	$here .= '?redirect=' . urlencode ($_GET['redirect']);
 }
