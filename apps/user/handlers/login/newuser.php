@@ -9,6 +9,10 @@ if (! $appconf['Custom Handlers']['user/signup']) {
 	return;
 }
 
+// Check for a custom handler override
+$res = $this->override ('user/login/newuser');
+if ($res) { echo $res; return; }
+
 $f = new Form ('post', 'user/login/newuser');
 if ($f->submit ()) {
 	$date = gmdate ('Y-m-d H:i:s');
