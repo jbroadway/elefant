@@ -486,11 +486,8 @@ span.dynamic-fileManager {
 	padding-top: 5px;
 	margin-top: 25px;
 	padding-bottom: 15px;
+	text-align: right;
 }
-
-	.copyright {
-		text-align: right;
-	}
 
 @media screen and (max-width: 480px) {
 	body, th, td {

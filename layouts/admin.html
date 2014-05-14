@@ -7,26 +7,28 @@
 	<link rel="stylesheet" type="text/css" href="/apps/admin/css/reset.css" />
 	<link rel="stylesheet" type="text/css" href="/apps/admin/css/text.css" />
 	<link rel="stylesheet" type="text/css" href="/apps/admin/css/960.css" />
-	<link rel="stylesheet" type="text/css" href="{{ Product::stylesheet() }}" />	
+	<link rel="stylesheet" type="text/css" href="{{ Product::stylesheet() }}" />
 	{! admin/head !}
 	{{ head|none }}
 </head>
-<body data-admin-last-page="{{ isset ($_COOKIE['elefant_last_page']) ? $_COOKIE['elefant_last_page'] : '' }}"  class="is-admin">
-<div id="wrapper" class="container_12">
-	<div id="body" class="grid_12">
-	{% if title != '' %}<h2>{{ title|none }}</h2>{% end %}
-	{{ body|none }}
-	</div>
-	<div class="clear"></div>
-	<div id="footer" class="grid_12">
-		<div class="grid_6 alpha">
-			&nbsp;
+<body data-admin-last-page="{{ isset ($_COOKIE['elefant_last_page']) ? $_COOKIE['elefant_last_page'] : '' }}"
+      class="is-admin page-{{id}}">
+<div id="wrapper">
+	<div class="section section-title container_12">
+		<div id="title" class="grid_12">
+			{% if title != '' %}<h2>{{ title|none }}</h2>{% end %}
 		</div>
-		<div class="grid_6 omega copyright">
+	</div>
+	<div class="section section-body container_12">
+		<div id="body" class="grid_12">
+			{{ body|none }}
+		</div>
+	</div>
+	<div class="section section-footer container_12">
+		<div id="footer" class="grid_12">
 			{"Powered by"} <a href="{{ Product::website() }}">{{ Product::name() }} {{ constant('ELEFANT_VERSION') }}</a>
 		</div>
 	</div>
-	<div class="clear"></div>
 </div>
 {{ tail|none }}
 </body>
