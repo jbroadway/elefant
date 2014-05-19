@@ -64,7 +64,9 @@ if ($f->submit ()) {
 	$u = new User;
 	$u = $f->merge_values ($u);
 	$u->failed = $f->failed;
-	$page->title = __ ('Sign Up');
+	if (! $this->internal) {
+		$page->title = __ ('Sign Up');
+	}
 	echo $tpl->render ('user/signup', $u);
 }
 

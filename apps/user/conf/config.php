@@ -32,6 +32,7 @@ user/index = user/index
 user/signup = user/signup
 user/update = user/update
 user/login = user/login
+user/login/newuser = user/login/newuser
 user/logout = user/logout
 
 [Facebook]

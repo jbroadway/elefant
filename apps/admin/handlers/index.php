@@ -7,6 +7,7 @@
  * the admin toolbar and edit buttons.
  */
 
+$page->id = 'admin';
 $page->layout = 'admin';
 
 if (isset ($_GET['redirect'])) {
