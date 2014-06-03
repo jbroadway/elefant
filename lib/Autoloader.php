@@ -74,7 +74,7 @@ function elefant_autoloader ($class) {
 		return true;
 	} else {
 		// No namespace, check in app lib and models folders
-		$res = glob ('apps/*/{models,lib}/' . $class . '.php', GLOB_BRACE);
+		$res = glob ('apps/*/{lib,models}/' . $class . '.php', GLOB_BRACE);
 		if (is_array ($res) && count ($res) > 0) {
 			require_once ($res[0]);
 			return true;
