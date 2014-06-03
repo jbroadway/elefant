@@ -22,6 +22,11 @@ login_methods[] = google
 login_attempt_limit = 5
 block_attempts_for = 900
 
+; Height and width to resize photos to
+
+photo_width = 250
+photo_height = 150
+
 [Custom Handlers]
 
 ; You can override some of the built-in handlers with your own

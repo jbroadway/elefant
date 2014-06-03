@@ -2,7 +2,7 @@
 .notice { display: none; }
 </style>
 
-<form method="POST" id="update-form">
+<form method="POST" id="update-form" enctype="multipart/form-data">
 <p>{"Your name"}:<br /><input type="text" name="name" size="40" value="{{ name }}" />
 <span class="notice" id="name-notice">{"You must enter a name."}</span></p>
 <p>{"Email address"}:<br /><input type="text" name="email" size="40" value="{{ email }}" />
@@ -11,6 +11,84 @@
 <span class="notice" id="password-notice">{"Your password must be at least 6 characters."}</span></p>
 <p>{"Verify new password"}:<br /><input type="password" name="verify_pass" size="20" value="{{ verify_pass }}" />
 <span class="notice" id="verify_pass-notice">{"Your password doesn't match."}</span></p>
+
+<h2>{"About you"}</h2>
+
+<p>
+	{"Personal bio"}:<br />
+	<textarea cols="70" rows="5" name="about">{{ about }}</textarea>
+</p>
+
+<p>
+	{"Profile photo"}:<br />
+	{% if photo != '' %}
+	<img src="/{{photo}}#{{mt_rand()}}" style="max-width: {{Appconf::user ('User', 'photo_width')}}" /><br />
+	{% end %}
+	<input type="file" name="photo" id="photo" size="40" value="{{ photo|quotes }}" />
+</p>
+
+<p>
+	{"Website"}:<br />
+	<input type="text" name="website" size="40" value="{{ website|quotes }}" />
+</p>
+
+<p>
+	{"Company"}:<br />
+	<input type="text" name="company" size="40" value="{{ company|quotes }}" />
+</p>
+
+<p>
+	{"Job title"}:<br />
+	<input type="text" name="title" size="40" value="{{ title|quotes }}" />
+</p>
+
+<h2>{"Contact info"}</h2>
+
+<p>
+	{"Phone number"}:<br />
+	<input type="text" name="phone" size="30" value="{{ phone|quotes }}" />
+</p>
+
+<p>
+	{"Address"}:<br />
+	<input type="text" name="address" size="40" value="{{ address|quotes }}" />
+</p>
+
+<p>
+	{"Address line 2"}:<br />
+	<input type="text" name="address2" size="40" value="{{ address2|quotes }}" />
+</p>
+
+<p>
+	{"City"}:<br />
+	<input type="text" name="city" size="40" value="{{ city|quotes }}" />
+</p>
+
+<p>
+	{"State/province"}:<br />
+	<select name="state">
+		<option value="">{"- select -"}</option>
+	{% foreach _states as _state, _name %}
+		<option value="{{ _state|quotes }}"{% if state === $data->_state %} selected {% end %}>{{ _name|ucfirst }}</option>
+	{% end %}
+	</select>
+</p>
+
+<p>
+	{"Country"}:<br />
+	<select name="country">
+		<option value="">{"- select -"}</option>
+	{% foreach _countries as _country, _name %}
+		<option value="{{ _country|quotes }}"{% if country === $data->_country %} selected {% end %}>{{ _name|ucfirst }}</option>
+	{% end %}
+	</select>
+</p>
+
+<p>
+	{"Zip/postal code"}:<br />
+	<input type="text" name="zip" size="20" value="{{ zip|quotes }}" />
+</p>
+
 <p><input type="submit" value="{"Update Profile"}" /></p>
 </form>
 
