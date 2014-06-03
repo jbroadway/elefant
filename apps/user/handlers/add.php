@@ -18,11 +18,13 @@ if ($f->submit ()) {
 	$_POST['updated'] = $now;
 	$_POST['userdata'] = json_encode (array ());
 	unset ($_POST['verify_pass']);
+	unset ($_POST['_states']);
+	unset ($_POST['_countries']);
 	$u = new User ($_POST);
 	$u->put ();
 	Versions::add ($u);
 	if (! $u->error) {
-		$this->add_notification (__ ('User added.'));
+		$this->add_notification (__ ('Member added.'));
 		$this->hook ('user/add', $_POST);
 		$this->redirect ('/user/admin');
 	}
@@ -35,7 +37,9 @@ if ($f->submit ()) {
 
 	$u->failed = $f->failed;
 	$u = $f->merge_values ($u);
-	$page->title = __ ('Add User');
+	$u->_states = user\Data::states ();
+	$u->_countries = user\Data::countries ();
+	$page->title = __ ('Add Member');
 	$page->add_script ('/js/json2.js');
 	$page->add_script ('/js/jstorage.js');
 	$page->add_script ('/js/jquery.autosave.js');

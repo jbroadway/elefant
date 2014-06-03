@@ -19,7 +19,7 @@ if (! $u->remove ()) {
 }
 
 $this->hook ('user/delete', $_GET);
-$this->add_notification (__ ('User deleted.'));
+$this->add_notification (__ ('Member deleted.'));
 $this->redirect ('/user/admin');
 
 ?>

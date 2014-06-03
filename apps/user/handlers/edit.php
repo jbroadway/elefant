@@ -19,11 +19,23 @@ if ($f->submit ()) {
 	if (! empty ($_POST['password'])) {
 		$u->password = User::encrypt_pass ($_POST['password']);
 	}
+	$u->photo = $_POST['photo'];
+	$u->about = $_POST['about'];
+	$u->phone = $_POST['phone'];
+	$u->address = $_POST['address'];
+	$u->address2 = $_POST['address2'];
+	$u->city = $_POST['city'];
+	$u->state = $_POST['state'];
+	$u->country = $_POST['country'];
+	$u->zip = $_POST['zip'];
+	$u->title = $_POST['title'];
+	$u->company = $_POST['company'];
+	$u->website = $_POST['website'];
 	$u->update_extended ();
 	$u->put ();
 	Versions::add ($u);
 	if (! $u->error) {
-		$this->add_notification (__ ('User saved.'));
+		$this->add_notification (__ ('Member saved.'));
 		$this->hook ('user/edit', $_POST);
 		$this->redirect ('/user/admin');
 	}
@@ -35,7 +47,9 @@ if ($f->submit ()) {
 
 	$u->failed = $f->failed;
 	$u = $f->merge_values ($u);
-	$page->title = __ ('Edit User') . ': ' . $u->name;
+	$u->_states = user\Data::states ();
+	$u->_countries = user\Data::countries ();
+	$page->title = __ ('Edit Member') . ': ' . $u->name;
 	$page->add_script ('/js/json2.js');
 	$page->add_script ('/js/jstorage.js');
 	$page->add_script ('/js/jquery.autosave.js');

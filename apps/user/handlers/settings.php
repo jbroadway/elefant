@@ -9,7 +9,7 @@ $this->require_admin ();
 require_once ('apps/admin/lib/Functions.php');
 
 $page->layout = 'admin';
-$page->title = __ ('User Settings');
+$page->title = __ ('Member Settings');
 
 $form = new Form ('post', $this);
 

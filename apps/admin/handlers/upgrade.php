@@ -25,7 +25,22 @@ if (DB::error ()) { // Add extra column to webpage
 	DB::commit ();
 }
 
-if (ELEFANT_VERSION === '1.3.6') { // Fix filemanager_prop primary key
+if (ELEFANT_VERSION === '1.3.10') { // Add extra user fields, social links, and notes
+	DB::beginTransaction ();
+	
+	$db = DB::get_connection (1);
+	$dbtype = $db->getAttribute (PDO::ATTR_DRIVER_NAME);
+	$sqldata = sql_split (file_get_contents ('apps/admin/conf/update/1.3.10_users_' . $dbtype . '.sql'));
+	
+	foreach ($sqldata as $sql) {
+		if (! DB::execute ($sql)) {
+			DB::rollback ();
+			printf ('<p>Error: %s</p>', DB::error ());
+			return;
+		}
+	}
+	DB::commit ();
+} elseif (ELEFANT_VERSION === '1.3.6') { // Fix filemanager_prop primary key
 	DB::beginTransaction ();
 
 	$db = DB::get_connection (1);

@@ -38,6 +38,18 @@ create table #prefix#user (
 	signed_up datetime not null,
 	updated datetime not null,
 	userdata text not null,
+	phone char(32) not null default '',
+	address char(48) not null default '',
+	address2 char(48) not null default '',
+	city char(48) not null default '',
+	state char(3) not null default '',
+	country char(3) not null default '',
+	zip char(16) not null default '',
+	title char(48) not null default '',
+	company char(48) not null default '',
+	photo char(128) not null default '',
+	about text not null default '',
+	website char(128) not null default '',
 	index(email, password),
 	index(session_id)
 ) default charset=utf8;
@@ -48,6 +60,24 @@ create table #prefix#user_openid (
 	token char(200) primary key,
 	user_id int not null
 ) default charset=utf8;
+
+create table #prefix#user_links (
+	id int not null auto_increment primary key,
+	user_id int not null,
+	service char(32) not null default '',
+	handle char(72) not null,
+	index (user_id, service)
+);
+
+create table #prefix#user_notes (
+	id int not null auto_increment primary key,
+	user_id int not null,
+	ts datetime not null,
+	made_by int not null,
+	note text not null,
+	index (user_id, ts),
+	index (made_by, ts)
+);
 
 create table #prefix#versions (
 	id int not null auto_increment primary key,

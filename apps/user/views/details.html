@@ -1,0 +1,48 @@
+<p>
+	<a href="/user/admin">&laquo; {"Back"}</a>
+	&nbsp;|&nbsp;
+	<a href="/user/edit?id={{id}}">{"Edit"}</a>
+	&nbsp;|&nbsp;
+	<a href="/user/delete?id={{id}}" onclick="return confirm ('{"Are you sure you want to delete this user?"}');">{"Delete"}</a>
+</p>
+
+<h4>{"Contact information"}</h4>
+
+{% if photo != '' %}
+<img src="{{photo}}" id="photo" />
+{% end %}
+
+<p>
+	<b>{"Email"}:</b> <a href="mailto:{{email}}">{{email}}</a><br />
+	<b>{"Phone"}:</b> {{phone}}<br />
+	<b>{"Website"}:</b> <a href="{{website}}">{{website}}</a>
+</p>
+
+<p>
+	<b>{"Company"}:</b> {{company}}<br />
+	<b>{"Title"}:</b> {{title}}
+</p>
+
+<p>
+	{{address}}{% if address2 != '' %},<br />{{address2}}{% end %}<br />
+	{{city}}, {{state|user\Data::state}}<br />
+	{{country|user\Data::country}} {{zip}}
+</p>
+
+{% if about != '' %}
+<p><b>{"About"}:</b><br />{{about}}</p>
+{% end %}
+
+<h4 class="clear-photo">{"Social links"}</h4>
+
+<h4>{"Notes"}</h4>
+
+<style>
+#photo {
+	max-width: 200px;
+	float: right;
+}
+.clear-photo {
+	clear: both;
+}
+</style>
