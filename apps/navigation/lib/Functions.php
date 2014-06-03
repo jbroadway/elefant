@@ -90,7 +90,7 @@ function navigation_clear_cache () {
  */
 function navigation_get_other_pages ($ids) {
 	$pages = array ();
-	$res = DB::fetch ('select id, title, menu_title, access from #prefix#webpage where access != "private"');
+	$res = DB::fetch ("select id, title, menu_title, access from #prefix#webpage where access != 'private'");
 
 	//Adds apps to Navigation
 	$apps = glob ('apps/*');
