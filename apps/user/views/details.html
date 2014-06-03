@@ -35,7 +35,43 @@
 
 <h4 class="clear-photo">{"Social links"}</h4>
 
+<div id="links" style="margin-bottom: 15px">
+</div>
+
+<form id="add-link">
+<p>
+	<input type="text" id="link-handle" placeholder="{"Link or handle"}" size="35" />
+	<select id="link-service">
+		<option value="">{"- service -"}</option>
+		<option value="Facebook">Facebook</option>
+		<option value="Google+">Google+</option>
+		<option value="Instagram">Instagram</option>
+		<option value="Twitter">Twitter</option>
+		<option value="Tumblr">Tumblr</option>
+		<option value="Website">Website</option>
+	</select>
+	<input type="submit" id="link-submit" value="{"Add Link"}" />
+</p>
+</form>
+
 <h4>{"Notes"}</h4>
+
+<div id="notes" style="margin-bottom: 15px">
+</div>
+
+<form id="add-note">
+<p>
+	<textarea id="note-text" cols="70" rows="4"></textarea><br />
+	<input type="submit" id="note-submit" value="{"Add Note"}" />
+</p>
+</form>
+
+<script>
+$(function () {
+	links.init ({{ links|json_encode }});
+	notes.init ({{ notes|json_encode }});
+});
+</script>
 
 <style>
 #photo {

@@ -109,6 +109,22 @@ class User extends ExtendedModel {
 	public static $acl = null;
 
 	/**
+	 * Relations to other tables.
+	 */
+	public $fields = array (
+		'links' => array (
+			'has_many' => 'user\Link',
+			'field_name' => 'user_id',
+			'order_by' => array ('service', 'asc')
+		),
+		'notes' => array (
+			'has_many' => 'user\Note',
+			'field_name' => 'user_id',
+			'order_by' => array ('ts', 'desc')
+		)
+	);
+
+	/**
 	 * Generates a random salt and encrypts a password using Blowfish.
 	 */
 	public static function encrypt_pass ($plain) {

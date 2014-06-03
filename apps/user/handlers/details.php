@@ -19,8 +19,15 @@ if ($user->error) {
 	return;
 }
 
-$page->title = __ ('Member') . ': ' . $user->name;
+$links = $user->links ();
+$notes = $user->notes ();
+$user = $user->orig ();
+$user->links = $links;
+$user->notes = $notes;
 
-echo $tpl->render ('user/details', $user->orig ());
+$page->title = __ ('Member') . ': ' . $user->name;
+$page->add_script ('/apps/user/js/links.js');
+$page->add_script ('/apps/user/js/notes.js');
+echo $tpl->render ('user/details', $user);
 
 ?>
