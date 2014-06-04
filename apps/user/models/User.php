@@ -109,20 +109,20 @@ class User extends ExtendedModel {
 	public static $acl = null;
 
 	/**
-	 * Relations to other tables.
+	 * Get all social links for the current user.
+	 * Alias of `user\Link::for_user ($user_id)`
 	 */
-	public $fields = array (
-		'links' => array (
-			'has_many' => 'user\Link',
-			'field_name' => 'user_id',
-			'order_by' => array ('service', 'asc')
-		),
-		'notes' => array (
-			'has_many' => 'user\Note',
-			'field_name' => 'user_id',
-			'order_by' => array ('ts', 'desc')
-		)
-	);
+	public function links () {
+		return user\Link::for_user ($this->id);
+	}
+
+	/**
+	 * Get all notes for the current user.
+	 * Alias of `user\Note::for_user ($user_id)`
+	 */
+	public function notes () {
+		return user\Note::for_user ($this->id);
+	}
 
 	/**
 	 * Generates a random salt and encrypts a password using Blowfish.

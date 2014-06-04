@@ -1,0 +1,20 @@
+#photo {
+	max-width: 200px;
+	float: right;
+}
+.clear-photo {
+	clear: both;
+}
+#note-list {
+	margin-bottom: 15px;
+}
+.note-info-line {
+	display: block;
+	font-weight: bold;
+}
+.note-made-by:after {
+	content: ":";
+}
+.note {
+	margin-bottom: 15px;
+}

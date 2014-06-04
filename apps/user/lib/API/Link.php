@@ -3,6 +3,10 @@
 namespace user\API;
 
 class Link extends \Restful {
+	public function get__default ($id) {
+		return user\Link::by_user ($id);
+	}
+
 	public function post_add () {
 		if (! isset ($_POST['user'])) return $this->error ('Missing parameter: user');
 		if (! isset ($_POST['service'])) return $this->error ('Missing parameter: service');

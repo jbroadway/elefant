@@ -19,15 +19,11 @@ if ($user->error) {
 	return;
 }
 
-$links = $user->links ();
-$notes = $user->notes ();
-$user = $user->orig ();
-$user->links = $links;
-$user->notes = $notes;
-
 $page->title = __ ('Member') . ': ' . $user->name;
-$page->add_script ('/apps/user/js/links.js');
-$page->add_script ('/apps/user/js/notes.js');
-echo $tpl->render ('user/details', $user);
+$page->add_script ('/apps/user/js/react/react.js');
+$page->add_script ('/apps/user/js/build/links.js');
+$page->add_script ('/apps/user/js/build/notes.js');
+$page->add_style ('/apps/user/css/details.css');
+echo $tpl->render ('user/details', $user->orig ());
 
 ?>

@@ -1,3 +1,5 @@
+{! admin/util/dates !}
+
 <p>
 	<a href="/user/admin">&laquo; {"Back"}</a>
 	&nbsp;|&nbsp;
@@ -56,29 +58,25 @@
 
 <h4>{"Notes"}</h4>
 
-<div id="notes" style="margin-bottom: 15px">
-</div>
-
-<form id="add-note">
-<p>
-	<textarea id="note-text" cols="70" rows="4"></textarea><br />
-	<input type="submit" id="note-submit" value="{"Add Note"}" />
-</p>
-</form>
+<div id="notes"></div>
 
 <script>
-$(function () {
-	links.init ({{ links|json_encode }});
-	notes.init ({{ notes|json_encode }});
-});
+var I18N = {
+	add_link: '{"Add Link"}',
+	add_note: '{"Add Note"}',
+	link_placeholder: '{"Link or handle"}',
+	service: '{"- service -"}'
+};
 </script>
 
-<style>
-#photo {
-	max-width: 200px;
-	float: right;
-}
-.clear-photo {
-	clear: both;
-}
-</style>
+<script>
+React.renderComponent (
+	NoteBox ({
+		init_url: '/user/api/note/{{id}}',
+		add_url: '/user/api/note/add',
+		user_id: {{id}},
+		i18n: I18N
+	}),
+	document.getElementById ('notes')
+);
+</script>
