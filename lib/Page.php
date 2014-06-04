@@ -186,8 +186,8 @@ class Page {
 	 * be added once. This makes it a good replacement for adding script include tags
 	 * to view templates.
 	 */
-	public function add_script ($script, $add_to = 'head') {
-		$script = Page::wrap_script ($script);
+	public function add_script ($script, $add_to = 'head', $type = '') {
+		$script = Page::wrap_script ($script, $type);
 
 		if (! in_array ($script, $this->scripts)) {
 			$this->scripts[] = $script;
@@ -208,8 +208,8 @@ class Page {
 	 * they both do the same thing, and `add_script()` always handled stylesheets
 	 * as well.
 	 */
-	public function add_style ($script, $add_to = 'head') {
-		return $this->add_script ($script, $add_to);
+	public function add_style ($script, $add_to = 'head', $type = '') {
+		return $this->add_script ($script, $add_to, $type);
 	}
 
 	/**
@@ -217,14 +217,17 @@ class Page {
 	 * including `<link>` tags for CSS files. Will pass through
 	 * on scripts that are already HTML.
 	 */
-	public static function wrap_script ($script) {
+	public static function wrap_script ($script, $type = '') {
 		if (strpos ($script, '<') === 0) {
 			return $script;
 		}
-		if (preg_match ('/\.css$/i', $script)) {
-			return '<link rel="stylesheet" href="' . $script . "\" />\n";
+		if ($type !== '') {
+			$type = ' type="' . $type . '"';
 		}
-		return '<script src="' . $script . "\"></script>\n";
+		if (preg_match ('/\.css$/i', $script)) {
+			return '<link rel="stylesheet"' . $type . ' href="' . $script . "\" />\n";
+		}
+		return '<script' . $type . ' src="' . $script . "\"></script>\n";
 	}
 }
 
