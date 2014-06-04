@@ -2,9 +2,11 @@
 
 namespace user\API;
 
-class Link extends \Restful {
+use Restful;
+
+class Link extends Restful {
 	public function get__default ($id) {
-		return user\Link::by_user ($id);
+		return \user\Link::for_user ($id);
 	}
 
 	public function post_add () {
@@ -12,8 +14,8 @@ class Link extends \Restful {
 		if (! isset ($_POST['service'])) return $this->error ('Missing parameter: service');
 		if (! isset ($_POST['handle'])) return $this->error ('Missing parameter: handle');
 		
-		$link = new user\Link (array (
-			'user_id' => $_POST['user']
+		$link = new \user\Link (array (
+			'user_id' => $_POST['user'],
 			'service' => $_POST['service'],
 			'handle' => $_POST['handle']
 		));
@@ -21,7 +23,8 @@ class Link extends \Restful {
 			error_log ($link->error);
 			return $this->error ('An unexpected error occurred.');
 		}
-		return $link->orig ();
+		return $this->get__default ($_POST['user']);
+		//return $link->orig ();
 	}
 	
 	public function post_delete () {

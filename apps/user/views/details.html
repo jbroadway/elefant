@@ -37,24 +37,7 @@
 
 <h4 class="clear-photo">{"Social links"}</h4>
 
-<div id="links" style="margin-bottom: 15px">
-</div>
-
-<form id="add-link">
-<p>
-	<input type="text" id="link-handle" placeholder="{"Link or handle"}" size="35" />
-	<select id="link-service">
-		<option value="">{"- service -"}</option>
-		<option value="Facebook">Facebook</option>
-		<option value="Google+">Google+</option>
-		<option value="Instagram">Instagram</option>
-		<option value="Twitter">Twitter</option>
-		<option value="Tumblr">Tumblr</option>
-		<option value="Website">Website</option>
-	</select>
-	<input type="submit" id="link-submit" value="{"Add Link"}" />
-</p>
-</form>
+<div id="links"></div>
 
 <h4>{"Notes"}</h4>
 
@@ -70,6 +53,15 @@ var I18N = {
 </script>
 
 <script>
+React.renderComponent (
+	LinkBox ({
+		init_url: '/user/api/link/{{id}}',
+		add_url: '/user/api/link/add',
+		user_id: {{id}},
+		i18n: I18N
+	}),
+	document.getElementById ('links')
+);
 React.renderComponent (
 	NoteBox ({
 		init_url: '/user/api/note/{{id}}',

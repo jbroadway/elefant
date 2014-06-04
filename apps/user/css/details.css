@@ -5,7 +5,7 @@
 .clear-photo {
 	clear: both;
 }
-#note-list {
+#link-list, #note-list, .note {
 	margin-bottom: 15px;
 }
 .note-info-line {
@@ -14,7 +14,4 @@
 }
 .note-made-by:after {
 	content: ":";
-}
-.note {
-	margin-bottom: 15px;
 }

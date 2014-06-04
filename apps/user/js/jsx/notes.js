@@ -56,14 +56,14 @@ var NoteBox = React.createClass ({
 			dataType: 'json',
 			success: function (res) {
 				if (! res.success) {
-					console.log (res.error);
+					//console.log (res.error);
 				} else {
 					this.setState ({notes: res.data});
 				}
 			}.bind (this),
 			error: function (xhr, status, err) {
 				// do nothing
-				console.log (err.toString ());
+				//console.log (err.toString ());
 			}.bind (this)
 		});
 	},
@@ -78,14 +78,14 @@ var NoteBox = React.createClass ({
 			data: data,
 			success: function (res) {
 				if (! res.success) {
-					console.log (res.error);
+					//console.log (res.error);
 				} else {
 					this.setState ({notes: res.data});
 				}
 			}.bind (this),
 			error: function (xhr, status, err) {
 				// do nothing
-				console.error (this.props_add_url, status, err.toString ());
+				//console.error (this.props_add_url, status, err.toString ());
 			}.bind (this)
 		});
 	},
