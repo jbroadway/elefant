@@ -52,6 +52,7 @@ class Link extends \Model {
 			case 'Facebook':
 			case 'Google+':
 			case 'Website':
+			case 'YouTube':
 				return 'http://' . $handle;
 		}
 	}

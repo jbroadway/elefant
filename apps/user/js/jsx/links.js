@@ -2,8 +2,11 @@
 var Link = React.createClass ({
 	render: function () {
 		var link = this.props.link;
-		link.type = link.service.toLowerCase ().replace ('+', '');
-		link.class_name = link.type + '-service';
+		link.type = link.service.toLowerCase ().replace ('+', '-plus');
+		link.class_name = 'fa fa-' + link.type;
+		if (link.type === 'website') {
+			link.class_name = 'fa fa-external-link';
+		}
 		return (
 			<div className="link">
 				<span className={link.class_name}></span>
@@ -16,7 +19,7 @@ var Link = React.createClass ({
 var LinkList = React.createClass ({
 	render: function () {
 		var links = [];
-		console.log (this.props.links);
+		//console.log (this.props.links);
 		this.props.links.forEach (function (link) {
 			links.push (<Link link={link} key={link.id} />);
 		});
@@ -38,6 +41,7 @@ var LinkForm = React.createClass ({
 						<option value="Twitter">Twitter</option>
 						<option value="Tumblr">Tumblr</option>
 						<option value="Website">Website</option>
+						<option value="YouTube">YouTube</option>
 					</select>
 					<input type="submit" value={this.props.i18n.add_link} />
 				</p>

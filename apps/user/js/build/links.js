@@ -2,8 +2,11 @@
 var Link = React.createClass ({displayName: 'Link',
 	render: function () {
 		var link = this.props.link;
-		link.type = link.service.toLowerCase ().replace ('+', '');
-		link.class_name = link.type + '-service';
+		link.type = link.service.toLowerCase ().replace ('+', '-plus');
+		link.class_name = 'fa fa-' + link.type;
+		if (link.type === 'website') {
+			link.class_name = 'fa fa-external-link';
+		}
 		return (
 			React.DOM.div( {className:"link"}, 
 				React.DOM.span( {className:link.class_name}),
@@ -16,7 +19,7 @@ var Link = React.createClass ({displayName: 'Link',
 var LinkList = React.createClass ({displayName: 'LinkList',
 	render: function () {
 		var links = [];
-		console.log (this.props.links);
+		//console.log (this.props.links);
 		this.props.links.forEach (function (link) {
 			links.push (Link( {link:link, key:link.id} ));
 		});
@@ -37,7 +40,8 @@ var LinkForm = React.createClass ({displayName: 'LinkForm',
 						React.DOM.option( {value:"Instagram"}, "Instagram"),
 						React.DOM.option( {value:"Twitter"}, "Twitter"),
 						React.DOM.option( {value:"Tumblr"}, "Tumblr"),
-						React.DOM.option( {value:"Website"}, "Website")
+						React.DOM.option( {value:"Website"}, "Website"),
+						React.DOM.option( {value:"YouTube"}, "YouTube")
 					),
 					React.DOM.input( {type:"submit", value:this.props.i18n.add_link} )
 				)

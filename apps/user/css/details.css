@@ -15,3 +15,6 @@
 .note-made-by:after {
 	content: ":";
 }
+.link .fa {
+	margin-right: 8px;
+}
