@@ -70,7 +70,7 @@ var NoteBox = React.createClass ({displayName: 'NoteBox',
 	
 	handleNoteSubmit: function (data) {
 		data.user = this.props.user_id;
-		console.log (data);
+		//console.log (data);
 		$.ajax ({
 			url: this.props.add_url,
 			dataType: 'json',
