@@ -29,8 +29,9 @@ class Link extends Restful {
 	
 	public function post_delete () {
 		if (! isset ($_POST['id'])) return $this->error ('Missing parameter: id');
+		if (! isset ($_POST['user'])) return $this->error ('Missing parameter: user');
 		
-		$link = new user\Link ($_POST['id']);
+		$link = new \user\Link ($_POST['id']);
 		if ($link->error) {
 			error_log ($link->error);
 			return $this->error ('An unexpected error occurred.');
@@ -40,7 +41,8 @@ class Link extends Restful {
 			error_log ($link->error);
 			return $this->error ('An unexpected error occurred.');
 		}
-		return true;
+		return $this->get__default ($_POST['user']);
+		//return true;
 	}
 }
 

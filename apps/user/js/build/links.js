@@ -10,18 +10,41 @@ var Link = React.createClass ({displayName: 'Link',
 		return (
 			React.DOM.div( {className:"link"}, 
 				React.DOM.span( {className:link.class_name}),
-				React.DOM.a( {href:link.link}, link.link)
+				React.DOM.a( {href:link.link, target:"_blank"}, link.link),
+				" ",
+				React.DOM.span( {className:"note-delete"}, 
+					"(",React.DOM.a( {href:"#", onClick:this.handleDelete}, this.props.i18n.del),")"
+				)
 			)
 		);
+	},
+	
+	handleDelete: function (event) {
+		event.preventDefault ();
+		
+		if (! confirm (this.props.i18n.confirm_delete_link)) {
+			return false;
+		}
+
+		this.props.onLinkDelete ({id: this.props.link.id});
 	}
 });
 
 var LinkList = React.createClass ({displayName: 'LinkList',
 	render: function () {
-		var links = [];
+		var links = [],
+			i18n = this.props.i18n,
+			link_delete = this.props.onLinkDelete;
 		//console.log (this.props.links);
 		this.props.links.forEach (function (link) {
-			links.push (Link( {link:link, key:link.id} ));
+			links.push (
+				Link(
+					{link:link,
+					key:link.id,
+					onLinkDelete:link_delete,
+					i18n:i18n}
+				)
+			);
 		});
 		return (React.DOM.div( {id:"link-list"}, links));
 	}
@@ -85,7 +108,34 @@ var LinkBox = React.createClass ({displayName: 'LinkBox',
 		});
 	},
 	
+	handleLinkDelete: function (data) {
+		var notification = this.props.i18n.link_deleted;
+
+		data.user = this.props.user_id;
+		//console.log (data);
+		$.ajax ({
+			url: this.props.del_url,
+			dataType: 'json',
+			type: 'POST',
+			data: data,
+			success: function (res) {
+				if (! res.success) {
+					//console.log (res.error);
+				} else {
+					$.add_notification (notification);
+					this.setState ({links: res.data});
+				}
+			}.bind (this),
+			error: function (xhr, status, err) {
+				// do nothing
+				//console.error (this.props_add_url, status, err.toString ());
+			}.bind (this)
+		});
+	},
+	
 	handleLinkSubmit: function (data) {
+		var notification = this.props.i18n.link_added;
+
 		data.user = this.props.user_id;
 		//console.log (data);
 		$.ajax ({
@@ -97,6 +147,7 @@ var LinkBox = React.createClass ({displayName: 'LinkBox',
 				if (! res.success) {
 					//console.log (res.error);
 				} else {
+					$.add_notification (notification);
 					this.setState ({links: res.data});
 				}
 			}.bind (this),
@@ -114,8 +165,15 @@ var LinkBox = React.createClass ({displayName: 'LinkBox',
 	render: function () {
 		return (
 			React.DOM.div( {className:"link-box"}, 
-				LinkList( {links:this.state.links} ),
-				LinkForm( {onLinkSubmit:this.handleLinkSubmit, i18n:this.props.i18n} )
+				LinkList(
+					{links:this.state.links,
+					onLinkDelete:this.handleLinkDelete,
+					i18n:this.props.i18n}
+				),
+				LinkForm(
+					{onLinkSubmit:this.handleLinkSubmit,
+					i18n:this.props.i18n}
+				)
 			)
 		);
 	}

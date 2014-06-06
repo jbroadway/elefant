@@ -30,6 +30,7 @@ class Note extends Restful {
 	
 	public function post_delete () {
 		if (! isset ($_POST['id'])) return $this->error ('Missing parameter: id');
+		if (! isset ($_POST['user'])) return $this->error ('Missing parameter: user');
 		
 		$note = new \user\Note ($_POST['id']);
 		if ($note->error) {
@@ -41,7 +42,8 @@ class Note extends Restful {
 			error_log ($note->error);
 			return $this->error ('An unexpected error occurred.');
 		}
-		return true;
+		return $this->get__default ($_POST['user']);
+		//return true;
 	}
 }
 
