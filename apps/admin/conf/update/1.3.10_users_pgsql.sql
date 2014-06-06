@@ -27,7 +27,7 @@ create sequence #prefix#user_notes_seq;
 create table #prefix#user_notes (
 	id integer not null default nextval('#prefix#user_notes_seq') primary key,
 	user_id int not null,
-	ts timestamp without time zone not null,
+	ts timestamp not null,
 	made_by int not null,
 	note text not null
 );
