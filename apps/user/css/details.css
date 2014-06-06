@@ -1,3 +1,6 @@
+#body>p {
+	max-width: 600px;
+}
 #photo {
 	max-width: 200px;
 	float: right;
