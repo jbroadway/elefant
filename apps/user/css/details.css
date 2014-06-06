@@ -1,4 +1,4 @@
-#body>p {
+#body>p, .note {
 	max-width: 600px;
 }
 #photo {
