@@ -25,7 +25,6 @@ if (! $this->params[0]) {
 	$data->is_current = (User::is_valid () && $this->params[0] === User::$user->id) ? true : false;
 }
 
-$data->hash = md5 (strtolower (trim ($data->email)));
 echo $tpl->render ('user/index', $data);
 
 ?>

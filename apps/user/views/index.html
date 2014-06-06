@@ -1,14 +1,24 @@
-<p>
 {% if photo == '' %}
-	<a href="http://www.gravatar.com/site/login/" target="_blank" title="{"Click to update photo"} (Gravatar)"><img src="http://www.gravatar.com/avatar/{{ hash }}?s=42&d=mm" style="float: left; margin-right: 15px; max-width: {{Appconf::user ('User', 'photo_width')}}" /></a>
+	<img src="{{Appconf::user ('User', 'default_photo')}}" align="left" style="margin-right: 15px; width: {{Appconf::user ('User', 'photo_width')}}px; height: {{Appconf::user ('User', 'photo_height')}}px" />
 {% else %}
-	<img src="{{photo}}" style="float: left; margin-right: 15px; max-width: {{Appconf::user ('User', 'photo_width')}}" />
+	<img src="{{photo}}" align="left" style="margin-right: 15px; width: {{Appconf::user ('User', 'photo_width')}}px; height: {{Appconf::user ('User', 'photo_height')}}px" />
+{% end %}
+
+<p>
+
+{% if website != '' %}
+	<a href="{{website}}" rel="nofollow">{"Visit Website"}</a>
 {% end %}
 
 {% if is_current %}
-<a href="/user/update">{"Edit Profile"}</a>
+	|
+	<a href="/user/update" class="user-edit-profile">{"Edit Profile"}</a>
 {% end %}
 
 </p>
+
+{% if about != '' %}
+<p>{{about|Template::sanitize|nl2br}}</p>
+{% end %}
 
 <br clear="both" />

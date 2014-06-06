@@ -24,8 +24,12 @@ block_attempts_for = 900
 
 ; Height and width to resize photos to
 
-photo_width = 250
-photo_height = 150
+photo_width = 125
+photo_height = 125
+
+; Default photo to use for users without profile photos
+
+default_photo = "/apps/admin/css/admin/user_profile.png"
 
 [Custom Handlers]
 
