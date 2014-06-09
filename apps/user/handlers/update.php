@@ -16,8 +16,17 @@ if (! User::require_login ()) {
 
 $u = User::$user;
 
-$f = new Form ('post', 'user/update');
-if ($f->submit ()) {
+$form = new Form ('post', $this);
+
+$form->data = $u->orig ();
+$form->data->password = '';
+$form->data = $form->merge_values ($form->data);
+$form->data->failed = $form->failed;
+$form->data->_states = user\Data::states ();
+$form->data->_countries = user\Data::countries ();
+$page->title = __ ('Update Profile');
+
+echo $form->handle (function ($form) use ($u, $page) {
 	$u->name = $_POST['name'];
 	$u->email = $_POST['email'];
 	if (! empty ($_POST['password'])) {
@@ -69,14 +78,6 @@ if ($f->submit ()) {
 	$page->title = __ ('An Error Occurred');
 	echo '<p>' . __ ('Please try again later.') . '</p>';
 	echo '<p><a href="/user">' . __ ('Back') . '</a></p>';
-} else {
-	$u->password = '';
-	$u = $f->merge_values ($u);
-	$u->failed = $f->failed;
-	$u->_states = user\Data::states ();
-	$u->_countries = user\Data::countries ();
-	$page->title = __ ('Update Profile');
-	echo $tpl->render ('user/update', $u);
-}
+});
 
 ?>

@@ -2,7 +2,7 @@
 .notice { display: none; }
 </style>
 
-<form method="POST" id="update-form" enctype="multipart/form-data">
+<form method="POST" id="{{_form}}" enctype="multipart/form-data">
 <p>{"Your name"}:<br /><input type="text" name="name" size="40" value="{{ name }}" />
 <span class="notice" id="name-notice">{"You must enter a name."}</span></p>
 <p>{"Email address"}:<br /><input type="text" name="email" size="40" value="{{ email }}" />
@@ -22,7 +22,7 @@
 <p>
 	{"Profile photo"}:<br />
 	{% if photo != '' %}
-	<img src="/{{photo}}#{{mt_rand()}}" style="max-width: {{Appconf::user ('User', 'photo_width')}}" /><br />
+	<img src="/{{photo}}#{{mt_rand()}}" style="width: {{Appconf::user ('User', 'photo_width')}}px; height: {{Appconf::user ('User', 'photo_height')}}px" /><br />
 	{% end %}
 	<input type="file" name="photo" id="photo" size="40" value="{{ photo|quotes }}" />
 </p>
@@ -91,26 +91,3 @@
 
 <p><input type="submit" value="{"Update Profile"}" /></p>
 </form>
-
-<script type="text/javascript" src="/js/jquery.verify_values.js"></script>
-<script type="text/javascript">
-$(function () {
-	$('#update-form').verify_values ({
-		handler: 'user/update',
-		callback: function (failed) {
-			// highlight the failed elements
-			for (var i = 0; i < failed.length; i++) {
-				$('#' + failed[i] + '-notice').show ();
-			}
-		},
-		reset: function (fields) {
-			for (var i = 0; i < fields.length; i++) {
-				$('#' + fields[i] + '-notice').hide ();
-			}
-		}
-	});
-	{% foreach failed %}
-	$('#{{ loop_value }}-notice').show ();
-	{% end %}
-});
-</script>
