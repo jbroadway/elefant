@@ -75,6 +75,16 @@ class I18n {
 	/**
 	 * The full date format to send to jQuery.localize.
 	 */
+	public $day_date_format = 'dddd, mmmm d, yyyy';
+
+	/**
+	 * The full date format to send to jQuery.localize.
+	 */
+	public $short_day_date_format = 'ddd, mmm d';
+
+	/**
+	 * The full date format to send to jQuery.localize.
+	 */
 	public $date_format = 'mmmm d, yyyy';
 
 	/**
@@ -452,6 +462,32 @@ class I18n {
 	}
 
 	/**
+	 * Filter for outputting a shortened day and date. Used with the
+	 * jQuery localize plugin to convert dates into the
+	 * current user's time zone.
+	 *
+	 * Usage:
+	 *
+	 *     {{ date_value|I18n::day_date }}
+	 */
+	public static function day_date ($date) {
+		return self::_date ($date, 'daydate', 'l, F j, Y');
+	}
+
+	/**
+	 * Filter for outputting a shortened day and date. Used with the
+	 * jQuery localize plugin to convert dates into the
+	 * current user's time zone.
+	 *
+	 * Usage:
+	 *
+	 *     {{ date_value|I18n::short_day_date }}
+	 */
+	public static function short_day_date ($date) {
+		return self::_date ($date, 'shortdaydate', 'D, M j');
+	}
+
+	/**
 	 * Filter for outputting times. Used with the jQuery
 	 * localize plugin to convert dates into the current user's
 	 * time zone.
@@ -484,10 +520,36 @@ class I18n {
 	 *
 	 * Usage:
 	 *
+	 *     {{ date_value|I18n::day_date_time }}
+	 */
+	public static function day_date_time ($date) {
+		return self::_date ($date, 'daydatetime', 'l, F j - g:ia');
+	}
+
+	/**
+	 * Filter for outputting a shortened date and time. Used
+	 * with the jQuery localize plugin to convert dates into
+	 * the current user's time zone.
+	 *
+	 * Usage:
+	 *
 	 *     {{ date_value|I18n::short_date_time }}
 	 */
 	public static function short_date_time ($date) {
 		return self::_date ($date, 'shortdatetime', 'M j - g:ia');
+	}
+
+	/**
+	 * Filter for outputting a shortened date and time. Used
+	 * with the jQuery localize plugin to convert dates into
+	 * the current user's time zone.
+	 *
+	 * Usage:
+	 *
+	 *     {{ date_value|I18n::short_day_date_time }}
+	 */
+	public static function short_day_date_time ($date) {
+		return self::_date ($date, 'shortdaydatetime', 'D, M j - g:ia');
 	}
 }
 
