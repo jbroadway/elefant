@@ -376,8 +376,8 @@ class DB {
 	/**
 	 * Get the last inserted id value.
 	 */
-	public static function last_id () {
-		return self::$connections[self::$last_conn]->lastInsertId ();
+	public static function last_id ($name=null) {
+		return self::$connections[self::$last_conn]->lastInsertId ($name);
 	}
 	
 	/**
