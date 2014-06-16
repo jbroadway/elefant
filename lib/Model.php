@@ -406,7 +406,7 @@ class Model {
 				return false;
 			}
 			if (! isset ($this->data[$this->key])) {
-				$this->data[$this->key] = DB::last_id ();
+				$this->data[$this->key] = (DB::get_connection(DB::$last_conn)->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql') ? DB::last_id(str_replace ('#prefix#', DB::$prefix, $this->table) . '_' . $this->key . '_seq') : DB::last_id();
 				$this->keyval = $this->data[$this->key];
 			}
 			$this->is_new = false;
