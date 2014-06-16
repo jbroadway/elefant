@@ -2,7 +2,7 @@
 
 namespace filemanager;
 
-use DB, FileManager, I18n, Restful;
+use DB, FileManager, I18n, Restful, Zipper;
 
 /**
  * Provides the JSON API for the admin file manager/browser, as well as functions
@@ -119,7 +119,7 @@ class API extends Restful {
 	 */
 	public function get_prop () {
 		$file = urldecode (join ('/', func_get_args ()));
-		if (! FileManager::verify_file ($file, $this->root)) {
+		if (! FileManager::verify_file ($file)) {
 			return $this->error (__ ('Invalid file name'));
 		}
 		if (! isset ($_GET['prop'])) {
@@ -137,6 +137,51 @@ class API extends Restful {
 			'prop' => $_GET['prop'],
 			'value' => $res,
 			'msg' => __ ('Properties saved.')
+		);
+	}
+	
+	/**
+	 * Handle unzip requests via (/filemanager/api/unzip).
+	 */
+	public function get_unzip () {
+		$file = urldecode (join ('/', func_get_args ()));
+		if (! FileManager::verify_file ($file)) {
+			return $this->error (__ ('Invalid file name'));
+		}
+		
+		// make sure it's a zip file
+		if (! preg_match ('/\.zip$/i', $file)) {
+			return $this->error (__ ('Invalid file type'));
+		}
+		
+		// make sure the folder doesn't already exist
+		$folder = preg_replace ('/\.zip$/i', '', $file);
+		if (FileManager::verify_folder ($folder)) {
+			return $this->error (__ ('Folder already exists'));
+		}
+		
+		// unzip the file
+		try {
+			Zipper::unzip (FileManager::root () . $file);
+		} catch (\Exception $e) {
+			return $this->error ($e->getMessage ());
+		}
+
+		// move the unzipped folder
+		$created = Zipper::find_folder (FileManager::root () . $file);
+		error_log ($created);
+		if (! $created) {
+			if (! rename (Zipper::$folder, FileManager::root () . $folder)) {
+				return $this->error (__ ('Unable to save unzipped folder.'));
+			}
+		} elseif (! rename ($created, FileManager::root () . $folder)) {
+			return $this->error (__ ('Unable to save unzipped folder.'));
+		}
+
+		// return the newly-created folder
+		return array (
+			'file' => $folder,
+			'msg' => __ ('File unzipped.')
 		);
 	}
 }

@@ -17,7 +17,7 @@ class ZipInstaller extends Installer {
 			return false;
 		}
 
-		$folder = ZipInstaller::find_folder ('cache/zip');
+		$folder = Zipper::find_folder ($source);
 
 		// Get config and verify it
 		if (! file_exists ($folder . '/elefant.json')) {
@@ -57,25 +57,10 @@ class ZipInstaller extends Installer {
 	}
 
 	/**
-	 * Find the folder that the zip created.
-	 */
-	public static function find_folder ($base) {
-		$files = glob ($base . '/*');
-		foreach ($files as $file) {
-			if (is_dir ($file)) {
-				return $file;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Remove all files and keep the cache folder clean.
 	 */
 	public static function clean () {
-		if (file_exists ('cache/zip')) {
-			rmdir_recursive ('cache/zip');
-		}
+		Zipper::clean ();
 	}
 
 	/**

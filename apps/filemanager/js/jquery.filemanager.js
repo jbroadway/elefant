@@ -9,6 +9,7 @@
 		aviary_current: false,
 		text_file: /\.(txt|html?|xml|md|csv|css|js|json)$/i,
 		img_file: /\.(gif|png|jpe?g)$/i,
+		zip_file: /\.zip$/i,
 		max_filesize: 2,
 		strings: {
 			
@@ -92,6 +93,7 @@
 									res.data.files[i].image_file = (filemanager.aviary !== null)
 										? res.data.files[i].name.match (filemanager.img_file)
 										: false;
+									res.data.files[i].zip_file = res.data.files[i].name.match (filemanager.zip_file);
 									res.data.files[i].text_file = res.data.files[i].name.match (filemanager.text_file);
 									res.data.files[i]._name = res.data.files[i].name.replace (/'/g, '\\\'');
 									res.data.files[i]._path = res.data.files[i].path.replace (/'/g, '\\\'');
@@ -146,6 +148,17 @@
 					filemanager.aviary.launch ({
 						image: 'aviary-tmp',
 						url: url
+					});
+					break;
+				case 'unzip':
+					// unzip an archive
+					$.get (options.root + cmd + '/' + options.file, function (res) {
+						if (! res.success) {
+							$.add_notification (res.error);
+							return;
+						}
+						$.add_notification (res.data.msg);
+						$.filemanager ('ls', {file: filemanager.path});
 					});
 					break;
 			}

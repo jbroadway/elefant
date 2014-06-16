@@ -17,6 +17,9 @@
 		<td>\{{html mtime}}</td>
 		<td>${fsize}</td>
 		<td style="text-align: right">
+			\{{if zip_file}}
+			<a href="#" onclick="return $.filemanager ('unzip', {file: '${_path}', name: '${_name}'})">{"Unzip"}</a> |
+			\{{/if}}
 			\{{if image_file}}
 			<a href="#" onclick="return $.filemanager ('img', {file: '${_path}', name: '${_name}'})">{"Edit"}</a> |
 			\{{/if}}
