@@ -844,6 +844,7 @@ class Controller {
 			if (strpos ($msg, 'Missing argument') === 0) {
 				return $obj->error ('Missing required argument');
 			}
+			error_log ('Restful error in ' . get_class ($obj) . '->' . $method . ' on line ' . $e->getLine () . ': ' . $msg);
 			return $obj->error ('Unexpected error occurred');
 		}
 
