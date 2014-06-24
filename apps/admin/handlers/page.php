@@ -36,7 +36,7 @@ if ($res) {
 	}
 
 	// show admin edit buttons
-	if (User::require_acl ('admin', 'admin/edit')) {
+	if (User::require_acl ('admin', 'admin/pages', 'admin/edit')) {
 		$lock = new Lock ('Webpage', $id);
 		$page->locked = $lock->exists ();
 		echo $tpl->render ('admin/editable', $page);
@@ -85,7 +85,7 @@ $page->access = $wp->access;
 $page->extra = (object) $wp->extra;
 
 // show admin edit buttons
-if (User::require_acl ('admin', 'admin/edit')) {
+if (User::require_acl ('admin', 'admin/pages', 'admin/edit')) {
 	$lock = new Lock ('Webpage', $id);
 	$page->locked = $lock->exists ();
 	echo $tpl->render ('admin/editable', $page);

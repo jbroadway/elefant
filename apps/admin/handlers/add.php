@@ -6,7 +6,7 @@
 
 $page->layout = 'admin';
 
-$this->require_acl ('admin', 'admin/edit', 'admin/add');
+$this->require_acl ('admin', 'admin/pages', 'admin/add');
 
 require_once ('apps/admin/lib/Functions.php');
 

@@ -59,6 +59,10 @@ if ($ver === true) {
 	);
 }
 
+if (! User::require_acl ('admin/pages')) {
+	unset ($tools['admin/pages']);
+}
+
 $res = glob ('apps/*/conf/config.php');
 $apps = DB::pairs ('select * from #prefix#apps');
 foreach ($res as $file) {

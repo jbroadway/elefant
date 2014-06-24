@@ -4,7 +4,7 @@
  * Show a list of all pages for admins.
  */
 
-$this->require_admin ();
+$this->require_acl ('admin', 'admin/pages');
 
 $page->layout = 'admin';
 $page->title = __ ('All Pages');
