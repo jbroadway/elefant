@@ -14,12 +14,15 @@ echo $form->handle (function ($form) {
 	// Update the {{appname}} 
 	${{appname}} = $form->data;
 {% for field in fields %}
+{% if field->name !== $data->pkey %}
 	${{appname}}->{{field->name}} = $_POST['{{field->name}}'];
+{% end %}
 {% end %}
 	${{appname}}->put ();
 
 	if (${{appname}}->error) {
 		// Failed to save
+		error_log ('Error updating {{appname}}: ' . DB::error ());
 		$form->controller->add_notification (__ ('Unable to save {{appname}}.'));
 		return false;
 	}

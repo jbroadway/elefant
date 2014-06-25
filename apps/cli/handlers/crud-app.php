@@ -123,6 +123,19 @@ if (! $pkey) {
 	$pkey = 'id';
 }
 
+$total = count ($fields);
+foreach ($fields as $k => $field) {
+	if ($field->name === $pkey) {
+		continue;
+	}
+
+	if ($k < $total - 1) {
+		$fields[$k]->comma = ',';
+	} else {
+		$fields[$k]->comma = '';
+	}
+}
+
 $data = array (
 	'appname' => $name,
 	'plural' => $plural,

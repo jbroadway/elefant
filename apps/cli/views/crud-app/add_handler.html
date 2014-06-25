@@ -12,13 +12,16 @@ echo $form->handle (function ($form) {
 	// Create and save a new {{appname}} 
 	${{appname}} = new {{plural}}{{backslash}}{{appname|ucfirst}} (array (
 {% for key, field in fields %}
-		'{{field->name}}' => $_POST['{{field->name}}']{% if $data->key < count ($data->fields) - 1 %},{% end %} 
+{% if field->name !== $data->pkey %}
+		'{{field->name}}' => $_POST['{{field->name}}']{{field->comma}} 
+{% end %}
 {% end %}
 	));
 	${{appname}}->put ();
 
 	if (${{appname}}->error) {
 		// Failed to save
+		error_log ('Error adding {{appname}}: ' . DB::error ());
 		$form->controller->add_notification (__ ('Unable to save {{appname}}.'));
 		return false;
 	}

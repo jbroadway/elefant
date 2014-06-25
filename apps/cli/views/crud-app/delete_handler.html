@@ -11,6 +11,7 @@ ${{appname}} = new {{plural}}{{backslash}}{{appname|ucfirst}};
 ${{appname}}->remove ($_POST['id']);
 
 if (${{appname}}->error) {
+	error_log ('Error deleting {{appname}}: ' . DB::error ());
 	$this->add_notification (__ ('Unable to delete {{appname}}.'));
 	$this->redirect ('/{{plural}}/admin');
 }
