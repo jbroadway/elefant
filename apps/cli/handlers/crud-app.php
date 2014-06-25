@@ -161,6 +161,11 @@ file_put_contents (
 );
 
 file_put_contents (
+	'apps/' . $plural . '/conf/acl.php',
+	$tpl->render ('cli/crud-app/acl', $data)
+);
+
+file_put_contents (
 	'apps/' . $plural . '/conf/install_mysql.sql',
 	$tpl->render ('cli/crud-app/install_mysql', $data)
 );
