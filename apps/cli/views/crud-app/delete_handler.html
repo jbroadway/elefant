@@ -1,7 +1,7 @@
 {{open_tag|none}}
 
 
-$this->require_admin ();
+$this->require_acl ('admin', '{{appname}}', 'admin/delete');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 	$this->redirect ('/{{plural}}/admin');
