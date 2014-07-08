@@ -17,7 +17,7 @@ class ZipInstaller extends Installer {
 			return false;
 		}
 
-		$folder = Zipper::find_folder ($source);
+		$folder = Zipper::find_folder ($source['name']);
 
 		// Get config and verify it
 		if (! file_exists ($folder . '/elefant.json')) {
