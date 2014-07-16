@@ -50,7 +50,7 @@ if (! $this->internal) {
 $data['photo'] = Image::for_key ($data['key'], $data['photo']);
 
 if ($data['photo']) {
-	$data['src'] = '/' . Image::resize ($data['photo'], $data['width'], $data['height']);
+	$data['src'] = '/' . Image::resize ($data['photo'], $data['width'], $data['height'], 'cover', 'ext');
 } else {
 	$data['src'] = 'http://placehold.it/' . $data['width'] . 'x' . $data['height'];
 }

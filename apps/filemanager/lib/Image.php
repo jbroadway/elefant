@@ -36,16 +36,16 @@ class Image {
 			$file = $file[0];
 		}
 
-		$cache_file = 'cache/thumbs/' . md5 ($file) . '-'. $style ."-" . $width . 'x' . $height . '.' . $format;
-		if (@file_exists ($cache_file) && @filemtime ($cache_file) > @filemtime ($file)) {
-			return $cache_file;
-		}
-
 		$info = pathinfo ($file);
 		$ext = strtolower ($info['extension']);
 
 		if ($format === 'ext') {
 			$format = $ext;
+		}
+
+		$cache_file = 'cache/thumbs/' . md5 ($file) . '-'. $style ."-" . $width . 'x' . $height . '.' . $format;
+		if (@file_exists ($cache_file) && @filemtime ($cache_file) > @filemtime ($file)) {
+			return $cache_file;
 		}
 
 		if (! extension_loaded ('gd')) {
