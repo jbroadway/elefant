@@ -44,6 +44,10 @@ class Image {
 		$info = pathinfo ($file);
 		$ext = strtolower ($info['extension']);
 
+		if ($format === 'ext') {
+			$format = $ext;
+		}
+
 		if (! extension_loaded ('gd')) {
 			return $file . '#gd-missing';
 		}
