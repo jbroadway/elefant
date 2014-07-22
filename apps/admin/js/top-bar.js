@@ -339,7 +339,9 @@ $(function () {
 	}
 
 	// focus on the first form input on load
-	try {
-		$('input, textarea').eq (0).focus ();
-	} catch (e) {}
+	if (typeof elefant_focus_input !== 'undefined') {
+		try {
+			$('input, textarea').eq (0).focus ();
+		} catch (e) {}
+	}
 });
