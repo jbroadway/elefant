@@ -48,12 +48,23 @@ class Zipper {
 
 		$folder = preg_replace ('/\.zip$/i', '', basename ($source));
 
+		// file folder matching basename
 		$files = glob ($base . '/*');
 		foreach ($files as $file) {
 			if (is_dir ($file) && basename ($file) === $folder) {
 				return $file;
 			}
 		}
+
+		// if one is zip and other is folder, return folder
+		if (count ($files) === 2) {
+			if (preg_match ('/\.zip$/i', $files[0]) && is_dir ($files[1])) {
+				return $files[1];
+			} elseif (preg_match ('/\.zip$/i', $files[1]) && is_dir ($files[0])) {
+				return $files[0];
+			}
+		}
+
 		return false;
 	}
 
