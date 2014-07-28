@@ -39,7 +39,7 @@ if ($res) {
 	if (User::require_acl ('admin', 'admin/pages', 'admin/edit')) {
 		$lock = new Lock ('Webpage', $id);
 		$page->locked = $lock->exists ();
-		echo $tpl->render ('admin/editable', $page);
+		echo $this->run ('admin/editable', $page);
 	}
 
 	// output the page body
@@ -88,7 +88,7 @@ $page->extra = (object) $wp->extra;
 if (User::require_acl ('admin', 'admin/pages', 'admin/edit')) {
 	$lock = new Lock ('Webpage', $id);
 	$page->locked = $lock->exists ();
-	echo $tpl->render ('admin/editable', $page);
+	echo $this->run ('admin/editable', $page);
 }
 
 // execute any embedded includes
