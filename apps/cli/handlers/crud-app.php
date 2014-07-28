@@ -221,6 +221,16 @@ file_put_contents (
 );
 
 file_put_contents (
+	'apps/' . $plural . '/handlers/install.php',
+	$tpl->render ('cli/crud-app/install_handler', $data)
+);
+
+file_put_contents (
+	'apps/' . $plural . '/handlers/upgrade.php',
+	$tpl->render ('cli/crud-app/upgrade_handler', $data)
+);
+
+file_put_contents (
 	'apps/' . $plural . '/views/index.html',
 	$tpl->render ('cli/crud-app/index_view', $data)
 );
