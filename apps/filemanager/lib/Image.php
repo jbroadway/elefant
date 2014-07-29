@@ -196,7 +196,6 @@ class Image {
 	 */
 	public static function generate_key ($key) {
 		if (! empty ($key)) {
-			error_log ($key);
 			return $key;
 		}
 		
