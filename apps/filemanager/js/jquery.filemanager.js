@@ -269,6 +269,13 @@
 				$('#filemanager-upload-progress-bar').css ('width', progress + '%');
 			}
 		});
+			
+		// filedrop hides the input, show it again
+		$('#file-upload').css ({
+			display: 'inline',
+			width: 'auto',
+			height: 'auto'
+		});
 	};
 
 	function show_progress_bar () {

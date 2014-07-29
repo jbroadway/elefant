@@ -209,7 +209,7 @@ class Image {
 			// TODO: verify uniqueness
 			if (! file_exists ($file)) {
 				touch ($file);
-				chmod ($file, 0777);
+				chmod ($file, 0666);
 				break;
 			}
 		}
@@ -234,7 +234,7 @@ class Image {
 		
 		if ($image !== null) {
 			file_put_contents ($file, $image);
-			chmod ($file, 0777);
+			chmod ($file, 0666);
 		}
 		
 		if (! file_exists ($file)) {

@@ -400,6 +400,13 @@
 					$('#filebrowser-upload-progress-bar').css ('width', progress + '%');
 				}
 			});
+			
+			// filedrop hides the input, show it again
+			$('#filebrowser-file').css ({
+				display: 'inline',
+				width: 'auto',
+				height: 'auto'
+			});
 		}
 	};
 })(jQuery);
