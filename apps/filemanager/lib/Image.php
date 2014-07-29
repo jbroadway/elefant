@@ -196,7 +196,12 @@ class Image {
 	 */
 	public static function generate_key ($key) {
 		if (! empty ($key)) {
+			error_log ($key);
 			return $key;
+		}
+		
+		if (! @is_dir ('cache/photos')) {
+			mkdir ('cache/photos');
 		}
 
 		while (true) {
