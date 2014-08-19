@@ -9,7 +9,7 @@
 <span class="notice" id="password-notice">{"You must enter a password."}</span></p>
 <p>{"Verify password"}:<br /><input type="password" name="verify_pass" size="20" value="{{ verify_pass }}" />
 <span class="notice" id="verify_pass-notice">{"Your password doesn't match."}</span></p>
-<p>{"User type"}:<br />
+<p>{"Member role"}:<br />
 <select name="type">
 {% foreach types %}
 	<option value="{{ loop_value }}"{% if type === $data->loop_value %} selected {% end %}>{{ loop_value|ucfirst }}</option>
@@ -19,7 +19,7 @@
 {! admin/util/extended?extends=User&modal=true !}
 
 <p>
-	<input type="submit" value="{"Add User"}" />&nbsp;
+	<input type="submit" value="{"Add Member"}" />&nbsp;
 	<a href="javascript:void(0)" id="adduser-cancel">{"Cancel"}</a>
 </p>
 </form>

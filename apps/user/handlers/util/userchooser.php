@@ -46,10 +46,10 @@ $page->add_script ('/apps/user/js/jquery.adduser.js');
 $page->add_script ('/apps/user/js/jquery.userchooser.js');
 $page->add_script (
 	I18n::export (
-		'Add User',
-		'Choose a User',
+		'Add Member',
+		'Choose a Member',
 		'Search',
-		'Unable to load the user list. Please try again in a few seconds.'
+		'Unable to load the member list. Please try again in a few seconds.'
 	)
 );
 

@@ -153,7 +153,7 @@
 			set_name_value: null,
 			set_email_value: null,
 			set_mailto: null,
-			title: $.i18n ('Choose a User'),
+			title: $.i18n ('Choose a Member'),
 			chosen: [],
 			chosen_visible: true
 		};
@@ -161,12 +161,12 @@
 		self.opts = $.extend (defaults, opts);
 		
 		if (! self.initialized) {
-			alert ($.i18n ('Unable to load the user list. Please try again in a few seconds.'));
+			alert ($.i18n ('Unable to load the member list. Please try again in a few seconds.'));
 			return;
 		}
 
 		var html = '<div id="userchooser-wrapper">' +
-			'<a href="#" id="userchooser-add-link" class="clearfix">' + $.i18n ('Add User') + '</a>' +
+			'<a href="#" id="userchooser-add-link" class="clearfix">' + $.i18n ('Add Member') + '</a>' +
 			'<div id="userchooser-search">' +
 				'<form id="userchooser-form">' +
 					'<input type="text" name="userchooser-input" id="userchooser-input" size="30" />' +

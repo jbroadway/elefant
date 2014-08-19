@@ -31,7 +31,7 @@ $u = new User ($_POST);
 $u->put ();
 Versions::add ($u);
 if (! $u->error) {
-	$this->add_notification (__ ('User added.'));
+	$this->add_notification (__ ('Member added.'));
 	$this->hook ('user/add', $_POST);
 	echo json_encode (array (
 		'success' => true,
