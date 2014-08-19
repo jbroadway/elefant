@@ -12,7 +12,8 @@
 .editable-text:hover,
 .editable-textarea:hover,
 .editable-select:hover {
-	border: 1px dashed #cde;
+	border: 1px dashed #ddd;
+	cursor: pointer;
 }
 
 .editable input,
@@ -20,6 +21,7 @@
 .editable select {
 	font-size: inherit;
 	font-weight: inherit;
+	background: inherit;
 	border: 0px;
 	outline: none;
 }
