@@ -61,6 +61,18 @@
  *     echo Template::sanitize ($_POST['value']);
  *     
  *     ?>
+ *
+ * To send an error message, use the following code:
+ *
+ *     $this->add_notification (__ ('Unable to save changes.'));
+ *     echo $this->error (500, 'Error message');
+ *     return;
+ *
+ * To add a notification upon successful requests, you can also use
+ * the Controller's `add_notification()` method:
+ *
+ *     $this->add_notification (__ ('Changes saved.'));
+ *     echo Template::sanitize ($_POST['value']);
  */
 
 $page->add_style ('/apps/admin/css/editable.css');
@@ -75,7 +87,8 @@ $page->add_script (I18n::export (
 	'Saving...',
 	'Cancel',
 	'OK',
-	'Click to edit'
+	'Click to edit',
+	'Unable to save changes.'
 ));
 
 ?>

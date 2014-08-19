@@ -28,7 +28,10 @@ $(function () {
 		submit: $.i18n ('OK'),
 		type: 'text',
 		style: 'inherit',
-		cssclass: 'editable'
+		cssclass: 'editable',
+		onerror: function (settings, original, xhr) {
+			original.reset ();
+		}
 	};
 
 	$('.editable-text').each (function () {
