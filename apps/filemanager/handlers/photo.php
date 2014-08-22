@@ -11,9 +11,12 @@
  *
  * Options:
  *
- * - key:    A unique ID for the photo spot (alphanumeric, no spaces).
- * - width:  The width of the photo spot (default: 300).
- * - height: The height of the photo spot (default: 200).
+ * - key:     A unique ID for the photo spot (alphanumeric, no spaces).
+ * - width:   The width of the photo spot (default: 300).
+ * - height:  The height of the photo spot (default: 200).
+ * - alt:     Text for the alt attribute.
+ * - class:   Class name(s) for the class attribute.
+ * - default: The path to a default photo, otherwise a placehold.it image is used.
  */
 
 if (! $this->internal) {
@@ -30,6 +33,9 @@ $data['width'] = (isset ($data['width']) && is_numeric ($data['width']))
 $data['height'] = (isset ($data['height']) && is_numeric ($data['height']))
 	? $data['height']
 	: 200;
+
+$data['alt'] = isset ($data['alt']) ? $data['alt'] : '';
+$data['class'] = isset ($data['class']) ? $data['class'] : false;
 
 if (! isset ($data['key'])) {
 	echo '<!-- Error: Missing key value -->';
@@ -51,6 +57,12 @@ $data['photo'] = Image::for_key ($data['key'], $data['photo']);
 
 if ($data['photo']) {
 	$data['src'] = '/' . Image::resize ($data['photo'], $data['width'], $data['height'], 'cover', 'ext');
+} elseif (isset ($data['default'])) {
+	if (preg_match ('/^https?:\/\//', $data['default'])) {
+		$data['src'] = $data['default'];
+	} else {
+		$data['src'] = '/' . Image::resize (ltrim ($data['default'], '/'), $data['width'], $data['height'], 'cover', 'ext');
+	}
 } else {
 	$data['src'] = 'http://placehold.it/' . $data['width'] . 'x' . $data['height'];
 }
