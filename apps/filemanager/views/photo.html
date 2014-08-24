@@ -1,8 +1,18 @@
 {% if ! User::require_acl ('admin', 'filemanager') %}
-<img src="{{src}}" id="photo-{{key}}" style="width: {{width}}px; height: {{height}}px" />
+<img src="{{src}}"
+	 id="photo-{{key}}"
+	 style="width: {{width}}px; height: {{height}}px"
+	 alt="{{alt}}"
+	 {% if class %} class="{{class}}"{% end %}
+/>
 {% else %}
 <div id="photo-{{key}}-wrapper" title="{'Edit Photo'} ({{width}}x{{height}})">
-	<img src="{{src}}" id="photo-{{key}}" style="width: {{width}}px; height: {{height}}px" />
+	<img src="{{src}}"
+		 id="photo-{{key}}"
+		 style="width: {{width}}px; height: {{height}}px"
+		 alt="{{alt}}"
+		 {% if class %} class="{{class}}"{% end %}
+	/>
 	<div id="photo-{{key}}-overlay"></div>
 </div>
 <script>

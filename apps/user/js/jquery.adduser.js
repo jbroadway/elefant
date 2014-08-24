@@ -48,13 +48,13 @@
 	$.add_user = function (opts) {
 		var defaults = {
 			callback: null,
-			title: $.i18n ('Add User')
+			title: $.i18n ('Add Member')
 		}
 
 		self.opts = $.extend (defaults, opts);
 
 		if (! self.initialized) {
-			alert ($.i18n ('Unable to load the add user form. Please try again in a few seconds.'));
+			alert ($.i18n ('Unable to load the add member form. Please try again in a few seconds.'));
 			return;
 		}
 

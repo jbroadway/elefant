@@ -11,7 +11,7 @@
 <span class="notice" id="password-notice">{"You must enter a password."}</span></p>
 <p>{"Verify password"}:<br /><input type="password" name="verify_pass" size="20" value="{{ verify_pass }}" />
 <span class="notice" id="verify_pass-notice">{"Your password doesn't match."}</span></p>
-<p>{"User role"}:<br />
+<p>{"Member role"}:<br />
 <select name="type">
 {% foreach types %}
 	<option value="{{ loop_value }}"{% if type === $data->loop_value %} selected {% end %}>{{ loop_value|ucfirst }}</option>

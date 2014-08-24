@@ -1,0 +1,38 @@
+.editable-text,
+.editable-textarea,
+.editable-select {
+	overflow: hidden;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	border: 1px solid rgba(0,0,0,0);
+	padding: 2px;
+}
+
+.editable-text:hover,
+.editable-textarea:hover,
+.editable-select:hover {
+	border: 1px dashed #ddd;
+	cursor: pointer;
+}
+
+.editable input,
+.editable textarea,
+.editable select {
+	font-size: inherit;
+	font-weight: inherit;
+	background: inherit;
+	border: 0px;
+	outline: none;
+}
+
+/*
+.editable-btn-save {
+}
+
+.editable-btn-delete {
+}
+
+.editable-btn-cancel {
+}
+*/

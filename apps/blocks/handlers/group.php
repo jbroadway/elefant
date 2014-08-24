@@ -45,6 +45,30 @@
  *
  * In this way, blocks can easily be styled collectively or individually,
  * making them a powerful way to build site content.
+ *
+ * You can also specify a `units` parameter, which specifies the width of
+ * each `div` as a `unit-%d` class, for example:
+ *
+ *     {! blocks/group
+ *        ?id[]=sidebar-promo
+ *        &id[]=sidebar-support
+ *        &units=75,25 !}
+ *
+ * This will output:
+ *
+ *     <div class="block unit-75" id="block-sidebar-promo">
+ *         <h2>Block title</h2>
+ *         <p>Block contents...</p>
+ *     </div>
+ *     <div class="block unit-25" id="block-sidebar-support">
+ *         <h2>Block title</h2>
+ *         <p>Block contents...</p>
+ *     </div>
+ *
+ * These can be styled and used to implement grid-based and responsive
+ * layouts. Here is a very basic example grid system implementation:
+ *
+ * https://gist.github.com/jbroadway/5d027fddfadabb56aff0
  */
 
 $ids = (count ($this->params) > 0) ? $this->params : (isset ($data['id']) ? $data['id'] : array ());
@@ -52,8 +76,18 @@ if (! is_array ($ids)) {
 	$ids = array ($ids);
 }
 
+if (count ($ids) === 0) {
+	return;
+}
+
 $level = (isset ($data['level']) && preg_match ('/^h[1-6]$/', $data['level'])) ? $data['level'] : 'h3';
 $divs = isset ($data['divs']) ? true : false;
+if (isset ($data['units'])) {
+	$units = explode (',', $data['units']);
+	$divs = true;
+} else {
+	$units = 'auto';
+}
 
 $qs = array ();
 foreach ($ids as $id) {
@@ -71,10 +105,31 @@ foreach ($blocks as $block) {
 	$list[$block->id] = $block;
 }
 
-foreach ($ids as $id) {
+$total = count ($blocks);
+if ($units === 'auto' || $total !== count ($units)) {
+	if ($total === 2) {
+		$units = array (66, 33);
+	} elseif ($total > 0) {
+		$units = array ();
+		$w = floor (100 / $total);
+		for ($k = 0; $k < $total; $k++) {
+			$units[$k] = $w;
+		}
+	}
+}
+
+foreach ($ids as $k => $id) {
 	if (! isset ($list[$id])) {
+		if ($divs) {
+			printf ('<div class="block block-missing" id="block-%s">' . PHP_EOL, $units[$k], $b->id);
+		}
+
 		if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
 			echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false)) . PHP_EOL;
+		}
+
+		if ($divs) {
+			echo '</div>' . PHP_EOL;
 		}
 		continue;
 	}
@@ -92,7 +147,7 @@ foreach ($ids as $id) {
 	}
 
 	if ($divs) {
-		printf ('<div class="block" id="block-%s">' . PHP_EOL, $b->id);
+		printf ('<div class="block unit-%d" id="block-%s">' . PHP_EOL, $units[$k], $b->id);
 	}
 
 	if ($b->show_title == 'yes') {
