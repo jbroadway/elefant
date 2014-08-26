@@ -37,7 +37,8 @@ unset ($resources['default']);
 $form->data = array (
 	'_resources' => $resources,
 	'name' => $_GET['role'],
-	'resources' => $checked
+	'resources' => $checked,
+	'_roles' => array_keys (User::acl ()->rules)
 );
 
 echo $form->handle (function ($form) use ($page) {

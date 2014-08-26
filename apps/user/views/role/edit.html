@@ -19,6 +19,16 @@
 	<tr>
 		<td><input type="checkbox" name="resources[{{resource}}]" id="resources-{{resource|user\Filter::resource_id}}" value="on" /> <label for="resources-{{resource|user\Filter::resource_id}}" style="display: inline-block; width: 95%">{{label|__}}</label></td>
 	</tr>
+		{% if resource == 'user/edit_roles' %}
+		<tr>
+			<td  style="padding-left: 30px; height: 29px; line-height: 29px">{"Allowed roles"}:</td>
+		</tr>
+			{% foreach _roles as role %}
+			<tr>
+				<td style="padding-left: 30px"><input type="checkbox" name="resources[user/allowed_roles/{{role}}]" id="resources-user-allowed_roles-{{role}}" value="on" /> <label for="resources-allowed-roles-{{role}}" style="display: inline-block; width: 85%">{{role|ucfirst}}</label></td>
+			</tr>
+			{% end %}
+		{% end %}
 	{% end %}
 </table>
 </p>
@@ -37,7 +47,8 @@ $(function () {
 	// re-check on re-render
 	var resources = {{resources|json_encode}};
 	for (var resource in resources) {
-		$('#resources-' + resource.replace ('/', '-'))[0].checked = true;
+		console.log (resource);
+		$('#resources-' + resource.replace (/\//g, '-'))[0].checked = true;
 	}
 	
 	// check all if default is checked because
