@@ -32,7 +32,7 @@ if ($f->submit ()) {
 	echo __ ('Error Message') . ': ' . $u->error;
 } else {
 	$u = new User;
-	$u->type = 'admin';
+	$u->type = Appconf::user ('User', 'default_role');
 	$u->types = array_keys (User::acl ()->rules);
 
 	$u->failed = $f->failed;

@@ -27,9 +27,13 @@ block_attempts_for = 900
 photo_width = 125
 photo_height = 125
 
-; Default photo to use for users without profile photos
+; Default photo to use for users without profile photos.
 
 default_photo = "/apps/admin/css/admin/user_profile.png"
+
+; The default role for new users.
+
+default_role = "member"
 
 [Custom Handlers]
 

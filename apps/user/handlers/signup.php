@@ -25,7 +25,7 @@ if ($f->submit ()) {
 		'email' => $_POST['email'],
 		'password' => User::encrypt_pass ($_POST['password']),
 		'expires' => $date,
-		'type' => 'member',
+		'type' => Appconf::user ('User', 'default_role'),
 		'signed_up' => $date,
 		'updated' => $date,
 		'userdata' => json_encode (array ('verifier' => $verifier))

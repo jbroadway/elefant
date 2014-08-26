@@ -7,7 +7,7 @@
 $this->require_acl ('admin', 'user');
 
 $u = new User;
-$u->type = 'admin';
+$u->type = Appconf::user ('User', 'default_role');
 $u->types = array_keys (User::acl ()->rules);
 
 $page->layout = false;

@@ -9,6 +9,13 @@
 <input type="checkbox" name="login_twitter" id="login_twitter" value="yes"{% if login_twitter %} checked{% end %} /> {"Twitter"}<br />
 <input type="checkbox" name="login_persona" id="login_persona" value="yes"{% if login_persona %} checked{% end %} /> {"Persona"}<br />
 
+<p>{"Default member role"}:<br />
+<select name="default_role">
+{% foreach roles %}
+	<option value="{{ loop_value }}"{% if default_role === $data->loop_value %} selected {% end %}>{{ loop_value|ucfirst }}</option>
+{% end %}
+</select></p>
+
 <div id="facebook-info">
 
 <p>

@@ -29,7 +29,9 @@ $form->data = array (
 	'login_google' => in_array ('google', $appconf['User']['login_methods']),
 	'login_facebook' => in_array ('facebook', $appconf['User']['login_methods']),
 	'login_twitter' => in_array ('twitter', $appconf['User']['login_methods']),
-	'login_persona' => in_array ('persona', $appconf['User']['login_methods'])
+	'login_persona' => in_array ('persona', $appconf['User']['login_methods']),
+	'default_role' => $appconf['User']['default_role'],
+	'roles' => array_keys (User::acl ()->rules)
 );
 
 echo $form->handle (function ($form) {
@@ -55,7 +57,8 @@ echo $form->handle (function ($form) {
 
 	$merged = Appconf::merge ('user', array (
 		'User' => array (
-			'login_methods' => $login_methods
+			'login_methods' => $login_methods,
+			'default_role' => $_POST['default_role']
 		),
 		'Facebook' => array (
 			'application_id' => $_POST['facebook_app_id'],
