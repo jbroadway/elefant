@@ -247,10 +247,12 @@ input[type=text], input[type=password], input[type=email], textarea {
     -moz-border-radius: 2px;
     padding: 2px 4px;
     text-shadow: 0 1px 0 #fff;
+    outline: none;
 }
 
 input[disabled] {
 	background: #eee;
+    outline: none;
 }
 
 input[type=submit], .dynamic-embed-object-back {
@@ -267,6 +269,7 @@ input[type=submit], .dynamic-embed-object-back {
     padding: 5px 10px;
     text-shadow: 0 1px 0 #fff;
     margin-bottom: 16px;
+    outline: none;
 }
 
 input[type=submit]:hover, .dynamic-embed-object-back:hover {
