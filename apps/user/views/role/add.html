@@ -19,6 +19,16 @@
 	<tr>
 		<td><input type="checkbox" name="resources[{{resource}}]" id="resources-{{resource|user\Filter::resource_id}}" value="on" /> <label for="resources-{{resource|user\Filter::resource_id}}" style="display: inline-block; width: 95%">{{label|__}}</label></td>
 	</tr>
+		{% if resource == 'user/edit_roles' %}
+		<tr>
+			<td  style="padding-left: 30px; height: 29px; line-height: 29px">{"Allowed roles"}:</td>
+		</tr>
+			{% foreach _roles as role %}
+			<tr>
+				<td style="padding-left: 30px"><input type="checkbox" name="resources[user/allowed_roles/{{role}}]" id="resources-allowed-roles-{{role}}" value="on" /> <label for="resources-allowed-roles-{{role}}" style="display: inline-block; width: 85%">{{role|ucfirst}}</label></td>
+			</tr>
+			{% end %}
+		{% end %}
 	{% end %}
 </table>
 </p>

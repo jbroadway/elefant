@@ -36,7 +36,7 @@ if ($f->submit ()) {
 } else {
 	$u = new User;
 	$u->type = Appconf::user ('User', 'default_role');
-	$u->types = array_keys (User::acl ()->rules);
+	$u->types = User::allowed_roles ();
 
 	$u->failed = $f->failed;
 	$u = $f->merge_values ($u);

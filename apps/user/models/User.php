@@ -408,6 +408,20 @@ class User extends ExtendedModel {
 
 		return self::$acl;
 	}
+	
+	/**
+	 * Fetch the roles that an admin user is allowed to assign.
+	 */
+	public static function allowed_roles () {
+		$allowed_roles = array ();
+		$roles = array_keys (self::acl ()->rules);
+		foreach ($roles as $role) {
+			if (self::acl ()->allowed ('user/allowed_roles/' . $role)) {
+				$allowed_roles[] = $role;
+			}
+		}
+		return $allowed_roles;
+	}
 
 	/**
 	 * Get or set a specific field's value.

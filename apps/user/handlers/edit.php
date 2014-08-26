@@ -45,7 +45,7 @@ if ($f->submit ()) {
 	echo __ ('Error Message') . ': ' . $u->error;
 } else {
 	$u->password = '';
-	$u->types = array_keys (User::acl ()->rules);
+	$u->types = User::allowed_roles ();
 
 	$u->failed = $f->failed;
 	$u = $f->merge_values ($u);

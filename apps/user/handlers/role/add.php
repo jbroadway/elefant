@@ -15,7 +15,8 @@ $resources = User::acl ()->resources ();
 unset ($resources['default']);
 
 $form->data = array (
-	'_resources' => $resources
+	'_resources' => $resources,
+	'_roles' => array_keys (User::acl ()->rules)
 );
 
 echo $form->handle (function ($form) use ($page) {
