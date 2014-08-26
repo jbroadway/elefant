@@ -36,6 +36,10 @@ class Image {
 			$file = $file[0];
 		}
 
+		if (! file_exists ($file)) {
+			return $file . '#file-missing';
+		}
+
 		$info = pathinfo ($file);
 		$ext = strtolower ($info['extension']);
 
