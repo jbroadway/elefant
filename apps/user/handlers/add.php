@@ -11,6 +11,9 @@ $this->require_acl ('admin', 'user');
 $f = new Form ('post', 'user/add');
 $f->verify_csrf = false;
 if ($f->submit ()) {
+	if (! User::require_acl ('user/edit_roles')) {
+		$_POST['type'] = Appconf::user ('User', 'default_role');
+	}
 	$_POST['password'] = User::encrypt_pass ($_POST['password']);
 	$now = gmdate ('Y-m-d H:i:s');
 	$_POST['expires'] = $now;

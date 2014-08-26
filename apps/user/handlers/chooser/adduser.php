@@ -20,6 +20,9 @@ if (! $f->submit ()) {
 	return;
 }
 
+if (! User::require_acl ('user/edit_roles')) {
+	$_POST['type'] = Appconf::user ('User', 'default_role');
+}
 $_POST['password'] = User::encrypt_pass ($_POST['password']);
 $now = gmdate ('Y-m-d H:i:s');
 $_POST['expires'] = $now;
