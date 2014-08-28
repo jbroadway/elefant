@@ -22,6 +22,7 @@ body {
 	font-weight: bold;
 	font-family: Helvetica, Arial, sans-serif !important;
 	text-align: left;
+	line-height: 21px;
 
 	background: #eeeeee; /* Old browsers */
 	background: -moz-linear-gradient(top,  #eeeeee 0%, #dddddd 100%); /* FF3.6+ */
@@ -177,6 +178,11 @@ body {
 	#admin-update-available:hover {
 		color: #B347AF;
 	}
+
+#preview-bar,
+p.admin-options {
+	line-height: 21px;
+}
 
 #preview-bar a,
 p.admin-options {
