@@ -182,6 +182,9 @@ body {
 #preview-bar,
 p.admin-options {
 	line-height: 21px;
+	font-size: 13px;
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: normal;
 }
 
 #preview-bar a,
