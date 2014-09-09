@@ -181,6 +181,7 @@ body {
 
 #preview-bar,
 p.admin-options {
+	display: block;
 	line-height: 21px;
 	font-size: 13px;
 	font-family: Helvetica, Arial, sans-serif;
