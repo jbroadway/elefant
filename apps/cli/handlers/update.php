@@ -60,7 +60,7 @@ if ($app === 'none' || $app === 'all') {
 	}
 
 	// Are we already up to date?
-	if ($res->latest <= ELEFANT_VERSION) {
+	if (version_compare ($res->latest, ELEFANT_VERSION,'<=')) {
 		echo ELEFANT_VERSION . " is already up-to-date.\n";
 		return;
 	}
