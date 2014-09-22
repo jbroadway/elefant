@@ -757,7 +757,10 @@ class Controller {
 	public function restful ($obj) {
 		// Disable page layout and set JSON header.
 		$this->_page->layout = false;
+		$this->header ('Cache-Control: no-store, no-cache, must-revalidate');
 		$this->header ('Content-Type: application/json');
+		$this->header ('Pragma: no-cache');
+		$this->header ('Expires: 0');
 
 		// Try to determine a method to call from the HTTP request method
 		// and the first extra parameter of the URL, or `_default`. For
