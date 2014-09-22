@@ -300,7 +300,7 @@
 				fallback_id: 'filebrowser-file',
 				url: '/filemanager/upload/drop',
 				paramname: 'file',
-				withCredentials: true,
+				withCredentials: (navigator.userAgent.indexOf('MSIE') === -1) ? true : false,
 				data: {
 					path: function () {
 						return self.opts.path;

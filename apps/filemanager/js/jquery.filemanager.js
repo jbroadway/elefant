@@ -194,7 +194,7 @@
 			fallback_id: 'file-upload',
 			url: '/filemanager/upload/drop',
 			paramname: 'file',
-			withCredentials: true,
+			withCredentials: (navigator.userAgent.indexOf('MSIE') === -1) ? true : false,
 			data: {
 				path: function () {
 					return filemanager.path
