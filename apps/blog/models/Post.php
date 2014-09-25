@@ -121,8 +121,8 @@ class Post extends \ExtendedModel {
 			->fetch_orig ();
 		
 		foreach ($posts as $i => $post) {
-			$url = 'blog/post/' . $post->id . '/' . URLify::filter ($post->title);
-			if (! Search::add (
+			$url = 'blog/post/' . $post->id . '/' . \URLify::filter ($post->title);
+			if (! \Search::add (
 				$url,
 				array (
 					'title' => $post->title,
