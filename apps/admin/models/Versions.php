@@ -130,24 +130,39 @@ class Versions extends Model {
 	 */
 	public static function history ($obj, $limit = 10, $offset = 0) {
 		if ($limit === true) {
+			// return a count instead of the results
 			if (is_string ($obj)) {
+				// return for a class type
 				return count (Versions::query ()
 					->where ('class', $obj)
 					->group ('pkey')
 					->fetch_field ('pkey'));
 			}
+
+			// return for an individual object
 			return count (Versions::query ()
 				->where ('class', get_class ($obj))
 				->where ('pkey', $obj->{$obj->key})
 				->fetch_field ('pkey'));
 		}
+
 		if (is_string ($obj)) {
-			return Versions::query ()
-				->where ('class', $obj)
-				->order ('ts desc')
-				->group ('pkey')
-				->fetch_orig ($limit, $offset);
+			// return for a class type
+			if (! is_numeric ($limit)) return array ();
+			if (! is_numeric ($offset)) return array ();
+			return DB::fetch (
+				'select * from `#prefix#versions` 
+				 where `id` in
+				 	(select max(`id`) from `#prefix#versions`
+				 	 where `class` = ?
+				 	 group by `pkey`)
+				 order by `ts` desc
+				 limit ' . $limit . ' offset ' . $offset,
+				$obj
+			);
 		}
+
+		// return for an individual object
 		return Versions::query ()
 			->where ('class', get_class ($obj))
 			->where ('pkey', $obj->{$obj->key})
