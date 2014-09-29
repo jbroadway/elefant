@@ -263,6 +263,11 @@ class Controller {
 	 * Template object.
 	 */
 	private $_tpl;
+	
+	/**
+	 * A list of apps whose hooks have been loaded already.
+	 */
+	private static $_hooks_loaded = array ();
 
 	/**
 	 * Constructor method. Receives a list of hooks as well
@@ -319,7 +324,7 @@ class Controller {
 	 * Run an internal request from one handler to another.
 	 */
 	public function run ($uri, $data = array (), $internal = true) {
-		$c = new Controller (conf ('Hooks'));
+		$c = new Controller (count (self::$hooks) > 0 ? self::$hooks : conf ('Hooks'));
 		$c->page ($this->_page);
 		$c->i18n ($this->_i18n);
 		$c->template ($this->_tpl);
@@ -367,10 +372,32 @@ class Controller {
 	}
 
 	/**
-	 * Run any handlers for the specified hook type. Note that the
-	 * output for hooks is ignored.
+	 * Run any handlers for the specified hook type. Output of the
+	 * handlers is concatenated and returned. Hooks are specified in
+	 * the `[Hooks]` section of each app's `conf/config.php` file,
+	 * like follows:
+	 *
+	 *     [Hooks]
+	 *     
+	 *     myapp/newpost[] = search/add
+	 *     myapp/newpost[] = twitter/posttweet
+	 *
+	 * Hooks may also be listed in the global `conf/config.php` in
+	 * the same format.
 	 */
 	public function hook ($type, $data = array ()) {
+		$pos = strpos ($type, '/');
+		if ($pos > 0) {
+			$app = substr ($type, 0, $pos);
+			if (! isset (self::$_hooks_loaded[$app])) {
+				$hooks = Appconf::get ($app, 'Hooks');
+				if (is_array ($hooks)) {
+					self::$hooks = array_merge_recursive (self::$hooks, $hooks);
+				}
+				self::$_hooks_loaded[$app] = true;
+			}
+		}
+
 		if (! isset (self::$hooks[$type])) {
 			return false;
 		}
