@@ -63,6 +63,7 @@ $page->add_script (I18n::export (
 	'New folder name:',
 	'Rename:',
 	'Are you sure you want to delete this file?',
+	'Are you sure you want to delete this folder and all of its contents?',
 	'Your browser does not support drag and drop file uploads.',
 	'Please upload fewer files at a time.',
 	'The following file is too large to upload'

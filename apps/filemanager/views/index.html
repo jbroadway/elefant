@@ -7,7 +7,10 @@
 		<td><div class="dropzone draggable" data-folder="${path}"><img src="/apps/admin/css/admin/folder.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/filemanager?path=${path}">${name}</a></div></td>
 		<td>\{{html mtime}}</td>
 		<td>&nbsp;</td>
-		<td style="text-align: right"><a href="#" onclick="return $.filemanager ('mv', {file: '${path}', name: '${name}'})">{"Rename"}</a></td>
+		<td style="text-align: right">
+			<a href="#" onclick="return $.filemanager ('mv', {file: '${path}', name: '${name}'})">{"Rename"}</a> | 
+			<a href="#" onclick="return $.filemanager ('rmdir', {file: '${_path}'})">{"Delete"}</a>
+		</td>
 	</tr>
 </script>
 

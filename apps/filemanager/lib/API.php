@@ -42,7 +42,7 @@ class API extends Restful {
 	/**
 	 * Handle remove file requests (/filemanager/api/rm).
 	 */
-	public function get_rm () {
+	public function post_rm () {
 		$file = urldecode (join ('/', func_get_args ()));
 
 		$res = FileManager::unlink ($file);
@@ -56,21 +56,40 @@ class API extends Restful {
 
 		return array ('msg' => __ ('File deleted.'), 'data' => $file);
 	}
+	
+	/**
+	 * Handle remove folder requests (/filemanager/api/rmdir).
+	 * Note: Erases the contents of the folder as well.
+	 */
+	public function post_rmdir () {
+		$file = urldecode (join ('/', func_get_args ()));
+
+		$res = FileManager::rmdir ($file, true);
+		if (! $res) {
+			return $this->error (FileManager::error ());
+		}
+
+		$this->controller->hook ('filemanager/delete', array (
+			'file' => $file
+		));
+
+		return array ('msg' => __ ('Folder deleted.'), 'data' => $file);
+	}
 
 	/**
 	 * Handle rename requests (/filemanager/api/mv).
 	 */
-	public function get_mv () {
+	public function post_mv () {
 		$file = urldecode (join ('/', func_get_args ()));
 
 		$is_folder = FileManager::verify_folder ($file) ? true : false;
 		
-		if (! FileManager::rename ($file, $_GET['rename'])) {
+		if (! FileManager::rename ($file, $_POST['rename'])) {
 			return $this->error (FileManager::error ());
 		}
 		$parts = explode ('/', $file);
 		$old = array_pop ($parts);
-		$new = preg_replace ('/' . preg_quote ($old) . '$/', $_GET['rename'], $file);
+		$new = preg_replace ('/' . preg_quote ($old) . '$/', $_POST['rename'], $file);
 		if ($is_folder) {
 			return array ('msg' => __ ('Folder renamed.'), 'data' => $new);
 		}
@@ -85,17 +104,17 @@ class API extends Restful {
 	 * Handle drop requests (/filemanager/api/drop), which move files between
 	 * folders.
 	 */
-	public function get_drop () {
+	public function post_drop () {
 		$file = urldecode (join ('/', func_get_args ()));
 		
-		if (! FileManager::move ($file, $_GET['folder'])) {
+		if (! FileManager::move ($file, $_POST['folder'])) {
 			return $this->error (FileManager::error ());
 		}
 
-		$new = $_GET['folder'] . '/' . basename ($file);
+		$new = $_POST['folder'] . '/' . basename ($file);
 		$this->controller->hook ('filemanager/drop', array (
 			'file' => $file,
-			'folder' => $_GET['folder'],
+			'folder' => $_POST['folder'],
 			'new' => $new
 		));
 		return array ('msg' => __ ('File moved.'), 'data' => $new);
@@ -104,7 +123,7 @@ class API extends Restful {
 	/**
 	 * Handle make directory requests (/filemanager/api/mkdir).
 	 */
-	public function get_mkdir () {
+	public function post_mkdir () {
 		$file = urldecode (join ('/', func_get_args ()));
 		
 		if (! FileManager::mkdir ($file)) {
@@ -117,24 +136,24 @@ class API extends Restful {
 	/**
 	 * Handle property update requests (/filemanager/api/prop).
 	 */
-	public function get_prop () {
+	public function post_prop () {
 		$file = urldecode (join ('/', func_get_args ()));
 		if (! FileManager::verify_file ($file)) {
 			return $this->error (__ ('Invalid file name'));
 		}
-		if (! isset ($_GET['prop'])) {
+		if (! isset ($_POST['prop'])) {
 			return $this->error (__ ('Missing property name'));
 		}
-		if (isset ($_GET['value'])) {
+		if (isset ($_POST['value'])) {
 			// update and fetch
-			$res = FileManager::prop ($file, $_GET['prop'], $_GET['value']);
+			$res = FileManager::prop ($file, $_POST['prop'], $_POST['value']);
 		} else {
 			// fetch
-			$res = FileManager::prop ($file, $_GET['prop']);
+			$res = FileManager::prop ($file, $_POST['prop']);
 		}
 		return array (
 			'file' => $file,
-			'prop' => $_GET['prop'],
+			'prop' => $_POST['prop'],
 			'value' => $res,
 			'msg' => __ ('Properties saved.')
 		);
@@ -143,7 +162,7 @@ class API extends Restful {
 	/**
 	 * Handle unzip requests via (/filemanager/api/unzip).
 	 */
-	public function get_unzip () {
+	public function post_unzip () {
 		$file = urldecode (join ('/', func_get_args ()));
 		if (! FileManager::verify_file ($file)) {
 			return $this->error (__ ('Invalid file name'));

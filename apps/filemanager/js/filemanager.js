@@ -70,7 +70,7 @@ var filemanager = (function ($) {
 			throw new Error ('filemanager.mkdir() - Missing parameter: name');
 		}
 
-		$.get (
+		$.post (
 			self.prefix + 'mkdir/' + opts.path + '/' + opts.name,
 			callback
 		);
@@ -82,8 +82,20 @@ var filemanager = (function ($) {
 			throw new Error ('filemanager.rm() - Missing parameter: path');
 		}
 
-		$.get (
+		$.post (
 			self.prefix + 'rm/' + opts.path,
+			callback
+		);
+	};
+
+	// Delete a folder
+	self.rmdir = function (opts, callback) {
+		if (! _has (opts, 'path')) {
+			throw new Error ('filemanager.rmdir() - Missing parameter: path');
+		}
+
+		$.post (
+			self.prefix + 'rmdir/' + opts.path,
 			callback
 		);
 	};
@@ -98,9 +110,9 @@ var filemanager = (function ($) {
 			throw new Error ('filemanager.mv() - Missing parameter: rename');
 		}
 
-		$.get (
-			self.prefix + 'rm/' + opts.path
-				+ '?rename=' + encodeURIComponent (opts.rename),
+		$.post (
+			self.prefix + 'rm/' + opts.path,
+			{rename: opts.rename},
 			callback
 		);
 	};
@@ -115,9 +127,9 @@ var filemanager = (function ($) {
 			throw new Error ('filemanager.drop() - Missing parameter: folder');
 		}
 
-		$.get (
-			self.prefix + 'drop/' + opts.path
-				+ '?folder=' + encodeURIComponent (opts.folder),
+		$.post (
+			self.prefix + 'drop/' + opts.path,
+			{folder: opts.folder},
 			callback
 		);
 	};
@@ -136,10 +148,9 @@ var filemanager = (function ($) {
 			throw new Error ('filemanager.prop() - Missing parameter: value');
 		}
 
-		$.get (
-			self.prefix + 'prop/' + opts.path
-				+ '?prop=' + encodeURIComponent (opts.prop)
-				+ '&value=' + encodeURIComponent (opts.value),
+		$.post (
+			self.prefix + 'prop/' + opts.path,
+			{prop: opts.prop, value: opts.value},
 			callback
 		);
 	};
