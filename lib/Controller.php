@@ -1012,7 +1012,9 @@ class Controller {
 	/**
 	 * Require the user to have access to one or more resources. Accepts
 	 * any number of parameters, which should be resource names. If any
-	 * resource fails, it will redirect to the `/admin` login screen.
+	 * resource fails, it will redirect to either the member login screen
+	 * at `/user/login`, or the `/admin` login screen if the `admin`
+	 * resource is included in the list.
 	 *
 	 * Usage:
 	 *
@@ -1020,9 +1022,10 @@ class Controller {
 	 */
 	public function require_acl ($resource) {
 		$args = func_get_args ();
+		$redirect = in_array ('admin', $args) ? '/admin' : '/user/login';
 		foreach ($args as $resource) {
 			if (! User::require_acl ($resource)) {
-				$this->redirect ('/admin');
+				$this->redirect ($redirect . '?redirect=' . urlencode ($_SERVER['REQUEST_URI']));
 			}
 		}
 	}
