@@ -59,7 +59,7 @@ if ($ver === true) {
 	);
 }
 
-if (! User::require_acl ('admin/pages')) {
+if (! Appconf::admin ('General', 'show_all_pages') || ! User::require_acl ('admin/pages')) {
 	unset ($tools['admin/pages']);
 }
 

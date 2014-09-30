@@ -6,6 +6,9 @@
 ; successfully logging in via the /admin URL.
 login_redirect = "/"
 
+; Whether to show "All Pages" in the tools menu.
+show_all_pages = On
+
 [Scripts]
 
 ; The place to load jQuery from, either 'local', 'google' which uses
