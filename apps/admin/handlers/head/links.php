@@ -34,92 +34,113 @@ if (! User::require_admin ()) {
 	return;
 }
 
-$tools = array ('admin/pages' => array ('handler' => 'admin/pages', 'name' => __ ('All Pages'), 'class' => false));
+$custom_tools = file_exists ('conf/tools.php') ? parse_ini_file ('conf/tools.php', true) : false;
+if ($custom_tools === false) {
+	$tools = array ('admin/pages' => array ('handler' => 'admin/pages', 'name' => __ ('All Pages'), 'class' => false));
 
-$ver = $this->installed ('elefant', ELEFANT_VERSION);
-if ($ver === true) {
-	$tools = array (
-		'admin/pages' => array (
-			'handler' => 'admin/pages',
-			'name' => __ ('All Pages'),
-			'class' => false
-		)
-	);
-} else {
-	$tools = array (
-		'admin/upgrade' => array (
-			'handler' => 'admin/upgrade',
-			'name' => __ (' Click to upgrade'),
-			'class' => 'needs-upgrade'
-		),
-		'admin/pages' => array (
-			'handler' => 'admin/pages',
-			'name' => __ ('All Pages')
-		)
-	);
-}
-
-if (! Appconf::admin ('General', 'show_all_pages') || ! User::require_acl ('admin/pages')) {
-	unset ($tools['admin/pages']);
-}
-
-$res = glob ('apps/*/conf/config.php');
-$apps = DB::pairs ('select * from #prefix#apps');
-foreach ($res as $file) {
-	$app = preg_replace ('/^apps\/(.*)\/conf\/config\.php$/i', '\1', $file);
-
-	if (! User::require_acl ($app)) {
-		// Can't access this app
-		continue;
+	$ver = $this->installed ('elefant', ELEFANT_VERSION);
+	if ($ver === true) {
+		$tools = array (
+			'admin/pages' => array (
+				'handler' => 'admin/pages',
+				'name' => __ ('All Pages'),
+				'class' => false
+			)
+		);
+	} else {
+		$tools = array (
+			'admin/upgrade' => array (
+				'handler' => 'admin/upgrade',
+				'name' => __ (' Click to upgrade'),
+				'class' => 'needs-upgrade'
+			),
+			'admin/pages' => array (
+				'handler' => 'admin/pages',
+				'name' => __ ('All Pages')
+			)
+		);
 	}
 
-	$appconf = parse_ini_file ($file, true);
+	if (! Appconf::admin ('General', 'show_all_pages') || ! User::require_acl ('admin/pages')) {
+		unset ($tools['admin/pages']);
+	}
+}
 
-	if (! admin_is_compatible ($appconf)) {
-        // App not compatible with this platform
-        continue;
-    }
+$apps = DB::pairs ('select * from #prefix#apps');
 
-	if (isset ($appconf['Admin']['handler'])) {
-		if (! preg_match ('/\/(admin|index)$/', $appconf['Admin']['handler']) && ! User::require_acl ($appconf['Admin']['handler'])) {
-			// A non /admin or /index handler should get an additional
-			// access check (e.g., admin/versions).
+if ($custom_tools !== false) {
+	foreach ($custom_tools as $column => $tools) {
+		foreach ($tools as $handler => $name) {
+			$custom_tools[$column][$handler] = array (
+				'handler' => $hander,
+				'name' => $name,
+				'class' => false
+			);
+		}
+	}
+	
+	$tools = $custom_tools;
+	$custom_tools = true;
+
+} else {
+	$res = glob ('apps/*/conf/config.php');
+	foreach ($res as $file) {
+		$app = preg_replace ('/^apps\/(.*)\/conf\/config\.php$/i', '\1', $file);
+
+		if (! User::require_acl ($app)) {
+			// Can't access this app
 			continue;
 		}
 
-		if (isset ($appconf['Admin']['install'])) {
-			$ver = $this->installed ($app, $appconf['Admin']['version']);
+		$appconf = parse_ini_file ($file, true);
 
-			if ($ver === true) {
-				// installed
+		if (! admin_is_compatible ($appconf)) {
+			// App not compatible with this platform
+			continue;
+		}
+
+		if (isset ($appconf['Admin']['handler'])) {
+			if (! preg_match ('/\/(admin|index)$/', $appconf['Admin']['handler']) && ! User::require_acl ($appconf['Admin']['handler'])) {
+				// A non /admin or /index handler should get an additional
+				// access check (e.g., admin/versions).
+				continue;
+			}
+
+			if (isset ($appconf['Admin']['install'])) {
+				$ver = $this->installed ($app, $appconf['Admin']['version']);
+
+				if ($ver === true) {
+					// installed
+					$tools[$appconf['Admin']['handler']] = $appconf['Admin'];
+					$tools[$appconf['Admin']['handler']]['class'] = false;
+				} elseif ($ver === false) {
+					// not installed
+					$appconf['Admin']['name'] .= ' (' . __ ('click to install') . ')';
+					$tools[$appconf['Admin']['install']] = $appconf['Admin'];
+					$tools[$appconf['Admin']['install']]['class'] = 'not-installed';
+				} else {
+					// needs upgrade
+					$appconf['Admin']['name'] .= ' (' . __ ('click to upgrade') . ')';
+					$tools[$appconf['Admin']['upgrade']] = $appconf['Admin'];
+					$tools[$appconf['Admin']['upgrade']]['class'] = 'needs-upgrade';
+				}
+			} else {
+				// no installer, as you were
 				$tools[$appconf['Admin']['handler']] = $appconf['Admin'];
 				$tools[$appconf['Admin']['handler']]['class'] = false;
-			} elseif ($ver === false) {
-				// not installed
-				$appconf['Admin']['name'] .= ' (' . __ ('click to install') . ')';
-				$tools[$appconf['Admin']['install']] = $appconf['Admin'];
-				$tools[$appconf['Admin']['install']]['class'] = 'not-installed';
-			} else {
-				// needs upgrade
-				$appconf['Admin']['name'] .= ' (' . __ ('click to upgrade') . ')';
-				$tools[$appconf['Admin']['upgrade']] = $appconf['Admin'];
-				$tools[$appconf['Admin']['upgrade']]['class'] = 'needs-upgrade';
 			}
-		} else {
-			// no installer, as you were
-			$tools[$appconf['Admin']['handler']] = $appconf['Admin'];
-			$tools[$appconf['Admin']['handler']]['class'] = false;
 		}
 	}
+	uasort ($tools, 'admin_head_links_sort');
 }
-uasort ($tools, 'admin_head_links_sort');
 
 $out = array (
 	'name' => Product::name (),
 	'logo' => Product::logo_toolbar (),
 	'links' => $tpl->render ('admin/head/links', array (
 		'user' => User::val ('name'),
-		'tools' => $tools
+		'tools' => $tools,
+		'custom' => $custom_tools
 	))
 );
 

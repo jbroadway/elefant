@@ -1,11 +1,30 @@
-<a href="#preview" class="admin-tools-show-preview" data-trigger="p" data-trigger-label="{"Toggle preview mode"}">{"Preview"}</a>
-<a href="/" id="admin-tools-website" data-trigger="w" data-trigger-label="{"Go to website"}">{"Website"}</a>
-<span id="admin-tools" data-trigger="t" data-trigger-label="{"Toggle tools menu"}">{"Tools"} &nbsp; &nbsp;
-<ul id="admin-tools-list">
-{% foreach tools %}
-    <li><a href="/{{ loop_index }}"{% if loop_value['class'] %}class="{{ loop_value['class'] }}"{% end %}>{{ loop_value['name']|i18n_get }}</a></li>
+{% if ! custom %}
+	<a href="#preview" class="admin-tools-show-preview" data-trigger="p" data-trigger-label="{"Toggle preview mode"}">{"Preview"}</a>
+	<a href="/" id="admin-tools-website" data-trigger="w" data-trigger-label="{"Go to website"}">{"Website"}</a>
+	<span id="admin-tools" data-trigger="t" data-trigger-label="{"Toggle tools menu"}">{"Tools"} &nbsp; &nbsp;
+	<ul id="admin-tools-list">
+	{% foreach tools %}
+		<li><a href="/{{ loop_index }}"{% if loop_value['class'] %}class="{{ loop_value['class'] }}"{% end %}>{{ loop_value['name']|i18n_get }}</a></li>
+	{% end %}
+	</ul>
+	</span>
+	<a href="/user" id="admin-tools-user" data-trigger="u" data-trigger-label="{"Go to user profile"}">{{ user }}</a>
+	<a href="/user/logout" id="admin-tools-logout" data-trigger="q" data-trigger-label="{"Log out"}">{"Log out"}</a>
+{% else %}
+	<a href="#preview" class="admin-tools-show-preview" data-trigger="p" data-trigger-label="{"Toggle preview mode"}">{"Preview"}</a>
+	<a href="/" id="admin-tools-website" data-trigger="w" data-trigger-label="{"Go to website"}">{"Website"}</a>
+	<div id="admin-tools-list" class="admin-tools-custom">
+	{% foreach tools as section, _tools %}
+		<div class="admin-tools-section">
+		<h3 class="admin-tools-section-header">{{section|__}}</h3>
+		<ul class="admin-tools-list">
+		{% foreach _tools %}
+			<li><a href="/{{ loop_index }}"{% if loop_value['class'] %}class="{{ loop_value['class'] }}"{% end %}>{{ loop_value['name']|__ }}</a></li>
+		{% end %}
+		</ul>
+		</div>
+	{% end %}
+	</div>
+	<a href="/user" id="admin-tools-user" data-trigger="u" data-trigger-label="{"Go to user profile"}">{{ user }}</a>
+	<a href="/user/logout" id="admin-tools-logout" data-trigger="q" data-trigger-label="{"Log out"}">{"Log out"}</a>
 {% end %}
-</ul>
-</span>
-<a href="/user" id="admin-tools-user" data-trigger="u" data-trigger-label="{"Go to user profile"}">{{ user }}</a>
-<a href="/user/logout" id="admin-tools-logout" data-trigger="q" data-trigger-label="{"Log out"}">{"Log out"}</a>

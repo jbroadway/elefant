@@ -188,51 +188,101 @@ $(function () {
 		$('#admin-links').append (res.links);
 	
 		// show/hide tools menu
-		var admin_tools = $('#admin-tools'),
-			admin_tools_list = $('#admin-tools-list');
+		if ($.elefant_custom) {
+			// custom tools menu
+			var admin_tools = $('#admin-bar'),
+				admin_tools_list = $('#admin-tools-list');
 
-		function toggle_tools_open () {
-			admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
-		}
+			$('#admin-bar>a').after ('<span id="admin-tools-arrow"></span>');
 
-		function toggle_tools_close () {
-			admin_tools_list.stop ().slideUp ('slow');
-		}
+			function toggle_custom_tools_open () {
+				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
+			}
 
-		function toggle_tools (e) {
-			e.preventDefault ();
+			function toggle_custom_tools_close () {
+				admin_tools_list.stop ().slideUp ('slow');
+			}
 
-			// fix for clicks on tools menu links
-			if ($(e.target).attr ('id') !== 'admin-tools') {
-				window.location.href = $(e.target).attr ('href');
+			function toggle_custom_tools (e) {
+				e.preventDefault ();
+
+				// fix for clicks on tools menu links
+				if ($(e.target).attr ('id') !== 'admin-bar' && $(e.target).attr ('id') !== 'admin-tools-arrow') {
+					window.location.href = $(e.target).attr ('href');
+					return false;
+				}
+
+				if (admin_tools_list.is (':visible')) {
+					admin_tools_list.stop ().slideUp ('fast');
+				} else {
+					admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
+					$('#admin-tools-list a')[0].focus ();
+				}
+			
 				return false;
 			}
 
-			if (admin_tools_list.is (':visible')) {
-				admin_tools_list.stop ().slideUp ('fast');
+			if (navigator.pointerEnabled) {
+				$('#admin-tools-arrow').on ('pointerdown', toggle_custom_tools);
+			} else if (navigator.msPointerEnabled) {
+				$('#admin-tools-arrow').on ('MSPointerDown', toggle_custom_tools);
 			} else {
-				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
-				$('#admin-tools-list a')[0].focus ();
+				admin_tools.hover (
+					toggle_custom_tools_open,
+					toggle_custom_tools_close
+				);
+
+				$('#admin-tools-arrow').on ('touchdown click', toggle_custom_tools);
 			}
-			
-			return false;
-		}
 
-		if (navigator.pointerEnabled) {
-			admin_tools.on ('pointerdown', toggle_tools);
-		} else if (navigator.msPointerEnabled) {
-			admin_tools.on ('MSPointerDown', toggle_tools);
 		} else {
-			admin_tools.hover (
-				toggle_tools_open,
-				toggle_tools_close
-			);
+			// default tools menu
+			var admin_tools = $('#admin-tools'),
+				admin_tools_list = $('#admin-tools-list');
 
-			admin_tools.on ('touchdown click', toggle_tools);
+			function toggle_tools_open () {
+				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
+			}
+
+			function toggle_tools_close () {
+				admin_tools_list.stop ().slideUp ('slow');
+			}
+
+			function toggle_tools (e) {
+				e.preventDefault ();
+
+				// fix for clicks on tools menu links
+				if ($(e.target).attr ('id') !== 'admin-tools') {
+					window.location.href = $(e.target).attr ('href');
+					return false;
+				}
+
+				if (admin_tools_list.is (':visible')) {
+					admin_tools_list.stop ().slideUp ('fast');
+				} else {
+					admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
+					$('#admin-tools-list a')[0].focus ();
+				}
+			
+				return false;
+			}
+
+			if (navigator.pointerEnabled) {
+				admin_tools.on ('pointerdown', toggle_tools);
+			} else if (navigator.msPointerEnabled) {
+				admin_tools.on ('MSPointerDown', toggle_tools);
+			} else {
+				admin_tools.hover (
+					toggle_tools_open,
+					toggle_tools_close
+				);
+
+				admin_tools.on ('touchdown click', toggle_tools);
+			}
+
+			// hide the tools menu on hover of non-tools menu toolbar links
+			$('#admin-links a').not('#admin-tools-list a').bind("mouseover", toggle_tools_close);
 		}
-
-		// hide the tools menu on hover of non-tools menu toolbar links
-		$('#admin-links a').not('#admin-tools-list a').bind("mouseover", toggle_tools_close);
 
 		// website link should open to the last non-admin page visited
 		var last_page = $('body').data ('admin-last-page');

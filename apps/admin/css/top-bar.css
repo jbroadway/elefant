@@ -161,6 +161,72 @@ body {
 		color: #93278f;
 		outline: 0;
 	}
+	
+	#admin-tools-arrow {
+		color: #93278f;
+		font-size: 12px;
+		font-weight: normal;
+		text-decoration: none;
+		text-align: center;
+		display: block;
+		width: 200px;
+		height: 20px;
+		margin: auto;
+		margin-top: -42px;
+		z-index: 100001;
+		cursor: pointer;
+		
+		background-image: url(/apps/admin/css/admin/tools-arrow.png);
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+	}
+	
+	#admin-tools-list.admin-tools-custom {
+		position: absolute;
+		top: 35px;
+		left: 0;
+		width: 100%;
+		color: #222;
+		/*
+		background: #ddd;
+		background: rgba(235,235,235,.95);
+		*/
+		padding: 15px 10px 12px 15px;
+		background: rgba(170,170,170,0.95);
+		background: -moz-linear-gradient(top, rgba(170,170,170,0.95) 0%, rgba(219,219,219,0.95) 3%, rgba(221,221,221,0.95) 100%);
+		background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(170,170,170,0.95)), color-stop(3%, rgba(219,219,219,0.95)), color-stop(100%, rgba(221,221,221,0.95)));
+		background: -webkit-linear-gradient(top, rgba(170,170,170,0.95) 0%, rgba(219,219,219,0.95) 3%, rgba(221,221,221,0.95) 100%);
+		background: -o-linear-gradient(top, rgba(170,170,170,0.95) 0%, rgba(219,219,219,0.95) 3%, rgba(221,221,221,0.95) 100%);
+		background: -ms-linear-gradient(top, rgba(170,170,170,0.95) 0%, rgba(219,219,219,0.95) 3%, rgba(221,221,221,0.95) 100%);
+		background: linear-gradient(to bottom, rgba(170,170,170,0.95) 0%, rgba(219,219,219,0.95) 3%, rgba(221,221,221,0.95) 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#aaaaaa', endColorstr='#dddddd', GradientType=0 );
+	}
+	
+		.admin-tools-section {
+			float: left;
+			width: 19%;
+		}
+		
+		h3.admin-tools-section-header {
+			font-family: Helvetica, Arial, sans-serif;
+			font-size: 21px;
+			line-height: 21px;
+			font-weight: normal;
+			margin-bottom: 0;
+		}
+	
+		.admin-tools-section li {
+			list-style-type: none;
+		}
+		
+		#admin-tools-list .admin-tools-section li a,
+		#admin-tools-list .admin-tools-section li a:focus,
+		#admin-tools-list .admin-tools-section li a:hover {
+			background: inherit;
+			border-bottom: 0;
+			padding-left: 0;
+			height: 24px;
+		}
 
 	#admin-update-available {
 		color: #93278f;
