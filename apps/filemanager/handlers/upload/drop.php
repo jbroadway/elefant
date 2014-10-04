@@ -37,6 +37,9 @@ if (isset ($_FILES['file']['error']) && $_FILES['file']['error'] > 0) {
 	return;
 }
 
+// some browsers may urlencode the file name
+$_FILES['file']['name'] = urldecode ($_FILES['file']['name']);
+
 if (@file_exists ($root . $_POST['path'] . '/' . $_FILES['file']['name'])) {
 	echo json_encode (array ('success' => false, 'error' => __ ('A file by that name already exists.')));
 	return;
