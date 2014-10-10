@@ -162,6 +162,7 @@ class User extends ExtendedModel {
 				$tld = array_pop ($parts);
 				$domain = '.' . array_pop ($parts) . '.' . $tld;
 			}
+			ini_set ('session.gc_maxlifetime', (int) $duration);
 			@session_set_cookie_params ($duration, $path, $domain, $secure, $httponly);
 			@session_name ($name);
 
