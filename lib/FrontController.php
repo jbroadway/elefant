@@ -218,6 +218,7 @@ class FrontController {
 		if (extension_loaded ('zlib') && conf ('General', 'compress_output')) {
 			ini_set ('zlib.output_compression', 4096);
 		}
+		@session_write_close ();
 		echo $out;
 		return true;
 	}

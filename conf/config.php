@@ -61,6 +61,21 @@ session_duration = 2592000
 
 session_name = elefant_user
 
+; This can be set to a session save handler such as memcached
+; or redis, or the name of a class that implements SessionHandlerInterface.
+; The default is Off, which uses PHP's internal session handler.
+; Here are 3 example options:
+;
+; session_save_handler = "memcached:192.0.2.25:11211,192.0.2.26:11211"
+; session_save_handler = "redis:tcp://192.0.2.5:6379?timeout=0.5"
+; session_save_handler = SessionHandlerCookie
+;
+; The first two specify a session handler followed by a string that
+; session.save_path will be set to. The third uses the SessionHandlerCookie
+; class to store session data in an HMAC-verified cookie.
+
+session_save_handler = Off
+
 ; For development, turn debugging on and Elefant will output
 ; helpful information on errors.
 

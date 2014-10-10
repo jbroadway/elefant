@@ -153,6 +153,7 @@ class User extends ExtendedModel {
 			$name = $name ? $name : conf ('General', 'session_name');
 			$duration = $duration ? $duration : conf ('General', 'session_duration');
 			$domain = $domain ? $domain : conf ('General', 'session_domain');
+			$handler_class = conf ('General', 'session_save_handler');
 
 			if ($domain === 'full') {
 				$domain = $_SERVER['HTTP_HOST'];
@@ -163,6 +164,18 @@ class User extends ExtendedModel {
 			}
 			@session_set_cookie_params ($duration, $path, $domain, $secure, $httponly);
 			@session_name ($name);
+
+			if ($handler_class) {
+				if (strpos ($handler_class, ':') !== false) {
+					list ($handler, $save_path) = explode (':', $handler_class, 2);
+					ini_set ('session.save_handler', $handler);
+					ini_set ('session.save_path', $save_path);
+				} elseif (class_exists ($handler_class)) {
+					$handler = new $handler_class (conf ('General', 'site_key'));
+					@session_set_save_handler ($handler, true);
+				}
+			}
+
 			@session_start ();
 
 			if (isset ($_COOKIE[$name])) {
