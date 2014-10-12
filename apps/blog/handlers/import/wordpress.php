@@ -23,11 +23,13 @@ if ($f->submit ()) {
 			foreach ($posts->channel->item as $entry) {
 				$dc = $entry->children ('http://purl.org/dc/elements/1.1/');
 				$content = $entry->children ('http://purl.org/rss/1.0/modules/content/');
+				$wp = $entry->children ('http://wordpress.org/export/1.2/');
+				$published = $wp->status == 'publish' ? 'yes' : 'no';
 				$post = array (
 					'title' => (string) $entry->title,
 					'author' => (string) $dc->creator,
 					'ts' => gmdate ('Y-m-d H:i:s', strtotime ($entry->pubDate)),
-					'published' => $_POST['published'],
+					'published' => $published,
 					'body' => str_replace ("\n", "<br />\n", (string) $content->encoded),
 					'tags' => ''
 				);
@@ -39,6 +41,21 @@ if ($f->submit ()) {
 				$p = new blog\Post ($post);
 				if ($p->put ()) {
 					Versions::add ($p);
+
+					// add tags
+					if ($published == 'yes' && ! empty ($post['tags'])) {
+						$tags = explode (',', $post['tags']);
+						foreach ($tags as $tag) {
+							$tr = trim ($tag);
+							DB::execute ('insert into #prefix#blog_tag (id) values (?)', $tr);
+							DB::execute (
+								'insert into #prefix#blog_post_tag (tag_id, post_id) values (?, ?)',
+								$tr,
+								$p->id
+							);
+						}
+					}
+
 					$imported++;
 				}
 			}
