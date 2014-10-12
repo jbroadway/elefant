@@ -91,4 +91,16 @@ function webpage_show_extra_options (link) {
 	}
 	return false;
 }
+function webpage_preview (f) {
+	var t = f.target,
+		a = f.action;
+
+	f.target = '_blank';
+	f.action = '/blog/preview';
+	f.submit ();
+
+	f.target = t;
+	f.action = a;
+	return false;
+}
 </script>
