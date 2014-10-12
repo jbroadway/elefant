@@ -1,5 +1,10 @@
 ; <?php /*
 
+[blog/archives]
+
+label = "Blog: Archives Sidebar"
+icon = rss
+
 [blog/headlines]
 
 label = "Blog: Headlines"

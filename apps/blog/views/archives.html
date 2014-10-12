@@ -1,0 +1,5 @@
+<ul class="blog-sidebar-archives">
+{% foreach archives as archive %}
+	<li><a href="/blog/archive/{{archive->year}}/{{archive->month}}">{{months[$data->archive->month - 1]}} {{archive->year}}</a> ({{archive->total}})</li>
+{% end %}
+</ul>

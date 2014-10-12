@@ -90,6 +90,22 @@ class Post extends \ExtendedModel {
 	}
 
 	/**
+	 * Get posts by a certain tag.
+	 */
+	public static function archive ($year, $month, $limit = 10, $offset = 0) {
+		$ids = \DB::shift_array ('select id from #prefix#blog_post where year(ts) = ? and month(ts) = ? and published = "yes"', $year, $month);
+		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
+	}
+
+	/**
+	 * Count posts by a certain tag.
+	 */
+	public static function count_by_month ($tag, $limit = 10, $offset = 0) {
+		$ids = \DB::shift_array ('select id from #prefix#blog_post where year(ts) = ? and month(ts) = ? and published = "yes"', $year, $month);
+		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->count ();
+	}
+
+	/**
 	 * Get a list of tags and the number of posts they've been used on.
 	 */
 	public static function tags () {
