@@ -90,7 +90,7 @@ class Post extends \ExtendedModel {
 	}
 
 	/**
-	 * Get posts by a certain tag.
+	 * Get posts by a certain year and month.
 	 */
 	public static function archive ($year, $month, $limit = 10, $offset = 0) {
 		$ids = \DB::shift_array ('select id from #prefix#blog_post where year(ts) = ? and month(ts) = ? and published = "yes"', $year, $month);
@@ -98,9 +98,9 @@ class Post extends \ExtendedModel {
 	}
 
 	/**
-	 * Count posts by a certain tag.
+	 * Count posts by a certain year and month.
 	 */
-	public static function count_by_month ($tag, $limit = 10, $offset = 0) {
+	public static function count_by_month ($year, $month, $limit = 10, $offset = 0) {
 		$ids = \DB::shift_array ('select id from #prefix#blog_post where year(ts) = ? and month(ts) = ? and published = "yes"', $year, $month);
 		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->count ();
 	}
@@ -110,6 +110,40 @@ class Post extends \ExtendedModel {
 	 */
 	public static function tags () {
 		return \DB::pairs ('select tag_id, count(*) as posts from #prefix#blog_post_tag group by tag_id order by tag_id asc');
+	}
+
+	/**
+	 * Get a list of archive years, months, and count of posts.
+	 */
+	public static function archive_months () {
+		$db = \DB::get_connection (1);
+		$dbtype = $db->getAttribute (\PDO::ATTR_DRIVER_NAME);
+		switch ($dbtype) {
+			case 'pgsql':
+				return \DB::fetch (
+					'select extract(year from ts) as year, extract(month from ts) as month, count(*) as total
+					 from #prefix#blog_post
+					 where published = \'yes\'
+					 group by year, month
+					 order by year desc, month desc'
+				);
+			case 'mysql':
+				return \DB::fetch (
+					'select year(ts) as year, month(ts) as month, count(*) as total
+					 from #prefix#blog_post
+					 where published = "yes"
+					 group by year, month
+					 order by year desc, month desc'
+				);
+			case 'sqlite':
+				return \DB::fetch (
+					'select strftime(\'%Y\', ts) as year, strftime(\'%m\', ts) as month, count(*) as total
+					 from #prefix#blog_post
+					 where published = "yes"
+					 group by year, month
+					 order by year desc, month desc'
+				);
+		}
 	}
 
 	/**
