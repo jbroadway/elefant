@@ -214,6 +214,10 @@ body {
 			font-weight: normal;
 			margin-bottom: 0;
 		}
+		
+		.admin-tools-section ul.admin-tools-list {
+			margin-left: 0;
+		}
 	
 		.admin-tools-section li {
 			list-style-type: none;
