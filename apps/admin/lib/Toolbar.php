@@ -225,6 +225,12 @@ class Toolbar {
 				$count++;
 			}
 		}
+
+		foreach (self::$custom_tools as $section => $tools) {
+			if (count ($tools) === 0) {
+				unset (self::$custom_tools[$section]);
+			}
+		}
 		
 		return self::$custom_tools;
 	}
