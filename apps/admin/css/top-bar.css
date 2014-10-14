@@ -226,6 +226,7 @@ body {
 			border-bottom: 0;
 			padding-left: 0;
 			height: 24px;
+			width: 100%;
 		}
 
 	#admin-update-available {
@@ -244,6 +245,17 @@ body {
 	#admin-update-available:hover {
 		color: #B347AF;
 	}
+
+		#admin-tools-list .admin-tools-section li a.not-installed, #admin-tools-list .admin-tools-section li a.needs-upgrade {
+			color: #93278f;
+			font-weight: bold;
+		}
+
+		#admin-tools-list .admin-tools-section li a.not-installed:hover, #admin-tools-list .admin-tools-section li a.needs-upgrade:hover,
+		#admin-tools-list .admin-tools-section li a.not-installed:focus, #admin-tools-list .admin-tools-section li a.needs-upgrade:focus {
+			color: #B347AF;
+			font-weight: bold;
+		}
 
 #preview-bar,
 p.admin-options {
