@@ -74,7 +74,7 @@ function info ($value, $full = false) {
  *     // Enable debugging
  *     conf ('General', 'debug', true);
  */
-function conf ($section, $value = false, $update = null) {
+function conf ($section = false, $value = false, $update = null) {
 	static $conf;
 	if ($conf === null) {
 		if (isset ($GLOBALS['conf'])) {
@@ -97,7 +97,10 @@ function conf ($section, $value = false, $update = null) {
 		}
 		return @$conf[$section][$value];
 	}
-	return @$conf[$section];
+	if ($section) {
+		return @$conf[$section];
+	}
+	return @$conf;
 }
 
 /**
