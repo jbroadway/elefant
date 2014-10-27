@@ -48,7 +48,7 @@ create table #prefix#user (
 	title char(48) not null default '',
 	company char(48) not null default '',
 	photo char(128) not null default '',
-	about text not null default '',
+	about text not null,
 	website char(128) not null default '',
 	index(email, password),
 	index(session_id)

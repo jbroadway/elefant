@@ -8,7 +8,7 @@ alter table #prefix#user add column zip char(16) not null default '';
 alter table #prefix#user add column title char(48) not null default '';
 alter table #prefix#user add column company char(48) not null default '';
 alter table #prefix#user add column photo char(128) not null default '';
-alter table #prefix#user add column about text not null default '';
+alter table #prefix#user add column about text not null;
 alter table #prefix#user add column website char(128) not null default '';
 
 create table #prefix#user_links (
