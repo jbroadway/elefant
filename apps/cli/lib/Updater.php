@@ -7,12 +7,12 @@ class Updater {
 	/**
 	 * The prefix for the update server.
 	 */
-	public static $updates = 'https://raw.github.com/jbroadway/elefant-updates/master/';
+	public static $updates = 'https://raw.githubusercontent.com/jbroadway/elefant-updates/master/';
 	
 	/**
 	 * The prefix for the checksum server.
 	 */
-	public static $checksums = 'https://raw.github.com/elefantcms/checksums/master/';
+	public static $checksums = 'https://raw.githubusercontent.com/elefantcms/checksums/master/';
 	
 	/**
 	 * Contains any errors from the last `fetch()` call.
