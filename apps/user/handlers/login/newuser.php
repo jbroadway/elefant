@@ -24,7 +24,8 @@ if ($f->submit ()) {
 		'type' => Appconf::user ('User', 'default_role'),
 		'signed_up' => $date,
 		'updated' => $date,
-		'userdata' => json_encode (array ())
+		'userdata' => json_encode (array ()),
+		'about' => ''
 	));
 	$u->put ();
 	Versions::add ($u);
