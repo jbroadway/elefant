@@ -229,8 +229,7 @@ class Tree {
 		}
 
 		// locate $parent and add child
-		if ($parent) {
-			$ref = $this->node ($parent);
+		if ($parent && ($ref = $this->node ($parent))) {
 			if (! isset ($ref->children)) {
 				$ref->children = array ();
 			}
