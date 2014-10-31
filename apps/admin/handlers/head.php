@@ -32,5 +32,3 @@ if (User::require_admin () && $page->preview == false) {
 		'Keyboard shortcuts'
 	));
 }
-
-?>

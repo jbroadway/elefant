@@ -9,5 +9,3 @@ if (self::$called['social/google/init'] > 1) {
 }
 
 $page->tail .= $tpl->render ('social/google/init');
-
-?>

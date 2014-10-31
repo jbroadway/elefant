@@ -742,5 +742,3 @@ $this->lang_hash['de'] = array (
 	'Modify translations and language settings' => 'Übersetzungen und Spracheinstellungen wurden geändert',
 	'Translated' => 'übersetzt'
 );
-
-?>

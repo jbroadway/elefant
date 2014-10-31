@@ -131,5 +131,3 @@ echo $tpl->render (
 		'timeout' => $timeout
 	)
 );
-
-?>

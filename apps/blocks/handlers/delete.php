@@ -37,5 +37,3 @@ if (! isset ($_POST['return'])) {
 } else {
 	$this->redirect ($_POST['return']);
 }
-
-?>

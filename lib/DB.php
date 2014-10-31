@@ -505,5 +505,3 @@ function db_last_sql () {
 function db_last_args () {
 	return DB::last_args ();
 }
-
-?>

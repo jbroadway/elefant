@@ -863,5 +863,3 @@ class summize extends twitter
 	    return $this->objectify( $this->process( $request ) );
 	}
 }
-
-?>

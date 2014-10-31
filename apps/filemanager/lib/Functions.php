@@ -117,5 +117,3 @@ function filemanager_sort_mtime_asc ($one, $two) {
 function filemanager_get_thumbnail ($file, $width = 140, $height = 105, $style = "cover") {
 	return Image::resize ($file, $width, $height, $style);
 }
-
-?>

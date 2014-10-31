@@ -127,5 +127,3 @@ if (ELEFANT_VERSION === '1.3.10') { // Add extra user fields, social links, and 
 printf ('<p><a href="/">%s</a></p>', __ ('Done.'));
 
 $this->mark_installed ('elefant', ELEFANT_VERSION);
-
-?>

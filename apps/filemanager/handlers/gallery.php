@@ -125,5 +125,3 @@ echo $tpl->render (
 		'desc' => $data['desc']
 	)
 );
-
-?>

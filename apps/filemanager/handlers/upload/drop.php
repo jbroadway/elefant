@@ -60,5 +60,3 @@ if (@move_uploaded_file ($_FILES['file']['tmp_name'], $root . $_POST['path'] . '
 }
 
 echo json_encode (array ('success' => true, 'data' => __ ('File saved.')));
-
-?>

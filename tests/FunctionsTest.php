@@ -232,5 +232,3 @@ class FunctionsTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse (file_exists ('rmdir_recursive_test'));
 	}
 }
-
-?>

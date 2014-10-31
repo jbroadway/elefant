@@ -36,5 +36,3 @@ switch ($dbtype) {
 echo '<p>' . __ ('Done.') . '</p>';
 
 $this->mark_installed ('filemanager', $appconf['Admin']['version']);
-
-?>

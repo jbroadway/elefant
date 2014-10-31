@@ -108,5 +108,3 @@ if (isset ($_SESSION['access_token'])) {
 		$this->redirect ($_GET['redirect']);
 	}
 }
-
-?>

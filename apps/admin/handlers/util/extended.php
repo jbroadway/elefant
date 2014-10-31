@@ -84,5 +84,3 @@ if ($data['fields'] || count ($data['fields']) === 0) {
 
 	echo $tpl->render ('admin/util/extended', $data);
 }
-
-?>

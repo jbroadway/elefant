@@ -84,5 +84,3 @@ class FormTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse ($form->verify_csrf ());
 	}
 }
-
-?>

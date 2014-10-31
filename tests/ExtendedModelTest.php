@@ -111,5 +111,3 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (json_encode ($extra), self::$o->data['extra']);
 	}
 }
-
-?>

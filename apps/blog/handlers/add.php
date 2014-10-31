@@ -80,5 +80,3 @@ if ($f->submit ()) {
 	echo $tpl->render ('blog/add/head', $p);
 	echo $tpl->render ('blog/add', $p);
 }
-
-?>

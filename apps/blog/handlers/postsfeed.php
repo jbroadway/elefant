@@ -50,5 +50,3 @@ if (! is_array ($posts) || count ($posts) === 0) {
 		echo $tpl->render ('blog/post', $post);
 	}
 }
-
-?>

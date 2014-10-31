@@ -692,5 +692,3 @@ class Template {
 		throw new LogicException ('Invalid template block: ' . $val);
 	}
 }
-
-?>

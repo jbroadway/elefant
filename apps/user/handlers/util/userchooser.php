@@ -52,5 +52,3 @@ $page->add_script (
 		'Unable to load the member list. Please try again in a few seconds.'
 	)
 );
-
-?>

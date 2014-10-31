@@ -25,5 +25,3 @@ if (isset ($_SERVER['argv'][2])) {
 }
 
 echo generate_password ($length) . "\n";
-
-?>

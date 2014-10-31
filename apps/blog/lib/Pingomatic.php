@@ -73,5 +73,3 @@ class Pingomatic {
 		return $res;
 	}
 }
-
-?>

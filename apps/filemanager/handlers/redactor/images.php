@@ -32,5 +32,3 @@ foreach ($glob as $list) {
 }
 
 echo stripslashes (json_encode ($images));
-
-?>

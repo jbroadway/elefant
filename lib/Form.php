@@ -577,5 +577,3 @@ class Form {
 		return $out;
 	}
 }
-
-?>

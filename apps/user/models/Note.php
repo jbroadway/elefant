@@ -36,5 +36,3 @@ class Note extends \Model {
 		return $res;
 	}
 }
-
-?>

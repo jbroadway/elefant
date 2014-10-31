@@ -26,5 +26,3 @@ foreach ($list as $item) {
 }
 
 echo $tpl->render ('blog/rssviewer', array ('items' => $items));
-
-?>

@@ -70,5 +70,3 @@ $page->add_script (I18n::export (
 ));
 
 echo $tpl->render ('filemanager/index', $o);
-
-?>

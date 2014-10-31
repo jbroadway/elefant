@@ -129,5 +129,3 @@ class AclTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse ((bool) self::$acl->allowed ('other'));
 	}
 }
-
-?>

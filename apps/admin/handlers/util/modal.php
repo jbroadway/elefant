@@ -32,5 +32,3 @@
 
 $page->add_script ('/apps/admin/js/modal.js');
 $page->add_style ('/apps/admin/css/modal.css');
-
-?>

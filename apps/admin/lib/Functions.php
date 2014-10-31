@@ -98,5 +98,3 @@ function admin_user_groups () {
 	}
 	return $out;
 }
-
-?>

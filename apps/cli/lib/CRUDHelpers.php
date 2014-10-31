@@ -116,5 +116,3 @@ function crud_sqlite_type ($type) {
 			return 'char(48) not null';
 	}
 }
-
-?>

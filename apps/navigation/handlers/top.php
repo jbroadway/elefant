@@ -18,5 +18,3 @@ foreach ($n->tree as $item) {
 	echo Link::single ($item->attr->id, $item->data);
 }
 echo '</ul>';
-
-?>

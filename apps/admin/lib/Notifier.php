@@ -22,5 +22,3 @@ class Notifier {
 		return setcookie (self::$cookie_name, $msg, 0, '/');
 	}
 }
-
-?>

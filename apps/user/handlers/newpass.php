@@ -37,5 +37,3 @@ if ($data['recover'] == $_GET['recover'] && $data['recover_expires'] > time () +
 	$page->title = __ ('Invalid or expired recovery link');
 	echo '<p><a href="/">' . __ ('Continue') . '</a></p>';
 }
-
-?>

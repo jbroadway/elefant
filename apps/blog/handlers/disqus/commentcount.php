@@ -17,5 +17,3 @@ printf (
 	$data['id'],
 	__ ('comments')
 );
-
-?>

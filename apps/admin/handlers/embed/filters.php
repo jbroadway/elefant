@@ -46,5 +46,3 @@ foreach ($_POST['data'] as $key => $value) {
 }
 
 echo json_encode ((object) array ('success' => true, 'data' => $out));
-
-?>

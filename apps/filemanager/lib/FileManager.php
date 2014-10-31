@@ -515,5 +515,3 @@ class FileManager {
 		return true;
 	}
 }
-
-?>

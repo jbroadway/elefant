@@ -25,5 +25,3 @@ echo $tpl->render ('user/admin', array (
 	'count' => count ($users),
 	'url' => '/user/admin?offset=%d'
 ));
-
-?>

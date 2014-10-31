@@ -114,5 +114,3 @@ class DBTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (3, DB::shift ('select count(*) from transaction_test'));
 	}
 }
-
-?>

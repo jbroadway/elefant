@@ -43,5 +43,3 @@ $_POST['url'] = '/' . $_POST['page'];
 $this->hook ('blog/delete', $_POST);
 $this->add_notification (__ ('Blog post deleted.'));
 $this->redirect ('/blog/admin');
-
-?>

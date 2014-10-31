@@ -17,5 +17,3 @@ if (User::require_admin ()) {
 }
 
 $this->permanent_redirect ($url);
-
-?>

@@ -59,5 +59,3 @@ if ($u) {
 	$_SESSION['persona/token'] = $response->email;
 	echo json_encode (array ('redirect' => '/user/login/newpersona'));
 }
-
-?>

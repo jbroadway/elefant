@@ -137,5 +137,3 @@ class Diff {
 		return $out;
 	}
 }
-
-?>

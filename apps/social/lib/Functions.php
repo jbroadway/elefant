@@ -31,4 +31,3 @@ function facebook_light_dark () {
 		(object) array ('key' => 'dark', 'value' => __ ('Dark')),
 	);
 }
-?>

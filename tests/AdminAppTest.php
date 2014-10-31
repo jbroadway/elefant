@@ -24,5 +24,3 @@ class AdminAppTest extends AppTest {
 		$this->assertContains ('<h3>Congratulations!</h3>', $res);
 	}
 }
-
-?>

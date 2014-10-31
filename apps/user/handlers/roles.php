@@ -12,5 +12,3 @@ $page->title = __ ('Roles');
 echo $tpl->render ('user/roles', array (
 	'roles' => array_keys (User::acl ()->rules)
 ));
-
-?>

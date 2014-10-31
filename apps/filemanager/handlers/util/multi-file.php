@@ -57,5 +57,3 @@ $page->add_script (I18n::export (
 	'Click to remove',
 	'Browse files'
 ));
-
-?>

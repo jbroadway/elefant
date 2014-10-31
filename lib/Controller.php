@@ -1071,5 +1071,3 @@ class Controller {
 		return DB::execute ('insert into #prefix#apps (name, version) values (?, ?)', $app, $version);
 	}
 }
-
-?>

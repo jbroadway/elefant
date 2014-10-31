@@ -47,5 +47,3 @@ exec ('gzip backup-' . $ts . '.tar');
 chdir ('..');
 exec ('mv .backups/backup-' . $ts . '.tar.gz ' . $path);
 exec ('rm -Rf .backups/backup-' . $ts);
-
-?>

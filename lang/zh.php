@@ -604,5 +604,3 @@ $this->lang_hash['zh'] = array (
 	'Zip file installation failed' => 'zip文件安装失败',
 	'Zip file was invalid or could not be installed.' => 'zip文件无效或者不能安装。'
 );
-
-?>

@@ -59,5 +59,3 @@ class Bitly {
 		return $obj['data']['url'];
 	}
 }
-
-?>

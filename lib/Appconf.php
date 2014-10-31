@@ -187,5 +187,3 @@ class Appconf {
 		return $merged;
 	}
 }
-
-?>

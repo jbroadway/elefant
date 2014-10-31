@@ -57,5 +57,3 @@ if (@move_uploaded_file ($_FILES['file']['tmp_name'], $root . $_FILES['file']['n
 } else {
 	echo json_encode (array ('error' => __ ('Failed to save file') . ': ' . $_FILES['file']['name']));
 }
-
-?>

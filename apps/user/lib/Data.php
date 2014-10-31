@@ -389,5 +389,3 @@ class Data {
 		return self::$countries[$code];
 	}
 }
-
-?>

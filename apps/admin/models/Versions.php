@@ -206,5 +206,3 @@ class Versions extends Model {
 		);
 	}
 }
-
-?>

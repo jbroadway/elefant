@@ -40,5 +40,3 @@ echo $tpl->render ('admin/compare', array (
 	'pkey' => $ver->pkey,
 	'ts' => $ver->ts
 ));
-
-?>

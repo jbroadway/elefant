@@ -74,5 +74,3 @@ if ($files) {
 }
 
 Cli::block ($help);
-
-?>

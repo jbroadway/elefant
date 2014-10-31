@@ -70,5 +70,3 @@ $page->add_script (
 		)
 	)
 );
-
-?>

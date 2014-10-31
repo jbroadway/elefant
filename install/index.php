@@ -238,5 +238,3 @@ echo $tpl->render ($_GET['step'], $data);
 echo '<br clear="both" />';
 info ($data);
 //*/
-
-?>

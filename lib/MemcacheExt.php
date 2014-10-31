@@ -57,5 +57,3 @@ class MemcacheExt extends Memcache {
 		return $val;
 	}
 }
-
-?>

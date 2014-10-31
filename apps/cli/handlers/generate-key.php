@@ -11,5 +11,3 @@ if (! $this->cli) {
 $page->layout = false;
 
 echo md5 (uniqid (rand (), true)) . "\n";
-
-?>

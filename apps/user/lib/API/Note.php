@@ -46,5 +46,3 @@ class Note extends Restful {
 		//return true;
 	}
 }
-
-?>

@@ -354,5 +354,3 @@ class Debugger {
 		return false;
 	}
 }
-
-?>

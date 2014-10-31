@@ -494,5 +494,3 @@ $this->lang_hash['sl_si'] = array (
 	'Weak password' => 'Šibko geslo',
 	'You must enter a valid email, or your email may already be registered.' => 'Že uporabljen ali neveljaven email.'
 );
-
-?>

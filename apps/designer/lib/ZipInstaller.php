@@ -114,5 +114,3 @@ class ZipInstaller extends Installer {
 		);
 	}
 }
-
-?>

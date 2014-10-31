@@ -512,4 +512,3 @@ $this->lang_hash['cs'] = array (
 	'Save event' => 'Uložit událost',
 	'Edit Event' => 'Upravit událost'
 );
-?>

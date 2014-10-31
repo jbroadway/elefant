@@ -9,5 +9,3 @@ printf (
 		($appconf['User']['block_attempts_for'] / 60)
 	)
 );
-
-?>

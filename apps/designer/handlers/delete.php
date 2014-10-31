@@ -28,5 +28,3 @@ if (! @unlink ($_GET['file'])) {
 
 $this->add_notification (__ ('File deleted.'));
 $this->redirect ('/designer');
-
-?>

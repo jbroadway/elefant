@@ -49,5 +49,3 @@ if ($f->submit ()) {
 	echo $tpl->render ('blocks/edit/head', $b);
 	echo $tpl->render ('blocks/edit', $b);
 }
-
-?>

@@ -13,5 +13,3 @@ if (strpos ($_SERVER['REQUEST_URI'], '/filemanager/api/ls') === 0) {
 	return;
 }
 $this->restful (new filemanager\API ());
-
-?>

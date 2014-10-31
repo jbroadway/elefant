@@ -53,5 +53,3 @@ echo json_encode (array (
 	'success' => true,
 	'data' => __ ('File saved.')
 ));
-
-?>

@@ -57,5 +57,3 @@ class Link extends \Model {
 		}
 	}
 }
-
-?>

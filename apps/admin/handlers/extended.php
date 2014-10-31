@@ -59,5 +59,3 @@ foreach ($res as $file) {
 }
 
 echo $tpl->render ('admin/extended', $data);
-
-?>

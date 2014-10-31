@@ -84,5 +84,3 @@ if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
 }
 
 echo $tpl->run_includes ($b->body);
-
-?>

@@ -17,5 +17,3 @@ if (! isset ($_SERVER['argv'][2])) {
 }
 
 echo User::encrypt_pass ($_SERVER['argv'][2]) . "\n";
-
-?>

@@ -104,5 +104,3 @@ if ($f->submit ()) {
 	echo $tpl->render ('blog/edit/head', $p);
 	echo $tpl->render ('blog/edit', $p);
 }
-
-?>

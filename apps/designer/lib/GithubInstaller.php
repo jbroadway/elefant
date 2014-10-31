@@ -89,5 +89,3 @@ class GithubInstaller extends Installer {
 		return $conf;
 	}
 }
-
-?>

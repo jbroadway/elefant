@@ -36,5 +36,3 @@ if ($f->submit ()) {
 	echo $tpl->render ('admin/add/head', $pg);
 	echo $tpl->render ('admin/add', $pg);
 }
-
-?>

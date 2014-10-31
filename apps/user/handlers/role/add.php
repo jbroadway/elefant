@@ -62,5 +62,3 @@ echo $form->handle (function ($form) use ($page) {
 	$form->controller->add_notification (__ ('Role added.'));
 	$form->controller->redirect ('/user/roles');
 });
-
-?>

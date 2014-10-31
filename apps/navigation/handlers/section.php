@@ -15,6 +15,4 @@ if (is_array ($section->children)) {
 		echo Link::single ($item->attr->id, $item->data);
 	}
 	echo '</ul>';
-}	
-
-?>
+}

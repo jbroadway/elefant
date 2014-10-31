@@ -14,5 +14,3 @@ $data['url'] = isset ($data['url'])
 	: '//' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 echo $tpl->render ('social/facebook/comments', $data);
-
-?>

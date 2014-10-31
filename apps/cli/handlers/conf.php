@@ -109,5 +109,3 @@ if (isset ($_SERVER['argv'][3])) {
 		Cli::out ('Invalid setting value: ' . $_SERVER['argv'][2], 'error');
 	}
 }
-
-?>

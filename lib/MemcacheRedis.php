@@ -156,5 +156,3 @@ class MemcacheRedis {
 		return self::$redis->flushDB ();
 	}
 }
-
-?>

@@ -39,5 +39,3 @@ if (! User::require_login ()) {
 } elseif (! $this->internal) {
 	$this->redirect ($_POST['redirect']);
 }
-
-?>

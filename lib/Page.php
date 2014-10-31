@@ -230,5 +230,3 @@ class Page {
 		return '<script' . $type . ' src="' . $script . "\"></script>\n";
 	}
 }
-
-?>

@@ -22,5 +22,3 @@ $page->add_script (sprintf (
 	'<link rel="alternate" type="application/rss+xml" href="http://%s/blog/rss" />',
 	$_SERVER['HTTP_HOST']
 ));
-
-?>

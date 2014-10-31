@@ -31,5 +31,3 @@ class PageTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ("<script src=\"/bar.js\"></script>\n", $p->tail);
 	}
 }
-
-?>

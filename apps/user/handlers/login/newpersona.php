@@ -7,5 +7,3 @@ $_POST['redirect'] = $_SESSION['persona/redirect'];
 $_POST['token'] = $_SESSION['persona/token'];
 
 echo $this->run ('user/login/newuser');
-
-?>

@@ -273,5 +273,3 @@ class Cache {
 		return true;
 	}
 }
-
-?>

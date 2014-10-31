@@ -13,5 +13,3 @@ if (strpos ($data['url'], '/') === 0) {
 	$data['url'] = 'http://' . $_SERVER['HTTP_HOST'] . $data['url'];
 }
 echo $tpl->render ('social/facebook/like-box', $data);
-
-?>

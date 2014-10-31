@@ -459,5 +459,3 @@ $this->lang_hash['ja'] = array (
 	'Add Item' => '項目追加',
 	'by' => '：'
 );
-
-?>

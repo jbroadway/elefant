@@ -37,5 +37,3 @@ if ($f->submit ()) {
 	echo $tpl->render ('blocks/add/head', $b);
 	echo $tpl->render ('blocks/add', $b);
 }
-
-?>

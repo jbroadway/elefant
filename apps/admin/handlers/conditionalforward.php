@@ -23,5 +23,3 @@ if (User::require_admin ()) {
 if (User::is ($user_type)) {
 	$this->redirect ($url);
 }
-
-?>

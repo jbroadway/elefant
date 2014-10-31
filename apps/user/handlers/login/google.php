@@ -76,5 +76,3 @@ if ($u) {
 	$_POST['token'] = $token;
 	echo $this->run ('user/login/newuser');
 }
-
-?>

@@ -28,5 +28,3 @@ echo $tpl->render ('blog/headlines', array (
 	'posts' => $posts,
 	'dates' => $dates
 ));
-
-?>

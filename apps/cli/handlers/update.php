@@ -157,5 +157,3 @@ if ($app === 'none' || $app === 'all') {
 foreach ($update_apps as $app) {
 	// TODO: Implement me
 }
-
-?>

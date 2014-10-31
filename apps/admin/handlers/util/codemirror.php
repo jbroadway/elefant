@@ -80,5 +80,3 @@ $data['field_id'] = isset ($data['field_id'])
 if ($data['field_id']) {
 	$page->add_script ($tpl->render ('admin/util/codemirror', $data));
 }
-
-?>

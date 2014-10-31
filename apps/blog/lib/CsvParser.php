@@ -104,5 +104,3 @@ class CsvParser {
 		return $fields;
 	}
 }
-
-?>

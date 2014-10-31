@@ -143,5 +143,3 @@ class MemcacheAPC {
 		return apc_clear_cache ('user');
 	}
 }
-
-?>

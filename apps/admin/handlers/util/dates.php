@@ -70,5 +70,3 @@ $(function () {
 	$.localize_dates ();
 });
 </script>');
-
-?>

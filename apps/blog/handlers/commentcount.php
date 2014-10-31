@@ -33,5 +33,3 @@ switch ($appconf['Blog']['comments']) {
 		}
 		break;
 }
-
-?>

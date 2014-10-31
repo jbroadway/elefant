@@ -82,5 +82,3 @@ function chmod_recursive ($path, $mode = false) {
 		? chmod ($path, $mode)
 		: array_map ('chmod_recursive', glob ($path . '/{,.}*', GLOB_BRACE)) == chmod ($path, $mode);
 }
-
-?>

@@ -47,5 +47,3 @@ class CliTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ("\033[0;32mYay!\033[0m\n\033[31;31mOh noes\033[0m", $out);
 	}
 }
-
-?>

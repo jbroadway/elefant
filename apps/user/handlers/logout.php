@@ -19,5 +19,3 @@ if (! Validator::validate ($_GET['redirect'], 'header')) {
 
 Lock::clear ();
 echo User::logout ($_GET['redirect']);
-
-?>

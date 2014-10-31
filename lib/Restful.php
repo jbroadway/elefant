@@ -207,5 +207,3 @@ class Restful {
 		return true;
 	}
 }
-
-?>

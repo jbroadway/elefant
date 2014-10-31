@@ -166,5 +166,3 @@ foreach ($ids as $k => $id) {
 		echo '</div>' . PHP_EOL;
 	}
 }
-
-?>

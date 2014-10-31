@@ -46,5 +46,3 @@ foreach ($path as $id => $title) {
 	}
 }
 echo '</ul>';
-
-?>

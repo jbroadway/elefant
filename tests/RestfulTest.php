@@ -203,5 +203,3 @@ class RestfulTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($err, $res);
 	}
 }
-
-?>

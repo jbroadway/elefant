@@ -112,5 +112,3 @@ $page->add_script (I18n::export (
 	'Unable to save changes.',
 	'Are you sure you want to delete this item?'
 ));
-
-?>

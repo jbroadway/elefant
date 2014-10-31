@@ -45,5 +45,3 @@ class AnalogTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 }
-
-?>

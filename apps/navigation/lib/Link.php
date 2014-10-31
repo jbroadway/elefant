@@ -217,5 +217,3 @@ class Link {
 		return join ('.', $parts);
 	}
 }
-
-?>

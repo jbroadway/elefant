@@ -43,5 +43,3 @@ if ($page->layout === false) {
 }
 
 echo '<p>' . __ ('This is a preview of how your layout will look.') . '</p>';
-
-?>

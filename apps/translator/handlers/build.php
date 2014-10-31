@@ -147,5 +147,3 @@ chmod ('lang/_index.php', 0666);
 $page->title = __ ('Indexing completed');
 
 echo '<p><a href="/translator/index">' . __ ('Continue') . '</a></p>';
-
-?>

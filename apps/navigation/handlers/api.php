@@ -57,5 +57,3 @@ if ($error) {
 }
 
 echo json_encode ($res);
-
-?>

@@ -666,5 +666,3 @@ $this->lang_hash['fr'] = array (
 	'Are you sure you want to delete this {{appname}}?' => 'Êtes-vous sûr de vouloir supprimer ce {{appname}} ?',
 	'Are you sure you want to delete the default block? This will remove it from all pages using this block' => 'Êtes-vous sûr de vouloir supprimer le bloc par défaut ? Il sera supprimé dans toutes les pages qui l&apos;utilisent'
 );
-
-?>

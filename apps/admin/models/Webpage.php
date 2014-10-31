@@ -110,5 +110,3 @@ class Webpage extends ExtendedModel {
 		return array (true, count ($pages));
 	}
 }
-
-?>

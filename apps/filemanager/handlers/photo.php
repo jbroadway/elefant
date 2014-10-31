@@ -79,5 +79,3 @@ if (User::is_valid () && User::require_acl ('admin', 'filemanager')) {
 }
 
 echo $tpl->render ('filemanager/photo', $data);
-
-?>

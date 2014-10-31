@@ -251,5 +251,3 @@ file_put_contents (
 );
 
 Cli::out ('App created in apps/' . $plural, 'success');
-
-?>

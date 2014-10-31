@@ -13,5 +13,3 @@ echo json_encode (
 		'select distinct tag_id from #prefix#blog_post_tag'
 	)
 );
-
-?>

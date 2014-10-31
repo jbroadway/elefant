@@ -31,5 +31,3 @@ foreach ($apps as $file) {
 ksort ($helpers);
 
 echo join ("\n", array_keys ($helpers)) . "\n";
-
-?>

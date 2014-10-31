@@ -18,5 +18,3 @@ class BlogAppTest extends AppTest {
 		$this->userAnon ();
 	}
 }
-
-?>

@@ -35,5 +35,3 @@ class AdminFunctionsTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse (admin_layout_exists ('this-is-a-nonexistent-layout'));
 	}
 }
-
-?>

@@ -5,5 +5,3 @@
  */
 
 $this->redirect ('/api/' . $appconf['Api']['current_version']);
-
-?>

@@ -48,5 +48,3 @@ switch ($dbtype) {
 echo '<p>' . __ ('Done.') . '</p>';
 
 $this->mark_installed ('user', $appconf['Admin']['version']);
-
-?>

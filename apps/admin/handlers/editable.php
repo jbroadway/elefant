@@ -14,5 +14,3 @@
  */
 
 echo $tpl->render ('admin/editable', $this->data);
-
-?>

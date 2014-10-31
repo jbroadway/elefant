@@ -104,5 +104,3 @@ if ($data['style'] === 'results') {
 }
 
 echo $tpl->render ('navigation/pager/' . $data['style'], $o);
-
-?>

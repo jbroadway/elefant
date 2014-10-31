@@ -51,5 +51,3 @@ echo json_encode (array (
 	'success' => false,
 	'error' => __ ('An Error Occurred') . ': ' . $u->error
 ));
-
-?>

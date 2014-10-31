@@ -37,5 +37,3 @@ foreach ($string['src'] as $source) {
 }
 
 echo View::render ('translator/sources', array ('contexts' => $contexts));
-
-?>

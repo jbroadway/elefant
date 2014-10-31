@@ -41,5 +41,3 @@ class Block extends Model {
 	 */
 	public $table = '#prefix#block';
 }
-
-?>

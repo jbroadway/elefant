@@ -95,5 +95,3 @@ function navigation_get_sections () {
 	$n = new Navigation;
 	return $n->sections ();
 }
-
-?>

@@ -55,5 +55,3 @@ if ($f->submit ()) {
 	echo $tpl->render ('admin/edit/head', $wp);
 	echo $tpl->render ('admin/edit', $wp);
 }
-
-?>

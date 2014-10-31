@@ -49,5 +49,3 @@ This is also a test,2012-01-20 12:23 PM,jbroadway,No,\"<p>Testing \"\"one\"\" tw
 		$this->assertEquals ("three, four", $parsed[2][5]);
 	}
 }
-
-?>

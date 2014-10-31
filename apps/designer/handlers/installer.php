@@ -76,5 +76,3 @@ echo $form->handle (function ($form) use ($page, $tpl) {
 		return false;
 	}
 });
-
-?>

@@ -60,5 +60,3 @@ require_once ('apps/designer/lib/Functions.php');
 
 $page->title = __ ('Designer');
 echo $tpl->render ('designer/index', $out);
-
-?>

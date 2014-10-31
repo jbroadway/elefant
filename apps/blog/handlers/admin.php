@@ -33,5 +33,3 @@ echo $tpl->render ('blog/admin', array (
 	'count' => count ($posts),
 	'url' => '/blog/admin?offset=%d'
 ));
-
-?>

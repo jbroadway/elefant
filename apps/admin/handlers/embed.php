@@ -60,5 +60,3 @@ foreach ($embeds as $k => $e) {
 usort ($embeds, 'admin_embed_sort');
 
 echo json_encode ($embeds);
-
-?>

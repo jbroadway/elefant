@@ -49,5 +49,3 @@ $page->add_script (
 		'Back'
 	)
 );
-
-?>

@@ -11,5 +11,3 @@ if (! $this->cli) {
 $page->layout = false;
 
 echo ELEFANT_VERSION . "\n";
-
-?>

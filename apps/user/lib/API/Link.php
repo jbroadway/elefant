@@ -45,5 +45,3 @@ class Link extends Restful {
 		//return true;
 	}
 }
-
-?>

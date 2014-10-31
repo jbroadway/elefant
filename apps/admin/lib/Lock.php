@@ -194,5 +194,3 @@ class Lock {
 		return DB::execute ('delete from `#prefix#lock`');
 	}
 }
-
-?>

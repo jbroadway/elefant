@@ -23,6 +23,3 @@ function blog_yes_no () {
 		(object) array ('key' => 'yes', 'value' => __ ('Yes')),
 	);
 }
-		
-
-?>

@@ -21,5 +21,3 @@ if (in_array ('persona', $appconf['User']['login_methods'])) {
 }
 
 echo $tpl->render ('user/sidebar', array ('login_methods' => $appconf['User']['login_methods']));
-
-?>

@@ -57,5 +57,3 @@ if ($f->submit ()) {
 	$page->add_script ('/js/jquery.autosave.js');
 	echo $tpl->render ('user/edit', $u);
 }
-
-?>

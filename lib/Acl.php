@@ -197,5 +197,3 @@ class Acl {
 		return $this->resources;
 	}
 }
-
-?>

@@ -91,5 +91,3 @@ if (isset ($_GET['contains']) && ! empty ($_GET['contains'])) {
 		'empty' => $empty
 	));
 }
-
-?>

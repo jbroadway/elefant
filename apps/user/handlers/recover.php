@@ -44,5 +44,3 @@ if ($f->submit ()) {
 	$page->title = __ ('Forgot your password?');
 	echo $tpl->render ('user/recover', $u);
 }
-
-?>

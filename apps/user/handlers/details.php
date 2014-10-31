@@ -25,5 +25,3 @@ $page->add_script ('/apps/user/js/build/links.js');
 $page->add_script ('/apps/user/js/build/notes.js');
 $page->add_style ('/apps/user/css/details.css');
 echo $tpl->render ('user/details', $user->orig ());
-
-?>

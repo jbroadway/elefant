@@ -17,5 +17,3 @@ $data['width'] = is_numeric ($data['width']) ? $data['width'] . 'px' : $data['wi
 $data['height'] = is_numeric ($data['height']) ? $data['height'] . 'px' : $data['height'];
 
 echo $tpl->render ('social/google/maps', $data);
-
-?>

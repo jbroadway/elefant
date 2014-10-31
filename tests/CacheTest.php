@@ -63,5 +63,3 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (count ($files), 2);
 	}
 }
-
-?>

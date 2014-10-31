@@ -325,5 +325,3 @@ class Toolbar {
 		return self::$tools;
 	}
 }
-
-?>

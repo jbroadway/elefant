@@ -17,5 +17,3 @@ if (conf ('I18n', 'multilingual')) {
 } else {
 	navigation_print_level ($n->tree);
 }
-
-?>

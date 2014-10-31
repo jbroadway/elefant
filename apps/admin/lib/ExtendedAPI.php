@@ -136,5 +136,3 @@ class ExtendedAPI extends Restful {
 		return true;
 	}
 }
-
-?>

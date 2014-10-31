@@ -50,5 +50,3 @@ $data['tweets'] = $res;
 $out = $tpl->render ('social/twitter/feed', $data);
 $cache->set ($cache_key, $out, 0, 1800);
 echo $out;
-
-?>

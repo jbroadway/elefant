@@ -60,5 +60,3 @@ $page->add_script (sprintf (
 ));
 
 echo $tpl->render ('blog/archive', $page);
-
-?>

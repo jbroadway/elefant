@@ -24,5 +24,3 @@ setcookie (
 isset ($_GET['redirect'])
 	? $this->redirect ($_GET['redirect'])
 	: $this->redirect ($_SERVER['HTTP_REFERER']);
-
-?>

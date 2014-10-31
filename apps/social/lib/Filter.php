@@ -31,5 +31,3 @@ class Filter {
 		return $tweet;
 	}
 }
-
-?>

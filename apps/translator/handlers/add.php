@@ -50,5 +50,3 @@ echo $form->handle (function ($form) {
 	$form->controller->add_notification (__ ('Language added.'));
 	$form->controller->redirect ('/translator/index');
 });
-
-?>

@@ -307,5 +307,3 @@ function fetch_url ($url) {
 	}
 	return file_get_contents ($url);
 }
-
-?>

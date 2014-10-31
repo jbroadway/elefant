@@ -54,5 +54,3 @@ $page->add_script (sprintf (
 ));
 
 echo $tpl->render ('blog/tag', $page);
-
-?>

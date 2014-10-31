@@ -40,5 +40,3 @@ foreach ($n->tree as $item) {
 	}
 }
 echo '</ul>';
-
-?>

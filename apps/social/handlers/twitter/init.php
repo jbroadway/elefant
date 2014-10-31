@@ -9,5 +9,3 @@ if (self::$called['social/twitter/init'] > 1) {
 }
 
 echo $tpl->render ('social/twitter/init');
-
-?>

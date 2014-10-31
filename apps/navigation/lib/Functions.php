@@ -149,6 +149,3 @@ function navigation_print_admin_tree ($tree, $tree_root=true) {
 	}
 	echo '</ul>';
 }
-
-
-?>

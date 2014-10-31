@@ -17,5 +17,3 @@ $page->layout = 'admin';
 $page->title = __ ('Languages');
 
 echo $tpl->render ('translator/index', $i18n);
-
-?>

@@ -81,5 +81,3 @@ if (count ($_FILES['file']) > 1) {
 	$this->add_notification (__ ('File saved.'));
 }
 $this->redirect ('/filemanager?path=' . $_POST['path']);
-
-?>

@@ -32,5 +32,3 @@ $rules = parse_ini_string ($rules, true);
 $page->layout = false;
 header ('Content-Type: application/json');
 echo json_encode ($rules);
-
-?>

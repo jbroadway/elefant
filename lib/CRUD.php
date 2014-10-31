@@ -299,5 +299,3 @@ class CRUD extends Restful {
 		return $this->delete__default ($id);
 	}
 }
-
-?>

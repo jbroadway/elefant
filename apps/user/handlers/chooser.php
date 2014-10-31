@@ -15,5 +15,3 @@ $users = User::query ('id, name, email')
 header ('Content-Type: application/json');
 
 echo json_encode ($users);
-
-?>

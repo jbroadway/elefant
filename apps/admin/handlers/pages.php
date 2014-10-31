@@ -31,5 +31,3 @@ echo $tpl->render ('admin/pages', array (
 	'count' => count ($pages),
 	'url' => '/admin/pages?offset=%d'
 ));
-
-?>

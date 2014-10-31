@@ -200,5 +200,3 @@ class ActiveResourceTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($t->_xml_entities ('ž'), '&#x17E;');
 	}
 }
-
-?>

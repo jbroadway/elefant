@@ -167,5 +167,3 @@ class GithubFetcher {
 		return $res->content;
 	}
 }
-
-?>

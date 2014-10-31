@@ -17,5 +17,3 @@ $data['width'] = isset ($data['width']) ? $data['width'] : 480;
 $data['height'] = isset ($data['height']) ? $data['height'] : 303;
 
 echo $tpl->render ('social/video/youtube', $data);
-
-?>

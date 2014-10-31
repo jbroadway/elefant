@@ -106,5 +106,3 @@ class Ini {
 		return file_put_contents ($file, $out);
 	}
 }
-
-?>

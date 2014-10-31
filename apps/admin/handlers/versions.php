@@ -60,5 +60,3 @@ echo $tpl->render ('admin/versions', array (
 	'url' => sprintf ('/admin/versions?type=%s&id=%s&offset=%%d', $_GET['type'], $_GET['id']),
 	'deleted' => $deleted
 ));
-
-?>

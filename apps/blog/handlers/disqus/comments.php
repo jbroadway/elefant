@@ -10,5 +10,3 @@ echo $tpl->render ('blog/disqus/comments', array (
 	'permalink' => $data['url'],
 	'title' => $data['title']
 ));
-
-?>

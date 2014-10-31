@@ -256,5 +256,3 @@ class Mailer {
 		Mailer::send ($this->args, 2);
 	}
 }
-
-?>

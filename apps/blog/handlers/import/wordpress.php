@@ -75,5 +75,3 @@ if ($f->submit ()) {
 $o = new StdClass;
 
 echo $tpl->render ('blog/import/wordpress', $o);
-
-?>

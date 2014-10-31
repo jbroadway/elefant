@@ -20,5 +20,3 @@ $page->title = $this->data['title'];
 if (! empty ($this->data['message'])) {
 	echo $this->data['message'];
 }
-
-?>

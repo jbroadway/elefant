@@ -26,5 +26,3 @@ class ZipperTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ('Test', file_get_contents ('cache/zip/zipper_test/foo.txt'));
 	}
 }
-
-?>

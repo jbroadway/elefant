@@ -164,5 +164,3 @@ Versions::add ($b);
 @umask (0000);
 @touch ('conf/installed');
 echo "Done.\n";
-
-?>

@@ -81,5 +81,3 @@ class Updater {
 		return true;
 	}
 }
-
-?>

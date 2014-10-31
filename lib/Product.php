@@ -77,5 +77,3 @@ class Product {
 		return $info['admin_layout'];
 	}
 }
-
-?>

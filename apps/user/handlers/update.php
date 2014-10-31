@@ -79,5 +79,3 @@ echo $form->handle (function ($form) use ($u, $page) {
 	echo '<p>' . __ ('Please try again later.') . '</p>';
 	echo '<p><a href="/user">' . __ ('Back') . '</a></p>';
 });
-
-?>

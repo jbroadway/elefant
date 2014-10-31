@@ -27,5 +27,3 @@ foreach ($menu as $pg) {
 usort ($out, 'admin_links_sort');
 
 echo json_encode ($out);
-
-?>

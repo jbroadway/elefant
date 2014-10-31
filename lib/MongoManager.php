@@ -112,5 +112,3 @@ class MongoManager {
 		return $conn->{conf ('Mongo', 'name')};
 	}
 }
-
-?>

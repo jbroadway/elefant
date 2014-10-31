@@ -38,5 +38,3 @@ if (! $res) {
 $page->layout = FALSE;
 header ('Content-Type: text/xml');
 echo $res;
-
-?>

@@ -19,5 +19,3 @@ $page->layout = $_POST['layout'];
 $page->head = '';
 
 echo $tpl->run_includes ($_POST['body']);
-
-?>

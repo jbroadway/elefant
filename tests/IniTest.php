@@ -47,5 +47,3 @@ class IniTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($ini, Ini::write ($data));
 	}
 }
-
-?>

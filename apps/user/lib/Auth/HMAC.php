@@ -151,5 +151,3 @@ class HMAC {
 		return TRUE;
 	}
 }
-
-?>

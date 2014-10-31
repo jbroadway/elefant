@@ -102,5 +102,3 @@ if ($out === $wp->body) {
 
 // output the page body
 echo $out;
-
-?>

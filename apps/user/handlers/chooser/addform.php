@@ -13,5 +13,3 @@ $u->types = User::allowed_roles ();
 $page->layout = false;
 
 echo $tpl->render ('user/chooser/addform', $u);
-
-?>

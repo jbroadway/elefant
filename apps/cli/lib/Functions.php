@@ -52,5 +52,3 @@ function cli_get_versions ($current, $latest) {
 	}
 	return $versions;
 }
-
-?>

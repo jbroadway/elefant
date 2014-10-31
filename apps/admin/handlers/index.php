@@ -38,5 +38,3 @@ if (! User::require_admin ()) {
 }
 
 $this->redirect ($_POST['redirect']);
-
-?>

@@ -223,5 +223,3 @@ class FrontController {
 		return true;
 	}
 }
-
-?>

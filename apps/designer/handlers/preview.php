@@ -22,5 +22,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 
 echo '<p>' . __ ('This is a preview of how your layout will look.') . '</p>';
-
-?>

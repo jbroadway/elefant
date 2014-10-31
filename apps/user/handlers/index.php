@@ -26,5 +26,3 @@ if (! $this->params[0]) {
 }
 
 echo $tpl->render ('user/index', $data);
-
-?>

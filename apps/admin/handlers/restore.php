@@ -38,5 +38,3 @@ if ($ver->class == 'Webpage') {
 	$this->redirect ('/' . $obj->id);
 }
 $this->redirect ('/');
-
-?>

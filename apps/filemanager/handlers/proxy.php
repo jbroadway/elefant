@@ -21,5 +21,3 @@ if ($appconf['General']['proxy_handler']) {
 }
 
 $this->permanent_redirect ('/files/' . join ('/', $this->params));
-
-?>

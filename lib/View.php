@@ -148,5 +148,3 @@ class View {
 		return self::$tpl->render ($view, $params);
 	}
 }
-
-?>

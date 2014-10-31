@@ -143,5 +143,3 @@ class MemcacheXCache {
 		return xcache_unset_by_prefix (self::$key_prefix);
 	}
 }
-
-?>

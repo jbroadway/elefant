@@ -133,5 +133,3 @@ class VersionsTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (count ($recent), 2);
 	}
 }
-
-?>

@@ -34,5 +34,3 @@ foreach ($sqldata as $sql) {
 }
 DB::commit ();
 Cli::out (count ($sqldata) . ' commands executed.', 'success');
-
-?>

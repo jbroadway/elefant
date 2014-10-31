@@ -25,5 +25,3 @@ $other_pages = navigation_get_other_pages ($ids);
 echo $tpl->render ('navigation/admin', array (
 	'other_pages' => $other_pages
 ));
-
-?>

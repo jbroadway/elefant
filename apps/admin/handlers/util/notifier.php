@@ -23,5 +23,3 @@ $page->add_style ('/apps/admin/css/jquery.notifier.css');
 $page->add_script ('/js/jquery.cookie.js');
 $page->add_script ('/apps/admin/js/jquery.jgrowl.min.js');
 $page->add_script ('/apps/admin/js/jquery.notifier.js');
-
-?>

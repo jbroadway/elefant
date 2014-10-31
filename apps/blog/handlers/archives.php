@@ -16,5 +16,3 @@ echo $tpl->render (
 		'archives' => $res
 	)
 );
-
-?>

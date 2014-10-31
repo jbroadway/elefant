@@ -76,5 +76,3 @@ class NavigationTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($expected_index, $index_node);
 	}
 }
-
-?>

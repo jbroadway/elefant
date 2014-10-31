@@ -380,5 +380,3 @@ $this->lang_hash['en'] = array (
 	'official blog' => '',
 	'results' => ''
 );
-
-?>

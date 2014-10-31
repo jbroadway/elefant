@@ -21,5 +21,3 @@ if (isset ($i18n->languages[$_GET['lang']])) {
 
 $this->add_notification (__ ('Default language updated.'));
 $this->redirect ('/translator/index');
-
-?>

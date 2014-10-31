@@ -10,5 +10,3 @@ if (self::$called['filemanager/mediaelement'] > 1) {
 }
 
 echo $tpl->render ('filemanager/mediaelement');
-
-?>

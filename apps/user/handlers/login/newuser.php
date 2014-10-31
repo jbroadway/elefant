@@ -53,5 +53,3 @@ if ($f->submit ()) {
 	$page->title = __ ('New User');
 	echo $tpl->render ('user/login/newuser', $u);
 }
-
-?>

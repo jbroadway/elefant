@@ -259,5 +259,3 @@ class ExtendedModel extends Model {
 		return $ext[$key];
 	}
 }
-
-?>

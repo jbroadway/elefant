@@ -953,5 +953,3 @@ class Model {
 		return $o->key;
 	}
 }
-
-?>

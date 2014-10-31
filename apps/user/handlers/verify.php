@@ -21,5 +21,3 @@ if ($row && isset ($data['verifier']) && $data['verifier'] == $_GET['verifier'])
 	$page->title = __ ('Invalid Verifier');
 	echo '<p><a href="/">' . __ ('Continue') . '</a></p>';
 }
-
-?>

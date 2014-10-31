@@ -204,5 +204,3 @@ class API extends Restful {
 		);
 	}
 }
-
-?>

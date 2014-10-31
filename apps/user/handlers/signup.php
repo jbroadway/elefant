@@ -70,5 +70,3 @@ if ($f->submit ()) {
 	}
 	echo $tpl->render ('user/signup', $u);
 }
-
-?>

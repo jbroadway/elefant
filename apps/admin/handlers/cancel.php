@@ -15,5 +15,3 @@ $lock = new Lock ($_GET['type'], $_GET['id']);
 $lock->remove ();
 
 $this->redirect ($_GET['return']);
-
-?>

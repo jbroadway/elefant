@@ -88,5 +88,3 @@ function elefant_autoloader ($class) {
 }
 
 spl_autoload_register ('elefant_autoloader');
-
-?>

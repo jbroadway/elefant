@@ -580,5 +580,3 @@ function __ ($original = '') {
 	$args = func_get_args ();
 	return call_user_func_array (array ($GLOBALS['i18n'], 'getf'), $args);
 }
-
-?>

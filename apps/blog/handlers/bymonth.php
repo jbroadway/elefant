@@ -37,5 +37,3 @@ foreach ($posts as $post) {
 echo $tpl->render ('blog/bymonth', array (
 	'posts' => $bymonth
 ));
-
-?>

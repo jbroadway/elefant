@@ -559,5 +559,3 @@ $this->lang_hash['ru'] = array (
 	'Zip file installation failed' => 'Установка zip-архива не удалась',
 	'Zip file was invalid or could not be installed.' => 'Zip-архив бракованный и не может быть установлен.'
 );
-
-?>

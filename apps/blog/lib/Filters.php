@@ -159,5 +159,3 @@ function blog_filter_truncate ($text, $length = 100, $ending = '…', $exact = t
 
         return $truncate;
 }
-
-?>

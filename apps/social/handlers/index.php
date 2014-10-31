@@ -6,5 +6,3 @@
  */
 
 echo $tpl->render ('social/index', array ());
-
-?>

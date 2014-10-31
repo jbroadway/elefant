@@ -661,5 +661,3 @@ class MongoModel {
 		return $orig;
 	}
 }
-
-?>

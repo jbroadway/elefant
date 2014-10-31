@@ -157,5 +157,3 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ($expected, I18n::short_date_time ($time));
 	}
 }
-
-?>

@@ -20,5 +20,3 @@ if (conf ('I18n', 'multilingual')) {
 } else {
 	navigation_print_context ($n->tree, $path);
 }
-
-?>

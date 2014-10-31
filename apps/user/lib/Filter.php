@@ -10,5 +10,3 @@ class Filter {
 		return str_replace ('/', '-', $resource);
 	}
 }
-
-?>

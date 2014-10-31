@@ -491,5 +491,3 @@ class User extends ExtendedModel {
 		}
 	}
 }
-
-?>

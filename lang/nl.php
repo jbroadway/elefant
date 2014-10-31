@@ -385,5 +385,3 @@ $this->lang_hash['nl'] = array (
 	'lang folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>' => 'lang map is niet beschrijfbaar. Run aub </p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>',
 	'layouts folder is not writeable. Please run:</p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>' => 'layouts map is niet beschrijfbaar. Run aub </p><p><tt>chmod -R 775 cache conf css files lang layouts</tt>'
 );
-
-?>

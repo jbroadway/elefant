@@ -116,5 +116,3 @@ class LockTest extends PHPUnit_Framework_TestCase {
 		$this->assertNotEquals (false, self::$lock->error);
 	}
 }
-
-?>

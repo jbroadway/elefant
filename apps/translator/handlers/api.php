@@ -6,5 +6,3 @@
 
 $this->require_acl ('admin', 'translator');
 $this->restful (new Translator ());
-
-?>

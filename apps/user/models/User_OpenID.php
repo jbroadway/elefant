@@ -59,5 +59,3 @@ class User_OpenID extends Model {
 		return false;
 	}
 }
-
-?>

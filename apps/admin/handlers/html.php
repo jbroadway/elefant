@@ -10,5 +10,3 @@
 require_once ('apps/admin/lib/Functions.php');
 
 echo admin_embed_lookup ($data['id']);
-
-?>

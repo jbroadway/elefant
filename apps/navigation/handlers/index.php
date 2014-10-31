@@ -5,5 +5,3 @@
  */
 
 $this->redirect ('/navigation/admin');
-
-?>

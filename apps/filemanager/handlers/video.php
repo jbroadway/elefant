@@ -17,5 +17,3 @@ if ($appconf['General']['proxy_handler']) {
 }
 
 echo $tpl->render ('filemanager/video', $data);
-
-?>

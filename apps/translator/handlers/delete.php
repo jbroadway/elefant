@@ -18,5 +18,3 @@ if (isset ($i18n->languages[$_GET['lang']])) {
 
 $this->add_notification (__ ('Language deleted.'));
 $this->redirect ('/translator/index');
-
-?>

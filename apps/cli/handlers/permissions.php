@@ -13,5 +13,3 @@ $page->layout = false;
 // set the necessary folder permissions
 system ('chmod -R 777 cache conf css files lang layouts');
 system ('chmod 777 apps');
-
-?>

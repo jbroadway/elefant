@@ -21,5 +21,3 @@ if (! Ini::write ($rules, conf ('Paths', 'access_control_list'))) {
 	$this->add_notification (__ ('Role deleted.'));
 }
 $this->redirect ('/user/roles');
-
-?>

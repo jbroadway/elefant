@@ -55,5 +55,3 @@ class AppconfTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ('admin/versions', $conf);
 	}
 }
-
-?>

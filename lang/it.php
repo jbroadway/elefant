@@ -561,6 +561,4 @@ $this->lang_hash['it'] = array (
 	'Admin access required.' => 'È richiesto l\'accesso amministrativo ',
 	'An email has been sent with a link to reset your password.' => 'È stata inviata una email con un link per annullare la password.',
 	'is required' => 'è richiesto'
-);                                      
-
-?>
+);

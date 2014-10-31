@@ -36,5 +36,3 @@ echo $form->handle (function ($form) {
     $form->controller->add_notification (__ ('Settings saved.'));
     $form->controller->redirect ('/filemanager/index');
 });
-
-?>

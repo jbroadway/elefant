@@ -86,5 +86,3 @@ class NavigationAppTest extends AppTest {
 		$this->assertContains ('<li><a href="/contactez-nous">Contactez-nous', $res);
 	}
 }
-
-?>

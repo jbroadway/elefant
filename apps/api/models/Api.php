@@ -78,5 +78,3 @@ class Api extends Model {
 		return array ($a->token, $a->api_key);
 	}
 }
-
-?>

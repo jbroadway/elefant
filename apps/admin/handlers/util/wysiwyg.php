@@ -66,5 +66,3 @@ $data['field_id'] = isset ($data['field_id'])
 	? (($data['field_id'] === '0' || empty ($data['field_id'])) ? false : $data['field_id'])
 	: 'webpage-body';
 $page->add_script ($tpl->render ('admin/util/wysiwyg', $data));
-
-?>

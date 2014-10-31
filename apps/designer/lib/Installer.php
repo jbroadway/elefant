@@ -95,5 +95,3 @@ class Installer {
 		return false;
 	}
 }
-
-?>

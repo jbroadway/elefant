@@ -81,5 +81,3 @@ foreach ($i18n->languages as $lang) {
 }
 
 Cli::out (sprintf ('Translations exported to apps/%s/lang', $app), 'success');
-
-?>

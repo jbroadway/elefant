@@ -24,5 +24,3 @@ $page->add_style ('/apps/admin/js/redactor/redactor.css');
 $page->add_style ('/apps/admin/js/redactor/custom.css');
 
 $page->add_script ('/apps/admin/js/redactor/redactor.min.js');
-
-?>

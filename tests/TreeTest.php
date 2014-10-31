@@ -407,5 +407,3 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals (count (self::$n->node ('index')->children), 2);
 	}
 }
-
-?>

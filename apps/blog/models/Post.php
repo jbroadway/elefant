@@ -186,5 +186,3 @@ class Post extends \ExtendedModel {
 		return array (true, count ($posts));
 	}
 }
-
-?>

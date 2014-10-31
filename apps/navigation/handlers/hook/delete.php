@@ -15,5 +15,3 @@ $n->save ();
 
 require_once ('apps/navigation/lib/Functions.php');
 navigation_clear_cache ();
-
-?>

@@ -56,5 +56,3 @@ $page->add_script (I18n::export (
 	'Click to remove, drag to re-order',
 	'Browse images'
 ));
-
-?>

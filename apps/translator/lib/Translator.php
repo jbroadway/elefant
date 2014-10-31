@@ -138,5 +138,3 @@ class Translator extends Restful {
 		return ($count / $index_count) * 100;
 	}
 }
-
-?>

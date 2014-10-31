@@ -424,5 +424,3 @@ $this->lang_hash['pt_br'] = array (
 	'Site tree' => 'árvore do local',
 	'Building index' => 'índice de construção'
 );
-
-?>

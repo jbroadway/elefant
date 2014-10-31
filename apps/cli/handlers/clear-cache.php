@@ -29,5 +29,3 @@ while (false !== ($f = $d->read ())) {
 	}
 	unlink ('cache/datastore/' . $f);
 }
-
-?>

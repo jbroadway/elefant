@@ -58,5 +58,3 @@ function translator_filter_sources ($sources) {
 	$sources = is_array ($sources) ? $sources : array ($sources);
 	return "\n- " . join ("\n- ", $sources);
 }
-
-?>

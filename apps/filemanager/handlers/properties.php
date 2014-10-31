@@ -22,5 +22,3 @@ $out = array (
 );
 
 echo json_encode ($out);
-
-?>

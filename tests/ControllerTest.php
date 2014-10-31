@@ -58,5 +58,3 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ('http://www.example.com/sub/page', $this->c->absolutize ('page', 'http://www.example.com/sub/'));
 	}
 }
-
-?>

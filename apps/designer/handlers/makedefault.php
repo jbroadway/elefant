@@ -37,5 +37,3 @@ file_put_contents ('conf/' . ELEFANT_ENV . '.php', $confdata);
 
 $this->add_notification (__ ('Default layout updated.'));
 $this->redirect ('/designer');
-
-?>

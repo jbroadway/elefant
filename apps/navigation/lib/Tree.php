@@ -445,5 +445,3 @@ class Tree {
 		return true;
 	}
 }
-
-?>

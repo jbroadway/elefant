@@ -15,5 +15,3 @@ if (! isset ($data['twitter_id'])) {
 }
 
 echo $tpl->render ('social/twitter/follow', $data);
-
-?>

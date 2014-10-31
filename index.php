@@ -32,5 +32,3 @@ require 'lib/FrontController.php';
 $argc = isset ($argc) ? $argc : null;
 $argv = isset ($argv) ? $argv : null;
 return FrontController::run ($argv, $argc);
-
-?>

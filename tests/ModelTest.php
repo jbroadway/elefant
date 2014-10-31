@@ -447,5 +447,3 @@ class ModelTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ('id', Cover::key ());
 	}
 }
-
-?>
