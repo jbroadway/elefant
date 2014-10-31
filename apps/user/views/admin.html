@@ -43,8 +43,10 @@
 			<a href="/user/details?id={{ loop_value->id }}">{"Details"}</a>
 			|
 			<a href="/user/edit?id={{ loop_value->id }}">{"Edit"}</a>
+			{% if User::val ('id') != $data->loop_value->id %}
 			|
 			<a href="/user/delete?id={{ loop_value->id }}" onclick="return confirm ('{"Are you sure you want to delete this user?"}');">{"Delete"}</a>
+			{% end %}
 			</td>
 	</tr>
 {% end %}
