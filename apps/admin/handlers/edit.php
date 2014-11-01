@@ -17,8 +17,6 @@ if ($lock->exists ()) {
 	$lock->add ();
 }
 
-require_once ('apps/admin/lib/Functions.php');
-
 $wp = new Webpage ($_GET['page']);
 
 $f = new Form ('post', 'admin/edit');

@@ -8,8 +8,6 @@ $page->layout = 'admin';
 
 $this->require_acl ('admin', 'admin/pages', 'admin/add');
 
-require_once ('apps/admin/lib/Functions.php');
-
 $f = new Form ('post', 'admin/add');
 $f->verify_csrf = false;
 if ($f->submit ()) {

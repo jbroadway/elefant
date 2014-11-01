@@ -6,8 +6,6 @@
 
 $this->require_admin ();
 
-require_once ('apps/admin/lib/Functions.php');
-
 $page->layout = 'admin';
 $page->title = __ ('Blog Settings');
 
