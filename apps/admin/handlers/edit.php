@@ -47,7 +47,6 @@ if ($f->submit ()) {
 	$page->title = __ ('An Error Occurred');
 	echo __ ('Error Message') . ': ' . $wp->error;
 } else {
-	$wp->layouts = admin_get_layouts ();
 	$wp->failed = $f->failed;
 	$wp = $f->merge_values ($wp);
 	$page->title = __ ('Edit Page') . ': ' . $wp->title;

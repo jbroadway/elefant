@@ -34,38 +34,21 @@ function admin_embed_lookup ($id) {
 
 /**
  * Get a list of installed layouts/themes.
+ * Alias of `array_keys(admin\Layout::options())`,
+ * for backward compatibility.
  */
 function admin_get_layouts () {
-	$layouts = array ();
-	$sources = array (
-		'layouts/*.html',
-		'layouts/*/*.html'
-	);
-	foreach ($sources as $source) {
-		$files = glob ($source);
-		if ($files) {
-			foreach ($files as $file) {
-				if (preg_match ('/\/([^\/]+)\/([^\/]+)\.html$/', $file, $regs)) {
-					if ($regs[1] === $regs[2]) {
-						$layouts[] = $regs[1];
-					} else {
-						$layouts[] = $regs[1] . '/' . $regs[2];
-					}
-				} elseif (preg_match ('/\/([^\/]+)\.html$/', $file, $regs)) {
-					$layouts[] = $regs[1];
-				}
-			}
-		}
-	}
-	sort ($layouts);
-	return $layouts;
+	$layouts = admin\Layout::options ();
+	return array_keys ($layouts);
 }
 
 /**
  * Check whether a layout exists.
+ * Alias of `admin\Layout::exists()`,
+ * for backward compatibility.
  */
 function admin_layout_exists ($name) {
-	return (file_exists ('layouts/' . $name . '.html') || file_exists ('layouts/' . $name . '/' . $name . '.html'));
+	return admin\Layout::exists ($name);
 }
 
 /**

@@ -15,7 +15,6 @@ $form = new Form ('post', $this);
 
 $form->data = array (
 	'title' => $appconf['Blog']['title'],
-	'layouts' => admin_get_layouts (),
 	'layout' => $appconf['Blog']['layout'],
 	'post_layout' => $appconf['Blog']['post_layout'],
 	'comments' => $appconf['Blog']['comments'],

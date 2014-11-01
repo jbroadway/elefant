@@ -8,15 +8,15 @@
 
 <p>{"Page layout"}:<br />
 <select name="layout">
-{% foreach layouts %}
-	<option value="{{ loop_value }}"{% if loop_value == $data->layout %} selected{% end %}>{{ loop_value|ucfirst }}</option>
+{% foreach admin\Layout::options () as _layout, _name %}
+	<option value="{{ _layout }}"{% if _layout == $data->layout %} selected{% end %}>{{ _name }}</option>
 {% end %}
 </select></p>
 
 <p>{"Post page layout"}:<br />
 <select name="post_layout">
-{% foreach layouts %}
-	<option value="{{ loop_value }}"{% if loop_value == $data->post_layout %} selected{% end %}>{{ loop_value|ucfirst }}</option>
+{% foreach admin\Layout::options () as _layout, _name %}
+	<option value="{{ _layout }}"{% if _layout == $data->post_layout %} selected{% end %}>{{ _name }}</option>
 {% end %}
 </select></p>
 

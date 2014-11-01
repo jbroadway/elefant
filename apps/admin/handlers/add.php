@@ -28,7 +28,6 @@ if ($f->submit ()) {
 	$pg = new Page;
 	$pg->layout = 'default';
 	$pg->weight = '0';
-	$pg->layouts = admin_get_layouts ();
 	$pg->failed = $f->failed;
 	$pg = $f->merge_values ($pg);
 	$page->title = __ ('Add Page');
