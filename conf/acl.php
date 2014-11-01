@@ -8,6 +8,7 @@ default                 = On
 
 default                 = Off
 admin                   = On
+admin/pages             = On
 admin/add               = On
 admin/edit              = On
 admin/delete            = On
