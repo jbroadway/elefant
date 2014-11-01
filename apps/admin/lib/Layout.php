@@ -86,7 +86,7 @@ class Layout {
 			foreach ($files as $file) {
 				$name = basename ($file, '.html');
 				if ($name !== $layout) {
-					$layouts[$name] = ucfirst ($name);
+					$layouts[$layout . '/' . $name] = ucfirst ($name);
 				}
 			}
 		}
