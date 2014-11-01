@@ -75,12 +75,29 @@ class Toolbar {
 
 					$original_tools[] = $handler;
 		
-					if ($handler === 'admin/pages' && (! Appconf::admin ('General', 'show_all_pages') || ! User::require_acl ('admin/pages'))) {
+					if ($handler === 'admin/pages' && ! Appconf::admin ('General', 'show_all_pages')) {
 						unset (self::$custom_tools[$column][$handler]);
 						continue;
 					}
 					
 					$app = substr ($handler, 0, strpos ($handler, '/'));
+
+					// for app/admin and app/index handlers, verify acl on app alone
+					// for app/custom-name handlers, verify acl on both app and handler
+					if (
+							(preg_match ('/^' . preg_quote ($app, '/') . '\/(admin|index)$/', $handler)
+								&&
+							User::require_acl ($app))
+						||
+							User::require_acl ($app, $handler)
+					) {
+						// Ok
+					} else {
+						// Can't access this app
+						unset (self::$custom_tools[$column][$handler]);
+						continue;
+					}
+
 					$appconf = Appconf::get ($app);
 
 					if (! self::is_compatible ($appconf)) {
@@ -104,8 +121,7 @@ class Toolbar {
 							$name = __ ($name) . ' (' . __ ('click to install') . ')';
 							unset (self::$custom_tools[$column][$handler]);
 							self::$custom_tools[$column][$handler] = array (
-								'handler' => $handler,
-								'install' => $appconf['Admin']['install'],
+								'handler' => $appconf['Admin']['install'],
 								'name' => $name,
 								'class' => 'needs-upgrade'
 							);
@@ -113,8 +129,7 @@ class Toolbar {
 							// needs upgrade
 							$name = __ ($name) . ' (' . __ ('click to upgrade') . ')';
 							self::$custom_tools[$column][$handler] = array (
-								'handler' => $handler,
-								'upgrade' => $appconf['Admin']['upgrade'],
+								'handler' => $appconf['Admin']['upgrade'],
 								'name' => $name,
 								'class' => 'needs-upgrade'
 							);
