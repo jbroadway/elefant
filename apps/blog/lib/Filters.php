@@ -46,6 +46,18 @@ function blog_filter_csv_line ($line) {
 }
 
 /**
+ * Filter published yes/no/que to text.
+ */
+function blog_filter_published ($p) {
+	if ($p === 'yes') {
+		return __ ('Yes');
+	} elseif ($p === 'no') {
+		return __ ('No');
+	}
+	return __ ('Scheduled');
+}
+
+/**
 * Truncates text.
 *
 * Cuts a string to the length of $length and replaces the last characters

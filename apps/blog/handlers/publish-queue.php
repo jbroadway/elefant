@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Publish queued blog posts. Use via cron like this:
+ * Publish scheduled blog posts. Use via cron like this:
  *
  *     0,15,30,45 * * * * /var/www/elefant blog/publish-queue
  */

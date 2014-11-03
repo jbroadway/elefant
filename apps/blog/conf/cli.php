@@ -1,5 +1,5 @@
 ; <?php /*
 
-commands[blog/publish-queue] = Publish queued blog posts.
+commands[blog/publish-queue] = Publish scheduled blog posts.
 
 ; */ ?>

@@ -38,7 +38,7 @@
 		<td><a href="/blog/post/{{ loop_value->id }}/{{ loop_value->title|URLify::filter }}" target="_blank">{{ loop_value->title }}</a></td>
 		<td>{{ loop_value->ts|I18n::date_time }}</td>
 		<td>{{ loop_value->author }}</td>
-		<td>{{ loop_value->published|ucfirst }}</td>
+		<td>{{ loop_value->published|blog_filter_published }}</td>
 		<td style="text-align: right">
 			{% if loop_value->locked %}
 			{"Editing Locked"}

@@ -52,11 +52,33 @@ class Post extends \ExtendedModel {
 	 */
 	public $_extended_field = 'extra';
 
+	public static function _publish_queued ($posts) {
+		foreach (array_keys ($posts) as $k) {
+			if ($posts[$k]->published === 'que') {
+				$posts[$k]->published = 'yes';
+				$posts[$k]->put ();
+				\Versions::add ($posts[$k]);
+			}
+		}
+		return $posts;
+	}
+
 	/**
 	 * Get the most recently published posts.
 	 */
 	public static function latest ($limit = 10, $offset = 0) {
-		return self::query ()->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
+		$posts = self::query ()
+			->where ('published', 'yes')
+			->or_where (function ($q) {
+				$q->where ('published', 'que');
+				$q->where ('ts <= ?', gmdate ('Y-m-d H:i:s'));
+			})
+			->order ('ts desc')
+			->fetch_orig ($limit, $offset);
+
+		$posts = self::_publish_queued ($posts);
+		
+		return $posts;
 	}
 
 	/**
