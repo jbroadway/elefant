@@ -18,8 +18,8 @@
 		<div class="admin-tools-section">
 		<h3 class="admin-tools-section-header">{{section|__}}</h3>
 		<ul class="admin-tools-list">
-		{% foreach _tools %}
-			<li><a href="/{{ loop_index }}"{% if loop_value['class'] %}class="{{ loop_value['class'] }}"{% end %}>{{ loop_value['name']|__ }}</a></li>
+		{% foreach _tools as _tool %}
+			<li><a href="/{{ _tool['handler'] }}"{% if _tool['class'] %}class="{{ _tool['class'] }}"{% end %}>{{ _tool['name']|__ }}</a></li>
 		{% end %}
 		</ul>
 		</div>

@@ -201,8 +201,7 @@ class Toolbar {
 							// not installed
 							$appconf['Admin']['name'] .= ' (' . __ ('click to install') . ')';
 							$extras[$appconf['Admin']['install']] = array (
-								'handler' => $appconf['Admin']['handler'],
-								'install' => $appconf['Admin']['install'],
+								'handler' => $appconf['Admin']['install'],
 								'name' => $appconf['Admin']['name'],
 								'class' => 'needs-upgrade'
 							);
@@ -210,8 +209,7 @@ class Toolbar {
 							// needs upgrade
 							$appconf['Admin']['name'] .= ' (' . __ ('click to upgrade') . ')';
 							$extras[$appconf['Admin']['upgrade']] = array (
-								'handler' => $appconf['Admin']['handler'],
-								'upgrade' => $appconf['Admin']['upgrade'],
+								'handler' => $appconf['Admin']['upgrade'],
 								'name' => $appconf['Admin']['name'],
 								'class' => 'needs-upgrade'
 							);
