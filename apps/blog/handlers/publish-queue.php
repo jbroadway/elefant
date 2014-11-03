@@ -8,6 +8,8 @@
 
 if (! $this->cli) die ('Must be run from the command line.');
 
+$page->layout = false;
+
 // fetch queued posts
 $posts = blog\Post::query ()
 	->where ('published', 'que')
