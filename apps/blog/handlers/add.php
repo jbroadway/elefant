@@ -57,7 +57,7 @@ if ($f->submit ()) {
 	$p = new blog\Post;
 	$p->author = User::val ('name');
 	$p->ts = gmdate ('Y-m-d H:i:s');
-	$p->yes_no = array ('yes' => __ ('Yes'), 'no' => __ ('No'));
+	$p->yes_no = array ('yes' => __ ('Yes'), 'no' => __ ('No'), 'que' => __ ('Queued'));
 	$p->autopost_pom = 'yes';
 
 	$p->failed = $f->failed;

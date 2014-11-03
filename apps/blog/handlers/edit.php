@@ -37,6 +37,7 @@ if ($f->submit ()) {
 	$p->published = $_POST['published'];
 	$p->body = $_POST['body'];
 	$p->tags = $_POST['tags'];
+	$p->thumbnail = $_POST['thumbnail'];
 
 	$p->update_extended ();
 
@@ -81,7 +82,7 @@ if ($f->submit ()) {
 	$page->title = __ ('An Error Occurred');
 	echo __ ('Error Message') . ': ' . $p->error;
 } else {
-	$p->yes_no = array ('yes' => __ ('Yes'), 'no' => __ ('No'));
+	$p->yes_no = array ('yes' => __ ('Yes'), 'no' => __ ('No'), 'que' => __ ('Queued'));
 	$p->autopost_pom = 'yes';
 	$p->tag_list = explode (',', $p->tags);
 

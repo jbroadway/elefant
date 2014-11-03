@@ -128,7 +128,8 @@ create table #prefix#blog_post (
 	body text not null,
 	tags text not null,
 	extra text not null,
-	check (published in ('yes', 'no'))
+	thumbnail char(128) not null default '',
+	check (published in ('yes', 'no', 'que'))
 );
 
 create index #prefix#blog_post_ts on #prefix#blog_post (ts);

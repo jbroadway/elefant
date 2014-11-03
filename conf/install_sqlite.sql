@@ -113,7 +113,8 @@ create table #prefix#blog_post (
 	published char(3) not null,
 	body text not null,
 	tags text not null,
-	extra text not null
+	extra text not null,
+	thumbnail char(128) not null default ''
 );
 
 create index #prefix#blog_post_ts on #prefix#blog_post (ts);

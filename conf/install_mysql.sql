@@ -103,10 +103,11 @@ create table #prefix#blog_post (
 	title char(72) not null,
 	ts datetime not null,
 	author char(32) not null,
-	published enum('yes','no') not null,
+	published enum('yes','no','que') not null,
 	body text not null,
 	tags text not null,
 	extra text not null,
+	thumbnail char(128) not null default '',
 	index (ts),
 	index (ts, published)
 ) default charset=utf8;
