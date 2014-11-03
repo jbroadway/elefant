@@ -47,7 +47,6 @@ $(function () {
 	// re-check on re-render
 	var resources = {{resources|json_encode}};
 	for (var resource in resources) {
-		console.log (resource);
 		$('#resources-' + resource.replace (/\//g, '-'))[0].checked = true;
 	}
 	
