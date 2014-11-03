@@ -67,7 +67,7 @@ if ($files) {
 	if (count ($commands) > 0) {
 		$help .= "Extended commands:\n\n";
 		foreach ($commands as $cmd => $desc) {
-			$help .= sprintf ("  <info>%-32s</info> %s\n", $cmd, $desc);
+			$help .= sprintf ("  <info>%-37s</info> %s\n", $cmd, $desc);
 		}
 		$help .= "\n";
 	}
