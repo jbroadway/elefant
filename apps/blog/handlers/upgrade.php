@@ -28,7 +28,8 @@ $conn = conf ('Database', 'master');
 $driver = $conn['driver'];
 
 // check if upgrade script exists and if so, run it
-$file = 'apps/' . $this->app . '/conf/upgrade_' . $version . '_' . $driver . '.sql';
+$base_version = preg_replace ('/-.*$/', '', $version);
+$file = 'apps/' . $this->app . '/conf/upgrade_' . $base_version . '_' . $driver . '.sql';
 if (file_exists ($file)) {
     // begin the transaction
     DB::beginTransaction ();
