@@ -42,7 +42,7 @@ foreach ($_FILES['file']['error'] as $error) {
 }
 
 for ($i = 0; $i < count ($_FILES['file']['name']); $i++) {
-	$_FILES['file']['name'] = urldecode ($_FILES['file']['name']);
+	$_FILES['file']['name'][$i] = urldecode ($_FILES['file']['name'][$i]);
 	if (@file_exists ($root . $_POST['path'] . '/' . $_FILES['file']['name'][$i])) {
 		$page->title = __ ('File Already Exists') . ': ' . $_FILES['file']['name'][$i];
 		echo '<p>' . __ ('A file by that name already exists.') . '</p>';
