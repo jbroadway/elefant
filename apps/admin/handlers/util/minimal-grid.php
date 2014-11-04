@@ -12,6 +12,9 @@
  * In a view template, call it like this:
  *
  *     {! admin/util/minimal-grid !}
+ *
+ * See the file apps/admin/css/minimal-grid.html for usage
+ * examples.
  */
 
 $page->add_script ('/apps/admin/css/minimal-grid.css');

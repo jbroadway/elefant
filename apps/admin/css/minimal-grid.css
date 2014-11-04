@@ -14,7 +14,7 @@
  *
  * Classes:
  *
- *     .e-row            A row of 992px that scales via media queries
+ *     .e-row            A centered row of 992px that scales via media queries
  *     .e-row-variable   A row of variable width
  *     .e-no-padding     Removes padding on an element
  *     .e-col-10         A column of 10%
@@ -95,12 +95,17 @@
 
 /* tablets */
 @media (max-width: 768px) {
-	.e-col-10, .e-col-20, .e-col-25, .e-col-30, .e-col-33, .e-col-40, .e-col-50 {
+	/* unfloat last '.e-col-' */
+	[class^='e-col-']:last-of-type {
+		float: left;
+	}
+
+	.e-col-10, .e-col-20, .e-col-25, .e-col-30, .e-col-33, .e-col-40, .e-col-50, .e-col-66, .e-col-75 {
 		width: 50%;
 		max-width 50%;
 	}
 	
-	.e-col-60, .e-col-66, .e-col-70, .e-col-75, .e-col-80, .e-col-90, .e-col-100 {
+	.e-col-60, .e-col-70, .e-col-80, .e-col-90, .e-col-100 {
 		width: 100%;
 	}
 }
