@@ -48,12 +48,6 @@
 	padding: 10px;
 }
 
-/* floats last '.e-col-' to the right */
-[class^='e-col-']:last-of-type {
-	padding-right: 10px;
-	float: right;
-}
-
 /* clearfix */
 .e-row:after, .e-row-variable:after {
 	content: "";
@@ -95,11 +89,6 @@
 
 /* tablets */
 @media (max-width: 768px) {
-	/* unfloat last '.e-col-' */
-	[class^='e-col-']:last-of-type {
-		float: left;
-	}
-
 	.e-col-10, .e-col-20, .e-col-25, .e-col-30, .e-col-33, .e-col-40, .e-col-50, .e-col-66, .e-col-75 {
 		width: 50%;
 		max-width 50%;
