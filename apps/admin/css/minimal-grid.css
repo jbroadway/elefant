@@ -1,0 +1,114 @@
+/**
+ * A minimal responsive grid system for Elefant's apps.
+ *
+ * Usage:
+ *
+ *     <div class="e-row">
+ *         <div class="e-col-75">
+ *             <h1>Body</h1>
+ *         </div>
+ *         <div class="e-col-25">
+ *             <h2>Sidebar</h2>
+ *         </div>
+ *     </div>
+ *
+ * Classes:
+ *
+ *     .e-row            A row of 992px that scales via media queries
+ *     .e-row-variable   A row of variable width
+ *     .e-no-padding     Removes padding on an element
+ *     .e-col-10         A column of 10%
+ *     .e-col-20         A column of 20%
+ *     .e-col-25         A column of 25%
+ *     .e-col-30         A column of 30%
+ *     .e-col-33         A column of 33%
+ *     .e-col-40         A column of 40%
+ *     .e-col-50         A column of 50%
+ *     .e-col-60         A column of 60%
+ *     .e-col-66         A column of 66%
+ *     .e-col-70         A column of 70%
+ *     .e-col-75         A column of 75%
+ *     .e-col-80         A column of 80%
+ *     .e-col-90         A column of 90%
+ *     .e-col-100        A column of 100%
+ */
+
+[class^='e-'], [class^='e-']:after, [class^='e-']:before {
+	margin: 0;
+	padding: 0;
+	outline: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/* attribute selector */
+[class^='e-col-'] {
+	float: left;
+	padding: 10px;
+}
+
+/* floats last '.e-col-' to the right */
+[class^='e-col-']:last-of-type {
+	padding-right: 10px;
+	float: right;
+}
+
+/* clearfix */
+.e-row:after, .e-row-variable:after {
+	content: "";
+	display: table;
+	table-layout: fixed;
+	clear: both;
+}
+
+/* widths */
+.e-col-100 { width: 100%; }
+.e-col-90  { width: 90%; }
+.e-col-80  { width: 80%; }
+.e-col-75  { width: 75%; }
+.e-col-70  { width: 70%; }
+.e-col-66  { width: 66.66%; }
+.e-col-60  { width: 60%; }
+.e-col-50  { width: 50%; }
+.e-col-40  { width: 40%; }
+.e-col-33  { width: 33.33%; }
+.e-col-30  { width: 30%; }
+.e-col-25  { width: 25%; }
+.e-col-20  { width: 20%; }
+.e-col-10  { width: 10%; }
+
+/* remove padding */
+.e-no-padding { padding: 0; }
+
+/* desktop */
+@media (min-width: 992px) {
+	.e-row {
+		width: 992px;
+		margin: 0px auto 0px auto;
+	}
+}
+
+@media (max-width: 991px) {
+	.e-row { width: 100%; }
+}
+
+/* tablets */
+@media (max-width: 768px) {
+	.e-col-10, .e-col-20, .e-col-25, .e-col-30, .e-col-33, .e-col-40, .e-col-50 {
+		width: 50%;
+		max-width 50%;
+	}
+	
+	.e-col-60, .e-col-66, .e-col-70, .e-col-75, .e-col-80, .e-col-90, .e-col-100 {
+		width: 100%;
+	}
+}
+
+/* mobile */
+@media (max-width: 480px) {
+	.e-col-10, .e-col-20, .e-col-25, .e-col-30, .e-col-33, .e-col-40, .e-col-50,
+	.e-col-60, .e-col-66, .e-col-70, .e-col-75, .e-col-80, .e-col-90, .e-col-100 {
+		width: 100%;
+	}
+}
