@@ -16,6 +16,7 @@
  *
  *     .e-row            A centered row of 992px that scales via media queries
  *     .e-row-variable   A row of variable width
+ *     .e-row-equal      A variable width row of equal height columns
  *     .e-no-padding     Removes padding on an element
  *     .e-col-10         A column of 10%
  *     .e-col-20         A column of 20%
@@ -31,6 +32,11 @@
  *     .e-col-80         A column of 80%
  *     .e-col-90         A column of 90%
  *     .e-col-100        A column of 100%
+ *
+ * Note that .e-row-equal does not wrap columns in IE10 and under. This is
+ * fine for equal height columns in pre-defined rows, but won't work for
+ * arbitrary numbers of columns. However, it will wrap and collapse correctly
+ * on mobile and tablet devices, and works correctly for all single-row uses.
  */
 
 [class^='e-'], [class^='e-']:after, [class^='e-']:before {
@@ -40,6 +46,19 @@
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+	border-collapse: collapse;
+}
+
+/* equal height columns */
+.e-row-equal {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	-moz-flex-wrap: wrap;
+	flex-wrap: wrap;
 }
 
 /* attribute selector */
