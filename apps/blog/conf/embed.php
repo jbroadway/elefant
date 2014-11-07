@@ -10,6 +10,10 @@ icon = rss
 label = "Blog: Headlines"
 icon = rss
 
+limit[label] = "Number of Posts"
+limit[type] = numeric
+limit[initial] = 10
+
 tag[label] = "Tag (optional)"
 tag[type] = select
 tag[require] = "apps/blog/lib/Functions.php"
