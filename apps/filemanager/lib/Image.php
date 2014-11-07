@@ -156,7 +156,11 @@ class Image {
 			return $file . '#exif-missing';
 		}
 		
-		$exif = exif_read_data ($file);
+		try {
+			$exif = exif_read_data ($file);
+		} catch (Exception $e) {
+			return $file . '#exif-error';
+		}
 		$orientation = isset ($exif['Orientation']) ? $exif['Orientation'] : false;
 		if (! $orientation || $orientation === 1) {
 			// no reorientation needed :)
