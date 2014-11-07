@@ -157,13 +157,13 @@ url[message] = Please enter a valid URL.
 
 width[label] = Player width
 width[type] = text
-width[initial] = 480
+width[initial] = 640
 width[not empty] = 1
 width[message] = Please enter a player width.
 
 height[label] = Player height
 height[type] = text
-height[initial] = 303
+height[initial] = 360
 height[not empty] = 1
 height[message] = Please enter a player height.
 
@@ -218,13 +218,13 @@ url[message] = Please enter a valid URL.
 
 width[label] = Player width
 width[type] = text
-width[initial] = 480
+width[initial] = 640
 width[not empty] = 1
 width[message] = Please enter a player width.
 
 height[label] = Player height
 height[type] = text
-height[initial] = 270
+height[initial] = 360
 height[not empty] = 1
 height[message] = Please enter a player height.
 
