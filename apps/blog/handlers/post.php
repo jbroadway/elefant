@@ -31,7 +31,7 @@ if ($p->published === 'que') {
 	}
 }
 
-$page->title = Appconf::blog ('Blog', 'title');
+$page->title = $p->title;
 
 $post = $p->orig ();
 $post->full = true;
