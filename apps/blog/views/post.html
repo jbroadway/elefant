@@ -1,6 +1,6 @@
 {! admin/util/dates !}
 
-<div class="blog-post block">
+<div class="blog-post{% if full %} blog-post-full{% end %} block">
 {% if ! full %}
 <h3><a href="{{ url }}">{{ title }}</a></h3>
 {% end %}
