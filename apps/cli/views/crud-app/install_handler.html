@@ -2,7 +2,7 @@
 
 
 // keep unauthorized users out
-$this->require_acl ('admin', '{{plural}}');
+$this->require_acl ('admin', $this->app);
 
 // set the layout
 $page->layout = 'admin';
