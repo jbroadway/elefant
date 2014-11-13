@@ -812,7 +812,6 @@ class Model {
 	 *     {{ user_id|User::field (%s, 'name') }}
 	 */
 	public static function field ($id, $field) {
-		error_log ($id . ': ' . $field);
 		$class = get_called_class ();
 		$obj = new $class;
 		return DB::shift (
