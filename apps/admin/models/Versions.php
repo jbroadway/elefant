@@ -187,13 +187,23 @@ class Versions extends Model {
 			$v = new Versions;
 			$obj2 = $v->restore ($obj2);
 		}
+		
+		// are there extended fields?
+		$ext = is_subclass_of ($obj2, 'ExtendedModel') ? $obj2->_extended_field : false;
 
 		$changed = array ();
-		foreach ($obj1->data as $key => $value) {
-			if ($value !== $obj2->data[$key]) {
+		$obj1_orig = (array) $obj1->orig ();
+		$obj2_orig = (array) $obj2->orig ();
+		foreach ($obj1_orig as $key => $value) {
+			if ($ext === $key) {
+				// skip extended field
+				continue;
+			}
+			if ($value !== $obj2_orig[$key]) {
 				$changed[] = $key;
 			}
 		}
+		
 		return $changed;
 	}
 

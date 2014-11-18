@@ -24,12 +24,18 @@ if ($cur->error) {
 }
 $diff = Versions::diff ($old, $cur);
 $data = array ();
-foreach ((array) $cur->orig () as $key => $value) {
+$cur_orig = (array) $cur->orig ();
+$old_orig = (array) $old->orig ();
+foreach ($cur_orig as $key => $value) {
 	$data[$key] = array (
 		'cur' => $value,
-		'old' => $old->{$key},
+		'old' => $old_orig[$key],
 		'diff' => (in_array ($key, $diff)) ? true : false
 	);
+}
+
+if (is_subclass_of ($cur, 'ExtendedModel')) {
+	unset ($data[$cur->_extended_field]);
 }
 
 $page->title = __ ('Comparing') . ' ' . $ver->class . ' / ' . $ver->pkey;
