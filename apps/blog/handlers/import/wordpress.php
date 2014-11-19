@@ -12,6 +12,22 @@ $page->title = __ ('Wordpress importer');
 $f = new Form ('post');
 
 if ($f->submit ()) {
+	set_time_limit (0);
+	if (! is_dir ('files/imported')) {
+		mkdir ('files/imported', 0777);
+	}
+	
+	// download files from external site into files/imported
+	function blog_import_wordpress_fix_links ($matches) {
+		$url = trim ($matches[0], '"');
+		$file = 'files/imported/' . str_replace ('/', '-', $matches[1]);
+		if (! file_exists ($file)) {
+			file_put_contents ($file, fetch_url ($url));
+			chmod ($file, 0666);
+		}
+		return '"/' . $file . '"';
+	}
+
 	if (move_uploaded_file ($_FILES['import_file']['tmp_name'], 'cache/blog_' . $_FILES['import_file']['name'])) {
 		$file = 'cache/blog_' . $_FILES['import_file']['name'];
 		
@@ -25,12 +41,20 @@ if ($f->submit ()) {
 				$content = $entry->children ('http://purl.org/rss/1.0/modules/content/');
 				$wp = $entry->children ('http://wordpress.org/export/1.2/');
 				$published = $wp->status == 'publish' ? 'yes' : 'no';
+
+				$body = str_replace ("\n", "<br />\n", (string) $content->encoded);
+				$body = preg_replace_callback (
+					'|"https?://[^"]+?/wp-content/uploads/([^"]+)?"|i',
+					'blog_import_wordpress_fix_links',
+					$body
+				);
+
 				$post = array (
 					'title' => (string) $entry->title,
 					'author' => (string) $dc->creator,
 					'ts' => gmdate ('Y-m-d H:i:s', strtotime ($entry->pubDate)),
 					'published' => $published,
-					'body' => str_replace ("\n", "<br />\n", (string) $content->encoded),
+					'body' => $body,
 					'tags' => ''
 				);
 				$sep = '';
