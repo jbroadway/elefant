@@ -300,26 +300,37 @@ class Template {
 	}
 
 	/**
-	 * Render a template string for preview purposes. Generates a temporary
-	 * cached version but unlinks it immediately after use.
+	 * Render a template from a string with the given data. Generates
+	 * the PHP and caches it.
 	 */
-	public function render_preview ($template, $data = array ()) {
+	public function render_string ($template, $data = array (), $file_prefix = '_string_') {
 		if (is_array ($data)) {
 			$data = (object) $data;
 		}
 		$data->is_being_rendered = true;
-
-		// Parse and save to a temporary file
-		$cache_file = $this->cache_folder . '/_preview_' . md5 ($template) . '.php';
-		$out = $this->parse_template ($template);
-		if (! file_put_contents ($cache_file, $out)) {
-			throw new RuntimeException ('Failed to generate cached template: ' . $cache_file);
+		
+		$cache_file = $this->cache_folder . '/' . $file_prefix . '' . md5 ($template) . '.php';
+		if (! file_exists ($cache_file)) {
+			$out = $this->parse_template ($template);
+			if (! file_put_contents ($cache_file, $out)) {
+				throw new RuntimeException ('Failed to generate cached template: ' . $cache_file);
+			}
 		}
-
-		// Include the temp file, then delete it, and return the output
+		
+		// Include the temp file and return the output
 		ob_start ();
 		require ($cache_file);
 		$out = ob_get_clean ();
+		return $out;
+	}
+
+	/**
+	 * Render a template string for preview purposes. Generates a temporary
+	 * cached version but unlinks it immediately after use.
+	 */
+	public function render_preview ($template, $data = array ()) {
+		$out = $this->render_string ($template, $data, '_preview_');
+		$cache_file = $this->cache_folder . '/_preview_' . md5 ($template) . '.php';
 		unlink ($cache_file);
 		return $out;
 	}
