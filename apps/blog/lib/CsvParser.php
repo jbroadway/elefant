@@ -74,31 +74,34 @@ class CsvParser {
 	public static function parse_line ($str) {
 		$tmp = explode (self::$delimiter, $str);
 		$fields = array ();
+		$field = 0;
+		$is_split = false;
 
 		$last = count ($tmp) - 1;
 		for ($i = 0; $i <= $last; $i++) {
-			if ($i > $last) {
-				break;
-
-			} elseif (strpos ($tmp[$i], '"') === false) {
-				// ordinary field, no quotes
-				$fields[] = $tmp[$i];
-
-			} elseif (strpos ($tmp[$i], '"') === 0 && substr ($tmp[$i], -1, 1) === '"') {
+			if (strpos ($tmp[$i], '"') === 0 && substr ($tmp[$i], -1) === '"') {
 				// remove escaped and outer quotes
 				$tmp[$i] = str_replace ('""', '"', $tmp[$i]);
-				$fields[] = substr ($tmp[$i], 1, -1);
+				$fields[$field] = substr ($tmp[$i], 1, -1);
+				$field++;
+				$is_split = false;
 
-			} elseif ($i < $last && substr ($tmp[$i + 1], -1, 1) === '"') {
-				// field was split with an inner delimiter
-				$fields[] = substr ($tmp[$i], 1) . self::$delimiter . substr ($tmp[$i + 1], 0, -1);
+			} elseif (strpos ($tmp[$i], '"') === 0) {
+				// start of quoted field, but split by comma
+				$tmp[$i] = str_replace ('""', '"', $tmp[$i]);
+				$fields[$field] = substr ($tmp[$i], 1);
+				$is_split = true;
 
-				// remove escaped quotes
-				$fields[count ($fields) - 1] = str_replace ('""', '"', $fields[count ($fields) - 1]);
-				$i++;
+			} elseif (substr ($tmp[$i], -1, 1) === '"') {
+				// end of quoted field, but split by comma
+				$tmp[$i] = str_replace ('""', '"', $tmp[$i]);
+				$fields[$field] .= self::$delimiter . substr ($tmp[$i], 0, -1);
+				$fields++;
+				$is_split = false;
 
 			} else {
-				return false;
+				$fields[$field] = $is_split ? $fields[$field] . self::$delimiter . $tmp[$i] : $tmp[$i];
+				$field = $is_split ? $field : $field + 1;
 			}
 		}
 		return $fields;
