@@ -374,9 +374,26 @@ class User extends ExtendedModel {
 	 * Where `User::require_acl('resource')` is good for validating
 	 * access to any resource type, `User::access('member')` is used
 	 * for content access levels.
+	 *
+	 * Can also be called via `User::access()` and it will return an
+	 * array of the access values which the current user may access,
+	 * for example:
+	 *
+	 *     array ('public' => 'Public', 'member' => 'Member')
 	 */
-	public static function access ($access) {
-		return self::require_acl ('content/' . $access);
+	public static function access ($access = null) {
+		if ($access !== null) {
+			return self::require_acl ('content/' . $access);
+		}
+		
+		$access = array ();
+		$list = self::access_list ();
+		foreach ($list as $k => $v) {
+			if (User::access ($k)) {
+				$access[$k] = $v;
+			}
+		}
+		return $access;
 	}
 
 	/**
