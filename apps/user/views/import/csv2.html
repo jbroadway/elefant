@@ -1,0 +1,50 @@
+<p>2. {"Which columns should be imported?"}</p>
+
+<form method="post" action="/user/import/csv2">
+
+<p>
+<table width="100%">
+	<tr>
+{% foreach headers %}
+		<th>{{ loop_value }}</th>
+{% end %}
+	</tr>
+{% foreach samples %}
+	<tr>
+	{{ loop_value|blog_filter_csv_line }}
+	</tr>
+{% end %}
+	<tr>
+{% foreach headers %}
+		<td>
+<select name="map-{{ loop_index }}">
+	<option value="">{"Import as..."}</option>
+	<option value="name">{"Full name"}</option>
+	<option value="first_name">{"First name"}</option>
+	<option value="last_name">{"Last name"}</option>
+	<option value="email">{"Email"}</option>
+	<option value="company">{"Company"}</option>
+	<option value="title">{"Title"}</option>
+	<option value="website">{"Website"}</option>
+	<option value="photo">{"Photo"}</option>
+	<option value="about">{"About"}</option>
+	<option value="phone">{"Phone"}</option>
+	<option value="address">{"Address"}</option>
+	<option value="address2">{"Address line 2"}</option>
+	<option value="city">{"City"}</option>
+	<option value="state">{"State/province"}</option>
+	<option value="country">{"Country"}</option>
+	<option value="zip">{"Zip/postal code"}</option>
+{% foreach extended as _field %}
+	<option value="{{_field->name}}">{{_field->label}}</option>
+{% end %}
+</select>
+		</td>
+{% end %}
+	</tr>
+</table>
+</p>
+
+<p><input type="submit" value="{"Finish importing"}" /></p>
+
+</form>

@@ -1,5 +1,7 @@
 <p>
 	<a href="/user/add">{"Add Member"}</a>
+	&nbsp;|&nbsp;
+	<a href="/user/import">{"Import Members"}</a>
 	{% if User::require_acl ('user/roles') %}
 	&nbsp;|&nbsp;
 	<a href="/user/roles">{"Roles"}</a>
