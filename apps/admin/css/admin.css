@@ -250,6 +250,10 @@ input[type=text], input[type=password], input[type=email], textarea {
     outline: none;
 }
 
+input[type=file] {
+	outline: none;
+}
+
 input[disabled] {
 	background: #eee;
     outline: none;
