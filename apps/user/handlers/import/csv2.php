@@ -60,7 +60,7 @@ foreach ($res as $k => $row) {
 	$name_joined = ($first_name !== false) ? $row[$first_name] . ' ' . $row[$last_name] : '';
 	$user = array (
 		'name' => ($name !== false) ? $row[$name] : $name_joined,
-		'email' => ($email !== false) ? $row[$email] : '',
+		'email' => ($email !== false) ? trim ($row[$email]) : '',
 		'company' => ($company !== false) ? $row[$company] : '',
 		'title' => ($title !== false) ? $row[$title] : '',
 		'website' => ($website !== false) ? $row[$website] : '',
@@ -80,7 +80,7 @@ foreach ($res as $k => $row) {
 		'updated' => gmdate ('Y-m-d H:i:s')
 	);
 	
-	if (! Validator::validate ($user['email'], 'unique', '#prefix#user.email')) {
+	if ($u->email === '' || ! Validator::validate ($u->email, 'unique', '#prefix#user.email')) {
 		continue;
 	}
 
