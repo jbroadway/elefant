@@ -13,13 +13,21 @@ require_once ('apps/blog/lib/Filters.php');
 $limit = 20;
 $num = isset ($_GET['offset']) ? $_GET['offset'] : 1;
 $offset = ($num - 1) * $limit;
+$q = isset ($_GET['q']) ? $_GET['q'] : '';
+$url = ! empty ($q)
+	? '/blog/admin?q=' . urlencode ($q) . '&offset=%d'
+	: '/blog/admin?offset=%d';
 
 $lock = new Lock ();
 
 $posts = blog\Post::query ('id, title, ts, author, published')
+	->where_search ($q, array ('title', 'author', 'tags', 'body'))
 	->order ('ts desc')
 	->fetch_orig ($limit, $offset);
-$count = blog\Post::query ()->count ();
+
+$count = blog\Post::query ()
+	->where_search ($q, array ('title', 'author', 'tags', 'body'))
+	->count ();
 
 foreach ($posts as $k => $p) {
 	$posts[$k]->locked = $lock->exists ('Blog', $p->id);
@@ -31,5 +39,6 @@ echo $tpl->render ('blog/admin', array (
 	'total' => $count,
 	'posts' => $posts,
 	'count' => count ($posts),
-	'url' => '/blog/admin?offset=%d'
+	'url' => $url,
+	'q' => $q
 ));

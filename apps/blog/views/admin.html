@@ -1,6 +1,8 @@
+{! admin/util/minimal-grid !}
 {! admin/util/dates !}
 
-<p>
+<div class="e-row-variable" style="margin-bottom: 20px">
+	<div class="e-col-50 e-no-padding">
 	{% if User::require_acl ('admin/add') %}
 	<a href="/blog/add">{"New Post"}</a>
 	&nbsp;|&nbsp;
@@ -12,19 +14,29 @@
 	&nbsp;|&nbsp;
 	<a href="/admin/extended?extends=blog\Post&name=Blog+Posts">{"Custom Fields"}</a>
 	{% end %}
-</p>
-
-<p style="float: left">
-{! navigation/pager?style=results&url=[url]&total=[total]&count=[count]&limit=[limit] !}
-</p>
-
-{% if total > $data->limit %}
-<div style="float: right">
-{! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
+	</div>
+	<div class="e-col-50 e-no-padding" style="text-align: right">
+		<form method="get">
+			<input type="text" name="q" size="40" value="{{q|quotes}}" />
+			<button>{"Search"}</button>
+			{% if q != '' %}
+			<button onclick="window.location.href = '/blog/admin'; return false">{"Clear"}</button>
+			{% end %}
+		</form>
+	</div>
 </div>
-{% end %}
 
-<p>
+<div class="e-row-variable">
+	<div class="e-col-50 e-no-padding">
+		{! navigation/pager?style=results&url=[url]&total=[total]&count=[count]&limit=[limit] !}
+	</div>
+	<div class="e-col-50 e-no-padding" style="text-align: right">
+		{% if total > $data->limit %}
+		{! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
+		{% end %}
+	</div>
+</div>
+
 <table width="100%">
 	<tr>
 		<th width="43%">{"Title"}</th>
@@ -53,7 +65,6 @@
 	</tr>
 {% end %}
 </table>
-</p>
 
 {% if total > $data->limit %}
 {! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
