@@ -80,7 +80,7 @@ foreach ($res as $k => $row) {
 		'updated' => gmdate ('Y-m-d H:i:s')
 	);
 	
-	if ($u->email === '' || ! Validator::validate ($u->email, 'unique', '#prefix#user.email')) {
+	if ($user['email'] === '' || ! Validator::validate ($user['email'], 'unique', '#prefix#user.email')) {
 		continue;
 	}
 
