@@ -574,6 +574,28 @@ class Model {
 		array_push ($this->query_filters, ' or ');
 		return $this->where ($key, $val);
 	}
+	
+	/**
+	 * Searches a list of fields for the specified query using
+	 * a `LIKE '%query%'` clause, resulting in a query of the
+	 * form:
+	 *
+	 *     (field1 like '%query%' or field2 like '%query%')
+	 */
+	public function where_search ($query, $fields) {
+		$this->where (function ($q) use ($query, $fields) {
+			$like = '%' . $query . '%';
+			foreach ($fields as $n => $field) {
+				if ($n === 0) {
+					$q->where ($field . ' like ?', $like);
+				} else {
+					$q->or_where ($field . ' like ?', $like);
+				}
+			}
+		});
+
+		return $this;
+	}
 
 	/**
 	 * Add a having condition to the query. Can be either a field/value
