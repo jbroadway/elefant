@@ -772,7 +772,7 @@ class Model {
 	 * Fetch as an associative array of the specified key/value fields.
 	 */
 	public function fetch_assoc ($key, $value, $limit = false, $offset = 0) {
-		$tmp = $this->fetch ($limit, $offset);
+		$tmp = $this->fetch_orig ($limit, $offset);
 		if (! $tmp) {
 			return $tmp;
 		}
@@ -787,7 +787,7 @@ class Model {
 	 * Fetch as an array of the specified field name.
 	 */
 	public function fetch_field ($value, $limit = false, $offset = 0) {
-		$tmp = $this->fetch ($limit, $offset);
+		$tmp = $this->fetch_orig ($limit, $offset);
 		if (! $tmp) {
 			return $tmp;
 		}
