@@ -88,6 +88,7 @@ for ($i = $start; $i <= $end; $i++) {
 if (isset ($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"]) $o->url .= '?'.$_SERVER["QUERY_STRING"];
 
 if ($data['style'] === 'results') {
+	echo '<div class="pager">';
 	if ($o->total == 0) {
 		echo __ ('No results.');
 	} elseif ($o->total == 1) {
@@ -100,6 +101,7 @@ if ($data['style'] === 'results') {
 			$o->total
 		);
 	}
+	echo '</div>';
 	return;
 }
 
