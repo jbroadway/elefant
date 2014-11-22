@@ -61,6 +61,7 @@ $(function () {
 		$(\'time.shortdatetime\').localize(\'' . $i18n->short_format . ' - ' . $i18n->time_format . '\');
 		$(\'time.date\').localize(\'' . $i18n->date_format . '\');
 		$(\'time.shortdate\').localize(\'' . $i18n->short_format . '\');
+		$(\'time.shortdate\').localize(\'' . $i18n->short_format . ', ' . $i18n->year_format . '\');
 		$(\'time.time\').localize(\'' . $i18n->time_format . '\');
 		$(\'time.shortdaydate\').localize(\'' . $i18n->short_day_date_format . '\');
 		$(\'time.shortdaydatetime\').localize(\'' . $i18n->short_day_date_format . ' - ' . $i18n->time_format . '\');

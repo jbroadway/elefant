@@ -96,6 +96,11 @@ class I18n {
 	 * The time format to send to jQuery.localize.
 	 */
 	public $time_format = 'h:MMa';
+	
+	/**
+	 * The year format to send to jQuery.localize.
+	 */
+	public $year_format = 'yyyy';
 
 	/**
 	 * Contains fallback text replacements.
@@ -459,6 +464,19 @@ class I18n {
 	 */
 	public static function short_date ($date) {
 		return self::_date ($date, 'shortdate', 'M j');
+	}
+
+	/**
+	 * Filter for outputting a shortened date with year included.
+	 * Used with the jQuery localize plugin to convert dates into the
+	 * current user's time zone.
+	 *
+	 * Usage:
+	 *
+	 *     {{ date_value|I18n::short_date_year }}
+	 */
+	public static function short_date_year ($date) {
+		return self::_date ($date, 'shortdateyear', 'M j, Y');
 	}
 
 	/**
