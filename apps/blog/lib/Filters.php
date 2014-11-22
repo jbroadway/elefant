@@ -50,9 +50,9 @@ function blog_filter_csv_line ($line) {
  */
 function blog_filter_published ($p) {
 	if ($p === 'yes') {
-		return __ ('Yes');
+		return __ ('Published');
 	} elseif ($p === 'no') {
-		return __ ('No');
+		return __ ('Draft');
 	}
 	return __ ('Scheduled');
 }

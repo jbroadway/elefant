@@ -16,8 +16,8 @@
 	{% end %}
 	</div>
 	<div class="e-col-50 e-no-padding" style="text-align: right">
-		<form method="get">
-			<input type="text" name="q" size="40" value="{{q|quotes}}" />
+		<form method="get" id="search-form">
+			<input type="text" name="q" id="search-query" size="40" value="{{q|quotes}}" />
 			<button>{"Search"}</button>
 			{% if q != '' %}
 			<button onclick="window.location.href = '/blog/admin'; return false">{"Clear"}</button>
@@ -39,19 +39,28 @@
 
 <table width="100%">
 	<tr>
-		<th width="43%">{"Title"}</th>
-		<th width="20%">{"Date"}</th>
-		<th width="12%">{"Author"}</th>
-		<th width="10%">{"Published"}</th>
-		<th width="15%">&nbsp;</th>
+		<th width="40%">{"Title"}</th>
+		<th width="17%">{"Date"}</th>
+		<th width="13%">{"Author"}</th>
+		<th width="17%">{"Tags"}</td>
+		<th width="13%">&nbsp;</th>
 	</tr>
 {% foreach posts %}
 	<tr>
-		<td><a href="/blog/post/{{ loop_value->id }}/{{ loop_value->title|URLify::filter }}" target="_blank">{{ loop_value->title }}</a></td>
-		<td>{{ loop_value->ts|I18n::date_time }}</td>
-		<td>{{ loop_value->author }}</td>
-		<td>{{ loop_value->published|blog_filter_published }}</td>
-		<td style="text-align: right">
+		<td class="title">
+			<a href="/blog/post/{{ loop_value->id }}/{{ loop_value->title|URLify::filter }}" target="_blank">{{ loop_value->title }}</a><br />
+		</td>
+		<td class="info">
+			{{ loop_value->ts|I18n::short_date }} -
+			<a href="#" class="search-append" data-search="published:{{ loop_value->published}}">{{ loop_value->published|blog_filter_published }}</a>
+		</td>
+		<td class="info"><a href="#" class="search-append" data-search="author:&quot;{{ loop_value->author}}&quot;">{{ loop_value->author }}</a></td>
+		<td class="info tags">
+			{% foreach loop_value->tags as _tag %}
+				<a href="#" class="search-append" data-search="{{_tag}}">{{_tag|ucfirst}}</a>
+			{% end %}
+		</td>
+		<td class="edit">
 			{% if loop_value->locked %}
 			{"Editing Locked"}
 			{% else %}
@@ -69,3 +78,38 @@
 {% if total > $data->limit %}
 {! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
 {% end %}
+
+<style>
+.tags a {
+	display: inline-block;
+	padding-right: 8px;
+}
+.tags a:last-child {
+	padding-right: 0px;
+}
+</style>
+
+<script>
+$(function () {
+	var $query = $('#search-query'),
+		$form = $('#search-form');
+
+	$('.search-append').click (function (e) {
+		e.preventDefault ();
+
+		var $this = $(this),
+			append = $this.data ('search'),
+			q = $query.val ();
+		
+		if (q.match (append)) {
+			return;
+		} else if (q.length === 0) {
+			$query.val (append);
+		} else {
+			$query.val (q + ' ' + append);
+		}
+		
+		$form.submit ();
+	});
+});
+</script>
