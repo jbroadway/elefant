@@ -6,6 +6,7 @@ body {
 
 a {
 	color: #93278f;
+	text-decoration: none;
 }
 
 a:hover {
@@ -25,25 +26,38 @@ table {
 	empty-cells: show;
 }
 
-table tr:hover {
-	background: #eee;
-}
+	table tr:hover {
+		background: #eee;
+	}
 
-table tr th {
-	padding: 5px 7px 5px 7px;
-	border-bottom: 1px solid #666;
-	font-weight: bold;
-	background: #f5f5f5;
-}
+		table tr th {
+			padding: 5px 7px 5px 7px;
+			border-bottom: 1px solid #666;
+			font-weight: bold;
+			background: #f5f5f5;
+		}
 
-table tr th a {
-	font-weight: normal;
-}
+		table tr th a {
+			font-weight: normal;
+		}
 
-table tr td {
-	padding: 5px 7px 5px 7px;
-	border-bottom: 1px solid #ccc;
-}
+		table tr td {
+			padding: 5px 7px 5px 7px;
+			border-bottom: 1px solid #ccc;
+		}
+
+			td.title {
+				font-weight: bold;
+			}
+
+			td.info {
+				color: #666;
+				font-size: 0.9em;
+			}
+
+			td.edit {
+				text-align: right;
+			}
 
 tt {
 	color: #000;
@@ -259,7 +273,7 @@ input[disabled] {
     outline: none;
 }
 
-input[type=submit], .dynamic-embed-object-back {
+input[type=submit], button, .dynamic-embed-object-back {
     font-size: 12px;
 	border: 1px solid #ddd;
     background: #e5e5e5;
@@ -270,18 +284,18 @@ input[type=submit], .dynamic-embed-object-back {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     color: #555;
-    padding: 5px 10px;
+    padding: 3px 10px;
     text-shadow: 0 1px 0 #fff;
-    margin-bottom: 16px;
     outline: none;
 }
 
-input[type=submit]:hover, .dynamic-embed-object-back:hover {
+input[type=submit]:hover, button:hover, .dynamic-embed-object-back:hover {
 	color: #333;
 	border: 1px solid #999;
     -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
     -webkit-box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
 }
 
 .dynamic-embed-object-list {
