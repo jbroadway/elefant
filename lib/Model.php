@@ -567,7 +567,16 @@ class Model {
 	}
 
 	/**
-	 * Creates an or clause with additional where conditions.
+	 * Creates an AND clause with additional where conditions.
+	 * Accepts the same parameters as `where()`.
+	 */
+	public function and_where ($key, $val = null) {
+		array_push ($this->query_filters, ' and ');
+		return $this->where ($key, $val);
+	}
+
+	/**
+	 * Creates an OR clause with additional where conditions.
 	 * Accepts the same parameters as `where()`.
 	 */
 	public function or_where ($key, $val = null) {
@@ -581,20 +590,61 @@ class Model {
 	 * form:
 	 *
 	 *     (field1 like '%query%' or field2 like '%query%')
+	 *
+	 * Providing a list of exact fields, you can also add exact
+	 * qualifiers using the form `field:value` or `field:"Some Value"`,
+	 * resulting in a query of the form:
+	 *
+	 *     field1 = "Some Value" and (field2 like '%query%' or field3 like '%query%')
+	 *
+	 * Query examples:
+	 *
+	 *     Smith
+	 *     Joe Smith
+	 *     published:yes Joe Smith
+	 *     author:"Joe Smith" Chemistry
+	 * 
+	 * These would become:
+	 *
+	 *     (field1 like '%Smith%' or field2 like '%Smith%')
+	 *     (field1 like '%Joe Smith%' or field2 like '%Joe Smith%')
+	 *     published = "yes" and (field1 like '%Joe Smith%' or field2 like '%Joe Smith%')
+	 *     author = "Joe Smith" and (field1 like '%Chemistry%' or field2 like '%Chemistry%')
 	 */
-	public function where_search ($query, $fields) {
-		$this->where (function ($q) use ($query, $fields) {
-			$like = '%' . $query . '%';
-			foreach ($fields as $n => $field) {
-				if ($n === 0) {
-					$q->where ($field . ' like ?', $like);
-				} else {
-					$q->or_where ($field . ' like ?', $like);
-				}
-			}
-		});
+	public function where_search ($query, $fields, $exact = array ()) {
+		$q = $this;
+		$exact_matches = false;
 
-		return $this;
+		$query = trim ($query);
+
+		if (count ($exact) > 0) {
+			$query = preg_replace_callback (
+				'/ ?(' . join ('|', $exact) . '):("[a-z0-9\'_-]+"|[a-z0-9\'_-]+) ?/i',
+				function ($regs) use ($q, &$exact_matches) {
+					$q->where ($regs[1], trim ($regs[2], '"'));
+					$exact_matches = true;
+					return '';
+				},
+				$query
+			);
+		}
+
+		if (strlen ($query) > 0) {
+			$where_method = $exact_matches ? 'and_where' : 'where';
+
+			$q->{$where_method} (function ($q) use ($query, $fields) {
+				$like = '%' . trim ($query) . '%';
+				foreach ($fields as $n => $field) {
+					if ($n === 0) {
+						$q->where ($field . ' like ?', $like);
+					} else {
+						$q->or_where ($field . ' like ?', $like);
+					}
+				}
+			});
+		}
+
+		return $q;
 	}
 
 	/**
@@ -674,7 +724,7 @@ class Model {
 			$sql .= ' where ';
 			$and = '';
 			foreach ($this->query_filters as $where) {
-				if ($where === '(' || $where === ' or ') {
+				if ($where === '(' || $where === ' or ' || $where === ' and ') {
 					$sql .= $where;
 					$and = '';
 				} elseif ($where === ')') {
