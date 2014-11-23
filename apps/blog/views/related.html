@@ -1,0 +1,21 @@
+<div class="e-row-variable">
+{% foreach posts as post %}
+	<div class="e-col-33 e-no-padding">
+		<div class="blog-related-post item">
+			<div class="thumbnail-wrapper">
+				<a href="/blog/post/{{post->id}}/{{post->title|URLify::filter}}">
+					<div class="thumbnail"
+						{% if post->thumbnail != '' %}
+							style="background-image: url({{post->thumbnail}})"
+						{% end %}
+					></div>
+				</a>
+			</div>
+			<div class="item-info">
+				<h4><a href="/blog/post/{{post->id}}/{{post->title|URLify::filter}}">{{post->title}}</a></h4>
+				<p>{{post->ts|I18n::short_date_year}}</p>
+			</div>
+		</div>
+	</div>
+{% end %}
+</div>

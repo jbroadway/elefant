@@ -30,6 +30,13 @@
 	{% end %}
 </select></p>
 
+<p>{"Show related posts"}:<br />
+<select name="show_related_posts">
+	<option value="no"{% if ! show_related_posts %} selected{% end %}>{"No"}</option>
+	<option value="yes"{% if show_related_posts %} selected{% end %}>{"Yes"}</option>
+</select>
+</p>
+
 <p>{"Edit posts with"}:<br />
 <select name="post_format" id="post_format">
 	<option value="html"{% if post_format === 'html' %} selected{% end %}>{"WYSIWYG editor"}</option>

@@ -44,6 +44,7 @@ if (Appconf::blog ('Blog', 'post_format') === 'html') {
 	$post->body = $tpl->run_includes (Markdown ($post->body));
 }
 $post->social_buttons = Appconf::blog ('Social Buttons');
+$post->related = Appconf::blog ('Blog', 'show_related_posts');
 
 echo $tpl->render ('blog/post', $post);
 

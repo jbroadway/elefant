@@ -31,4 +31,10 @@
 	{{ controller.run ('social/google/plusone', $data)|none }}
 {% end %}
 </div>
+{% if related %}
+<div class="blog-related">
+<h4>{"You might also like:"}</h4>
+{! blog/related?id=[id]&tags=[tags] !}
+</div>
+{% end %}
 </div>
