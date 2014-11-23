@@ -22,6 +22,10 @@ h4 {
 	border-bottom: 1px solid #ccc;
 }
 
+/**
+ * Table styles
+ */
+
 table {
 	empty-cells: show;
 }
@@ -81,6 +85,16 @@ table {
 			td.edit {
 				text-align: right;
 			}
+		
+		table tr th:first-child,
+		table tr td:first-child {
+			padding-left: 0;
+		}
+		
+		table tr th:last-child,
+		table tr td:last-child {
+			padding-right: 0;
+		}
 
 tt {
 	color: #000;
