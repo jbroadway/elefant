@@ -567,7 +567,7 @@ class Model {
 	}
 
 	/**
-	 * Creates an AND clause with additional where conditions.
+	 * Creates an `AND` clause with additional where conditions.
 	 * Accepts the same parameters as `where()`.
 	 */
 	public function and_where ($key, $val = null) {
@@ -576,7 +576,7 @@ class Model {
 	}
 
 	/**
-	 * Creates an OR clause with additional where conditions.
+	 * Creates an `OR` clause with additional where conditions.
 	 * Accepts the same parameters as `where()`.
 	 */
 	public function or_where ($key, $val = null) {
@@ -642,6 +642,8 @@ class Model {
 					}
 				}
 			});
+		} elseif (! $exact_matches) {
+			$q->where ('1 = 1');
 		}
 
 		return $q;
