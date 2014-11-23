@@ -16,7 +16,7 @@ $url = ! empty ($q)
 	? '/user/admin?q=' . urlencode ($q) . '&offset=%d'
 	: '/user/admin?offset=%d';
 
-$users = User::query ('id, name, email, type, company, title')
+$users = User::query ('id, name, email, type, company, title, phone')
 	->where_search ($q, array ('name', 'email', 'company', 'city', 'state', 'address'))
 	->order ('name asc')
 	->fetch_orig ($limit, $offset);

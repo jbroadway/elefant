@@ -41,22 +41,22 @@
 <table width="100%">
 	<tr>
 		<th width="18%">{"Name"}</th>
+		<th width="13%">{"Phone"}</th>
 		<th width="20%">{"Email"}</th>
-		<th width="18%">{"Company"}</th>
-		<th width="18%">{"Title"}</th>
-		<th width="10%">{"Role"}</th>
-		<th width="16%">&nbsp;</th>
+		<th width="16%">{"Company"}</th>
+		<th width="16%">{"Title"}</th>
+		<th width="8%">{"Role"}</th>
+		<th width="9%">&nbsp;</th>
 	</tr>
 {% foreach users %}
 	<tr>
-		<td>{{ loop_value->name }}</td>
+		<td class="title"><a href="/user/details?id={{ loop_value->id }}">{{ loop_value->name }}</a></td>
+		<td>{{ loop_value->phone }}</td>
 		<td><a href="mailto:{{ loop_value->email }}">{{ loop_value->email }}</a></td>
 		<td>{{ loop_value->company }}</td>
 		<td>{{ loop_value->title }}</td>
 		<td>{{ loop_value->type|ucfirst }}</td>
-		<td style="text-align: right">
-			<a href="/user/details?id={{ loop_value->id }}">{"Details"}</a>
-			|
+		<td class="edit">
 			<a href="/user/edit?id={{ loop_value->id }}">{"Edit"}</a>
 			{% if User::val ('id') != $data->loop_value->id %}
 			|
