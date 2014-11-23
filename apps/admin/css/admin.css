@@ -276,6 +276,10 @@ tt {
 	white-space: nowrap;
 }
 
+/**
+ * Form inputs
+ */
+
 input[type=text], input[type=password], input[type=email], textarea {
 	font-size: 12px;
 	border: 1px solid #999;
@@ -320,6 +324,10 @@ input[type=submit]:hover, button:hover, .dynamic-embed-object-back:hover {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
     cursor: pointer;
 }
+
+/**
+ * Dynamic Objects menu
+ */
 
 .dynamic-embed-object-list {
 	padding: 0px;
@@ -478,6 +486,10 @@ span.dynamic-fileManager {
 	padding-top: 50px;
 }
 
+/**
+ * Navigation
+ */
+
 .nav {
 	text-align: right;
 }
@@ -496,6 +508,10 @@ span.dynamic-fileManager {
 		border-top: 3px solid #B347AF;
 		padding-top: 2px;
 	}
+
+/**
+ * Header and footer
+ */
 
 #head {
 	border-top: 3px solid #111;
@@ -532,6 +548,10 @@ span.dynamic-fileManager {
 	padding-bottom: 15px;
 	text-align: right;
 }
+
+/**
+ * Responsiveness
+ */
 
 @media screen and (max-width: 480px) {
 	body, th, td {
