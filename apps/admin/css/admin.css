@@ -36,6 +36,29 @@ table {
 			font-weight: bold;
 			background: #f5f5f5;
 		}
+		
+		table tr th select {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			border: 0;
+			padding-left: 16px;
+			background-color: transparent;
+			background-image: url(/apps/admin/css/admin/arrow-down.png);
+			background-position: 0% 40%;
+			background-repeat: no-repeat;
+			font-weight: inherit;
+			font-size: inherit;
+			color: inherit;
+			outline: none;
+		}
+		
+		table tr th select:hover {
+			cursor: pointer;
+			font-weight: inherit;
+			font-family: inherit;
+			font-size: inherit;
+		}
 
 		table tr th a {
 			font-weight: normal;

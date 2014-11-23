@@ -11,8 +11,8 @@
 	{% end %}
 	</div>
 	<div class="e-col-50 e-no-padding" style="text-align: right">
-		<form method="get">
-			<input type="text" name="q" size="40" value="{{q|quotes}}" />
+		<form method="get" id="search-form">
+			<input type="text" name="q" id="search-query" size="40" value="{{q|quotes}}" />
 			<button>{"Search"}</button>
 			{% if q != '' %}
 			<button onclick="window.location.href = '/admin/pages'; return false">{"Clear"}</button>
@@ -43,8 +43,10 @@
 	<tr>
 		<td><a href="{{ loop_value->id|Link::href }}" target="_blank">{{ loop_value->id }}</a></td>
 		<td>{{ loop_value->title }}</td>
-		<td>{{ loop_value->access|ucfirst }}</td>
-		<td style="text-align: right">
+		<td>
+			<a href="#" class="search-append" data-search="access:{{ loop_value->access}}">{{ loop_value->access|ucfirst }}</a>
+		</td>
+		<td class="edit">
 			{% if loop_value->locked %}
 			{"Editing Locked"}
 			{% else %}
@@ -64,3 +66,28 @@
 {% if total > $data->limit %}
 {! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
 {% end %}
+
+<script>
+$(function () {
+	var $query = $('#search-query'),
+		$form = $('#search-form');
+
+	$('.search-append').click (function (e) {
+		e.preventDefault ();
+
+		var $this = $(this),
+			append = $this.data ('search'),
+			q = $query.val ();
+		
+		if (q.match (append)) {
+			return;
+		} else if (q.length === 0) {
+			$query.val (append);
+		} else {
+			$query.val (q + ' ' + append);
+		}
+		
+		$form.submit ();
+	});
+});
+</script>

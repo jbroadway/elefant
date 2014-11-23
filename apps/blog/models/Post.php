@@ -137,35 +137,45 @@ class Post extends \ExtendedModel {
 	/**
 	 * Get a list of archive years, months, and count of posts.
 	 */
-	public static function archive_months () {
+	public static function archive_months ($published = true) {
 		$db = \DB::get_connection (1);
 		$dbtype = $db->getAttribute (\PDO::ATTR_DRIVER_NAME);
+		$published = $published ? 'where published = "yes"' : '';
 		switch ($dbtype) {
 			case 'pgsql':
-				return \DB::fetch (
+				$res = \DB::fetch (
 					'select extract(year from ts) as year, extract(month from ts) as month, count(*) as total
 					 from #prefix#blog_post
-					 where published = \'yes\'
+					 ' . $published . '
 					 group by year, month
 					 order by year desc, month desc'
 				);
+				break;
 			case 'mysql':
-				return \DB::fetch (
+				$res = \DB::fetch (
 					'select year(ts) as year, month(ts) as month, count(*) as total
 					 from #prefix#blog_post
-					 where published = "yes"
+					 ' . $published . '
 					 group by year, month
 					 order by year desc, month desc'
 				);
+				break;
 			case 'sqlite':
-				return \DB::fetch (
+				$res = \DB::fetch (
 					'select strftime(\'%Y\', ts) as year, strftime(\'%m\', ts) as month, count(*) as total
 					 from #prefix#blog_post
-					 where published = "yes"
+					 ' . $published . '
 					 group by year, month
 					 order by year desc, month desc'
 				);
+				break;
 		}
+		
+		foreach ($res as $k => $row) {
+			$res[$k]->date = $row->year . '-' . $row->month;
+		}
+
+		return $res;
 	}
 
 	/**

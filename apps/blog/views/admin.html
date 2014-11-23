@@ -1,6 +1,8 @@
 {! admin/util/minimal-grid !}
 {! admin/util/dates !}
 
+<form method="get" id="search-form">
+
 <div class="e-row-variable" style="margin-bottom: 20px">
 	<div class="e-col-50 e-no-padding">
 	{% if User::require_acl ('admin/add') %}
@@ -16,32 +18,61 @@
 	{% end %}
 	</div>
 	<div class="e-col-50 e-no-padding" style="text-align: right">
-		<form method="get" id="search-form">
-			<input type="text" name="q" id="search-query" size="40" value="{{q|quotes}}" />
-			<button>{"Search"}</button>
-			{% if q != '' %}
-			<button onclick="window.location.href = '/blog/admin'; return false">{"Clear"}</button>
-			{% end %}
-		</form>
+		<input type="text" name="q" id="search-query" size="40" value="{{q|quotes}}" />
+		<button>{"Search"}</button>
+		{% if q != '' %}
+		<button onclick="window.location.href = '/blog/admin'; return false">{"Clear"}</button>
+		{% end %}
 	</div>
 </div>
 
-<div class="e-row-variable">
+<div class="e-row-variable infobar">
 	<div class="e-col-50 e-no-padding">
 		{! navigation/pager?style=results&url=[url]&total=[total]&count=[count]&limit=[limit] !}
 	</div>
 	<div class="e-col-50 e-no-padding" style="text-align: right">
-		{% if total > $data->limit %}
-		{! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
+		{% if strpos ($data->q, 'published:yes') !== false %}
+			<strong>{"Published"}</strong>
+			&nbsp;|&nbsp;
+			<a href="#" class="search-replace" data-search="published:no">{"Draft"}</a>
+			&nbsp;|&nbsp;
+			<a href="#" class="search-replace" data-search="published:que">{"Scheduled"}</a>
+		{% elseif strpos ($data->q, 'published:no') !== false %}
+			<a href="#" class="search-replace" data-search="published:yes">{"Published"}</a>
+			&nbsp;|&nbsp;
+			<strong>{"Draft"}</strong>
+			&nbsp;|&nbsp;
+			<a href="#" class="search-replace" data-search="published:que">{"Scheduled"}</a>
+		{% elseif strpos ($data->q, 'published:que') !== false %}
+			<a href="#" class="search-replace" data-search="published:yes">{"Published"}</a>
+			&nbsp;|&nbsp;
+			<a href="#" class="search-replace" data-search="published:no">{"Draft"}</a>
+			&nbsp;|&nbsp;
+			<strong>{"Scheduled"}</strong>
+		{% else %}
+			<a href="#" class="search-append" data-search="published:yes">{"Published"}</a>
+			&nbsp;|&nbsp;
+			<a href="#" class="search-append" data-search="published:no">{"Draft"}</a>
+			&nbsp;|&nbsp;
+			<a href="#" class="search-append" data-search="published:que">{"Scheduled"}</a>
 		{% end %}
 	</div>
 </div>
 
 <table width="100%">
 	<tr>
-		<th width="40%">{"Title"}</th>
-		<th width="17%">{"Date"}</th>
-		<th width="13%">{"Author"}</th>
+		<th width="38%">{"Title"}</th>
+		<th width="18%">
+			<select name="m" id="search-month">
+				<option value="">{"All Dates"}</option>
+				{% foreach archives as archive %}
+				<option value="{{archive->date}}"
+					{% if m === $data->archive->date %}selected{% end %}
+				>{{months[$data->archive->month - 1]}} {{archive->year}} ({{archive->total}})</option>
+				{% end %}
+			</select>
+		</th>
+		<th width="14%">{"Author"}</th>
 		<th width="17%">{"Tags"}</td>
 		<th width="13%">&nbsp;</th>
 	</tr>
@@ -50,12 +81,12 @@
 		<td class="title">
 			<a href="/blog/post/{{ loop_value->id }}/{{ loop_value->title|URLify::filter }}" target="_blank">{{ loop_value->title }}</a><br />
 		</td>
-		<td class="info">
+		<td>
 			{{ loop_value->ts|I18n::short_date }} -
 			<a href="#" class="search-append" data-search="published:{{ loop_value->published}}">{{ loop_value->published|blog_filter_published }}</a>
 		</td>
-		<td class="info"><a href="#" class="search-append" data-search="author:&quot;{{ loop_value->author}}&quot;">{{ loop_value->author }}</a></td>
-		<td class="info tags">
+		<td><a href="#" class="search-append" data-search="author:&quot;{{ loop_value->author}}&quot;">{{ loop_value->author }}</a></td>
+		<td class="tags">
 			{% foreach loop_value->tags as _tag %}
 				<a href="#" class="search-append" data-search="{{_tag}}">{{_tag|ucfirst}}</a>
 			{% end %}
@@ -74,6 +105,8 @@
 	</tr>
 {% end %}
 </table>
+
+</form>
 
 {% if total > $data->limit %}
 {! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
@@ -94,6 +127,12 @@ $(function () {
 	var $query = $('#search-query'),
 		$form = $('#search-form');
 
+	$('#search-month').change (function (e) {
+		e.preventDefault ();
+		
+		$form.submit ();
+	});
+
 	$('.search-append').click (function (e) {
 		e.preventDefault ();
 
@@ -108,6 +147,20 @@ $(function () {
 		} else {
 			$query.val (q + ' ' + append);
 		}
+		
+		$form.submit ();
+	});
+	
+	$('.search-replace').click (function (e) {
+		e.preventDefault ();
+		
+		var $this = $(this),
+			search = $this.data ('search'),
+			prefix = search.split (':')[0],
+			regex = new RegExp (prefix + ':[a-z0-9\'_-]+', 'i'),
+			q = $query.val ();
+
+		$query.val (q.replace (regex, search));
 		
 		$form.submit ();
 	});

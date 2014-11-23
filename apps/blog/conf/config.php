@@ -43,6 +43,13 @@ comments = facebook
 ;comments = disqus
 ;comments = comments/embed
 
+; Show related posts in a "You might also like" box at the bottom
+; of full post pages.
+
+show_related_posts = Off
+
+; Your Disqus.com shortname.
+
 disqus_shortname = ""
 
 [Social Buttons]
