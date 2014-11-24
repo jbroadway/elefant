@@ -40,8 +40,10 @@ table {
 			font-weight: bold;
 			background: #f5f5f5;
 		}
-		
-		table tr th select {
+
+		table tr th select,
+		table tr th select:focus,
+		table tr th select:active {
 			-webkit-appearance: none;
 			-moz-appearance: none;
 			appearance: none;
@@ -311,7 +313,7 @@ input[type=file] {
 
 input[disabled] {
 	background: #eee;
-    outline: none;
+	outline: none;
 }
 
 input[type=submit], button, .dynamic-embed-object-back {
