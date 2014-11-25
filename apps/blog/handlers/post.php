@@ -67,7 +67,19 @@ switch (Appconf::blog ('Blog', 'comments')) {
 		break;
 }
 
+// add rss discovery
 $page->add_script (sprintf (
 	'<link rel="alternate" type="application/rss+xml" href="http://%s/blog/rss" />',
 	$_SERVER['HTTP_HOST']
 ));
+
+// add opengraph meta tags
+$page->add_meta ('og:title', $post->title, 'property');
+
+if ($post->thumbnail !== '') {
+	$page->add_meta (
+		'og:image',
+		'//'. $_SERVER['HTTP_HOST'] . $post->thumbnail,
+		'property'
+	);
+}
