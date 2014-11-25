@@ -30,4 +30,20 @@ class PageTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ("<script src=\"/foo.js\"></script>\n", $p->head);
 		$this->assertEquals ("<script src=\"/bar.js\"></script>\n", $p->tail);
 	}
+	
+	function test_add_meta () {
+		$p = new Page;
+
+		$p->add_meta ('keywords', 'One, Two');
+		$expected_head = "<meta name=\"keywords\" content=\"One, Two\" />\n";
+		$this->assertEquals ($expected_head, $p->head);
+
+		$p->add_meta ('refresh', '0;url=http://example.com/', 'http-equiv');
+		$expected_head .= "<meta http-equiv=\"refresh\" content=\"0;url=http://example.com/\" />\n";
+		$this->assertEquals ($expected_head, $p->head);
+
+		$p->add_meta ('<meta charset="utf-8" />');
+		$expected_head .= "<meta charset=\"utf-8\" />\n";
+		$this->assertEquals ($expected_head, $p->head);
+	}
 }

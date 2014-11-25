@@ -213,6 +213,33 @@ class Page {
 	}
 
 	/**
+	 * Add a meta tag to the page. Example usage:
+	 *
+	 *     $page->add_meta ('keywords', 'One, Two, Three');
+	 *     $page->add_meta ('UTF-8', '', 'charset');
+	 *     $page->add_meta ('og:image', 'http://example.com/foo.jpg', 'property');
+	 *     $page->add_meta ('refresh', '30;url=http://example.com/', 'http-equiv');
+	 *     $page->add_meta ('<meta charset="utf-8" />');
+	 */
+	public function add_meta ($name, $content = '', $attr = 'name') {
+		if (strpos ($name, '<') === 0) {
+			$script = trim ($name) . "\n";
+		} else {
+			$script = '<meta ' . $attr . '="' . $name . '"'
+				. (($content !== '') ? ' content="' . Template::quotes ($content) . '"' : '')
+				. " />\n";
+		}
+		
+		if (! in_array ($script, $this->scripts)) {
+			$this->scripts[] = $script;
+			
+			if (! $this->is_being_rendered) {
+				$this->head .= $script;
+			}
+		}
+	}
+
+	/**
 	 * Wrap scripts that are simply URLs in the correct HTML tags,
 	 * including `<link>` tags for CSS files. Will pass through
 	 * on scripts that are already HTML.
