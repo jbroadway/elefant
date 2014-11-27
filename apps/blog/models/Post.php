@@ -74,7 +74,7 @@ class Post extends \ExtendedModel {
 				$q->where ('ts <= ?', gmdate ('Y-m-d H:i:s'));
 			})
 			->order ('ts desc')
-			->fetch_orig ($limit, $offset);
+			->fetch ($limit, $offset);
 
 		$posts = self::_publish_queued ($posts);
 		
