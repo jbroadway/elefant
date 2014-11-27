@@ -14,7 +14,7 @@
 <div class="blog-tags info">
 {"Tags"}: 
 {% foreach tag_list %}
-<a href="/blog/tag/{{ loop_value|trim|strtolower }}">{{ loop_value|trim|ucfirst }}</a>
+<a href="/blog/tag/{{ loop_value|trim|urlencode }}">{{ loop_value|trim|ucfirst }}</a>
 {% end %}
 </div>
 <hr />
