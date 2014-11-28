@@ -26,6 +26,8 @@ $page->count = $p->count_by_month ($year, $month, $page->limit, $page->offset);
 $page->last = $page->offset + count ($posts);
 $page->more = ($page->count > $page->last) ? true : false;
 $page->next = $page->num + 2;
+$page->year = $year;
+$page->month = str_pad ($month, 2, '0', STR_PAD_LEFT);
 
 if (Appconf::blog ('Blog', 'post_format') === 'markdown') {
 	require_once ('apps/blog/lib/markdown.php');
