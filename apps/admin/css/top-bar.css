@@ -169,10 +169,10 @@ body {
 		text-decoration: none;
 		text-align: center;
 		display: block;
-		width: 200px;
-		height: 20px;
+		width: 100px;
+		height: 30px;
 		margin: auto;
-		margin-top: -42px;
+		margin-top: -48px;
 		z-index: 100001;
 		cursor: pointer;
 		

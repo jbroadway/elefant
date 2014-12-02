@@ -228,11 +228,14 @@ $(function () {
 				$('#admin-tools-arrow').on ('MSPointerDown', toggle_custom_tools);
 			} else {
 				admin_tools.hover (
-					toggle_custom_tools_open,
+					function () {},
 					toggle_custom_tools_close
 				);
 
-				$('#admin-tools-arrow').on ('touchdown click', toggle_custom_tools);
+				$('#admin-tools-arrow').hover (
+					toggle_custom_tools_open,
+					function () {}
+				).on ('touchdown click', toggle_custom_tools);
 			}
 
 		} else {
