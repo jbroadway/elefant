@@ -50,9 +50,8 @@
 				q = $query.val (),
 				match = regex.exec (q);
 
-			console.log (match);
 			if (match != null) {
-				$this.val (match[1]);
+				$this.val (match[1].replace (/(^")|("$)/g, ''));
 			}
 		});
 		
