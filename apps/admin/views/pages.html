@@ -1,4 +1,5 @@
 {! admin/util/minimal-grid !}
+{! admin/util/search !}
 
 <div class="e-row-variable" style="margin-bottom: 20px">
 	<div class="e-col-50 e-no-padding">
@@ -36,7 +37,14 @@
 	<tr>
 		<th width="38%">{"ID"}</th>
 		<th width="38%">{"Title"}</th>
-		<th width="12%">{"Access"}</th>
+		<th width="12%">
+			<select class="search-option" data-prefix="access">
+				<option value="">{"Access"}</option>
+				{% foreach User::access_list () as _access, _name %}
+				<option value="{{_access}}">{{_name}}</option>
+				{% end %}
+			</select>
+		</th>
 		<th width="12%">&nbsp;</th>
 	</tr>
 {% foreach pages %}
@@ -44,7 +52,7 @@
 		<td><a href="{{ loop_value->id|Link::href }}" target="_blank">{{ loop_value->id }}</a></td>
 		<td>{{ loop_value->title }}</td>
 		<td>
-			<a href="#" class="search-append" data-search="access:{{ loop_value->access}}">{{ loop_value->access|ucfirst }}</a>
+			<a href="#" class="search-for" data-search="access:{{ loop_value->access}}">{{ loop_value->access|ucfirst }}</a>
 		</td>
 		<td class="edit">
 			{% if loop_value->locked %}
@@ -69,25 +77,11 @@
 
 <script>
 $(function () {
-	var $query = $('#search-query'),
-		$form = $('#search-form');
-
-	$('.search-append').click (function (e) {
-		e.preventDefault ();
-
-		var $this = $(this),
-			append = $this.data ('search'),
-			q = $query.val ();
-		
-		if (q.match (append)) {
-			return;
-		} else if (q.length === 0) {
-			$query.val (append);
-		} else {
-			$query.val (q + ' ' + append);
-		}
-		
-		$form.submit ();
+	$.search_init ({
+		form: '#search-form',
+		query: '#search-query',
+		links: '.search-for',
+		options: '.search-option'
 	});
 });
 </script>

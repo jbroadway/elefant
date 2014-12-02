@@ -1,4 +1,5 @@
 {! admin/util/minimal-grid !}
+{! admin/util/search !}
 {! admin/util/dates !}
 
 <form method="get" id="search-form">
@@ -34,27 +35,27 @@
 		{% if strpos ($data->q, 'published:yes') !== false %}
 			<strong>{"Published"}</strong>
 			&nbsp;|&nbsp;
-			<a href="#" class="search-replace" data-search="published:no">{"Draft"}</a>
+			<a href="#" class="search-for" data-search="published:no">{"Draft"}</a>
 			&nbsp;|&nbsp;
-			<a href="#" class="search-replace" data-search="published:que">{"Scheduled"}</a>
+			<a href="#" class="search-for" data-search="published:que">{"Scheduled"}</a>
 		{% elseif strpos ($data->q, 'published:no') !== false %}
-			<a href="#" class="search-replace" data-search="published:yes">{"Published"}</a>
+			<a href="#" class="search-for" data-search="published:yes">{"Published"}</a>
 			&nbsp;|&nbsp;
 			<strong>{"Draft"}</strong>
 			&nbsp;|&nbsp;
-			<a href="#" class="search-replace" data-search="published:que">{"Scheduled"}</a>
+			<a href="#" class="search-for" data-search="published:que">{"Scheduled"}</a>
 		{% elseif strpos ($data->q, 'published:que') !== false %}
-			<a href="#" class="search-replace" data-search="published:yes">{"Published"}</a>
+			<a href="#" class="search-for" data-search="published:yes">{"Published"}</a>
 			&nbsp;|&nbsp;
-			<a href="#" class="search-replace" data-search="published:no">{"Draft"}</a>
+			<a href="#" class="search-for" data-search="published:no">{"Draft"}</a>
 			&nbsp;|&nbsp;
 			<strong>{"Scheduled"}</strong>
 		{% else %}
-			<a href="#" class="search-append" data-search="published:yes">{"Published"}</a>
+			<a href="#" class="search-for" data-search="published:yes">{"Published"}</a>
 			&nbsp;|&nbsp;
-			<a href="#" class="search-append" data-search="published:no">{"Draft"}</a>
+			<a href="#" class="search-for" data-search="published:no">{"Draft"}</a>
 			&nbsp;|&nbsp;
-			<a href="#" class="search-append" data-search="published:que">{"Scheduled"}</a>
+			<a href="#" class="search-for" data-search="published:que">{"Scheduled"}</a>
 		{% end %}
 	</div>
 </div>
@@ -83,12 +84,12 @@
 		</td>
 		<td>
 			{{ loop_value->ts|I18n::short_date }} -
-			<a href="#" class="search-append" data-search="published:{{ loop_value->published}}">{{ loop_value->published|blog_filter_published }}</a>
+			<a href="#" class="search-for" data-search="published:{{ loop_value->published}}">{{ loop_value->published|blog_filter_published }}</a>
 		</td>
-		<td><a href="#" class="search-append" data-search="author:&quot;{{ loop_value->author}}&quot;">{{ loop_value->author }}</a></td>
+		<td><a href="#" class="search-for" data-search="author:&quot;{{ loop_value->author}}&quot;">{{ loop_value->author }}</a></td>
 		<td class="tags">
 			{% foreach loop_value->tags as _tag %}
-				<a href="#" class="search-append" data-search="{{_tag}}">{{_tag|ucfirst}}</a>
+				<a href="#" class="search-for" data-search="{{_tag}}">{{_tag|ucfirst}}</a>
 			{% end %}
 		</td>
 		<td class="edit">
@@ -124,45 +125,16 @@
 
 <script>
 $(function () {
-	var $query = $('#search-query'),
-		$form = $('#search-form');
+	$.search_init ({
+		form: '#search-form',
+		query: '#search-query',
+		links: '.search-for'
+	});
 
 	$('#search-month').change (function (e) {
 		e.preventDefault ();
 		
-		$form.submit ();
-	});
-
-	$('.search-append').click (function (e) {
-		e.preventDefault ();
-
-		var $this = $(this),
-			append = $this.data ('search'),
-			q = $query.val ();
-		
-		if (q.match (append)) {
-			return;
-		} else if (q.length === 0) {
-			$query.val (append);
-		} else {
-			$query.val (q + ' ' + append);
-		}
-		
-		$form.submit ();
-	});
-	
-	$('.search-replace').click (function (e) {
-		e.preventDefault ();
-		
-		var $this = $(this),
-			search = $this.data ('search'),
-			prefix = search.split (':')[0],
-			regex = new RegExp (prefix + ':[a-z0-9\'_-]+', 'i'),
-			q = $query.val ();
-
-		$query.val (q.replace (regex, search));
-		
-		$form.submit ();
+		$('#search-form').submit ();
 	});
 });
 </script>

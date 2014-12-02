@@ -1,4 +1,5 @@
 {! admin/util/minimal-grid !}
+{! admin/util/search !}
 
 <div class="e-row-variable" style="margin-bottom: 20px">
 	<div class="e-col-50 e-no-padding">
@@ -17,8 +18,8 @@
 		{% end %}
 	</div>
 	<div class="e-col-50 e-no-padding" style="text-align: right">
-		<form method="get">
-			<input type="text" name="q" size="40" value="{{q|quotes}}" />
+		<form method="get" id="search-form">
+			<input type="text" name="q" id="search-query" size="40" value="{{q|quotes}}" />
 			<button>{"Search"}</button>
 			{% if q != '' %}
 			<button onclick="window.location.href = '/user/admin'; return false">{"Clear"}</button>
@@ -44,18 +45,25 @@
 		<th width="13%">{"Phone"}</th>
 		<th width="20%">{"Email"}</th>
 		<th width="16%">{"Company"}</th>
-		<th width="16%">{"Title"}</th>
-		<th width="8%">{"Role"}</th>
-		<th width="9%">&nbsp;</th>
+		<th width="15%">{"Title"}</th>
+		<th width="8%">
+			<select class="search-option" data-prefix="type">
+				<option value="">{"Role"}</option>
+				{% foreach User::allowed_roles () as _role %}
+				<option value="{{_role}}">{{_role|ucfirst}}</option>
+				{% end %}
+			</select>
+		</th>
+		<th width="10%">&nbsp;</th>
 	</tr>
 {% foreach users %}
 	<tr>
 		<td class="title"><a href="/user/details?id={{ loop_value->id }}">{{ loop_value->name }}</a></td>
 		<td>{{ loop_value->phone }}</td>
 		<td><a href="mailto:{{ loop_value->email }}">{{ loop_value->email }}</a></td>
-		<td>{{ loop_value->company }}</td>
+		<td><a href="#" class="search-for" data-search="company:&quot;{{ loop_value->company }}&quot;">{{ loop_value->company }}</td>
 		<td>{{ loop_value->title }}</td>
-		<td>{{ loop_value->type|ucfirst }}</td>
+		<td><a href="#" class="search-for" data-search="type:{{ loop_value->type}}">{{ loop_value->type|ucfirst }}</a></td>
 		<td class="edit">
 			<a href="/user/edit?id={{ loop_value->id }}">{"Edit"}</a>
 			{% if User::val ('id') != $data->loop_value->id %}
@@ -70,3 +78,14 @@
 {% if total > $data->limit %}
 {! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
 {% end %}
+
+<script>
+$(function () {
+	$.search_init ({
+		form: '#search-form',
+		query: '#search-query',
+		links: '.search-for',
+		options: '.search-option'
+	});
+});
+</script>

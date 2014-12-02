@@ -619,7 +619,7 @@ class Model {
 
 		if (count ($exact) > 0) {
 			$query = preg_replace_callback (
-				'/ ?(' . join ('|', $exact) . '):("[a-z0-9\' _-]+"|[a-z0-9\'_-]+) ?/i',
+				'/ ?(' . join ('|', $exact) . '):("[a-z0-9\'\. _-]+"|[a-z0-9\'\._-]+) ?/i',
 				function ($regs) use ($q, &$exact_matches) {
 					$q->where ($regs[1], trim ($regs[2], '"'));
 					$exact_matches = true;
