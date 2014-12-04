@@ -19,7 +19,7 @@ if ($user->error) {
 	return;
 }
 
-$page->title = __ ('Member') . ': ' . $user->name;
+$page->title = __ ('Member') . ': ' . Template::sanitize ($user->name);
 $page->add_script ('/apps/user/js/react/react.js');
 $page->add_script ('/apps/user/js/build/links.js');
 $page->add_script ('/apps/user/js/build/notes.js');

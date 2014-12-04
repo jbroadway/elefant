@@ -34,7 +34,9 @@
 			if (q === '' || self.users[i].name.toLowerCase ().match (q)) {
 				if ($.inArray (parseInt (self.users[i].id), self.opts.chosen) > -1) {
 					if (self.opts.chosen_visible) {
-						list.append ('<li><span class="userchooser-disabled"><i class="fa fa-user"></i> ' + self.users[i].name + '</span></li>');
+						list.append ('<li><span class="userchooser-disabled"><i class="fa fa-user"></i> '
+							+ $('<div />').text (self.users[i].name).html ()
+							+ '</span></li>');
 					}
 				} else {
 					list.append (
@@ -44,7 +46,8 @@
 								.data ('id', self.users[i].id)
 								.data ('name', self.users[i].name)
 								.data ('email', self.users[i].email)
-								.html ('<i class="fa fa-user"></i> ' + self.users[i].name)
+								.html ('<i class="fa fa-user"></i> '
+								+ $('<div />').text (self.users[i].name).html ())
 						)
 					);
 				}
@@ -183,7 +186,9 @@
 		for (var i = 0; i < self.users.length; i++) {
 			if ($.inArray (parseInt (self.users[i].id), self.opts.chosen) > -1) {
 				if (self.opts.chosen_visible) {
-					list.append ('<li><span class="userchooser-disabled"><i class="fa fa-user"></i> ' + self.users[i].name + '</span></li>');
+					list.append ('<li><span class="userchooser-disabled"><i class="fa fa-user"></i> '
+						+ $('<div />').text (self.users[i].name).html ()
+						+ '</span></li>');
 				}
 			} else {
 				list.append (
@@ -193,7 +198,8 @@
 							.data ('id', self.users[i].id)
 							.data ('name', self.users[i].name)
 							.data ('email', self.users[i].email)
-							.html ('<i class="fa fa-user"></i> ' + self.users[i].name)
+							.html ('<i class="fa fa-user"></i> '
+							+ $('<div />').text (self.users[i].name).html ())
 					)
 				);
 			}
