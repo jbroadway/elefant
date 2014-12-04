@@ -431,6 +431,12 @@ class Template {
 			} elseif (trim ($filter) === 'quotes') {
 				$out .= 'Template::quotes (';
 				$end = ')' . $end;
+			} elseif (trim ($filter) === 'sanitize') {
+				$out .= 'Template::sanitize (';
+				$end = ', \'' . $this->charset . '\')' . $end;
+			} elseif (trim ($filter) === 'autolink') {
+				$out .= 'Template::autolink (';
+				$end = ')' . $end;
 			} else {
 				$out .= $filter . ' (';
 				$end = ')' . $end;
@@ -600,9 +606,46 @@ class Template {
 	 * Convert quotes to HTML entities for form input values.
 	 * Note: This should only be done for *trusted* data, as it does
 	 * not prevent XSS attacks.
+	 *
+	 * Usage as a template filter:
+	 *
+	 *     {{ text|quotes }}
 	 */
 	public static function quotes ($val) {
 		return str_replace ('"', '&quot;', $val);
+	}
+	
+	/**
+	 * Replace links in text with html links. For use as a
+	 * template filter via:
+	 *
+	 *     {{ text|autolink }}
+	 *
+	 * Note that you will likely want to sanitize your output too:
+	 *
+	 *     {{ text|sanitize|autolink }}
+	 *
+	 * Or even add line breaks too:
+	 *
+	 *     {{ text|sanitize|autolink|nl2br }}
+	 *
+	 * Based on: http://stackoverflow.com/a/1959073/1092725
+	 */
+	public static function autolink ($text) {
+		$pattern = '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
+
+		$callback = function ($matches) {
+			$url = array_shift ($matches);
+			$url_parts = parse_url ($url);
+
+			$text = parse_url ($url, PHP_URL_HOST) . parse_url ($url, PHP_URL_PATH);
+			$text = preg_replace ("/^www\./", "", $text);
+			$text = trim ($text, '/');
+
+			return sprintf ('<a rel="nofollow" href="%s">%s</a>', $url, $text);
+		};
+
+		return preg_replace_callback ($pattern, $callback, $text);
 	}
 
 	/**

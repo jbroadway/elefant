@@ -77,12 +77,111 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_sanitize () {
-		$t = new Template ('UTF-8');
-
 		$this->assertEquals (
-			$t->sanitize ('<script type="text/javascript">eval ("alert (typeof window)")</script>'),
+			Template::sanitize ('<script type="text/javascript">eval ("alert (typeof window)")</script>'),
 			'&lt;script type=&quot;text/javascript&quot;&gt;eval (&quot;alert (typeof window)&quot;)&lt;/script&gt;'
 		);
+	}
+
+	function test_quotes () {
+		$this->assertEquals (
+			Template::quotes ('Escape "double" quotes'),
+			'Escape &quot;double&quot; quotes'
+		);
+	}
+
+	function test_autolink () {
+		$this->assertEquals (
+			Template::autolink ('http://www.example.com/'),
+			'<a rel="nofollow" href="http://www.example.com/">example.com</a>'
+		);
+
+		$this->assertEquals (
+			Template::autolink ('http://www.example.com/'),
+			'<a rel="nofollow" href="http://www.example.com/">example.com</a>'
+		);
+
+$this->assertEquals (
+			Template::autolink ('http://foo.com/blah_blah'),
+			'<a rel="nofollow" href="http://foo.com/blah_blah">foo.com/blah_blah</a>'
+		);
+
+$this->assertEquals (
+			Template::autolink ('http://foo.com/blah_blah/'),
+			'<a rel="nofollow" href="http://foo.com/blah_blah/">foo.com/blah_blah</a>'
+		);
+
+$this->assertEquals (
+			Template::autolink ('(Something like http://foo.com/blah_blah)'),
+			'(Something like <a rel="nofollow" href="http://foo.com/blah_blah">foo.com/blah_blah</a>)'
+		);
+
+$this->assertEquals (
+			Template::autolink ('http://foo.com/blah_blah_(wikipedia)'),
+			'<a rel="nofollow" href="http://foo.com/blah_blah_(wikipedia)">foo.com/blah_blah_(wikipedia)</a>'
+		);
+
+$this->assertEquals (
+			Template::autolink ('(Something like http://foo.com/blah_blah_(wikipedia))'),
+			'(Something like <a rel="nofollow" href="http://foo.com/blah_blah_(wikipedia)">foo.com/blah_blah_(wikipedia)</a>)'
+		);
+
+$this->assertEquals (
+			Template::autolink ('http://foo.com/blah_blah.'),
+			'<a rel="nofollow" href="http://foo.com/blah_blah">foo.com/blah_blah</a>.'
+		);
+
+		$this->assertEquals (
+			Template::autolink ('http://foo.com/blah_blah/.'),
+			'<a rel="nofollow" href="http://foo.com/blah_blah/">foo.com/blah_blah</a>.'
+		);
+
+		$this->assertEquals (
+			Template::autolink ('<http://foo.com/blah_blah>'),
+			'<<a rel="nofollow" href="http://foo.com/blah_blah">foo.com/blah_blah</a>>'
+		);
+
+		$this->assertEquals (
+			Template::autolink ('<http://foo.com/blah_blah/>'),
+			'<<a rel="nofollow" href="http://foo.com/blah_blah/">foo.com/blah_blah</a>>'
+		);
+
+		$this->assertEquals (
+			Template::autolink ('http://foo.com/blah_blah,'),
+			'<a rel="nofollow" href="http://foo.com/blah_blah">foo.com/blah_blah</a>,'
+		);
+
+		$this->assertEquals (
+			Template::autolink ('http://www.example.com/wpstyle/?p=364.'),
+			'<a rel="nofollow" href="http://www.example.com/wpstyle/?p=364">example.com/wpstyle</a>.'
+		);
+
+		$this->assertEquals (
+			Template::autolink ('rdar://1234'),
+			'<a rel="nofollow" href="rdar://1234">1234</a>'
+		);
+
+		$this->assertEquals (
+			Template::autolink ('http://userid:password@example.com:8080'),
+			'<a rel="nofollow" href="http://userid:password@example.com:8080">example.com</a>'
+		);
+
+		$this->assertEquals (
+			Template::autolink ('http://example.com:8080 x-yojimbo-item://6303E4C1-xxxx-45A6-AB9D-3A908F59AE0E'),
+			'<a rel="nofollow" href="http://example.com:8080">example.com</a> <a rel="nofollow" href="x-yojimbo-item://6303E4C1-xxxx-45A6-AB9D-3A908F59AE0E">6303E4C1-xxxx-45A6-AB9D-3A908F59AE0E</a>'
+		);
+
+		$this->assertEquals (
+			Template::autolink ('message://%3c330e7f8409726r6a4ba78dkf1fd71420c1bf6ff@mail.gmail.com%3e'),
+			'<a rel="nofollow" href="message://%3c330e7f8409726r6a4ba78dkf1fd71420c1bf6ff@mail.gmail.com%3e">mail.gmail.com%3e</a>'
+		);
+
+		$this->assertEquals (
+			Template::autolink ('<tag>http://example.com</tag>'),
+			'<tag><a rel="nofollow" href="http://example.com">example.com</a></tag>'
+		);
+
+
 	}
 
 	function test_escape () {
