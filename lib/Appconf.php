@@ -186,4 +186,37 @@ class Appconf {
 		unset ($merged['Admin']);
 		return $merged;
 	}
+	
+	/**
+	 * Fetch all published hook handlers from a specific confi file in
+	 * across all apps. This may be a specific file, or a specific
+	 * option list within the file.
+	 *
+	 * Usage:
+	 *
+	 *     $payment_options = Appconf::options ('payments');
+	 *     // array ('stripe/payment' => 'Stripe Payments')
+	 *     
+	 *     $commands = Appconf::options ('cli', 'commands');
+	 *     // array ('blog/publish-queue' => 'Publish scheduled...', ...etc...)
+	 */
+	public static function options ($basename = 'hooks', $hook = false) {
+		$files = glob ('apps/*/conf/' . $basename . '.php');
+		$options = array ();
+
+		foreach ($files as $file) {
+			$hooks = parse_ini_file ($file);
+			if ($hook !== false) {
+				if (isset ($hooks[$hook]) && is_array ($hooks[$hook])) {
+					foreach ($hooks[$hook] as $handler => $name) {
+						$options[$handler] = $name;
+					}
+				}
+			} else {
+				$options = array_merge ($options, $hooks);
+			}
+		}
+
+		return $options;
+	}
 }

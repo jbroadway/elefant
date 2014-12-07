@@ -54,4 +54,25 @@ class AppconfTest extends PHPUnit_Framework_TestCase {
 		$conf = Appconf::admin ('Admin', 'handler');
 		$this->assertEquals ('admin/versions', $conf);
 	}
+	
+	function test_options () {
+		$payments = Appconf::options ('payments');
+		$this->assertEquals (true, is_array ($payments));
+		
+		$acl = Appconf::options ('acl');
+		$this->assertEquals (true, in_array ('filemanager', array_keys ($acl)));
+		$this->assertEquals ('Upload and manage files', $acl['filemanager']);
+		$this->assertEquals (true, in_array ('user/roles', array_keys ($acl)));
+		
+		$commands = Appconf::options ('cli', 'commands');
+		$expected_commands = array (
+			'api/create-token' => 'Generate or reset an API token and secret key for a user.',
+			'api/get-token' => 'Fetch or generate an API token and secret key for a user.',
+			'blog/publish-queue' => 'Publish scheduled blog posts.'
+		);
+		foreach ($expected_commands as $command => $name) {
+			$this->assertEquals (true, in_array ($command, array_keys ($commands)));
+			$this->assertEquals ($name, $commands[$command]);
+		}
+	}
 }
