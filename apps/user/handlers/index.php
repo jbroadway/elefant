@@ -8,6 +8,8 @@
 $res = $this->override ('user/index');
 if ($res) { echo $res; return; }
 
+$page->id = 'user';
+
 if (! $this->params[0]) {
 	if (! User::require_login ()) {
 		$page->title = __ ('Members');
