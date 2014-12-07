@@ -97,6 +97,9 @@ class Layout {
 	 * Check whether a layout exists.
 	 */
 	public static function exists ($name) {
+		if ($name === 'default') {
+			return true;
+		}
 		return (file_exists ('layouts/' . $name . '.html') || file_exists ('layouts/' . $name . '/' . $name . '.html'));
 	}
 }
