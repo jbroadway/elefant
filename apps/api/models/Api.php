@@ -1,5 +1,7 @@
 <?php
 
+namespace api;
+
 /**
  * Elefant CMS - http://www.elefantcms.com/
  *
@@ -32,13 +34,13 @@
  *
  * To create new tokens, use:
  *
- *   list ($token, $key) = Api::create_token ($user_id);
+ *   list ($token, $key) = api\Api::create_token ($user_id);
  *
  * To authenticate, use the `user\Auth\HMAC` authentication scheme:
  *
  *   $this->require_auth (user\Auth\HMAC::init ($this, $cache));
  */
-class Api extends Model {
+class Api extends \Model {
 	/**
 	 * The database table name.
 	 */
@@ -57,12 +59,11 @@ class Api extends Model {
 	 * API access.
 	 */
 	public static function create_token ($user_id) {
-		$a = Api::query ()
+		$a = self::query ()
 			->where ('user_id', $user_id)
-			->fetch ();
+			->single ();
 
-		if (count ($a) > 0) {
-			$a = $a[0];
+		if ($a && ! $a->error) {
 			$a->token = md5 (uniqid (mt_rand (), 1));
 			$a->api_key = md5 (uniqid (mt_rand (), 1));
 		} else {
