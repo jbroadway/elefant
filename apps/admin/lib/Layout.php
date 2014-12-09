@@ -94,6 +94,31 @@ class Layout {
 	}
 
 	/**
+	 * Get a list of layout styles and their names. Styles correspond
+	 * to CSS class names which can be assigned to rows of the page grid.
+	 */
+	public static function styles () {
+		$layout = conf ('General', 'default_layout');
+		
+		if ($layout === 'default') {
+			$layouts = self::all ();
+			$out = array ();
+			foreach ($layouts as $layout) {
+				$out[$layout] = ucfirst ($layout);
+			}
+			return $out;
+		}
+
+		if (file_exists ('layouts/' . $layout . '/elefant.json')) {
+			$info = json_decode (file_get_contents ('layouts/' . $layout . '/elefant.json'));
+			if (isset ($info->styles) && is_object ($info->styles)) {
+				return array_merge (array ('' => __ ('- choose -')), (array) $info->styles);
+			}
+		}
+		return array ();
+	}
+
+	/**
 	 * Check whether a layout exists.
 	 */
 	public static function exists ($name) {
