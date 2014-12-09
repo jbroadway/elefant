@@ -437,6 +437,9 @@ class Template {
 			} elseif (trim ($filter) === 'autolink') {
 				$out .= 'Template::autolink (';
 				$end = ')' . $end;
+			} elseif (trim ($filter) === 'fixed') {
+				$out .= 'Template::fixed (';
+				$end = ')' . $end;
 			} else {
 				$out .= $filter . ' (';
 				$end = ')' . $end;
@@ -646,6 +649,19 @@ class Template {
 		};
 
 		return preg_replace_callback ($pattern, $callback, $text);
+	}
+
+	/**
+	 * Replaces `e-row-variable` CSS classes with `e-row` so total
+	 * width is restricted instead of going to the edges of the
+	 * page.
+	 *
+	 * Usage as a template filter:
+	 *
+	 *     {{ text|fixed }}
+	 */
+	public static function fixed ($val) {
+		return str_replace ('e-row-variable', 'e-row', $val);
 	}
 
 	/**
