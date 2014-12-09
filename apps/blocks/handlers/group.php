@@ -47,7 +47,7 @@
  * making them a powerful way to build site content.
  *
  * You can also specify a `units` parameter, which specifies the width of
- * each `div` as a `unit-%d` class, for example:
+ * each `div` as an `e-col-%d` class, for example:
  *
  *     {! blocks/group
  *        ?id[]=sidebar-promo
@@ -56,19 +56,18 @@
  *
  * This will output:
  *
- *     <div class="block unit-75" id="block-sidebar-promo">
+ *     <div class="block e-col-75" id="block-sidebar-promo">
  *         <h2>Block title</h2>
  *         <p>Block contents...</p>
  *     </div>
- *     <div class="block unit-25" id="block-sidebar-support">
+ *     <div class="block e-col-25" id="block-sidebar-support">
  *         <h2>Block title</h2>
  *         <p>Block contents...</p>
  *     </div>
  *
- * These can be styled and used to implement grid-based and responsive
- * layouts. Here is a very basic example grid system implementation:
- *
- * https://gist.github.com/jbroadway/5d027fddfadabb56aff0
+ * The use of units will automatically include the `admin/util/minimal-grid`
+ * helper, which provides a very minimal responsive grid system for
+ * page content.
  */
 
 $ids = (count ($this->params) > 0) ? $this->params : (isset ($data['id']) ? $data['id'] : array ());
@@ -83,6 +82,7 @@ if (count ($ids) === 0) {
 $level = (isset ($data['level']) && preg_match ('/^h[1-6]$/', $data['level'])) ? $data['level'] : 'h3';
 $divs = isset ($data['divs']) ? true : false;
 if (isset ($data['units'])) {
+	echo $this->run ('admin/util/minimal-grid');
 	$units = explode (',', $data['units']);
 	$divs = true;
 } else {
@@ -121,7 +121,7 @@ if ($units === 'auto' || $total !== count ($units)) {
 foreach ($ids as $k => $id) {
 	if (! isset ($list[$id])) {
 		if ($divs) {
-			printf ('<div class="block block-missing" id="block-%s">' . PHP_EOL, $units[$k], $b->id);
+			printf ('<div class="e-col-%d block block-missing" id="block-%s">' . PHP_EOL, $units[$k], $id);
 		}
 
 		if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
@@ -147,7 +147,7 @@ foreach ($ids as $k => $id) {
 	}
 
 	if ($divs) {
-		printf ('<div class="block unit-%d" id="block-%s">' . PHP_EOL, $units[$k], $b->id);
+		printf ('<div class="e-col-%d block" id="block-%s">' . PHP_EOL, $units[$k], $b->id);
 	}
 
 	if ($b->show_title == 'yes') {
