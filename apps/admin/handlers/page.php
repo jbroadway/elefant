@@ -17,7 +17,7 @@ $id = count ($this->params)
     : 'index';
 
 // check if cached
-$res = $cache->get ('_admin_page_' . $id);
+/*$res = $cache->get ('_admin_page_' . $id);
 if ($res) {
 	$pg = (is_object ($res)) ? $res : unserialize ($res);
 	foreach ($pg as $key => $value) {
@@ -43,9 +43,9 @@ if ($res) {
 	}
 
 	// output the page body
-	echo $page->body;
+	echo $this->run ('admin/grid', array ('grid' => $pg->body ())); // error: doesn't work on Page
 	return;
-}
+}*/
 
 // let apps handle sub-page requests
 // e.g., /company/blog -> blog app
@@ -91,14 +91,14 @@ if (User::require_acl ('admin', 'admin/pages', 'admin/edit')) {
 	echo $this->run ('admin/editable', $page);
 }
 
-// execute any embedded includes
-$out = $tpl->run_includes ($wp->body);
+// build and render the page body grid
+$out = $this->run ('admin/grid', array ('grid' => $wp->body ()));
 
-if ($out === $wp->body) {
+/*if ($out === $wp->body) {
 	// no includes, cacheable.
 	$page->body = $out;
 	$cache->set ('_admin_page_' . $id, serialize ($page));
-}
+}*/
 
 // output the page body
 echo $out;

@@ -40,6 +40,14 @@
  * keywords
  * body
  * extra
+ *
+ * To return the page body as a grid, call:
+ *
+ *     $grid = $page->body ();
+ *
+ * If a page was created with a regular body, the contents
+ * will be converted into a single row, single column grid
+ * with the page body contents.
  */
 class Webpage extends ExtendedModel {
 	/**
@@ -52,6 +60,24 @@ class Webpage extends ExtendedModel {
 	 * user-defined properties.
 	 */
 	public $_extended_field = 'extra';
+
+	/**
+	 * Returns a grid version of the page body, for rendering with
+	 * the `admin/grid` view template and its inline editing capabilities.
+	 */
+	public function body () {
+		$g = $this->ext ('grid');
+		if (! $g) {
+			$grid = new admin\Grid ();
+			$grid->add_row ('100', '', false, '', array ($this->body));
+			$g = $grid->all ();
+			$this->ext ('grid', $g);
+			$this->put ();
+		} else {
+			$grid = new admin\Grid ($g);
+		}
+		return $grid;
+	}
 
 	/**
 	 * Override the getter for head to include the description
