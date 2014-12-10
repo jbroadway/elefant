@@ -1,0 +1,81 @@
+/**
+ * Move page edit buttons to top right below toolbar.
+ */
+.admin-options {
+	position: fixed;
+	top: 50px;
+	right: 20px;
+}
+
+/**
+ * Center notifications below toolbar.
+ */
+div.jGrowl.top-right {
+	position: absolute;
+	left: 50%;
+	margin-left: -120px;
+}
+
+div.jGrowl div.jGrowl-notification {
+	min-height: 0px !important;
+}
+
+div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
+	margin-top: 10px !important;
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
+	-webkit-border-radius: 0 !important;
+	-moz-border-radius: 0 !important;
+	border-radius: 0 !important;
+	background-color: #f5f5f5 !important;
+}
+
+/**
+ * Grid editing styles.
+ */
+
+.e-grid-col {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border: 1px dashed #d5d9dc;
+	margin-bottom: 1em;
+}
+
+
+.e-grid-col:hover {
+	border: 1px dashed #b5b9bc;
+	cursor: pointer;
+}
+
+button.e-grid-button {
+	margin-bottom: 1em;
+	outline: none;
+	background-color: #;
+}
+
+button.e-grid-button {
+    font-size: 12px;
+	border: 1px solid #ddd;
+    background: #e5e5e5;
+    background: -webkit-gradient(linear,0% 40%,0% 70%,from(#eee),to(#e5e5e5));
+    background: -moz-linear-gradient(linear,0% 40%,0% 70%,from(#eee),to(#e5e5e5));
+    border: solid 1px #ccc;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    color: #333;
+    padding: 3px 10px;
+    text-shadow: 0 1px 0 #fff;
+    outline: none;
+}
+
+button.e-grid-button:hover {
+	color: #111;
+	border: 1px solid #999;
+    -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
