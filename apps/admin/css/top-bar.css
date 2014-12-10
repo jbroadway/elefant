@@ -403,6 +403,7 @@ p.admin-options a {
     left: 0;
     height: 35px;
     width: 100%;
+    text-align: right;
     z-index: 100000;
 }
 
@@ -419,6 +420,7 @@ p.admin-options a {
     background-image: url(/apps/admin/css/admin/editable-sprite-dark.png);
 	background-position: -26px 0px;
 	position: relative;
+	margin-right: 124px;
 }
 
 .is-preview .page, body.is-preview {
