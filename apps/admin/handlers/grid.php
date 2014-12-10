@@ -55,12 +55,16 @@ echo $this->run ('admin/util/minimal-grid');
 echo $this->run ('admin/util/fontawesome');
 
 if (User::require_acl ('admin', 'admin/edit')) {
+	$page->add_script ('apps/admin/js/handlebars-v2.0.0.js');
+	$page->add_script ('apps/admin/js/velocity.min.js');
+	$page->add_script ('apps/admin/js/velocity.ui.js');
 	$page->add_script ('apps/admin/js/jquery.grid.js');
 	$page->add_style ('apps/admin/css/jquery.grid.css');
 	$page->add_script (
 		$tpl->render (
 			'admin/grid',
 			array (
+				'id' => $id,
 				'styles' => admin\Layout::styles (),
 				'api' => $api
 			)

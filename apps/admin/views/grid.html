@@ -1,6 +1,40 @@
+<script id="tpl-grid-row" type="text/html">
+	<div class="e-grid-row" \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
+		<div class="e-row\{{#if variable}}-variable\{{/if}}\{{#if fixed}} e-row-fixed\{{/if}}">
+		\{{#each cols}}
+			<div class="e-col-\{{unit}} e-grid-col">
+				\{{content}}
+			</div>
+		\{{/each}}
+		</div>
+	</div>
+</script>
+
+<script id="tpl-grid-add" type="text/html">
+	<div class="e-grid-add \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
+		<div class="e-row\{{#if variable}}-variable\{{/if}}">
+			<div class="e-col-100">
+				<p><b>{"Columns"}:</b></p>
+				<p><b>{"Style"}:</b> <select class="e-row"></select>
+				<p style="float: right"><a href="#" id="e-row-add-cancel">{"Cancel"}</a></p>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script id="tpl-grid-add-button" type="text/html">
+	<div class="e-grid-add-button">
+		<div class="e-row\{{#if variable}}-variable\{{/if}}">
+			<div class="e-col-100 e-no-padding">
+				<button class="e-grid-button" data-id="\{{id}}"><i class="fa fa-plus"></i> {"Add row"}</button>
+			</div>
+		</div>
+	</div>
+</script>
+
 <script>
 $(function () {
-	$.grid.init ({
+	$('.e-grid').grid ({
 		id: '{{id}}',
 		styles: {{styles|json_encode}},
 		api: '{{api}}'

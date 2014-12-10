@@ -408,7 +408,7 @@ p.admin-options a {
 }
 
 .is-preview #preview-bar a {
-    margin: 8px;
+    margin: 8px 20px 8px 8px;;
     border: 2px solid #93278f;
 }
 
@@ -420,11 +420,11 @@ p.admin-options a {
     background-image: url(/apps/admin/css/admin/editable-sprite-dark.png);
 	background-position: -26px 0px;
 	position: relative;
-	margin-right: 124px;
+	margin-right: 136px;
 }
 
 .is-preview .page, body.is-preview {
-    padding-top:0;
+    padding-top: 0;
 }
 
 .is-preview #preview-bar a:hover:after {

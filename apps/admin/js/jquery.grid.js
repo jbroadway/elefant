@@ -1,45 +1,90 @@
-$.grid = (function ($) {
-	var self = {
-			opts: {
-				styles: {},
-				api: '/admin/grid/api'
-			}
+/**
+ * Responsive grid-based inline editing. See:
+ *
+ *     apps/admin/handlers/grid.php
+ *
+ * Usage:
+ *
+ *     $('.e-grid').grid ({
+ *         id: '{{id}}',
+ *         styles: {{admin\Layout::styles ()|json_encode}},
+ *         api: '/admin/grid/api'
+ *     });
+ */
+(function ($, H) {
+	var initialized = false,
+		tpl = {
+			row:			'#tpl-grid-row',
+			add:			'#tpl-grid-add',
+			add_button:		'#tpl-grid-add-button'
 		};
+	
+	// attach via $.proxy (add_row, $this)
+	function add_row (e) {
+		e.preventDefault ();
 
-	self.add_row = function (e) {
+		var $this = this,
+			$add = $(e.target),
+			$row = $(tpl.add ({
+			id: $this.data ('id'),
+			row: $this.rows ().length,
+			css_class: '',
+			variable: false,
+			fixed: false,
+			styles: $this.opts.styles
+		})).insertBefore ($add).velocity ('transition.slideDownIn', 200);
+		
+		$row.find ('.e-grid-cancel-link')
+			.click ($.proxy (cancel_row, $this));
+	}
+
+	// attach via $.proxy (cancel_row, $this);
+	function cancel_row (e) {
 		e.preventDefault ();
 		
-		console.log ('add row!');
-		$(this).before (
-			$('<div class="e-grid-row">'
-				+ '<div class="e-row-variable">'
-					+ '<div class="e-col-50 e-grid-col">...</div>'
-					+ '<div class="e-col-50 e-grid-col">...</div>'
-				+ '</div>'
-			+ '</div>')
-		);
-	};
-
-	self.make_editable = function () {
-		var $this = $(this),
-			id = $this.data ('id'),
-			rows = $this.children ('.e-grid-row');
-
-		console.log (id);
-		console.log (rows);
-
-		$(this).append (
-			$('<button class="e-grid-button"><i class="fa fa-plus"></i> Add row</button>')
-				.click (self.add_row)
-		);
-	};
-	
-	self.init = function (options) {
-		self.opts = $.extend (self.opts, options);
+		var $this = this,
+			$cancel = $(e.target);
 		
-		$('.e-grid').each (self.make_editable);
-	};
+		$cancel.parent ('.e-grid-row').remove ();
+	}
 	
-	return self;
-})(jQuery);
+	// attach via $.proxy (get_rows, $this)
+	function get_rows () {
+		var $this = this;
+
+		return $this.children ('.e-grid-row');
+	}
+
+	$.fn.extend ({
+		grid: function (options) {
+			var defaults = {
+				id: '',
+				styles: {},
+				api: '/admin/grid/api'
+			};
+			
+			if (! initialized) {
+				// compile templates
+				for (var k in tpl) {
+					tpl[k] = H.compile ($(tpl[k]).html ());
+				}
+				initialized = true;
+			}
+			
+			options = $.extend (defaults, options);
+			
+			return this.each (function () {
+				var $this = $(this);
+				
+				$this.opts = options;
+				$this.rows = $.proxy (get_rows, $this);
+
+				// Create and connect 'Add row' button
+				$this.append (tpl.add_button ({ id: $this.opts.id }));
+				$this.find ('.e-grid-add-button button')
+					.click ($.proxy (add_row, $this));
+			});
+		}
+	});
+})(jQuery, Handlebars);
 

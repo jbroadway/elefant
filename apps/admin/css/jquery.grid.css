@@ -35,22 +35,32 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
  * Grid editing styles.
  */
 
+.e-grid-row {
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+.e-grid-add {
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
 .e-grid-col {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	border: 1px dashed #d5d9dc;
-	margin-bottom: 1em;
+	padding: 3px;
 }
 
 .e-grid-col:hover {
 	border: 1px dashed #b5b9bc;
+	background-color: rgba(119,127,135,0.15);
 	cursor: pointer;
 }
 
 .is-preview .e-grid-col {
-	border: 0px;
-	margin-bottom: inherit;
+	border: inherit;
 }
 
 .is-preview .e-grid-col:hover {
@@ -59,16 +69,17 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 
 .is-preview button.e-grid-button {
 	display: none;
-	margin-bottom: inherit;
 }
 
-button.e-grid-button {
+button.e-grid-add-button {
 	margin-bottom: 1em;
-	outline: none;
-	background-color: #;
+	background-color: #e5e5e5;
 }
 
 button.e-grid-button {
+	display: inline-block;
+	margin-left: 0.5em;
+	margin-top: 0.5em;
     font-size: 12px;
 	border: 1px solid #ddd;
     background: #e5e5e5;
