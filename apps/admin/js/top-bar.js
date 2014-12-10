@@ -338,10 +338,10 @@ $(function () {
 		var major_minor = $.elefant_version.replace (/\.[0-9]+$/, '');
 
 		$.ajax ({
-			url: 'https://raw.github.com/jbroadway/elefant-updates/master/releases/' + major_minor + '.js?callback=elefant_update_response',
+			url: '/admin/head/updates/' + major_minor + '?callback=elefant_update_response',
 			type: 'GET',
 			dataType: 'jsonp',
-			callback: 'elefant_update_response'
+			callback: elefant_update_response
 		});
 
 		$.cookie ('elefant_update_checked', 1, { expires: 1, path: '/' });
