@@ -1,7 +1,7 @@
 /**
  * Move page edit buttons to top right below toolbar.
  */
-.admin-options {
+p.admin-options {
 	position: fixed;
 	top: 50px;
 	right: 20px;
@@ -43,10 +43,23 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	margin-bottom: 1em;
 }
 
-
 .e-grid-col:hover {
 	border: 1px dashed #b5b9bc;
 	cursor: pointer;
+}
+
+.is-preview .e-grid-col {
+	border: 0px;
+	margin-bottom: inherit;
+}
+
+.is-preview .e-grid-col:hover {
+	cursor: default;
+}
+
+.is-preview button.e-grid-button {
+	display: none;
+	margin-bottom: inherit;
 }
 
 button.e-grid-button {
