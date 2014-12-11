@@ -81,7 +81,7 @@ button.e-grid-button {
 	display: inline-block;
 	margin: 0;
     font-size: 12px;
-	border: 1px solid #ddd;
+	border: 1px solid #bbb;
     background: #e5e5e5;
     background: -webkit-gradient(linear,0% 40%,0% 70%,from(#eee),to(#e5e5e5));
     background: -moz-linear-gradient(linear,0% 40%,0% 70%,from(#eee),to(#e5e5e5));
@@ -103,3 +103,31 @@ button.e-grid-button:hover {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
     cursor: pointer;
 }
+
+.e-grid-icon {
+	display: inline-block;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100px;
+	height: 66px;
+	padding: 0;
+	margin: 0.4em;
+	background-image: url(/apps/admin/css/jquery.grid.icons.png);
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+	overflow: hidden;
+}
+
+.e-grid-icon:hover {
+	cursor: pointer;
+	background-position-y: -66px;
+}
+
+.e-grid-icon-highlighted {
+	background-position-y: -66px;
+}
+
+.e-grid-icon-100 { background-position: 0px 0px; }
+.e-grid-icon-50-50 { background-position: -100px 0px; }
+.e-grid-icon-33-33-33 { background-position: -200px 0px; }

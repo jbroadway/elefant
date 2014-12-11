@@ -61,6 +61,18 @@
 		$row.addClass (css_style);
 	}
 	
+	// Select a grid choice
+	// Attach via $.proxy (select_grid, $this);
+	function select_grid (e) {
+		e.preventDefault ();
+		
+		var $this = this,
+			$choice = $(e.target);
+		
+		$choice.siblings ('.e-grid-icon').removeClass ('e-grid-icon-highlighted');		
+		$choice.addClass ('e-grid-icon-highlighted');
+	}
+	
 	// Create add row form.
 	// Attach via $.proxy (add_row, $this)
 	function add_row (e) {
@@ -79,6 +91,8 @@
 				})
 			).insertBefore ($add.closest ('.e-grid-add-button')).velocity ('slideDown', 500);
 		
+		$row.find ('.e-grid-icon')
+			.click ($.proxy (select_grid, $this));
 		$row.find ('.e-grid-cancel-link')
 			.click ($.proxy (cancel_row, $this));
 		$row.find ('.e-grid-select-style')
