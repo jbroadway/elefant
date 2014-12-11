@@ -45,6 +45,12 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	padding-bottom: 0.5em;
 }
 
+.e-grid-add .e-row,
+.e-grid-add .e-row-variable {
+	padding: 5px 10px 5px 10px;
+	border: 1px solid #bbb;
+}
+
 .e-grid-col {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -67,8 +73,9 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	cursor: default;
 }
 
+.is-preview .e-grid-add,
 .is-preview button.e-grid-button {
-	display: none;
+	display: none !important;
 }
 
 .e-grid-add-button {
@@ -81,11 +88,10 @@ button.e-grid-button {
 	display: inline-block;
 	margin: 0;
     font-size: 12px;
-	border: 1px solid #bbb;
     background: #e5e5e5;
     background: -webkit-gradient(linear,0% 40%,0% 70%,from(#eee),to(#e5e5e5));
     background: -moz-linear-gradient(linear,0% 40%,0% 70%,from(#eee),to(#e5e5e5));
-    border: solid 1px #ccc;
+    border: 1px solid #aaa;
     border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -97,7 +103,7 @@ button.e-grid-button {
 
 button.e-grid-button:hover {
 	color: #111;
-	border: 1px solid #999;
+	border: 1px solid #777;
     -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
     -webkit-box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);

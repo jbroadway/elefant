@@ -11,27 +11,25 @@
 </script>
 
 <script id="tpl-grid-add" type="text/html">
-	<div class="e-grid-row \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
+	<div class="e-grid-row e-grid-add \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
 		<div class="e-row\{{#if variable}}-variable\{{/if}}">
-			<div class="e-col-100">
-				<b>{"Columns"}:</b>
+			<div class="e-col-100 e-grid-options">
+				<b>{"Columns"}:</b><br />
+				<div class="e-grid-options">
+					<div class="e-grid-icon e-grid-icon-100"></div>
+					<div class="e-grid-icon e-grid-icon-50-50"></div>
+					<div class="e-grid-icon e-grid-icon-66-33"></div>
+					<div class="e-grid-icon e-grid-icon-33-66"></div>
+					<div class="e-grid-icon e-grid-icon-75-25"></div>
+					<div class="e-grid-icon e-grid-icon-25-75"></div>
+					<div class="e-grid-icon e-grid-icon-80-20"></div>
+					<div class="e-grid-icon e-grid-icon-20-80"></div>
+					<div class="e-grid-icon e-grid-icon-33-33-33"></div>
+					<div class="e-grid-icon e-grid-icon-25-50-25"></div>
+					<div class="e-grid-icon e-grid-icon-25-25-25-25"></div>
+					<div class="e-grid-icon e-grid-icon-20-20-20-20-20"></div>
+				</div>
 			</div>
-		</div>
-		<div class="e-row\{{#if variable}}-variable\{{/if}} e-grid-options">
-			<div class="e-grid-icon e-grid-icon-100"></div>
-			<div class="e-grid-icon e-grid-icon-50-50"></div>
-			<div class="e-grid-icon e-grid-icon-66-33"></div>
-			<div class="e-grid-icon e-grid-icon-33-66"></div>
-			<div class="e-grid-icon e-grid-icon-75-25"></div>
-			<div class="e-grid-icon e-grid-icon-25-75"></div>
-			<div class="e-grid-icon e-grid-icon-80-20"></div>
-			<div class="e-grid-icon e-grid-icon-20-80"></div>
-			<div class="e-grid-icon e-grid-icon-33-33-33"></div>
-			<div class="e-grid-icon e-grid-icon-25-50-25"></div>
-			<div class="e-grid-icon e-grid-icon-25-25-25-25"></div>
-			<div class="e-grid-icon e-grid-icon-20-20-20-20-20"></div>
-		</div>
-		<div class="e-row\{{#if variable}}-variable\{{/if}}">
 			<div class="e-col-30">
 				<b>{"Style"}:</b>
 				<select class="e-grid-select-style">
