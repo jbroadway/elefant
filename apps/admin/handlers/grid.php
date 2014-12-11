@@ -64,7 +64,7 @@ if (User::require_acl ('admin', 'admin/edit')) {
 		$tpl->render (
 			'admin/grid',
 			array (
-				'styles' => admin\Layout::styles (),
+				'styles' => admin\Layout::styles ($page->layout),
 				'api' => $api
 			)
 		)
