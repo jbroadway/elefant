@@ -11,12 +11,28 @@
 </script>
 
 <script id="tpl-grid-add" type="text/html">
-	<div class="e-grid-add \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
+	<div class="e-grid-row \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
 		<div class="e-row\{{#if variable}}-variable\{{/if}}">
 			<div class="e-col-100">
-				<p><b>{"Columns"}:</b></p>
-				<p><b>{"Style"}:</b> <select class="e-row"></select>
-				<p style="float: right"><a href="#" id="e-row-add-cancel">{"Cancel"}</a></p>
+				<b>{"Columns"}:</b><br />
+				...grid options...
+			</div>
+			<div class="e-col-30">
+				<b>{"Style"}:</b>
+				<select class="e-grid-select-style">
+				\{{#each styles}}
+					<option value="\{{css_class}}">\{{name}}</option>
+				\{{/each}}
+				</select>
+			</div>
+			<div class="e-col-25 e-grid-bg-button">
+				<button class="e-grid-button">{"Background image"}</button>
+			</div>
+			<div class="e-col-25">
+				<label><input type="checkbox" class="e-grid-equal"> {"Equal height columns"}</label>
+			</div>
+			<div class="e-col-20" style="text-align: right">
+				<a href="#" class="e-grid-cancel-link">{"Cancel"}</a>
 			</div>
 		</div>
 	</div>

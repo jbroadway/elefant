@@ -71,15 +71,15 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	display: none;
 }
 
-button.e-grid-add-button {
+.e-grid-add-button {
 	margin-bottom: 1em;
-	background-color: #e5e5e5;
+	margin-left: 0.5em;
+	margin-top: 0.5em;
 }
 
 button.e-grid-button {
 	display: inline-block;
-	margin-left: 0.5em;
-	margin-top: 0.5em;
+	margin: 0;
     font-size: 12px;
 	border: 1px solid #ddd;
     background: #e5e5e5;
