@@ -48,7 +48,7 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 .e-grid-add .e-row,
 .e-grid-add .e-row-variable {
 	padding: 5px 10px 5px 10px;
-	border: 1px solid #bbb;
+	border: 1px solid #999;
 }
 
 .e-grid-col {
@@ -130,10 +130,12 @@ button.e-grid-button:hover {
 	background-position-y: -66px;
 }
 
-.e-grid-icon-highlighted {
-	background-position-y: -66px;
+.e-grid-icon.e-grid-icon-highlighted,
+.e-grid-icon.e-grid-icon-highlighted:hover {
+	background-position-y: -132px;
 }
 
 .e-grid-icon-100 { background-position: 0px 0px; }
 .e-grid-icon-50-50 { background-position: -100px 0px; }
 .e-grid-icon-33-33-33 { background-position: -200px 0px; }
+.e-grid-icon-25-25-25-25 { background-position: -300px 0px; }
