@@ -97,16 +97,11 @@ class Layout {
 	 * Get a list of layout styles and their names. Styles correspond
 	 * to CSS class names which can be assigned to rows of the page grid.
 	 */
-	public static function styles () {
-		$layout = conf ('General', 'default_layout');
+	public static function styles ($layout = false) {
+		$layout = $layout ? $layout : conf ('General', 'default_layout');
 		
 		if ($layout === 'default') {
-			$layouts = self::all ();
-			$out = array ();
-			foreach ($layouts as $layout) {
-				$out[$layout] = ucfirst ($layout);
-			}
-			return $out;
+			return array ('' => __ ('- choose -'));
 		}
 
 		if (file_exists ('layouts/' . $layout . '/elefant.json')) {
