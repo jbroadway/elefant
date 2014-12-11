@@ -137,6 +137,12 @@ button.e-grid-button:hover {
 
 .e-grid-icon-100            { background-position:    0px  0px; }
 .e-grid-icon-50-50          { background-position: -100px  0px; }
+.e-grid-icon-66-33          { background-position: -200px  0px; }
+.e-grid-icon-33-66          { background-position: -300px  0px; }
+.e-grid-icon-75-25          { background-position: -400px  0px; }
+.e-grid-icon-25-75          { background-position: -500px  0px; }
+.e-grid-icon-80-20          { background-position: -600px  0px; }
+.e-grid-icon-20-80          { background-position: -700px  0px; }
 .e-grid-icon-33-33-33       { background-position: -800px  0px; }
 .e-grid-icon-25-50-25       { background-position: -900px  0px; }
 .e-grid-icon-25-25-25-25    { background-position: -1000px 0px; }
