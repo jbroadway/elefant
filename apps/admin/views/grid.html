@@ -12,7 +12,7 @@
 
 <script id="tpl-grid-add" type="text/html">
 	<div class="e-grid-row e-grid-add \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
-		<div class="e-row\{{#if variable}}-variable\{{/if}}">
+		<div class="e-row\{{#unless variable}}-variable\{{/unless}}">
 			<div class="e-col-100 e-grid-options">
 				<b>{"Columns"}:</b><br />
 				<div class="e-grid-options">
@@ -38,13 +38,13 @@
 				\{{/each}}
 				</select>
 			</div>
-			<div class="e-col-25 e-grid-bg-button">
+			<div class="e-col-30 e-grid-bg-button">
 				<button class="e-grid-button">{"Background image"}</button>
 			</div>
-			<div class="e-col-25">
+			<div class="e-col-30">
 				<label><input type="checkbox" class="e-grid-equal"> {"Equal height columns"}</label>
 			</div>
-			<div class="e-col-20" style="text-align: right">
+			<div class="e-col-10" style="text-align: right">
 				<a href="#" class="e-grid-cancel-link">{"Cancel"}</a>
 			</div>
 		</div>
@@ -64,7 +64,6 @@
 <script>
 $(function () {
 	$('.e-grid').grid ({
-		id: '{{id}}',
 		styles: {{styles|json_encode}},
 		api: '{{api}}'
 	});

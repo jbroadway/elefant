@@ -43,7 +43,7 @@ if ($res) {
 	}
 
 	// output the page body
-	echo $this->run ('admin/grid', array ('grid' => $pg->body ())); // error: doesn't work on Page
+	echo $this->run ('admin/grid', array ('grid' => $pg->body ())); // error: doesn't work on Page, must cache Webpage object instead
 	return;
 }*/
 

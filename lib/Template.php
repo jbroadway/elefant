@@ -656,12 +656,19 @@ class Template {
 	 * width is restricted instead of going to the edges of the
 	 * page.
 	 *
+	 * Also marks `e-grid` with an additional `e-grid-fixed` class,
+	 * used by the jquery.grid.js plugin.
+	 *
 	 * Usage as a template filter:
 	 *
 	 *     {{ text|fixed }}
 	 */
 	public static function fixed ($val) {
-		return str_replace ('e-row-variable', 'e-row', $val);
+		return str_replace (
+			array ('class="e-row-variable', 'class="e-grid"'),
+			array ('class="e-row', 'class="e-grid e-grid-fixed"'),
+			$val
+		);
 	}
 
 	/**

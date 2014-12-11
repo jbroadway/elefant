@@ -85,7 +85,7 @@
 					id: $this.data ('id'),
 					row: $this.rows ().length,
 					css_class: '',
-					variable: false,
+					variable: $this.opts.variable,
 					fixed: false,
 					styles: $this.opts.styles
 				})
@@ -117,6 +117,7 @@
 		grid: function (options) {
 			var defaults = {
 				id: '',
+				variable: true,
 				styles: {},
 				api: '/admin/grid/api'
 			};
@@ -140,6 +141,8 @@
 				var $this = $(this);
 				
 				$this.opts = options;
+				$this.opts.id = $this.data ('id');
+				$this.opts.variable = $this.hasClass ('e-grid-fixed');
 				$this.rows = $.proxy (get_rows, $this);
 
 				// Create and connect 'Add row' button
