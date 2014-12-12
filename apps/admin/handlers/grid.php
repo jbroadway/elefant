@@ -52,9 +52,14 @@ $grid = (isset ($data['grid']) && is_object ($data['grid'])) ? $data['grid'] : n
 $api = isset ($data['api']) ? $data['api'] : '/admin/grid/api';
 
 echo $this->run ('admin/util/minimal-grid');
-echo $this->run ('admin/util/fontawesome');
+$page->add_style ('/apps/admin/css/grid.css');
 
 if (User::require_acl ('admin', 'admin/edit')) {
+	echo $this->run ('admin/util/fontawesome');
+	echo $this->run ('admin/util/dynamicobjects');
+	echo $this->run ('admin/util/wysiwyg');
+	echo $this->run ('filemanager/util/browser');
+
 	$page->add_script ('apps/admin/js/handlebars-v2.0.0.js');
 	$page->add_script ('apps/admin/js/velocity.min.js');
 	$page->add_script ('apps/admin/js/velocity.ui.js');

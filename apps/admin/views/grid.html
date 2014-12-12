@@ -13,39 +13,52 @@
 <script id="tpl-grid-add" type="text/html">
 	<div class="e-grid-row e-grid-add \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
 		<div class="e-row\{{#unless variable}}-variable\{{/unless}}">
-			<div class="e-col-100 e-grid-options">
-				<b>{"Columns"}:</b><br />
+			<div class="e-col-50 e-no-padding e-grid-toggle">
+				<a href="#" class="e-toggle-active" data-tab="add-columns">{"Columns"}</a><a href="#" data-tab="add-styles">{"Styles"}</a>
+			</div>
+			<div class="e-col-50 e-no-padding e-grid-right">
+				<button class="e-grid-button e-grid-add-row-button">{"Add"}</button>
+				&nbsp;
+				<a href="#" class="e-grid-link e-grid-cancel-link">{"Cancel"}</a>
+			</div>
+		</div>
+		<div class="e-row\{{#unless variable}}-variable\{{/unless}} e-grid-tabs">		
+			<div class="e-col-100 e-no-padding e-grid-tab e-tab-add-columns">
 				<div class="e-grid-options">
-					<div class="e-grid-icon e-grid-icon-100"></div>
-					<div class="e-grid-icon e-grid-icon-50-50"></div>
-					<div class="e-grid-icon e-grid-icon-66-33"></div>
-					<div class="e-grid-icon e-grid-icon-33-66"></div>
-					<div class="e-grid-icon e-grid-icon-75-25"></div>
-					<div class="e-grid-icon e-grid-icon-25-75"></div>
-					<div class="e-grid-icon e-grid-icon-80-20"></div>
-					<div class="e-grid-icon e-grid-icon-20-80"></div>
-					<div class="e-grid-icon e-grid-icon-33-33-33"></div>
-					<div class="e-grid-icon e-grid-icon-25-50-25"></div>
-					<div class="e-grid-icon e-grid-icon-25-25-25-25"></div>
-					<div class="e-grid-icon e-grid-icon-20-20-20-20-20"></div>
+					<div class="e-grid-icon e-grid-icon-100 e-grid-icon-highlighted" data-units="100"></div>
+					<div class="e-grid-icon e-grid-icon-50-50" data-units="50,50"></div>
+					<div class="e-grid-icon e-grid-icon-66-33" data-units="66,33"></div>
+					<div class="e-grid-icon e-grid-icon-33-66" data-units="66,33"></div>
+					<div class="e-grid-icon e-grid-icon-75-25" data-units="75,25"></div>
+					<div class="e-grid-icon e-grid-icon-25-75" data-units="25,75"></div>
+					<div class="e-grid-icon e-grid-icon-80-20" data-units="80,20"></div>
+					<div class="e-grid-icon e-grid-icon-20-80" data-units="20,80"></div>
+					<div class="e-grid-icon e-grid-icon-33-33-33" data-units="33,33,33"></div>
+					<div class="e-grid-icon e-grid-icon-25-50-25" data-units="25,50,25"></div>
+					<div class="e-grid-icon e-grid-icon-25-25-25-25" data-units="25,25,25,25"></div>
+					<div class="e-grid-icon e-grid-icon-20-20-20-20-20" data-units="20,20,20,20,20"></div>
 				</div>
 			</div>
-			<div class="e-col-30">
-				<b>{"Style"}:</b>
-				<select class="e-grid-select-style">
-				\{{#each styles}}
-					<option value="\{{css_class}}">\{{name}}</option>
-				\{{/each}}
-				</select>
-			</div>
-			<div class="e-col-30 e-grid-bg-button">
-				<button class="e-grid-button">{"Background image"}</button>
-			</div>
-			<div class="e-col-30">
-				<label><input type="checkbox" class="e-grid-equal"> {"Equal height columns"}</label>
-			</div>
-			<div class="e-col-10" style="text-align: right">
-				<a href="#" class="e-grid-cancel-link">{"Cancel"}</a>
+			<div class="e-col-100 e-no-padding e-grid-tab e-tab-add-styles">
+				<div class="e-col-50 e-no-padding">
+					{"Background color"}:
+					<span class="e-grid-select">
+						<select class="e-grid-select-style">
+						\{{#each styles}}
+							<option value="\{{css_class}}">\{{name}}</option>
+						\{{/each}}
+						</select>
+						<i class="fa fa-lg fa-caret-down e-grid-select-arrow"></i>
+					</span>
+					&nbsp;
+					<button class="e-grid-button e-grid-set-bg-button">{"Set background image"}</button>
+					&nbsp;
+					<a href="#" class="e-grid-link e-grid-clear-bg-link">{"Clear"}</a>
+					<br /><br />
+					<label><input type="checkbox" value="yes" class="e-grid-toggle-inset"> {"Drop shadow"}</label>
+					<br /><br />
+					Height: <input type="text" class="e-grid-set-height" value="250" /> px
+				</div>
 			</div>
 		</div>
 	</div>
@@ -65,7 +78,10 @@
 $(function () {
 	$('.e-grid').grid ({
 		styles: {{styles|json_encode}},
-		api: '{{api}}'
+		api: '{{api}}',
+		i18n: {
+			choose_bg: '{"Choose a background image"}'
+		}
 	});
 });
 </script>
