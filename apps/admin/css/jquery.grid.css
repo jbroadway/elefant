@@ -44,6 +44,9 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 .e-grid-edit {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 13px;
+	font-weight: normal;
 }
 
 .e-grid-edit .e-row,
@@ -102,11 +105,19 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 
 .is-preview .e-grid-col:hover {
 	cursor: default;
+	border: inherit;
+	background: none;
 }
 
 .is-preview .e-grid-add,
 .is-preview button.e-grid-button {
 	display: none !important;
+}
+
+.is-preview .e-col-edit,
+.is-preview .e-grid-col:hover .e-col-edit,
+.is-preview .e-grid-col:hover .e-col-edit:hover {
+	opacity: 0;
 }
 
 .e-grid-add-button {
@@ -205,6 +216,17 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 
 a.e-grid-link {
 	outline: none;
+}
+
+.e-grid-edit input[type=text] {
+	font-size: 12px;
+	border: 1px solid #999;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    padding: 2px 4px;
+    text-shadow: 0 1px 0 #fff;
+    outline: none;
 }
 
 span.e-grid-select {

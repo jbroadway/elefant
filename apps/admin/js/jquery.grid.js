@@ -63,6 +63,18 @@
 			);
 	}
 
+	// Cancel edit row form and restore previous content.
+	// Attach via $.proxy (cancel_edit_row, $this);
+	function cancel_edit_row (e) {
+		e.preventDefault ();
+		
+		var $this = this,
+			$cancel = $(e.target),
+			$row = $cancel.closest ('.e-grid-row');
+		
+		$row.html ($row.data ('_prev'));
+	}
+
 	// Remove a row from the grid.
 	// Attach via $.proxy (remove_row, $this);
 	function remove_row (e) {
@@ -201,10 +213,10 @@
 
 		if (checked) {
 			row.equal_heights = true;
-			$row.data ('_row', row).addClass ('e-row-equal');
+			$row.data ('_row', row).find ('.e-row*').addClass ('e-row-equal');
 		} else {
 			row.equal_heights = false;
-			$row.data ('_row', row).removeClass ('e-row-equal');
+			$row.data ('_row', row).find ('.e-row*').removeClass ('e-row-equal');
 		}
 	}
 	
@@ -350,6 +362,114 @@
 			.html (tpl.row (row));
 	}
 	
+	// Create edit row form.
+	// Attach via $.proxy (edit_row, $this)
+	function edit_row_form (e) {
+		e.preventDefault ();
+
+		var $this = this,
+			$add = $(e.target),
+			row = $.extend (base_row, {
+				id: $this.data ('id'),
+				row: $this.data ('row'),
+				css_class: '',
+				variable: $this.opts.variable,
+				fixed: $this.hasClass ('e-fixed'),
+				inset: $this.hasClass ('e-inset'),
+				height: $this.css ('height'),
+				styles: $this.opts.styles,
+				units: get_units ($this)
+			}),
+			$row = $add.closest ('.e-grid-row');
+			$row.data ('_row', row); // stores our data model
+			$row.data ('_prev', $row.html ()); // cached for cancel
+
+		// show/hide unit options
+		$row.find ('.e-grid-icon').css ({display: 'none'});
+		for (var u in $this.opts.units) {
+			$row.find ('.e-grid-icon-' + $this.opts.units[u].replace (/,/g, '-')).css ({display: 'inline-block'});
+		}
+		
+		$row.find ('.e-grid-toggle a')
+			.click (toggle_active_tab);
+		
+		$row.find ('.e-grid-icon')
+			.click ($.proxy (select_grid, $this));
+		$row.find ('.e-grid-cancel-link')
+			.click ($.proxy (cancel_edit_row, $this));
+		$row.find ('.e-grid-edit-row-button')
+			.click ($.proxy (edit_row, $this));
+		$row.find ('.e-grid-select-style')
+			.change ($.proxy (select_style, $this));
+		$row.find ('button.e-grid-set-bg-button')
+			.click ($.proxy (background_chooser, $this));
+		$row.find ('.e-grid-clear-bg-link')
+			.click ($.proxy (background_clear, $this));
+		$row.find ('.e-grid-set-height')
+			.change ($.proxy (set_height, $this));
+		$row.find ('.e-grid-toggle-equal-heights')
+			.change ($.proxy (toggle_equal_heights, $this));
+		$row.find ('.e-grid-toggle-fixed')
+			.change ($.proxy (toggle_fixed, $this));
+		$row.find ('.e-grid-toggle-inset')
+			.change ($.proxy (toggle_inset, $this));
+	}
+
+	// Update row from edit row form.
+	// Attach via $.proxy (add_row, $this);
+	function edit_row (e) {
+		e.preventDefault ();
+		
+		var $this = this,
+			$row = $(e.target).closest ('.e-grid-row'),
+			row = $row.data ('_row');
+		
+		$row.removeClass ('e-grid-edit')
+			.html (tpl.row (row));
+	}
+
+	// Edit the contents of a cell.
+	// Attach via $.proxy (edit_col, $this);	
+	function edit_col (e) {
+		e.preventDefault ();
+		console.log ('edit_col');
+		
+		var $this = this,
+			$col = $(e.target),
+			col = $col.data ('col'),
+			$row = $col.closest ('.e-grid-row'),
+			row = $row.data ('_row');
+
+		console.log (col);
+		console.log (row);
+	}
+	
+	// Add a photo to the cell.
+	// Attach via $.proxy (edit_photo, $this);
+	function edit_photo (e) {
+		e.preventDefault ();
+		e.stopPropagation ();
+		console.log ('edit_photo');
+
+		var $this = this,
+			$col = $(e.target).hasClass ('e-grid-col')
+				? $(e.target)
+				: $(e.target).closest ('.e-grid-col'),
+			col = $col.data ('col'),
+			$row = $col.closest ('.e-grid-row'),
+			row = $row.data ('_row');
+
+		$.filebrowser ({
+			allowed: ['jpg', 'jpeg', 'png', 'gif'],
+			title: i18n.choose_bg,
+			thumbs: true,
+			callback: function (file) {
+				// TODO: Replace with filemanager/photo embed
+				$col.html ('<img src="' + file + '" />');
+			}
+		});
+	}
+	
 	// Fetch all rows.
 	// Attach via $.proxy (get_rows, $this)
 	function get_rows () {
@@ -361,6 +481,26 @@
 	// Fetch row for an element within it.
 	function find_row (el) {
 		return $(el).closest ('.e-grid-row');
+	}
+	
+	// Fetch all columns from a row.
+	function get_cols ($row) {
+		return $row.find ('.e-col-*');
+	}
+	
+	// Build the units string from columns.
+	function get_units ($row) {
+		var $cols = get_cols ($row),
+			units = '',
+			sep = '';
+		
+		for (var i in $cols) {
+			var unit = $cols[i].attr ('class').match (/e-col-([0-9]+)/)[1];
+			units += sep + unit;
+			sep = ',';
+		}
+		
+		return units;
 	}
 
 	// Start of jQuery.grid plugin
@@ -403,6 +543,9 @@
 				$this.rows = $.proxy (get_rows, $this);
 				
 				$this.find ('.e-grid-col-empty').html (tpl.icons ({}));
+
+				$this.on ('click', '.e-grid-col', $.proxy (edit_col, $this));
+				$this.on ('click', '.e-col-edit-photo', $.proxy (edit_photo, $this));
 
 				// Create and connect 'Add row' button
 				$this.append (tpl.add_button ({ id: $this.opts.id }));

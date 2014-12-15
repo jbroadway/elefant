@@ -99,7 +99,9 @@ foreach ($grid as $r => $row) {
 	}
 	echo '" id="e-row-' . $id . '-' . $r . '" data-id="' . $id . '" data-row="' . $r . '"';
 	if ($row->bg_image !== '') {
-		echo ' style="background: url(\'' . Template::sanitize ($row->bg_image) . '\') no-repeat center center fixed;'
+		echo ' style="background: url(\'' . Template::sanitize ($row->bg_image) . '\');'
+			. ' background-repeat: no-repeat;'
+			. ' background-position: center top;'
 			. ' -webkit-background-size: cover;'
 			. ' -moz-background-size: cover;'
 			. ' -o-background-size: cover;'
