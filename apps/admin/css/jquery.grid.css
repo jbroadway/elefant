@@ -1,7 +1,7 @@
 /**
  * Move page edit buttons to top right below toolbar.
  */
-p.admin-options {
+p.admin-options-page {
 	position: fixed;
 	top: 50px;
 	right: 20px;
@@ -75,6 +75,26 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	background-color: rgba(119,127,135,0.15);
 	cursor: pointer;
 }
+
+.e-grid-col-empty {
+	min-height: 160px;
+	text-align: center;
+	padding-top: 15px;
+}
+
+	.e-col-edit {
+		color: #93278f;
+		opacity: 0.4;
+	}
+
+	.e-grid-col:hover .e-col-edit {
+		opacity: 1;
+	}
+	
+	.e-grid-col:hover .e-col-edit:hover {
+		color: #B347AF;
+		cursor: pointer;
+	}
 
 .is-preview .e-grid-col {
 	border: inherit;
@@ -216,7 +236,7 @@ span.e-grid-select i.e-grid-select-arrow {
 	position: absolute;
 	top: 6px;
 	right: 7px;
-	z-index: 10000;
+	z-index: 500;
 	pointer-events: none;
 	color: #333;
 }

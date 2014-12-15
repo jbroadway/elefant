@@ -17,11 +17,30 @@
 			row:			'#tpl-grid-row',
 			add:			'#tpl-grid-add',
 			edit:			'#tpl-grid-edit',
+			icons:			'#tpl-grid-icons',
 			add_button:		'#tpl-grid-add-button'
 		}
 		i18n = {
 			choose_bg: 'Choose a background image'
-		};
+		},
+		base_row = {
+			css_class: '',
+			bg_image: '',
+			variable: true,
+			fixed: false,
+			inset: false,
+			equal_height: false,
+			height: '',
+			units: '100',
+			id: '',
+			row: 0
+		},
+		base_col = {
+			col: 0,
+			unit: '100',
+			content: ''
+		},
+		rows = [];
 
 	// Cancel add row form.
 	// Attach via $.proxy (cancel_row, $this);
@@ -71,7 +90,12 @@
 		e.preventDefault ();
 		
 		var $this = this,
-			$choice = $(e.target);
+			$choice = $(e.target),
+			$row = $choice.closest ('.e-grid-row'),
+			row = $row.data ('_row');
+		
+		row.units = $choice.data ('units');
+		$row.data ('_row', row);
 		
 		$choice.siblings ('.e-grid-icon').removeClass ('e-grid-icon-highlighted');		
 		$choice.addClass ('e-grid-icon-highlighted');
@@ -85,7 +109,11 @@
 		var $this = this,
 			$select = $(e.target),
 			$row = $select.closest ('.e-grid-row'),
+			row = $row.data ('_row'),
 			css_style = $select.find ('option:selected').val ();
+
+		row.css_class = css_style;
+		$row.data ('_row', row);
 
 		// clear existing styles
 		for (var s in $this.opts.styles) {
@@ -103,22 +131,25 @@
 	function background_chooser (e) {
 		e.preventDefault ();
 		
-		var $row = $(e.target).closest ('.e-grid-row');
+		var $row = $(e.target).closest ('.e-grid-row'),
+			row = $row.data ('_row');
 		
 		$.filebrowser ({
 			allowed: ['jpg', 'jpeg', 'png', 'gif'],
 			title: i18n.choose_bg,
 			thumbs: true,
 			callback: function (file) {
-				$row.css ({
-					'background-image': 'url(\'' + file + '\')',
-					'background-repeat': 'no-repeat',
-					'background-position': 'center top',
-					'-webkit-background-size': 'cover',
-					'-moz-background-size': 'cover',
-					'-o-background-size': 'cover',
-					'background-size': 'cover'
-				});
+				row.bg_image = file;
+				$row.data ('_row', row)
+					.css ({
+						'background-image': 'url(\'' + file + '\')',
+						'background-repeat': 'no-repeat',
+						'background-position': 'center top',
+						'-webkit-background-size': 'cover',
+						'-moz-background-size': 'cover',
+						'-o-background-size': 'cover',
+						'background-size': 'cover'
+					});
 			}
 		});
 	}
@@ -128,7 +159,11 @@
 	function background_clear (e) {
 		e.preventDefault ();
 		
-		var $row = $(e.target).closest ('.e-grid-row');
+		var $row = $(e.target).closest ('.e-grid-row'),
+			row = $row.data ('_row');
+
+		row.bg_image = '';
+		$row.data ('_row', row);
 		
 		$row.removeAttr ('style');
 	}
@@ -140,12 +175,36 @@
 		
 		var $target = $(e.target),
 			height = $target.val (),
-			$row = $(e.target).closest ('.e-grid-row');
+			$row = $(e.target).closest ('.e-grid-row'),
+			row = $row.data ('_row');
 
 		if (height !== '') {
-			$row.css ({height: $target.val () + 'px', 'min-height': $target.val () + 'px'});
+			row.height = height;
+			$row.data ('_row', row)
+				.css ({height: height + 'px', 'min-height': height + 'px'});
 		} else {
-			$row.css ({height: '', 'min-height': ''});
+			row.height = '';
+			$row.data ('_row', row)
+				.css ({height: '', 'min-height': ''});
+		}
+	}
+	
+	// Set column heights to be equal
+	// Attach via $.proxy (toggle_equal_heights, $this)
+	function toggle_equal_heights (e) {
+		e.preventDefault ();
+		
+		var $target = $(e.target),
+			checked = $target.is (':checked'),
+			$row = $(e.target).closest ('.e-grid-row'),
+			row = $row.data ('_row');
+
+		if (checked) {
+			row.equal_heights = true;
+			$row.data ('_row', row).addClass ('e-row-equal');
+		} else {
+			row.equal_heights = false;
+			$row.data ('_row', row).removeClass ('e-row-equal');
 		}
 	}
 	
@@ -156,12 +215,17 @@
 		
 		var $target = $(e.target),
 			checked = $target.is (':checked'),
-			$row = $(e.target).closest ('.e-grid-row');
+			$row = $(e.target).closest ('.e-grid-row'),
+			row = $row.data ('_row');
 
 		if (checked) {
-			$row.removeClass ('e-no-fixed').addClass ('e-fixed');
+			row.fixed = true;
+			$row.data ('_row', row)
+				.removeClass ('e-no-fixed').addClass ('e-fixed');
 		} else {
-			$row.removeClass ('e-fixed').addClass ('e-no-fixed');
+			row.fixed = false;
+			$row.data ('_row', row)
+				.removeClass ('e-fixed').addClass ('e-no-fixed');
 		}
 	}
 	
@@ -172,12 +236,17 @@
 		
 		var $target = $(e.target),
 			checked = $target.is (':checked'),
-			$row = $(e.target).closest ('.e-grid-row');
+			$row = $(e.target).closest ('.e-grid-row'),
+			row = $row.data ('_row');
 
 		if (checked) {
-			$row.removeClass ('e-no-inset').addClass ('e-inset');
+			row.inset = true;
+			$row.data ('_row', row)
+				.removeClass ('e-no-inset').addClass ('e-inset');
 		} else {
-			$row.removeClass ('e-inset').addClass ('e-no-inset');
+			row.inset = false;
+			$row.data ('_row', row)
+				.removeClass ('e-inset').addClass ('e-no-inset');
 		}
 	}
 	
@@ -206,24 +275,28 @@
 
 		var $this = this,
 			$add = $(e.target),
-			$row = $(
-				tpl.add ({
-					id: $this.data ('id'),
-					row: $this.rows ().length,
-					css_class: '',
-					variable: $this.opts.variable,
-					fixed: false,
-					styles: $this.opts.styles
-				})
-			);
-		
+			row = $.extend (base_row, {
+				id: $this.data ('id'),
+				row: $this.rows ().length,
+				css_class: '',
+				variable: $this.opts.variable,
+				fixed: false,
+				inset: false,
+				height: '',
+				styles: $this.opts.styles,
+				units: '100'
+			}),
+			$row = $(tpl.add (row));
+
 		// show/hide unit options
 		$row.find ('.e-grid-icon').css ({display: 'none'});
 		for (var u in $this.opts.units) {
 			$row.find ('.e-grid-icon-' + $this.opts.units[u].replace (/,/g, '-')).css ({display: 'inline-block'});
 		}
 		
-		$row.insertBefore ($add.closest ('.e-grid-add-button')).velocity ('slideDown', 500);
+		$row.insertBefore ($add.closest ('.e-grid-add-button'))
+			.velocity ('slideDown', 500)
+			.data ('_row', row);
 
 		$('html,body').animate ({
 			scrollTop: $row.offset ().top
@@ -236,6 +309,8 @@
 			.click ($.proxy (select_grid, $this));
 		$row.find ('.e-grid-cancel-link')
 			.click ($.proxy (cancel_row, $this));
+		$row.find ('.e-grid-add-row-button')
+			.click ($.proxy (add_row, $this));
 		$row.find ('.e-grid-select-style')
 			.change ($.proxy (select_style, $this));
 		$row.find ('button.e-grid-set-bg-button')
@@ -244,10 +319,35 @@
 			.click ($.proxy (background_clear, $this));
 		$row.find ('.e-grid-set-height')
 			.change ($.proxy (set_height, $this));
+		$row.find ('.e-grid-toggle-equal-heights')
+			.change ($.proxy (toggle_equal_heights, $this));
 		$row.find ('.e-grid-toggle-fixed')
 			.change ($.proxy (toggle_fixed, $this));
 		$row.find ('.e-grid-toggle-inset')
 			.change ($.proxy (toggle_inset, $this));
+	}
+
+	// Add row from add row form.
+	// Attach via $.proxy (add_row, $this);
+	function add_row (e) {
+		e.preventDefault ();
+		
+		var $this = this,
+			$row = $(e.target).closest ('.e-grid-row'),
+			row = $row.data ('_row'),
+			units = row.units.split (',');
+		
+		row.cols = [];
+		for (var i = 0; i < units.length; i++) {
+			row.cols.push ({
+				unit: units[i],
+				content: tpl.icons ({}),
+				empty: true
+			});
+		}
+		
+		$row.removeClass ('e-grid-edit')
+			.html (tpl.row (row));
 	}
 	
 	// Fetch all rows.
@@ -299,8 +399,10 @@
 				
 				$this.opts = options;
 				$this.opts.id = $this.data ('id');
-				$this.opts.variable = $this.hasClass ('e-grid-fixed');
+				$this.opts.variable = ! $this.hasClass ('e-grid-fixed');
 				$this.rows = $.proxy (get_rows, $this);
+				
+				$this.find ('.e-grid-col-empty').html (tpl.icons ({}));
 
 				// Create and connect 'Add row' button
 				$this.append (tpl.add_button ({ id: $this.opts.id }));

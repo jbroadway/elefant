@@ -146,13 +146,16 @@ class Grid implements \Iterator {
 	/**
 	 * Add a row to the end of the grid.
 	 */
-	public function add_row ($units = '100', $css_class = '', $equal_height = false, $bg_image = '', $cols = array ()) {
+	public function add_row ($units = '100', $css_class = '', $equal_height = false, $bg_image = '', $fixed = false, $inset = false, $height = '', $cols = array ()) {
 		$this->grid[] = (object) array (
 			'units' => $units,
 			'css_class' => $css_class,
 			'equal_height' => $equal_height,
 			'bg_image' => $bg_image,
-			'cols' => $cols
+			'cols' => $cols,
+			'fixed' => $fixed,
+			'inset' => $inset,
+			'height' => $height
 		);
 	}
 

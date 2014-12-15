@@ -1,3 +1,3 @@
-<p class="admin-options">
+<p class="admin-options admin-options-page">
 	{% if User::require_acl ('admin/edit', 'admin/add') %}<a href="/admin/add" title="{"Add Page"}" class="editable-add" data-trigger="a"></a>{% end %}{% if locked %}<a href="javascript:void(0)" title="{"Editing Locked"}" class="editable-lock"></a>{% else %}{% if User::require_acl ('admin/edit') %}<a href="/admin/edit?page={{ id }}" title="{"Edit Properties"}" class="editable-edit" data-trigger="e"></a>{% end %}{% if User::require_acl ('admin/versions') %}<a href="/admin/versions?type=Webpage&id={{ id }}" title="{"Versions"}" class="editable-versions" data-trigger="v"></a>{% end %}{% if User::require_acl ('admin/delete') %}<a href="/admin/delete" data-page="{{ id }}" title="{"Delete Page"}" onclick="return $.confirm_and_post (this, '{"Are you sure you want to delete the current page?"}');" class="editable-delete" data-trigger="d"></a>{% end %}{% end %}
 </p>

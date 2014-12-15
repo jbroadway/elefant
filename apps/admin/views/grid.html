@@ -1,18 +1,36 @@
 <script id="tpl-grid-row" type="text/html">
-	<div class="e-grid-row" \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
-		<div class="e-row\{{#if variable}}-variable\{{/if}}\{{#if fixed}} e-row-fixed\{{/if}}">
-		\{{#each cols}}
-			<div class="e-col-\{{unit}} e-grid-col">
-				\{{content}}
-			</div>
-		\{{/each}}
+	<div class="e-row\{{#if variable}}-variable\{{/if}}\{{#if equal_heights}} e-row-equal\{{/if}}">
+	\{{#each cols}}
+		<div class="e-col-\{{unit}} e-grid-col\{{#if empty}} e-grid-col-empty\{{/if}}">
+			\{{{content}}}
 		</div>
+	\{{/each}}
 	</div>
+</script>
+
+<script id="tpl-grid-icons" type="text/html">
+		<span class="fa-stack fa-3x e-col-edit" data-type="html" title="{"Add text"}">
+			<i class="fa fa-square-o fa-stack-2x"></i>
+			<i class="fa fa-pencil fa-stack-1x"></i>
+		</span>
+		<span class="fa-stack fa-3x e-col-edit" data-type="photo" title="{"Add photo"}">
+			<i class="fa fa-square-o fa-stack-2x"></i>
+			<i class="fa fa-picture-o fa-stack-1x"></i>
+		</span>
+		<br />
+		<span class="fa-stack fa-3x e-col-edit" data-type="video" title="{"Add YouTube video"}">
+			<i class="fa fa-square-o fa-stack-2x"></i>
+			<i class="fa fa-youtube-play fa-stack-1x"></i>
+		</span>
+		<span class="fa-stack fa-3x e-col-edit" data-type="embed" title="{"Add dynamic object"}">
+			<i class="fa fa-square-o fa-stack-2x"></i>
+			<i class="fa fa-cog fa-stack-1x"></i>
+		</span>
 </script>
 
 <script id="tpl-grid-add" type="text/html">
 	<div class="e-grid-row e-grid-edit \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
-		<div class="e-row\{{#unless variable}}-variable\{{/unless}}">
+		<div class="e-row\{{#if variable}}-variable\{{/if}}">
 			<div class="e-col-50 e-no-padding e-grid-toggle">
 				<a href="#" class="e-toggle-active" data-tab="add-columns">{"Columns"}</a><a href="#" data-tab="add-styles">{"Style"}</a>
 			</div>
@@ -22,7 +40,7 @@
 				<a href="#" class="e-grid-link e-grid-cancel-link">{"Cancel"}</a>
 			</div>
 		</div>
-		<div class="e-row\{{#unless variable}}-variable\{{/unless}} e-grid-tabs">		
+		<div class="e-row\{{#if variable}}-variable\{{/if}} e-grid-tabs">		
 			<div class="e-col-100 e-no-padding e-grid-tab e-tab-add-columns">
 				<div class="e-grid-options">
 					<div class="e-grid-icon e-grid-icon-100 e-grid-icon-highlighted" data-units="100"></div>
@@ -56,6 +74,8 @@
 				<br /><br />
 				{"Set height"}: <input type="text" class="e-grid-set-height" value="" /> px
 				<br /><br />
+				<label><input type="checkbox" value="yes" class="e-grid-toggle-equal-heights"> {"Equal column heights"}</label>
+				<br /><br />
 				<label><input type="checkbox" value="yes" class="e-grid-toggle-fixed"> {"Fixed background position"}</label>
 				<br /><br />
 				<label><input type="checkbox" value="yes" class="e-grid-toggle-inset"> {"Drop shadow"}</label>
@@ -68,7 +88,7 @@
 
 <script id="tpl-grid-edit" type="text/html">
 	<div class="e-grid-row e-grid-edit \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
-		<div class="e-row\{{#unless variable}}-variable\{{/unless}}">
+		<div class="e-row\{{#if variable}}-variable\{{/if}}">
 			<div class="e-col-50 e-no-padding e-grid-toggle">
 				<a href="#" class="e-toggle-active" data-tab="edit-columns">{"Columns"}</a><a href="#" data-tab="edit-styles">{"Style"}</a>
 			</div>
@@ -78,7 +98,7 @@
 				<a href="#" class="e-grid-link e-grid-cancel-update-link">{"Cancel"}</a>
 			</div>
 		</div>
-		<div class="e-row\{{#unless variable}}-variable\{{/unless}} e-grid-tabs">		
+		<div class="e-row\{{#if variable}}-variable\{{/if}} e-grid-tabs">		
 			<div class="e-col-100 e-no-padding e-grid-tab e-tab-edit-columns">
 				<div class="e-grid-options">
 					<div class="e-grid-icon e-grid-icon-100" data-units="100"></div>

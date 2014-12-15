@@ -45,6 +45,7 @@
  * - row          - The row number starting from zero
  * - col          - The column number starting from zero
  * - content      - The HTML contents of a column
+ * - inset        - Whether to add `e-row-inset` class
  */
 
 $id = (count ($this->params) > 0) ? $this->params[0] : (isset ($data['id']) ? $data['id'] : $page->id);
@@ -52,7 +53,6 @@ $grid = (isset ($data['grid']) && is_object ($data['grid'])) ? $data['grid'] : n
 $api = isset ($data['api']) ? $data['api'] : '/admin/grid/api';
 
 echo $this->run ('admin/util/minimal-grid');
-$page->add_style ('/apps/admin/css/grid.css');
 
 if (User::require_acl ('admin', 'admin/edit')) {
 	echo $this->run ('admin/util/fontawesome');
@@ -85,6 +85,18 @@ foreach ($grid as $r => $row) {
 	if ($row->css_class !== '') {
 		echo ' ' . $row->css_class;
 	}
+	if ($row->fixed) {
+		echo ' e-fixed';
+	}
+	if ($row->equal_heights) {
+		echo ' e-row-equal';
+	}
+	if ($row->inset) {
+		echo ' e-inset';
+	}
+	if ($row->height !== '') {
+		echo '" style="height: ' . $row->height . 'px';
+	}
 	echo '" id="e-row-' . $id . '-' . $r . '" data-id="' . $id . '" data-row="' . $r . '"';
 	if ($row->bg_image !== '') {
 		echo ' style="background: url(\'' . Template::sanitize ($row->bg_image) . '\') no-repeat center center fixed;'
@@ -106,8 +118,12 @@ foreach ($grid as $r => $row) {
 	
 	foreach ($row->cols as $c => $col) {
 		$col_id = 'e-grid-' . $id . '-' . $r . '-' . $c;
-		echo "<div class=\"e-col-{$units[$c]} e-grid-col\" id=\"{$col_id}\" data-id=\"{$id}\" data-row=\"{$r}\" data-col=\"{$c}\">\n";
-		echo $tpl->run_includes ($col);
+		$empty = (strlen ($col) === 0) ? true : false;
+		$empty_class = $empty ? ' e-grid-col-empty' : '';
+		echo "<div class=\"e-col-{$units[$c]} e-grid-col{$empty_class}\" id=\"{$col_id}\" data-id=\"{$id}\" data-row=\"{$r}\" data-col=\"{$c}\">\n";
+		if (! $empty) {
+			echo $tpl->run_includes ($col);
+		}
 		echo "</div>\n";
 	}
 	

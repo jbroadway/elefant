@@ -269,6 +269,7 @@ p.admin-options {
 	font-size: 13px;
 	font-family: Helvetica, Arial, sans-serif;
 	font-weight: normal;
+	z-index: 1000;
 }
 
 #preview-bar a,
