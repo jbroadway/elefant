@@ -38,19 +38,29 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 .e-grid-row {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
+	position: relative;
 }
 
-.e-grid-add {
+.e-grid-edit {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
-	min-height: 250px;
 }
 
-.e-grid-add .e-row,
-.e-grid-add .e-row-variable {
-	padding: 5px 10px 5px 10px;
-	/*border: 1px solid #999;*/
+.e-grid-edit .e-row,
+.e-grid-edit .e-row-variable {
+	padding: 15px;
+	background-color: rgba(255,255,255,0.5);
+	color: #000;
 }
+
+	.e-grid-edit a {
+		color: #93278f;
+		text-decoration: none;
+	}
+
+	.e-grid-edit a:hover {
+		color: #B347AF;
+	}
 
 .e-grid-col {
 	-webkit-box-sizing: border-box;

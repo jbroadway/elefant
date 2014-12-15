@@ -11,10 +11,10 @@
 </script>
 
 <script id="tpl-grid-add" type="text/html">
-	<div class="e-grid-row e-grid-add \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
+	<div class="e-grid-row e-grid-edit \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
 		<div class="e-row\{{#unless variable}}-variable\{{/unless}}">
 			<div class="e-col-50 e-no-padding e-grid-toggle">
-				<a href="#" class="e-toggle-active" data-tab="add-columns">{"Columns"}</a><a href="#" data-tab="add-styles">{"Styles"}</a>
+				<a href="#" class="e-toggle-active" data-tab="add-columns">{"Columns"}</a><a href="#" data-tab="add-styles">{"Style"}</a>
 			</div>
 			<div class="e-col-50 e-no-padding e-grid-right">
 				<button class="e-grid-button e-grid-add-row-button">{"Add"}</button>
@@ -54,11 +54,67 @@
 				&nbsp;
 				<a href="#" class="e-grid-link e-grid-clear-bg-link">{"Clear"}</a>
 				<br /><br />
+				{"Set height"}: <input type="text" class="e-grid-set-height" value="" /> px
+				<br /><br />
 				<label><input type="checkbox" value="yes" class="e-grid-toggle-fixed"> {"Fixed background position"}</label>
 				<br /><br />
 				<label><input type="checkbox" value="yes" class="e-grid-toggle-inset"> {"Drop shadow"}</label>
+			</div>
+		</div>
+	</div>
+</script>
+
+
+
+<script id="tpl-grid-edit" type="text/html">
+	<div class="e-grid-row e-grid-edit \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
+		<div class="e-row\{{#unless variable}}-variable\{{/unless}}">
+			<div class="e-col-50 e-no-padding e-grid-toggle">
+				<a href="#" class="e-toggle-active" data-tab="edit-columns">{"Columns"}</a><a href="#" data-tab="edit-styles">{"Style"}</a>
+			</div>
+			<div class="e-col-50 e-no-padding e-grid-right">
+				<button class="e-grid-button e-grid-update-row-button">{"Save"}</button>
+				&nbsp;
+				<a href="#" class="e-grid-link e-grid-cancel-update-link">{"Cancel"}</a>
+			</div>
+		</div>
+		<div class="e-row\{{#unless variable}}-variable\{{/unless}} e-grid-tabs">		
+			<div class="e-col-100 e-no-padding e-grid-tab e-tab-edit-columns">
+				<div class="e-grid-options">
+					<div class="e-grid-icon e-grid-icon-100" data-units="100"></div>
+					<div class="e-grid-icon e-grid-icon-50-50" data-units="50,50"></div>
+					<div class="e-grid-icon e-grid-icon-66-33" data-units="66,33"></div>
+					<div class="e-grid-icon e-grid-icon-33-66" data-units="66,33"></div>
+					<div class="e-grid-icon e-grid-icon-75-25" data-units="75,25"></div>
+					<div class="e-grid-icon e-grid-icon-25-75" data-units="25,75"></div>
+					<div class="e-grid-icon e-grid-icon-80-20" data-units="80,20"></div>
+					<div class="e-grid-icon e-grid-icon-20-80" data-units="20,80"></div>
+					<div class="e-grid-icon e-grid-icon-33-33-33" data-units="33,33,33"></div>
+					<div class="e-grid-icon e-grid-icon-25-50-25" data-units="25,50,25"></div>
+					<div class="e-grid-icon e-grid-icon-25-25-25-25" data-units="25,25,25,25"></div>
+					<div class="e-grid-icon e-grid-icon-20-20-20-20-20" data-units="20,20,20,20,20"></div>
+				</div>
+			</div>
+			<div class="e-col-100 e-no-padding e-grid-tab e-tab-edit-styles">
+				{"Background color"}:
+				<span class="e-grid-select">
+					<select class="e-grid-select-style">
+					\{{#each styles}}
+						<option value="\{{css_class}}">\{{name}}</option>
+					\{{/each}}
+					</select>
+					<i class="fa fa-lg fa-caret-down e-grid-select-arrow"></i>
+				</span>
+				&nbsp;
+				<button class="e-grid-button e-grid-set-bg-button">{"Set background image"}</button>
+				&nbsp;
+				<a href="#" class="e-grid-link e-grid-clear-bg-link">{"Clear"}</a>
 				<br /><br />
-				Height: <input type="text" class="e-grid-set-height" value="250" /> px
+				{"Set height"}: <input type="text" class="e-grid-set-height" value="" /> px
+				<br /><br />
+				<label><input type="checkbox" value="yes" class="e-grid-toggle-fixed"> {"Fixed background position"}</label>
+				<br /><br />
+				<label><input type="checkbox" value="yes" class="e-grid-toggle-inset"> {"Drop shadow"}</label>
 			</div>
 		</div>
 	</div>

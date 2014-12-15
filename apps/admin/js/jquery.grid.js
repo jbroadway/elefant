@@ -16,6 +16,7 @@
 		tpl = {
 			row:			'#tpl-grid-row',
 			add:			'#tpl-grid-add',
+			edit:			'#tpl-grid-edit',
 			add_button:		'#tpl-grid-add-button'
 		}
 		i18n = {
@@ -138,9 +139,14 @@
 		e.preventDefault ();
 		
 		var $target = $(e.target),
+			height = $target.val (),
 			$row = $(e.target).closest ('.e-grid-row');
-		
-		$row.css ({height: $target.val () + 'px', 'min-height': $target.val () + 'px'});
+
+		if (height !== '') {
+			$row.css ({height: $target.val () + 'px', 'min-height': $target.val () + 'px'});
+		} else {
+			$row.css ({height: '', 'min-height': ''});
+		}
 	}
 	
 	// Change the background attachment
