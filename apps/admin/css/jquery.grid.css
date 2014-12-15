@@ -167,7 +167,6 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 .e-grid-tab {
 	display: none;
 	min-height: 162px;
-	height: 162px;
 }
 
 .e-grid-tab:first-child {

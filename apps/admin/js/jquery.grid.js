@@ -42,6 +42,27 @@
 				}
 			);
 	}
+
+	// Remove a row from the grid.
+	// Attach via $.proxy (remove_row, $this);
+	function remove_row (e) {
+		e.preventDefault ();
+		
+		var $this = this,
+			$cancel = $(e.target);
+		
+		$cancel
+			.closest ('.e-grid-row')
+			.velocity (
+				'slideUp',
+				{
+					duration: 500,
+					complete: function () {
+						$(this).remove ();
+					}
+				}
+			);
+	}
 	
 	// Select a grid choice
 	// Attach via $.proxy (select_grid, $this);
@@ -86,6 +107,7 @@
 		$.filebrowser ({
 			allowed: ['jpg', 'jpeg', 'png', 'gif'],
 			title: i18n.choose_bg,
+			thumbs: true,
 			callback: function (file) {
 				$row.css ({
 					'background-image': 'url(\'' + file + '\')',
@@ -200,13 +222,6 @@
 		$('html,body').animate ({
 			scrollTop: $row.offset ().top
 		});
-		
-		// open columns tab first
-		if (window.history.pushState) {
-			window.history.pushState (null, null, '#add-columns');
-		} else {
-			window.location.hash = '#add-columns';
-		}
 		
 		$row.find ('.e-grid-toggle a')
 			.click (toggle_active_tab);
