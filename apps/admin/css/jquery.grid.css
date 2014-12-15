@@ -43,7 +43,6 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 .e-grid-add {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
-	height: 250px;
 	min-height: 250px;
 }
 
@@ -92,6 +91,10 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 
 .e-grid-relative {
 	position: relative;
+}
+
+.e-grid-clear {
+	clear: both;
 }
 
 .e-grid-toggle a {

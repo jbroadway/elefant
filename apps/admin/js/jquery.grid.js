@@ -121,8 +121,24 @@
 		$row.css ({height: $target.val () + 'px', 'min-height': $target.val () + 'px'});
 	}
 	
-	// Change the height of the row
-	// Attach via $.proxy (background_chooser, $this)
+	// Change the background attachment
+	// Attach via $.proxy (toggle_fixed, $this)
+	function toggle_fixed (e) {
+		e.preventDefault ();
+		
+		var $target = $(e.target),
+			checked = $target.is (':checked'),
+			$row = $(e.target).closest ('.e-grid-row');
+
+		if (checked) {
+			$row.removeClass ('e-no-fixed').addClass ('e-fixed');
+		} else {
+			$row.removeClass ('e-fixed').addClass ('e-no-fixed');
+		}
+	}
+	
+	// Change the drop shadow
+	// Attach via $.proxy (toggle_inset, $this)
 	function toggle_inset (e) {
 		e.preventDefault ();
 		
@@ -180,6 +196,10 @@
 		}
 		
 		$row.insertBefore ($add.closest ('.e-grid-add-button')).velocity ('slideDown', 500);
+
+		$('html,body').animate ({
+			scrollTop: $row.offset ().top
+		});
 		
 		// open columns tab first
 		if (window.history.pushState) {
@@ -203,6 +223,8 @@
 			.click ($.proxy (background_clear, $this));
 		$row.find ('.e-grid-set-height')
 			.change ($.proxy (set_height, $this));
+		$row.find ('.e-grid-toggle-fixed')
+			.change ($.proxy (toggle_fixed, $this));
 		$row.find ('.e-grid-toggle-inset')
 			.change ($.proxy (toggle_inset, $this));
 	}

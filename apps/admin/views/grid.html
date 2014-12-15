@@ -40,32 +40,32 @@
 				</div>
 			</div>
 			<div class="e-col-100 e-no-padding e-grid-tab e-tab-add-styles">
-				<div class="e-col-50 e-no-padding">
-					{"Background color"}:
-					<span class="e-grid-select">
-						<select class="e-grid-select-style">
-						\{{#each styles}}
-							<option value="\{{css_class}}">\{{name}}</option>
-						\{{/each}}
-						</select>
-						<i class="fa fa-lg fa-caret-down e-grid-select-arrow"></i>
-					</span>
-					&nbsp;
-					<button class="e-grid-button e-grid-set-bg-button">{"Set background image"}</button>
-					&nbsp;
-					<a href="#" class="e-grid-link e-grid-clear-bg-link">{"Clear"}</a>
-					<br /><br />
-					<label><input type="checkbox" value="yes" class="e-grid-toggle-inset"> {"Drop shadow"}</label>
-					<br /><br />
-					Height: <input type="text" class="e-grid-set-height" value="250" /> px
-				</div>
+				{"Background color"}:
+				<span class="e-grid-select">
+					<select class="e-grid-select-style">
+					\{{#each styles}}
+						<option value="\{{css_class}}">\{{name}}</option>
+					\{{/each}}
+					</select>
+					<i class="fa fa-lg fa-caret-down e-grid-select-arrow"></i>
+				</span>
+				&nbsp;
+				<button class="e-grid-button e-grid-set-bg-button">{"Set background image"}</button>
+				&nbsp;
+				<a href="#" class="e-grid-link e-grid-clear-bg-link">{"Clear"}</a>
+				<br /><br />
+				<label><input type="checkbox" value="yes" class="e-grid-toggle-fixed"> {"Fixed background position"}</label>
+				<br /><br />
+				<label><input type="checkbox" value="yes" class="e-grid-toggle-inset"> {"Drop shadow"}</label>
+				<br /><br />
+				Height: <input type="text" class="e-grid-set-height" value="250" /> px
 			</div>
 		</div>
 	</div>
 </script>
 
 <script id="tpl-grid-add-button" type="text/html">
-	<div class="e-grid-add-button">
+	<div class="e-grid-add-button e-grid-clear">
 		<div class="e-row\{{#if variable}}-variable\{{/if}}">
 			<div class="e-col-100 e-no-padding">
 				<button class="e-grid-button" data-id="\{{id}}"><i class="fa fa-plus"></i> {"Add row"}</button>
