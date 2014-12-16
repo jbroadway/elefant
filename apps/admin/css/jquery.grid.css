@@ -11,7 +11,7 @@ p.admin-options-page {
  * Center notifications below toolbar.
  */
 div.jGrowl.top-right {
-	position: absolute;
+	position: fixed;
 	left: 50%;
 	margin-left: -120px;
 }

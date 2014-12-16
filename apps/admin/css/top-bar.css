@@ -114,6 +114,7 @@ body {
 		box-shadow: 0px 1px 2px rgba(0,0,0,.3);
 	}
 
+	#admin-tools-list ul,
 	#admin-tools-list li {
 		margin: 0;
 		padding: 0;
@@ -212,7 +213,7 @@ body {
 			font-size: 21px;
 			line-height: 21px;
 			font-weight: normal;
-			margin-bottom: 0;
+			margin: 5px 0px 0px 0px;
 		}
 		
 		.admin-tools-section ul.admin-tools-list {

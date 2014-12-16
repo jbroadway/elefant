@@ -38,7 +38,8 @@
 		base_col = {
 			col: 0,
 			unit: '100',
-			content: ''
+			content: '',
+			rendered: ''
 		},
 		rows = [];
 
@@ -353,8 +354,12 @@
 		for (var i = 0; i < units.length; i++) {
 			row.cols.push ({
 				unit: units[i],
-				content: tpl.icons ({}),
-				empty: true
+				content: '',
+				rendered: tpl.icons ({}),
+				empty: true,
+				id: row.id,
+				row: row.row,
+				col: i
 			});
 		}
 		
@@ -435,7 +440,9 @@
 		console.log ('edit_col');
 		
 		var $this = this,
-			$col = $(e.target),
+			$col = $(e.target).hasClass ('e-grid-col')
+				? $(e.target)
+				: $(e.target).closest ('.e-grid-col'),
 			col = $col.data ('col'),
 			$row = $col.closest ('.e-grid-row'),
 			row = $row.data ('_row');
@@ -449,7 +456,6 @@
 	function edit_photo (e) {
 		e.preventDefault ();
 		e.stopPropagation ();
-		console.log ('edit_photo');
 
 		var $this = this,
 			$col = $(e.target).hasClass ('e-grid-col')
@@ -464,8 +470,71 @@
 			title: i18n.choose_bg,
 			thumbs: true,
 			callback: function (file) {
-				// TODO: Replace with filemanager/photo embed
-				$col.html ('<img src="' + file + '" />');
+				var html = '<p><img src="' + encodeURI (file) + '" alt="" /></p>',
+					data = {id: row.id, row: row.row, col: col, content: html};
+
+				$.post ($this.opts.api + '/update', data, function (res) {
+					col.content = html;
+					col.rendered = html;
+					$col.html (html);
+				});
+			}
+		});
+	}
+	
+	// Add a YouTube video to the cell.
+	// Attach via $.proxy (edit_video, $this);
+	function edit_video (e) {
+		e.preventDefault ();
+		e.stopPropagation ();
+
+		var $this = this,
+			$col = $(e.target).hasClass ('e-grid-col')
+				? $(e.target)
+				: $(e.target).closest ('.e-grid-col'),
+			col = $col.data ('col'),
+			$row = $col.closest ('.e-grid-row'),
+			row = $row.data ('_row');
+
+		$.dynamicobjects ({
+			current: 'social/video/youtube?url=&width=640&height=360',
+			callback: function (embed_code, handler, params, label) {
+				var html = '<p><span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span></p>',
+					data = {id: row.id, row: row.row, col: col, content: html};
+
+				$.post ($this.opts.api + '/update', data, function (res) {
+					col.content = html;
+					col.rendered = res.data;
+					$col.html (col.rendered);
+				});
+			}
+		});
+	}
+	
+	// Add a dynamic object embed to the cell.
+	// Attach via $.proxy (edit_embed, $this);
+	function edit_embed (e) {
+		e.preventDefault ();
+		e.stopPropagation ();
+
+		var $this = this,
+			$col = $(e.target).hasClass ('e-grid-col')
+				? $(e.target)
+				: $(e.target).closest ('.e-grid-col'),
+			col = $col.data ('col'),
+			$row = $col.closest ('.e-grid-row'),
+			row = $row.data ('_row');
+
+		$.dynamicobjects ({
+			callback: function (embed_code, handler, params, label) {
+				var html = '<p><span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span></p>',
+					data = {id: row.id, row: row.row, col: col, content: html};
+
+				$.post ($this.opts.api + '/update', data, function (res) {
+					col.content = html;
+					col.rendered = res.data;
+					$col.html (col.rendered);
+				});
 			}
 		});
 	}
@@ -546,6 +615,8 @@
 
 				$this.on ('click', '.e-grid-col', $.proxy (edit_col, $this));
 				$this.on ('click', '.e-col-edit-photo', $.proxy (edit_photo, $this));
+				$this.on ('click', '.e-col-edit-video', $.proxy (edit_video, $this));
+				$this.on ('click', '.e-col-edit-embed', $.proxy (edit_embed, $this));
 
 				// Create and connect 'Add row' button
 				$this.append (tpl.add_button ({ id: $this.opts.id }));
@@ -555,4 +626,3 @@
 		}
 	});
 })(jQuery, Handlebars);
-

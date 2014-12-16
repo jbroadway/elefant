@@ -1,8 +1,8 @@
 <script id="tpl-grid-row" type="text/html">
-	<div class="e-row\{{#if variable}}-variable\{{/if}}\{{#if equal_heights}} e-row-equal\{{/if}}">
+	<div class="e-row\{{#if variable}}-variable\{{/if}}\{{#if equal_heights}} e-row-equal\{{/if}}" data-row="\{{row}}">
 	\{{#each cols}}
-		<div class="e-col-\{{unit}} e-grid-col\{{#if empty}} e-grid-col-empty\{{/if}}">
-			\{{{content}}}
+		<div class="e-col-\{{unit}} e-grid-col\{{#if empty}} e-grid-col-empty\{{/if}}" data-id="\{{id}}" data-row="\{{row}}" data-col="\{{col}}">
+			\{{{rendered}}}
 		</div>
 	\{{/each}}
 	</div>
