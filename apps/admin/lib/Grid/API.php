@@ -17,7 +17,12 @@ class API extends Restful {
 	 */
 	public function post_update () {
 		// TODO: Save changes
+
+		// render and return
 		$this->controller->add_notification (__ ('Changes saved.'));
-		return $this->controller->template ()->run_includes ($_POST['content']);
+		return array (
+			'html' => $this->controller->template ()->run_includes ($_POST['content']),
+			'scripts' => $this->controller->page ()->scripts
+		);
 	}
 }

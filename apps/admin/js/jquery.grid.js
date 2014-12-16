@@ -41,7 +41,42 @@
 			content: '',
 			rendered: ''
 		},
-		rows = [];
+		rows = [],
+		scripts = [];
+
+	// Load scripts/styles from embedded content
+	function load_embed_scripts (load) {
+		if (scripts.length === 0) {
+			$('script,link[rel="stylesheet"]').each (function () {
+				scripts.push ($(this).html ());
+			});
+		}
+		
+		for (var i = 0; i < load.length; i++) {
+			if (scripts.indexOf (load[i]) === -1) {
+				// load script
+				var $script = $(load[i]),
+					tag = $script.prop ('tagName').toLowerCase (),
+					src = $script.attr ('src'),
+					href = $script.attr ('href'),
+					body = $script.html (),
+					script = load[i];
+
+				if (tag == 'script') {
+					script = document.createElement ('script');
+					script.type = 'text/javascript';
+					if (typeof src !== 'undefined') {
+						script.src = src;
+					} else {
+						script.innerHTML = body;
+					}
+				}
+
+				$('head').append (script);
+				scripts.push (load[i]);
+			}
+		}
+	}
 
 	// Cancel add row form.
 	// Attach via $.proxy (cancel_row, $this);
@@ -308,8 +343,8 @@
 		}
 		
 		$row.insertBefore ($add.closest ('.e-grid-add-button'))
-			.velocity ('slideDown', 500)
-			.data ('_row', row);
+			.data ('_row', row)
+			.velocity ('slideDown', 500);
 
 		$('html,body').animate ({
 			scrollTop: $row.offset ().top
@@ -470,13 +505,16 @@
 			title: i18n.choose_bg,
 			thumbs: true,
 			callback: function (file) {
-				var html = '<p><img src="' + encodeURI (file) + '" alt="" /></p>',
+				var html = '<img src="' + encodeURI (file) + '" alt="" />',
 					data = {id: row.id, row: row.row, col: col, content: html};
 
 				$.post ($this.opts.api + '/update', data, function (res) {
+					load_embed_scripts (res.data.scripts);
 					col.content = html;
-					col.rendered = html;
-					$col.html (html);
+					col.rendered = res.data.html;
+					$col.data ('col', col)
+						.removeClass ('e-grid-col-empty')
+						.html (res.data.html);
 				});
 			}
 		});
@@ -497,15 +535,18 @@
 			row = $row.data ('_row');
 
 		$.dynamicobjects ({
-			current: 'social/video/youtube?url=&width=640&height=360',
+			current: 'social/video/youtube?url=&width=100%25&height=auto',
 			callback: function (embed_code, handler, params, label) {
-				var html = '<p><span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span></p>',
+				var html = '<span class="embedded" data-embed="' + encodeURI (embed_code) + '" data-label="' + encodeURI (label) + '" title="Click to edit."></span>',
 					data = {id: row.id, row: row.row, col: col, content: html};
 
 				$.post ($this.opts.api + '/update', data, function (res) {
+					load_embed_scripts (res.data.scripts);
 					col.content = html;
-					col.rendered = res.data;
-					$col.html (col.rendered);
+					col.rendered = res.data.html;
+					$col.data ('col', col)
+						.removeClass ('e-grid-col-empty')
+						.html (res.data.html);
 				});
 			}
 		});
@@ -527,13 +568,16 @@
 
 		$.dynamicobjects ({
 			callback: function (embed_code, handler, params, label) {
-				var html = '<p><span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span></p>',
+				var html = '<span class="embedded" data-embed="' + encodeURI (embed_code) + '" data-label="' + encodeURI (label) + '" title="Click to edit."></span>',
 					data = {id: row.id, row: row.row, col: col, content: html};
 
 				$.post ($this.opts.api + '/update', data, function (res) {
+					load_embed_scripts (res.data.scripts);
 					col.content = html;
-					col.rendered = res.data;
-					$col.html (col.rendered);
+					col.rendered = res.data.html;
+					$col.data ('col', col)
+						.removeClass ('e-grid-col-empty')
+						.html (res.data.html);
 				});
 			}
 		});
