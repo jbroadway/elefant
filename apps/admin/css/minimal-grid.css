@@ -109,6 +109,23 @@
 	-moz-box-shadow: none;
 	box-shadow: none;
 }
+.e-container {
+	position: relative;
+	padding-bottom: 56.25%;
+	padding-top: 30px;
+	height: 0;
+	overflow:hidden;
+}
+.e-container iframe,
+.e-container object,
+.e-container embed,
+.e-container video {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100% !important;
+	height: 100% !important;
+}
 
 /* desktop */
 @media (min-width: 992px) {
