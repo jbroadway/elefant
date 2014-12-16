@@ -13,7 +13,7 @@ if (isset ($params['v'])) {
 	$data['video'] = substr (parse_url ($data['url'], PHP_URL_PATH), 1);
 }
 
-$data['width'] = isset ($data['width']) ? $data['width'] : 480;
-$data['height'] = isset ($data['height']) ? $data['height'] : 303;
+$data['width'] = isset ($data['width']) ? $data['width'] : '100%';
+$data['height'] = isset ($data['height']) ? $data['height'] : 'auto';
 
 echo $tpl->render ('social/video/youtube', $data);

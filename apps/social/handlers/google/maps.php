@@ -5,9 +5,7 @@
  * the WYSIWYG editor's dynamic objects menu.
  */
 
-if (self::$called['social/google/maps'] == 1) {
-	echo '<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>';
-}
+$page->add_script ('//maps.googleapis.com/maps/api/js?sensor=false');
 
 $data['map_id'] = rand ();
 

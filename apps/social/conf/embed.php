@@ -156,14 +156,14 @@ url[regex] = "|^https?://.+$|"
 url[message] = Please enter a valid URL.
 
 width[label] = Player width
-width[type] = text
-width[initial] = 640
+width[type] = hidden
+width[initial] = "100%"
 width[not empty] = 1
 width[message] = Please enter a player width.
 
 height[label] = Player height
-height[type] = text
-height[initial] = 360
+height[type] = hidden
+height[initial] = auto
 height[not empty] = 1
 height[message] = Please enter a player height.
 
@@ -217,14 +217,14 @@ url[regex] = "|^https?://.+$|"
 url[message] = Please enter a valid URL.
 
 width[label] = Player width
-width[type] = text
-width[initial] = 640
+width[type] = hidden
+width[initial] = "100%"
 width[not empty] = 1
 width[message] = Please enter a player width.
 
 height[label] = Player height
-height[type] = text
-height[initial] = 360
+height[type] = hidden
+height[initial] = auto
 height[not empty] = 1
 height[message] = Please enter a player height.
 
