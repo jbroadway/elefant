@@ -7,12 +7,16 @@
 
 <form method="POST" id="add-form">
 
-<p>{"Title"}:<br /><input type="text" name="title" size="80" value="{{ title }}" />
+<p>{"Title"}:<br /><input type="text" name="title" size="70" value="{{ title }}" />
 <span class="notice" id="title-notice">{"You must enter a title."}</span></p>
 
 <div id="thumbnail-div">
 	{"Thumbnail"}:<br />
-	<img src="{% if thumbnail == '' %}//:0{% else %}{{thumbnail|quotes}}{% end %}" id="thumbnail-preview" /><br />
+	<div class="thumbnail-wrapper">
+		<div class="thumbnail" id="thumbnail-preview"
+			style="background-image: url('{% if thumbnail == '' %}//:0{% else %}{{thumbnail|quotes}}{% end %}')"
+		></div>
+	</div>
 	<input type="hidden" name="thumbnail" id="thumbnail" size="40" value="{{ thumbnail|quotes }}" />
 	<input type="submit" id="thumbnail-browse" value="{"Choose"}" />
 </div>
@@ -69,9 +73,7 @@
 	right: 0;
 	width: 150px;
 }
-#thumbnail-preview {
-	width: 150px;
-	height: 100px;
+.thumbnail-wrapper {
 	margin-bottom: 5px;
 }
 </style>
@@ -99,7 +101,7 @@ $(function () {
 			title: "{"Choose an image"}",
 			thumbs: true,
 			callback: function (file) {
-				$('#thumbnail-preview').attr ('src', file);
+				$('#thumbnail-preview').css ('background-image', 'url(\'' + encodeURI (file) + '\')');
 			}
 		});
 	});
