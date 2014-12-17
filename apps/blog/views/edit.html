@@ -14,7 +14,9 @@
 	{"Thumbnail"}:<br />
 	<div class="thumbnail-wrapper">
 		<div class="thumbnail" id="thumbnail-preview"
-			style="background-image: url('{% if thumbnail == '' %}//:0{% else %}{{thumbnail|quotes}}{% end %}')"
+		{% if thumbnail !== '' %}
+			style="background-image: url({{thumbnail|urlencode}}')"
+		{% end %}
 		></div>
 	</div>
 	<input type="hidden" name="thumbnail" id="thumbnail" size="40" value="{{ thumbnail|quotes }}" />
