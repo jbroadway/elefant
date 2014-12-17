@@ -471,6 +471,13 @@
 	// Edit the contents of a cell.
 	// Attach via $.proxy (edit_col, $this);	
 	function edit_col (e) {
+		var $target = $(e.target);
+
+		if (e.target.nodeName.toLowerCase () === 'a' && ! $(e.target).hasClass ('e-col-edit')) {
+			console.log ('let it bubble');
+			return;
+		}
+
 		e.preventDefault ();
 		console.log ('edit_col');
 		
@@ -508,7 +515,7 @@
 				var html = '<img src="' + encodeURI (file) + '" alt="" />',
 					data = {id: row.id, row: row.row, col: col, content: html};
 
-				$.post ($this.opts.api + '/update', data, function (res) {
+				$.post ($this.opts.api + '/update_column', data, function (res) {
 					load_embed_scripts (res.data.scripts);
 					col.content = html;
 					col.rendered = res.data.html;
@@ -540,7 +547,7 @@
 				var html = '<span class="embedded" data-embed="' + encodeURI (embed_code) + '" data-label="' + encodeURI (label) + '" title="Click to edit."></span>',
 					data = {id: row.id, row: row.row, col: col, content: html};
 
-				$.post ($this.opts.api + '/update', data, function (res) {
+				$.post ($this.opts.api + '/update_column', data, function (res) {
 					load_embed_scripts (res.data.scripts);
 					col.content = html;
 					col.rendered = res.data.html;
@@ -571,7 +578,7 @@
 				var html = '<span class="embedded" data-embed="' + encodeURI (embed_code) + '" data-label="' + encodeURI (label) + '" title="Click to edit."></span>',
 					data = {id: row.id, row: row.row, col: col, content: html};
 
-				$.post ($this.opts.api + '/update', data, function (res) {
+				$.post ($this.opts.api + '/update_column', data, function (res) {
 					load_embed_scripts (res.data.scripts);
 					col.content = html;
 					col.rendered = res.data.html;
@@ -624,6 +631,7 @@
 				variable: true,
 				styles: {},
 				api: '/admin/grid/api',
+				grid: [],
 				units: [
 					'100', '50,50', '66,33', '33,66', '75,25', '25,75',
 					'80,20', '20,80', '33,33,33', '25,50,25', '25,25,25,25',
@@ -661,6 +669,25 @@
 				$this.on ('click', '.e-col-edit-photo', $.proxy (edit_photo, $this));
 				$this.on ('click', '.e-col-edit-video', $.proxy (edit_video, $this));
 				$this.on ('click', '.e-col-edit-embed', $.proxy (edit_embed, $this));
+
+				// Add row data to each existing row
+				var r = 0;
+				$this.find ('.e-grid-row').each (function () {
+					var units = $this.opts.grid[r].units.split (',');
+					for (var c = 0; c < $this.opts.grid[r].cols.length; c++) {
+						$this.opts.grid[r].cols[c] = {
+							unit: units[c],
+							content: $this.opts.grid[r].cols[c],
+							rendered: $(this).find ('.e-grid-col')[c].innerHTML,
+							empty: ($this.opts.grid[r].cols[c].length === 0) ? true : false,
+							id: $this.opts.id,
+							row: r,
+							col: c
+						};
+					}
+					$(this).data ('_row', $this.opts.grid[r]);
+					r++;
+				});
 
 				// Create and connect 'Add row' button
 				$this.append (tpl.add_button ({ id: $this.opts.id }));

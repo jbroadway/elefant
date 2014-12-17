@@ -15,7 +15,8 @@ class API extends Restful {
 	 * @param col
 	 * @param content
 	 */
-	public function post_update () {
+	public function post_update_column () {
+		// TODO: Verify values
 		// TODO: Save changes
 
 		// render and return
@@ -24,5 +25,18 @@ class API extends Restful {
 			'html' => $this->controller->template ()->run_includes ($_POST['content']),
 			'scripts' => $this->controller->page ()->scripts
 		);
+	}
+	
+	/**
+	 * Updates all columns to the database at once. Does not return
+	 * a rendered version, simply true or false. The `grid` parameter
+	 * is an object matching the structure stored by `admin\Grid`.
+	 *
+	 * @param id
+	 * @param grid
+	 */
+	public function post_update () {
+		// TODO: Verify changes
+		// TODO: Save changes
 	}
 }

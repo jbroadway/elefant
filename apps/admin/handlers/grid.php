@@ -45,7 +45,9 @@
  * - row          - The row number starting from zero
  * - col          - The column number starting from zero
  * - content      - The HTML contents of a column
- * - inset        - Whether to add `e-row-inset` class
+ * - inset        - Whether to add `e-inset` class
+ * - fixed        - Whether to add `e-fixed` class
+ * - height       - A fixed height for the row
  */
 
 $id = (count ($this->params) > 0) ? $this->params[0] : (isset ($data['id']) ? $data['id'] : $page->id);
@@ -70,7 +72,8 @@ if (User::require_acl ('admin', 'admin/edit')) {
 			'admin/grid',
 			array (
 				'styles' => admin\Layout::styles ($page->layout),
-				'api' => $api
+				'api' => $api,
+				'grid' => $grid->all ()
 			)
 		)
 	);

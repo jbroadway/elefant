@@ -29,6 +29,9 @@ namespace admin;
  * - equal_height  // Whether the height should be equal across columns
  * - bg_image      // Background image for the row
  * - cols          // The columns themselves
+ * - fixed         // Whether this row should have a fixed background attachment
+ * - inset         // Whether this row should be styled inset (e.g., shadows)
+ * - height        // The height of the row
  *
  * Valid units values are:
  *
