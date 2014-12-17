@@ -68,13 +68,13 @@ RedactorPlugins.links = {
 			$.i18n ('Link'),
 			'<div class="links-content">' +
 				'<p>' +
-					'<span class="links-btn" id="links-page-btn">' + $.i18n ('Page') + '</span>' +
 					'<span class="links-btn" id="links-url-btn">' + $.i18n ('URL') + '</span>' +
+					'<span class="links-btn" id="links-page-btn">' + $.i18n ('Page') + '</span>' +
 					'<span class="links-btn" id="links-email-btn">' + $.i18n ('Email') + '</span>' +
 					'<br />' +
+					'<input type="text" id="links-url" size="65" placeholder="http://" />' +
 					'<select id="links-page">' +
 					'</select>' +
-					'<input type="text" id="links-url" size="65" placeholder="http://" />' +
 					'<input type="email" id="links-email" size="65" placeholder="you@example.com" />' +
 				'</p>' +
 				'<p>' +
@@ -130,7 +130,7 @@ RedactorPlugins.links = {
 			$('#links-url').val (url);
 			this.show_url ();
 		} else {
-			this.show_pages ();
+			this.show_url ();
 		}
 
 		$('#links-text').val (text);
