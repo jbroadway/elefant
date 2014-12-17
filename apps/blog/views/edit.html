@@ -33,8 +33,8 @@
 <p>{"Body"}: <span class="notice" id="body-notice">{"You must enter body content."}</span><br />
 <textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 
-<h4><a href="#" onclick="return webpage_show_extra_options (this)" class="extra-options-link"><span class="arrow arrow-off"></span>{"Extra Options"}</a></h4>
-<div id="extra-options">
+<h4>{"Extra Options"}</h4>
+
 <p>{"Published"}:
 <select name="published">
 {% foreach yes_no %}
@@ -51,7 +51,6 @@
 <p>{"Auto-post options"}:<br />
 <input type="checkbox" name="autopost_pom" id="autopost_pom" value="yes" {% if autopost_tw %}checked{% end %} /> <label for="autopost_pom">Ping-o-matic</label><br />
 </p>
-</div>
 
 {! admin/util/extended?extends=blog\Post&name=Blog+Posts&values=[extra|none]&id=[id] !}
 
