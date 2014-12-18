@@ -89,8 +89,6 @@
 	</div>
 </script>
 
-
-
 <script id="tpl-grid-edit" type="text/html">
 	<div class="e-grid-row e-grid-edit \{{css_class}}" data-id=\{{id}}" data-row="\{{row}}">
 		<div class="e-row\{{#if variable}}-variable\{{/if}}">
@@ -98,9 +96,9 @@
 				<a href="#" class="e-toggle-active" data-tab="edit-columns">{"Columns"}</a><a href="#" data-tab="edit-styles">{"Style"}</a>
 			</div>
 			<div class="e-col-50 e-no-padding e-grid-right">
-				<button class="e-grid-button e-grid-update-row-button">{"Save"}</button>
+				<button class="e-grid-button e-grid-edit-row-button">{"Save"}</button>
 				&nbsp;
-				<a href="#" class="e-grid-link e-grid-cancel-update-link">{"Cancel"}</a>
+				<a href="#" class="e-grid-link e-grid-cancel-edit-link">{"Cancel"}</a>
 			</div>
 		</div>
 		<div class="e-row\{{#if variable}}-variable\{{/if}} e-grid-tabs">		
@@ -136,6 +134,8 @@
 				<a href="#" class="e-grid-link e-grid-clear-bg-link">{"Clear"}</a>
 				<br /><br />
 				{"Set height"}: <input type="text" class="e-grid-set-height" value="" /> px
+				<br /><br />
+				<label><input type="checkbox" value="yes" class="e-grid-toggle-equal-heights"> {"Equal column heights"}</label>
 				<br /><br />
 				<label><input type="checkbox" value="yes" class="e-grid-toggle-fixed"> {"Fixed background position"}</label>
 				<br /><br />

@@ -109,7 +109,9 @@
 			$cancel = $(e.target),
 			$row = $cancel.closest ('.e-grid-row');
 		
-		$row.html ($row.data ('_prev'));
+		$row.removeClass ('e-grid-edit')
+			.html ($row.data ('_prev'))
+			.append (tpl.edit_buttons ({}));
 	}
 
 	// Remove a row from the grid.
@@ -351,29 +353,17 @@
 			scrollTop: $row.offset ().top
 		});
 		
-		$row.find ('.e-grid-toggle a')
-			.click (toggle_active_tab);
-		
-		$row.find ('.e-grid-icon')
-			.click ($.proxy (select_grid, $this));
-		$row.find ('.e-grid-cancel-link')
-			.click ($.proxy (cancel_row, $this));
-		$row.find ('.e-grid-add-row-button')
-			.click ($.proxy (add_row, $this));
-		$row.find ('.e-grid-select-style')
-			.change ($.proxy (select_style, $this));
-		$row.find ('button.e-grid-set-bg-button')
-			.click ($.proxy (background_chooser, $this));
-		$row.find ('.e-grid-clear-bg-link')
-			.click ($.proxy (background_clear, $this));
-		$row.find ('.e-grid-set-height')
-			.change ($.proxy (set_height, $this));
-		$row.find ('.e-grid-toggle-equal-heights')
-			.change ($.proxy (toggle_equal_heights, $this));
-		$row.find ('.e-grid-toggle-fixed')
-			.change ($.proxy (toggle_fixed, $this));
-		$row.find ('.e-grid-toggle-inset')
-			.change ($.proxy (toggle_inset, $this));
+		$row.find ('.e-grid-toggle a')				.click  (toggle_active_tab);
+		$row.find ('.e-grid-icon')					.click  ($.proxy (select_grid, $this));
+		$row.find ('.e-grid-cancel-link')			.click  ($.proxy (cancel_row, $this));
+		$row.find ('.e-grid-add-row-button')		.click  ($.proxy (add_row, $this));
+		$row.find ('.e-grid-select-style')			.change ($.proxy (select_style, $this));
+		$row.find ('button.e-grid-set-bg-button')	.click  ($.proxy (background_chooser, $this));
+		$row.find ('.e-grid-clear-bg-link')			.click  ($.proxy (background_clear, $this));
+		$row.find ('.e-grid-set-height')			.change ($.proxy (set_height, $this));
+		$row.find ('.e-grid-toggle-equal-heights')	.change ($.proxy (toggle_equal_heights, $this));
+		$row.find ('.e-grid-toggle-fixed')			.change ($.proxy (toggle_fixed, $this));
+		$row.find ('.e-grid-toggle-inset')			.change ($.proxy (toggle_inset, $this));
 	}
 
 	// Add row from add row form.
@@ -410,21 +400,18 @@
 		e.preventDefault ();
 
 		var $this = this,
-			$add = $(e.target),
-			row = $.extend (base_row, {
-				id: $this.data ('id'),
-				row: $this.data ('row'),
-				css_class: '',
-				variable: $this.opts.variable,
-				fixed: $this.hasClass ('e-fixed'),
-				inset: $this.hasClass ('e-inset'),
-				height: $this.css ('height'),
-				styles: $this.opts.styles,
-				units: get_units ($this)
-			}),
-			$row = $add.closest ('.e-grid-row');
-			$row.data ('_row', row); // stores our data model
-			$row.data ('_prev', $row.html ()); // cached for cancel
+			$edit = $(e.target),
+			$row = $edit.closest ('.e-grid-row'),
+			row = $row.data ('_row'),
+			prev = $row.html (); // cache for cancel
+
+		row.styles = $this.opts.styles;
+
+		$new_row = $(tpl.edit (row));
+		$row.replaceWith ($new_row);
+		$row = $new_row;
+		$row.data ('_row', row);
+		$row.data ('_prev', prev);
 
 		// show/hide unit options
 		$row.find ('.e-grid-icon').css ({display: 'none'});
@@ -432,29 +419,17 @@
 			$row.find ('.e-grid-icon-' + $this.opts.units[u].replace (/,/g, '-')).css ({display: 'inline-block'});
 		}
 		
-		$row.find ('.e-grid-toggle a')
-			.click (toggle_active_tab);
-		
-		$row.find ('.e-grid-icon')
-			.click ($.proxy (select_grid, $this));
-		$row.find ('.e-grid-cancel-link')
-			.click ($.proxy (cancel_edit_row, $this));
-		$row.find ('.e-grid-edit-row-button')
-			.click ($.proxy (edit_row, $this));
-		$row.find ('.e-grid-select-style')
-			.change ($.proxy (select_style, $this));
-		$row.find ('button.e-grid-set-bg-button')
-			.click ($.proxy (background_chooser, $this));
-		$row.find ('.e-grid-clear-bg-link')
-			.click ($.proxy (background_clear, $this));
-		$row.find ('.e-grid-set-height')
-			.change ($.proxy (set_height, $this));
-		$row.find ('.e-grid-toggle-equal-heights')
-			.change ($.proxy (toggle_equal_heights, $this));
-		$row.find ('.e-grid-toggle-fixed')
-			.change ($.proxy (toggle_fixed, $this));
-		$row.find ('.e-grid-toggle-inset')
-			.change ($.proxy (toggle_inset, $this));
+		$row.find ('.e-grid-toggle a')				.click  (toggle_active_tab);
+		$row.find ('.e-grid-icon')					.click  ($.proxy (select_grid, $this));
+		$row.find ('.e-grid-cancel-edit-link')		.click  ($.proxy (cancel_edit_row, $this));
+		$row.find ('.e-grid-edit-row-button')		.click  ($.proxy (edit_row, $this));
+		$row.find ('.e-grid-select-style')			.change ($.proxy (select_style, $this));
+		$row.find ('button.e-grid-set-bg-button')	.click  ($.proxy (background_chooser, $this));
+		$row.find ('.e-grid-clear-bg-link')			.click  ($.proxy (background_clear, $this));
+		$row.find ('.e-grid-set-height')			.change ($.proxy (set_height, $this));
+		$row.find ('.e-grid-toggle-equal-heights')	.change ($.proxy (toggle_equal_heights, $this));
+		$row.find ('.e-grid-toggle-fixed')			.change ($.proxy (toggle_fixed, $this));
+		$row.find ('.e-grid-toggle-inset')			.change ($.proxy (toggle_inset, $this));
 	}
 
 	// Update row from edit row form.
@@ -617,7 +592,7 @@
 		var $cols = get_cols ($row),
 			units = '',
 			sep = '';
-		
+
 		for (var i in $cols) {
 			var unit = $cols[i].attr ('class').match (/e-col-([0-9]+)/)[1];
 			units += sep + unit;
