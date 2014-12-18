@@ -18,7 +18,8 @@
 			add:			'#tpl-grid-add',
 			edit:			'#tpl-grid-edit',
 			icons:			'#tpl-grid-icons',
-			add_button:		'#tpl-grid-add-button'
+			add_button:		'#tpl-grid-add-button',
+			edit_buttons:	'#tpl-grid-edit-buttons'
 		}
 		i18n = {
 			choose_bg: 'Choose a background image'
@@ -399,7 +400,8 @@
 		}
 		
 		$row.removeClass ('e-grid-edit')
-			.html (tpl.row (row));
+			.html (tpl.row (row))
+			.append (tpl.edit_buttons ({}));
 	}
 	
 	// Create edit row form.
@@ -466,6 +468,8 @@
 		
 		$row.removeClass ('e-grid-edit')
 			.html (tpl.row (row));
+		
+		// TODO: Update row settings
 	}
 
 	// Edit the contents of a cell.
@@ -669,6 +673,8 @@
 				$this.on ('click', '.e-col-edit-photo', $.proxy (edit_photo, $this));
 				$this.on ('click', '.e-col-edit-video', $.proxy (edit_video, $this));
 				$this.on ('click', '.e-col-edit-embed', $.proxy (edit_embed, $this));
+				$this.on ('click', '.e-grid-row-edit-button', $.proxy (edit_row_form, $this));
+				$this.on ('click', '.e-grid-row-delete-button', $.proxy (remove_row, $this));
 
 				// Add row data to each existing row
 				var r = 0;
@@ -686,6 +692,7 @@
 						};
 					}
 					$(this).data ('_row', $this.opts.grid[r]);
+					$(this).append (tpl.edit_buttons ({}));
 					r++;
 				});
 

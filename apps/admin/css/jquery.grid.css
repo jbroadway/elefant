@@ -41,6 +41,43 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	position: relative;
 }
 
+	.e-grid-row-delete-button,
+	.e-grid-row-edit-button {
+		position: absolute;
+		display: block;
+		text-align: center;
+		text-decoration: none;
+		top: 7px;
+		border: 1px solid #ccc;
+		background-color: #f5f5f5;
+		color: #333;
+		width: 30px;
+		height: 28px;
+		padding-top: 3px;
+	}
+	
+	.e-grid-row-delete-button {
+		border-left: 0px none;
+		right: 20px;
+	}
+	
+	.e-grid-row-edit-button {
+		border-right: 0px none;
+		right: 50px;
+	}
+	
+	.e-grid-row-delete-button:hover,
+	.e-grid-row-edit-button:hover {
+		color: #111;
+		background-color: #eee;
+		text-decoration: none;
+	}
+	
+	.is-preview .e-grid-row-delete-button,
+	.is-preview .e-grid-row-edit-button {
+		display: none;
+	}
+
 .e-grid-edit {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
