@@ -43,7 +43,11 @@ if (file_exists ('lang/_index.php')) {
 	$list = array ();
 }
 
-set_time_limit (90);
+try {
+	set_time_limit (90);
+} catch (Exception $e) {
+	// let it slide
+}
 
 foreach ($sources as $source) {
 	$files = glob ($source);
