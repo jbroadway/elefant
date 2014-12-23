@@ -58,12 +58,12 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	
 	.e-grid-row-delete-button {
 		border-left: 0px none;
-		right: 20px;
+		right: -68px;
 	}
 	
 	.e-grid-row-edit-button {
 		border-right: 0px none;
-		right: 50px;
+		right: -38px;
 	}
 	
 	.e-grid-row-delete-button:hover,
@@ -71,6 +71,14 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 		color: #111;
 		background-color: #eee;
 		text-decoration: none;
+	}
+	
+	.e-grid-fixed .e-grid-row-delete-button {
+		right: 20px;
+	}
+	
+	.e-grid-fixed .e-grid-row-edit-button {
+		right: 50px;
 	}
 	
 	.is-preview .e-grid-row-delete-button,
