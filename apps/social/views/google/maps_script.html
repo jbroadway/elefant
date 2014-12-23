@@ -21,8 +21,6 @@ $(function () {
 		my_maps.push (map_{{map_id}});
 
 		geocoder.geocode (georeq, function (results, status) {
-			console.log (status);
-			console.log (results);
 			if (status == google.maps.GeocoderStatus.OK) {
 				map_{{map_id}}.setCenter (results[0].geometry.location);
 				var marker = new google.maps.Marker ({
