@@ -69,7 +69,7 @@ class Webpage extends ExtendedModel {
 		$g = $this->ext ('grid');
 		if (! $g) {
 			$grid = new admin\Grid ();
-			$grid->add_row ('100', '', false, '', array ($this->body));
+			$grid->add_row ('100', '', false, '', false, false, '', array ($this->body));
 			$g = $grid->all ();
 			$this->ext ('grid', $g);
 			$this->put ();
