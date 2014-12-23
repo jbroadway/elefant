@@ -73,7 +73,7 @@
 					}
 				}
 
-				$('head').append (script);
+				document.body.appendChild (script);
 				scripts.push (load[i]);
 			}
 		}
@@ -523,7 +523,7 @@
 		$.dynamicobjects ({
 			current: 'social/video/youtube?url=&width=100%25&height=auto',
 			callback: function (embed_code, handler, params, label) {
-				var html = '<span class="embedded" data-embed="' + encodeURI (embed_code) + '" data-label="' + encodeURI (label) + '" title="Click to edit."></span>',
+				var html = '<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>',
 					data = {id: row.id, row: row.row, col: col, content: html};
 
 				$.post ($this.opts.api + '/update_column', data, function (res) {
@@ -554,7 +554,7 @@
 
 		$.dynamicobjects ({
 			callback: function (embed_code, handler, params, label) {
-				var html = '<span class="embedded" data-embed="' + encodeURI (embed_code) + '" data-label="' + encodeURI (label) + '" title="Click to edit."></span>',
+				var html = '<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>',
 					data = {id: row.id, row: row.row, col: col, content: html};
 
 				$.post ($this.opts.api + '/update_column', data, function (res) {
