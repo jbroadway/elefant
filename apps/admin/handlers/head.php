@@ -26,6 +26,7 @@ if (User::require_admin () && $page->preview == false) {
 	$page->add_script ('/apps/admin/js/jquery.jgrowl.min.js');
 	$page->add_script ('/apps/admin/js/jquery.triggers.js');
 	$page->add_script ('/js/jquery.cookie.js');
+	$page->add_script ('/apps/admin/js/jquery.i18n.js');
 	$page->add_script ('/apps/admin/js/top-bar.js');
 	$page->add_script (I18n::export (
 		'List keyboard shortcuts',
