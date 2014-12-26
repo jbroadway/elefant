@@ -101,9 +101,10 @@ var autosave_interval = null,
 							opts.form.elements[vals[i].name].value = vals[i].value;
 						}
 
-						if (opts.form.elements[vals[i].name].getAttribute ('id') == 'webpage-body') {
+						if (opts.form.elements[vals[i].name].getAttribute ('data-wysiwyg') == 1) {
 							// Set the contents of wysiwyg editor
-							$('#webpage-body').redactor ('set', vals[i].value);
+							var id = opts.form.elements[vals[i].name].getAttribute ('id');
+							$('#' + id).redactor ('code.set', vals[i].value);
 						} else if (opts.form.elements[vals[i].name].getAttribute ('id') == 'code-body') {
 							// Set the contents of codemirror editor
 							_codemirror.setValue (vals[i].value);
@@ -156,12 +157,13 @@ var autosave_interval = null,
 						// Unnamed fields can be ignored (submit buttons)
 						continue;
 					}
-					if (opts.form.elements[i].getAttribute ('id') == 'webpage-body') {
+					if (opts.form.elements[i].getAttribute ('data-wysiwyg') == 1) {
 						// Get the contents from Redactor editor
 						try {
+							var id = opts.form.elements[i].getAttribute ('id')
 							vals[i] = {
 								name: opts.form.elements[i].name,
-								value: $('#webpage-body').redactor ('get')
+								value: $('#' + id).redactor ('code.get')
 							};
 						} catch (e) {}
 					} else if (opts.form.elements[i].getAttribute ('id') == 'code-body') {
