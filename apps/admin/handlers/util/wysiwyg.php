@@ -25,6 +25,7 @@
  *     </script>
  */
 
+$this->run ('admin/util/i18n');
 $this->run ('admin/util/fontawesome');
 $this->run ('admin/util/dynamicobjects');
 $this->run ('filemanager/util/browser');
@@ -34,10 +35,7 @@ $page->add_style ('/js/jquery-ui/jquery-ui.css');
 
 $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/js/jquery.quickpager.js');
-$page->add_script ('/apps/admin/js/redactor/plugins/filebrowser.js');
-$page->add_script ('/apps/admin/js/redactor/plugins/imagebrowser.js');
-$page->add_script ('/apps/admin/js/redactor/plugins/links.js');
-$page->add_script ('/apps/admin/js/redactor/plugins/dynamic.js');
+$page->add_script ('/apps/admin/js/redactor/plugins/undo.js');
 
 $page->add_script (I18n::export (
 	'Dynamic Objects',
@@ -60,6 +58,25 @@ if (file_exists ('apps/admin/js/redactor/lang/' . $i18n->language . '_' . $i18n-
 	$data['language'] = $i18n->language;
 } else {
 	$data['language'] = 'en';
+}
+
+if (! User::require_admin ()) {
+	$page->add_script ('/apps/admin/js/redactor/plugins/filebrowser.js');
+	$page->add_script ('/apps/admin/js/redactor/plugins/imagebrowser.js');
+	$page->add_script ('/apps/admin/js/redactor/plugins/links.js');
+	$page->add_script ('/apps/admin/js/redactor/plugins/dynamic.js');
+
+	$data['buttons'] = array (
+		'formatting', 'bold', 'italic', 'deleted', 'alignment', 'horizontalrule',
+		'unorderedlist', 'orderedlist', 'outdent', 'indent', 'links', 'imagebrowser',
+		'filebrowser', 'table', 'undo', 'html', 'dynamic'
+	);
+} else {
+	$data['buttons'] = array (
+		'formatting', 'bold', 'italic', 'deleted', 'alignment', 'horizontalrule',
+		'unorderedlist', 'orderedlist', 'outdent', 'indent', 'link',
+		'table', 'undo', 'html'
+	);
 }
 
 $data['field_id'] = isset ($data['field_id'])
