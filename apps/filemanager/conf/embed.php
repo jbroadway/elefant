@@ -4,6 +4,7 @@
 
 label = "Images: Editable Photo"
 icon = picture-o
+acl = filemanager
 
 key[type] = hidden
 key[filter] = "Image::generate_key"
@@ -66,6 +67,7 @@ style[callback] = "filemanager_style_list"
 
 label = "Embedded Audio (MP3)"
 icon = headphones
+acl = filemanager
 
 file[label] = MP3 Audio
 file[type] = file
@@ -74,6 +76,7 @@ file[type] = file
 
 label = "Embedded Video (MP4)"
 icon = video-camera
+acl = filemanager
 
 file[label] = MP4 Video
 file[type] = file
@@ -81,7 +84,8 @@ file[type] = file
 [filemanager/swf]
 
 label = "Embedded Flash (SWF)"
-icon = "/apps/filemanager/css/icon-swf.png"
+icon = flash
+acl = filemanager
 
 file[label] = SWF Flash File
 file[type] = file

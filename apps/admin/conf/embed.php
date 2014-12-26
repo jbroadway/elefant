@@ -19,6 +19,7 @@ code[require] = "apps/admin/lib/Functions.php"
 code[callback] = "admin_status_codes"
 
 [admin/conditionalforward]
+
 label ="Pages: Conditional Redirect"
 icon = /apps/admin/css/icon-conditionalforward.png
 
