@@ -19,7 +19,6 @@
 .redactor-editor {
 	margin-top: 0px !important;
 	padding: 0;
-	max-width: 97%;
 }
 
 .redactor-editor, .redactor-box textarea {
@@ -173,6 +172,13 @@
 }
 
 @media (max-width: 480px) {
+	div.redactor-box,
+	div.redactor-editor,
+	div.redactor-box textarea {
+		width: 97% !important;
+		max-width: 97% !important;
+	}
+	
 	.redactor-toolbar li a.re-icon.re-deleted,
 	.redactor-toolbar li a.re-icon.re-indent,
 	.redactor-toolbar li a.re-icon.re-outdent,
