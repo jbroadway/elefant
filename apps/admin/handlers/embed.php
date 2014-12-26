@@ -32,6 +32,13 @@ function admin_embed_sort ($a, $b) {
 }
 
 foreach ($embeds as $k => $e) {
+	if (isset ($embeds[$k]['acl'])) {
+		$acl = preg_split ('/, ?/', $embeds[$k]['acl']);
+		if (! call_user_func_array ('User::require_acl', $acl)) {
+			unset ($embeds[$k]);
+			continue;
+		}
+	}
 	$embeds[$k]['handler'] = $k;
 	$embeds[$k]['fields'] = array ();
 	foreach ($e as $field => $opts) {
