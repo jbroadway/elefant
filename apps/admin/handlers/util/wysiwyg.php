@@ -45,6 +45,8 @@ $page->add_script (I18n::export (
 	'Insert',
 	'Insert Link',
 	'Unlink',
+	'Insert Image',
+	'Insert File',
 	'URL',
 	'Email',
 	'Text',
