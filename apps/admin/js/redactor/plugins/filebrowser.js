@@ -22,8 +22,6 @@ RedactorPlugins.filebrowser = function () {
 		},
 	
 		insert_file: function (file) {
-			console.log (file);
-			console.log (this);
 			this.selection.restore ();
 			this.buffer.set ();
 
