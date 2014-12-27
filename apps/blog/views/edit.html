@@ -7,12 +7,18 @@
 
 <form method="POST" id="edit-form">
 
-<p>{"Title"}:<br /><input type="text" name="title" size="80" value="{{ title|quotes }}" />
+<p>{"Title"}:<br /><input type="text" name="title" size="70" value="{{ title|quotes }}" />
 <span class="notice" id="title-notice">{"You must enter a title."}</span></p>
 
 <div id="thumbnail-div">
 	{"Thumbnail"}:<br />
-	<img src="{% if thumbnail == '' %}//:0{% else %}{{thumbnail|quotes}}{% end %}" id="thumbnail-preview" /><br />
+	<div class="thumbnail-wrapper">
+		<div class="thumbnail" id="thumbnail-preview"
+		{% if thumbnail !== '' %}
+			style="background-image: url({{thumbnail|urlencode}}')"
+		{% end %}
+		></div>
+	</div>
 	<input type="hidden" name="thumbnail" id="thumbnail" size="40" value="{{ thumbnail|quotes }}" />
 	<input type="submit" id="thumbnail-browse" value="{"Choose"}" />
 </div>
@@ -27,8 +33,8 @@
 <p>{"Body"}: <span class="notice" id="body-notice">{"You must enter body content."}</span><br />
 <textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 
-<h4><a href="#" onclick="return webpage_show_extra_options (this)" class="extra-options-link"><span class="arrow arrow-off"></span>{"Extra Options"}</a></h4>
-<div id="extra-options">
+<h4>{"Extra Options"}</h4>
+
 <p>{"Published"}:
 <select name="published">
 {% foreach yes_no %}
@@ -45,7 +51,6 @@
 <p>{"Auto-post options"}:<br />
 <input type="checkbox" name="autopost_pom" id="autopost_pom" value="yes" {% if autopost_tw %}checked{% end %} /> <label for="autopost_pom">Ping-o-matic</label><br />
 </p>
-</div>
 
 {! admin/util/extended?extends=blog\Post&name=Blog+Posts&values=[extra|none]&id=[id] !}
 
@@ -71,9 +76,7 @@
 	right: 0;
 	width: 150px;
 }
-#thumbnail-preview {
-	width: 150px;
-	height: 100px;
+.thumbnail-wrapper {
 	margin-bottom: 5px;
 }
 </style>
@@ -101,7 +104,7 @@ $(function () {
 			title: "{"Choose an image"}",
 			thumbs: true,
 			callback: function (file) {
-				$('#thumbnail-preview').attr ('src', file);
+				$('#thumbnail-preview').css ('background-image', 'url(\'' + encodeURI (file) + '\')');
 			}
 		});
 	});

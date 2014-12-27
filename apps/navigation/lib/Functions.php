@@ -92,7 +92,16 @@ function navigation_get_other_pages ($ids) {
 	$pages = array ();
 	$res = DB::fetch ("select id, title, menu_title, access from #prefix#webpage where access != 'private'");
 
-	//Adds apps to Navigation
+	//Adds apps to Navigation, the new way
+	$nav = Appconf::options ('nav');
+	foreach ($nav as $id => $title) {
+		$appObj = new StdClass ();
+		$appObj->id = $id;
+		$appObj->title = $title;
+		$res[] = $appObj;
+	}
+
+	// Add apps to Navigation, the old way	
 	$apps = glob ('apps/*');
 	foreach ($apps as $app) {
 		$app = str_replace ('apps/', '', $app);

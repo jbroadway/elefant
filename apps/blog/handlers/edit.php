@@ -89,6 +89,7 @@ if ($f->submit ()) {
 	$p->failed = $f->failed;
 	$p = $f->merge_values ($p);
 	$page->title = __ ('Edit Blog Post') . ': ' . $p->title;
+	$page->add_script ('/apps/blog/css/related.css');
 	if (Appconf::blog ('Blog', 'post_format') === 'html') {
 		$this->run ('admin/util/wysiwyg');
 	} else {

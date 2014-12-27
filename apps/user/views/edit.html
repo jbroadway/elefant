@@ -13,12 +13,19 @@
 <span class="notice" id="verify_pass-notice">{"Your password doesn't match."}</span></p>
 
 {% if User::require_acl ('user/edit_roles') %}
-	<p>{"Member role"}:<br />
+	<p>{"Member role"}:
+	{% if ! in_array ($data->type, $data->types) %}
+		<input type="hidden" name="type" value="{{type}}" />
+		<b>{{type|ucfirst}}</b>
+	{% else %}
+	<br />
 	<select name="type">
 	{% foreach types %}
 		<option value="{{ loop_value }}"{% if type === $data->loop_value %} selected {% end %}>{{ loop_value|ucfirst }}</option>
 	{% end %}
-	</select></p>
+	</select>
+	{% end %}
+	</p>
 {% else %}
 	<input type="hidden" name="type" value="{{type}}" />
 {% end %}

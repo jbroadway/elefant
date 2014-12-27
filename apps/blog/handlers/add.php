@@ -64,6 +64,7 @@ if ($f->submit ()) {
 	$p = $f->merge_values ($p);
 	$p->tag_list = explode (',', $p->tags);
 	$page->title = __ ('Add Blog Post');
+	$page->add_script ('/apps/blog/css/related.css');
 	if (Appconf::blog ('Blog', 'post_format') === 'html') {
 		$this->run ('admin/util/wysiwyg');
 	} else {
