@@ -9,7 +9,7 @@ RedactorPlugins.imagebrowser = function () {
 	return {
 		// Initialize the plugin
 		init: function () {
-			var button = this.button.addAfter ('links', 'imagebrowser', $.i18n ('Dynamic Objects'));
+			var button = this.button.addAfter ('links', 'imagebrowser', $.i18n ('Insert Image'));
 			this.button.setAwesome ('imagebrowser', 'fa-picture-o');
 			this.button.addCallback (button, this.imagebrowser.open_image_dialog);
 		},

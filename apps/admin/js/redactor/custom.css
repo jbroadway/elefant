@@ -77,27 +77,42 @@
 }
 
 #redactor-modal-overlay {
+	z-index: 100001 !important;
 	background: #000;
 	opacity: 0.2;
 	filter: alpha(opacity=20);
 }
 
+#redactor-modal-box {
+	z-index: 100002 !important;
+}
+
 #redactor-modal {
+	z-index: 100002 !important;
 	-webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,.3);
 	-moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,.3);
 	box-shadow: 0px 1px 2px 0px rgba(0,0,0,.3);
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
 	border-radius: 0;
+	width: 550px !important;
+	max-width: 100% !important;
 }
 
 #redactor-modal-close {
 	color: #444;
 	border: 1px solid #aaa;
-	margin-top: 3px;
-	margin-right: 3px;
-	line-height: 18px;
+	margin: -2px -2px 0px 0px;
+	padding: 3px 5px 5px 5px;
+	line-height: 10px;
 	text-align: center;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	text-transform: lowercase;
+	text-decoration: none;
+	font-weight: normal;
+	height: 10px;
+	width: 8px;
 }
 
 #redactor-modal-close:hover {
@@ -125,7 +140,7 @@
 	border-radius: 0;
 }
 
-#redactor-modal-inner {
+#redactor-modal-body {
 	background: #fafafa;
 	border: 1px solid #fafafa;
 	border-top: 0px none;
@@ -134,8 +149,52 @@
 	overflow-y: auto;
 }
 
-	#redactor-modal-inner section {
+	#redactor-modal-body section {
 		padding: 0px 15px 0px 15px;
+	}
+	
+	#redactor-modal #redactor-modal-body label {
+		margin-bottom: 0px !important;
+	}
+	
+	#redactor-modal #redactor-modal-body input[type=text],
+	#redactor-modal #redactor-modal-body input[type=email],
+	#redactor-modal #redactor-modal-body input[type=password],
+	#redactor-modal #redactor-modal-body textarea {
+		font-size: 12px;
+		border: 1px solid #999;
+		-webkit-border-radius: 2px;
+		-moz-border-radius: 2px;
+		border-radius: 2px;
+		padding: 2px 4px;
+		text-shadow: 0 1px 0 #fff;
+		box-shadow: none;
+		height: 15px;
+		outline: none;
+		max-width: 95%;
+	}
+
+#redactor-modal .redactor-modal-btn {
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	text-shadow: none !important;
+}
+
+	#redactor-modal footer button.redactor-modal-close-btn:hover {
+		color: #333 !important;
+	}
+
+	#redactor-modal footer button.redactor-modal-delete-btn:hover {
+		color: #fff !important;
+	}
+
+	#redactor-modal footer button.redactor-modal-action-btn:hover {
+		color: #fff !important;
+	}
+	
+	#redactor-modal select {
+		width: auto;
 	}
 
 .links-btn {
@@ -167,10 +226,6 @@
 	display: none;
 }
 
-#redactor_modal label {
-	margin-bottom: 0px !important;
-}
-
 @media (max-width: 480px) {
 	div.redactor-box,
 	div.redactor-editor,
@@ -184,5 +239,11 @@
 	.redactor-toolbar li a.re-icon.re-outdent,
 	.redactor-toolbar li a.re-icon.re-html {
 		display: none;
+	}
+	
+	#redactor-modal select,
+	#redactor-modal input[type=checkbox],
+	#redactor-modal input[type=radio] {
+		width: auto !important;
 	}
 }
