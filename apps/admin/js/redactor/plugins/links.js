@@ -15,7 +15,7 @@ RedactorPlugins.links = function () {
 				'/admin/wysiwyg/links',
 				$.proxy (
 					function (res) {
-						this._links = res;
+						this.links._links = res;
 					},
 					this
 				)
@@ -33,9 +33,9 @@ RedactorPlugins.links = function () {
 	
 		// Initialize the plugin when the button is clicked
 		insert: function (self, evt, button) {
-			this.insert_link_node = false;
-			this.has_selected_text = false;
-			var sel = this.getCurrent (),
+			this.links.insert_link_node = false;
+			this.links.has_selected_text = false;
+			var sel = this.selection.getCurrent (),
 				url = '', text = '', target = '',
 				page_matched = false,
 				base = window.location.origin
@@ -43,36 +43,36 @@ RedactorPlugins.links = function () {
 					: window.location.protocol + '//' + window.location.host;
 
 			if (sel && sel.anchorNode && sel.anchorNode.parentNode.tagName === 'A') {
-				this.insert_link_node = sel.anchorNode.parentNode;
+				this.links.insert_link_node = sel.anchorNode.parentNode;
 				url = sel.anchorNode.parentNode.href;
 				text = sel.anchorNode.parentNode.text;
 				target = sel.anchorNode.parentNode.target;
 			} else if (sel.tagName && sel.tagName === 'A') {
-				this.insert_link_node = sel;
+				this.links.insert_link_node = sel;
 				url = sel.href;
 				text = sel.text;
 				target = sel.target;
 			} else {
-				var parent = this.getParent ();
+				var parent = this.selection.getParent ();
 				if (parent.nodeName === 'A') {
-					this.insert_link_node = $(parent);
-					text = this.insert_link_node.text ();
-					url = this.insert_link_node.attr ('href');
-					target = this.insert_link_node.attr ('target');
+					this.links.insert_link_node = $(parent);
+					text = this.links.insert_link_node.text ();
+					url = this.links.insert_link_node.attr ('href');
+					target = this.links.insert_link_node.attr ('target');
 				} else {
-					text = this.getSelectionText ();
+					text = this.selection.getText ();
 				}
 			}
 		
 			if (text.length !== 0) {
-				this.has_selected_text = true;
+				this.links.has_selected_text = true;
 			}
 		
 			if (url.search (base) === 0) {
 				url = url.replace (base, '');
 			}
 
-			this.selectionSave ();
+			this.selection.save ();
 
 			$.open_dialog (
 				$.i18n ('Link'),
@@ -105,42 +105,42 @@ RedactorPlugins.links = function () {
 				'</div>'
 			);
 
-			if (this._links) {
+			if (this.links._links) {
 				var sel = $('#links-page');
 				sel.append (
 					$('<option>')
 						.attr ('value', '')
 						.text ($.i18n ('- select -'))
 				);
-				for (var i in this._links) {
-					if (url === this._links[i].url) {
+				for (var i in this.links._links) {
+					if (url === this.links._links[i].url) {
 						sel.append (
 							$('<option>')
-								.attr ('value', this._links[i].url)
-								.text (this._links[i].title)
+								.attr ('value', this.links._links[i].url)
+								.text (this.links._links[i].title)
 								.attr ('selected', 'selected')
 						);
 						page_matched = true;
 					} else {
 						sel.append (
 							$('<option>')
-								.attr ('value', this._links[i].url)
-								.text (this._links[i].title)
+								.attr ('value', this.links._links[i].url)
+								.text (this.links._links[i].title)
 						);
 					}
 				}
 			}
 
 			if (page_matched) {
-				this.show_pages ();
+				this.links.show_pages ();
 			} else if (url.search ('mailto:') === 0) {
 				$('#links-email').val (url.replace ('mailto:', ''));
-				this.show_email ();
+				this.links.show_email ();
 			} else if (url.length !== 0) {
 				$('#links-url').val (url);
-				this.show_url ();
+				this.links.show_url ();
 			} else {
-				this.show_url ();
+				this.links.show_url ();
 			}
 
 			$('#links-text').val (text);
@@ -149,19 +149,19 @@ RedactorPlugins.links = function () {
 				$('#links-tab').attr ('checked', 'checked');
 			}
 
-			$('#links-page-btn').click ($.proxy (this.show_pages, this));
-			$('#links-url-btn').click ($.proxy (this.show_url, this));
-			$('#links-email-btn').click ($.proxy (this.show_email, this));
+			$('#links-page-btn').click ($.proxy (this.links.show_pages, this));
+			$('#links-url-btn').click ($.proxy (this.links.show_url, this));
+			$('#links-email-btn').click ($.proxy (this.links.show_email, this));
 			$('#links-cancel').click (function () { $.close_dialog (); });
-			$('#links-submit').click ($.proxy (this.handle, this));
+			$('#links-submit').click ($.proxy (this.links.handle, this));
 		},
 
 		// Insert or update the link
 		handle: function () {
-			this.selectionRestore ();
-			this.bufferSet ();
+			this.selection.restore ();
+			this.buffer.set ();
 		
-			var active = this.links_active,
+			var active = this.links.links_active,
 				page = $('#links-page').find (':selected').val (),
 				url = $('#links-url').val (),
 				email = $('#links-email').val (),
@@ -177,21 +177,22 @@ RedactorPlugins.links = function () {
 				href = 'mailto:' + email;
 			}
 
-			if (this.insert_link_node) {
-				$(this.insert_link_node).text (text);
-				$(this.insert_link_node).attr ('href', href);
+			if (this.links.insert_link_node) {
+				$(this.links.insert_link_node).text (text);
+				$(this.links.insert_link_node).attr ('href', href);
 				if (target) {
-					$(this.insert_link_node).attr ('target', '_blank');
+					$(this.links.insert_link_node).attr ('target', '_blank');
 				} else {
-					$(this.insert_link_node).removeAttr ('target');
+					$(this.links.insert_link_node).removeAttr ('target');
 				}
+				this.code.sync ();
 			} else {
 				var html = '<a href="' + href + '"';
 				if (target) {
 					html += ' target="_blank"';
 				}
 				html += '>' + text + '</a>';
-				this.insertHtml (html);
+				this.insert.html (html);
 			}
 
 			$.close_dialog ();
@@ -199,7 +200,7 @@ RedactorPlugins.links = function () {
 	
 		// Show the pages list
 		show_pages: function () {
-			this.links_active = 'page';
+			this.links.links_active = 'page';
 			$('#links-page-btn').addClass ('active');
 			$('#links-url-btn').removeClass ('active');
 			$('#links-email-btn').removeClass ('active');
@@ -210,7 +211,7 @@ RedactorPlugins.links = function () {
 	
 		// Show the URL input
 		show_url: function () {
-			this.links_active = 'url';
+			this.links.links_active = 'url';
 			$('#links-page-btn').removeClass ('active');
 			$('#links-url-btn').addClass ('active');
 			$('#links-email-btn').removeClass ('active');
@@ -221,7 +222,7 @@ RedactorPlugins.links = function () {
 	
 		// Show the email input
 		show_email: function () {
-			this.links_active = 'email';
+			this.links.links_active = 'email';
 			$('#links-page-btn').removeClass ('active');
 			$('#links-url-btn').removeClass ('active');
 			$('#links-email-btn').addClass ('active');
