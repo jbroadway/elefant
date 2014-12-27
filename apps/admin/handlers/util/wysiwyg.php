@@ -26,8 +26,6 @@
  */
 
 $this->run ('admin/util/fontawesome');
-$this->run ('admin/util/dynamicobjects');
-$this->run ('filemanager/util/browser');
 $this->run ('admin/util/redactor');
 
 $page->add_style ('/js/jquery-ui/jquery-ui.css');
@@ -42,8 +40,11 @@ $page->add_script ('/apps/admin/js/redactor/plugins/dynamic.js');
 $page->add_script (I18n::export (
 	'Dynamic Objects',
 	'Link',
+	'Links',
 	'Page',
 	'Insert',
+	'Insert Link',
+	'Unlink',
 	'URL',
 	'Email',
 	'Text',
@@ -62,7 +63,29 @@ if (file_exists ('apps/admin/js/redactor/lang/' . $i18n->language . '_' . $i18n-
 	$data['language'] = 'en';
 }
 
+if (User::require_admin ()) {
+	$this->run ('admin/util/dynamicobjects');
+	$this->run ('filemanager/util/browser');
+	$page->add_script ('/apps/admin/js/redactor/plugins/links.js');
+	$page->add_script ('/apps/admin/js/redactor/plugins/imagebrowser.js');
+	$page->add_script ('/apps/admin/js/redactor/plugins/filebrowser.js');
+	$page->add_script ('/apps/admin/js/redactor/plugins/dynamic.js');
+
+	$data['buttons'] = array (
+		'formatting', 'bold', 'italic', 'deleted', 'alignment', 'horizontalrule',
+		'unorderedlist', 'orderedlist', 'outdent', 'indent', 'links', 'imagebrowser',
+		'filebrowser', 'table', 'undo', 'html', 'dynamic'
+	);
+} else {
+	$data['buttons'] = array (
+		'formatting', 'bold', 'italic', 'deleted', 'alignment', 'horizontalrule',
+		'unorderedlist', 'orderedlist', 'outdent', 'indent', 'link',
+		'table', 'undo', 'html'
+	);
+}
+
 $data['field_id'] = isset ($data['field_id'])
 	? (($data['field_id'] === '0' || empty ($data['field_id'])) ? false : $data['field_id'])
 	: 'webpage-body';
+
 $page->add_script ($tpl->render ('admin/util/wysiwyg', $data));
