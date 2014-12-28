@@ -58,12 +58,12 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	
 	.e-grid-row-delete-button {
 		border-left: 0px none;
-		right: -68px;
+		left: -45px;
 	}
 	
 	.e-grid-row-edit-button {
 		border-right: 0px none;
-		right: -38px;
+		left: -75px;
 	}
 	
 	.e-grid-row-delete-button:hover,
@@ -74,11 +74,31 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	}
 	
 	.e-grid-fixed .e-grid-row-delete-button {
-		right: 20px;
+		left: 50px;
 	}
 	
 	.e-grid-fixed .e-grid-row-edit-button {
-		right: 50px;
+		left: 20px;
+	}
+	
+	@media (max-width: 768px) {
+		.e-grid-row-delete-button {
+			left: 30px !important;
+		}
+		
+		.e-grid-row-edit-button {
+			left: 0px !important;
+		}
+	}
+	
+	@media (max-width: 480px) {
+		.e-grid-row-delete-button {
+			left: 30px !important;
+		}
+		
+		.e-grid-row-edit-button {
+			left: 0px !important;
+		}
 	}
 	
 	.is-preview .e-grid-row-delete-button,
