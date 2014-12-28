@@ -30,7 +30,7 @@
 			variable: true,
 			fixed: false,
 			inset: false,
-			equal_height: false,
+			equal_heights: false,
 			height: '',
 			units: '100',
 			id: '',
@@ -389,7 +389,8 @@
 			});
 		}
 		
-		$row.removeClass ('e-grid-edit')
+		$row.data ('_row', row)
+			.removeClass ('e-grid-edit')
 			.html (tpl.row (row))
 			.append (tpl.edit_buttons ({}));
 	}
@@ -411,12 +412,13 @@
 		$row.replaceWith ($new_row);
 		$row = $new_row;
 		$row.data ('_row', row);
+		$row.data ('_units', row.units);
 		$row.data ('_prev', prev);
 
 		// show/hide unit options
 		$row.find ('.e-grid-icon').css ({display: 'none'});
 		for (var u in $this.opts.units) {
-			$row.find ('.e-grid-icon-' + $this.opts.units[u].replace (/,/g, '-')).css ({display: 'inline-block'});
+			$row.find ('.e-grid-icon-' + $this.opts.units[u].toString ().replace (/,/g, '-')).css ({display: 'inline-block'});
 		}
 		
 		$row.find ('.e-grid-toggle a')				.click  (toggle_active_tab);
@@ -430,6 +432,35 @@
 		$row.find ('.e-grid-toggle-equal-heights')	.change ($.proxy (toggle_equal_heights, $this));
 		$row.find ('.e-grid-toggle-fixed')			.change ($.proxy (toggle_fixed, $this));
 		$row.find ('.e-grid-toggle-inset')			.change ($.proxy (toggle_inset, $this));
+
+		// set form values
+		$row.find ('.e-grid-icon-' + row.units.toString ().replace (/,/g, '-')).trigger ('click');
+		if (row.css_class !== '') {
+			$row.find ('.e-grid-select-style').val (row.css_class).change ();
+		}
+		if (row.bg_image !== '') {
+			$row.css ({
+				'background-image': 'url(\'' + row.bg_image + '\')',
+				'background-repeat': 'no-repeat',
+				'background-position': 'center top',
+				'-webkit-background-size': 'cover',
+				'-moz-background-size': 'cover',
+				'-o-background-size': 'cover',
+				'background-size': 'cover'
+			});
+		}
+		if (row.height !== '') {
+			$row.find ('.e-grid-set-height').val (row.height).change ();
+		}
+		if (row.equal_heights) {
+			$row.find ('.e-grid-toggle-equal-heights').attr ('checked', true).change ();
+		}
+		if (row.fixed) {
+			$row.find ('.e-grid-toggle-fixed').attr ('checked', true).change ();
+		}
+		if (row.inset) {
+			$row.find ('.e-grid-toggle-inset').attr ('checked', true).change ();
+		}
 	}
 
 	// Update row from edit row form.
@@ -439,12 +470,36 @@
 		
 		var $this = this,
 			$row = $(e.target).closest ('.e-grid-row'),
-			row = $row.data ('_row');
+			row = $row.data ('_row'),
+			old_units = $row.data ('_units');
 		
-		$row.removeClass ('e-grid-edit')
-			.html (tpl.row (row));
+		// Update grid cols if changed
+		if (row.units != old_units) {
+			var units = row.units.toString ().split (/,/g);
+			for (var i = 0; i < units.length; i++) {
+				if (typeof row.cols[i] !== 'undefined') {
+					row.cols[i].unit = units[i].toString ();
+				} else {
+					row.cols[i] = {
+						unit: units[i],
+						content: '',
+						rendered: tpl.icons ({}),
+						empty: true,
+						id: row.id,
+						row: row.row,
+						col: i
+					};
+				}
+			}
+			row.cols = row.cols.slice (0, units.length);
+		}
 		
-		// TODO: Update row settings
+		console.log (row.cols);
+		
+		$row.data ('_row', row)
+			.removeClass ('e-grid-edit')
+			.html (tpl.row (row))
+			.append (tpl.edit_buttons ({}));
 	}
 
 	// Edit the contents of a cell.
