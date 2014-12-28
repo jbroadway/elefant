@@ -71,10 +71,27 @@
 					} else {
 						script.innerHTML = body;
 					}
+				} else if (tag == 'link') {
+					if ($script.attr ('rel') === 'stylesheet') {
+						script = document.createElement ('link');
+						script.href = $script.attr ('href');
+						script.type = 'text/css';
+						script.rel = 'stylesheet';
+					} else {
+						script = false;
+					}
+				} else if (tag == 'style') {
+					script = document.createElement ('style');
+					script.type = 'text/css';
+					script.innerHtml = body;
+				} else {
+					script = false;
 				}
 
-				document.body.appendChild (script);
-				scripts.push (load[i]);
+				if (script) {
+					document.body.appendChild (script);
+					scripts.push (load[i]);
+				}
 			}
 		}
 	}
@@ -326,7 +343,7 @@
 
 		var $this = this,
 			$add = $(e.target),
-			row = $.extend (base_row, {
+			row = {
 				id: $this.data ('id'),
 				row: $this.rows ().length,
 				css_class: '',
@@ -336,7 +353,7 @@
 				height: '',
 				styles: $this.opts.styles,
 				units: '100'
-			}),
+			},
 			$row = $(tpl.add (row));
 
 		// show/hide unit options
@@ -345,8 +362,8 @@
 			$row.find ('.e-grid-icon-' + $this.opts.units[u].replace (/,/g, '-')).css ({display: 'inline-block'});
 		}
 		
-		$row.insertBefore ($add.closest ('.e-grid-add-button'))
-			.data ('_row', row)
+		$row.data ('_row', row)
+			.insertBefore ($add.closest ('.e-grid-add-button'))
 			.velocity ('slideDown', 500);
 
 		$('html,body').animate ({
