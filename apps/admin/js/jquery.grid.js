@@ -494,8 +494,6 @@
 			row.cols = row.cols.slice (0, units.length);
 		}
 		
-		console.log (row.cols);
-		
 		$row.data ('_row', row)
 			.removeClass ('e-grid-edit')
 			.html (tpl.row (row))
@@ -523,6 +521,7 @@
 			$row = $col.closest ('.e-grid-row'),
 			row = $row.data ('_row');
 
+		// TODO: Edit text content
 		console.log (col);
 		console.log (row);
 	}
@@ -551,11 +550,14 @@
 
 				$.post ($this.opts.api + '/update_column', data, function (res) {
 					load_embed_scripts (res.data.scripts);
-					col.content = html;
-					col.rendered = res.data.html;
+					row.cols[col].content = html;
+					row.cols[col].rendered = res.data.html;
+					row.cols[col].empty = false;
 					$col.data ('col', col)
 						.removeClass ('e-grid-col-empty')
 						.html (res.data.html);
+
+					$row.data ('_row', row);
 				});
 			}
 		});
@@ -583,11 +585,14 @@
 
 				$.post ($this.opts.api + '/update_column', data, function (res) {
 					load_embed_scripts (res.data.scripts);
-					col.content = html;
-					col.rendered = res.data.html;
+					row.cols[col].content = html;
+					row.cols[col].rendered = res.data.html;
+					row.cols[col].empty = false;
 					$col.data ('col', col)
 						.removeClass ('e-grid-col-empty')
 						.html (res.data.html);
+					
+					$row.data ('_row', row);
 				});
 			}
 		});
@@ -614,11 +619,14 @@
 
 				$.post ($this.opts.api + '/update_column', data, function (res) {
 					load_embed_scripts (res.data.scripts);
-					col.content = html;
-					col.rendered = res.data.html;
+					row.cols[col].content = html;
+					row.cols[col].rendered = res.data.html;
+					row.cols[col].empty = false;
 					$col.data ('col', col)
 						.removeClass ('e-grid-col-empty')
 						.html (res.data.html);
+					
+					$row.data ('_row', row);
 				});
 			}
 		});
