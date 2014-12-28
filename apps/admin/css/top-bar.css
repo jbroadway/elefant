@@ -322,51 +322,37 @@ p.admin-options a {
 	margin: 0;
 	padding: 0;
 	border: 0;
-	width: 26px;
+	width: 29px;
 	height: 24px;
 	background-color: #f5f5f5;
-	background-repeat: no-repeat;
-	background-image: url(/apps/admin/css/admin/editable-sprite-dark.png);
+}
+
+p.admin-options a {
+	color: #333;
 }
 
 #preview-bar a {
-	background-image: url(/apps/admin/css/admin/editable-sprite-violett.png);
+	color: #93278f;
+	width: 26px;
 }
 
 #preview-bar a:hover,
 .admin-options a:hover {
-	background: #f5f5f5;
-	background-image: url(/apps/admin/css/admin/editable-sprite-dark.png);
+	background: #eee;
 	text-decoration: none !important;
 	margin: 0;
 	padding: 0;
+	color: #111;
 }
 
-#preview-bar a:hover {
-    background-image: url(/apps/admin/css/admin/editable-sprite-violett.png);
+#preview-bar a i {
+	padding: 5px 5px 0px 0px;
 }
 
-	.admin-options a.editable-add {
-		background-position: 0px 0px;
-	}
-
-    #preview-bar a,
-    #preview-bar a:hover,
-    .admin-options a.editable-edit {
-		background-position: -26px 0px;
-	}
-
-	.admin-options a.editable-delete {
-		background-position: -52px 0px;
-	}
-
-	.admin-options a.editable-versions {
-		background-position: -78px 0px;
-	}
-
-	.admin-options a.editable-lock {
-		background-position: -104px 0px;
-	}
+.admin-options a i {
+	padding: 5px 0px 0px 7px;
+	line-height: 16px;
+}
 
 .admin-tooltip {
 	position: absolute;
@@ -445,8 +431,6 @@ p.admin-options a {
 	border-right: 0px;
 	/*background-color: #ddd;
 	background-color: rgba(220,220,220,.95);*/
-    background-image: url(/apps/admin/css/admin/editable-sprite-dark.png);
-	background-position: -26px 0px;
 	position: relative;
 }
 
@@ -467,7 +451,7 @@ p.admin-options a {
 	padding-top: 3px;
 	padding-left: 3px;
 	padding-right: 5px;
-	background-color: #f5f5f5;
+	background-color: #eee;
 	border: 2px solid #666;
 	border-left: 0px;
 	color: #222;

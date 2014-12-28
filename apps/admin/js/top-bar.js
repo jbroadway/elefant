@@ -150,7 +150,7 @@ $(function () {
 	var sliding_up = false;
 
 	// fetch data for admin toolbar
-	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img id="admin-logo" src="/apps/admin/css/admin/spacer.png" alt="" /></a></div><div id="preview-bar"><a href="#" class="admin-tools-hide-preview" data-title="'+$.i18n("Back to Edit Mode")+'"></a></div>');
+	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img id="admin-logo" src="/apps/admin/css/admin/spacer.png" alt="" /></a></div><div id="preview-bar"><a href="#" class="admin-tools-hide-preview" data-title="'+$.i18n("Back to Edit Mode")+'"><i class="fa fa-lg fa-pencil"></i></a></div>');
 	$.get ('/admin/head/links', function (res) {
 		$('#admin-logo').attr ('src', res.logo).attr ('alt', res.name);
 		$('#admin-links').append (res.links);
