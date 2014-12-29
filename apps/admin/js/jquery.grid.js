@@ -577,9 +577,6 @@
 		$div.wysiwyg ({
 			startCallback: function () {
 				var marker = this.selection.getMarker ();
-				//try {
-					this.insert.node (marker);
-				//} catch (e) {}
 			},
 			initCallback: function () {
 				this.selection.restore ();
