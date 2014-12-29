@@ -349,10 +349,12 @@
 				id: $this.data ('id'),
 				row: $this.rows ().length,
 				css_class: '',
+				bg_image: '',
 				variable: $this.opts.variable,
 				fixed: false,
 				inset: false,
 				height: '',
+				equal_heights: false,
 				styles: $this.opts.styles,
 				units: '100'
 			},
@@ -409,10 +411,29 @@
 			});
 		}
 		
-		$row.data ('_row', row)
-			.removeClass ('e-grid-edit')
-			.html (tpl.row (row))
-			.append (tpl.edit_buttons ({}));
+		var data = {
+			id: row.id,
+			units: row.units,
+			cols: [],
+			css_class: row.css_class,
+			bg_image: row.bg_image,
+			inset: row.inset ? 1 : 0,
+			fixed: row.fixed ? 1 : 0,
+			height: row.height,
+			equal_heights: row.equal_heights ? 1 : 0
+		};
+		for (var i = 0; i < row.cols.length; i++) {
+			data.cols[i] = row.cols[i].content;
+		}
+		console.log (data);
+		
+		$.post ($this.opts.api + '/add_row', data, function (res) {
+			console.log (res.data);
+			$row.data ('_row', row)
+				.removeClass ('e-grid-edit')
+				.html (tpl.row (row))
+				.append (tpl.edit_buttons ({}));
+		});
 	}
 	
 	// Create edit row form.
@@ -709,6 +730,21 @@
 		var $this = this;
 
 		return $this.children ('.e-grid-row');
+	}
+	
+	// Fetch all row data.
+	function get_data ($grid) {
+		var rows = [];
+		
+		$grid.children ('.e-grid-row').each (function () {
+			var row = $(this).data ('_row');
+			for (var i = 0; i < row.cols.length; i++) {
+				row.cols[i] = row.cols[i].content;
+			}
+			rows.push (row);
+		});
+		
+		return rows;
 	}
 	
 	// Fetch row for an element within it.
