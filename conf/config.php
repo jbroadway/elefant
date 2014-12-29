@@ -43,6 +43,12 @@ compress_output = On
 
 page_url_style = flat
 
+; Set this to 'grid' to enable the grid-based page editor.
+; Set this to 'classic' to enable single page body field with
+; wysiwyg editor.
+
+page_editor = grid
+
 ; The domain to set the session cookie for. If set to 'full'
 ; (the default) it will set it to the full domain of the current
 ; request, including subdomain. If set to 'top', it will set
