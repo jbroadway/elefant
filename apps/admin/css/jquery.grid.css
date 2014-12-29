@@ -121,13 +121,22 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	color: #000;
 }
 
-	.e-grid-edit a {
+	.e-grid-edit a,
+	.e-grid-link {
 		color: #93278f;
 		text-decoration: none;
+		font-family: Helvetica, Arial, sans-serif;
+		font-size: 13px;
+		font-weight: normal;
 	}
 
-	.e-grid-edit a:hover {
+	.e-grid-edit a:hover,
+	.e-grid-link a:hover {
 		color: #B347AF;
+		text-decoration: none;
+		font-family: Helvetica, Arial, sans-serif;
+		font-size: 13px;
+		font-weight: normal;
 	}
 
 .e-grid-col {
@@ -135,7 +144,7 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	border: 1px dashed #d5d9dc;
-	padding: 3px;
+	padding: 3px 10px 3px 10px;
 }
 
 .e-grid-col:hover {

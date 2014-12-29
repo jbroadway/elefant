@@ -573,11 +573,13 @@
 
 		// Edit text content
 		$div = $('<div></div>').addClass ('e-col-editor');
-		$col.removeClass ('e-grid-col-empty').addClass ('e-col-editing').html ($div);
+		$col.data ('_prev', $col.html ()).removeClass ('e-grid-col-empty').addClass ('e-col-editing').html ($div);
 		$div.wysiwyg ({
 			startCallback: function () {
 				var marker = this.selection.getMarker ();
-				this.insert.node (marker);
+				//try {
+					this.insert.node (marker);
+				//} catch (e) {}
 			},
 			initCallback: function () {
 				this.selection.restore ();
@@ -586,7 +588,7 @@
 		});
 
 		$save = $(tpl.save_button ({}));
-		$save.click ($.proxy (function (e) {
+		$save.find ('button.e-grid-button').click ($.proxy (function (e) {
 			e.preventDefault ();
 
 			var $this = this,
@@ -615,6 +617,20 @@
 
 				$row.data ('_row', row);
 			});
+		}, $this));
+
+		$save.find ('a.e-grid-cancel-link').click ($.proxy (function (e) {
+			e.preventDefault ();
+
+			var $this = this,
+				$cancel = $(e.target),
+				$col = $save.closest ('.e-grid-col'),
+				prev = $col.data ('_prev'),
+				$row = $cancel.closest ('.e-grid-row'),
+				$div = $col.find ('.e-col-editor');
+
+			$div.redactor ('core.destroy');
+			$col.removeClass ('e-col-editing').html (prev);
 		}, $this));
 		$col.append ($save);
 	}

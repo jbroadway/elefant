@@ -6,6 +6,7 @@ use \admin\Grid;
 use \Restful;
 use \FileManager;
 use \Webpage;
+use \Versions;
 
 class API extends Restful {
 	/**
@@ -42,6 +43,8 @@ class API extends Restful {
 		if (! $p->put ()) {
 			return $this->error (__ ('Unexpected error.'));
 		}
+		
+		Versions::add ($p);
 
 		// render and return
 		$this->controller->add_notification (__ ('Changes saved.'));
@@ -84,6 +87,8 @@ class API extends Restful {
 		if (! $p->put ()) {
 			return $this->error (__ ('Unexpected error.'));
 		}
+		
+		Versions::add ($p);
 
 		// render and return
 		$this->controller->add_notification (__ ('Changes saved.'));
@@ -167,6 +172,8 @@ class API extends Restful {
 		if (! $p->put ()) {
 			return $this->error (__ ('Unexpected error.'));
 		}
+		
+		Versions::add ($p);
 
 		// render and return
 		$this->controller->add_notification (__ ('Changes saved.'));
@@ -209,6 +216,8 @@ class API extends Restful {
 		if (! $p->put ()) {
 			return $this->error (__ ('Unexpected error.'));
 		}
+		
+		Versions::add ($p);
 
 		// render and return
 		$this->controller->add_notification (__ ('Changes saved.'));
