@@ -556,16 +556,22 @@
 			},
 			initCallback: function () {
 				this.selection.restore ();
-				console.log (row.cols[col].content);
 				this.code.set (row.cols[col].content);
 			}
 		});
 
 		$save = $(tpl.save_button ({}));
-		$save.click (function (e) {
+		$save.click ($.proxy (function (e) {
 			e.preventDefault ();
 
-			var html = $div.redactor ('code.get'),
+			var $this = this,
+				$save = $(e.target),
+				$col = $save.closest ('.e-grid-col'),
+				col = $col.data ('col'),
+				$row = $col.closest ('.e-grid-row'),
+				row = $row.data ('_row'),
+				$div = $col.find ('.e-col-editor'),
+				html = $div.redactor ('code.get'),
 				data = {id: row.id, row: row.row, col: col, content: html};
 
 			$.post ($this.opts.api + '/update_column', data, function (res) {
@@ -584,7 +590,7 @@
 
 				$row.data ('_row', row);
 			});
-		});
+		}, $this));
 		$col.append ($save);
 	}
 	
