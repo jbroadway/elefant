@@ -19,7 +19,8 @@
 			edit:			'#tpl-grid-edit',
 			icons:			'#tpl-grid-icons',
 			add_button:		'#tpl-grid-add-button',
-			edit_buttons:	'#tpl-grid-edit-buttons'
+			edit_buttons:	'#tpl-grid-edit-buttons',
+			save_button:	'#tpl-grid-save-button'
 		}
 		i18n = {
 			choose_bg: 'Choose a background image'
@@ -40,7 +41,8 @@
 			col: 0,
 			unit: '100',
 			content: '',
-			rendered: ''
+			rendered: '',
+			editing: false
 		},
 		rows = [],
 		scripts = [];
@@ -400,6 +402,7 @@
 				content: '',
 				rendered: tpl.icons ({}),
 				empty: true,
+				editing: false,
 				id: row.id,
 				row: row.row,
 				col: i
@@ -502,6 +505,7 @@
 						content: '',
 						rendered: tpl.icons ({}),
 						empty: true,
+						editing: false,
 						id: row.id,
 						row: row.row,
 						col: i
@@ -523,12 +527,9 @@
 		var $target = $(e.target);
 
 		if (e.target.nodeName.toLowerCase () === 'a' && ! $(e.target).hasClass ('e-col-edit')) {
-			console.log ('let it bubble');
+			// let it bubble
 			return;
 		}
-
-		e.preventDefault ();
-		console.log ('edit_col');
 		
 		var $this = this,
 			$col = $(e.target).hasClass ('e-grid-col')
@@ -538,9 +539,53 @@
 			$row = $col.closest ('.e-grid-row'),
 			row = $row.data ('_row');
 
-		// TODO: Edit text content
-		console.log (col);
-		console.log (row);
+		if ($col.hasClass ('e-col-editing')) {
+			// already editing, don't re-initialize
+			return;
+		}
+
+		e.preventDefault ();
+
+		// Edit text content
+		$div = $('<div></div>').addClass ('e-col-editor');
+		$col.removeClass ('e-grid-col-empty').addClass ('e-col-editing').html ($div);
+		$div.wysiwyg ({
+			startCallback: function () {
+				var marker = this.selection.getMarker ();
+				this.insert.node (marker);
+			},
+			initCallback: function () {
+				this.selection.restore ();
+				console.log (row.cols[col].content);
+				this.code.set (row.cols[col].content);
+			}
+		});
+
+		$save = $(tpl.save_button ({}));
+		$save.click (function (e) {
+			e.preventDefault ();
+
+			var html = $div.redactor ('code.get'),
+				data = {id: row.id, row: row.row, col: col, content: html};
+
+			$.post ($this.opts.api + '/update_column', data, function (res) {
+				load_embed_scripts (res.data.scripts);
+
+				row.cols[col].content = html;
+				row.cols[col].rendered = res.data.html;
+				row.cols[col].empty = false;
+				row.cols[col].editing = false;
+
+				$div.redactor ('core.destroy');
+
+				$col.data ('col', col)
+					.removeClass ('e-col-editing')
+					.html (res.data.html);
+
+				$row.data ('_row', row);
+			});
+		});
+		$col.append ($save);
 	}
 	
 	// Add a photo to the cell.
@@ -570,6 +615,7 @@
 					row.cols[col].content = html;
 					row.cols[col].rendered = res.data.html;
 					row.cols[col].empty = false;
+					row.cols[col].editing = false;
 					$col.data ('col', col)
 						.removeClass ('e-grid-col-empty')
 						.html (res.data.html);
@@ -605,6 +651,7 @@
 					row.cols[col].content = html;
 					row.cols[col].rendered = res.data.html;
 					row.cols[col].empty = false;
+					row.cols[col].editing = false;
 					$col.data ('col', col)
 						.removeClass ('e-grid-col-empty')
 						.html (res.data.html);
@@ -639,6 +686,7 @@
 					row.cols[col].content = html;
 					row.cols[col].rendered = res.data.html;
 					row.cols[col].empty = false;
+					row.cols[col].editing = false;
 					$col.data ('col', col)
 						.removeClass ('e-grid-col-empty')
 						.html (res.data.html);
@@ -741,6 +789,7 @@
 							content: $this.opts.grid[r].cols[c],
 							rendered: $(this).find ('.e-grid-col')[c].innerHTML,
 							empty: ($this.opts.grid[r].cols[c].length === 0) ? true : false,
+							editing: false,
 							id: $this.opts.id,
 							row: r,
 							col: c
