@@ -139,19 +139,24 @@
 		e.preventDefault ();
 		
 		var $this = this,
-			$cancel = $(e.target);
+			$cancel = $(e.target),
+			$row = $cancel.closest ('.e-grid-row'),
+			row = $row.data ('row'),
+			data = {id: $this.opts.id, row: row};
 		
-		$cancel
-			.closest ('.e-grid-row')
-			.velocity (
-				'slideUp',
-				{
-					duration: 500,
-					complete: function () {
-						$(this).remove ();
+		$.post ($this.opts.api + '/delete_row', data, function (res) {
+			$cancel
+				.closest ('.e-grid-row')
+				.velocity (
+					'slideUp',
+					{
+						duration: 500,
+						complete: function () {
+							$(this).remove ();
+						}
 					}
-				}
-			);
+				);
+		});
 	}
 	
 	// Select a grid choice
@@ -428,7 +433,6 @@
 		console.log (data);
 		
 		$.post ($this.opts.api + '/add_row', data, function (res) {
-			console.log (res.data);
 			$row.data ('_row', row)
 				.removeClass ('e-grid-edit')
 				.html (tpl.row (row))
@@ -593,7 +597,7 @@
 				row = $row.data ('_row'),
 				$div = $col.find ('.e-col-editor'),
 				html = $div.redactor ('code.get'),
-				data = {id: row.id, row: row.row, col: col, content: html};
+				data = {id: $this.opts.id, row: $row.data ('row'), col: col, content: html};
 
 			$.post ($this.opts.api + '/update_column', data, function (res) {
 				load_embed_scripts (res.data.scripts);
@@ -635,7 +639,7 @@
 			thumbs: true,
 			callback: function (file) {
 				var html = '<img src="' + encodeURI (file) + '" alt="" />',
-					data = {id: row.id, row: row.row, col: col, content: html};
+					data = {id: $this.opts.id, row: $row.data ('row'), col: col, content: html};
 
 				$.post ($this.opts.api + '/update_column', data, function (res) {
 					load_embed_scripts (res.data.scripts);
@@ -671,7 +675,7 @@
 			current: 'social/video/youtube?url=&width=100%25&height=auto',
 			callback: function (embed_code, handler, params, label) {
 				var html = '<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>',
-					data = {id: row.id, row: row.row, col: col, content: html};
+					data = {id: $this.opts.id, row: $row.data ('row'), col: col, content: html};
 
 				$.post ($this.opts.api + '/update_column', data, function (res) {
 					load_embed_scripts (res.data.scripts);
@@ -706,7 +710,7 @@
 		$.dynamicobjects ({
 			callback: function (embed_code, handler, params, label) {
 				var html = '<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>',
-					data = {id: row.id, row: row.row, col: col, content: html};
+					data = {id: $this.opts.id, row: $row.data ('row'), col: col, content: html};
 
 				$.post ($this.opts.api + '/update_column', data, function (res) {
 					load_embed_scripts (res.data.scripts);

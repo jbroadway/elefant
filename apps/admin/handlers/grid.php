@@ -97,18 +97,21 @@ foreach ($grid as $r => $row) {
 	if ($row->inset) {
 		echo ' e-inset';
 	}
-	if ($row->height !== '') {
-		echo '" style="height: ' . $row->height . 'px';
-	}
 	echo '" id="e-row-' . $id . '-' . $r . '" data-id="' . $id . '" data-row="' . $r . '"';
 	if ($row->bg_image !== '') {
-		echo ' style="background: url(\'' . Template::sanitize ($row->bg_image) . '\');'
+		echo ' style="background-image: url(\'' . Template::sanitize ($row->bg_image) . '\');'
 			. ' background-repeat: no-repeat;'
 			. ' background-position: center top;'
 			. ' -webkit-background-size: cover;'
 			. ' -moz-background-size: cover;'
 			. ' -o-background-size: cover;'
-			. ' background-size: cover;"';
+			. ' background-size: cover;';
+		if ($row->height !== '') {
+			echo ' height: ' . $row->height . 'px';
+		}
+		echo '"';
+	} elseif ($row->height !== '') {
+		echo ' style="height: ' . $row->height . 'px"';
 	}
 	echo ">\n";
 	

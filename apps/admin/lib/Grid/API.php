@@ -33,8 +33,8 @@ class API extends Restful {
 		$p = new Webpage ($_POST['id']);
 		if ($p->error) return $this->error (__ ('Error: Page not found.'));
 
-		$grid = $page->body ();
-		if (! $g->update ($_POST['row'], $_POST['col'], $_POST['content'])) {
+		$grid = $p->body ();
+		if (! $grid->update ($_POST['row'], $_POST['col'], $_POST['content'])) {
 			return $this->error (__ ('Error: Column not found.'));
 		}
 		$g = $grid->all ();
@@ -73,9 +73,9 @@ class API extends Restful {
 		$p = new Webpage ($_POST['id']);
 		if ($p->error) return $this->error (__ ('Error: Page not found.'));
 
-		$grid = $page->body ();
+		$grid = $p->body ();
 		foreach ($_POST['properties'] as $property => $value) {
-			if ($g->property ($_POST['row'], $property, $value) === null) {
+			if ($grid->property ($_POST['row'], $property, $value) === null) {
 				return $this->error (__ ('Error: Row not found.'));
 			}
 		}
@@ -124,7 +124,7 @@ class API extends Restful {
 			? $_POST['css_class']
 			: '';
 		
-		$bg_image = (isset ($_POST['bg_image']) && FileManager::verify_file ($_POST['bg_image']))
+		$bg_image = isset ($_POST['bg_image'])
 			? $_POST['bg_image']
 			: '';
 		
@@ -193,5 +193,25 @@ class API extends Restful {
 	 * @param row
 	 */
 	public function post_delete_row () {
+		// verify values
+		if (! isset ($_POST['id'])) return $this->error (__ ('Error: Missing page ID.'));
+		if (! isset ($_POST['row'])) return $this->error (__ ('Error: Missing row.'));
+		if (! is_numeric ($_POST['row'])) return $this->error (__ ('Error: Invalid row.'));
+		
+		// save changes
+		$p = new Webpage ($_POST['id']);
+		if ($p->error) return $this->error (__ ('Error: Page not found.'));
+
+		$grid = $p->body ();
+		$grid->delete_row ($_POST['row']);
+		$g = $grid->all ();
+		$p->ext ('grid', $g);
+		if (! $p->put ()) {
+			return $this->error (__ ('Unexpected error.'));
+		}
+
+		// render and return
+		$this->controller->add_notification (__ ('Changes saved.'));
+		return true;
 	}
 }

@@ -67,7 +67,7 @@ class Webpage extends ExtendedModel {
 	 */
 	public function body () {
 		$g = $this->ext ('grid');
-		if (! $g) {
+		if (! is_array ($g)) {
 			$grid = new admin\Grid ();
 			$grid->add_row ('100', '', false, '', false, false, '', array ($this->body));
 			$g = $grid->all ();
