@@ -430,7 +430,6 @@
 		for (var i = 0; i < row.cols.length; i++) {
 			data.cols[i] = row.cols[i].content;
 		}
-		console.log (data);
 		
 		$.post ($this.opts.api + '/add_row', data, function (res) {
 			$row.data ('_row', row)
@@ -452,6 +451,8 @@
 			prev = $row.html (); // cache for cancel
 
 		row.styles = $this.opts.styles;
+		row.id = $this.opts.id;
+		row.row = $row.data ('row');
 
 		$new_row = $(tpl.edit (row));
 		$row.replaceWith ($new_row);
@@ -540,10 +541,28 @@
 			row.cols = row.cols.slice (0, units.length);
 		}
 		
-		$row.data ('_row', row)
-			.removeClass ('e-grid-edit')
-			.html (tpl.row (row))
-			.append (tpl.edit_buttons ({}));
+		var data = {
+			id: $this.opts.id,
+			row: $row.data ('row'),
+			units: row.units,
+			cols: [],
+			css_class: row.css_class,
+			bg_image: row.bg_image,
+			inset: row.inset ? 1 : 0,
+			fixed: row.fixed ? 1 : 0,
+			height: row.height,
+			equal_heights: row.equal_heights ? 1 : 0
+		};
+		for (var i = 0; i < row.cols.length; i++) {
+			data.cols[i] = row.cols[i].content;
+		}
+		
+		$.post ($this.opts.api + '/update_row', data, function (res) {
+			$row.data ('_row', row)
+				.removeClass ('e-grid-edit')
+				.html (tpl.row (row))
+				.append (tpl.edit_buttons ({}));
+		});
 	}
 
 	// Edit the contents of a cell.

@@ -192,6 +192,102 @@ class API extends Restful {
 	/**
 	 * API endpoint:
 	 *
+	 *     /admin/grid/api/update_row
+	 *
+	 * Updates the properties of a grid row, including changing units
+	 * and their corresponding columns.
+	 *
+	 * @param id
+	 * @param units
+	 * @param cols
+	 * @param css_class
+	 * @param bg_image
+	 * @param inset
+	 * @param fixed
+	 * @param heights
+	 * @param equal_heights
+	 */
+	public function post_update_row () {
+		if (! isset ($_POST['id'])) return $this->error (__ ('Error: Missing page ID.'));
+		if (! isset ($_POST['row'])) return $this->error (__ ('Error: Missing row.'));
+		if (! is_numeric ($_POST['row'])) return $this->error (__ ('Error: Invalid row.'));
+		
+		// save changes
+		$p = new Webpage ($_POST['id']);
+		if ($p->error) return $this->error (__ ('Error: Page not found.'));
+
+		$grid = $p->body ();
+
+		if (! isset ($_POST['units'])) return $this->error (__ ('Error: Missing units.'));
+		if (! $grid->valid_units ($_POST['units'])) return $this->error (__ ('Error: Invalid units.'));
+		$units = $_POST['units'];
+
+		$css_class = (isset ($_POST['css_class']) && preg_match ('/^[a-zA-Z0-9_-]+$/', $_POST['css_class']))
+			? $_POST['css_class']
+			: '';
+		
+		$bg_image = isset ($_POST['bg_image'])
+			? $_POST['bg_image']
+			: '';
+		
+		$fixed = (isset ($_POST['fixed']) && $_POST['fixed'] == 1)
+			? true
+			: false;
+
+		$inset = (isset ($_POST['inset']) && $_POST['inset'] == 1)
+			? true
+			: false;
+
+		$equal_heights = (isset ($_POST['equal_heights']) && $_POST['equal_heights'] == 1)
+			? true
+			: false;
+		
+		$height = (isset ($_POST['height']) && is_numeric ($_POST['height']))
+			? $_POST['height']
+			: '';
+		
+		$cols = array ();
+		if (! isset ($_POST['cols']) || ! is_array ($_POST['cols'])) {
+			return $this->error (__ ('Error: Invalid columns.'));
+		}
+		foreach ($_POST['cols'] as $col) {
+			$cols[] = $col;
+		}
+
+		$grid->property ($_POST['row'], 'units', $units);
+		$grid->property ($_POST['row'], 'css_class', $css_class);
+		$grid->property ($_POST['row'], 'bg_image', $bg_image);
+		$grid->property ($_POST['row'], 'fixed', $fixed);
+		$grid->property ($_POST['row'], 'inset', $inset);
+		$grid->property ($_POST['row'], 'equal_heights', $equal_heights);
+		$grid->property ($_POST['row'], 'height', $height);
+		$grid->property ($_POST['row'], 'cols', $cols);
+
+		$g = $grid->all ();
+		$p->ext ('grid', $g);
+		if (! $p->put ()) {
+			return $this->error (__ ('Unexpected error.'));
+		}
+		
+		Versions::add ($p);
+
+		// render and return
+		$this->controller->add_notification (__ ('Changes saved.'));
+		return array (
+			'units' => $units,
+			'css_class' => $css_class,
+			'equal_heights' => $equal_heights,
+			'bg_image' => $bg_image,
+			'fixed' => $fixed,
+			'inset' => $inset,
+			'height' => $height,
+			'cols' => $cols
+		);
+	}
+	
+	/**
+	 * API endpoint:
+	 *
 	 *     /admin/grid/api/delete_row
 	 *
 	 * Deletes a row to the grid.
