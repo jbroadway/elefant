@@ -1,10 +1,11 @@
-{% if ! custom %}
+{% if is_apps %}
 	<a href="#preview" class="admin-tools-show-preview" data-trigger="p" data-trigger-label="{"Toggle preview mode"}">{"Preview"}</a>
 	<a href="/" id="admin-tools-website" data-trigger="w" data-trigger-label="{"Go to website"}">{"Website"}</a>
 	<span id="admin-tools" data-trigger="t" data-trigger-label="{"Toggle tools menu"}">{"Tools"} &nbsp; &nbsp;
-	<ul id="admin-tools-list">
+	<ul id="admin-tools-list" style="max-height:500px!important;">
+	{% if editable %}<li><a href="/admin/toolbar"><em>{" Edit Toolbar "}</em></a></li>{% end %}
 	{% foreach tools %}
-		<li><a href="/{{ loop_index }}"{% if loop_value['class'] %}class="{{ loop_value['class'] }}"{% end %}>{{ loop_value['name']|i18n_get }}</a></li>
+		<li><a href="/{{ loop_index }}"{% if loop_value['class'] %} class="{{ loop_value['class'] }}"{% end %}>{{ loop_value['name']|__ }}</a></li>
 	{% end %}
 	</ul>
 	</span>
@@ -14,12 +15,12 @@
 	<a href="#preview" class="admin-tools-show-preview" data-trigger="p" data-trigger-label="{"Toggle preview mode"}">{"Preview"}</a>
 	<a href="/" id="admin-tools-website" data-trigger="w" data-trigger-label="{"Go to website"}">{"Website"}</a>
 	<div id="admin-tools-list" class="admin-tools-custom">
-	{% foreach tools as section, _tools %}
+	{% foreach tools as section, group %}
 		<div class="admin-tools-section">
 		<h3 class="admin-tools-section-header">{{section|__}}</h3>
 		<ul class="admin-tools-list">
-		{% foreach _tools as _tool %}
-			<li><a href="/{{ _tool['handler'] }}"{% if _tool['class'] %}class="{{ _tool['class'] }}"{% end %}>{{ _tool['name']|__ }}</a></li>
+		{% foreach group as tool %}
+			<li><a href="/{{ tool['handler'] }}"{% if tool['class'] %}class="{{ tool['class'] }}"{% end %}>{{ tool['name']|__ }}</a></li>
 		{% end %}
 		</ul>
 		</div>

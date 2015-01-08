@@ -181,6 +181,16 @@ body {
 		background-position: 50% 50%;
 	}
 	
+		#admin-tools-arrow a {
+			margin-left: 50px;
+			margin-top: 4px;
+			display:none;
+		}
+		
+		#admin-tools-arrow:hover a {
+			display:inline-block;
+		}
+	
 	#admin-tools-list.admin-tools-custom {
 		position: absolute;
 		top: 35px;

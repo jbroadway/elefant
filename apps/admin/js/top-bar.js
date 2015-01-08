@@ -188,12 +188,13 @@ $(function () {
 		$('#admin-links').append (res.links);
 	
 		// show/hide tools menu
-		if ($.elefant_custom) {
+		if (!res.is_apps) {
 			// custom tools menu
 			var admin_tools = $('#admin-bar'),
 				admin_tools_list = $('#admin-tools-list');
-
-			$('#admin-bar>a').after ('<span id="admin-tools-arrow"></span>');
+			
+			if (res.editable) $('#admin-bar>a').after ('<span id="admin-tools-arrow"><a href="/admin/toolbar">Edit</a></span>');
+			else $('#admin-bar>a').after ('<span id="admin-tools-arrow"></span>');
 
 			function toggle_custom_tools_open () {
 				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
