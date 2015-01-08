@@ -221,12 +221,12 @@ class Model {
 					$this->data = $vals;
 					$this->keyval = array();
 					foreach ($this->key as $key) {
-						if (isset($vals[$key]) $this->keyval[$key] = $vals[$key];
+						if (isset($vals[$key])) $this->keyval[$key] = $vals[$key];
 					}
 				}
 			} else { // plain-key
 				$this->data = $vals;
-				if (in_array($this->key, $vals)) this->keyval = $vals[$this->key];
+				if (in_array($this->key, $vals)) $this->keyval = $vals[$this->key];
 			}
 			
 			if ($is_new) $this->is_new = true;
@@ -481,7 +481,7 @@ class Model {
 				if ($this->keyval && $this->keyval !== $arraykeymatch) {
 					array_merge($par, $this->keyval);
 				} else {
-					array_merge($par, array_values($arraykeymatch);
+					array_merge($par, array_values($arraykeymatch));
 					$this->keyval = $arraykeymatch;
 				}
 				if (! DB::execute ('update '. Model::backticks ($this->table) .' set '. join(' = ?, ', Model::backticks ($ins)) .' where '. join(' = ?, ', Model::backticks ($this->key)) .' = ?', $par)) {
@@ -502,7 +502,7 @@ class Model {
 			$this->error = 'Model does not have a primary key(s).';
 			return false; // should no-key check for use of the ->where() fields?
 		}
-		elseif ($this->_key_type(2)) $id = ($id) ? $id : array_intersect_key($this->data,array_fill_keys($this->key,$this->key));;
+		elseif ($this->_key_type(2)) $id = ($id) ? $id : array_intersect_key($this->data,array_fill_keys($this->key,$this->key));
 		else $id = ($id) ? $id : $this->data[$this->key];
 		if (! $id) {
 			$this->error = 'No id specified.';
@@ -1057,10 +1057,10 @@ class Model {
 	 * Get the type of primary key for this model.
 	 * If type is specified, a boolean comparison is returned.
 	 */
-	private function _key_type ($type) {
-		if ((bool)$this->key === false) return (!isset($type)) ? 0 : ($type === 0) ? true : false;
-		if (is_array($this->key)) return (!isset($type)) ? 2 : ($type === 2) ? true : false;
-		return (!isset($type)) ? 1 : ($type === 1) ? true : false;
+	private function _key_type ($type = false) {
+		if ((bool)$this->key === false) return (type === false) ? 0 : ($type === 0) ? true : false;
+		if (is_array($this->key)) return (type === false) ? 2 : ($type === 2) ? true : false;
+		return (type === false) ? 1 : ($type === 1) ? true : false;
 	}
 }
 
