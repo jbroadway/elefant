@@ -38,6 +38,29 @@ if (is_subclass_of ($cur, 'ExtendedModel')) {
 	unset ($data[$cur->_extended_field]);
 }
 
+// render grid if enabled
+if ($ver->class === 'Webpage' && conf ('General', 'page_editor') === 'grid') {
+	$data['body'] = $data['grid'];
+	$data['body']['cur'] = $this->run (
+		'admin/grid',
+		array (
+			'id' => $_GET['id'],
+			'grid' => new admin\Grid ($data['body']['cur']),
+			'preview' => true
+		)
+	);
+	$data['body']['old'] = $this->run (
+		'admin/grid',
+		array (
+			'id' => $_GET['id'],
+			'grid' => new admin\Grid ($data['body']['old']),
+			'preview' => true
+		)
+	);
+	$data['body']['diff'] = ($data['body']['cur'] !== $data['body']['old']);
+	unset ($data['grid']);
+}
+
 $page->title = __ ('Comparing') . ' ' . $ver->class . ' / ' . $ver->pkey;
 
 echo $tpl->render ('admin/compare', array (

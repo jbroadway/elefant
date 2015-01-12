@@ -52,11 +52,12 @@
 
 $id = (count ($this->params) > 0) ? $this->params[0] : (isset ($data['id']) ? $data['id'] : $page->id);
 $grid = (isset ($data['grid']) && is_object ($data['grid'])) ? $data['grid'] : new admin\Grid ();
+$preview = isset ($data['preview']) ? true : false;
 $api = isset ($data['api']) ? $data['api'] : '/admin/grid/api';
 
 echo $this->run ('admin/util/minimal-grid');
 
-if (User::require_acl ('admin', 'admin/edit')) {
+if (! $preview && User::require_acl ('admin', 'admin/edit')) {
 	echo $this->run ('admin/util/fontawesome');
 	echo $this->run ('admin/util/dynamicobjects');
 	echo $this->run ('admin/util/wysiwyg');
