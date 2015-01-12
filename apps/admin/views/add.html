@@ -7,10 +7,15 @@
 <span class="notice" id="title-notice">{"You must enter a page title."}</span></p>
 <p>{"Page ID"} (ex: <tt>{{ $_SERVER.HTTP_HOST }}/<strong>your-page-id</strong></tt>):<br /><input type="text" name="id" size="35" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
 <span class="notice" id="id-notice">{"Your ID must be a lowercase alphanumeric value and can't already exist. It must also not share the name of an app."}</span></p>
+
+{% if conf ('General', 'page_editor') === 'grid' %}
+<input type="hidden" name="body" value="{{ body }}" />
+{% else %}
 <p>{"Body"}: <span class="notice" id="body-notice">{"You must enter body content."}</span><br />
 <textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 
 <h4>{"Extra Options"}</h4>
+{% end %}
 
 <p>{"Page layout"}:<br />
 <select name="layout">
