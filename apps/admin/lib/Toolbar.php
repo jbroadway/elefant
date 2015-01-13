@@ -28,6 +28,17 @@ class Toolbar {
 	}
 
 	/**
+	 * Set the custom tools file to read from.
+	 */
+	public static function set_file ($file) {
+		if (file_exists ($file)) {
+			self::$custom_tools_file = $file;
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Check if an app is compatible with the current user's platform.
 	 */
 	public static function is_compatible ($appconf) {
@@ -45,6 +56,9 @@ class Toolbar {
         return false;
 	}
 
+	/**
+	 * Fetch the custom tools list. Returns false if none.
+	 */
 	public static function custom_tools ($controller) {
 		if (self::$custom_tools !== null) {
 			return self::$custom_tools;

@@ -13,6 +13,8 @@ if (! User::require_admin ()) {
 	return;
 }
 
+admin\Toolbar::set_file (conf ('Paths', 'toolbar'));
+
 $custom_tools = admin\Toolbar::custom_tools ($this);
 if ($custom_tools === false) {
 	$tools = admin\Toolbar::parse_apps ($this);
