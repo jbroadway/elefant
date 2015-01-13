@@ -16,8 +16,12 @@ require_once ('apps/blog/lib/Filters.php');
 $p = new blog\Post ($this->params[0]);
 
 // post not found
-if ($p->error || $p->published === 'no') {
-    return $this->error (404, __ ('Post not found'), '<p>' . __ ('Hmm, we can\'t seem to find the post you wanted at the moment.') . '</p>');
+if ($p->error) {
+	return $this->error (404, __ ('Post not found'), '<p>' . __ ('Hmm, we can\'t seem to find the post you wanted at the moment.') . '</p>');
+}
+
+if ($p->published === 'no' && ! User::require_acl ('admin', 'blog')) {
+	return $this->error (404, __ ('Post not found'), '<p>' . __ ('Hmm, we can\'t seem to find the post you wanted at the moment.') . '</p>');
 }
 
 // published if it was scheduled and it's time

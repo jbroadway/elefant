@@ -30,17 +30,16 @@
 <p>{"Date/Time"}:<br /><input type="text" name="ts" id="ts" size="30" value="{{ ts }}" />
 <span class="notice" id="ts-notice">{"You must select a date/time."}</span></p>
 
-<p>{"Body"}: <span class="notice" id="body-notice">{"You must enter body content."}</span><br />
-<textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
-
-<h4>{"Extra Options"}</h4>
-
 <p>{"Published"}:
 <select name="published">
 {% foreach yes_no %}
 	<option value="{{ loop_index }}"{% if loop_index == $data->published %} selected{% end %}>{{ loop_value|none }}</option>
 {% end %}
 </select></p>
+
+<p>{"Body"}: <span class="notice" id="body-notice">{"You must enter body content."}</span><br />
+<textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
+
 <p>{"Tags (comma-separated)"}:
 <ul id="tagit" style="width: 580px; padding-top: 0px; margin-top: -16px">
 {% foreach tag_list %}
@@ -48,9 +47,6 @@
 {% end %}
 </ul>
 <input type="hidden" name="tags" id="tags"></p>
-<p>{"Auto-post options"}:<br />
-<input type="checkbox" name="autopost_pom" id="autopost_pom" value="yes" {% if autopost_tw %}checked{% end %} /> <label for="autopost_pom">Ping-o-matic</label><br />
-</p>
 
 {! admin/util/extended?extends=blog\Post&name=Blog+Posts&values=[extra|none]&id=[id] !}
 
