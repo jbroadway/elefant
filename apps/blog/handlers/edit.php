@@ -22,9 +22,6 @@ $p = new blog\Post ($_GET['id']);
 $f = new Form ('post', 'blog/edit');
 $f->verify_csrf = false;
 if ($f->submit ()) {
-	$autopost_pom = ($_POST['autopost_pom'] == 'yes') ? true : false;
-	unset ($_POST['autopost_pom']);
-
 	if ($p->published == 'no' && $_POST['published'] == 'yes') {
 		$autopost = true;
 	} else {
