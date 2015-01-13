@@ -40,15 +40,6 @@
 <input type="hidden" name="published" id="published" value="{{ published }}" />
 </div>
 
-<!--
-<p>{"Published"}:
-<select name="published">
-{% foreach yes_no %}
-	<option value="{{ loop_index }}"{% if loop_index == $data->published %} selected{% end %}>{{ loop_value|none }}</option>
-{% end %}
-</select></p>
--->
-
 <p><textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 
 <p>{"Tags (comma-separated)"}:

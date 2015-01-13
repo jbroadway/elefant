@@ -22,12 +22,6 @@ $p = new blog\Post ($_GET['id']);
 $f = new Form ('post', 'blog/edit');
 $f->verify_csrf = false;
 if ($f->submit ()) {
-	if ($p->published == 'no' && $_POST['published'] == 'yes') {
-		$autopost = true;
-	} else {
-		$autopost = false;
-	}
-
 	$p->title = $_POST['title'];
 	$p->author = $_POST['author'];
 	$p->ts = $_POST['ts'];
@@ -71,8 +65,6 @@ if ($f->submit ()) {
 	$page->title = __ ('An Error Occurred');
 	echo __ ('Error Message') . ': ' . $p->error;
 } else {
-	$p->yes_no = array ('yes' => __ ('Yes'), 'no' => __ ('No'), 'que' => __ ('Scheduled'));
-	$p->autopost_pom = 'yes';
 	$p->tag_list = explode (',', $p->tags);
 
 	$p->failed = $f->failed;
