@@ -30,6 +30,11 @@ if (! Validator::validate ($_POST['redirect'], 'header')) {
 	$_POST['redirect'] = '/user';
 }
 
+$redir = parse_url ($_POST['redirect']);
+if ($redir === false || $_POST['redirect'] !== $redir['path'] && $_POST['redirect'] !== $redir['path'] . '?' . $redir['query']) {
+	$_POST['redirect'] = '/user';
+}
+
 if (! User::require_login ()) {
 	if (! $this->internal && ! empty ($_POST['username'])) {
 		echo '<p>' . __ ('Incorrect email or password, please try again.') . '</p>';
