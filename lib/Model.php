@@ -201,10 +201,10 @@ class Model {
 		$vals = is_object ($vals) ? (array) $vals : $vals;
 		
 		if (is_array ($vals)) {
-			if ((bool)$this->key === false) { // no-key
+			if ($this->_key_type(0)) { // no-key
 				$this->keyval = '';
 				$this->data = $vals;
-			} elseif (is_array($this->key)) { // array-key
+			} elseif ($this->_key_type(2)) { // array-key
 				// To query an existing multi-key entry, all key fields must be present
 				if (count(array_diff($this->key,array_keys($vals))) == 0) {
 					// query DB with multi column primary key values
@@ -233,7 +233,7 @@ class Model {
 			
 		} elseif ($vals !== false) {
 			// Array-key/no-key when passed a single value sets an error. (required for backwards compatability)
-			if (is_array($this->key) || (bool)$this->key === false) { // array-key || no-key
+			if ($this->_key_type(2) || $this->_key_type(0)) { // array-key || no-key
 				$this->error = 'Model requires values passed as an associative array.';
 			} else { // plain-key
 				$res = DB::single ('select * from '. Model::backticks ($this->table) .' where `'. $this->key .'` = ?', $vals);
