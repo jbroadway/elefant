@@ -1,0 +1,102 @@
+.slideshow-nav
+{
+    position: absolute;
+    right: 0;
+}
+.cycle-slideshow
+{
+    min-width: 480px;
+    position: relative;
+    background: url(/apps/filemanager/css/cycle2/spinner.gif) 50% 50% no-repeat;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.cycle-slideshow IMG
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    display: block;
+    /* forced big images */
+    width: 2000px;
+    height: 1500px;
+    /* height drives width */
+    width: auto;
+    height: 100%;
+    /* width drives height */
+    width: 100%;
+    height: auto;
+    /* fill screen and maintain aspect ratio */
+    width: auto;
+    height: auto;
+    min-width: 100%;
+    min-height: 100%;
+    /*overflow: hidden;*/
+}
+.cycle-slideshow IMG:first-child
+{
+    position: static;
+    z-index: 100;
+}
+.cycle-overlay
+{
+    /*font-family: tahoma, arial;*/
+    position: absolute;
+    right: 0;
+    width: 30%;
+    z-index: 600;
+    background: black;
+    color: white;
+    padding: 15px;
+    opacity: 0.5;
+}
+.cycle-prev, .cycle-next
+{
+    position: absolute;
+    top: 0;
+    width: 30%;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    z-index: 800;
+    height: 100%;
+    cursor: pointer;
+}
+.cycle-prev
+{
+    left: 0;
+    background: url(/apps/filemanager/css/cycle2/prev.png) 25% 50% no-repeat;
+}
+.cycle-next
+{
+    right: 0;
+    background: url(/apps/filemanager/css/cycle2/next.png) 75% 50% no-repeat;
+}
+.cycle-prev:hover, .cycle-next:hover
+{
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+.disabled
+{
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+.cycle-paused:after
+{
+    content: attr(data-paused-text);
+    color: white;
+    background: black;
+    padding: 10px;
+    z-index: 500;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 0;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
