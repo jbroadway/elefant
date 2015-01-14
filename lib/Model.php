@@ -294,49 +294,49 @@ class Model {
 
 		if (isset ($this->fields[$name]['belongs_to'])) {
 			// handle belongs_to relationships (reverse of one to one or one to many)
-			if (! $reset_cache && isset ($this->{'_ref_'. $name})) {
-				return $this->{'_ref_'. $name};
+			if (! $reset_cache && isset ($this->{'_ref_' . $name})) {
+				return $this->{'_ref_' . $name};
 			}
 			$class = $this->fields[$name]['belongs_to'];
 			$field_name = isset ($this->fields[$name]['field_name']) ? $this->fields[$name]['field_name'] : $name;
-			$this->{'_ref_'. $name} = new $class ($this->data[$field_name]);
-			return $this->{'_ref_'. $name};
+			$this->{'_ref_' . $name} = new $class ($this->data[$field_name]);
+			return $this->{'_ref_' . $name};
 
 		} elseif (isset ($this->fields[$name]['has_one'])) {
 			// handle has_one relationships (one to one)
-			if (! $reset_cache && isset ($this->{'_ref_'. $name})) {
-				return $this->{'_ref_'. $name};
+			if (! $reset_cache && isset ($this->{'_ref_' . $name})) {
+				return $this->{'_ref_' . $name};
 			}
 			$class = $this->fields[$name]['has_one'];
 			$field_name = isset ($this->fields[$name]['field_name']) ? $this->fields[$name]['field_name'] : $this->table;
-			$this->{'_ref_'. $name} = $class::query ()
+			$this->{'_ref_' . $name} = $class::query ()
 				->where ($field_name, $this->data[$this->key])
 				->single ();
-			return $this->{'_ref_'. $name};
+			return $this->{'_ref_' . $name};
 
 		} elseif (isset ($this->fields[$name]['has_many'])) {
 			// handle has_many relationships (one to many)
-			if (! $reset_cache && isset ($this->{'_ref_'. $name})) {
-				return $this->{'_ref_'. $name};
+			if (! $reset_cache && isset ($this->{'_ref_' . $name})) {
+				return $this->{'_ref_' . $name};
 			}
 			$class = $this->fields[$name]['has_many'];
 			$field_name = isset ($this->fields[$name]['field_name']) ? $this->fields[$name]['field_name'] : $this->table;
 			if (isset ($this->fields[$name]['order_by'])) {
-				$this->{'_ref_'. $name} = $class::query ()
+				$this->{'_ref_' . $name} = $class::query ()
 					->where ($field_name, $this->data[$this->key])
 					->order ($this->fields[$name]['order_by'])
 					->fetch ($limit, $offset);
 			} else {
-				$this->{'_ref_'. $name} = $class::query ()
+				$this->{'_ref_' . $name} = $class::query ()
 					->where ($field_name, $this->data[$this->key])
 					->fetch ($limit, $offset);
 			}
-			return $this->{'_ref_'. $name};
+			return $this->{'_ref_' . $name};
 
 		} elseif (isset ($this->fields[$name]['many_many'])) {
 			// handle many_many relationships (many to many)
-			if (! $reset_cache && isset ($this->{'_ref_'. $name})) {
-				return $this->{'_ref_'. $name};
+			if (! $reset_cache && isset ($this->{'_ref_' . $name})) {
+				return $this->{'_ref_' . $name};
 			}
 			$class = $this->fields[$name]['many_many'];
 			$obj = new $class;
@@ -350,48 +350,32 @@ class Model {
 			$obj = new $class;
 
 			if (is_array ($order_by)) {
-				$order_by[0] = Model::backticks ($obj->table) .'.'. Model::backticks ($order_by[0]);
-				$this->{'_ref_'. $name} = $class::query (Model::backticks ($obj->table) .'.*')
-					->from (Model::backticks ($obj->table) .', '. Model::backticks ($join_table))
-				
-				// if ((bool) $obj->key === false) { // no-key
-				
-				// } elseif (is_array($obj->key)) { // array-key
-				
-				// } else { // plain-key
-				// $class
-					->where (Model::backticks ($join_table) .'.'. Model::backticks ($that_field) .' = '. Model::backticks ($obj->table) .'.'. Model::backticks ($obj->key))
-				// }
-				// if ((bool) $this->key === false) { // no-key
-				
-				// } elseif (is_array($this->key)) { // array-key
-				
-				// } else { // plain-key
-				// $class
-					->where (Model::backticks ($join_table) .'.'. Model::backticks ($this_field), $this->id)
-				// }
-				// $class
+				$order_by[0] = Model::backticks ($obj->table) . '.' . Model::backticks ($order_by[0]);
+				$this->{'_ref_' . $name} = $class::query (Model::backticks ($obj->table) . '.*')
+					->from (Model::backticks ($obj->table) . ', ' . Model::backticks ($join_table))
+					->where (Model::backticks ($join_table) . '.' . Model::backticks ($that_field) . ' = ' . Model::backticks ($obj->table) . '.' . Model::backticks ($obj->key))
+					->where (Model::backticks ($join_table) . '.' . Model::backticks ($this_field), $this->id)
 					->order ($order_by[0], $order_by[1])
 					->fetch ($limit, $offset);
 
 			} elseif ($order_by !== false) {
-				$order_by = Model::backticks ($obj->table) .'.'. Model::backticks ($order_by);
-				$this->{'_ref_'. $name} = $class::query (Model::backticks ($obj->table) .'.*')
-					->from (Model::backticks ($obj->table) .', '. Model::backticks ($join_table))
-					->where (Model::backticks ($join_table) .'.'. Model::backticks ($that_field) .' = '. Model::backticks ($obj->table) .'.'. Model::backticks ($obj->key))
-					->where (Model::backticks ($join_table) .'.'. Model::backticks ($this_field), $this->id)
+				$order_by = Model::backticks ($obj->table) . '.' . Model::backticks ($order_by);
+				$this->{'_ref_' . $name} = $class::query (Model::backticks ($obj->table) . '.*')
+					->from (Model::backticks ($obj->table) . ', ' . Model::backticks ($join_table))
+					->where (Model::backticks ($join_table) . '.' . Model::backticks ($that_field) . ' = ' . Model::backticks ($obj->table) . '.' . Model::backticks ($obj->key))
+					->where (Model::backticks ($join_table) . '.' . Model::backticks ($this_field), $this->id)
 					->order ($order_by)
 					->fetch ($limit, $offset);
 
 			} else {
-				$this->{'_ref_'. $name} = $class::query (Model::backticks ($obj->table) . '.*')
-					->from (Model::backticks ($obj->table) .', '. Model::backticks ($join_table))
-					->where (Model::backticks ($join_table) .'.'. Model::backticks ($that_field) .' = '. Model::backticks ($obj->table) .'.'. Model::backticks ($obj->key))
-					->where (Model::backticks ($join_table) .'.'. Model::backticks ($this_field), $this->id)
+				$this->{'_ref_' . $name} = $class::query (Model::backticks ($obj->table) . '.*')
+					->from (Model::backticks ($obj->table) . ', ' . Model::backticks ($join_table))
+					->where (Model::backticks ($join_table) . '.' . Model::backticks ($that_field) . ' = ' . Model::backticks ($obj->table) . '.' . Model::backticks ($obj->key))
+					->where (Model::backticks ($join_table) . '.' . Model::backticks ($this_field), $this->id)
 					->fetch ($limit, $offset);
 			}
 
-			return $this->{'_ref_'. $name};
+			return $this->{'_ref_' . $name};
 		}
 
 		$trace = debug_backtrace ();
