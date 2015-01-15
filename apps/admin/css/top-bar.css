@@ -243,6 +243,12 @@ body {
 			height: 24px;
 			width: 100%;
 		}
+		
+		#admin-tools-list .admin-tools-edit {
+			position: absolute;
+			top: -4px;
+			right: 45px;
+		}
 
 	#admin-update-available {
 		color: #93278f;

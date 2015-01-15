@@ -14,6 +14,7 @@ class Toolbar {
 	public static $apps = false;
 	public static $tools = false;
 	public static $compiled = false;
+	public static $autofill = false;
 
 	/**
 	 * Check if an app is compatible with the current user's platform.
@@ -24,10 +25,7 @@ class Toolbar {
 			foreach ($device_list as $device) {
 				if (detect (trim ($device))) return true;
 			}
-        } else {
-			// No Admin/platforms conf entry so assume app is compatible
-			return true;
-        }
+        } else return true; // No Admin/platforms conf entry so assume app is compatible
         return false;
 	}
 	
@@ -70,9 +68,9 @@ class Toolbar {
 
 				foreach ($group as $handler => $name) {
 					if ($handler === '*') {
-						// Compatibility
-						unset($tools[$column][$handler]);
-						continue;
+						self::$autofill = $column;
+						unset($tools[$column]);
+						break;
 					}
 					
 					$app = substr ($handler, 0, strpos ($handler, '/'));

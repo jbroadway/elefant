@@ -15,4 +15,8 @@ designer/admin = Designer
 translator/index = Languages
 admin/versions = Versions
 
+[Extras]
+
+* = *
+
 ; */ ?>

@@ -21,23 +21,12 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 	margin-top:10px;
 }
 
-#treeModal {
-	display:none;
-	position:absolute;
-	text-align:center;
-	top:250px;
-	left:60%;
-	border-radius:5px;
-	background-color:#eaecee;
-	border: 2px solid black;
-	padding-top:5px;
-	padding-bottom:5px;
-	padding-left:10px;
-	padding-right:10px;
+.error {
+	color:red;
 }
 
-#treeModal .error {
-	color:red;
+.special {
+	font-style:italic;
 }
 
 </style>
@@ -45,12 +34,7 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 <div class="treeDragDrop">
 	<div class="tree">
 		<h4> {"Toolbar Tree"}</h4>
-		<a class="caption" href="javascript:;" onclick="
-			$('#treeModal #add-handler').parent().hide();
-			$('#treeModal #add-type')[0].value = 'section';
-			$('#treeModal').show();
-			$('#treeModal #add-name')[0].focus();
-		">{"Click to add a catagory."}</a>
+		<a class="caption" href="javascript:;" onclick="$.treeDragDrop.handlers.handleOpenModal('section');">{"Add Catagory"}</a>
 		<p class="caption">{"Drag resources to the toolbar tree to include them in the toolbar."}</p>
 		<ul class="tdd-tree">
 		{% if tools|count %}
@@ -59,7 +43,11 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 				<ul class="tools">
 				{% if group|count %}
 				{% foreach group as tool %}
-					<li id="{{ tool['handler']|str_replace('/','-',%s) }}" class="tool" data-name="{{ tool['name'] }}" data-handler="{{ tool['handler'] }}">
+					<li id="{{ tool['handler']|str_replace('/','-',%s) }}" 
+						class="tool" 
+						data-name="{{ tool['name'] }}" 
+						data-handler="{{ tool['handler'] }}"
+					>
 						{{ tool['name'] }} ({{ tool['handler'] }})
 					</li>
 				{% end %}
@@ -68,34 +56,29 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 			</li>
 		{% end %}
 		{% end %}
+		{% if autofill %}
+			<li id="*" class="special" data-name="{{ autofill }}" data-handler="*">{{ autofill }} (*)</li>
+		{% end %}
 		</ul>
 	</div>	
 	<div class="trashbin">
 		<h4> {"Unused Resources"}</h4>
-		<a class="caption" href="javascript:;" onclick="
-			$('#treeModal #add-handler').parent().show();
-			$('#treeModal #add-type')[0].value = 'tool';
-			$('#treeModal').show();
-			$('#treeModal #add-name')[0].focus();
-		">{"Click to add a resource."}</a>
+		<a class="caption" href="javascript:;" onclick="$.treeDragDrop.handlers.handleOpenModal('tool');">{"Add Resource"}</a>
 		<p class="caption">{"Drag resources here to remove them from the toolbar."}</p>
 		<ul class="tdd-trashbin">
 		{% foreach apps as app %}
-			<li id="{{ app['handler']|str_replace('/','-',%s) }}" class="tool" data-name="{{ app['name'] }}" data-handler="{{ app['handler'] }}">
+			<li id="{{ app['handler']|str_replace('/','-',%s) }}" 
+				class="tool" 
+				data-name="{{ app['name'] }}" 
+				data-handler="{{ app['handler'] }}"
+			>
 				{{ app['name'] }} ({{ app['handler'] }})
 			</li>
+		{% end %}
+		{% if autofill === false %}
+			<li id="*" class="special" data-name="{{ \Appconf::admin('General','autofill_column') }}" data-handler="*">{{ \Appconf::admin('General','autofill_column') }} (*)</li>
 		{% end %}
 		</ul>
 	</div>
 </div>
 <br clear="both" />
-
-<form id="treeModal" onsubmit="if($.treeDragDrop.handlers.handleAddResource()) { $('#treeModal').hide(); } return false;">
-	<input type="hidden" id="add-type" />
-	<div>
-		<span class="caption error"></span>
-		<label for="add-name">Display Text<br><input type="text" id="add-name" /></label><br>
-		<label for="add-handler">Resource/Handler<br><input type="text" id="add-handler" /></label><br>
-		<input type="submit" value="Add"/>
-	</div>
-</form>

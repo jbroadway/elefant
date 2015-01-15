@@ -3,7 +3,7 @@
 	<a href="/" id="admin-tools-website" data-trigger="w" data-trigger-label="{"Go to website"}">{"Website"}</a>
 	<span id="admin-tools" data-trigger="t" data-trigger-label="{"Toggle tools menu"}">{"Tools"} &nbsp; &nbsp;
 	<ul id="admin-tools-list" style="max-height:500px!important;">
-	{% if editable %}<li><a href="/admin/toolbar"><em>{" Edit Toolbar "}</em></a></li>{% end %}
+	{% if editable %}<li><a href="/admin/toolbar"><em>{"Edit Toolbar"}</em></a></li>{% end %}
 	{% foreach tools %}
 		<li><a href="/{{ loop_index }}"{% if loop_value['class'] %} class="{{ loop_value['class'] }}"{% end %}>{{ loop_value['name']|__ }}</a></li>
 	{% end %}
@@ -15,6 +15,7 @@
 	<a href="#preview" class="admin-tools-show-preview" data-trigger="p" data-trigger-label="{"Toggle preview mode"}">{"Preview"}</a>
 	<a href="/" id="admin-tools-website" data-trigger="w" data-trigger-label="{"Go to website"}">{"Website"}</a>
 	<div id="admin-tools-list" class="admin-tools-custom">
+	{% if editable %}<a class="admin-tools-edit" href="/admin/toolbar"><em>{"Edit Toolbar"}</em></a>{% end %}
 	{% foreach tools as section, group %}
 		<div class="admin-tools-section">
 		<h3 class="admin-tools-section-header">{{section|__}}</h3>
