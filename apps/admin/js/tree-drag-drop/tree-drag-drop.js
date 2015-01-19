@@ -153,6 +153,9 @@ if (typeof String.prototype.trim !== 'function') {
 					} else if (draggable.hasClass('special')) {
 						marker.addClass(beforeClass);
 						target.parents('.tdd-tree').append(marker);
+					} else if (draggable.hasClass('section') && target.hasClass('special')) {
+						marker.addClass(beforeClass);
+						target.before(marker);
 					} else {
 						if (target.parent().hasClass('tools') && !draggable.hasClass('tool')) return;
 						if (target.parent().hasClass('tdd-tree') && draggable.hasClass('tool')) return;
@@ -173,6 +176,7 @@ if (typeof String.prototype.trim !== 'function') {
 				marker.removeClass(beforeClass, afterClass);
 				marker.addClass(beforeClass);
 				dropable.append(marker);
+				if (dropable.children('.special').length !== 0) dropable.append(dropable.children('.special'));
 			} else if (dropable.hasClass("tdd-trashbin")) {
 				dropable.append(marker);
 			}
@@ -240,7 +244,7 @@ if (typeof String.prototype.trim !== 'function') {
 					modal.find('.error').text('Section name must be specified.');
 					return false;
 				}
-				var id = name.val().lower().replace(/\//g,'-');
+				var id = name.val().toLowerCase().replace(/\//g,'-');
 				if ($('.treeDragDrop #'+ id).length) {
 					modal.find('.error').text('Section name already in use.');
 					return false;
@@ -261,7 +265,7 @@ if (typeof String.prototype.trim !== 'function') {
 					modal.find('.error').text('Must fill in both fields.');
 					return false;
 				}
-				var id = handler.val().lower().replace(/\//g,'-');
+				var id = handler.val().toLowerCase().replace(/\//g,'-');
 				if ($('.treeDragDrop #'+ id).length) {
 					modal.find('.error').text('Resource already in use.');
 					return false;
