@@ -257,7 +257,7 @@ if (typeof String.prototype.trim !== 'function') {
 				node.innerText = '['+ name.val() +']';
 				$(node).append('<ul class="tools"></ul>');
 				$(".tree .tdd-tree").append(node);
-				if (/special/.test(node.previousElementSibling.className)) {
+				if (node.previousElementSibling && /special/.test(node.previousElementSibling.className)) {
 					$(node.previousElementSibling).before(node);
 				}
 				$(node).data('tddCtx',$(node).closest('.treeDragDrop'));
