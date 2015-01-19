@@ -241,12 +241,12 @@ if (typeof String.prototype.trim !== 'function') {
 			if (type === 'section') {
 				var name = modal.find('input#add-name');
 				if (name.val() == '') {
-					modal.find('.error').text('Section name must be specified.');
+					modal.find('.error').text('Category name must be specified.');
 					return false;
 				}
-				var id = name.val().toLowerCase().replace(/\//g,'-');
+				var id = 'cat_'+ name.val().toLowerCase().replace(/[^a-zA-Z0-9.:_-]/g,'-');
 				if ($('.treeDragDrop #'+ id).length) {
-					modal.find('.error').text('Section name already in use.');
+					modal.find('.error').text('Category name already in use.');
 					return false;
 				}
 				modal.find('.error').text('');
@@ -257,6 +257,9 @@ if (typeof String.prototype.trim !== 'function') {
 				node.innerText = '['+ name.val() +']';
 				$(node).append('<ul class="tools"></ul>');
 				$(".tree .tdd-tree").append(node);
+				if (/special/.test(node.previousElementSibling.className)) {
+					$(node.previousElementSibling).before(node);
+				}
 				$(node).data('tddCtx',$(node).closest('.treeDragDrop'));
 				name.val("");
 			} else {
@@ -265,7 +268,7 @@ if (typeof String.prototype.trim !== 'function') {
 					modal.find('.error').text('Must fill in both fields.');
 					return false;
 				}
-				var id = handler.val().toLowerCase().replace(/\//g,'-');
+				var id = 'res_'+ handler.val().toLowerCase().replace(/[^a-zA-Z0-9.:_-]/g,'-');
 				if ($('.treeDragDrop #'+ id).length) {
 					modal.find('.error').text('Resource already in use.');
 					return false;
