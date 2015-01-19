@@ -244,7 +244,7 @@ if (typeof String.prototype.trim !== 'function') {
 					modal.find('.error').text('Category name must be specified.');
 					return false;
 				}
-				var id = 'cat_'+ name.val().toLowerCase().replace(/[^a-zA-Z0-9.:_-]/g,'-');
+				var id = 'cat_'+ name.val().toLowerCase().replace(/ /g,'_');
 				if ($('.treeDragDrop #'+ id).length) {
 					modal.find('.error').text('Category name already in use.');
 					return false;
@@ -268,7 +268,7 @@ if (typeof String.prototype.trim !== 'function') {
 					modal.find('.error').text('Must fill in both fields.');
 					return false;
 				}
-				var id = 'res_'+ handler.val().toLowerCase().replace(/[^a-zA-Z0-9.:_-]/g,'-');
+				var id = 'res_'+ handler.val().toLowerCase().replace(/ /g,'_');
 				if ($('.treeDragDrop #'+ id).length) {
 					modal.find('.error').text('Resource already in use.');
 					return false;
