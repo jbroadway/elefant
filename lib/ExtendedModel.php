@@ -161,7 +161,7 @@ class ExtendedModel extends Model {
 		// Pre-populate extended attributes with given default values
 		if (! empty ($defaults)) {
 			foreach ($defaults as $k => $v) {
-				if (! isset ($this->{$k})) $this->ext ($k, $v);
+				if (!$this->ext($k)) $this->ext ($k, $v);
 			}
 		}
 
