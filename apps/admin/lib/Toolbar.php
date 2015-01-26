@@ -63,14 +63,31 @@ class Toolbar {
 		if ($tools !== false) {
 			foreach ($tools as $column => $group) {
 				if ($first === false) {
-					$first = $column;
+					$first = true;
+					// check if we need to add an upgrade link
+					$ver = $c->installed ('elefant', ELEFANT_VERSION);
+					if ($ver !== true) {
+						$tools[$column]['admin/upgrade'] = array (
+							'handler' => 'admin/upgrade',
+							'name' => ' ' . __ ('Click to upgrade'),
+							'class' => 'needs-upgrade'
+						);
+					}
 				}
-
+				$_column = $column;
+				$i = 0;
+				$j = 2;
 				foreach ($group as $handler => $name) {
 					if ($handler === '*') {
 						self::$autofill = $column;
 						unset($tools[$column]);
 						break;
+					}
+					
+					if (++$i > 7 && !$editing) {
+						$i = 0;
+						$column = $_column .' ('. $j++ .')';
+						$tools[$column] = array();
 					}
 					
 					$app = substr ($handler, 0, strpos ($handler, '/'));
@@ -85,17 +102,20 @@ class Toolbar {
 						// Ok
 					} else {
 						// Can't access this app
-						unset ($tools[$column][$handler]);
+						unset ($tools[$_column][$handler]);
 						continue;
 					}
 
 					$appconf = Appconf::get ($app);
 
 					if (! self::is_compatible ($appconf)) {
-						// App not compatible with this platform
-						unset ($tools[$column][$handler]);
+						// App not compatible with this platform 
+						unset ($tools[$_column][$handler]);
 						continue;
 					}
+					
+					// remove resource from original section
+					if ($column !== $_column) unset ($tools[$_column][$handler]);
 
 					if (isset ($appconf['Admin']['install'])) {
 						$ver = $c->installed ($app, $appconf['Admin']['version']);
@@ -110,7 +130,6 @@ class Toolbar {
 						} elseif ($ver === false) {
 							// not installed
 							$name = __ ($name) . ' (' . __ ('click to install') . ')';
-							unset ($tools[$column][$handler]);
 							$tools[$column][$handler] = array (
 								'handler' => $appconf['Admin']['install'],
 								'name' => $name,
@@ -134,15 +153,6 @@ class Toolbar {
 						);
 					}
 				}
-			}
-			// check if we need to add an upgrade link
-			$ver = $c->installed ('elefant', ELEFANT_VERSION);
-			if ($ver !== true) {
-				$tools[$first]['admin/upgrade'] = array (
-					'handler' => 'admin/upgrade',
-					'name' => ' ' . __ ('Click to upgrade'),
-					'class' => 'needs-upgrade'
-				);
 			}
 			// Clean out unused sections
 			foreach ($tools as $section => $group) {

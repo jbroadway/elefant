@@ -59,7 +59,7 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 				</ul>
 			</li>
 		{% end %}{% end %}
-		{% if autofill %}<li id="*" class="special" data-name="{{ autofill }}" data-handler="*">{{ autofill }} (*)</li>{% end %}
+		{% if autofill %}<li id="cat_*" class="special" data-name="{{ autofill }}" data-handler="*">{{ autofill }} (*)</li>{% end %}
 		</ul>
 	</div>	
 	<div class="trashbin">
@@ -74,7 +74,7 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 			>{{ app['name'] }} ({{ app['handler'] }})</li>
 		{% end %}
 		{% if autofill === false %}
-			<li id="*" class="special" data-name="{{ \Appconf::admin('General','autofill_column') }}" data-handler="*">{{ \Appconf::admin('General','autofill_column') }} (*)</li>
+			<li id="cat_*" class="special" data-name="{{ \Appconf::admin('General','autofill_column') }}" data-handler="*">{{ \Appconf::admin('General','autofill_column') }} (*)</li>
 		{% end %}
 		</ul>
 	</div>
