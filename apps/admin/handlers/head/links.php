@@ -41,15 +41,16 @@ if (count($tools) === 0 && admin\Toolbar::$autofill === false) {
 	$is_apps = false;
 }
 
+$editable = User::require_acl('admin/toolbar');
 $out = array (
 	'name' => Product::name (),
 	'logo' => Product::logo_toolbar (),
-	'is_apps' => $is_apps,
+	'is_apps' => ($is_apps || (count($tools) && !$editable)),
 	'links' => $tpl->render ('admin/head/links', array (
 		'user' => User::val ('name'),
 		'tools' => $tools,
 		'is_apps' => $is_apps,
-		'editable' => User::require_acl('admin/toolbar')
+		'editable' => $editable
 	))
 );
 

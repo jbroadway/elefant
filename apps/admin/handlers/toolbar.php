@@ -11,7 +11,7 @@ $page->add_script ('<script src="/apps/admin/js/tree-drag-drop/tree-drag-drop.js
 $page->add_style ('/apps/admin/css/font-awesome/css/font-awesome.min.css');
 $page->add_style ('/apps/admin/js/tree-drag-drop/css/tree-drag-drop.css');
 
-list($tools, $apps) = admin\Toolbar::compile ($this);
+list($tools, $apps) = admin\Toolbar::compile ($this, true);
 echo $tpl->render ('admin/toolbar', array (
 	'tools' => $tools,
 	'autofill' => admin\Toolbar::$autofill,

@@ -139,10 +139,7 @@ if (typeof String.prototype.trim !== 'function') {
 					
 					marker.removeClass(beforeClass, afterClass);
 					
-					// prevent dropping items in itself
-					if (target.hasClass(selectedClass) || target.parents("." + selectedClass).length !== 0) {
-						marker.detach();
-					} else if (target.parents('.tdd-trashbin').length !== 0) {						
+					if (target.parents('.tdd-trashbin').length !== 0) {						
 						target.parents('.tdd-trashbin').append(marker);
 					} else if (target.hasClass('section') && draggable.hasClass('tool')) {
 						marker.addClass(afterClass);
@@ -219,72 +216,41 @@ if (typeof String.prototype.trim !== 'function') {
 			});	
 		},
 		
-		handleOpenModal: function(type) {
-			if (!type) type = 'tool';
+		handleOpenModal: function() {
 			var title = '', html = '<form id="treeModal" style="text-align:center;" \
-				onsubmit="if($.treeDragDrop.handlers.handleAddResource(\''+ type +'\')) { $.close_dialog (); } return false;">\
+				onsubmit="if($.treeDragDrop.handlers.handleAddCategory()) { $.close_dialog (); } return false;">\
 				<span class="caption error"></span>\
-				<label for="add-name">Display Text<br><input type="text" id="add-name" /></label><br>';
-			if (type == 'tool') {
-				html += '<label for="add-handler">App/Handler<br><input type="text" id="add-handler" /></label><br>';
-			}
-			html += '<input type="submit" value="Add"/>\
+				<label for="add-category">Category Name<br><input type="text" id="add-category" /></label><br><br>\
+				<input type="submit" value="Add"/>\
 			</form>';
-			if (type == 'section') title = 'New Catagory';
-			else title = 'New Resource';
-			$.open_dialog(title,html,{width:250,height:225});
-			$('#treeModal #add-name')[0].focus();
+			$.open_dialog('New Catagory',html,{width:250,height:200});
+			$('#treeModal #add-category')[0].focus();
 		},
 		
-		handleAddResource: function (type) {
-			var modal = $('#treeModal');
-			if (type === 'section') {
-				var name = modal.find('input#add-name');
-				if (name.val() == '') {
-					modal.find('.error').text('Category name must be specified.');
-					return false;
-				}
-				var id = 'cat_'+ name.val().toLowerCase().replace(/ /g,'_');
-				if ($('.treeDragDrop #'+ id).length) {
-					modal.find('.error').text('Category name already in use.');
-					return false;
-				}
-				modal.find('.error').text('');
-				var node = document.createElement("LI");
-				node.id = id;
-				node.setAttribute('data-section', name.val());
-				node.setAttribute('class', 'section');
-				node.innerText = '['+ name.val() +']';
-				$(node).append('<ul class="tools"></ul>');
-				$(".tree .tdd-tree").append(node);
-				if (node.previousElementSibling && /special/.test(node.previousElementSibling.className)) {
-					$(node.previousElementSibling).before(node);
-				}
-				$(node).data('tddCtx',$(node).closest('.treeDragDrop'));
-				name.val("");
-			} else {
-				var handler = modal.find('input#add-handler'), name = modal.find('input#add-name');
-				if (handler.val() == '' || name.val() == '') {
-					modal.find('.error').text('Must fill in both fields.');
-					return false;
-				}
-				var id = 'res_'+ handler.val().toLowerCase().replace(/ /g,'_');
-				if ($('.treeDragDrop #'+ id).length) {
-					modal.find('.error').text('Resource already in use.');
-					return false;
-				}
-				modal.find('.error').text('');
-				var node = document.createElement("LI");
-				node.id = id;
-				node.setAttribute('data-handler',handler.val());
-				node.setAttribute('data-name', name.val());
-				node.setAttribute('class', 'tool');
-				node.innerText = name.val() +" ("+ handler.val() +")";
-				$(".trashbin .tdd-trashbin").append(node);
-				$(node).data('tddCtx',$(node).closest('.treeDragDrop'));
-				handler.val("");
-				name.val("");
+		handleAddCategory: function () {
+			var modal = $('#treeModal'), name = modal.find('input#add-category');
+			if (name.val() == '') {
+				modal.find('.error').text('Category name must be specified.');
+				return false;
 			}
+			var id = 'cat_'+ name.val().toLowerCase().replace(/ /g,'_');
+			if ($('.treeDragDrop #'+ id).length) {
+				modal.find('.error').text('Category name already in use.');
+				return false;
+			}
+			modal.find('.error').text('');
+			var node = document.createElement("LI");
+			node.id = id;
+			node.setAttribute('data-section', name.val());
+			node.setAttribute('class', 'section');
+			node.innerHTML = '<b>'+ name.val() +'</b><ul class="tools"></ul>';
+			$(".tree .tdd-tree").append(node);
+			if (node.previousElementSibling && /special/.test(node.previousElementSibling.className)) {
+				$(node.previousElementSibling).before(node);
+			}
+			$(node).data('tddCtx',$(node).closest('.treeDragDrop'));
+			name.val("");
+			
 			$('.treeDragDrop').treeDragDrop({ // rebind drag/drop for new node.
 				updateUrl: "/admin/api/toolbar",
 				cursorGrabbingUrl: ($.browser.msie) ? "/apps/admin/js/tree-drag-drop/css/closedhand.cur" : "/apps/admin/js/tree-drag-drop/css/cursorGrabbing.png"
