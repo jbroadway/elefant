@@ -28,7 +28,7 @@
 	self.build_embed_string = function (handler, data) {
 		var i, sep = '?', embed = handler;
 		for (i in data) {
-			embed += sep + i + '=' + escape (data[i]);
+			embed += sep + i + '=' + encodeURIComponent (data[i]);
 			sep = '&';
 		}
 		return embed;
