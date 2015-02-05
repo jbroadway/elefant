@@ -160,9 +160,14 @@ class ExtendedModel extends Model {
 
 		// Pre-populate extended attributes with given default values
 		if (! empty ($defaults)) {
+			$ext = (is_string($this->data[$this->_extended_field])) ? 
+				(array) json_decode($this->data[$this->_extended_field]) : 
+				(array) $this->data[$this->_extended_field];
 			foreach ($defaults as $k => $v) {
-				if (!$this->ext($k)) $this->ext ($k, $v);
+				if (!isset($ext[$k])) 
+					$ext[$k] = $v;
 			}
+			$this->data[$this->_extended_field] = json_encode($ext);
 		}
 
 		// Populate extended attributes after `parent::__construct()`
