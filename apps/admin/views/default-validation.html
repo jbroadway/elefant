@@ -5,6 +5,9 @@ $(function () {
 	$('#{{ _form }}').verify_values ({
 		handler: '{{ _rules }}',
 		callback: function (failed) {
+			// scroll to top of form
+			$('body').scrollTo ('#{{ _form }}');
+
 			// highlight the failed elements
 			for (var i = 0; i < failed.length; i++) {
 				$('#' + failed[i] + '-notice').show ();
