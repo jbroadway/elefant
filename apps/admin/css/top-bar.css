@@ -255,12 +255,12 @@ body {
 		#admin-tools-list .admin-tools-edit {
 			position: absolute;
 			display:block;
-			top: -4px;
-			left:0;
-			right:0;
-			margin:auto;
-			text-align:center;
+			top: 6px;
+			right: 55px;
+			margin: 0;
+			text-align: right;
 			background-color:initial!important;
+			color: #93278f;
 		}
 
 	#admin-update-available {

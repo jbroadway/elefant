@@ -18,7 +18,7 @@
 	<a href="/" id="admin-tools-website" data-trigger="w" data-trigger-label="{"Go to website"}">{"Website"}</a>
 	{% if count($data->tools) || $data->editable %}
 		<div id="admin-tools-list" class="admin-tools-custom">
-		{% if editable %}<a class="admin-tools-edit" href="/admin/toolbar"><em>{"Edit Toolbar"}</em></a>{% end %}
+		{% if editable %}<a class="admin-tools-edit" href="/admin/toolbar">{"Edit Toolbar"}</a>{% end %}
 		<?php $data->row_count = 0; ?>
 		{% foreach tools as section, group %}
 			<?php $data->row_count++; ?>

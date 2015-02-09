@@ -217,11 +217,11 @@ if (typeof String.prototype.trim !== 'function') {
 		},
 		
 		handleOpenModal: function() {
-			var title = '', html = '<form id="treeModal" style="text-align:center;" \
+			var title = '', html = '<form id="treeModal" \
 				onsubmit="if($.treeDragDrop.handlers.handleAddCategory()) { $.close_dialog (); } return false;">\
 				<span class="caption error"></span>\
-				<label for="add-category">Category Name<br><input type="text" id="add-category" /></label><br><br>\
-				<input type="submit" value="Add"/>\
+				<label for="add-category">Category Name<br><input type="text" id="add-category" style="width: 95%" /></label><br><br>\
+				<input type="submit" value="Add" style="float:right" />\
 			</form>';
 			$.open_dialog('New Catagory',html,{width:250,height:200});
 			$('#treeModal #add-category')[0].focus();
