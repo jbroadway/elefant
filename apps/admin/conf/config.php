@@ -9,6 +9,9 @@ login_redirect = "/"
 ; Whether to show "All Pages" in the tools menu.
 show_all_pages = On
 
+; Name of the column where extra apps are placed under.
+autofill_column = "Extras"
+
 [Scripts]
 
 ; The place to load jQuery from, either 'local', 'google' which uses

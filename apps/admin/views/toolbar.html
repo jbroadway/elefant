@@ -1,0 +1,84 @@
+<!--[if IE]>
+<style>
+body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
+	cursor: url(/apps/admin/js/tree-drag-drop/css/openhand.cur), move;
+}
+</style>
+<![endif]-->
+<style>
+.trashbin {
+	width:48%; 
+	float:right;
+}
+
+.tree {
+	width:48%; 
+	float:left;
+}
+
+.caption {
+	display:block;
+	margin-top:10px;
+}
+
+.inline-caption {
+	display:inline-block;
+	font-size:13px;
+	float:right;
+	font-weight:initial;
+	margin-top:5px;
+}
+
+.error {
+	color:red;
+}
+
+.special {
+	/*font-style:italic;*/
+}
+
+</style>
+
+<div class="treeDragDrop">
+	<div class="tree">
+		<h4>{"Toolbar Menu"}<a class="inline-caption" href="javascript:;" onclick="$.treeDragDrop.handlers.handleOpenModal();">{"Add Category"}</a></h4>
+		<p class="caption">{"Drag resources to the toolbar tree to include them in the toolbar."}</p>
+		<ul class="tdd-tree">
+		{% if tools|count %}{% foreach tools as section, group %}
+			<li id="cat_{{ section|str_replace(' ','_',%s)|strtolower }}" class="section" data-section="{{ section }}"><b>{{ section }}</b>
+				<ul class="tools">
+				{% if group|count %}
+				{% foreach group as tool %}
+					<li id="res_{{ tool['handler']|str_replace(' ','_',%s)|strtolower }}" 
+						class="tool"
+						title="/{{ tool['handler'] }}" 
+						data-name="{{ tool['name'] }}" 
+						data-handler="{{ tool['handler'] }}"
+					>{{ tool['name'] }}</li>
+				{% end %}
+				{% end %}
+				</ul>
+			</li>
+		{% end %}{% end %}
+		{% if autofill %}<li id="cat_*" class="special" data-name="{{ autofill }}" data-handler="*"><b>{{ autofill }}</b> ({"new apps will automatically be added here"})</li>{% end %}
+		</ul>
+	</div>	
+	<div class="trashbin">
+		<h4> {"Available Resources"}</h4>
+		<p class="caption">{"Drag resources here to remove them from the toolbar."}</p>
+		<ul class="tdd-trashbin">
+		{% foreach apps as app %}
+			<li id="res_{{ app['handler']|str_replace(' ','_',%s)|strtolower }}" 
+				class="tool" 
+				title="/{{ app['handler'] }}"
+				data-name="{{ app['name'] }}" 
+				data-handler="{{ app['handler'] }}"
+			>{{ app['name'] }}</li>
+		{% end %}
+		{% if autofill === false %}
+			<li id="cat_*" class="special" data-name="{{ \Appconf::admin('General','autofill_column') }}" data-handler="*"><b>{{ \Appconf::admin('General','autofill_column') }}</b> ({"new apps will automatically be added here"})</li>
+		{% end %}
+		</ul>
+	</div>
+</div>
+<br clear="both" />
