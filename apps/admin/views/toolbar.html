@@ -30,8 +30,8 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 }
 
 .tool.needs-upgrade, .tool.not-installed {
-	color: #93278f;
-	font-weight: bold;
+	/*color: #93278f;
+	font-weight: bold;*/
 }
 
 .error {
@@ -39,7 +39,7 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 }
 
 .special {
-	font-style:italic;
+	/*font-style:italic;*/
 }
 
 </style>
@@ -55,18 +55,19 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 				{% if group|count %}
 				{% foreach group as tool %}
 					<li id="res_{{ tool['handler']|str_replace(' ','_',%s)|strtolower }}" 
-						class="tool{% if tool['class'] %} {{ tool['class'] }}{% end %}" 
+						class="tool{% if tool['class'] %} {{ tool['class'] }}{% end %}"
+						title="/{{ tool['handler'] }}" 
 						data-name="{{ tool['name'] }}" 
 						data-handler="{{ tool['handler'] }}"
-					>{{ tool['name'] }} ({{ tool['handler'] }})</li>
+					>{{ tool['name'] }}</li>
 				{% end %}
 				{% end %}
 				</ul>
 			</li>
 		{% end %}{% end %}
-		{% if autofill %}<li id="cat_*" class="special" data-name="{{ autofill }}" data-handler="*">{{ autofill }} (*)</li>{% end %}
+		{% if autofill %}<li id="cat_*" class="special" data-name="{{ autofill }}" data-handler="*"><b>{{ autofill }}</b> ({"new apps will automatically be added here"})</li>{% end %}
 		</ul>
-	</div>	
+	</div>
 	<div class="trashbin">
 		<h4> {"Available Resources"}</h4>
 		<p class="caption">{"Drag resources here to remove them from the toolbar."}</p>
@@ -74,12 +75,13 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 		{% foreach apps as app %}
 			<li id="res_{{ app['handler']|str_replace(' ','_',%s)|strtolower }}" 
 				class="tool{% if app['class'] %} {{ app['class'] }}{% end %}" 
+				title="/{{ app['handler'] }}"
 				data-name="{{ app['name'] }}" 
 				data-handler="{{ app['handler'] }}"
-			>{{ app['name'] }} ({{ app['handler'] }})</li>
+			>{{ app['name'] }}</li>
 		{% end %}
 		{% if autofill === false %}
-			<li id="cat_*" class="special" data-name="{{ \Appconf::admin('General','autofill_column') }}" data-handler="*">{{ \Appconf::admin('General','autofill_column') }} (*)</li>
+			<li id="cat_*" class="special" data-name="{{ \Appconf::admin('General','autofill_column') }}" data-handler="*"><b>{{ \Appconf::admin('General','autofill_column') }}</b> ({"new apps will automatically be added here"})</li>
 		{% end %}
 		</ul>
 	</div>
