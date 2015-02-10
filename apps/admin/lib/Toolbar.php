@@ -57,11 +57,13 @@ class Toolbar {
 		if (conf('Paths','toolbar') && !file_exists (conf('Paths','toolbar')))
 			return self::$tools = array();
 		$path = (conf('Paths','toolbar'))?conf('Paths','toolbar'):'conf/tools.php';
-		$tools = parse_ini_file ($path, true);
+		$_tools = parse_ini_file ($path, true);
+		$tools = array();
 		$first = false;
 
-		if ($tools !== false) {
-			foreach ($tools as $column => $group) {
+		if ($_tools !== false) {
+			foreach ($_tools as $column => $group) {
+				$tools[$column] = array();
 				if ($first === false) {
 					$first = true;
 					// check if we need to add an upgrade link
@@ -79,8 +81,7 @@ class Toolbar {
 				$j = 2;
 				foreach ($group as $handler => $name) {
 					if ($handler === '*') {
-						self::$autofill = $column;
-						unset($tools[$column]);
+						self::$autofill = $_column;
 						break;
 					}
 					
@@ -102,7 +103,6 @@ class Toolbar {
 						// Ok
 					} else {
 						// Can't access this app
-						unset ($tools[$_column][$handler]);
 						continue;
 					}
 
@@ -110,12 +110,8 @@ class Toolbar {
 
 					if (! self::is_compatible ($appconf)) {
 						// App not compatible with this platform 
-						unset ($tools[$_column][$handler]);
 						continue;
 					}
-					
-					// remove resource from original section
-					if ($column !== $_column) unset ($tools[$_column][$handler]);
 
 					if (isset ($appconf['Admin']['install'])) {
 						$ver = $c->installed ($app, $appconf['Admin']['version']);
@@ -129,7 +125,6 @@ class Toolbar {
 							);
 						} elseif ($ver === false) {
 							// not installed
-							unset($tools[$column][$handler]);
 							$tools[$column][$appconf['Admin']['install']] = array (
 								'handler' => $handler,
 								'name' => $name,
@@ -137,7 +132,6 @@ class Toolbar {
 							);
 						} else {
 							// needs upgrade
-							unset($tools[$column][$handler]);
 							$tools[$column][$appconf['Admin']['upgrade']] = array (
 								'handler' => $handler,
 								'name' => $name,
