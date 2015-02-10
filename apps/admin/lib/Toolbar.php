@@ -66,10 +66,10 @@ class Toolbar {
 					$first = true;
 					// check if we need to add an upgrade link
 					$ver = $c->installed ('elefant', ELEFANT_VERSION);
-					if ($ver !== true) {
+					if ($ver !== true && !$editing) {
 						$tools[$column]['admin/upgrade'] = array (
 							'handler' => 'admin/upgrade',
-							'name' => ' ' . __ ('Click to upgrade'),
+							'name' => 'Website Core',
 							'class' => 'needs-upgrade'
 						);
 					}
@@ -129,17 +129,17 @@ class Toolbar {
 							);
 						} elseif ($ver === false) {
 							// not installed
-							$name = __ ($name) . ' (' . __ ('click to install') . ')';
-							$tools[$column][$handler] = array (
-								'handler' => $appconf['Admin']['install'],
+							unset($tools[$column][$handler]);
+							$tools[$column][$appconf['Admin']['install']] = array (
+								'handler' => $handler,
 								'name' => $name,
-								'class' => 'needs-upgrade'
+								'class' => 'not-installed'
 							);
 						} else {
 							// needs upgrade
-							$name = __ ($name) . ' (' . __ ('click to upgrade') . ')';
-							$tools[$column][$handler] = array (
-								'handler' => $appconf['Admin']['upgrade'],
+							unset($tools[$column][$handler]);
+							$tools[$column][$appconf['Admin']['upgrade']] = array (
+								'handler' => $handler,
 								'name' => $name,
 								'class' => 'needs-upgrade'
 							);
@@ -174,10 +174,10 @@ class Toolbar {
 		$tools = array();
 		
 		$ver = $controller->installed ('elefant', ELEFANT_VERSION);
-		if ($ver !== true) {
+		if ($ver !== true && !$editing) {
 			$tools['admin/upgrade'] = array(
 				'handler' => 'admin/upgrade',
-				'name' => ' ' . __ ('Click to upgrade'),
+				'name' => 'Website Core',
 				'class' => 'needs-upgrade'
 			);
 		}
@@ -212,12 +212,20 @@ class Toolbar {
 					User::require_acl ($handler)
 				)) {/* Ok */} else continue;
 				
-				if (preg_match ('/\/(admin|index)$/', $handler) && $ver !== true) {
-					$tools[$handler] = array(
-						'handler' => $handler,
-						'name' => __($name),
-						'class' => 'needs-upgrade'
-					);
+				if (preg_match ('/\/(admin|index)$/', $handler)) {
+						if ($ver === true) {
+							$tools[$handler] = array(
+								'handler' => $handler,
+								'name' => __($name),
+								'class' => false
+							);
+						} else {
+							$tools[$appconf['Admin']['upgrade']] = array(
+								'handler' => $handler,
+								'name' => __($name),
+								'class' => 'needs-upgrade'
+							);
+						}
 				} else {
 					$tools[$handler] = array(
 						'handler' => $handler,
@@ -272,12 +280,10 @@ class Toolbar {
 						$tools[$appconf['Admin']['handler']]['class'] = false;
 					} elseif ($ver === false) {
 						// not installed
-						$appconf['Admin']['name'] .= ' (' . __ ('click to install') . ')';
 						$tools[$appconf['Admin']['install']] = $appconf['Admin'];
 						$tools[$appconf['Admin']['install']]['class'] = 'not-installed';
 					} else {
 						// needs upgrade
-						$appconf['Admin']['name'] .= ' (' . __ ('click to upgrade') . ')';
 						$tools[$appconf['Admin']['upgrade']] = $appconf['Admin'];
 						$tools[$appconf['Admin']['upgrade']]['class'] = 'needs-upgrade';
 					}
