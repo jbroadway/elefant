@@ -45,7 +45,7 @@ $editable = User::require_acl('admin/toolbar');
 $out = array (
 	'name' => Product::name (),
 	'logo' => Product::logo_toolbar (),
-	'is_apps' => $is_apps,
+	'is_apps' => ($is_apps || (count($tools) === 0 && !$editable)),
 	'links' => $tpl->render ('admin/head/links', array (
 		'user' => User::val ('name'),
 		'tools' => $tools,

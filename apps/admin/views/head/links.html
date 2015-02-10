@@ -1,3 +1,11 @@
+<style>
+	#admin-tools-list li a.not-installed:after {
+		content: " ({"Click to install"})";
+	}
+	#admin-tools-list li a.needs-upgrade:after {
+		content: " ({"Click to upgrade"})";
+	}
+</style>
 {% if is_apps %}
 	<a href="#preview" class="admin-tools-show-preview" data-trigger="p" data-trigger-label="{"Toggle preview mode"}">{"Preview"}</a>
 	<a href="/" id="admin-tools-website" data-trigger="w" data-trigger-label="{"Go to website"}">{"Website"}</a>
@@ -26,7 +34,7 @@
 			<h3 class="admin-tools-section-header">{{section|__}}</h3>
 			<ul class="admin-tools-list">
 			{% foreach group as tool %}
-				<li><a href="/{{ tool['handler'] }}"{% if tool['class'] %}class="{{ tool['class'] }}"{% end %}>{{ tool['name']|__ }}</a></li>
+				<li><a href="/{{ loop_index }}"{% if tool['class'] %}class="{{ tool['class'] }}"{% end %}>{{ tool['name']|__ }}</a></li>
 			{% end %}
 			</ul>
 			</div>
