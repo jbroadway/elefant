@@ -203,7 +203,6 @@ body {
 		width: 100%;
 		color: #222;
 		max-height:250px;
-		overflow-y:auto!important;
 		padding-top:25px!important;
 		/*
 		background: #ddd;
@@ -255,10 +254,12 @@ body {
 		#admin-tools-list .admin-tools-edit {
 			position: absolute;
 			display:block;
-			top: 6px;
-			right: 55px;
 			margin: 0;
-			text-align: right;
+			width: 0;
+			top: 0;
+			right:50%;
+			padding-right:41px;
+			white-space:nowrap;
 			background-color:initial!important;
 			color: #93278f;
 		}
