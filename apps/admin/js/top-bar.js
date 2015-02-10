@@ -213,7 +213,7 @@ $(function () {
 				}
 
 				if (admin_tools_list.is (':visible')) {
-					admin_tools_list.stop ().css ('overflow-y', 'auto').slideUp ('fast');
+					admin_tools_list.stop ().css ('overflow-y', 'hidden').slideUp ('fast');
 				} else {
 					admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast', function(){admin_tools_list.css ('overflow-y', 'auto');});
 					$('#admin-tools-list a')[0].focus ();
