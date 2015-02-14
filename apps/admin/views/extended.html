@@ -19,6 +19,8 @@
 				<option value="select">{"Drop down"}</option>
 				<option value="file">{"File link"}</option>
 				<option value="image">{"Image link"}</option>
+				<option value="date">{"Date input"}</option>
+				<option value="datetime">{"Date/time input"}</option>
 {% foreach custom as field_id, field_name %}
 				<option value="{{field_id}}">{{field_name|__}}</option>
 {% end %}
@@ -58,6 +60,8 @@
 					<option value="select"\{{#if select}} selected\{{/if}}>{"Drop down"}</option>
 					<option value="file"\{{#if file}} selected\{{/if}}>{"File link"}</option>
 					<option value="image"\{{#if image}} selected\{{/if}}>{"Image link"}</option>
+					<option value="date"\{{#if date}} selected\{{/if}}>{"Date input"}</option>
+					<option value="datetime"\{{#if datetime}} selected\{{/if}}>{"Date/time input"}</option>
 {% foreach custom as field_id, field_name %}
 					<option value="{{field_id}}"\{{#if {{field_id}}\}} selected \{{/if}}>{{field_name|__}}</option>
 {% end %}
@@ -182,7 +186,7 @@ $(function () {
 	
 	.submit-buttons {
 		position: absolute;
-		bottom: 0px;
+		bottom: 10px;
 		right: 8px;
 	}
 
