@@ -78,8 +78,8 @@ RedactorPlugins.links = function () {
 				$.i18n ('Link'),
 				'<div class="links-content">' +
 					'<p>' +
-						'<span class="links-btn" id="links-page-btn">' + $.i18n ('Page') + '</span>' +
 						'<span class="links-btn" id="links-url-btn">' + $.i18n ('URL') + '</span>' +
+						'<span class="links-btn" id="links-page-btn">' + $.i18n ('Page') + '</span>' +
 						'<span class="links-btn" id="links-email-btn">' + $.i18n ('Email') + '</span>' +
 						'<br />' +
 						'<select id="links-page">' +
