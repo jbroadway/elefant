@@ -156,19 +156,19 @@ $(function () {
 		$('#admin-links').append (res.links);
 	
 		// show/hide tools menu
-		if ($.elefant_custom) {
+		if (!res.is_apps) {
 			// custom tools menu
 			var admin_tools = $('#admin-bar'),
 				admin_tools_list = $('#admin-tools-list');
-
+			
 			$('#admin-bar>a').after ('<span id="admin-tools-arrow"></span>');
 
 			function toggle_custom_tools_open () {
-				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
+				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast', function(){admin_tools_list.css ('overflow-y', 'auto');});
 			}
 
 			function toggle_custom_tools_close () {
-				admin_tools_list.stop ().slideUp ('slow');
+				admin_tools_list.stop ().css ('overflow-y', 'hidden').slideUp ('slow');
 			}
 
 			function toggle_custom_tools (e) {
@@ -181,9 +181,9 @@ $(function () {
 				}
 
 				if (admin_tools_list.is (':visible')) {
-					admin_tools_list.stop ().slideUp ('fast');
+					admin_tools_list.stop ().css ('overflow-y', 'hidden').slideUp ('fast');
 				} else {
-					admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
+					admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast', function(){admin_tools_list.css ('overflow-y', 'auto');});
 					$('#admin-tools-list a')[0].focus ();
 				}
 			
@@ -196,7 +196,7 @@ $(function () {
 				$('#admin-tools-arrow').on ('MSPointerDown', toggle_custom_tools);
 			} else {
 				admin_tools.hover (
-					function () {},
+					function(){if(admin_tools_list.is(':visible')){toggle_custom_tools_open();}},
 					toggle_custom_tools_close
 				);
 
@@ -212,11 +212,11 @@ $(function () {
 				admin_tools_list = $('#admin-tools-list');
 
 			function toggle_tools_open () {
-				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
+				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast', function(){admin_tools_list.css ('overflow-y', 'auto');});
 			}
 
 			function toggle_tools_close () {
-				admin_tools_list.stop ().slideUp ('slow');
+				admin_tools_list.stop ().css ('overflow-y', 'hidden').slideUp ('slow');
 			}
 
 			function toggle_tools (e) {
@@ -229,9 +229,9 @@ $(function () {
 				}
 
 				if (admin_tools_list.is (':visible')) {
-					admin_tools_list.stop ().slideUp ('fast');
+					admin_tools_list.stop ().css ('overflow-y', 'hidden').slideUp ('fast');
 				} else {
-					admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
+					admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast', function(){admin_tools_list.css ('overflow-y', 'auto');});
 					$('#admin-tools-list a')[0].focus ();
 				}
 			

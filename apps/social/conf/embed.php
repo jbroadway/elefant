@@ -8,7 +8,7 @@ icon = thumbs-up
 url[label] = Link
 url[type] = text
 url[not empty] = 1
-url[regex] = "|^http://.+$|"
+url[regex] = "/^http:\/\/.+$/"
 url[message] = Please enter a valid URL.
 
 [social/facebook/like-box]
@@ -20,7 +20,7 @@ columns = 2
 url[label] = Facebook Page URL
 url[type] = text
 url[not empty] = 1
-url[regex] = "|^http://.+$|"
+url[regex] = "/^http:\/\/.+$/"
 url[message] = Please enter a valid URL.
 
 width[label] = Width
@@ -67,7 +67,7 @@ icon = /apps/social/css/icon-facebook-comments.png
 url[label] = Link
 url[type] = text
 url[not empty] = 1
-url[regex] = "|^http://.+$|"
+url[regex] = "/^http:\/\/.+$/"
 url[message] = Please enter a valid URL.
 
 [social/facebook/commentcount]
@@ -78,7 +78,7 @@ icon = /apps/social/css/icon-facebook-commentcount.png
 url[label] = Link
 url[type] = text
 url[not empty] = 1
-url[regex] = "|^http://.+$|"
+url[regex] = "/^http:\/\/.+$/"
 url[message] = Please enter a valid URL.
 
 [social/twitter/follow]
@@ -127,7 +127,7 @@ icon = twitter
 url[label] = Link
 url[type] = text
 url[not empty] = 1
-url[regex] = "|^http://.+$|"
+url[regex] = "/^http:\/\/.+$/"
 url[message] = Please enter a valid URL.
 
 via[label] = Twitter ID
@@ -141,7 +141,7 @@ icon = google-plus-square
 url[label] = Link
 url[type] = text
 url[not empty] = 1
-url[regex] = "|^http://.+$|"
+url[regex] = "/^http:\/\/.+$/"
 url[message] = Please enter a valid URL.
 
 [social/video/youtube]
@@ -152,7 +152,7 @@ icon = video-camera
 url[label] = Link
 url[type] = text
 url[not empty] = 1
-url[regex] = "|^https?://.+$|"
+url[regex] = "/^https?:\/\/.+$/"
 url[message] = Please enter a valid URL.
 
 width[label] = Player width
@@ -213,7 +213,7 @@ icon = video-camera
 url[label] = Link
 url[type] = text
 url[not empty] = 1
-url[regex] = "|^https?://.+$|"
+url[regex] = "/^https?:\/\/.+$/"
 url[message] = Please enter a valid URL.
 
 width[label] = Player width

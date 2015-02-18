@@ -32,8 +32,11 @@ autoplay[type] = select
 autoplay[require] = "apps/filemanager/lib/Functions.php"
 autoplay[callback] = "filemanager_yes_no"
 
-dimensions[label] = "Dimensions (format: WIDTHxHEIGHT)"
-dimensions[type] = text
+speed[label] = "Transition Speed (milliseconds)"
+speed[type] = text
+
+ratio[label] = "Ratio (format: WIDTH:HEIGHT)"
+ratio[type] = text
 
 [filemanager/gallery]
 

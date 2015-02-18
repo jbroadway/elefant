@@ -93,10 +93,13 @@ body {
 	}
 
 		#admin-links a:hover, #admin-links a:focus {
-			color: #93278f;
-			background-color: #dddddd;
 			text-decoration: none;
 			outline: 0;
+		}
+		
+		#admin-links a:hover, #admin-links > a:focus {
+			color: #93278f;
+			background-color: #dddddd;
 		}
 
 	#admin-tools-list {
@@ -109,6 +112,8 @@ body {
 		float: left;
 		border: 0;
 		list-style: none;
+		max-height:350px;
+		overflow-x:hidden;
 		-webkit-box-shadow: 0px 1px 2px rgba(0,0,0,.3);
 		-moz-box-shadow: 0px 1px 2px rgba(0,0,0,.3);
 		box-shadow: 0px 1px 2px rgba(0,0,0,.3);
@@ -182,12 +187,25 @@ body {
 		background-position: 50% 50%;
 	}
 	
+		#admin-tools-arrow a {
+			margin-left: 50px;
+			margin-top: 4px;
+			display:none;
+		}
+		
+		#admin-tools-arrow:hover a {
+			display:inline-block;
+		}
+	
 	#admin-tools-list.admin-tools-custom {
 		position: absolute;
 		top: 35px;
 		left: 0;
 		width: 100%;
 		color: #222;
+		max-height:250px;
+		overflow-y:auto!important;
+		padding-top:25px!important;
 		/*
 		background: #ddd;
 		background: rgba(235,235,235,.95);
@@ -205,7 +223,7 @@ body {
 	
 		.admin-tools-section {
 			float: left;
-			width: 19%;
+			width: 20%;
 		}
 		
 		h3.admin-tools-section-header {
@@ -233,6 +251,17 @@ body {
 			padding-left: 0;
 			height: 24px;
 			width: 100%;
+		}
+		
+		#admin-tools-list .admin-tools-edit {
+			position: absolute;
+			display:block;
+			top: 6px;
+			right: 55px;
+			margin: 0;
+			text-align: right;
+			background-color:initial!important;
+			color: #93278f;
 		}
 
 	#admin-update-available {

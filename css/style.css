@@ -142,6 +142,7 @@ a:hover {
 #body.index-body #slideshow-homepage img {
 	max-width: 940px;
 	width: 940px;
+	min-height:initial;
 }
 
 .index-body table td {

@@ -301,9 +301,44 @@ function fetch_url ($url) {
 		curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
 		curl_setopt ($ch, CURLOPT_FAILONERROR, 0);
 		curl_setopt ($ch, CURLOPT_URL, $url);
+		curl_setproxy ($ch, $url);
 		$res = curl_exec ($ch);
 		curl_close ($ch);
 		return $res;
 	}
 	return file_get_contents ($url);
+}
+
+/**
+ * Sets proxy for a curl call using global settings.
+ * 
+ * @param resource $ch
+ * @param string $url
+ */
+function curl_setproxy ($ch, $url) {
+	
+	$set_proxy = true;
+	if (conf ('Proxy', 'url') && intval (conf ('Proxy', 'port'))) {
+		if (conf ('Proxy', 'skip_urls')) {
+			if (($domain = parse_url ($url, PHP_URL_HOST))) {
+				if (in_array ($domain, explode (',', conf ('Proxy', 'skip_urls')))) {
+					$set_proxy = false;
+				}
+			}
+		}
+		if (conf ('Proxy', 'skip_ips')) {
+			if (($domain = parse_url ($url, PHP_URL_HOST))) {
+				if (($ip = gethostbyname ($domain))) {
+					if (in_array ($ip, explode (',', conf ('Proxy', 'skip_ips')))) {
+						$set_proxy = false;
+					}
+				}
+			}
+		}
+		if ($set_proxy) {
+			curl_setopt ($ch, CURLOPT_PROXY,
+				conf ('Proxy', 'url') . ':' . intval (conf ('Proxy', 'port'))
+			);			
+		}
+	}
 }

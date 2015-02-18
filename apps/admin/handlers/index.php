@@ -21,6 +21,11 @@ if (! isset ($_POST['redirect'])
 	$_POST['redirect'] = $appconf['General']['login_redirect'];
 }
 
+$redir = parse_url ($_POST['redirect']);
+if ($redir === false || $_POST['redirect'] !== $redir['path'] && $_POST['redirect'] !== $redir['path'] . '?' . $redir['query']) {
+	$_POST['redirect'] = $appconf['General']['login_redirect'];
+}
+
 if (! User::require_admin ()) {
 	$page->title = sprintf (
 		'<img src="%s" alt="%s" style="margin-left: -7px" />',

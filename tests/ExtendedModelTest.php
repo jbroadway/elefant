@@ -13,12 +13,27 @@ class MyModel extends ExtendedModel {
 	);
 }
 
+class MyModelWithDefault extends ExtendedModel {
+	public $_extended_field = 'extra';
+	public $verify = array (
+		'name' => array (
+			'not empty' => 1
+		),
+		'foo' => array (
+			'not empty' => 1,
+			'extended' => 1,
+			'default' => 'default value'
+		)
+	);
+}
+
 class ExtendedModelTest extends PHPUnit_Framework_TestCase {
 	protected static $o;
 
 	static function setUpBeforeClass () {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		DB::execute ('create table mymodel ( id integer primary key, name char(32), extra text )');
+		DB::execute ('create table mymodelwithdefault ( id integer primary key, name char(32), extra text )');
 	}
 
 	function test_create () {
@@ -35,6 +50,11 @@ class ExtendedModelTest extends PHPUnit_Framework_TestCase {
 		self::$o->foo = 'foo';
 		$this->assertTrue (self::$o->put ());
 		$this->assertEquals (1, self::$o->id);
+		
+		// Test model with default foo value
+		$o2 = new MyModelWithDefault (array ('name' => 'Test'));
+		$this->assertEquals ('default value', $o2->ext ('foo'));
+		$this->assertTrue ($o2->put ());
 	}
 
 	/**

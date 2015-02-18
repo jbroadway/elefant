@@ -9,25 +9,48 @@
 $page->layout = false;
 header ('Content-Type: application/json');
 
-if (! User::require_admin ()) {
-	return;
-}
+if (! User::require_admin ()) return;
 
-$custom_tools = admin\Toolbar::custom_tools ($this);
-if ($custom_tools === false) {
-	$tools = admin\Toolbar::parse_apps ($this);
+$tools = admin\Toolbar::tools ($this);
+if (count($tools) === 0 && admin\Toolbar::$autofill === false) {
+	$tools = admin\Toolbar::apps($this);
+	$is_apps = true;
 } else {
-	$tools = $custom_tools;
-	$custom_tools = true;
+	if (admin\Toolbar::$autofill) { 
+		// Extend the tools list with any unused app resources.
+		$apps = admin\Toolbar::apps($this);
+		foreach ($tools as $column => $group) {
+			// filter out resources that are already in use
+			$apps = array_diff_key($apps, $group);
+		}
+		if (count($apps)) {
+			$i = 0;
+			$j = 2;
+			$column = admin\Toolbar::$autofill;
+			$tools[$column] = array();
+			foreach ($apps as $handler => $app) {
+				if (++$i > 7) {
+					$i = 0;
+					$column = admin\Toolbar::$autofill .' ('. $j++ .')';
+					$tools[$column] = array();
+				}
+				$tools[$column][$handler] = $apps[$handler];
+			}
+		}
+	}
+	$is_apps = false;
 }
 
+$editable = User::require_acl('admin/toolbar');
 $out = array (
 	'name' => Product::name (),
 	'logo' => Product::logo_toolbar (),
+	'is_apps' => ($is_apps || (count($tools) === 0 && !$editable)),
 	'links' => $tpl->render ('admin/head/links', array (
 		'user' => User::val ('name'),
 		'tools' => $tools,
-		'custom' => $custom_tools
+		'is_apps' => $is_apps,
+		'editable' => $editable
 	))
 );
 
