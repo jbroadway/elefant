@@ -72,7 +72,7 @@ access_token_secret = ""
 [Admin]
 
 handler = user/admin
-name = Members
+name = Accounts
 install = user/upgrade
 upgrade = user/upgrade
 version = 1.1.3-stable

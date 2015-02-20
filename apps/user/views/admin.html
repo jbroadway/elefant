@@ -3,9 +3,9 @@
 
 <div class="e-row-variable" style="margin-bottom: 20px">
 	<div class="e-col-50 e-no-padding">
-		<a href="/user/add">{"Add Member"}</a>
+		<a href="/user/add">{"Add"}</a>
 		&nbsp;|&nbsp;
-		<a href="/user/import">{"Import Members"}</a>
+		<a href="/user/import">{"Import"}</a>
 		{% if User::require_acl ('user/roles') %}
 		&nbsp;|&nbsp;
 		<a href="/user/roles">{"Roles"}</a>
@@ -14,7 +14,7 @@
 		&nbsp;|&nbsp;
 		<a href="/user/settings">{"Settings"}</a>
 		&nbsp;|&nbsp;
-		<a href="/admin/extended?extends=User&name=Members">{"Custom Fields"}</a>
+		<a href="/admin/extended?extends=User&name=Accounts">{"Custom Fields"}</a>
 		{% end %}
 	</div>
 	<div class="e-col-50 e-no-padding" style="text-align: right">

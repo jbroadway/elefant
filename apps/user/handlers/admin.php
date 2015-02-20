@@ -27,7 +27,7 @@ $count = User::query ()
 	->where_search ($q, $q_fields, $q_exact)
 	->count ();
 
-$page->title = __ ('Members');
+$page->title = __ ('Accounts');
 echo $tpl->render ('user/admin', array (
 	'limit' => $limit,
 	'total' => $count,
