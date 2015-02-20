@@ -188,7 +188,7 @@ class Appconf {
 	}
 	
 	/**
-	 * Fetch all published hook handlers from a specific confi file in
+	 * Fetch all published hook handlers from a specific config file in
 	 * across all apps. This may be a specific file, or a specific
 	 * option list within the file.
 	 *
