@@ -342,3 +342,23 @@ function curl_setproxy ($ch, $url) {
 		}
 	}
 }
+
+/**
+ * Returns URL without protocol and domain, just path, query and fragment:
+ *	https://www.elefantcms.com/docs/2.0?param=value#top => /docs/2.0?param=value#top
+ * 
+ * @param string $url
+ * @return string
+ */
+function url_get_fullpath ($url) {
+	
+	$url = parse_url ($url);
+	$return = $url['path'];
+	if ($url['query']) {
+		$return .= '?' . $url[query];
+	}
+	if ($url['fragment']) {
+		$return .= '#' . $url[fragment];
+	}
+	return $return;
+}
