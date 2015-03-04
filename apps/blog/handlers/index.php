@@ -40,10 +40,12 @@ if (! is_array ($posts) || count ($posts) === 0) {
 		require_once ('apps/blog/lib/markdown.php');
 	}
 
-	foreach ($posts as $post) {
-		$post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
+	foreach ($posts as $_post) {
+		$post = $_post->orig();
+		$post->url = '/blog/post/' . $post->id . '/';
+		$post->fullurl = $post->url . URLify::filter ($post->title);
 		$post->tag_list = (strlen ($post->tags) > 0) ? explode (',', $post->tags) : array ();
-		$post->social_buttons = Appconf::blog ('Social Buttons');
+		$post->social_buttons = $appconf['Social Buttons'];
 		if (Appconf::blog ('Blog', 'post_format') === 'html') {
 			$post->body = $tpl->run_includes ($post->body);
 		} else {

@@ -34,9 +34,10 @@ if (! is_array ($posts) || count ($posts) === 0) {
 		echo '<p class="hide-in-preview"><a href="/blog/add">' . __ ('Add Blog Post') . '</a></p>';
 	}
 
-	foreach ($posts as $p) {
-		$post = $p->orig();
-		$post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
+	foreach ($posts as $_post) {
+		$post = $_post->orig();
+		$post->url = '/blog/post/' . $post->id . '/';
+		$post->fullurl = $post->url . URLify::filter ($post->title);
 		$post->tag_list = (strlen ($post->tags) > 0) ? explode (',', $post->tags) : array ();
 		$post->social_buttons = $appconf['Social Buttons'];
 		if (Appconf::blog ('Blog', 'post_format') === 'html') {

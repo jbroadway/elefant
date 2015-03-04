@@ -39,7 +39,8 @@ $page->title = $p->title;
 
 $post = $p->orig ();
 $post->full = true;
-$post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
+$post->url = '/blog/post/' . $post->id . '/';
+$post->fullurl = $post->url . URLify::filter ($post->title);
 $post->tag_list = (strlen ($post->tags) > 0) ? explode (',', $post->tags) : array ();
 if (Appconf::blog ('Blog', 'post_format') === 'html') {
 	$post->body = $tpl->run_includes ($post->body);

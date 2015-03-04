@@ -2,7 +2,9 @@
 
 <div class="blog-post{% if full %} blog-post-full{% end %} block">
 {% if ! full %}
-<h3><a href="{{ url }}">{{ title }}</a></h3>
+<h3><a href="{{ fullurl }}">{{ title }}</a></h3>
+{% else %}
+<h3>{{ title }}</h3>
 {% end %}
 <p class="blog-info info">{{ ts|I18n::date_time }}<span class="blog-by"> - {" by "} <a href="/blog/by/{{ author }}">{{ author }}</a></span>
 {% if User::require_acl ('admin', 'blog') %}
@@ -20,7 +22,7 @@
 <hr />
 {% end %}
 <div class="blog-comments">
-{{ controller.run ('blog/commentcount', $data)|none }}&nbsp;
+{% if ! full %}{{ controller.run ('blog/commentcount', $data)|none }}{% end %}&nbsp;
 {% if social_buttons['facebook'] %}
 	{{ controller.run ('social/facebook/like', $data)|none }}
 {% end %}
