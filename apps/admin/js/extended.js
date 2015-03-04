@@ -171,6 +171,8 @@ var extended = (function ($) {
 		field.select = (field.type === 'select') ? true : false;
 		field.file = (field.type === 'file') ? true : false;
 		field.image = (field.type === 'image') ? true : false;
+		field.date = (field.type === 'date') ? true : false;
+		field.datetime = (field.type === 'datetime') ? true : false;
 		for (var field_id in e.custom) {
 			field[field_id] = (field.type === field_id) ? true : false;
 		}
