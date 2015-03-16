@@ -29,7 +29,8 @@ $(function () {
 	});
 
 	{% if field_id %}
-	$('#{{ field_id }}').data ('wysiwyg', 1).wysiwyg ();
+	document.getElementById ('{{ field_id }}').setAttribute ('data-wysiwyg', 1);
+	$('#{{ field_id }}').wysiwyg ();
 	{% end %}
 
 	if (RedactorPlugins && RedactorPlugins.links) {
