@@ -404,6 +404,9 @@ class FileManager {
 		if (! preg_match ('/^[a-zA-Z0-9 _-]+\.[a-zA-Z0-9_-]+$/', $name)) {
 			return false;
 		}
+		if (preg_match ('/\.php$/i', $name)) {
+			return false;
+		}
 		return true;
 	}
 
