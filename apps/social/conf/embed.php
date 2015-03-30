@@ -62,7 +62,7 @@ stream[callback] = "social_yes_no"
 [social/facebook/comments]
 
 label = Facebook: Comments
-icon = /apps/social/css/icon-facebook-comments.png
+icon = facebook
 
 url[label] = Link
 url[type] = text
@@ -73,7 +73,7 @@ url[message] = Please enter a valid URL.
 [social/facebook/commentcount]
 
 label = Facebook: Comment Count
-icon = /apps/social/css/icon-facebook-commentcount.png
+icon = facebook
 
 url[label] = Link
 url[type] = text
@@ -84,7 +84,7 @@ url[message] = Please enter a valid URL.
 [social/twitter/follow]
 
 label = Twitter: Follow
-icon = /apps/social/css/icon-twitter-follow.png
+icon = twitter
 
 twitter_id[label] = Twitter ID
 twitter_id[type] = text
