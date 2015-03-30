@@ -32,6 +32,7 @@ $page->add_style ('/js/jquery-ui/jquery-ui.css');
 
 $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/js/jquery.quickpager.js');
+$page->add_script ('/apps/admin/js/redactor/plugins/table.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/filebrowser.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/imagebrowser.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/links.js');
