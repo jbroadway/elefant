@@ -5,28 +5,28 @@
 		clear: both;
 	}
 }
-.transition(@transition: all linear .2s) {
+.transition-redactor(@transition: all linear .2s) {
 	-moz-transition: @transition;
 	transition: @transition;
 }
 
-.opacity(@opacity: 100) {
+.opacity-redactor(@opacity: 100) {
 	filter: e(%("alpha(opacity=%d)", @opacity));
 	-moz-opacity: @opacity / 100;
 	opacity: @opacity / 100;
 }
-.box-sizing(@box-model) {
+.box-sizing-redactor(@box-model) {
 	-webkit-box-sizing: @box-model;
 	-moz-box-sizing: @box-model;
 	box-sizing: @box-model;
 }
-.striped(@color: rgba(255, 255, 255, .2); @angle: 45deg) {
+.striped-redactor(@color: rgba(255, 255, 255, .2); @angle: 45deg) {
 	background-image: -webkit-linear-gradient(@angle, @color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
 	background-image: -o-linear-gradient(@angle, @color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
 	background-image: linear-gradient(@angle, @color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
 }
 
-.animation(@animation) {
+.animation-redactor(@animation) {
 	-webkit-animation: @animation;
 	-o-animation: @animation;
 	animation: @animation;
@@ -63,18 +63,12 @@
 	overflow: visible;
 	margin-bottom: 24px;
 
-	& iframe,
 	& textarea {
 		display: block;
 		position: relative;
 		margin: 0;
 		padding: 0;
 		width: 100%;
-	}
-	& iframe {
-		border: 1px solid #eee;
-	}
-	& textarea {
 		overflow: auto;
 		outline: none;
 		border: none;
@@ -89,32 +83,33 @@
 		}
 	}
 }
-
-/*
-	Z-index setup
-*/
-
 .redactor-editor,
 .redactor-box {
 	background: #fff;
 }
 
+
+/*
+	Z-index setup
+*/
 .redactor-editor,
 .redactor-box,
 .redactor-box textarea {
-	z-index: auto !important;
+	z-index: auto;
 }
 .redactor-box-fullscreen {
-	z-index: 1052 !important;
+	z-index: 1051;
 }
-.redactor-toolbar,
+.redactor-toolbar {
+	z-index: 100;
+}
 .redactor-dropdown {
-	z-index: 1053 !important;
+	z-index: 1052;
 }
 #redactor-modal-overlay,
 #redactor-modal-box,
 #redactor-modal {
-	z-index: 1054 !important;
+	z-index: 1053;
 }
 
 
@@ -148,7 +143,7 @@ body .redactor-box-fullscreen {
 /*
 	Utils
 */
-.body-hidden {
+.body-redactor-hidden {
 	overflow: hidden;
 }
 
@@ -169,6 +164,9 @@ body .redactor-box-fullscreen {
 	&:focus {
 		outline: none;
 	}
+}
+.toolbar-fixed-box + .redactor-editor {
+	padding-top: 32px !important;
 }
 
 /*
@@ -228,7 +226,7 @@ body .redactor-box-fullscreen {
 		padding: 0 !important;
 		outline: none;
 		list-style: none !important;
-		.box-sizing(content-box);
+		.box-sizing-redactor(content-box);
 	}
 	& li a {
 		display: block;
@@ -241,7 +239,7 @@ body .redactor-box-fullscreen {
 		text-decoration: none;
 		cursor: pointer;
 		zoom: 1;
-		.box-sizing(content-box);
+		.box-sizing-redactor(content-box);
 	}
 	& li a {
 		&:hover {
@@ -271,7 +269,7 @@ body .redactor-box-fullscreen {
 		line-height: 1;
 	}
 	& li a.redactor-button-disabled {
-		.opacity(30);
+		.opacity-redactor(30);
 		&:hover {
 			color: #333;
 			outline: none;
@@ -555,8 +553,8 @@ body .redactor-box-fullscreen {
 	width: 100%;
 	height: 100%;
 	background-color: #3d58a8;
-	.striped();
-	.animation(progress-bar-stripes 2s linear infinite);
+	.striped-redactor();
+	.animation-redactor(progress-bar-stripes 2s linear infinite);
 	background-size: 40px 40px;
 }
 
@@ -586,7 +584,7 @@ body .redactor-box-fullscreen {
 	width: 100%;
 	height: 100%;
 	background-color: #000 !important;
-	.opacity(30);
+	.opacity-redactor(30);
 }
 #redactor-modal-box {
 	position: fixed;
@@ -648,7 +646,7 @@ body .redactor-box-fullscreen {
 		width: 100%;
 		font-size: 14px;
 		font-family: @redactorFontFamily;
-		.transition(border 0.3s ease-in);
+		.transition-redactor(border 0.3s ease-in);
 		&:focus {
 			outline: none;
 			border-color: #5ca9e4;
@@ -704,7 +702,7 @@ body .redactor-box-fullscreen {
 		padding-left: 0;
 		list-style: none;
 		max-height: 250px;
-		overflow-x: scroll;
+		overflow-x: auto;
 		& li {
 			border-bottom: 1px solid #ddd;
 			&:last-child {
@@ -888,9 +886,6 @@ body .redactor-box-fullscreen {
 	object,
 	hr {
 	  margin-bottom: 15px;
-	}
-	iframe {
-		width: auto;
 	}
 	blockquote {
 	  margin-left: 1.6em !important;
