@@ -255,6 +255,7 @@ class Template {
 			$data = (object) $data;
 		}
 		$data->is_being_rendered = true;
+		$data->template_id = str_replace ('/', '-', $template);
 
 		// Resolve the template to a file name, in one of:
 		// `apps/appname/views/filename.html`
