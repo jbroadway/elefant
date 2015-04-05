@@ -27,6 +27,11 @@ $form->data->_countries = user\Data::countries ();
 $page->title = __ ('Update Profile');
 
 echo $form->handle (function ($form) use ($u, $page) {
+	if (user\Rules::email_in_use ($_POST['email'], User::val ('id'))) {
+		$form->failed[] = 'email-in-use';
+		return false;
+	}
+
 	$u->name = $_POST['name'];
 	$u->email = $_POST['email'];
 	if (! empty ($_POST['password'])) {
