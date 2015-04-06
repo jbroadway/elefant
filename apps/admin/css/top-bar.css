@@ -346,12 +346,16 @@ p.admin-options a {
 }
 
 #preview-bar a i {
-	padding: 5px 5px 0px 0px;
+	padding: 5px 5px 0px 5px;
+	font-family: 'FontAwesome' !important;
+	font-size: 18px !important;
 }
 
 .admin-options a i {
 	padding: 5px 0px 0px 7px;
 	line-height: 16px;
+	font-family: 'FontAwesome' !important;
+	font-size: 18px !important;
 }
 
 .admin-tooltip {
