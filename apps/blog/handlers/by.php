@@ -26,6 +26,11 @@ $page->last = $page->offset + count ($posts);
 $page->more = ($page->count > $page->last) ? true : false;
 $page->next = $page->num + 2;
 
+$footer = Appconf::blog ('Blog', 'post_footer');
+$footer = ($footer && ! empty (strip_tags ($footer)))
+	? $tpl->run_includes ($footer)
+	: false;
+
 if (Appconf::blog ('Blog', 'post_format') === 'markdown') {
 	require_once ('apps/blog/lib/markdown.php');
 }
@@ -42,6 +47,8 @@ foreach ($posts as $post) {
 	if ($preview_chars) {
 		$post->body = blog_filter_truncate ($post->body, $preview_chars)
 			. ' <a href="' . $post->url . '">' . __ ('Read more') . '</a>';
+	} else {
+		$post->footer = $footer;
 	}
 	echo $tpl->render ('blog/post', $post);
 }

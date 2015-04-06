@@ -50,6 +50,11 @@ if (Appconf::blog ('Blog', 'post_format') === 'html') {
 $post->social_buttons = Appconf::blog ('Social Buttons');
 $post->related = Appconf::blog ('Blog', 'show_related_posts');
 
+$footer = Appconf::blog ('Blog', 'post_footer');
+$post->footer = ($footer && ! empty (strip_tags ($footer)))
+	? $tpl->run_includes ($footer)
+	: false;
+
 echo $tpl->render ('blog/post', $post);
 
 switch (Appconf::blog ('Blog', 'comments')) {

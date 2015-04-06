@@ -29,6 +29,10 @@ preview_chars = Off
 
 post_format = html
 
+; A footer message to show at the bottom of each post.
+
+post_footer = ""
+
 ; Here you can choose a service to use for blog comments.
 ; Supported platforms are Facebook and Disqus, or a custom
 ; handler name that implements an alternate comment system.

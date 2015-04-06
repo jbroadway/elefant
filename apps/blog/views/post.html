@@ -10,6 +10,13 @@
 {% end %}
 </p>
 {{ body|none }}
+
+{% if footer %}
+<div class="blog-footer">
+{{ footer|none }}
+</div>
+{% end %}
+
 {% if count ($data->tag_list) > 0 %}
 <div class="blog-tags info">
 {"Tags"}: 
@@ -19,6 +26,7 @@
 </div>
 <hr />
 {% end %}
+
 <div class="blog-comments">
 {{ controller.run ('blog/commentcount', $data)|none }}&nbsp;
 {% if social_buttons['facebook'] %}
@@ -31,6 +39,7 @@
 	{{ controller.run ('social/google/plusone', $data)|none }}
 {% end %}
 </div>
+
 {% if related %}
 <div class="blog-related">
 <h4>{"You might also like:"}</h4>
