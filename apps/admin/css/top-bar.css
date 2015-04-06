@@ -349,6 +349,7 @@ p.admin-options a {
 	padding: 5px 5px 0px 5px;
 	font-family: 'FontAwesome' !important;
 	font-size: 18px !important;
+	font-style: normal !important;
 }
 
 .admin-options a i {
@@ -356,6 +357,7 @@ p.admin-options a {
 	line-height: 16px;
 	font-family: 'FontAwesome' !important;
 	font-size: 18px !important;
+	font-style: normal !important;
 }
 
 .admin-tooltip {
