@@ -254,12 +254,10 @@ body {
 		#admin-tools-list .admin-tools-edit {
 			position: absolute;
 			display:block;
+			top: 6px;
+			right: 55px;
 			margin: 0;
-			width: 0;
-			top: 0;
-			right:50%;
-			padding-right:41px;
-			white-space:nowrap;
+			text-align: right;
 			background-color:initial!important;
 			color: #93278f;
 		}
