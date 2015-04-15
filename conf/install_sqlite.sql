@@ -59,6 +59,15 @@ create index #prefix#user_session_id on #prefix#user (session_id);
 
 insert into #prefix#user (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, 'you@example.com', '$2a$07$1QeR9mu2doQxY0uBcpFlrOIfDxq0BwpR8FsImCgWvAL4Fz9jDByxi', null, (DATETIME('now')), 'Admin User', 'admin', (DATETIME('now')), (DATETIME('now')), '[]');
 
+create table #prefix#user_session (
+	session_id char(32) not null primary key,
+	expires datetime not null,
+	user_id int not null
+);
+
+create index #prefix#user_session_user on #prefix#user_session (user_id, expires);
+create index #prefix#user_session_expires on #prefix#user_session (expires);
+
 create table #prefix#user_openid (
 	token char(200) primary key,
 	user_id int not null
@@ -107,7 +116,7 @@ create index #prefix#api_user on #prefix#api (user_id);
 
 create table #prefix#blog_post (
 	id integer primary key,
-	title char(72) not null,
+	title char(128) not null,
 	ts datetime not null,
 	author char(32) not null,
 	published char(3) not null,
@@ -121,12 +130,12 @@ create index #prefix#blog_post_ts on #prefix#blog_post (ts);
 create index #prefix#blog_post_pts on #prefix#blog_post (ts, published);
 
 create table #prefix#blog_tag (
-	id char(24) not null,
+	id char(48) not null,
 	primary key (id)
 );
 
 create table #prefix#blog_post_tag (
-	tag_id char(24) not null,
+	tag_id char(48) not null,
 	post_id int not null,
 	primary key (tag_id, post_id)
 );

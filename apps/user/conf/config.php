@@ -35,6 +35,11 @@ default_photo = "/apps/admin/css/admin/user_profile.png"
 
 default_role = "member"
 
+; This setting allows multiple logins from different machines on the same
+; user account at the same time, without logging your other sessions out.
+
+multi_login = Off
+
 [Custom Handlers]
 
 ; You can override some of the built-in handlers with your own
@@ -75,6 +80,6 @@ handler = user/admin
 name = Accounts
 install = user/upgrade
 upgrade = user/upgrade
-version = 1.1.3-stable
+version = 1.1.4-stable
 
 ; */ ?>
