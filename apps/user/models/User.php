@@ -292,6 +292,7 @@ class User extends ExtendedModel {
 			if (isset ($_SESSION['session_id'])) {
 				if (Appconf::user ('User', 'multi_login')) {
 					$u = \user\Session::fetch_user ($_SESSION['session_id']);
+					$u->session_id = $_SESSION['session_id'];
 				} else {
 					$u = DB::single (
 						'select * from `#prefix#user` where session_id = ? and expires > ?',
@@ -506,14 +507,12 @@ class User extends ExtendedModel {
 		if (self::$user === FALSE) {
 			self::require_login ();
 		}
-		if (! empty (self::$user->session_id)) {
-			if (Appconf::user ('User', 'multi_login')) {
-				user\Session::clear (self::$user->session_id);
-				user\Session::clear_expired ();
-			} else {
-				self::$user->expires = gmdate ('Y-m-d H:i:s', time () - 100000);
-				self::$user->put ();
-			}
+		if (Appconf::user ('User', 'multi_login')) {
+			user\Session::clear ($_SESSION['session_id']);
+			user\Session::clear_expired ();
+		} elseif (! empty (self::$user->session_id)) {
+			self::$user->expires = gmdate ('Y-m-d H:i:s', time () - 100000);
+			self::$user->put ();
 		}
 		$_SESSION['session_id'] = NULL;
 
