@@ -7,11 +7,6 @@ php:
   - 7.0
   - hhvm
 services: mongodb
-before_script:
-  - pear channel-discover pear.phpunit.de
-  - pear install phpunit/PHP_Invoker
-  - pear install phpunit/PHPUnit_Story
-  - composer install --no-interaction --prefer-source
 script: phpunit --coverage-text --verbose
 branches:
   only:
