@@ -7,10 +7,11 @@ php:
   - 7.0
   - hhvm
 services: mongodb
-install:
+before_script:
   - pear install phpunit/PHP_Invoker
   - pear install phpunit/PHPUnit_Story
-script: phpunit
+  - composer install --no-interaction --prefer-source
+script: phpunit --coverage-text --verbose
 branches:
   only:
     - master
