@@ -171,7 +171,7 @@ class FrontController {
 			if (isset($_routes['Disable'])){
 			foreach ($_routes['Disable'] as $_route => $_strict) {
 				if (
-					(!$_strict && strpos($_SERVER['REQUEST_URI'],$_route) === 0) //match from left
+					(!$_strict && strpos($_SERVER['REQUEST_URI'],$_route) === 0 && $_SERVER['REQUEST_URI'] !== $_route) //match from left, exclude exact
 					|| 
 					($_strict && $_SERVER['REQUEST_URI'] == $_route) // match exact
 				) {
