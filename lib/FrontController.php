@@ -186,7 +186,7 @@ class FrontController {
 			}}
 			if (isset($_routes['Redirect'])){
 			foreach ($_routes['Redirect'] as $_old => $_new) {
-				if ($_SERVER['REQUEST_URI'] == $_old) $controller->redirect($_new);
+				if ($_old !== $_new && $_SERVER['REQUEST_URI'] == $_old) $controller->redirect($_new);
 			}}
 			if (isset($_routes['Alias'])){
 			foreach ($_routes['Alias'] as $_old => $_new) {
