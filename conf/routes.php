@@ -7,9 +7,6 @@
 ; 404s /admin/* resources, leaves the /admin resource still accessable
 ;/admin = false
 
-; 404s any requests starting with /blog/by
-;/blog/by = false
-
 [Redirect]
 
 ;/login = /user/login
