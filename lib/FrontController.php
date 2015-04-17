@@ -164,6 +164,33 @@ class FrontController {
 		$GLOBALS['cache'] = $cache;
 
 		/**
+		 * Run any config level route overrides.
+		 */
+		if (file_exists ('conf/routes.php')) {
+			$_routes = parse_ini_file ('conf/routes.php',true);
+			foreach ($_routes['Disable'] as $_route => $_strict) {
+				if (
+					(!$_strict && strpos($_SERVER['REQUEST_URI'],$_route) === 0) //match from left
+					|| 
+					($_strict && $_SERVER['REQUEST_URI'] == $_route) // match exact
+				) {
+					$controller->error();
+					$controller->quit();
+				}
+			}
+			foreach ($_routes['Alias'] as $_old => $_new) {
+				if (strpos($_SERVER['REQUEST_URI'],$_old) === 0) {
+					$_routes['Redirect'] = array();
+					str_replace($_old,$_new,$_SERVER['REQUEST_URI'],1);
+				}
+			}
+			foreach ($_routes['Redirect'] as $_old => $_new) {
+				if ($_SERVER['REQUEST_URI'] == $_old) $controller->redirect($_new);
+			}
+			unset($_routes);
+		}
+
+		/**
 		 * Route the request to the appropriate handler and get
 		 * the handler's response.
 		 */
