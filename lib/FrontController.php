@@ -168,25 +168,32 @@ class FrontController {
 		 */
 		if (file_exists ('conf/routes.php')) {
 			$_routes = parse_ini_file ('conf/routes.php',true);
+			if (isset($_routes['Disable'])){
 			foreach ($_routes['Disable'] as $_route => $_strict) {
 				if (
 					(!$_strict && strpos($_SERVER['REQUEST_URI'],$_route) === 0) //match from left
 					|| 
 					($_strict && $_SERVER['REQUEST_URI'] == $_route) // match exact
 				) {
-					$controller->error();
-					$controller->quit();
+					$page->body = $controller->run (conf ('General', 'error_handler'), array (
+						'code' => 404,
+						'title' => 'Page not found.',
+						'message' => ''
+					));
+					echo $page->render ($tpl, $controller); // render 404 page and exit
+					return true;
 				}
-			}
-			foreach ($_routes['Alias'] as $_old => $_new) {
-				if (strpos($_SERVER['REQUEST_URI'],$_old) === 0) {
-					$_routes['Redirect'] = array();
-					str_replace($_old,$_new,$_SERVER['REQUEST_URI'],1);
-				}
-			}
+			}}
+			if (isset($_routes['Redirect'])){
 			foreach ($_routes['Redirect'] as $_old => $_new) {
 				if ($_SERVER['REQUEST_URI'] == $_old) $controller->redirect($_new);
-			}
+			}}
+			if (isset($_routes['Alias'])){
+			foreach ($_routes['Alias'] as $_old => $_new) {
+				if (strpos($_SERVER['REQUEST_URI'],$_old) === 0) {
+					$_SERVER['REQUEST_URI'] = str_replace($_old,$_new,$_SERVER['REQUEST_URI']);
+				}
+			}}
 			unset($_routes);
 		}
 
