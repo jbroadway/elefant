@@ -154,6 +154,7 @@ if (typeof String.prototype.trim !== 'function') {
 						marker.addClass(beforeClass);
 						target.before(marker);
 					} else {
+						if (target.parent().hasClass('section') && draggable.hasClass('section')) return;
 						if (target.parent().hasClass('tools') && !draggable.hasClass('tool')) return;
 						if (target.parent().hasClass('tdd-tree') && draggable.hasClass('tool')) return;
 						// append to item

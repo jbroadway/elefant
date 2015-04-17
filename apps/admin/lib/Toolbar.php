@@ -15,6 +15,24 @@ class Toolbar {
 	public static $tools = false;
 	public static $compiled = false;
 	public static $autofill = false;
+	private static $defaults = array(
+		'Content' => array(
+			'admin/pages' => 'Web Pages',
+			'blog/admin' => 'Blog Posts',
+			'blocks/admin' => 'Content Blocks',
+			'filemanager/index' => 'Files'
+		),
+		'Administration' => array(
+			'user/admin' => 'Members',
+			'navigation/admin' => 'Navigation',
+			'designer/admin' => 'Designer',
+			'translator/index' => 'Languages',
+			'admin/versions' => 'Versions'
+		),
+		'Extras' => array(
+			'*' => '*'
+		)
+	);
 
 	/**
 	 * Check if an app is compatible with the current user's platform.
@@ -47,16 +65,16 @@ class Toolbar {
 	
 	/**
 	 * Parse and cache custom tools list.
-	 * Sets cache to empty array if tools file
+	 * Creates file from defaults if tools file
 	 * doesn't exist or is unspecified.
 	 */
 	public static function tools ($c, $editing = false, $recache = false) {
 		if (self::$tools !== false && !$recache)
 			return self::$tools;
 		
-		if (conf('Paths','toolbar') && !file_exists (conf('Paths','toolbar')))
-			return self::$tools = array();
 		$path = (conf('Paths','toolbar'))?conf('Paths','toolbar'):'conf/tools.php';
+		// if file doesn't exist, build it from hardcoded default
+		if (!file_exists ($path)) Toolbar::save(Toolbar::$defaults);
 		$_tools = parse_ini_file ($path, true);
 		$tools = array();
 		$first = false;
