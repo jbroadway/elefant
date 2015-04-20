@@ -192,6 +192,7 @@ class FrontController {
 			foreach ($_routes['Alias'] as $_old => $_new) {
 				if (strpos($_SERVER['REQUEST_URI'],$_old) === 0) {
 					$_SERVER['REQUEST_URI'] = str_replace($_old,$_new,$_SERVER['REQUEST_URI']);
+					break;
 				}
 			}}
 			unset($_routes);
