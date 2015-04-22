@@ -7,6 +7,8 @@ php:
   - 7.0
   - hhvm
 services: mongodb
+install:
+  - composer require phpunit/phpunit-story:dev-master
 script: phpunit --coverage-text --verbose
 branches:
   only:
