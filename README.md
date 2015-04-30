@@ -1,6 +1,6 @@
 # Elefant CMS
 
-[Elefant](http://www.elefantcms.com/) is a refreshingly simple PHP content management
+[Elefant](https://www.elefantcms.com/) is a refreshingly simple PHP content management
 system and web framework. Elefant is a fast, lean tool for building everything from
 simple websites to complete web applications.
 
@@ -11,7 +11,7 @@ simple websites to complete web applications.
 Elefant has extensive documentation including installation instructions, user manual,
 designer guides, and developer tutorials here:
 
-* http://www.elefantcms.com/documentation
+* http://www.elefantcms.com/docs
 
 You can also find help on our community forum here:
 
@@ -26,17 +26,17 @@ possible and also takes advantage of bytecode caching (e.g., APC).
 
 **Dead simple, concise template tags**
 
-[Familiar syntax](http://www.elefantcms.com/wiki/Templates) to other template
+[Familiar syntax](https://www.elefantcms.com/docs/2.0/designers/template-language) to other template
 languages, with some added conveniences for dynamic embeds and internationalization.
 
 **Clean, easy to use site editor for your users**
 
-Elefant comes out of the box with a [full-featured CMS](http://www.elefantcms.com/wiki/The-page-editor)
-for your users. You can even [white label it](http://www.elefantcms.com/wiki/White-labelling-the-CMS).
+Elefant comes out of the box with a [full-featured CMS](https://www.elefantcms.com/docs/2.0/user-manual)
+for your users. You can even [white label it](https://www.elefantcms.com/docs/2.0/designers/white-labelling-the-cms).
 
 **Syntax highlighted template and CSS editor**
 
-Sophisticated [in-browser editing](http://www.elefantcms.com/wiki/Setting-up-your-custom-designs)
+Sophisticated [in-browser editing](https://www.elefantcms.com/docs/2.0/designers)
 with highlights and references at your finger tips.
 
 **Live preview while editing templates and CSS**
@@ -57,19 +57,21 @@ code quickly.
 
 **Extensively documented**
 
-Including full [API reference](http://api.elefantcms.com/),
-[cheat sheets](http://www.elefantcms.com/wiki/Cheat-sheet),
-[tutorials, and much more](https://github.com/jbroadway/elefant/wiki/Developers).
+Including full [API reference](https://www.elefantcms.com/visor),
+[user manual](https://www.elefantcms.com/docs/2.0/user-manual),
+[tutorials, and much more](https://www.elefantcms.com/docs/2.0/developers).
 
 **Strong security by default**
 
-[Flexible input validation](http://www.elefantcms.com/wiki/Forms-and-input-validation)
+[Flexible form building](https://www.elefantcms.com/docs/2.0/developers/form-handling),
+[input validation](https://www.elefantcms.com/docs/2.0/developers/input-validation),
 and automatic prevention of XSS, SQL injection, CSRF, and other types of attacks.
 
 **Very fast and low memory**
 
-Elefant uses [less memory per request](http://www.elefantcms.com/wiki/Performance)
-than any of the major frameworks, so you can serve more visitors with the same resources.
+Elefant uses less memory than any of the major frameworks, so you can serve more visitors with the same resources.
+Benchmarks: [MVC layer](https://github.com/jbroadway/phpmark-elefant/blob/master/php-framework-benchmark-results.md),
+[database access](https://github.com/jbroadway/php-dbal-bench), and [template rendering](https://github.com/jbroadway/template-bench).
 
 **Solid debugging tools**
 
@@ -78,13 +80,13 @@ help you fix bugs faster.
 
 **Minimalist HMVC/Model2 architecture**
 
-Elefant takes a [unique but proven approach](http://www.elefantcms.com/wiki/Elefant-architecture)
+Elefant takes a [unique but proven approach](https://www.elefantcms.com/docs/2.0/developers/request-response-cycle)
 that helps minimize boilerplate without sacrificing code organization as your project grows.
 
 **Shared apps to save you time**
 
 From blogs to user management, events to search, Elefant saves you time not reinventing
-the wheel with [high quality shared apps](http://www.elefantcms.com/shared-apps).
+the wheel with [high quality shared apps](https://www.elefantcms.com/listings).
 
 **Thoroughly unit-tested**
 
@@ -94,7 +96,7 @@ ensuring a stable base to build on.
 
 **Internationalization**
 
-Elefant apps are automatically [i18n aware](http://www.elefantcms.com/wiki/Internationalization),
+Elefant apps are automatically [i18n aware](https://www.elefantcms.com/docs/2.0/administration/multilingual-setup),
 with built-in multilingual capabilities and locale awareness.
 
 ## More developer goodness
@@ -103,28 +105,26 @@ Elefant builds on over 12 years of PHP experience, and aims to simplify rapid PH
 development again. As such, Elefant takes into consideration all the little details
 to help you work faster and better:
 
-* Really simple, [automatic URL routing](http://www.elefantcms.com/wiki/Page-routing-and-handler-basics) w/ friendly URLs
-* [Minimal but secure and fast ORM](http://www.elefantcms.com/wiki/Database-API-and-models) (based on PDO)
+* Really simple, [automatic URL routing](https://www.elefantcms.com/docs/2.0/developers/mapping-your-routes) w/ friendly URLs
+* [Minimal but secure and fast ORM](https://www.elefantcms.com/docs/2.0/developers/modelling-your-data) (based on PDO)
 * Output filtering is turned *on by default*
-* Tight [memcache integration](http://www.elefantcms.com/wiki/Memcache)
+* Tight [cache integration](https://www.elefantcms.com/docs/2.0/developers/caching) (supports APC/APCu, filesystem, Memcache, Redis, and XCache)
 * Matching server- and client-side input validation
-* Dead-simple [form handling](http://www.elefantcms.com/wiki/Forms-and-input-validation)
-* Customizable [user authentication](http://www.elefantcms.com/wiki/Custom-user-authentication)
-* [CLI tool](http://www.elefantcms.com/wiki/Command-line-usage) for common tasks
+* Dead-simple [form handling](https://www.elefantcms.com/docs/2.0/developers/form-handling)
+* Customizable [user authentication](https://www.elefantcms.com/docs/2.0/developers/users-and-access-control)
+* [CLI tool](https://www.elefantcms.com/docs/2.0/developers/writing-command-line-scripts) for common tasks
 * As little scaffolding as possible
 * Gzip output compression
-* [Assetic](http://github.com/jbroadway/assetic) integration
+* [Assetic](https://github.com/jbroadway/assetic) integration
 
 ## Try it out
 
 [Download the latest release](http://www.elefantcms.com/download) or try the
 [online demo](http://www.elefantcms.com/demo).
 
-* [Installation instructions](http://www.elefantcms.com/wiki/Getting-started)
-* [Installing on PHP Fog](http://www.elefantcms.com/wiki/Installing-Elefant-on-PHP-Fog)
-* [Installing on DotCloud](http://www.elefantcms.com/wiki/Installing-Elefant-on-DotCloud)
-* [Requirements and compatible hosts](http://www.elefantcms.com/wiki/Requirements)
-* [Support forum](http://www.elefantcms.com/forum/) and [IRC channel](http://www.elefantcms.com/elefant-irc)
+* [Installation instructions](https://www.elefantcms.com/docs/2.0/getting-started)
+* [Requirements](https://www.elefantcms.com/docs/2.0/getting-started/requirements)
+* [Support forum](http://www.elefantcms.com/community) and [Gitter channel](https://gitter.im/jbroadway/elefant)
 
 ## FAQ
 
@@ -135,5 +135,3 @@ A. This was my attempt at being hip and cool. No good?
 **Q. Isn't Elefant a bit of an oxymoron for a slim framework?**
 
 A. Why, yes. Yes it is.
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/6328ab92375adc7e82f36ed5f290ef1c "githalytics.com")](http://githalytics.com/jbroadway/elefant)
