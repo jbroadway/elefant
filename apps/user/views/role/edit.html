@@ -16,7 +16,7 @@
 		<td><input type="checkbox" name="resources[default]" id="resources-default" value="on" /> <label for="resources-default">{"Default access for this role"} <span class="notice" style="display: inline">({"selected means allow everything by default"})</span></label></td>
 	</tr>
 	{% foreach _resources as resource, label %}
-	<tr>
+	<tr title="{{resource}}">
 		<td><input type="checkbox" name="resources[{{resource}}]" id="resources-{{resource|user\Filter::resource_id}}" value="on" /> <label for="resources-{{resource|user\Filter::resource_id}}" style="display: inline-block; width: 95%">{{label|__}}</label></td>
 	</tr>
 		{% if resource == 'user/edit_roles' %}
