@@ -7,6 +7,6 @@
 echo $tpl->render ('blog/disqus/comments', array (
 	'shortname' => $appconf['Blog']['disqus_shortname'],
 	'identifier' => $data['id'],
-	'permalink' => $data['url'],
+	'permalink' => $data['fullurl'],
 	'title' => $data['title']
 ));

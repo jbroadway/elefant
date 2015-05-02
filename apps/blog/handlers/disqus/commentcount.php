@@ -13,7 +13,7 @@ if (self::$called['blog/disqus/commentcount'] === 1) {
 
 printf (
 	'<a href="%s#disqus_thread" data-disqus-identifier="%s">%s</a>',
-	$data['url'],
+	$data['fullurl'],
 	$data['id'],
 	__ ('comments')
 );
