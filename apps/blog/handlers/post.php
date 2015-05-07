@@ -51,7 +51,8 @@ $post->social_buttons = Appconf::blog ('Social Buttons');
 $post->related = Appconf::blog ('Blog', 'show_related_posts');
 
 $footer = Appconf::blog ('Blog', 'post_footer');
-$post->footer = ($footer && ! empty (strip_tags ($footer)))
+$footer_stripped = strip_tags ($footer);
+$post->footer = ($footer && ! empty ($footer_stripped))
 	? $tpl->run_includes ($footer)
 	: false;
 

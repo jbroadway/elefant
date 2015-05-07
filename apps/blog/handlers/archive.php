@@ -30,7 +30,8 @@ $page->year = $year;
 $page->month = str_pad ($month, 2, '0', STR_PAD_LEFT);
 
 $footer = Appconf::blog ('Blog', 'post_footer');
-$footer = ($footer && ! empty (strip_tags ($footer)))
+$footer_stripped = strip_tags ($footer);
+$footer = ($footer && ! empty ($footer_stripped))
 	? $tpl->run_includes ($footer)
 	: false;
 
