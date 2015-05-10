@@ -43,8 +43,8 @@ post_footer = ""
 ; the comments/embed handler from the comments app at
 ; https://github.com/jbroadway/comments
 
-comments = facebook
-;comments = disqus
+comments = disqus
+;comments = facebook
 ;comments = comments/embed
 
 ; Show related posts in a "You might also like" box at the bottom
