@@ -17,7 +17,7 @@ function make_fields_header ($fields) {
 		$out .= sprintf (
 			"\t\t<th width=\"%d%%\">{\" %s \"}</th>\n",
 			$width,
-			ucfirst ($fields[$i]->name)
+			cli\Filter::label ($fields[$i]->name)
 		);
 	}
 	return $out;

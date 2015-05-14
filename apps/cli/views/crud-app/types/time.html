@@ -1,5 +1,5 @@
 <p>
-	\{"{{field->name|ucfirst}}"}:<br />
+	\{"{{field->name|cli\Filter::label}}"}:<br />
 	<select name="{{field->name}}">
 		<option value="">- select -</option>
 		<option value="00:00:00"\{% if {{field->name}} == '00:00:00' %} selected\{% end %}>12:00am</option>
@@ -51,6 +51,6 @@
 		<option value="23:00:00"\{% if {{field->name}} == '23:00:00' %} selected\{% end %}>11:00pm</option>
 		<option value="23:30:00"\{% if {{field->name}} == '23:30:00' %} selected\{% end %}>11:30pm</option>
 	</select>
-	<span class="notice" id="{{field->name}}-notice">\{"Please choose a {{field->name}}."}</span>
+	<span class="notice" id="{{field->name}}-notice">\{"Please choose a {{field->name|cli\Filter::spaces}}."}</span>
 </p>
 
