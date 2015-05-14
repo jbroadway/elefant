@@ -41,7 +41,7 @@ if (isset ($_GET['path'])) {
 }
 
 if ($appconf['General']['aviary_key']) {
-	$page->add_script ('http://feather.aviary.com/js/feather.js');
+	$page->add_script ('https://dme0ih8comzn4.cloudfront.net/imaging/v1/editor.js');
 	$o->aviary_key = $appconf['General']['aviary_key'];
 } else {
 	$o->aviary_key = false;
