@@ -39,7 +39,7 @@ if (! is_array ($posts) || count ($posts) === 0) {
 		$post->url = '/blog/post/' . $post->id . '/';
 		$post->fullurl = $post->url . URLify::filter ($post->title);
 		$post->tag_list = (strlen ($post->tags) > 0) ? explode (',', $post->tags) : array ();
-		$post->social_buttons = $appconf['Social Buttons'];
+		$post->social_buttons = Appconf::blog ('Social Buttons');
 		if (Appconf::blog ('Blog', 'post_format') === 'html') {
 			$post->body = $tpl->run_includes ($post->body);
 		} else {
@@ -47,7 +47,7 @@ if (! is_array ($posts) || count ($posts) === 0) {
 		}
 		if ($preview_chars) {
 			$post->body = blog_filter_truncate ($post->body, $preview_chars)
-				. ' <a href="' . $post->url . '">' . __ ('Read more') . '</a>';
+				. ' <a href="' . $post->fullurl . '">' . __ ('Read more') . '</a>';
 		}
 		echo $tpl->render ('blog/post', $post);
 	}

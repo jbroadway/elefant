@@ -3,8 +3,6 @@
 <div class="blog-post{% if full %} blog-post-full{% end %} block">
 {% if ! full %}
 <h3><a href="{{ fullurl }}">{{ title }}</a></h3>
-{% else %}
-<h3>{{ title }}</h3>
 {% end %}
 <p class="blog-info info">{{ ts|I18n::date_time }}<span class="blog-by"> - {" by "} <a href="/blog/by/{{ author }}">{{ author }}</a></span>
 {% if User::require_acl ('admin', 'blog') %}
@@ -12,6 +10,13 @@
 {% end %}
 </p>
 {{ body|none }}
+
+{% if footer %}
+<div class="blog-footer">
+{{ footer|none }}
+</div>
+{% end %}
+
 {% if count ($data->tag_list) > 0 %}
 <div class="blog-tags info">
 {"Tags"}: 
@@ -21,6 +26,7 @@
 </div>
 <hr />
 {% end %}
+
 <div class="blog-comments">
 {% if ! full %}{{ controller.run ('blog/commentcount', $data)|none }}{% end %}&nbsp;
 {% if social_buttons['facebook'] %}
@@ -33,6 +39,7 @@
 	{{ controller.run ('social/google/plusone', $data)|none }}
 {% end %}
 </div>
+
 {% if related %}
 <div class="blog-related">
 <h4>{"You might also like:"}</h4>
