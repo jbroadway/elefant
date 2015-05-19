@@ -19,8 +19,20 @@ if (! file_exists ($file)) {
 	return;
 }
 
-$res = blog\CsvParser::parse ($file);
-if (! $res) {
+set_time_limit (0);
+ini_set ('auto_detect_line_endings', true);
+
+$res = array ();
+if (($f = fopen ($file, 'r')) !== false) {
+	while (($row = fgetcsv ($f, 0, ',')) !== false) {
+		if (count ($row) === 1 && $row[0] === null) {
+			// ignore blank lines, which come through as array(null)
+			continue;
+		}
+		$res[] = $row;
+	}
+	fclose ($f);
+} else {
 	echo '<p>' . __ ('Unable to parse the uploaded file.') . '</p>';
 	echo '<p><a href="/user/import">' . __ ('Back') . '</a></p>';
 	return;

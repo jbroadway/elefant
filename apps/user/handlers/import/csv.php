@@ -15,16 +15,26 @@ if ($f->submit ()) {
 	if (move_uploaded_file ($_FILES['import_file']['tmp_name'], 'cache/user_csv_import.csv')) {
 		$file = 'cache/user_csv_import.csv';
 
-		$res = blog\CsvParser::parse ($file);
+		set_time_limit (0);
+		ini_set ('auto_detect_line_endings', true);
 
-		if (is_array ($res)) {
-			$headers = array_shift ($res);
-			$samples = array ();
-			for ($i = 0; $i < 3; $i++) {
-				if (isset ($res[$i])) {
-					$samples[] = $res[$i];
+		$headers = array ();
+		$samples = array ();
+		if (($f = fopen ($file, 'r')) !== false) {
+			while (($row = fgetcsv ($f, 0, ',')) !== false) {
+				if (count ($row) === 1 && $row[0] === null) {
+					// ignore blank lines, which come through as array(null)
+					continue;
+				}
+				if (count ($headers) === 0) {
+					$headers = $row;
+				} elseif (count ($samples) < 3) {
+					$samples[] = $row;
+				} else {
+					break;
 				}
 			}
+			fclose ($f);
 
 			require_once ('apps/blog/lib/Filters.php');
 
