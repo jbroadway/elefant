@@ -67,8 +67,6 @@ if (isset ($argv[0]) && strpos ($argv[0], '--env=') === 0) {
 	$env = str_replace ('--env=', '', $argv[0]);
 	array_shift ($argv);
 	$argc--;
-	var_dump ($argv);
-	var_dump ($argc);
 } else {
 	$env = 'config';
 }
