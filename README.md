@@ -4,6 +4,8 @@
 system and web framework. Elefant is a fast, lean tool for building everything from
 simple websites to complete web applications.
 
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/jbroadway/elefant?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 <a href='http://www.pledgie.com/campaigns/16594'><img alt='Click here to lend your support to: Elefant CMS and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16594.png?skin_name=chrome' border='0' /></a>
 
 ## Installation help & documentation
