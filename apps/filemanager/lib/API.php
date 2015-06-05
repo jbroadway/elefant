@@ -156,7 +156,7 @@ class API extends Restful {
 			}
 			
 			foreach ($_POST['props'] as $k => $v) {
-				if (! FileManager::prop ($file, $k, $v)) {
+				if (FileManager::prop ($file, $k, $v) === false) {
 					return $this->error (__ ('Error saving properties.'));
 				}
 			}
