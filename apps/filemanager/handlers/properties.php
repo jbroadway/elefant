@@ -16,7 +16,8 @@ $out = array (
 		'filemanager/properties',
 		array (
 			'file' => $file,
-			'desc' => FileManager::prop ($file, 'desc')
+			'desc' => FileManager::prop ($file, 'desc'),
+			'link' => FileManager::prop ($file, 'link')
 		)
 	)
 );

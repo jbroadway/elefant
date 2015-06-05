@@ -220,6 +220,7 @@ class FileManager {
 		}
 
 		$new = $folder . '/' . basename ($file);
+		$new = ltrim ($new, '/');
 		if (! rename (self::root () . $file, self::root () . $new)) {
 			self::$error = __ ('Unable to move') . ' ' . $file;
 			return false;
