@@ -17,6 +17,9 @@ height[label] = "Height (px)"
 height[type] = text
 height[initial] = 200
 
+link[label] = "Link (optional)"
+link[type] = text
+
 [filemanager/slideshow]
 
 label = "Images: Slideshow"
