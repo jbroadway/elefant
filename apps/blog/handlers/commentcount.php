@@ -11,7 +11,7 @@ switch ($appconf['Blog']['comments']) {
 	case 'facebook':
 		printf (
 			'<a href="%s">%s %s</a>',
-			$data['url'],
+			$data['fullurl'],
 			$this->run ('social/facebook/commentcount', $data),
 			__ ('comments')
 		);
@@ -20,7 +20,7 @@ switch ($appconf['Blog']['comments']) {
 		if ($appconf['Blog']['comments'] != false) {
 			printf (
 				'<a href="%s">%s %s</a>',
-				$data['url'],
+				$data['fullurl'],
 				$this->run (
 					$appconf['Blog']['comments'],
 					array (

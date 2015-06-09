@@ -13,6 +13,6 @@ if ($shortname === '') {
 echo $tpl->render ('blog/disqus/comments', array (
 	'shortname' => $shortname,
 	'identifier' => $data['id'],
-	'permalink' => $data['url'],
+	'permalink' => $data['fullurl'],
 	'title' => $data['title']
 ));
