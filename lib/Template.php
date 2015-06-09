@@ -534,7 +534,7 @@ class Template {
 		// normalize <span data-embed> tags to {! tags !} embeds.
 		// also remove enclosing <p>, <br> and spacing that may have
 		// been added around it by the wysiwyg editor.
-		$val = preg_replace ('/(<p>\s*?)?<[^>]*?data-embed="([^"]+)".*?>.*?<\/.*?>(\s*?<br>?\s*?<\/p>)?/s', '{! \2 !}', $val);
+		$val = preg_replace ('/(<p>\s*?)?<[^>]*?data-embed="([^"]+)".*?>.*?<\/.*?>(\s*?(<br>)?\s*?<\/p>)?/s', '{! \2 !}', $val);
 
 		$parts = preg_split ('/(\{\! ?.*? ?\!\})/', $val, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$out = '';
