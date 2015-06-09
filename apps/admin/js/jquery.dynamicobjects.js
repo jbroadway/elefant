@@ -215,6 +215,20 @@
 							
 						html += '</p>';
 						
+					} else if (obj.fields[i].type == 'image') {
+						html += '<p><label for="' + obj.fields[i].name + '" >' + obj.fields[i].label + '</label>';
+						html += '<input type="text" class="wysiwyg-file-input" name="' + obj.fields[i].name + '" id="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
+
+						// add the File Manager icon:
+						html += '&nbsp;<button class="wysiwyg-imageManager" id="' + obj.fields[i].name + '-imageManager">' + self.opts.browse_button + '</button>';
+						html += "<br clear:both />"
+
+						if (obj.fields[i].message) {
+							html += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span>';
+						} 
+							
+						html += '</p>';
+						
 					} else {
 						html += '<p><label for="' + obj.fields[i].name + '">' + obj.fields[i].label + '</label><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
 						if (obj.fields[i].message) {
@@ -251,14 +265,25 @@
 				// selecting a file
 				for (var i in obj.fields) {
 					if (obj.fields[i].type == 'file') {
+						var input_field = obj.fields[i].name;
 						$('#' + obj.fields[i].name + '-fileManager').bind ('click', function () {
 							$.filebrowser ({
-								set_value: '#' + obj.fields[i].name
-								// todo: limit by file type
+								set_value: '#' + input_field
+							});
+							return false;
+						});
+					} else if (obj.fields[i].type == 'image') {
+						var input_field = obj.fields[i].name;
+						$('#' + obj.fields[i].name + '-imageManager').bind ('click', function () {
+							$.filebrowser ({
+								set_value: '#' + input_field,
+								thumbs: true,
+								allowed: ['jpg', 'jpeg', 'png', 'gif']
 							});
 							return false;
 						});
 					}
+					// TODO: Limit by additional file types (audio, video)
 				}
 
 				// submit button handler
