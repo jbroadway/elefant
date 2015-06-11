@@ -23,7 +23,7 @@ if (! $this->cli) die ('Must be run from the command line.');
 $page->layout = false;
 
 $valid_section_name = '/^[a-zA-Z0-9 _-]+$/';
-$valid_setting_name = '/^[a-zA-Z0-9\/ _-]+$/';
+$valid_setting_name = '/^[a-zA-Z0-9\/\[\] _-]+$/';
 
 // there's a value to update
 if (isset ($_SERVER['argv'][3])) {
