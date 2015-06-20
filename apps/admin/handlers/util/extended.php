@@ -52,6 +52,11 @@ if ($data['fields'] || count ($data['fields']) === 0) {
 	foreach ($data['fields'] as $k => $field) {
 		if (isset ($data['values']) && isset ($data['values'][$field->name])) {
 			$data['fields'][$k]->value = $data['values'][$field->name];
+
+			// keep open if data was previously set
+			if ($data['values'][$field->name] && $data['values'][$field->name] !== '') {
+				$data['open'] = true;
+			}
 		}
 
 		if ($field->type === 'select') {
@@ -76,6 +81,7 @@ if ($data['fields'] || count ($data['fields']) === 0) {
 			}
 		}
 		
+		// keep open if any fields are required
 		if ($data['fields'][$k]->required) {
 			$data['open'] = true;
 		}
