@@ -192,6 +192,7 @@
 						} else {
 							html += '</select></p>';
 						}
+
 					} else if (obj.fields[i].type == 'textarea') {
 						html += '<p><label for="' + obj.fields[i].name + '">' + obj.fields[i].label + '</label><textarea name="' + obj.fields[i].name + '" rows="6">' + obj.fields[i].initial + '</textarea>';
 						if (obj.fields[i].message) {
@@ -199,14 +200,16 @@
 						} else {
 							html += '</p>';
 						}
+
 					} else if (obj.fields[i].type == 'hidden') {
 						html += '<input type="hidden" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
+
 					} else if (obj.fields[i].type == 'file') {
 						html += '<p><label for="' + obj.fields[i].name + '" >' + obj.fields[i].label + '</label>';
 						html += '<input type="text" class="wysiwyg-file-input" name="' + obj.fields[i].name + '" id="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
 
 						// add the File Manager icon:
-						html += '&nbsp;<button class="wysiwyg-fileManager" id="' + obj.fields[i].name + '-fileManager">' + self.opts.browse_button + '</button>';
+						html += '&nbsp;<button class="wysiwyg-fileManager" id="' + obj.fields[i].name + '-fileManager" data-name="' + obj.fields[i].name + '">' + self.opts.browse_button + '</button>';
 						html += "<br clear:both />"
 
 						if (obj.fields[i].message) {
@@ -220,7 +223,7 @@
 						html += '<input type="text" class="wysiwyg-file-input" name="' + obj.fields[i].name + '" id="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
 
 						// add the File Manager icon:
-						html += '&nbsp;<button class="wysiwyg-imageManager" id="' + obj.fields[i].name + '-imageManager">' + self.opts.browse_button + '</button>';
+						html += '&nbsp;<button class="wysiwyg-imageManager" id="' + obj.fields[i].name + '-imageManager" data-name="' + obj.fields[i].name + '">' + self.opts.browse_button + '</button>';
 						html += "<br clear:both />"
 
 						if (obj.fields[i].message) {
@@ -265,16 +268,16 @@
 				// selecting a file
 				for (var i in obj.fields) {
 					if (obj.fields[i].type == 'file') {
-						var input_field = obj.fields[i].name;
 						$('#' + obj.fields[i].name + '-fileManager').bind ('click', function () {
+							var input_field = $(this).data ('name');
 							$.filebrowser ({
 								set_value: '#' + input_field
 							});
 							return false;
 						});
 					} else if (obj.fields[i].type == 'image') {
-						var input_field = obj.fields[i].name;
 						$('#' + obj.fields[i].name + '-imageManager').bind ('click', function () {
+							var input_field = $(this).data ('name');
 							$.filebrowser ({
 								set_value: '#' + input_field,
 								thumbs: true,
