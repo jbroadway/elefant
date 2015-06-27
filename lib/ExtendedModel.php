@@ -207,7 +207,14 @@ class ExtendedModel extends Model {
 	 * Return the original data as an object, including extended fields.
 	 */
 	public function orig () {
-		return (object) array_merge ($this->data, $this->ext ());
+		$ext = $this->ext ();
+		if (is_string ($ext)) {
+			$ext = json_decode ($ext);
+		}
+		if (is_object ($ext)) {
+			$ext = (array) $ext;
+		}
+		return (object) array_merge ($this->data, $ext);
 	}
 
 	/**
