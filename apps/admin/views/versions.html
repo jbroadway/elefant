@@ -6,11 +6,13 @@
 <input type="hidden" name="id" value="{{ id }}" />
 {"Type"}: <select name="type" onchange="this.form.submit ()">
 {% foreach classes %}
-	<option value="{{ loop_value }}" {% if type == $data->loop_value %}selected{% end %}>{{ loop_value }}</option>
+	<option value="{{ loop_value }}" {% if type == $data->loop_value %}selected{% end %}>{{ loop_value|Versions::plural_name|__ }}</option>
 {% end %}
 </select>
 </form>
 </p>
+{% else %}
+<p><a href="/admin/versions?type={{type|urlencode}}">&laquo; {"All"} {{plural}}</a></p>
 {% end %}
 
 <p style="float: left">

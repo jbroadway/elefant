@@ -51,7 +51,7 @@ if (is_subclass_of ($cur, 'ExtendedModel')) {
 	unset ($data[$cur->_extended_field]);
 }
 
-$page->title = __ ('Comparing') . ' ' . $ver->class . ' / ' . $ver->pkey;
+$page->title = __ ('Comparing') . ' ' . Template::sanitize (__ (Versions::display_name ($ver->class))) . ' / ' . $ver->pkey;
 
 echo $tpl->render ('admin/compare', array (
 	'fields' => $data,
