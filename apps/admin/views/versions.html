@@ -56,12 +56,12 @@
 			<td>{{ loop_value->user|admin_filter_user_name }}</td>
 		{% if loop_index == 0 %}
 			{% if deleted %}
-				<td><a href="/admin/compare?id={{ loop_value->id }}">{"View current"}</a></td>
+				<td><a href="/admin/compare?id={{ loop_value->id }}&current=yes"><strong>{"View current (deleted)"}</strong></a></td>
 			{% else %}
-				<td><strong>{"Current version"}</strong></td>
+				<td><a href="/admin/compare?id={{ loop_value->id }}&current=yes"><strong>{"Current version"}</strong></a></td>
 			{% end %}
 		{% else %}
-			<td><a href="/admin/compare?id={{ loop_value->id }}">{"Compare to current"}</a></td>
+			<td><a href="/admin/compare?id={{ loop_value->id }}&current=no">{"Compare to current"}</a></td>
 		{% end %}
 		</tr>
 	{% end %}
