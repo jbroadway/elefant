@@ -292,7 +292,9 @@ class User extends ExtendedModel {
 			if (isset ($_SESSION['session_id'])) {
 				if (Appconf::user ('User', 'multi_login')) {
 					$u = \user\Session::fetch_user ($_SESSION['session_id']);
-					$u->session_id = $_SESSION['session_id'];
+					if (is_object ($u)) {
+						$u->session_id = $_SESSION['session_id'];
+					}
 				} else {
 					$u = DB::single (
 						'select * from `#prefix#user` where session_id = ? and expires > ?',
@@ -300,7 +302,7 @@ class User extends ExtendedModel {
 						gmdate ('Y-m-d H:i:s')
 					);
 				}
-				if ($u) {
+				if (is_object ($u)) {
 					// Verify user agent as a last step (make hijacking harder)
 					global $cache;
 					$ua = $cache->get ('_user_session_agent_' . $_SESSION['session_id']);
