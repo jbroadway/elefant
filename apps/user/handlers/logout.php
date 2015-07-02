@@ -17,5 +17,10 @@ if (! Validator::validate ($_GET['redirect'], 'header')) {
 	$_GET['redirect'] = '/';
 }
 
+$redir = parse_url ($_GET['redirect']);
+if ($redir === false || $_GET['redirect'] !== $redir['path'] && $_GET['redirect'] !== $redir['path'] . '?' . $redir['query']) {
+	$_GET['redirect'] = '/';
+}
+
 Lock::clear ();
 echo User::logout ($_GET['redirect']);

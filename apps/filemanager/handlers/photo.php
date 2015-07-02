@@ -44,9 +44,13 @@ if (! isset ($data['key'])) {
 
 if (! $this->internal) {
 	if (isset ($data['photo'])) {
-		$photo = preg_replace ('|^/files/|', '', $data['photo']);
-		if (! FileManager::verify_file ($photo)) {
+		if (! preg_match ('|^/files/|', $data['photo'])) {
 			$data['photo'] = null;
+		} else {
+			$photo = preg_replace ('|^/files/|', '', $data['photo']);
+			if (! FileManager::verify_file ($photo)) {
+				$data['photo'] = null;
+			}
 		}
 	} else {
 		$data['photo'] = null;
@@ -54,6 +58,11 @@ if (! $this->internal) {
 }
 
 $data['photo'] = Image::for_key ($data['key'], $data['photo']);
+
+if ((! isset ($data['link']) || ! $data['link'] || $data['link'] === '') && $data['photo'] !== null) {
+	$photo = preg_replace ('|^/files/|', '', $data['photo']);
+	$data['link'] = FileManager::prop ($photo, 'link');
+}
 
 if ($data['photo']) {
 	$data['src'] = '/' . Image::resize ($data['photo'], $data['width'], $data['height'], 'cover', 'ext');

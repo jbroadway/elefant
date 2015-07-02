@@ -51,6 +51,16 @@ class Post extends \ExtendedModel {
 	 * user-defined properties.
 	 */
 	public $_extended_field = 'extra';
+	
+	/**
+	 * Display name for this model type.
+	 */
+	public static $display_name = 'Blog Post';
+	
+	/**
+	 * Plural display name for this model type.
+	 */
+	public static $plural_name = 'Blog Posts';
 
 	public static function _publish_queued ($posts) {
 		foreach (array_keys ($posts) as $k) {

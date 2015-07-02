@@ -102,6 +102,12 @@ class User extends ExtendedModel {
 	 * This is the static User object for the current user.
 	 */
 	public static $user = FALSE;
+	
+	/**
+	 * Session object for storing session IDs and expiry times,
+	 * when `multi_login` is enabled.
+	 */
+	public static $session = null;
 
 	/**
 	 * Acl object for `require_acl()` method. Get and set via `User::acl()`.
@@ -148,6 +154,10 @@ class User extends ExtendedModel {
 		return $pass;
 	}
 
+	/**
+	 * Initializes the PHP session with the right settings
+	 * and save handler.
+	 */
 	public static function init_session ($name = false, $duration = false, $path = '/', $domain = false, $secure = false, $httponly = true) {
 		if (! isset ($_SESSION)) {
 			$name = $name ? $name : conf ('General', 'session_name');
@@ -206,13 +216,13 @@ class User extends ExtendedModel {
 		);
 
 		// Check if they've exceeded their login attempt limit
-		global $cache, $controller;
-		$appconf = parse_ini_file ('apps/user/conf/config.php', TRUE);
+		global $controller;
+		$cache = $controller->cache ();
 		$attempts = $cache->get ('_user_login_attempts_' . session_id ());
 		if (! $attempts) {
 			$attempts = 0;
 		}
-		if ($attempts > $appconf['User']['login_attempt_limit']) {
+		if ($attempts > Appconf::user ('User', 'login_attempt_limit')) {
 			$called[$user] = FALSE;
 			$controller->redirect ('/user/too-many-attempts');
 		}
@@ -220,18 +230,29 @@ class User extends ExtendedModel {
 		if ($u && crypt ($pass, $u->password) == $u->password) {
 			$class = get_called_class ();
 			self::$user = new $class ((array) $u, FALSE);
-			self::$user->session_id = md5 (uniqid (mt_rand (), 1));
-			self::$user->expires = gmdate ('Y-m-d H:i:s', time () + 2592000); // 1 month
-			$try = 0;
-			while (! self::$user->put ()) {
-				self::$user->session_id = md5 (uniqid (mt_rand (), 1));
-				$try++;
-				if ($try == 5) {
+			if (Appconf::user ('User', 'multi_login')) {
+				self::$session = user\Session::create ($u->id);
+				if (self::$session === false) {
 					$called[$user] = FALSE;
-					return FALSE;
+					return false;
 				}
+				self::$user->session_id = self::$session->session_id;
+				self::$user->expires = self::$session->expires;
+				$_SESSION['session_id'] = self::$user->session_id;
+			} else {
+				self::$user->session_id = md5 (uniqid (mt_rand (), 1));
+				self::$user->expires = gmdate ('Y-m-d H:i:s', time () + 2592000); // 1 month
+				$try = 0;
+				while (! self::$user->put ()) {
+					self::$user->session_id = md5 (uniqid (mt_rand (), 1));
+					$try++;
+					if ($try == 5) {
+						$called[$user] = FALSE;
+						return FALSE;
+					}
+				}
+				$_SESSION['session_id'] = self::$user->session_id;
 			}
-			$_SESSION['session_id'] = self::$user->session_id;
 
 			// Save the user agent so we can verify it against future sessions,
 			// and remove the login attempts cache item
@@ -244,8 +265,8 @@ class User extends ExtendedModel {
 
 		// Increment the number of attempts they've made
 		$attempts++;
-		if (! $cache->add ('_user_login_attempts_' . session_id (), $attempts, 0, $appconf['User']['block_attempts_for'])) {
-			$cache->replace ('_user_login_attempts_' . session_id (), $attempts, 0, $appconf['User']['block_attempts_for']);
+		if (! $cache->add ('_user_login_attempts_' . session_id (), $attempts, 0, Appconf::user ('User', 'block_attempts_for'))) {
+			$cache->replace ('_user_login_attempts_' . session_id (), $attempts, 0, Appconf::user ('User', 'block_attempts_for'));
 		}
 
 		$called[$user] = FALSE;
@@ -269,12 +290,19 @@ class User extends ExtendedModel {
 			}
 
 			if (isset ($_SESSION['session_id'])) {
-				$u = DB::single (
-					'select * from `#prefix#user` where session_id = ? and expires > ?',
-					$_SESSION['session_id'],
-					gmdate ('Y-m-d H:i:s')
-				);
-				if ($u) {
+				if (Appconf::user ('User', 'multi_login')) {
+					$u = \user\Session::fetch_user ($_SESSION['session_id']);
+					if (is_object ($u)) {
+						$u->session_id = $_SESSION['session_id'];
+					}
+				} else {
+					$u = DB::single (
+						'select * from `#prefix#user` where session_id = ? and expires > ?',
+						$_SESSION['session_id'],
+						gmdate ('Y-m-d H:i:s')
+					);
+				}
+				if (is_object ($u)) {
 					// Verify user agent as a last step (make hijacking harder)
 					global $cache;
 					$ua = $cache->get ('_user_session_agent_' . $_SESSION['session_id']);
@@ -481,7 +509,10 @@ class User extends ExtendedModel {
 		if (self::$user === FALSE) {
 			self::require_login ();
 		}
-		if (! empty (self::$user->session_id)) {
+		if (Appconf::user ('User', 'multi_login')) {
+			user\Session::clear ($_SESSION['session_id']);
+			user\Session::clear_expired ();
+		} elseif (! empty (self::$user->session_id)) {
 			self::$user->expires = gmdate ('Y-m-d H:i:s', time () - 100000);
 			self::$user->put ();
 		}

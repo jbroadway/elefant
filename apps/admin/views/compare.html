@@ -1,16 +1,22 @@
 <p><a href="/admin/versions?type={{ class }}&id={{ pkey }}">&laquo; {"Other versions"}</a></p>
 
 <p>
-<table>
+<table width="100%">
 	<tr>
 		<th>{"Field"}</th>
-		<th width="45%">{{ ts|gmdate ('F j, Y - g:ia', strtotime (%s)) }} <a href="/admin/restore?id={{ $_GET['id'] }}">{"Restore"}</a></th>
-		<th width="45%">{"Current"}</th>
+		{% if ! is_current %}
+		<th width="43%">{{ ts|gmdate ('F j, Y - g:ia', strtotime (%s)) }} <a href="/admin/restore?id={{ $_GET['id'] }}">{"Restore"}</a></th>
+		<th width="43%">{"Current"}</th>
+		{% else %}
+		<th width="80%">{"Current"} <a href="/admin/restore?id={{ $_GET['id'] }}">{"Restore"}</a></th>
+		{% end %}
 	</tr>
 {% foreach fields %}
 	<tr{% if loop_value['diff'] %} class="different"{% end %}>
 		<td>{{ loop_index|ucfirst|str_replace ('_', ' ', %s) }}</td>
+		{% if ! is_current %}
 		<td>{{ loop_value['old']|none }}</td>
+		{% end %}
 		<td>{{ loop_value['cur']|none }}</td>
 	</tr>
 {% end %}

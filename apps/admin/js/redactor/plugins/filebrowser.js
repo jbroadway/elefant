@@ -3,36 +3,40 @@
  * Requires Elefant's filemanager/util/browser handler.
  */
 
-if (typeof RedactorPlugins === 'undefined') var RedactorPlugins = {};
+if (! RedactorPlugins) var RedactorPlugins = {};
 
-RedactorPlugins.filebrowser = {
-	// Initialize the plugin
-	init: function () {
-		this.buttonAddAfter ('imagebrowser', 'filebrowser', $.i18n ('Insert File'), $.proxy (this.open_dialog, this));
-	},
+RedactorPlugins.filebrowser = function () {
+	return {
+		// Initialize the plugin
+		init: function () {
+			var button = this.button.addAfter ('imagebrowser', 'filebrowser', $.i18n ('Insert File'));
+			this.button.setAwesome ('filebrowser', 'fa-paperclip');
+			this.button.addCallback (button, this.filebrowser.open_dialog);
+		},
 	
-	open_dialog: function (button, el, self, evt) {
-		this.selectionSave ();
-		$.filebrowser ({
-			callback: $.proxy (this.insert_file, this)
-		});
-	},
+		open_dialog: function (button, el, self, evt) {
+			this.selection.save ();
+			$.filebrowser ({
+				callback: $.proxy (this.filebrowser.insert_file, this)
+			});
+		},
 	
-	insert_file: function (file) {
-		this.selectionRestore ();
-		this.bufferSet ();
+		insert_file: function (file) {
+			this.selection.restore ();
+			this.buffer.set ();
 
-		if (file.match (/\.(jpg|png|gif)$/i)) {
-			this.insertHtml ('<img src="' + file + '" alt="" style="" />');
-		} else if (file.match (/\.swf$/i)) {
-			this.insertHtml ('<span class="embedded" data-embed="filemanager/swf?file=' + file + '" data-label="Embedded Flash (SWF)" title="Click to edit."></span>');
-		} else if (file.match (/\.(mp4|m4v|flv|f4v)$/i)) {
-			this.insertHtml ('<span class="embedded" data-embed="filemanager/video?file=' + file + '" data-label="Embedded Video (MP4)" title="Click to edit."></span>');
-		} else if (file.match (/\.mp3$/i)) {
-			this.insertHtml ('<span class="embedded" data-embed="filemanager/audio?file=' + file + '" data-label="Embedded Audio (MP3)" title="Click to edit."></span>');
-		} else {
-			var basename = file.match (/([^\/]+)$/)[1];
-			this.insertHtml ('<a href="' + file + '">' + basename + '</a>');
+			if (file.match (/\.(jpg|png|gif)$/i)) {
+				this.insert.html ('<img src="' + file + '" alt="" style="" />');
+			} else if (file.match (/\.swf$/i)) {
+				this.insert.htmlWithoutClean ('<span class="embedded" data-embed="filemanager/swf?file=' + file + '" data-label="Embedded Flash (SWF)" title="Click to edit."></span>');
+			} else if (file.match (/\.(mp4|m4v|flv|f4v)$/i)) {
+				this.insert.htmlWithoutClean ('<span class="embedded" data-embed="filemanager/video?file=' + file + '" data-label="Embedded Video (MP4)" title="Click to edit."></span>');
+			} else if (file.match (/\.mp3$/i)) {
+				this.insert.htmlWithoutClean ('<span class="embedded" data-embed="filemanager/audio?file=' + file + '" data-label="Embedded Audio (MP3)" title="Click to edit."></span>');
+			} else {
+				var basename = file.match (/([^\/]+)$/)[1];
+				this.insert.html ('<a href="' + file + '">' + basename + '</a>');
+			}
 		}
-	}
+	};
 };

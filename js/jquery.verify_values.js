@@ -160,8 +160,18 @@
 					}
 					break;
 				case 'regex':
-					var re = new RegExp (validator.substring (1, validator.length - 1));
-					if (! value.match (re)) {
+					try {
+						var mod = validator.replace (/^.+\/([igm]?)$/, '$1'),
+							str = validator.substring (1).replace (/\/[igm]*$/, ''),
+							re = new RegExp (str, mod);
+
+						if (! value.match (re)) {
+							return _false;
+						}
+					} catch (e) {
+						if (window.console && console.log) {
+							console.log (e.message);
+						}
 						return _false;
 					}
 					break;

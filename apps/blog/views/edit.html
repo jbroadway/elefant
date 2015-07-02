@@ -7,7 +7,7 @@
 
 <form method="POST" id="edit-form">
 
-<p>{"Title"}:<br /><input type="text" name="title" size="70" value="{{ title|quotes }}" />
+<p>{"Title"}:<br /><input type="text" name="title" size="65" value="{{ title|quotes }}" />
 <span class="notice" id="title-notice">{"You must enter a title."}</span></p>
 
 <div id="thumbnail-div">
@@ -30,17 +30,18 @@
 <p>{"Date/Time"}:<br /><input type="text" name="ts" id="ts" size="30" value="{{ ts }}" />
 <span class="notice" id="ts-notice">{"You must select a date/time."}</span></p>
 
-<p>{"Body"}: <span class="notice" id="body-notice">{"You must enter body content."}</span><br />
-<textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
+<div>
+{"Status"}:<br />
+<p class="toggle" data-field="published">
+	<a href="#" data-value="no">{"Draft"}</a
+	><a href="#" data-value="yes">{"Published"}</a
+	><a href="#" data-value="que">{"Scheduled"}</a>
+</p>
+<input type="hidden" name="published" id="published" value="{{ published }}" />
+</div>
 
-<h4>{"Extra Options"}</h4>
+<p><textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 
-<p>{"Published"}:
-<select name="published">
-{% foreach yes_no %}
-	<option value="{{ loop_index }}"{% if loop_index == $data->published %} selected{% end %}>{{ loop_value|none }}</option>
-{% end %}
-</select></p>
 <p>{"Tags (comma-separated)"}:
 <ul id="tagit" style="width: 580px; padding-top: 0px; margin-top: -16px">
 {% foreach tag_list %}
@@ -48,9 +49,6 @@
 {% end %}
 </ul>
 <input type="hidden" name="tags" id="tags"></p>
-<p>{"Auto-post options"}:<br />
-<input type="checkbox" name="autopost_pom" id="autopost_pom" value="yes" {% if autopost_tw %}checked{% end %} /> <label for="autopost_pom">Ping-o-matic</label><br />
-</p>
 
 {! admin/util/extended?extends=blog\Post&name=Blog+Posts&values=[extra|none]&id=[id] !}
 
@@ -88,6 +86,33 @@ $(function () {
 			set_name_value: '#author'
 		});
 		return false;
+	});
+	
+	/**
+	 * Takes the following HTML and enables a toggle on them:
+	 *
+	 * <p class="toggle" data-field="published">
+	 *     <a href="#" data-value="no">{"Draft"}</a>
+	 *     <!-- etc -->
+	 * </p>
+	 * <input type="hidden" name="published" id="published" value="{{published}}" />
+	 */
+	$('.toggle').each (function () {
+		var $this = $(this),
+			field = $this.data ('field'),
+			$field = $('#' + field);
+		
+		$this.find ('a').removeClass ('toggle-active').click (function (e) {
+			e.preventDefault ();
+
+			var val = $(this).data ('value');
+			$field.val (val);
+
+			$this.find ('a').removeClass ('toggle-active');
+			$(this).addClass ('toggle-active');
+		});
+
+		$this.find ('a[data-value={{published}}]').addClass ('toggle-active');
 	});
 
 	{% if Appconf::blog ('Blog', 'post_format') === 'markdown' %}

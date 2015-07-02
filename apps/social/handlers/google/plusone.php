@@ -9,6 +9,6 @@ if (! isset (self::$called['social/google/init'])) {
 }
 
 if (strpos ($data['url'], '/') === 0) {
-	$data['url'] = 'http://' . $_SERVER['HTTP_HOST'] . $data['url'];
+	$data['url'] = '//' . $_SERVER['HTTP_HOST'] . $data['url'];
 }
 echo $tpl->render ('social/google/plusone', $data);

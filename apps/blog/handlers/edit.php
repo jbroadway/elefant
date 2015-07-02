@@ -22,15 +22,6 @@ $p = new blog\Post ($_GET['id']);
 $f = new Form ('post', 'blog/edit');
 $f->verify_csrf = false;
 if ($f->submit ()) {
-	$autopost_pom = ($_POST['autopost_pom'] == 'yes') ? true : false;
-	unset ($_POST['autopost_pom']);
-
-	if ($p->published == 'no' && $_POST['published'] == 'yes') {
-		$autopost = true;
-	} else {
-		$autopost = false;
-	}
-
 	$p->title = $_POST['title'];
 	$p->author = $_POST['author'];
 	$p->ts = $_POST['ts'];
@@ -63,14 +54,6 @@ if ($f->submit ()) {
 
 		require_once ('apps/blog/lib/Filters.php');
 
-		// autopost
-		if ($autopost) {
-			if ($autopost_pom) {
-				$pom = new Pingomatic;
-				$pom->post ($appconf['Blog']['title'], 'http://' . $_SERVER['HTTP_HOST'] . '/blog');
-			}
-		}
-
 		// reset blog rss cache
 		$cache->delete ('blog_rss');
 
@@ -82,13 +65,15 @@ if ($f->submit ()) {
 	$page->title = __ ('An Error Occurred');
 	echo __ ('Error Message') . ': ' . $p->error;
 } else {
-	$p->yes_no = array ('yes' => __ ('Yes'), 'no' => __ ('No'), 'que' => __ ('Scheduled'));
-	$p->autopost_pom = 'yes';
 	$p->tag_list = explode (',', $p->tags);
 
 	$p->failed = $f->failed;
 	$p = $f->merge_values ($p);
-	$page->title = __ ('Edit Blog Post') . ': ' . $p->title;
+	if ($p->title === '') {
+		$page->title = __ ('Add Blog Post');
+	} else {
+		$page->title = __ ('Edit Blog Post') . ': ' . $p->title;
+	}
 	$page->add_script ('/apps/blog/css/related.css');
 	if (Appconf::blog ('Blog', 'post_format') === 'html') {
 		$this->run ('admin/util/wysiwyg');

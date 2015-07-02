@@ -20,10 +20,13 @@
  * by `|` or a glob pattern like 'stuff/*_light.jpg'.
  * `idsuffix` will be appended to the CSS id of the slideshow.
  *
- * To limit the photo dimensions to a certain size, add a `dimensions`
- * parameter in the form `WIDTHxHEIGH`, for example:
+* To set the transition speed in milliseconds add a `speed`
+ * parameter in the form `SPEED`
  *
- *     {! filemanager/slideshow?path=foldername&dimensions=500x300 !}
+ * To set the photo ratio, add a `ratio`
+ * parameter in the form `WIDTH:HEIGH`, for example:
+ *
+ *     {! filemanager/slideshow?path=foldername&ratio=4:3&speed=1500 !}
  *
  * Note that this will also reorient photos that have been uploaded from
  * devices that don't automatically correct the photo orientation, based
@@ -102,17 +105,24 @@ if (isset ($data['path']) or isset ($_GET['path'])) {
 	return;
 }
 
-if (isset ($data['dimensions']) && strpos ($data['dimensions'], 'x')) {
-	list ($width, $height) = explode ('x', $data['dimensions']);
-	$width = (int) $width;
-	$height = (int) $height;
-	$files = array_map (
-		function ($file) use ($width, $height) {
-			Image::reorient ($file);
-			return Image::resize ($file, $width, $height);
-		},
-		$files
-	);
+if (isset ($data['speed'])) {
+	$speed = $data['speed'];
+} else {
+	$speed = "2000";
+}
+
+// get links for each file
+$prop_files = array_map (function ($file) {
+	return preg_replace ('/^files\//', '', $file);
+}, $files);
+$prop_links = FileManager::prop ($prop_files, 'link');
+$links = array ();
+foreach ($prop_links as $f => $link) {
+	$links['files/' . $f] = $link;
+}
+
+if (isset ($data['ratio'])) {
+	$ratio = $data['ratio'];
 }
 
 // rewrite if proxy is set
@@ -122,12 +132,16 @@ if ($appconf['General']['proxy_handler']) {
 	}
 }
 
-$page->add_script ('/apps/filemanager/js/jquery.cycle.all.min.js');
+$page->add_style ('/apps/filemanager/css/cycle2.css');
+$page->add_script ('/apps/filemanager/js/jquery.cycle2.js');
 echo $tpl->render (
 	'filemanager/slideshow', 
 	array (
 		'files' => $files,
 		'name' => $name,
-		'timeout' => $timeout
+		'timeout' => $timeout,
+		'speed' => $speed,
+		'ratio' => $ratio,
+		'links' => $links
 	)
 );

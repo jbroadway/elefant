@@ -136,8 +136,14 @@ class ExtendedModel extends Model {
 	 * so we override the constructor to do so.
 	 */
 	public function __construct ($vals = false, $is_new = true) {
+		$defaults = array ();
+
 		foreach ($this->verify as $k => $v) {
 			if (isset ($v['extended'])) {
+				if (isset ($v['default'])) {
+					$defaults[$k] = $v['default'];
+					unset ($v['default']);
+				}
 				unset ($v['extended']);
 				$this->_extended_verify[$k] = $v;
 				unset ($this->verify[$k]);
@@ -151,6 +157,13 @@ class ExtendedModel extends Model {
 		}
 
 		parent::__construct ($vals, $is_new);
+
+		// Pre-populate extended attributes with given default values
+		if (! empty ($defaults)) {
+			foreach ($defaults as $k => $v) {
+				if (!$this->ext($k)) $this->ext ($k, $v);
+			}
+		}
 
 		// Populate extended attributes after `parent::__construct()`
 		if (isset ($extended)) {
@@ -194,7 +207,14 @@ class ExtendedModel extends Model {
 	 * Return the original data as an object, including extended fields.
 	 */
 	public function orig () {
-		return (object) array_merge ($this->data, $this->ext ());
+		$ext = $this->ext ();
+		if (is_string ($ext)) {
+			$ext = json_decode ($ext);
+		}
+		if (is_object ($ext)) {
+			$ext = (array) $ext;
+		}
+		return (object) array_merge ($this->data, $ext);
 	}
 
 	/**

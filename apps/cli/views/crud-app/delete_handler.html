@@ -7,16 +7,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 	$this->redirect ('/{{plural}}/admin');
 }
 
-${{appname}} = new {{plural}}{{backslash}}{{appname|ucfirst}};
+${{appname}} = new {{plural}}{{backslash}}{{appname|cli\Filter::camel}};
 ${{appname}}->remove ($_POST['id']);
 
 if (${{appname}}->error) {
 	error_log ('Error deleting {{appname}}: ' . DB::error ());
-	$this->add_notification (__ ('Unable to delete {{appname}}.'));
+	$this->add_notification (__ ('Unable to delete {{appname|cli\Filter::spaces}}.'));
 	$this->redirect ('/{{plural}}/admin');
 }
 
-$this->add_notification (__ ('{{appname|ucfirst}} deleted.'));
+$this->add_notification (__ ('{{appname|cli\Filter::label}} deleted.'));
 $this->redirect ('/{{plural}}/admin');
-
-{{close_tag|none}}

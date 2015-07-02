@@ -1,0 +1,11 @@
+<script>
+function google_maps_init () {}
+
+$(function () {
+	script = document.createElement ('script');
+	script.type = 'text/javascript';
+	script.async = true;
+	script.src = '//maps.googleapis.com/maps/api/js?sensor=false&callback=google_maps_init';
+	document.body.appendChild (script);
+});
+</script>

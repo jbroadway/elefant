@@ -28,13 +28,16 @@ icon = /apps/navigation/css/icon-nav-contextual.png
 [navigation/breadcrumb]
 
 label = "Navigation: Breadcrumb"
+icon = ellipsis-h
 
 [navigation/languages]
 
 label = "Navigation: Languages"
+icon = globe
 
 [navigation/redirect]
 
 label = "Multilingual Homepage Redirect"
+icon = globe
 
 ; */ ?>

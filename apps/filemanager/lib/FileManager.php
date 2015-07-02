@@ -220,6 +220,7 @@ class FileManager {
 		}
 
 		$new = $folder . '/' . basename ($file);
+		$new = ltrim ($new, '/');
 		if (! rename (self::root () . $file, self::root () . $new)) {
 			self::$error = __ ('Unable to move') . ' ' . $file;
 			return false;
@@ -402,6 +403,9 @@ class FileManager {
 	 */
 	public static function verify_file_name ($name) {
 		if (! preg_match ('/^[a-zA-Z0-9 _-]+\.[a-zA-Z0-9_-]+$/', $name)) {
+			return false;
+		}
+		if (preg_match ('/\.php$/i', $name)) {
 			return false;
 		}
 		return true;

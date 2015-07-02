@@ -245,4 +245,13 @@ transport[type] = sendmail
 ;transport[type] = file
 ;transport[folder] = cache/mailer
 
+[Proxy]
+
+; Proxy configuration for cURL.
+; Keep commented if no proxy used.
+;url = "http://1.2.3.4"
+;port = 8080
+;skip_urls = "localhost,localhost.local"
+;skip_ips = "127.0.0.1,192.168.1.1"
+
 ; */ ?>

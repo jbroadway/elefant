@@ -307,9 +307,16 @@
 
 	$.filemanager_prop = function (form) {
 		var file = form.elements.file.value,
-			desc = form.elements.desc.value;
+			desc = form.elements.desc.value,
+			link = form.elements.link.value,
+			data = {
+				props: {
+					desc: desc,
+					link: link
+				}
+			};
 
-		$.post ('/filemanager/api/prop/' + file, {prop: 'desc', value: desc}, function (res) {
+		$.post ('/filemanager/api/prop/' + file, data, function (res) {
 			$.close_dialog ();
 			$.add_notification (res.data.msg);
 		});

@@ -19,6 +19,34 @@
 				<span class="notice" id="_extended_{{field->name}}_notice">{{field->label|__}} {"is required"}.</span>
 			{% end %}
 		</p>
+	{% elseif field->type === 'date' %}
+		<p>
+			{{field->label|__}}:<br />
+			<input	type="text"
+					name="_extended[{{field->name}}]"
+					id="_extended_{{field->name}}"
+					value="{{field->value|quotes}}"
+					class="datewidget-date"
+					size="20"
+			/>
+			{% if field->required %}
+				<span class="notice" id="_extended_{{field->name}}_notice">{{field->label|__}} {"is required"}.</span>
+			{% end %}
+		</p>
+	{% elseif field->type === 'datetime' %}
+		<p>
+			{{field->label|__}}:<br />
+			<input	type="text"
+					name="_extended[{{field->name}}]"
+					id="_extended_{{field->name}}"
+					value="{{field->value|quotes}}"
+					class="datewidget-datetime"
+					size="20"
+			/>
+			{% if field->required %}
+				<span class="notice" id="_extended_{{field->name}}_notice">{{field->label|__}} {"is required"}.</span>
+			{% end %}
+		</p>
 	{% elseif field->type === 'textarea' %}
 		<p>
 			{{field->label|__}}:<br />

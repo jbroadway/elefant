@@ -23,7 +23,8 @@ $help = <<<HELP
 Usage:
 
   <info>$ cd /path/to/my/site
-  $ ./elefant COMMAND</info>
+  $ ./elefant COMMAND
+  $ ./elefant --env=staging COMMAND</info>
 
 Commands:
 

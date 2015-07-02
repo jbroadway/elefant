@@ -1,3 +1,5 @@
+<div class="blog-tags">
 {% foreach tags %}
-<a href="/blog/tag/{{ loop_index|strtolower }}" style="padding-right: 5px; font-size: {{ loop_value }}em">{{ loop_index }}</a>
+<a href="/blog/tag/{{ loop_index|strtolower }}" class="blog-tag" style="padding-right: 5px; font-size: {{ loop_value }}em">{{ loop_index }}</a>
 {% end %}
+</div>
