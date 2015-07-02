@@ -85,13 +85,13 @@ class MongoManager {
 			if (isset ($conf['user'])) {
 				$connstr = 'mongodb://' . $conf['user'] . ':' . $conf['pass'] . '@' . $conf['host'];
 			} else {
-				$connstr = $conf['host'];
+				$connstr = 'mongodb://' . $conf['host'];
 			}
 			try {
 				if (isset ($conf['set_name'])) {
-					self::$conn = new Mongo ($connstr, array ('replicaSet' => $conf['set_name']));
+					self::$conn = new MongoClient ($connstr, array ('replicaSet' => $conf['set_name']));
 				} else {
-					self::$conn = new Mongo ($connstr);
+					self::$conn = new MongoClient ($connstr);
 				}
 			} catch (Exception $e) {
 				self::$error = $e->getMessage ();

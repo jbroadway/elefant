@@ -52,6 +52,16 @@ class Webpage extends ExtendedModel {
 	 * user-defined properties.
 	 */
 	public $_extended_field = 'extra';
+	
+	/**
+	 * Display name for this model type.
+	 */
+	public static $display_name = 'Web Page';
+	
+	/**
+	 * Plural display name for this model type.
+	 */
+	public static $plural_name = 'Web Pages';
 
 	/**
 	 * Override the getter for head to include the description

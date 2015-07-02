@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GEt or set a global setting.
+ * Get or set a global setting.
  *
  * Usage:
  *
@@ -16,6 +16,9 @@
  *
  *     # List configuration options in the Mailer section
  *     ./elefant conf Mailer                     # email_from, email_name, etc.
+ *
+ *     # Set the database driver
+ *     ./elefant conf Database.master.driver sqlite
  */
 
 if (! $this->cli) die ('Must be run from the command line.');
@@ -24,6 +27,7 @@ $page->layout = false;
 
 $valid_section_name = '/^[a-zA-Z0-9 _-]+$/';
 $valid_setting_name = '/^[a-zA-Z0-9\/ _-]+$/';
+$valid_inner_name = '/^[a-zA-Z0-9\/ _-]+$/';
 
 // there's a value to update
 if (isset ($_SERVER['argv'][3])) {
@@ -31,12 +35,15 @@ if (isset ($_SERVER['argv'][3])) {
 	$value = $_SERVER['argv'][3];
 
 	// make sure they provide a specific and valid setting name
-	if (count ($parts) !== 2) {
+	if (count ($parts) === 3) {
+		list ($section, $setting, $inner) = $parts;
+	} elseif (count ($parts) === 2) {
+		list ($section, $setting) = $parts;
+		$inner = null;
+	} else {
 		Cli::out ('Please provide a setting name to update its value.', 'error');
 		return;
 	}
-	
-	list ($section, $setting) = $parts;
 	
 	if (! preg_match ($valid_section_name, $section)) {
 		Cli::out ('Invalid section name: ' . $section, 'error');
@@ -47,10 +54,19 @@ if (isset ($_SERVER['argv'][3])) {
 		Cli::out ('Invalid setting name: ' . $setting, 'error');
 		return;
 	}
+
+	if ($inner !== null && ! preg_match ($valid_inner_name, $inner)) {
+		Cli::out ('Invalid setting key name: ' . $inner, 'error');
+		return;
+	}
 	
 	// build an updated config to save
 	$settings = conf ();
-	$merged = array_replace_recursive ($settings, array ($section => array ($setting => $value)));
+	if ($inner !== null) {
+		$merged = array_replace_recursive ($settings, array ($section => array ($setting => array ($inner => $value))));
+	} else {
+		$merged = array_replace_recursive ($settings, array ($section => array ($setting => $value)));
+	}
 
 	if (! Ini::write ($merged, 'conf/' . ELEFANT_ENV . '.php')) {
 		Cli::out ('Unable to save changes to: conf/' . ELEFANT_ENV . '.php', 'error');

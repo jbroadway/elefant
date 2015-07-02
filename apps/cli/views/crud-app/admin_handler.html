@@ -4,7 +4,7 @@
 $this->require_acl ('admin', '{{plural}}');
 
 $page->layout = 'admin';
-$page->title = __ ('{{plural|ucfirst}}');
+$page->title = __ ('{{plural|cli\Filter::title}}');
 
 // Calculate the offset
 $limit = 20;
@@ -12,8 +12,8 @@ $num = isset ($this->params[0]) ? $this->params[0] : 1;
 $offset = ($num - 1) * $limit;
 
 // Fetch the items and total items
-$items = {{plural}}{{backslash}}{{appname|ucfirst}}::query ()->fetch ($limit, $offset);
-$total = {{plural}}{{backslash}}{{appname|ucfirst}}::query ()->count ();
+$items = {{plural}}{{backslash}}{{appname|cli\Filter::camel}}::query ()->fetch ($limit, $offset);
+$total = {{plural}}{{backslash}}{{appname|cli\Filter::camel}}::query ()->count ();
 
 // Check for error, e.g., if table hasn't been created yet
 if ($items === false) {
@@ -37,5 +37,3 @@ echo $tpl->render (
 		'url' => '/{{plural}}/admin/%d'
 	)
 );
-
-{{close_tag|none}}

@@ -53,7 +53,7 @@ var LinkList = React.createClass ({displayName: 'LinkList',
 var LinkForm = React.createClass ({displayName: 'LinkForm',
 	render: function () {
 		return (
-			React.DOM.form( {onSubmit:this.handleSubmit}, 
+			React.DOM.form( {id:"social-link-form", onSubmit:this.handleSubmit}, 
 				React.DOM.p(null, 
 					React.DOM.input( {type:"text", ref:"handle", placeholder:this.props.i18n.link_placeholder, size:"35"} ),
 					React.DOM.select( {ref:"service"}, 

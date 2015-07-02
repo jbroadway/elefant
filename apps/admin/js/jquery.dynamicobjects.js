@@ -28,7 +28,7 @@
 	self.build_embed_string = function (handler, data) {
 		var i, sep = '?', embed = handler;
 		for (i in data) {
-			embed += sep + i + '=' + escape (data[i]);
+			embed += sep + i + '=' + encodeURIComponent (data[i]);
 			sep = '&';
 		}
 		return embed;
@@ -192,6 +192,7 @@
 						} else {
 							html += '</select></p>';
 						}
+
 					} else if (obj.fields[i].type == 'textarea') {
 						html += '<p><label for="' + obj.fields[i].name + '">' + obj.fields[i].label + '</label><textarea name="' + obj.fields[i].name + '" rows="6">' + obj.fields[i].initial + '</textarea>';
 						if (obj.fields[i].message) {
@@ -199,14 +200,30 @@
 						} else {
 							html += '</p>';
 						}
+
 					} else if (obj.fields[i].type == 'hidden') {
 						html += '<input type="hidden" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
+
 					} else if (obj.fields[i].type == 'file') {
 						html += '<p><label for="' + obj.fields[i].name + '" >' + obj.fields[i].label + '</label>';
 						html += '<input type="text" class="wysiwyg-file-input" name="' + obj.fields[i].name + '" id="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
 
 						// add the File Manager icon:
-						html += '&nbsp;<button class="wysiwyg-fileManager" id="' + obj.fields[i].name + '-fileManager">' + self.opts.browse_button + '</button>';
+						html += '&nbsp;<button class="wysiwyg-fileManager" id="' + obj.fields[i].name + '-fileManager" data-name="' + obj.fields[i].name + '">' + self.opts.browse_button + '</button>';
+						html += "<br clear:both />"
+
+						if (obj.fields[i].message) {
+							html += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span>';
+						} 
+							
+						html += '</p>';
+						
+					} else if (obj.fields[i].type == 'image') {
+						html += '<p><label for="' + obj.fields[i].name + '" >' + obj.fields[i].label + '</label>';
+						html += '<input type="text" class="wysiwyg-file-input" name="' + obj.fields[i].name + '" id="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
+
+						// add the File Manager icon:
+						html += '&nbsp;<button class="wysiwyg-imageManager" id="' + obj.fields[i].name + '-imageManager" data-name="' + obj.fields[i].name + '">' + self.opts.browse_button + '</button>';
 						html += "<br clear:both />"
 
 						if (obj.fields[i].message) {
@@ -252,13 +269,24 @@
 				for (var i in obj.fields) {
 					if (obj.fields[i].type == 'file') {
 						$('#' + obj.fields[i].name + '-fileManager').bind ('click', function () {
+							var input_field = $(this).data ('name');
 							$.filebrowser ({
-								set_value: '#' + obj.fields[i].name
-								// todo: limit by file type
+								set_value: '#' + input_field
+							});
+							return false;
+						});
+					} else if (obj.fields[i].type == 'image') {
+						$('#' + obj.fields[i].name + '-imageManager').bind ('click', function () {
+							var input_field = $(this).data ('name');
+							$.filebrowser ({
+								set_value: '#' + input_field,
+								thumbs: true,
+								allowed: ['jpg', 'jpeg', 'png', 'gif']
 							});
 							return false;
 						});
 					}
+					// TODO: Limit by additional file types (audio, video)
 				}
 
 				// submit button handler

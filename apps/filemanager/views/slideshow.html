@@ -1,20 +1,30 @@
 <div id="slideshow-{{name}}" class="cycle-slideshow crop"
-    data-cycle-fx="fade"
-    data-cycle-pause-on-hover="true"
-     data-cycle-timeout="{{ timeout }}"
-    {% if speed %} data-cycle-speed="{{ speed }}" {% end %}
-    {% if ratio %} data-cycle-auto-height="{{ ratio }}" {% end %}
-    data-cycle-prev="#prev"
-    data-cycle-next="#next"
-    data-cycle-manual-fx="scrollHorz"
-    data-cycle-manual-speed="200"
-    data-paused-text="{"paused"}">
-    <div id="prev" class="cycle-prev"></div>
-    <div id="next" class="cycle-next"></div>
-    <!-- <div class="cycle-overlay"></div> -->
-{% foreach files %}
-    <img src="/{{ loop_value }}" alt="" {% if loop_index > 0 %}style="display: none"{% end %} />
-{% end %}
+	data-cycle-fx="fade"
+	data-cycle-pause-on-hover="true"
+	data-cycle-timeout="{{ timeout }}"
+	data-cycle-slides="> a" 
+	{% if speed %} data-cycle-speed="{{ speed }}" {% end %}
+	{% if ratio %} data-cycle-auto-height="{{ ratio }}" {% end %}
+	data-cycle-prev="#prev"
+	data-cycle-next="#next"
+	data-cycle-manual-fx="scrollHorz"
+	data-cycle-manual-speed="200"
+	data-paused-text="{"paused"}">
+	<div id="prev" class="cycle-prev"></div>
+	<div id="next" class="cycle-next"></div>
+	<!-- <div class="cycle-overlay"></div> -->
+	{% foreach files %}
+		{% if isset ($data->links[$data->loop_value]) %}
+			<a href="{{links[$data->loop_value]}}" {% if loop_index > 0 %}style="display: none"{% end %}><img src="/{{ loop_value }}" alt="" /></a>
+		{% else %}
+			<a href="#" {% if loop_index > 0 %}style="display: none"{% end %}><img src="/{{ loop_value }}" alt="" /></a>
+		{% end %}
+	{% end %}
 </div>
 <br style="clear: both" />
 
+<style>
+.cycle-prev, .cycle-next {
+	width: 20% !important;
+}
+</style>

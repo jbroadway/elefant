@@ -9,7 +9,7 @@ to[label] = Link
 to[type] = text
 to[initial] = "http://"
 to[not empty] = 1
-to[regex] = "|^(http:/)?/.+$|"
+to[regex] = "/^(https?:\/)?\/.+$/"
 to[message] = Please enter a valid URL.
 
 code[label] = Status
@@ -19,13 +19,14 @@ code[require] = "apps/admin/lib/Functions.php"
 code[callback] = "admin_status_codes"
 
 [admin/conditionalforward]
+
 label ="Pages: Conditional Redirect"
-icon = /apps/admin/css/icon-conditionalforward.png
+icon = external-link
 
 to[label] = Link
 to[type] = text
 to[initial] = "http://"
-to[regex] = "|^(http:/)?/.+$|"
+to[regex] = "/^(https?:\/)?\/.+$/"
 to[message] = Please enter a valid URL.
 
 user_type[label] = User role
@@ -36,7 +37,7 @@ user_type[callback] = "admin_user_groups"
 [admin/html]
 
 label = "Embed HTML Code"
-icon = /apps/admin/css/icon-html.png
+icon = code
 
 id[label] = HTML
 id[type] = textarea

@@ -255,6 +255,7 @@ class Template {
 			$data = (object) $data;
 		}
 		$data->is_being_rendered = true;
+		$data->template_id = str_replace ('/', '-', $template);
 
 		// Resolve the template to a file name, in one of:
 		// `apps/appname/views/filename.html`
@@ -530,8 +531,10 @@ class Template {
 		// remove spaces before ? and & for multiline includes
 		$val = preg_replace ('/\n(\t+| {2,})(\?|\&)/', '\2', trim ($val));
 
-		// normalize <span data-embed> tags to {! tags !}
-		$val = preg_replace ('/<[^>]*?data-embed="([^"]+)".*?>.*?<\/.*?>/', '{! \1 !}', $val);
+		// normalize <span data-embed> tags to {! tags !} embeds.
+		// also remove enclosing <p>, <br> and spacing that may have
+		// been added around it by the wysiwyg editor.
+		$val = preg_replace ('/(<p>\s*?)?<[^>]*?data-embed="([^"]+)".*?>.*?<\/.*?>(\s*?(<br>)?\s*?<\/p>)?/s', '{! \2 !}', $val);
 
 		$parts = preg_split ('/(\{\! ?.*? ?\!\})/', $val, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$out = '';

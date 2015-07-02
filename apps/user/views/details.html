@@ -9,8 +9,6 @@
 	<a href="/user/delete?id={{id}}" onclick="return confirm ('{"Are you sure you want to delete this user?"}');">{"Delete"}</a>
 </p>
 
-<h4>{"Contact information"}</h4>
-
 {% if photo != '' %}
 <img src="{{photo}}" id="photo" />
 {% end %}
@@ -36,13 +34,21 @@
 <p><b>{"About"}:</b><br />{{about}}</p>
 {% end %}
 
-<h4 class="clear-photo">{"Social links"}</h4>
+<div id="tabs" class="clear-photo">
+	<ul id="tab-list">
+		<li><a href="#tab-notes">{"Notes"}</a></li>
+		<li><a href="#tab-social">{"Social"}</a></li>
+	{% foreach tabs as _name, _content %}
+		<li><a href="#tab-{{_name|URLify::filter}}">{{_name|__}}</a></li>
+	{% end %}
+	</ul>
 
-<div id="links"></div>
-
-<h4>{"Notes"}</h4>
-
-<div id="notes"></div>
+	<div id="tab-notes"></div>
+	<div id="tab-social"></div>
+{% foreach tabs as _name, _content %}
+	<div id="tab-{{_name|URLify::filter}}">{{_content|none}}</div>
+{% end %}
+</div>
 
 <script>
 var I18N = {
@@ -62,6 +68,9 @@ var I18N = {
 </script>
 
 <script>
+$(function () {
+	$('#tabs').tabs ();
+});
 React.renderComponent (
 	LinkBox ({
 		init_url: '/user/api/link/{{id}}',
@@ -71,7 +80,7 @@ React.renderComponent (
 		current_user: {{User::val ('id')}},
 		i18n: I18N
 	}),
-	document.getElementById ('links')
+	document.getElementById ('tab-social')
 );
 React.renderComponent (
 	NoteBox ({
@@ -82,6 +91,6 @@ React.renderComponent (
 		current_user: {{User::val ('id')}},
 		i18n: I18N
 	}),
-	document.getElementById ('notes')
+	document.getElementById ('tab-notes')
 );
 </script>

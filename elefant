@@ -33,7 +33,12 @@
  * Usage:
  *
  *     $ cd /path/to/my/site
- *     $ elefant COMMAND
+ *     $ ./elefant COMMAND
+ *
+ * To set the ELEFANT_ENV environment variable and use a specific configuration,
+ * call via:
+ *
+ *     $ ./elefant --env=production COMMAND
  */
 
 // Prevent non-CLI access
@@ -56,6 +61,15 @@ ini_set ('error_reporting', 247);
 
 // Remove the script name
 array_shift ($argv);
+
+// Set ELEFANT_ENV based on --env=production parameter
+if (isset ($argv[0]) && strpos ($argv[0], '--env=') === 0) {
+	$env = str_replace ('--env=', '', $argv[0]);
+	array_shift ($argv);
+	$argc--;
+} else {
+	$env = 'config';
+}
 
 if (count ($argv) === 0) {
 	// No command, use default handler
@@ -85,6 +99,4 @@ if (count ($argv) === 0) {
 foreach ($argv as $k => $v) {
 	$argv[$k] = escapeshellarg ($v);
 }
-system ('php index.php ' . $handler . ' ' . join (' ', $argv));
-
-?>
+system ('export ELEFANT_ENV=' . escapeshellarg ($env) . ' && php index.php ' . $handler . ' ' . join (' ', $argv));

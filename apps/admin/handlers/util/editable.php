@@ -94,6 +94,7 @@
  *     echo Template::sanitize ($_POST['value']);
  */
 
+$this->run ('admin/util/i18n');
 $page->add_style ('/apps/admin/css/editable.css');
 $page->add_script ('/apps/admin/js/jquery.autogrow.min.js');
 $page->add_script ('/apps/admin/js/jquery.jeditable.min.js');

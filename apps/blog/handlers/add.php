@@ -13,6 +13,8 @@ $p = new blog\Post (array (
 	'ts' => gmdate ('Y-m-d H:i:s'),
 	'author' => User::val ('name'),
 	'body' => '',
+	'tags' => '',
+	'extra' => '',
 	'published' => 'no'
 ));
 $p->put ();

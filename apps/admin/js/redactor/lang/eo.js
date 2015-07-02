@@ -69,6 +69,7 @@ $.Redactor.opts.langs['eo'] = {
 	underline: 'Substrekita', // adjective
 	alignment: 'Ĝisrandigo', // substantive
 	filename: 'Dosiernomo (fakultativa)', // substantive
-	edit: 'Redaktu' // imperative
+	edit: 'Redaktu', // imperative
+	center: 'Center'
 };
 })( jQuery );

@@ -69,6 +69,7 @@ $.Redactor.opts.langs['tr'] = {
 	underline: 'Altı çizili',
 	alignment: 'Hizalama',
 	filename: 'Dosya Adı (isteğe bağlı)',
-	edit: 'Düzenle'
+	edit: 'Düzenle',
+	center: 'Center'
 };
 })( jQuery );

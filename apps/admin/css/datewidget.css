@@ -4,3 +4,6 @@
 .ui-timepicker-div dl dt{ height: 25px; }
 .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
 .ui-timepicker-div td { font-size: 90%; }
+
+.ui-datepicker { z-index: 9999 !important; }
+.ui-timepicker { z-index: 9999 !important; }

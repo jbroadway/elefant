@@ -111,6 +111,15 @@ if (isset ($data['speed'])) {
 	$speed = "2000";
 }
 
+// get links for each file
+$prop_files = array_map (function ($file) {
+	return preg_replace ('/^files\//', '', $file);
+}, $files);
+$prop_links = FileManager::prop ($prop_files, 'link');
+$links = array ();
+foreach ($prop_links as $f => $link) {
+	$links['files/' . $f] = $link;
+}
 
 if (isset ($data['ratio'])) {
 	$ratio = $data['ratio'];
@@ -132,6 +141,7 @@ echo $tpl->render (
 		'name' => $name,
 		'timeout' => $timeout,
 		'speed' => $speed,
-		'ratio' => $ratio
+		'ratio' => $ratio,
+		'links' => $links
 	)
 );

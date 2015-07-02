@@ -5,7 +5,11 @@
 {% inc cli/crud-app/types/[field->type] %}
 {% end %}
 
-<p><input type="submit" value="\{"Save {{appname|ucfirst}}"}" /></p>
+<p>
+	<input type="submit" value="\{"Save {{appname|cli\Filter::title}}"}" />
+	&nbsp;
+	<a href="/{{plural}}/admin" onclick="return confirm ('\{"Are you sure you want to cancel and lose any changes?"}')">\{"Cancel"}</a>
+</p>
 
 </form>
 </div>

@@ -4,11 +4,11 @@
 $this->require_acl ('admin', '{{plural}}', 'admin/edit');
 
 $page->layout = 'admin';
-$page->title = __ ('Edit {{appname|ucfirst}}');
+$page->title = __ ('Edit {{appname|cli\Filter::title}}');
 
 $form = new Form ('post', $this);
 
-$form->data = new {{plural}}{{backslash}}{{appname|ucfirst}} ($_GET['id']);
+$form->data = new {{plural}}{{backslash}}{{appname|cli\Filter::camel}} ($_GET['id']);
 
 echo $form->handle (function ($form) {
 	// Update the {{appname}} 
@@ -23,7 +23,7 @@ echo $form->handle (function ($form) {
 	if (${{appname}}->error) {
 		// Failed to save
 		error_log ('Error updating {{appname}}: ' . DB::error ());
-		$form->controller->add_notification (__ ('Unable to save {{appname}}.'));
+		$form->controller->add_notification (__ ('Unable to save {{appname|cli\Filter::spaces}}.'));
 		return false;
 	}
 
@@ -31,8 +31,6 @@ echo $form->handle (function ($form) {
 	Versions::add (${{appname}});
 
 	// Notify the user and redirect on success
-	$form->controller->add_notification (__ ('{{appname|ucfirst}} saved.'));
+	$form->controller->add_notification (__ ('{{appname|cli\Filter::label}} saved.'));
 	$form->controller->redirect ('/{{plural}}/admin');
 });
-
-{{close_tag|none}}

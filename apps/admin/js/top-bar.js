@@ -119,38 +119,6 @@ jQuery.expanded_section = function (options) {
 };
 
 /**
- * Translates strings of text in .js files.
- * Usage:
- *
- *     <script>
- *     $(function () {
- *         // This will make the text available to $.i18n()
- *         $.i18n_append ({
- *             'Some text': '{"Some text"}',
- *             'Another string': '{"Another string"}'
- *         });
- *         
- *         // Now fetch a translated string
- *         console.log ($.i18n ('Some text'));
- *     });
- *     </script>
- */
-(function ($) {
-	var strings = {};
-
-	$.i18n_append = function (obj) {
-		strings = $.extend (strings, obj);
-	};
-
-	$.i18n = function (text) {
-		if (strings[text]) {
-			return strings[text];
-		}
-		return text;
-	};
-})(jQuery);
-
-/**
  * Displays the update notice if one is available. This is a JSONP
  * response handler.
  */
@@ -182,25 +150,25 @@ $(function () {
 	var sliding_up = false;
 
 	// fetch data for admin toolbar
-	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img id="admin-logo" src="/apps/admin/css/admin/spacer.png" alt="" /></a></div><div id="preview-bar"><a href="#" class="admin-tools-hide-preview" data-title="'+$.i18n("Back to Edit Mode")+'"></a></div>');
+	$('body').append ('<div id="admin-bar"><div id="admin-links"></div><a href="/"><img id="admin-logo" src="/apps/admin/css/admin/spacer.png" alt="" /></a></div><div id="preview-bar"><a href="#" class="admin-tools-hide-preview" data-title="'+$.i18n("Back to Edit Mode")+'"><i class="fa fa-lg fa-pencil"></i></a></div>');
 	$.get ('/admin/head/links', function (res) {
 		$('#admin-logo').attr ('src', res.logo).attr ('alt', res.name);
 		$('#admin-links').append (res.links);
 	
 		// show/hide tools menu
-		if ($.elefant_custom) {
+		if (!res.is_apps) {
 			// custom tools menu
 			var admin_tools = $('#admin-bar'),
 				admin_tools_list = $('#admin-tools-list');
-
+			
 			$('#admin-bar>a').after ('<span id="admin-tools-arrow"></span>');
 
 			function toggle_custom_tools_open () {
-				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
+				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast', function(){admin_tools_list.css ('overflow-y', 'auto');});
 			}
 
 			function toggle_custom_tools_close () {
-				admin_tools_list.stop ().slideUp ('slow');
+				admin_tools_list.stop ().css ('overflow-y', 'hidden').slideUp ('slow');
 			}
 
 			function toggle_custom_tools (e) {
@@ -213,9 +181,9 @@ $(function () {
 				}
 
 				if (admin_tools_list.is (':visible')) {
-					admin_tools_list.stop ().slideUp ('fast');
+					admin_tools_list.stop ().css ('overflow-y', 'hidden').slideUp ('fast');
 				} else {
-					admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
+					admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast', function(){admin_tools_list.css ('overflow-y', 'auto');});
 					$('#admin-tools-list a')[0].focus ();
 				}
 			
@@ -228,7 +196,7 @@ $(function () {
 				$('#admin-tools-arrow').on ('MSPointerDown', toggle_custom_tools);
 			} else {
 				admin_tools.hover (
-					function () {},
+					function(){if(admin_tools_list.is(':visible')){toggle_custom_tools_open();}},
 					toggle_custom_tools_close
 				);
 
@@ -244,11 +212,11 @@ $(function () {
 				admin_tools_list = $('#admin-tools-list');
 
 			function toggle_tools_open () {
-				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
+				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast', function(){admin_tools_list.css ('overflow-y', 'auto');});
 			}
 
 			function toggle_tools_close () {
-				admin_tools_list.stop ().slideUp ('slow');
+				admin_tools_list.stop ().css ('overflow-y', 'hidden').slideUp ('slow');
 			}
 
 			function toggle_tools (e) {
@@ -261,9 +229,9 @@ $(function () {
 				}
 
 				if (admin_tools_list.is (':visible')) {
-					admin_tools_list.stop ().slideUp ('fast');
+					admin_tools_list.stop ().css ('overflow-y', 'hidden').slideUp ('fast');
 				} else {
-					admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast');
+					admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast', function(){admin_tools_list.css ('overflow-y', 'auto');});
 					$('#admin-tools-list a')[0].focus ();
 				}
 			
@@ -338,10 +306,10 @@ $(function () {
 		var major_minor = $.elefant_version.replace (/\.[0-9]+$/, '');
 
 		$.ajax ({
-			url: 'https://raw.github.com/jbroadway/elefant-updates/master/releases/' + major_minor + '.js?callback=elefant_update_response',
+			url: '/admin/head/updates/' + major_minor + '?callback=elefant_update_response',
 			type: 'GET',
 			dataType: 'jsonp',
-			callback: 'elefant_update_response'
+			callback: elefant_update_response
 		});
 
 		$.cookie ('elefant_update_checked', 1, { expires: 1, path: '/' });
