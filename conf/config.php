@@ -128,6 +128,11 @@ filemanager_path = files
 
 access_control_list = conf/acl.php
 
+; The path to your custom tools list. Note: Leave
+; the leading slashes out of the path.
+
+toolbar = conf/tools.php
+
 [Database]
 
 ; Database settings go here. Driver must be a valid PDO driver.
