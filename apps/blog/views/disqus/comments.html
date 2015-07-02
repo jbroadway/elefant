@@ -3,7 +3,7 @@
     var disqus_shortname = '{{shortname}}';
     var disqus_title = '{{title}}';
     var disqus_identifier = '{{identifier}}';
-    var disqus_url = '//{{$_SERVER.HTTP_HOST}}{{permalink}}';
+    var disqus_url = 'http{% if $this->controller->is_https() %}s{% end %}://{{$_SERVER.HTTP_HOST}}{{permalink}}';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

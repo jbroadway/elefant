@@ -1,5 +1,5 @@
 \{% if User::require_acl ('admin/add') %}
-<p><a href="/{{plural}}/add">\{"Add {{appname|ucfirst}}"}</a></p>
+<p><a href="/{{plural}}/add">\{"Add {{appname|cli\Filter::title}}"}</a></p>
 \{% end %}
 
 <p>
@@ -19,7 +19,7 @@
 			|
 			<a	href="/{{plural}}/delete"
 				data-id="\{{ loop_value->id }}"
-				onclick="return $.confirm_and_post (this, '\{"Are you sure you want to delete this {{appname}}?"}')">\{"Delete"}</a>
+				onclick="return $.confirm_and_post (this, '\{"Are you sure you want to delete this {{appname|cli\Filter::spaces}}?"}')">\{"Delete"}</a>
 			\{% end %}
 		</td>
 	</tr>

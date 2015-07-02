@@ -56,6 +56,14 @@ create table #prefix#user (
 
 insert into #prefix#user (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, 'you@example.com', '$2a$07$1QeR9mu2doQxY0uBcpFlrOIfDxq0BwpR8FsImCgWvAL4Fz9jDByxi', null, now(), 'Admin User', 'admin', now(), now(), '[]');
 
+create table #prefix#user_session (
+	session_id char(32) not null primary key,
+	expires datetime not null,
+	user_id int not null,
+	index (user_id, expires),
+	index (expires)
+);
+
 create table #prefix#user_openid (
 	token char(200) primary key,
 	user_id int not null
@@ -100,7 +108,7 @@ create table #prefix#api (
 
 create table #prefix#blog_post (
 	id int not null auto_increment primary key,
-	title char(72) not null,
+	title char(128) not null,
 	ts datetime not null,
 	author char(32) not null,
 	published enum('yes','no','que') not null,
@@ -113,11 +121,11 @@ create table #prefix#blog_post (
 ) default charset=utf8;
 
 create table #prefix#blog_tag (
-	id char(24) not null primary key
+	id char(48) not null primary key
 ) default charset=utf8;
 
 create table #prefix#blog_post_tag (
-	tag_id char(24) not null,
+	tag_id char(48) not null,
 	post_id int not null,
 	primary key (tag_id, post_id)
 ) default charset=utf8;

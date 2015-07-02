@@ -6,7 +6,7 @@ $(function () {
 		handler: '{{ _rules }}',
 		callback: function (failed) {
 			// scroll to top of form
-			$('body').scrollTo ('#{{ _form }}');
+			$('#{{ _form }}')[0].scrollIntoView ();
 
 			// highlight the failed elements
 			for (var i = 0; i < failed.length; i++) {

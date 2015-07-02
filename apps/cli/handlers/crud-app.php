@@ -88,7 +88,7 @@ for ($i = 3; $i < count ($_SERVER['argv']); $i++) {
 			$pkey = $regs[1];
 		}
 
-	// natch name alone
+	// match name alone
 	} elseif (preg_match ('/^[a-zA-Z0-9_]+$/', $_SERVER['argv'][$i])) {
 
 		// automatically promote 'id' field to primary key if unspecified
@@ -191,7 +191,7 @@ file_put_contents (
 );
 
 file_put_contents (
-	'apps/' . $plural . '/models/' . ucfirst ($name) . '.php',
+	'apps/' . $plural . '/models/' . cli\Filter::camel ($name) . '.php',
 	$tpl->render ('cli/crud-app/model', $data)
 );
 

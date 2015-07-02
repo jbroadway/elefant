@@ -55,6 +55,12 @@ for ($i = 0; $i < count ($_FILES['file']['name']); $i++) {
 		echo '<p><a href="/filemanager">' . __ ('Back') . '</a></p>';
 		return;
 	}
+	if (preg_match ('/\.php$/i', $_FILES['file']['name'][$i])) {
+		$page->title = __ ('Invalid File Name') . ': ' . $_FILES['file']['name'][$i];
+		echo '<p>' . __ ('Cannot upload PHP files due to security.') . '</p>';
+		echo '<p><a href="/filemanager">' . __ ('Back') . '</a></p>';
+		return;
+	}
 }
 
 $count = 0;

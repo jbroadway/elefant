@@ -84,3 +84,15 @@
 	border-collapse: collapse;
 	border: 2px solid #B347AF;
 }
+
+@media (max-width: 480px) {
+	#filebrowser-upload {
+		float: none;
+		margin-bottom: 8px;
+	}
+	
+	#filebrowser-col-a,
+	#filebrowser-col-b {
+		width: 97%;
+	}
+}

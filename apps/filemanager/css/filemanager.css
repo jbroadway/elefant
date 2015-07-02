@@ -6,7 +6,7 @@
 	height: 100%;
 	border: 2px dashed #e5e5e5;
 	margin: -8px 0px -8px 0px;
-	padding: 16px 0px 6px 16px;
+	padding: 16px 0px 16px 16px;
 }
 
 	#filemanager-dropzone form, #filemanager-dropzone p {
@@ -20,7 +20,7 @@
 		color: #e5e5e5;
 		font-size: 48px;
 		float: right;
-		margin-top: -62px;
+		margin-top: -46px;
 		padding-right: 16px;
 	}
 

@@ -1,0 +1,16 @@
+<p>
+	{"Imported"} {{ imported_posts }} {"posts"}<br />
+	{"Imported"} {{ imported_pages }} {"pages"}
+</p>
+
+<p><em>{"Please add these lines to .htaccess file in order to keep old links working"}:</em></p>
+
+<code>
+	{% foreach links as _old_link, _new_link %}
+		redirect 301 {{ _old_link }} {{ _new_link }}<br />
+	{% end %}	
+</code>
+
+<p></p>
+
+<p><a href="/blog/admin">{"Continue"}</a></p>

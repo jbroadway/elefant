@@ -12,6 +12,11 @@
  *     {! user/signup?redirect=/welcome !}
  */
 
+// If they're already logged in, redirect them
+if (User::require_login ()) {
+	$this->redirect ('/user');
+}
+
 // Check for a custom handler override
 $res = $this->override ('user/signup');
 if ($res) { echo $res; return; }

@@ -7,49 +7,18 @@ $(function () {
 	 */
 	$.fn.extend ({
 		wysiwyg: function (options) {
-			var defaults = {
-				lang: '{{language}}',
-				convertDivs: false,
-				observeLinks: false,
-				plugins: ['links', 'imagebrowser', 'filebrowser', 'dynamic'],
-				buttons: [
-					'formatting', '|', 'bold', 'italic', 'deleted', '|',
-					'alignment', 'horizontalrule', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
-					'link_unlink', 'imagebrowser', 'filebrowser', 'table', '|',
-					'undo', 'html', 'dynamic'
-				],
-				buttonsCustom: {
-					undo: {
-						title: '{"Undo"}',
-						dropdown: {
-							point1: {
-								title: '{"Undo"}',
-								callback: undo
-							},
-							point2: {
-								title: '{"Redo"}',
-								callback: redo
-							}
-						}
-					},
-					link_unlink: {
-						title: '{"Link"}',
-						dropdown: {
-							point1: {
-								title: '{"Insert Link"}',
-								callback: RedactorPlugins.links.insert
-							},
-							point2: {
-								title: '{"Unlink"}',
-								exec: 'unlink'
-							}
-						}
+			var buttons = {{buttons|json_encode}},
+				defaults = {
+					lang: '{{language}}',
+					replaceDivs: false,
+					linkTooltip: false,
+					buttonSource: true,
+					plugins: ['links', 'imagebrowser', 'filebrowser', 'table', 'undo', 'dynamic'],
+					buttons: buttons,
+					focusCallback: function (evt) {
+						autosave_focused = true;
 					}
-				},
-				focusCallback: function (evt) {
-					autosave_focused = true;
-				}
-			};
+				};
 
 			options = $.extend (defaults, options);
 
@@ -60,19 +29,12 @@ $(function () {
 	});
 
 	{% if field_id %}
+	document.getElementById ('{{ field_id }}').setAttribute ('data-wysiwyg', 1);
 	$('#{{ field_id }}').wysiwyg ();
 	{% end %}
 
-	RedactorPlugins.links.editor_id = '#{{ field_id }}';
-
-	function undo () {
-		//obj.exec.command.call (obj, 'undo');
-		$('#{{ field_id }}').redactor ('execCommand', 'undo');
-	}
-
-	function redo () {
-		//obj.exec.command.call (obj, 'redo');
-		$('#{{ field_id }}').redactor ('execCommand', 'redo');
+	if (RedactorPlugins && RedactorPlugins.links) {
+		RedactorPlugins.links.editor_id = '#{{ field_id }}';
 	}
 });
 </script>

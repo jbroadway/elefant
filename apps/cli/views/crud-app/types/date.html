@@ -1,8 +1,8 @@
 \{! admin/util/datewidget !}
 
 <p>
-	\{"{{field->name|ucfirst}}"}:<br />
+	\{"{{field->name|cli\Filter::label}}"}:<br />
 	<input type="text" name="{{field->name}}" class="datewidget-date" value="\{{ {{field->name}}|quotes }}" />
-	<span class="notice" id="{{field->name}}-notice">\{"Please enter a {{field->name}}."}</span>
+	<span class="notice" id="{{field->name}}-notice">\{"Please enter a {{field->name|cli\Filter::spaces}}."}</span>
 </p>
 

@@ -135,12 +135,40 @@ class API extends Restful {
 
 	/**
 	 * Handle property update requests (/filemanager/api/prop).
+	 *
+	 * If passed a `props` array, the key/value pairs will be
+	 * saved as properties and returned as a `props` field in
+	 * the response.
+	 *
+	 * Otherwise, individual `prop` and `value` parameters can
+	 * be used to set an individual property's value.
 	 */
 	public function post_prop () {
 		$file = urldecode (join ('/', func_get_args ()));
 		if (! FileManager::verify_file ($file)) {
 			return $this->error (__ ('Invalid file name'));
 		}
+		
+		// handle multiple properties at once
+		if (isset ($_POST['props'])) {
+			if (! is_array ($_POST['props'])) {
+				return $this->error (__ ('Invalid properties'));
+			}
+			
+			foreach ($_POST['props'] as $k => $v) {
+				if (FileManager::prop ($file, $k, $v) === false) {
+					return $this->error (__ ('Error saving properties.'));
+				}
+			}
+			
+			return array (
+				'file' => $file,
+				'props' => $_POST['props'],
+				'msg' => __ ('Properties saved.')
+			);
+		}
+		
+		// handle a single property
 		if (! isset ($_POST['prop'])) {
 			return $this->error (__ ('Missing property name'));
 		}

@@ -44,14 +44,20 @@ function admin_filter_user_name ($id) {
 	return $u->name;
 }
 
-$page->title = __ ('Versions of') . ' ' . Template::sanitize ($_GET['type']);
+$name = Versions::display_name ($_GET['type']);
+$plural = Versions::plural_name ($_GET['type']);
+
 if (! empty ($_GET['id'])) {
-	$page->title .= ' / ' . Template::sanitize ($_GET['id']);
+	$page->title .= __ ('Versions of') . ' ' . Template::sanitize (__ ($name)) . ' / ' . Template::sanitize ($_GET['id']);
+} else {
+	$page->title = __ ('Versions') . ' - ' . Template::sanitize (__ ($plural));
 }
 
 echo $tpl->render ('admin/versions', array (
 	'id' => (! empty ($_GET['id'])) ? $_GET['id'] : false,
 	'type' => $_GET['type'],
+	'name' => $name,
+	'plural' => $plural,
 	'classes' => $classes,
 	'history' => $history,
 	'limit' => $limit,

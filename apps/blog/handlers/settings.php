@@ -18,6 +18,7 @@ $form->data = array (
 	'comments' => $appconf['Blog']['comments'],
 	'preview_chars' => $appconf['Blog']['preview_chars'],
 	'post_format' => $appconf['Blog']['post_format'],
+	'post_footer' => $appconf['Blog']['post_footer'],
 	'show_related_posts' => $appconf['Blog']['show_related_posts'],
 	'disqus_shortname' => $appconf['Blog']['disqus_shortname'],
 	'social_twitter' => $appconf['Social Buttons']['twitter'],
@@ -33,6 +34,7 @@ echo $form->handle (function ($form) {
 			'post_layout' => $_POST['post_layout'],
 			'preview_chars' => (! empty ($_POST['preview_chars'])) ? (int) $_POST['preview_chars'] : false,
 			'post_format' => $_POST['post_format'],
+			'post_footer' => $_POST['post_footer'],
 			'comments' => ($_POST['comments'] === 'none') ? false : $_POST['comments'],
 			'show_related_posts' => ($_POST['show_related_posts'] === 'yes') ? true : false,
 			'disqus_shortname' => $_POST['disqus_shortname']

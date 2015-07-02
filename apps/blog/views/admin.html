@@ -19,7 +19,7 @@
 	{% end %}
 	</div>
 	<div class="e-col-50 e-no-padding" style="text-align: right">
-		<input type="text" name="q" id="search-query" size="40" value="{{q|quotes}}" />
+		<input type="text" name="q" id="search-query" size="40" value="{{q}}" />
 		<button>{"Search"}</button>
 		{% if q != '' %}
 		<button onclick="window.location.href = '/blog/admin'; return false">{"Clear"}</button>

@@ -69,7 +69,8 @@
         upload: 'Uppladdning',
         video: 'Infoga Video...',
         video_html_code: 'Kod För Inbäddad Video',
-        web: 'Webbadress'
+        web: 'Webbadress',
+		center: 'Center'
     };
 })( jQuery );
 

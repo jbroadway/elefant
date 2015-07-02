@@ -4,13 +4,13 @@
 $this->require_acl ('admin', '{{plural}}', 'admin/add');
 
 $page->layout = 'admin';
-$page->title = __ ('Add {{appname|ucfirst}}');
+$page->title = __ ('Add {{appname|cli\Filter::title}}');
 
 $form = new Form ('post', $this);
 
 echo $form->handle (function ($form) {
 	// Create and save a new {{appname}} 
-	${{appname}} = new {{plural}}{{backslash}}{{appname|ucfirst}} (array (
+	${{appname}} = new {{plural}}{{backslash}}{{appname|cli\Filter::camel}} (array (
 {% for key, field in fields %}
 {% if field->name !== $data->pkey %}
 		'{{field->name}}' => $_POST['{{field->name}}']{{field->comma}} 
@@ -22,7 +22,7 @@ echo $form->handle (function ($form) {
 	if (${{appname}}->error) {
 		// Failed to save
 		error_log ('Error adding {{appname}}: ' . DB::error ());
-		$form->controller->add_notification (__ ('Unable to save {{appname}}.'));
+		$form->controller->add_notification (__ ('Unable to save {{appname|cli\Filter::spaces}}.'));
 		return false;
 	}
 
@@ -30,8 +30,6 @@ echo $form->handle (function ($form) {
 	Versions::add (${{appname}});
 
 	// Notify the user and redirect on success
-	$form->controller->add_notification (__ ('{{appname|ucfirst}} added.'));
+	$form->controller->add_notification (__ ('{{appname|cli\Filter::label}} added.'));
 	$form->controller->redirect ('/{{plural}}/admin');
 });
-
-{{close_tag|none}}

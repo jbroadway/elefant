@@ -39,7 +39,8 @@ $page->title = $p->title;
 
 $post = $p->orig ();
 $post->full = true;
-$post->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
+$post->url = '/blog/post/' . $post->id . '/';
+$post->fullurl = $post->url . URLify::filter ($post->title);
 $post->tag_list = (strlen ($post->tags) > 0) ? explode (',', $post->tags) : array ();
 if (Appconf::blog ('Blog', 'post_format') === 'html') {
 	$post->body = $tpl->run_includes ($post->body);
@@ -49,6 +50,12 @@ if (Appconf::blog ('Blog', 'post_format') === 'html') {
 }
 $post->social_buttons = Appconf::blog ('Social Buttons');
 $post->related = Appconf::blog ('Blog', 'show_related_posts');
+
+$footer = Appconf::blog ('Blog', 'post_footer');
+$footer_stripped = strip_tags ($footer);
+$post->footer = ($footer && ! empty ($footer_stripped))
+	? $tpl->run_includes ($footer)
+	: false;
 
 echo $tpl->render ('blog/post', $post);
 

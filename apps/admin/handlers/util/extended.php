@@ -46,17 +46,25 @@ $data['open'] = false;
 $data['id'] = isset ($data['id']) ? $data['id'] : false;
 
 $load_assets = false;
+$load_date_widget = false;
 
 if ($data['fields'] || count ($data['fields']) === 0) {
 	foreach ($data['fields'] as $k => $field) {
 		if (isset ($data['values']) && isset ($data['values'][$field->name])) {
 			$data['fields'][$k]->value = $data['values'][$field->name];
+
+			// keep open if data was previously set
+			if ($data['values'][$field->name] && $data['values'][$field->name] !== '') {
+				$data['open'] = true;
+			}
 		}
 
 		if ($field->type === 'select') {
 			$data['fields'][$k]->options = preg_split ("/[\r\n]+/", $field->options);
 		} elseif ($field->type === 'file' || $field->type === 'image') {
 			$load_assets = true;
+		} elseif ($field->type === 'date' || $field->type === 'datetime') {
+			$load_date_widget = true;
 		} elseif (strpos ($field->type, '_') !== false) {
 			list ($app, $extra) = explode ('_', $field->type);
 			$fields = parse_ini_file ('apps/'. $app . '/conf/fields.php', true);
@@ -73,6 +81,7 @@ if ($data['fields'] || count ($data['fields']) === 0) {
 			}
 		}
 		
+		// keep open if any fields are required
 		if ($data['fields'][$k]->required) {
 			$data['open'] = true;
 		}
@@ -80,6 +89,10 @@ if ($data['fields'] || count ($data['fields']) === 0) {
 
 	if ($load_assets) {
 		$this->run ('filemanager/util/browser');
+	}
+	
+	if ($load_date_widget) {
+		$this->run ('admin/util/datewidget');
 	}
 
 	echo $tpl->render ('admin/util/extended', $data);

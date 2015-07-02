@@ -12,7 +12,7 @@ $user_type = isset ($data['user_type']) ? $data['user_type'] : $_GET['user_type'
 
 if (User::require_admin ()) {
 	printf (
-		'<p>%s:</p><p><a href="%s">%s</a></p>',
+		'<div class="admin-forward admin-forward-conditional hide-in-preview"><p>%s:</p><p><a href="%s">%s</a></p></div>',
 		__ ('This page forwards members of the %s group to the following link', $user_type),
 		$url,
 		$url

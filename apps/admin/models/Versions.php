@@ -215,4 +215,35 @@ class Versions extends Model {
 			'select distinct class from #prefix#versions order by class asc'
 		);
 	}
+	
+	/**
+	 * Get the display name for a class.
+	 */
+	public static function display_name ($name) {
+		if (isset ($name::$display_name)) {
+			return $name::$display_name;
+		}
+		
+		if (strpos ($name, '\\') !== false) {
+			return substr ($name, strrpos ($name, '\\') + 1);
+		}
+		
+		return $name;
+	}
+	
+	/**
+	 * Get the plural name for a class.
+	 */
+	public static function plural_name ($name) {
+		if (isset ($name::$plural_name)) {
+			return $name::$plural_name;
+		}
+		
+		if (strpos ($name, '\\') !== false) {
+			$name = substr ($name, strrpos ($name, '\\') + 1);
+		}
+		
+		$ar = new ActiveResource;
+		return $ar->pluralize ($name);
+	}
 }

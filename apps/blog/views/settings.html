@@ -1,12 +1,27 @@
+{! admin/util/wysiwyg?field_id=post-footer !}
+
 <div class="form">
 
 <form method="post" id="{{_form}}">
+
+<h4>{"Basic Settings"}</h4>
 
 <p>{"Blog title"}:<br />
 <input type="text" name="title" size="40" value="{{ title|quotes }}" />
 <span class="notice" id="title-notice">{"You must enter a blog title."}</span></p>
 
-<p>{"Page layout"}:<br />
+<p>{"Edit posts with"}:<br />
+<select name="post_format" id="post_format">
+	<option value="html"{% if post_format === 'html' %} selected{% end %}>{"WYSIWYG editor"}</option>
+	<option value="markdown"{% if post_format === 'markdown' %} selected{% end %}>{"Markdown formatting"}</option>
+</select>
+<span class="notice" id="post_format-notice">{"Please choose a post format."}</span></p>
+
+<p>{"Limit post previews (# of chars)"}:<br />
+<input type="text" name="preview_chars" size="20" value="{{ preview_chars|quotes }}" />
+<span class="notice" id="preview_chars-notice">{"Preview must be a number of characters."}</span></p>
+
+<p>{"Blog page layout"}:<br />
 <select name="layout">
 {% foreach admin\Layout::options () as _layout, _name %}
 	<option value="{{ _layout }}"{% if _layout == $data->layout %} selected{% end %}>{{ _name }}</option>
@@ -20,6 +35,18 @@
 {% end %}
 </select></p>
 
+<h4>{"Post Footer Settings"}</h4>
+
+<p>{"Footer message"}:<br />
+<textarea name="post_footer" id="post-footer">{{post_footer}}</textarea>
+</p>
+
+<p>{"Social buttons"}:<br />
+<input type="checkbox" name="social_twitter" value="yes"{% if social_twitter %} checked{% end %} /> {"Twitter"}<br />
+<input type="checkbox" name="social_facebook" value="yes"{% if social_facebook %} checked{% end %} /> {"Facebook"}<br />
+<input type="checkbox" name="social_google" value="yes"{% if social_google %} checked{% end %} /> {"Google"}<br />
+</p>
+
 <p>{"Comments"}:<br />
 <select name="comments" id="comments">
 	<option value="none"{% if comments === false %} selected{% end %}>{"Off"}</option>
@@ -30,32 +57,15 @@
 	{% end %}
 </select></p>
 
+<p id="disqus_shortname">{"Disqus shortname"}:<br />
+<input type="text" name="disqus_shortname" size="30" value="{{ disqus_shortname|quotes }}" />
+</p>
+
 <p>{"Show related posts"}:<br />
 <select name="show_related_posts">
 	<option value="no"{% if ! show_related_posts %} selected{% end %}>{"No"}</option>
 	<option value="yes"{% if show_related_posts %} selected{% end %}>{"Yes"}</option>
 </select>
-</p>
-
-<p>{"Edit posts with"}:<br />
-<select name="post_format" id="post_format">
-	<option value="html"{% if post_format === 'html' %} selected{% end %}>{"WYSIWYG editor"}</option>
-	<option value="markdown"{% if post_format === 'markdown' %} selected{% end %}>{"Markdown formatting"}</option>
-</select>
-<span class="notice" id="post_format-notice">{"Please choose a post format."}</span></p>
-
-<p>{"Limit post previews (# of chars)"}:<br />
-<input type="text" name="preview_chars" size="20" value="{{ preview_chars|quotes }}" />
-<span class="notice" id="preview_chars-notice">{"Preview must be a number of characters."}</span></p>
-
-<p id="disqus_shortname">{"Disqus shortname"}:<br />
-<input type="text" name="disqus_shortname" size="30" value="{{ disqus_shortname|quotes }}" />
-</p>
-
-<p>{"Social buttons"}:<br />
-<input type="checkbox" name="social_twitter" value="yes"{% if social_twitter %} checked{% end %} /> {"Twitter"}<br />
-<input type="checkbox" name="social_facebook" value="yes"{% if social_facebook %} checked{% end %} /> {"Facebook"}<br />
-<input type="checkbox" name="social_google" value="yes"{% if social_google %} checked{% end %} /> {"Google"}<br />
 </p>
 
 <p>
@@ -85,3 +95,10 @@ $(function () {
 	});
 });
 </script>
+
+<style>
+div.redactor-editor, div.redactor-box textarea {
+	height: 160px !important;
+	max-height: 160px !important;
+}
+</style>

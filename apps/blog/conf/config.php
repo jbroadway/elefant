@@ -29,6 +29,10 @@ preview_chars = Off
 
 post_format = html
 
+; A footer message to show at the bottom of each post.
+
+post_footer = ""
+
 ; Here you can choose a service to use for blog comments.
 ; Supported platforms are Facebook and Disqus, or a custom
 ; handler name that implements an alternate comment system.
@@ -39,8 +43,8 @@ post_format = html
 ; the comments/embed handler from the comments app at
 ; https://github.com/jbroadway/comments
 
-comments = facebook
-;comments = disqus
+comments = disqus
+;comments = facebook
 ;comments = comments/embed
 
 ; Show related posts in a "You might also like" box at the bottom

@@ -10,7 +10,7 @@ $url = isset ($data['to']) ? $data['to'] : $_GET['to'];
 
 if (User::require_admin ()) {
 	printf (
-		'<p>%s:</p><p><a href="%s">%s</a></p>',
+		'<div class="admin-forward hide-in-preview"><p>%s:</p><p><a href="%s">%s</a></p></div>',
 		__ ('This page forwards visitors to the following link'),
 		$url,
 		$url
