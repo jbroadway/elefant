@@ -180,19 +180,19 @@ url[message] = Please enter a valid vine.co URL.
 
 size[label] = Player width/height
 size[type] = select
-size[require] = "/apps/social/lib/Functions.php"
+size[require] = "apps/social/lib/Functions.php"
 size[callback] = vine_size
 size[initial] = "600"
 
 audio[label] = Mute video by default?
 audio[type] = select
-audio[require] = "/apps/social/lib/Functions.php"
+audio[require] = "apps/social/lib/Functions.php"
 audio[callback] = social_yes_no
 audio[initial] = "yes"
 
 embed[label] = Embed Type
 embed[type] = select
-embed[require] = "/apps/social/lib/Functions.php"
+embed[require] = "apps/social/lib/Functions.php"
 embed[callback] = vine_embed
 embed[initial] = "simple"
 
