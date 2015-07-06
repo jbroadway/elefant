@@ -187,9 +187,9 @@ switch ($_GET['step']) {
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			// got the settings, save them
 			$config = file_get_contents ('../conf/config.php');
-			$config = preg_replace ('/site_name = .*(\r\n|\r|\n)/', 'site_name = "' . $_POST['site_name'] . '\1"', $config, 1);
-			$config = preg_replace ('/email_from = .*(\r\n|\r|\n)/', 'email_from = "' . $_POST['email_from'] . '\1"', $config, 1);
-			$config = preg_replace ('/site_key = .*(\r\n|\r|\n)/', 'site_key = "' . md5 (uniqid (rand (), true)) . '\1"', $config, 1);
+			$config = preg_replace ('/site_name = .*(?:\r\n|\r|\n)/', 'site_name = "' . $_POST['site_name'] . '"'. PHP_EOL, $config, 1);
+			$config = preg_replace ('/email_from = .*(?:\r\n|\r|\n)/', 'email_from = "' . $_POST['email_from'] . '"'. PHP_EOL, $config, 1);
+			$config = preg_replace ('/site_key = .*(?:\r\n|\r|\n)/', 'site_key = "' . md5 (uniqid (rand (), true)) . '"'. PHP_EOL, $config, 1);
 			if (! file_put_contents ('../conf/config.php', $config)) {
 				$data['error'] = __ ('Failed to write to conf/config.php');
 			} else {
