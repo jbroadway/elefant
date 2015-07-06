@@ -39,6 +39,8 @@ $this->require_auth (user\Auth\HMAC::init ($this, $cache));
 
 $error = false;
 
+$appconf = Appconf::get('api');
+
 if (! isset ($appconf['Objects'][$this->params[0]])) {
 	$error = 'Invalid request object: ' . $this->params[0];
 } else {

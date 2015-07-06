@@ -167,6 +167,35 @@ height[initial] = 360
 height[not empty] = 1
 height[message] = Please enter a player height.
 
+[social/video/vine]
+
+label = "Video: Vine"
+icon = video-camera
+
+url[label] = Link
+url[type] = text
+url[not empty] = 1
+url[regex] = "/^https?:\/\/vine\.co\/v\/[a-zA-Z0-9_-]+$/"
+url[message] = Please enter a valid vine.co URL.
+
+size[label] = Player width/height
+size[type] = select
+size[require] = "/apps/social/lib/Functions.php"
+size[callback] = vine_size
+size[initial] = "600"
+
+audio[label] = Mute video by default?
+audio[type] = select
+audio[require] = "/apps/social/lib/Functions.php"
+audio[callback] = social_yes_no
+audio[initial] = "yes"
+
+embed[label] = Embed Type
+embed[type] = select
+embed[require] = "/apps/social/lib/Functions.php"
+embed[callback] = vine_embed
+embed[initial] = "simple"
+
 [social/google/maps]
 
 label = "Google: Map"

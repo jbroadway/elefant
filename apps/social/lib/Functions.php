@@ -23,6 +23,29 @@ function social_yes_no () {
 }
 
 /**
+ * Get size options for vine videos
+ * Dynamic Objects dialog.
+ */
+function vine_size () {
+	return array (
+		(object) array ('key' => '600', 'value' => '600px'),
+		(object) array ('key' => '480', 'value' => '480px'),
+		(object) array ('key' => '300', 'value' => '300px')
+	);
+}
+
+/**
+ * Get embed types for vine videos
+ * Dynamic Objects dialog.
+ */
+function vine_embed () {
+	return array (
+		(object) array('key' => 'simple', 'value' => 'Borderless Layout'),
+		(object) array('key' => 'postcard', 'value' => 'Postcard Layout')
+	);
+}
+
+/**
  * Get light/dark choice for Facebook embed options.
  */
 function facebook_light_dark () {
