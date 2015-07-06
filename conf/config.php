@@ -246,6 +246,7 @@ transport[type] = sendmail
 ;transport[folder] = cache/mailer
 
 [Proxy]
+
 ; Proxy configuration for cURL.
 ; Keep commented if no proxy used.
 ;url = "http://1.2.3.4"
