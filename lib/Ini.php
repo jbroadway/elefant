@@ -100,6 +100,7 @@ class Ini {
 		}
 	
 		$out .= "\n; */ ?>";
+		$out = preg_replace("/\n/",PHP_EOL,$out);
 		if ($file === false) {
 			return $out;
 		}
