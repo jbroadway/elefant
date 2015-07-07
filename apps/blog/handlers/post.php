@@ -71,7 +71,7 @@ switch (Appconf::blog ('Blog', 'comments')) {
 			echo $this->run (
 				Appconf::blog ('Blog', 'comments'),
 				array (
-					'identifier' => $post->fullurl
+					'identifier' => $post->url
 				)
 			);
 		}
