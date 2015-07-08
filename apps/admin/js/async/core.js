@@ -17,7 +17,7 @@
 			e.stopImmediatePropagation();
 			return async.link(this.href, false);
 		}
-		$('a:not([class*="editable"]):not(.noasync):not(href^="'+ self.ignore.join('"):not([href^="') +'")'on('click', catch_link);
+		$('a:not([class*="editable"]):not(.noasync):not([href^="'+ self.ignore.join('"]):not([href^="') +'"])').on('click', catch_link);
 		$('#admin-bar a').off('click', catch_link);
 		$('#preview-bar a').off('click', catch_link);
 	};
