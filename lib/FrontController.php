@@ -166,10 +166,13 @@ class FrontController {
 		/**
 		 * Run any config level route overrides.
 		 */
-		if (file_exists ('conf/routes.php')) {
-			$_routes = parse_ini_file ('conf/routes.php',true);
+		$_path = conf_env_path('routes');
+		if (!file_exists ($_path)) $_path = 'conf/routes.php';
+		if (file_exists ($_path)) {
+			$_routes = parse_ini_file ($_path,true);
 			if (isset($_routes['Disable'])){
 			foreach ($_routes['Disable'] as $_route => $_strict) {
+				$_route = '/'. trim($_route,'/'); // clean up leading/trailing slashes
 				if (
 					(!$_strict && strpos($_SERVER['REQUEST_URI'],$_route) === 0 && $_SERVER['REQUEST_URI'] !== $_route) //match from left, exclude exact
 					|| 
@@ -186,10 +189,14 @@ class FrontController {
 			}}
 			if (isset($_routes['Redirect'])){
 			foreach ($_routes['Redirect'] as $_old => $_new) {
+				$_old = '/'. trim($_old,'/');
+				$_new = '/'. trim($_new,'/');
 				if ($_old !== $_new && $_SERVER['REQUEST_URI'] == $_old) $controller->redirect($_new);
 			}}
 			if (isset($_routes['Alias'])){
 			foreach ($_routes['Alias'] as $_old => $_new) {
+				$_old = '/'. trim($_old,'/');
+				$_new = '/'. trim($_new,'/');
 				if (strpos($_SERVER['REQUEST_URI'],$_old) === 0) {
 					$_SERVER['REQUEST_URI'] = str_replace($_old,$_new,$_SERVER['REQUEST_URI']);
 					break;
@@ -197,6 +204,7 @@ class FrontController {
 			}}
 			unset($_routes);
 		}
+		unset($_path);
 
 		/**
 		 * Route the request to the appropriate handler and get

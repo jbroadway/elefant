@@ -104,6 +104,18 @@ function conf ($section = false, $value = false, $update = null) {
 }
 
 /**
+ * Checks against conditions to figure out the appropriate
+ * config file path to use.
+ */
+
+function conf_env_path ($label) {
+	if (conf('Paths',$label) && conf('Paths',$label) !== 'conf/'. $label. '.php') 
+		return conf('Paths',$label);
+	elseif (defined ('ELEFANT_ENV')/* && ELEFANT_ENV !== 'config'*/)
+		return 'conf/'. $label .'.'. ELEFANT_ENV .'.php';
+	else return 'conf/'. $label.'.php';
+}
+/**
  * Implements a simple authentication mechanism based on callbacks.
  * You provide a verifier function and a communication method function.
  * It then returns them like this:
