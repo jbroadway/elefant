@@ -49,9 +49,7 @@ window.async = (function($){
 					$document.trigger('async_pre', res.data);
 					if (self.load !== res.data.path) return false;
 					container.innerHTML = (self.compile?res.data.page.head:'') + res.data.html + (self.compile?res.data.page.tail:'');
-					var title = res.data.page.window_title;
-					if (!title) title = res.data.page._window_title;
-					if (!title) title = res.data.page.title;
+					var title = res.data.page.window_title || res.data.page._window_title || res.data.page.title;
 					document.querySelector('head title').innerText = title;
 					$document.trigger('async_post', res.data);
 					if (self.debug) console.log('Async load successful');
