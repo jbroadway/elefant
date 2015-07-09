@@ -39,9 +39,9 @@
 				if (self.debug) console.log(res);
 				if (res.success) {
 					if (self._loading !== res.data.path) return false;
-					$document.trigger({type:'async_pre', data:res.data});
+					$document.trigger('async_pre', res.data);
 					container.innerHTML = (self.compile?res.data.page.head:'') + res.data.html + (self.compile?res.data.page.tail:'');
-					$document.trigger({type:'async_post', data:res.data});
+					$document.trigger('async_post', res.data);
 					if (self.debug) console.log('Async load successful');
 					document.cookie = 'elefant_last_page='+ res.data.path;
 					self.bind();
@@ -54,7 +54,7 @@
 					self._loading = false;
 				} else {
 					if (self.debug) console.log(res);
-					$document.trigger({type:'async_error', data:res});
+					$document.trigger('async_error', res.error);
 				}
 			}).fail(function(){
 				if (self.debug) console.log('Async load unsuccessful');
