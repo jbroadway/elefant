@@ -42,8 +42,9 @@ class API extends \Restful {
 		\Page::$bypass_layout = true; 
 		return array(
 			'path'=>$route,
-			'html'=>$this->controller->run ($route),
-			'page'=>(array) $this->controller->page()
+			'html'=>$this->controller->run ($route, $_GET, false),
+			'page'=>(array) $this->controller->page(),
+			'extra'=>array('site_name'=>conf('General','site_name'))
 		);
 	}
 }

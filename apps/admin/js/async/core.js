@@ -41,15 +41,18 @@
 					if (self._loading !== res.data.path) return false;
 					$document.trigger('async_pre', res.data);
 					container.innerHTML = (self.compile?res.data.page.head:'') + res.data.html + (self.compile?res.data.page.tail:'');
+					var title = res.data.page.window_title;
+					if (!title) title = res.data.page._window_title;
+					if (!title) title = res.data.page.title;
+					document.querySelector('head title').innerText = title;
 					$document.trigger('async_post', res.data);
 					if (self.debug) console.log('Async load successful');
 					document.cookie = 'elefant_last_page='+ res.data.path;
 					self.bind();
 					container.dataset['path'] = uri;
 					if (!pop_state) {
-						history.pushState({data:uri}, res.data.page.title, uri);
+						history.pushState({data:uri}, document.querySelector('head title').innerText, uri);
 					}
-					$('head title').text(res.data.page.title);
 					$document.trigger('async_success');
 					self._loading = false;
 				} else {
@@ -66,7 +69,7 @@
 		return false;
 	};
 	console.log('Async wrapper loaded.');
-	self.bind();
+	$(self.bind);
 	return self;
 }(jQuery));
 
