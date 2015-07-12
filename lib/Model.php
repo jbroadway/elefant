@@ -975,12 +975,12 @@ class Model {
 			case 1:
 				return DB::shift (
 					'select '. Model::backticks ($field) .' from '. Model::backticks ($obj->table) .' where `'. $obj->key .'` = ?',
-					$id
+					$key
 				);
 			case 2:
 				return DB::shift (
 					'select '. Model::backticks ($field) .' from '. Model::backticks ($obj->table) .' where '. join(' = ?, ', Model::backticks ($obj->key)) .' = ?',
-					$id
+					$key
 				);
 		}
 	}
