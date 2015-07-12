@@ -67,7 +67,7 @@ insert into #prefix#user (id, email, password, session_id, expires, name, type, 
 
 create table #prefix#user_session (
 	session_id varchar(32) not null primary key,
-	expires timestampe not null,
+	expires timestamp not null,
 	user_id integer not null
 );
 

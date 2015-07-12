@@ -49,7 +49,9 @@ foreach ($embeds as $k => $e) {
 		unset ($embeds[$k][$field]);
 		foreach ($opts as $opt => $val) {
 			if ($opt == 'require') {
-				require_once ($val);
+				if (file_exists ($val)) {
+					require_once ($val);
+				}
 			} elseif ($opt == 'callback') {
 				try {
 					$embeds[$k]['fields'][$field]['values'] = call_user_func ($val);
