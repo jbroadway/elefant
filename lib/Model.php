@@ -440,11 +440,7 @@ class Model {
 				case 1: // plain-key
 					if (! isset ($this->data[$this->key])) {
 						if (!isset($this->data[$this->key])) { // if key wasn't given, assume auto-increment field
-							$this->data[$this->key] = (DB::get_connection(DB::$last_conn)->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql') 
-								? 
-								DB::last_id(str_replace ('#prefix#', DB::$prefix, '_'. $this->table .'_'. $this->key .'_seq')) 
-								:
-								DB::last_id();
+							$this->data[$this->key] = (DB::get_connection(DB::$last_conn)->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql') ? DB::last_id(str_replace ('#prefix#', DB::$prefix, '_'. $this->table .'_'. $this->key .'_seq')) : DB::last_id();
 						}
 						$this->keyval = $this->data[$this->key];
 					}
@@ -658,14 +654,83 @@ class Model {
 	}
 
 	/**
-	 * Creates an or clause with additional where conditions.
+	 * Creates an `AND` clause with additional where conditions.
+	 * Accepts the same parameters as `where()`.
+	 */
+	public function and_where ($key, $val = null) {
+		array_push ($this->query_filters, ' and ');
+		return $this->where ($key, $val);
+	}
+	/**
+	 * Creates an `OR` clause with additional where conditions.
 	 * Accepts the same parameters as `where()`.
 	 */
 	public function or_where ($key, $val = null) {
 		array_push ($this->query_filters, ' or ');
 		return $this->where ($key, $val);
 	}
-
+	
+	/**
+	 * Searches a list of fields for the specified query using
+	 * a `LIKE '%query%'` clause, resulting in a query of the
+	 * form:
+	 *
+	 *     (field1 like '%query%' or field2 like '%query%')
+	 *
+	 * Providing a list of exact fields, you can also add exact
+	 * qualifiers using the form `field:value` or `field:"Some Value"`,
+	 * resulting in a query of the form:
+	 *
+	 *     field1 = "Some Value" and (field2 like '%query%' or field3 like '%query%')
+	 *
+	 * Query examples:
+	 *
+	 *     Smith
+	 *     Joe Smith
+	 *     published:yes Joe Smith
+	 *     author:"Joe Smith" Chemistry
+	 * 
+	 * These would become:
+	 *
+	 *     (field1 like '%Smith%' or field2 like '%Smith%')
+	 *     (field1 like '%Joe Smith%' or field2 like '%Joe Smith%')
+	 *     published = "yes" and (field1 like '%Joe Smith%' or field2 like '%Joe Smith%')
+	 *     author = "Joe Smith" and (field1 like '%Chemistry%' or field2 like '%Chemistry%')
+	 */
+	
+	public function where_search ($query, $fields, $exact = array ()) {
+		$q = $this;
+		$exact_matches = false;
+		$query = trim ($query);
+		if (count ($exact) > 0) {
+			$query = preg_replace_callback (
+				'/ ?(' . join ('|', $exact) . '):("[a-z0-9\'\. _-]+"|[a-z0-9\'\._-]+) ?/i',
+				function ($regs) use ($q, &$exact_matches) {
+					$q->where ($regs[1], trim ($regs[2], '"'));
+					$exact_matches = true;
+					return '';
+				},
+				$query
+			);
+		}
+		if (strlen ($query) > 0) {
+			$where_method = $exact_matches ? 'and_where' : 'where';
+			$q->{$where_method} (function ($q) use ($query, $fields) {
+				$like = '%' . trim ($query) . '%';
+				foreach ($fields as $n => $field) {
+					if ($n === 0) {
+						$q->where ($field . ' like ?', $like);
+					} else {
+						$q->or_where ($field . ' like ?', $like);
+					}
+				}
+			});
+		} elseif (! $exact_matches) {
+			$q->where ('1 = 1');
+		}
+		return $q;
+	}
+	
 	/**
 	 * Add a having condition to the query. Can be either a field/value
 	 * combo, or if no value is present the first parameter can be one
@@ -743,7 +808,7 @@ class Model {
 			$sql .= ' where ';
 			$and = '';
 			foreach ($this->query_filters as $where) {
-				if ($where === '(' || $where === ' or ') {
+				if ($where === '(' || $where === ' or ' || $where === ' and ') {
 					$sql .= $where;
 					$and = '';
 				} elseif ($where === ')') {
@@ -863,7 +928,7 @@ class Model {
 	 * Fetch as an associative array of the specified key/value fields.
 	 */
 	public function fetch_assoc ($key, $value, $limit = false, $offset = 0) {
-		$tmp = $this->fetch ($limit, $offset);
+		$tmp = $this->fetch_orig ($limit, $offset);
 		if (! $tmp) {
 			return $tmp;
 		}
@@ -878,7 +943,7 @@ class Model {
 	 * Fetch as an array of the specified field name.
 	 */
 	public function fetch_field ($value, $limit = false, $offset = 0) {
-		$tmp = $this->fetch ($limit, $offset);
+		$tmp = $this->fetch_orig ($limit, $offset);
 		if (! $tmp) {
 			return $tmp;
 		}
@@ -903,7 +968,6 @@ class Model {
 	 *     {{ user_id|User::field (%s, 'name') }}
 	 */
 	public static function field ($key, $field) {
-		error_log ((string)$key . ': ' . $field);
 		$class = get_called_class ();
 		$obj = new $class;
 		switch ($obj->_key_type()) {
@@ -1063,5 +1127,3 @@ class Model {
 		return (type === false) ? 1 : ($type === 1) ? true : false;
 	}
 }
-
-?>
