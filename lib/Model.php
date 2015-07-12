@@ -531,9 +531,9 @@ class Model {
 	public static function get ($id) {
 		$class = get_called_class ();
 		$q = new $class;
-		switch ($this->_key_type()) {
+		switch ($q->_key_type()) {
 			case 0:
-				$this->error = 'Model does not have a primary key(s).';
+				$q->error = 'Model does not have a primary key(s).';
 				break;
 			case 1:
 				$res = (array) DB::single ('select * from '. Model::backticks ($q->table) .' where `'. $q->key .'` = ?', $id);
