@@ -20,7 +20,7 @@ window.async = (function($){
 			e.stopImmediatePropagation();
 			return async.link(this.href, false);
 		}
-		if (!container) css = document;
+		if (!container || container instanceof Event) container = document;
 		$(container).find('a:not([class*="editable"]):not(.noasync):not([href^="'+ self.ignore.join('"]):not([href^="') +'"])').on('click', catch_link);
 		$('#admin-bar a').off('click', catch_link);
 		$('#preview-bar a').off('click', catch_link);
@@ -76,7 +76,7 @@ window.async = (function($){
 		return false;
 	};
 	console.log('Async wrapper loaded.');
-	$(self.bind);
+	document.addEventListener('DOMContentLoaded',self.bind);
 	return self;
 }(jQuery));
 
