@@ -80,7 +80,7 @@ function elefant_autoloader ($class) {
 			return true;
 		}
 	}
-	if (count (spl_autoload_functions ()) > 1) {
+	if (ELEFANT_ENV === 'test' || count (spl_autoload_functions ()) > 1) {
 		// Leave it to another autoloader
 		return false;
 	}
