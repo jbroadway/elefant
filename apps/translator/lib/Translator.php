@@ -84,7 +84,7 @@ class Translator extends Restful {
 			);
 			$sep = ",\n";
 		}
-		$out .= "\n);\n\n?>";
+		$out .= "\n);\n";
 
 		if (! file_put_contents ('lang/' . $lang . '.php', $out)) {
 			return false;
