@@ -48,14 +48,10 @@ class FormTest extends PHPUnit_Framework_TestCase {
 		$form = new Form ();
 		$form->initialize_csrf ();
 		$this->assertRegExp ('/^[a-zA-Z0-9]+$/', $form->csrf_token);
-		$this->assertEquals ($_SESSION['csrf_token'], $form->csrf_token);
-		$this->assertGreaterThan (time (), $_SESSION['csrf_expires']);
 
 		$token = $form->csrf_token;
 		$form->initialize_csrf ();
 		$this->assertEquals ($token, $form->csrf_token);
-		$this->assertEquals ($_SESSION['csrf_token'], $form->csrf_token);
-		$this->assertGreaterThan (time (), $_SESSION['csrf_expires']);
 	}
 
 	function test_generate_csrf_script () {
@@ -66,7 +62,7 @@ class FormTest extends PHPUnit_Framework_TestCase {
 
 		$res = $form->generate_csrf_script ();
 		$this->assertEquals (
-			'<script>$(function(){$("form").append("<input type=\'hidden\' name=\'TOKEN\' value=\'' . $token . '\'/>");});</script>',
+			'<script>$(function(){$("form[method=\'post\']").append("<input type=\'hidden\' name=\'TOKEN\' value=\'' . $token . '\'/>");});</script>',
 			$res
 		);
 	}
@@ -80,7 +76,7 @@ class FormTest extends PHPUnit_Framework_TestCase {
 		$_POST['_token_'] = $form->csrf_token;
 		$this->assertTrue ($form->verify_csrf ());
 
-		$_SESSION['csrf_expires'] = time () - 10;
+		$_POST['_token_'] = '...';
 		$this->assertFalse ($form->verify_csrf ());
 	}
 }

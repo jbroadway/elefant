@@ -292,6 +292,10 @@ tt {
 	white-space: nowrap;
 }
 
+.embedded * {
+	display: none !important;
+}
+
 /**
  * Form inputs
  */

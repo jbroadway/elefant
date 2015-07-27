@@ -10,7 +10,6 @@ $this->require_admin ();
 $post = new blog\Post ($_POST);
 
 $page->id = 'blog';
-$page->title = Appconf::blog ('Blog', 'title');
 $page->layout = Appconf::blog ('Blog', 'post_layout');
 
 if (Appconf::blog ('Blog', 'post_format') === 'html') {

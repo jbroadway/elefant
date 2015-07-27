@@ -6,7 +6,7 @@ class FunctionsTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals ('Site Name', conf ('General', 'site_name', 'Site Name'));
 		$this->assertEquals ('Site Name', conf ('General', 'site_name'));
 		$this->assertEquals ('Your Site Name', conf ('General', 'site_name', 'Your Site Name'));
-		$this->assertEquals (array (), conf ('Cache'));
+		$this->assertEquals (array ('control' => '', 'expires' => '86400'), conf ('Cache'));
 	}
 
 	function test_simple_auth () {

@@ -232,6 +232,12 @@
 							
 						html += '</p>';
 						
+					} else if (obj.fields[i].type == 'color') {
+						html += '<p><label for="' + obj.fields[i].name + '">' + obj.fields[i].label + '</label><input type="color" name="' + obj.fields[i].name +'" value="' + obj.fields[i].initial + '" />';
+						if (obj.fields[i].message)
+							html += '<span id="' + obj.fields[i].name + '-msg" class="notice" style="display: none"><br />' + obj.fields[i].message + '</span>';
+						html += '</p>';
+						
 					} else {
 						html += '<p><label for="' + obj.fields[i].name + '">' + obj.fields[i].label + '</label><input type="text" name="' + obj.fields[i].name + '" value="' + obj.fields[i].initial + '" />';
 						if (obj.fields[i].message) {
