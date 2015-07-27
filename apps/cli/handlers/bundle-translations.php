@@ -35,10 +35,12 @@ $index = unserialize (file_get_contents ('lang/_index.php'));
 $include = array ();
 
 foreach ($index as $string) {
-	foreach ($string['src'] as $source) {
-		if (strpos ($source, 'apps/' . $app . '/') === 0) {
-			$include[] = $string['orig'];
-			break;
+	if (isset ($string['src']) && is_array ($string['src'])) {
+		foreach ($string['src'] as $source) {
+			if (strpos ($source, 'apps/' . $app . '/') === 0) {
+				$include[] = $string['orig'];
+				break;
+			}
 		}
 	}
 }
@@ -75,7 +77,7 @@ foreach ($i18n->languages as $lang) {
 		);
 		$sep = ",\r";
 	}
-	$out .= "\n\t)\n);\n\n?>";
+	$out .= "\n\t)\n);\n";
 
 	file_put_contents ('apps/' . $app . '/lang/' . $code . '.php', $out);
 }
