@@ -47,6 +47,7 @@ create table #prefix#user (
 	updated timestamp not null,
 	userdata text not null,
 	phone char(32) not null default '',
+	fax char(32) not null default '',
 	address char(48) not null default '',
 	address2 char(48) not null default '',
 	city char(48) not null default '',

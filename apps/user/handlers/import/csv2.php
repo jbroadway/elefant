@@ -49,6 +49,7 @@ $website = false;
 $photo = false;
 $about = false;
 $phone = false;
+$fax = false;
 $address = false;
 $address2 = false;
 $city = false;
@@ -79,6 +80,7 @@ foreach ($res as $k => $row) {
 		'photo' => ($photo !== false) ? $row[$photo] : '',
 		'about' => ($about !== false) ? $row[$about] : '',
 		'phone' => ($phone !== false) ? $row[$phone] : '',
+		'fax' => ($fax !== false) ? $row[$fax] : '',
 		'address' => ($address !== false) ? $row[$address] : '',
 		'address2' => ($address2 !== false) ? $row[$address2] : '',
 		'city' => ($city !== false) ? $row[$city] : '',

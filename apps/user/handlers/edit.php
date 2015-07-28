@@ -24,6 +24,7 @@ if ($f->submit ()) {
 	$u->photo = $_POST['photo'];
 	$u->about = $_POST['about'];
 	$u->phone = $_POST['phone'];
+	$u->fax = $_POST['fax'];
 	$u->address = $_POST['address'];
 	$u->address2 = $_POST['address2'];
 	$u->city = $_POST['city'];

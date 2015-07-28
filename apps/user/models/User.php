@@ -47,6 +47,19 @@
  * - signed_up
  * - updated
  * - userdata
+ * - phone
+ * - fax
+ * - address
+ * - address2
+ * - city
+ * - state
+ * - country
+ * - zip
+ * - title
+ * - company
+ * - photo
+ * - about
+ * - website
  *
  * Basic usage of additional methods:
  *
