@@ -14,9 +14,10 @@
 {% end %}
 
 <p>
-	<b>{"Email"}:</b> <a href="mailto:{{email}}">{{email}}</a><br />
-	<b>{"Phone"}:</b> {{phone}}<br />
-	<b>{"Website"}:</b> <a href="{{website}}">{{website}}</a>
+	<b>{"Email"}:</b> <a href="mailto:{{email}}">{{email}}</a>
+	{% if phone != '' %}<br /><b>{"Phone"}:</b> {{phone}}{% end %}
+	{% if fax != '' %}<br /><b>{"Fax"}:</b> {{fax}}{% end %}
+	{% if website != '' %}<br /><b>{"Website"}:</b> <a href="{{website}}">{{website}}</a>{% end %}
 </p>
 
 <p>
