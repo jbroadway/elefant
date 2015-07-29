@@ -369,7 +369,7 @@ class Form {
 	 * since those are almost certainly abusive.
 	 */
 	public function verify_referrer () {
-		if (strpos ($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST']) === false) {
+		if (strpos ($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST']) === false && $_SERVER['HTTP_REFERER'] !== null) {
 			return false;
 		}
 		return true;
