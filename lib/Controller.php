@@ -243,6 +243,12 @@ class Controller {
 	 * The HTTP status code that's been set.
 	 */
 	public $status_code = false;
+	
+	/**
+	 * If the page is an alias, this will contain the original value of
+	 * `$_SERVER['REQUEST_URI']`. Otherwise, it will be false.
+	 */
+	public $alias = false;
 
 	/**
 	 * Page object.
