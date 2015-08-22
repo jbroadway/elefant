@@ -103,12 +103,12 @@ if ($post->thumbnail !== '') {
 }
 
 $page->add_meta ('twitter:card', 'summary_large_image');
-$page->add_meta ('twitter:title', $post->title);
-$page->add_meta ('twitter:description', $desc);
 $twitter_id = Appconf::user ('Twitter', 'twitter_id');
 if (is_string ($twitter_id) && $twitter_id !== '') {
 	$page->add_meta ('twitter:site', '@' . $twitter_id);
 }
+$page->add_meta ('twitter:title', $post->title);
+$page->add_meta ('twitter:description', $desc);
 
 if ($post->thumbnail !== '') {
 	$page->add_meta (
