@@ -84,13 +84,33 @@ $page->add_script (sprintf (
 	$_SERVER['HTTP_HOST']
 ));
 
-// add opengraph meta tags
+// add opengraph/twitter card meta tags
+$url = ($this->is_https () ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $post->fullurl;
+$desc = blog_filter_truncate (strip_tags ($post->body), 300);
+
+$page->add_meta ('og:type', 'article', 'property');
+$page->add_meta ('og:site_name', conf ('General', 'site_name'), 'property');
 $page->add_meta ('og:title', $post->title, 'property');
+$page->add_meta ('og:description', $desc, 'property');
+$page->add_meta ('og:url', $url, 'property');
 
 if ($post->thumbnail !== '') {
 	$page->add_meta (
 		'og:image',
-		'//'. $_SERVER['HTTP_HOST'] . $post->thumbnail,
+		($this->is_https () ? 'https' : 'http') . '://'. $_SERVER['HTTP_HOST'] . $post->thumbnail,
 		'property'
 	);
+	
+	$page->add_meta (
+		'twitter:image',
+		($this->is_https () ? 'https' : 'http') . '://'. $_SERVER['HTTP_HOST'] . $post->thumbnail
+	);
+}
+
+$page->add_meta ('twitter:card', 'summary_large_image');
+$page->add_meta ('twitter:title', $post->title);
+$page->add_meta ('twitter:description', $desc);
+$twitter_id = Appconf::user ('Twitter', 'twitter_id');
+if (is_string ($twitter_id) && $twitter_id !== '') {
+	$page->add_meta ('twitter:site', '@' . $twitter_id);
 }
