@@ -964,6 +964,16 @@ class Controller {
 		}
 		return true;
 	}
+	
+	/**
+	 * Get the remote IP address from REMOTE_ADDR, or if it's set,
+	 * from HTTP_X_FORWARDED_FOR which may be set by a load balancer.
+	 */
+	public function remote_addr () {
+		return isset ($_SERVER['HTTP_X_FORWARDED_FOR'])
+			? $_SERVER['HTTP_X_FORWARDED_FOR']
+			: $_SERVER['REMOTE_ADDR'];
+	}
 
 	/**
 	 * Returns whether the current request is made over HTTPS or not.
