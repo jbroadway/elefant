@@ -100,11 +100,6 @@ if ($post->thumbnail !== '') {
 		($this->is_https () ? 'https' : 'http') . '://'. $_SERVER['HTTP_HOST'] . $post->thumbnail,
 		'property'
 	);
-	
-	$page->add_meta (
-		'twitter:image',
-		($this->is_https () ? 'https' : 'http') . '://'. $_SERVER['HTTP_HOST'] . $post->thumbnail
-	);
 }
 
 $page->add_meta ('twitter:card', 'summary_large_image');
@@ -113,4 +108,11 @@ $page->add_meta ('twitter:description', $desc);
 $twitter_id = Appconf::user ('Twitter', 'twitter_id');
 if (is_string ($twitter_id) && $twitter_id !== '') {
 	$page->add_meta ('twitter:site', '@' . $twitter_id);
+}
+
+if ($post->thumbnail !== '') {
+	$page->add_meta (
+		'twitter:image',
+		($this->is_https () ? 'https' : 'http') . '://'. $_SERVER['HTTP_HOST'] . $post->thumbnail
+	);
 }
