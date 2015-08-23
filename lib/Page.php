@@ -98,6 +98,25 @@ class Page {
 	 * `add_script()`.
 	 */
 	public $scripts = array ();
+	
+	/**
+	 * If set, add the specified value as a `?v=' to the end of scripts and stylesheets
+	 * that use a relative absolute path and end in `.js` or `.css` such as:
+	 *
+	 *     /apps/myapp/js/myscript.js -> /apps/myapp/js/myscript.js?v=123
+	 *     /apps/myapp/css/style.css -> /apps/myapp/css/style.css?v=123
+	 *
+	 * Should not affect scripts or stylesheets of these forms:
+	 *
+	 *     <script>...</script>
+	 *     <link rel="stylesheet" href="..." />
+	 *     https://www.google.com/script.js
+	 *     //www.google.com/script.js?abc=123
+	 *
+	 * This prevents it from altering external links including protocol-relative links,
+	 * and links which are being passed parameters already.
+	 */
+	public static $assets_version = false;
 
 	/**
 	 * This is set to true when the template is currently rendering
@@ -187,7 +206,7 @@ class Page {
 	 * to view templates.
 	 */
 	public function add_script ($script, $add_to = 'head', $type = '') {
-		$script = Page::wrap_script ($script, $type);
+		$script = self::wrap_script ($script, $type);
 
 		if (! in_array ($script, $this->scripts)) {
 			$this->scripts[] = $script;
@@ -252,8 +271,34 @@ class Page {
 			$type = ' type="' . $type . '"';
 		}
 		if (preg_match ('/\.css$/i', $script)) {
-			return '<link rel="stylesheet"' . $type . ' href="' . $script . "\" />\n";
+			return '<link rel="stylesheet"' . $type . ' href="' . self::assets_version ($script) . "\" />\n";
 		}
-		return '<script' . $type . ' src="' . $script . "\"></script>\n";
+		return '<script' . $type . ' src="' . self::assets_version ($script) . "\"></script>\n";
+	}
+
+	/**
+	 * Returns a script with `'?v='.Page::$assets_version` appended if
+	 * `Page::$assets_version` is set and the script is a relative
+	 * absolute path ending in `.js` or `.css`, otherwise it returns the script
+	 * unchanged.
+	 */	
+	public static function assets_version ($script = '') {
+		if (! self::$assets_version) {
+			return $script;
+		}
+
+		if (! preg_match ('/\.(js|css)$/i', $script)) {
+			return $script; // make sure script ends in .js or .css
+		}
+
+		if (strpos ($script, '/') !== 0) {
+			return $script; // make sure script begins with /
+		}
+		
+		if (preg_match ('/^\/\//', $script)) {
+			return $script; // ignore protocol-relative URLs beginning with //
+		}
+
+		return $script . '?v=' . self::$assets_version;
 	}
 }
