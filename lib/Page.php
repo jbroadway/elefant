@@ -280,23 +280,25 @@ class Page {
 	 * Returns a script with `'?v='.Page::$assets_version` appended if
 	 * `Page::$assets_version` is set and the script is a relative
 	 * absolute path ending in `.js` or `.css`, otherwise it returns the script
-	 * unchanged.
+	 * unchanged. If the script is empty, it will return 
 	 */	
 	public static function assets_version ($script = '') {
 		if (! self::$assets_version) {
 			return $script;
 		}
 
-		if (! preg_match ('/\.(js|css)$/i', $script)) {
-			return $script; // make sure script ends in .js or .css
-		}
+		if ($script !== '') {
+			if (! preg_match ('/\.(js|css)$/i', $script)) {
+				return $script; // make sure script ends in .js or .css
+			}
 
-		if (strpos ($script, '/') !== 0) {
-			return $script; // make sure script begins with /
-		}
+			if (strpos ($script, '/') !== 0) {
+				return $script; // make sure script begins with /
+			}
 		
-		if (preg_match ('/^\/\//', $script)) {
-			return $script; // ignore protocol-relative URLs beginning with //
+			if (preg_match ('/^\/\//', $script)) {
+				return $script; // ignore protocol-relative URLs beginning with //
+			}
 		}
 
 		return $script . '?v=' . self::$assets_version;

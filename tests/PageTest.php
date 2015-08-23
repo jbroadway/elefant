@@ -46,4 +46,23 @@ class PageTest extends PHPUnit_Framework_TestCase {
 		$expected_head .= "<meta charset=\"utf-8\" />\n";
 		$this->assertEquals ($expected_head, $p->head);
 	}
+	
+	function test_assets_version () {
+		// should always return original value if unset
+		$this->assertEquals ('', Page::assets_version ());
+		$this->assertEquals ('...', Page::assets_version ('...'));
+		$this->assertEquals ('http://www.google.com/', Page::assets_version ('http://www.google.com/'));
+
+		// should add ?v=123 to these
+		Page::$assets_version = '123';
+		$this->assertEquals ('?v=123', Page::assets_version ());
+		$this->assertEquals ('/js/urlify.js?v=123', Page::assets_version ('/js/urlify.js'));
+		$this->assertEquals ('/css/style.css?v=123', Page::assets_version ('/css/style.css'));
+
+		// should not add ?v=123 to these
+		$this->assertEquals ('<script src="/js/urlify.js"></script>', Page::assets_version ('<script src="/js/urlify.js"></script>'));
+		$this->assertEquals ('<link rel="stylesheet" href="style.css" />', Page::assets_version ('<link rel="stylesheet" href="style.css" />'));
+		$this->assertEquals ('http://www.google.com/script.js', Page::assets_version ('http://www.google.com/script.js'));
+		$this->assertEquals ('//www.google.com/script.js', Page::assets_version ('//www.google.com/script.js'));
+	}
 }
