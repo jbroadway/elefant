@@ -9,7 +9,7 @@ filemanager/index = Files
 
 [Administration]
 
-user/admin = Members
+user/admin = Accounts
 navigation/admin = Navigation
 designer/admin = Designer
 translator/index = Languages
