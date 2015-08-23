@@ -29,17 +29,8 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 	margin-top:5px;
 }
 
-.tool.needs-upgrade, .tool.not-installed {
-	/*color: #93278f;
-	font-weight: bold;*/
-}
-
 .error {
 	color:red;
-}
-
-.special {
-	/*font-style:italic;*/
 }
 
 </style>
@@ -65,7 +56,7 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 				</ul>
 			</li>
 		{% end %}{% end %}
-		{% if autofill %}<li id="cat_*" class="special" data-name="{{ autofill }}" data-handler="*"><b>{{ autofill }}</b> ({"new apps will automatically be added here"})</li>{% end %}
+		{% if autofill %}<li id="cat_*" class="special" data-name="{{ autofill }}" data-handler="*"><b>{{ autofill }}</b> ({"new apps/tools will automatically be added here"})</li>{% end %}
 		</ul>
 	</div>
 	<div class="trashbin">
@@ -81,7 +72,7 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 			>{{ app['name'] }}</li>
 		{% end %}
 		{% if autofill === false %}
-			<li id="cat_*" class="special" data-name="{{ \Appconf::admin('General','autofill_column') }}" data-handler="*"><b>{{ \Appconf::admin('General','autofill_column') }}</b> ({"new apps will automatically be added here"})</li>
+			<li id="cat_*" class="special" data-name="{{ \Appconf::admin('General','autofill_column') }}" data-handler="*"><b>{{ \Appconf::admin('General','autofill_column') }}</b> ({"new apps/tools will automatically be added here"})</li>
 		{% end %}
 		</ul>
 	</div>
