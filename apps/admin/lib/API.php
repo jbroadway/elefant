@@ -3,6 +3,7 @@
 namespace admin;
 
 use \Appconf;
+use \Ini;
 
 class API extends \Restful {
 
@@ -23,5 +24,20 @@ class API extends \Restful {
 			$out[Appconf::admin('General','autofill_column')]['*'] = '*';
 		}
 		return Toolbar::save($out);
+	}
+	
+	public function post_routes() {
+		$this->controller->require_acl('admin','admin/routes');
+		$out = array('Alias'=>array(),'Disable'=>array(),'Redirect'=>array());
+		foreach($_POST as $section => $group) {
+			if (isset($out[$section])) {
+			foreach($group as $match => $action) {
+				$out[$section][$match] = $action;
+			}
+			}
+		}
+		$path = conf_env_path('routes');
+		if (Ini::write($out,$path)) return true;
+		else $this->error('Unable to write to config file.');
 	}
 }

@@ -3,6 +3,7 @@ conf/app.*
 conf/installed
 conf/site.db
 conf/config.php
+conf/routes.*.php
 install/cache/*
 install/installed
 lang/_index.php
