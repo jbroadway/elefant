@@ -67,13 +67,29 @@ class FrontController {
 		/**
 		 * Check ELEFANT_ENV environment variable to determine which
 		 * configuration to load. Also include the Elefant version,
-		 * autoloader, and core functions, and set the default
-		 * timezone to avoid warnings in date functions.
+		 * autoloader, and core functions.
 		 */
 		define ('ELEFANT_ENV', getenv ('ELEFANT_ENV') ? getenv ('ELEFANT_ENV') : 'config');
 		require ('conf/version.php');
 		require ('lib/Autoloader.php');
 		require ('lib/Functions.php');
+		
+		/**
+		 * There are several settings which were moved to the admin app,
+		 * but are replicated into the global config here for backwards
+		 * compatibility with existing templates and apps.
+		 */
+		$site_settings = Appconf::admin ('Site Settings');
+		foreach ($site_settings as $key => $value) {
+			if ($value) {
+				conf ('General', $key, $value);
+			}
+		}
+
+		/**
+		 * Set the default timezone to avoid warnings in date functions,
+		 * and configure session settings.
+		 */
 		date_default_timezone_set(conf ('General', 'timezone'));
 		ini_set ('session.cookie_httponly', 1);
 		ini_set ('session.use_only_cookies', 1);
