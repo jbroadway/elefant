@@ -13,6 +13,7 @@ user/admin = Members
 navigation/admin = Navigation
 designer/admin = Designer
 translator/index = Languages
+admin/settings = Site Settings
 admin/versions = Versions
 
 [Extras]

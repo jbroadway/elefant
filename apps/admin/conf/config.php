@@ -1,5 +1,22 @@
 ; <?php /*
 
+[Site Settings]
+
+; The name of your website.
+site_name = Off
+
+; The domain name of your website.
+site_domain = Off
+
+; Default outbound email address.
+email_from = Off
+
+; Default timezone for date functions.
+timezone = GMT
+
+; Google Analytics ID
+google_analytics_id = Off
+
 [General]
 
 ; Set this to the location you want to redirect admins to after
