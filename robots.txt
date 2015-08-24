@@ -31,3 +31,6 @@ Disallow: /elefant
 # Apps Paths
 Disallow: /admin/
 Disallow: /user/
+# Allow Twitterbot for card images
+User-agent: Twitterbot
+Allow: /files/
