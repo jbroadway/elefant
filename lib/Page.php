@@ -134,6 +134,12 @@ class Page {
 	 * request.
 	 */
 	public $preview = false;
+	
+	/**
+	 * Set this to true if you wish to globally bypass all templates.
+	 * Primarily used by the async utility.
+	 */
+	public static $bypass_layout = false;
 
 	/**
 	 * Constructor method
@@ -155,7 +161,7 @@ class Page {
 	 * whether to render as a preview or as a real page.
 	 */
 	public function render ($tpl, $controller) {
-		if ($this->layout === false) {
+		if ($this->layout === false || self::$bypass_layout) {
 			// No layout, return the body as-is
 			return $this->body;
 		}
