@@ -352,11 +352,13 @@ if (typeof String.prototype.trim !== 'function') {
 	
 }(jQuery));
 
+// Cheap test for MSIE
+window.is_msie = (window.navigator.userAgent.indexOf ('MSIE ') > -1);
 
 $('.treeDragDrop').treeDragDrop({
 	collapsedClass: "fa-folder", 
 	expandedClass: "fa-folder-open", 
 	updateUrl: "/navigation/api/update",
-	cursorGrabbingUrl: ($.browser.msie) ? "/apps/navigation/js/tree-drag-drop/css/closedhand.cur" : "/apps/navigation/js/tree-drag-drop/css/cursorGrabbing.png"
+	cursorGrabbingUrl: (window.is_msie) ? "/apps/navigation/js/tree-drag-drop/css/closedhand.cur" : "/apps/navigation/js/tree-drag-drop/css/cursorGrabbing.png"
 }); 
 

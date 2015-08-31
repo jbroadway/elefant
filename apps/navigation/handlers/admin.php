@@ -10,7 +10,7 @@ $this->require_acl ('admin', 'navigation');
 $page->title = __ ('Navigation');
 $page->layout = 'admin';
 
-$page->add_script ('<script src="/apps/navigation/js/tree-drag-drop/jquery-ui-1.9.1.custom.min.js"></script>', 'tail');
+$page->add_script ('<script src="/js/jquery-ui/jquery-ui.min.js"></script>', 'tail');
 $page->add_script ('<script src="/apps/navigation/js/tree-drag-drop/tree-drag-drop.js"></script>', 'tail');
 $page->add_style ('/apps/admin/css/font-awesome/css/font-awesome.min.css');
 

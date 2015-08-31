@@ -253,7 +253,7 @@ if (typeof String.prototype.trim !== 'function') {
 			
 			$('.treeDragDrop').treeDragDrop({ // rebind drag/drop for new node.
 				updateUrl: "/admin/api/toolbar",
-				cursorGrabbingUrl: ($.browser.msie) ? "/apps/admin/js/tree-drag-drop/css/closedhand.cur" : "/apps/admin/js/tree-drag-drop/css/cursorGrabbing.png"
+				cursorGrabbingUrl: (window.is_msie) ? "/apps/admin/js/tree-drag-drop/css/closedhand.cur" : "/apps/admin/js/tree-drag-drop/css/cursorGrabbing.png"
 			}, '#'+ id); 
 			return true
 		}
@@ -319,9 +319,11 @@ if (typeof String.prototype.trim !== 'function') {
 	
 }(jQuery));
 
+// Cheap test for MSIE
+window.is_msie = (window.navigator.userAgent.indexOf ('MSIE ') > -1);
 
 $('.treeDragDrop').treeDragDrop({
 	updateUrl: "/admin/api/toolbar",
-	cursorGrabbingUrl: ($.browser.msie) ? "/apps/admin/js/tree-drag-drop/css/closedhand.cur" : "/apps/admin/js/tree-drag-drop/css/cursorGrabbing.png"
+	cursorGrabbingUrl: (window.is_msie) ? "/apps/admin/js/tree-drag-drop/css/closedhand.cur" : "/apps/admin/js/tree-drag-drop/css/cursorGrabbing.png"
 }); 
 
