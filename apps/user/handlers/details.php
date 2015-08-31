@@ -28,6 +28,7 @@ foreach ($tabs as $handler => $name) {
 
 $page->title = Template::sanitize ($user->name);
 $page->add_style ('/apps/user/css/details.css');
+$page->add_script ('/js/jquery-migrate-1.2.1.js');
 $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/apps/user/js/jquery.tools.min.js');
 $page->add_script ('/apps/user/js/react/react.js');
