@@ -91,7 +91,7 @@
 		},
 
 		verify_value: function (options) {
-			var value = $(this).attr ('value'),
+			var value = $(this).val (),
 				type = options.type,
 				validator = options.validator;
 
