@@ -1,5 +1,10 @@
 /*global window, $, jQuery*/
 
+/**
+ * Note: This script is a modified version of
+ * apps/navigation/js/tree-drag-drop/tree-drag-drop.js
+ */
+
 if (typeof String.prototype.trim !== 'function') {
 	String.prototype.trim = function () {
 		"use strict";
@@ -38,11 +43,11 @@ if (typeof String.prototype.trim !== 'function') {
 	}
 	
 	function getContext(el) {
-		return $(el).closest(".treeDragDrop");
+		return $('.treeDragDrop').first ();
 	}
 	
 	function getOptions(el) {
-		return $(el).closest(".treeDragDrop").data("options");
+		return $('.treeDragDrop').first ().data ("options");
 	}
 	
 	function serializeTree(el) {
@@ -69,7 +74,7 @@ if (typeof String.prototype.trim !== 'function') {
 				data: serializeTree(data), 
 				autofill: data.find('.special').length
 			}, function (res) {
-				console.log (res);
+				//debug (res);
 				//TODO: error handling
 				return true;
 			});
@@ -121,6 +126,9 @@ if (typeof String.prototype.trim !== 'function') {
 				draggable = $(o.draggable),
 				dropable = $(e.target),
 				marker = options.marker;
+
+			marker.show ();
+
 			if (dropable.is('li')) {
 				// bind MouseMove to the item to check if the draggable should be appended or placed before or after the item 
 				dropable.bind('mousemove', function (mme) {
@@ -207,7 +215,7 @@ if (typeof String.prototype.trim !== 'function') {
 			} else {				
 				marker.before(draggable);
 			}			
-			marker.detach();
+			marker.hide();
 			//clean up empty uls if its not the tree or trashbin
 			$("ul", ctx).not(".tdd-trashbin, .tdd-tree").each(function () {
 				if ($(this).children().length === 0) {
