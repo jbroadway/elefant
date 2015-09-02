@@ -85,8 +85,6 @@ body.cursorGrabbing{
 	cursor: pointer;
 }
 
-
 .treeDragDrop .tdd-tree i:hover{
 	color:#93278f;
 }
-
