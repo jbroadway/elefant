@@ -282,11 +282,22 @@ class Validator {
 		}
 		$failed = array ();
 		self::$invalid = array ();
-		foreach ($validations as $name => $validators) {
+		foreach ($validations as $n => $validators) {
+			if (strpos ($n, ':') !== false) {
+				list ($name, $rule) = explode (':', $n);
+			} else {
+				$name = $n;
+				$rule = $n;
+			}
+			
+			if (in_array ($name, $failed)) {
+				continue;
+			}
+
 			foreach ($validators as $type => $validator) {
 				if ($type === 'file') {
 					if (! is_uploaded_file ($_FILES[$name]['tmp_name'])) {
-						$failed[] = $name;
+						$failed[] = $rule;
 						self::$invalid[$name] = array (
 							'field' => $name,
 							'type'  => $type,
@@ -305,7 +316,7 @@ class Validator {
 					}
 					$extension = strtolower (pathinfo ($_FILES[$name]['name'], PATHINFO_EXTENSION));
 					if (! in_array ($extension, $extensions)) {
-						$failed[] = $name;
+						$failed[] = $rule;
 						self::$invalid[$name] = array (
 							'field' => $name,
 							'type'  => $type,
@@ -333,7 +344,7 @@ class Validator {
 					}
 				}
 				if (! isset ($values[$name]) || ! Validator::validate ($values[$name], $type, $validator)) {
-					$failed[] = $name;
+					$failed[] = $rule;
 					self::$invalid[$name] = array (
 						'field' => $name,
 						'type'  => $type,

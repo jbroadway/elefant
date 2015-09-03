@@ -54,15 +54,31 @@
 						fields = [];
 					
 					for (var n in opts.rules) {
-						fields.push (n);
+						var name = rule = n,
+							rules = n.indexOf (':');
+
+						if (rules > 0) {
+							name = n.substr (0, rules);
+							rule = n.substr (rules + 1);
+						}
+
+						if ($.inArray (rule, fields) === -1) {
+							fields.push (rule);
+						}
+
+						if ($.inArray (name, failed) !== -1) {
+							// field already failed its main validation
+							continue;
+						}
 
 						// switch for fields with name[] format
-						var field = (typeof evt.target.elements[n + '[]'] !== 'undefined')
-								? evt.target.elements[n + '[]']
-								: evt.target.elements[n],
+						var field = (typeof evt.target.elements[name + '[]'] !== 'undefined')
+								? evt.target.elements[name + '[]']
+								: evt.target.elements[name],
 							skip_if_empty = false;
 
 						for (var t in opts.rules[n]) {
+
 							if (t == 'skip_if_empty') {
 								skip_if_empty = true;
 							}
@@ -73,8 +89,9 @@
 								validator: opts.rules[n][t],
 								skip_if_empty: skip_if_empty
 							};
+
 							if (! $(field).verify_value (opt_list)) {
-								failed.push (n);
+								failed.push (rule);
 								break;
 							}
 						}
