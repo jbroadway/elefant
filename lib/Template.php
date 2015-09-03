@@ -652,6 +652,16 @@ class Template {
 	}
 
 	/**
+	 * Clones and adds a parent_template_id value to the
+	 * template data.
+	 */
+	private static function add_parent_id ($data) {
+		$data = clone $data;
+		$data->parent_template_id = $data->template_id;
+		return $data;
+	}
+
+	/**
 	 * Replace foreach and if blocks. Handles the following forms:
 	 *
 	 *     {% foreach some_list %}
@@ -704,7 +714,7 @@ class Template {
 				);
 				$extra = preg_replace ('/\[(.*)\]/', $r, $extra);
 			}
-			return '<?php echo $this->render (\'' . $extra . '\', $data); ?>';
+			return '<?php echo $this->render (\'' . $extra . '\', self::add_parent_id ($data)); ?>';
 		}
 
 		if (($block === 'if' || $block === 'elseif') && strpos (ltrim ($extra), '!') === 0) {
