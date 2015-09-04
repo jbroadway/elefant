@@ -343,6 +343,9 @@ class Validator {
 						continue;
 					}
 				}
+				if ($type === 'validate_on_change') {
+					continue;
+				}
 				if (! isset ($values[$name]) || ! Validator::validate ($values[$name], $type, $validator)) {
 					$failed[] = $rule;
 					self::$invalid[$name] = array (

@@ -47,6 +47,56 @@
 				
 				$.get (url, function (res) {
 					opts.rules = res;
+					
+					// Attach input change events for rule blocks that include
+					// validate_on_change = 1 for live input validation.
+					for (var n in opts.rules) {
+						if (opts.rules[n]['validate_on_change'] === undefined) {
+							continue;
+						}
+
+						var name = rule = n,
+							rules = n.indexOf (':');
+						
+						if (rules > 0) {
+							name = n.substr (0, rules);
+							rule = n.substr (rules + 1);
+						}
+						
+						var field = (typeof obj[0].elements[name + '[]'] !== 'undefined')
+								? obj[0].elements[name + '[]']
+								: obj[0].elements[name],
+							skip_if_empty = false;
+						
+						$(field).on ('change input', function (e) {
+							var failed = false;
+
+							for (var t in opts.rules[n]) {
+
+								if (t == 'skip_if_empty') {
+									skip_if_empty = true;
+								}
+								
+								var opt_list = {
+									form: obj,
+									type: t,
+									validator: opts.rules[n][t],
+									skip_if_empty: skip_if_empty
+								};
+
+								if (! $(field).verify_value (opt_list)) {
+									failed = true;
+									break;
+								}
+							}								
+					
+							if (failed) {
+								opts.callback ([rule]);
+							} else {
+								opts.reset ([rule]);
+							}
+						});
+					}
 				});
 
 				obj.bind ('submit', function (evt) {
@@ -111,6 +161,10 @@
 			var value = $(this).val (),
 				type = options.type,
 				validator = options.validator;
+			
+			if (type === 'validate_on_change') {
+				return true;
+			}
 
 			if (options.skip_if_empty == true && value == '') {
 				return true;
