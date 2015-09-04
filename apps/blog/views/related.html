@@ -6,7 +6,7 @@
 				<a href="/blog/post/{{post->id}}/{{post->title|URLify::filter}}">
 					<div class="thumbnail"
 						{% if post->thumbnail != '' %}
-							style="background-image: url('/{{post->thumbnail|Image::resize (%s, 400, 300, 'cover', 'ext')}}')"
+							style="background-image: url('/{{post->thumbnail|Image::resize (%s, 400, 264, 'cover', 'ext')}}')"
 						{% end %}
 					></div>
 				</a>
