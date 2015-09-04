@@ -65,11 +65,16 @@
 						
 						var field = (typeof obj[0].elements[name + '[]'] !== 'undefined')
 								? obj[0].elements[name + '[]']
-								: obj[0].elements[name],
-							skip_if_empty = false;
+								: obj[0].elements[name];
 						
-						$(field).on ('change input', function (e) {
-							var failed = false;
+						$(field).on ('change input', {name: name, rule: rule, field: field, opts: opts, n: n}, function (evt) {
+							var failed = false,
+								skip_if_empty = false,
+								name = evt.data.name,
+								rule = evt.data.rule,
+								field = evt.data.field,
+								opts = evt.data.opts,
+								n = evt.data.n;
 
 							for (var t in opts.rules[n]) {
 
@@ -91,7 +96,7 @@
 							}								
 					
 							if (failed) {
-								opts.callback ([rule]);
+								opts.callback ([rule], true);
 							} else {
 								opts.reset ([rule]);
 							}
@@ -99,9 +104,10 @@
 					}
 				});
 
-				obj.bind ('submit', function (evt) {
+				obj.bind ('submit', {opts: opts}, function (evt) {
 					var failed = [],
-						fields = [];
+						fields = [],
+						opts = evt.data.opts;
 					
 					for (var n in opts.rules) {
 						var name = rule = n,
@@ -247,7 +253,7 @@
 					}
 					break;
 				case 'contains':
-					if (! value.toLowerCase ().match (validator.toLowerCase ())) {
+					if (value.toLowerCase ().indexOf (validator.toLowerCase ()) == -1) {
 						return _false;
 					}
 					break;

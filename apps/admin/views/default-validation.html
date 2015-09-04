@@ -4,9 +4,11 @@
 $(function () {
 	$('#{{ _form }}').verify_values ({
 		handler: '{{ _rules }}',
-		callback: function (failed) {
-			// scroll to top of form
-			$('#{{ _form }}')[0].scrollIntoView ();
+		callback: function (failed, dont_scroll) {
+			if (! dont_scroll) {
+				// scroll to top of form
+				$('#{{ _form }}')[0].scrollIntoView ();
+			}
 
 			// highlight the failed elements
 			for (var i = 0; i < failed.length; i++) {
