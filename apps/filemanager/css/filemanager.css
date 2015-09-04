@@ -85,3 +85,11 @@
 	background-color: #fefefe;
 	z-index: 1000;
 }
+
+#avpw_fullscreen_bg {
+	z-index: 100001 !important;
+}
+
+.avpw_is_fullscreen #avpw_controls {
+	z-index: 100002 !important;
+}
