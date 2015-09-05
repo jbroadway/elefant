@@ -470,8 +470,8 @@ class Template {
 			if (is_array ($v)) {
 				$arr .= sprintf ('%s\'%s\' => array (', $sep, $k);
 				$sep2 = '';
-				foreach ($v as $a) {
-					$arr .= sprintf ('%s\'%s\'', $sep2, $a);
+				foreach ($v as $x => $a) {
+					$arr .= sprintf ('%s\'%s\' => \'%s\'', $sep2, $x, $a);
 					$sep2 = ', ';
 				}
 				$arr .= ')';
