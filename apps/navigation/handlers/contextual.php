@@ -4,6 +4,16 @@
  * Displays contextual navigation, opening and closing
  * sections based on the currently active page. Shows
  * All parents and children of the current page.
+ *
+ * In PHP code, call it like this:
+ *
+ *     echo $this->run ('navigation/contextual');
+ *
+ * In a template, call it like this:
+ *
+ *     {! navigation/contextual !}
+ *
+ * Also available in the dynamic objects menu as "Navigation: Contextual".
  */
 
 $n = Link::nav ();

@@ -2,7 +2,19 @@
 
 /**
  * Displays a breadcrumb menu using a bulleted list that you can
- * apply CSS to with the `breadcrumb` class, for example:
+ * apply CSS to with the `breadcrumb` class.
+ *
+ * In PHP code, call it like this:
+ *
+ *     echo $this->run ('navigation/breadcrumb');
+ *
+ * In a template, call it like this:
+ *
+ *     {! navigation/breadcrumb !}
+ *
+ * Also available in the dynamic objects menu as "Navigation: Breadcrumb".
+ *
+ * A CSS styling example:
  *
  *     .breadcrumb {
  *         list-style-type: none;

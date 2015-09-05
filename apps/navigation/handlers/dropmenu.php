@@ -5,11 +5,14 @@
  *
  * Usage:
  *
- * 1. Embed the drop menu in your layout file like this:
+ * ### 1. Embed the drop menu in your layout file like this:
  *
  *     {! navigation/dropmenu !}
  *
- * 2. Customize the menu in your design stylesheet.
+ * ### 2. Customize the menu in your design stylesheet.
+ *
+ * See [apps/navigation/css/dropmenu.css](/apps/navigation/css/dropmenu.css)
+ * for the default styles you can override.
  */
 
 $n = Link::nav ();

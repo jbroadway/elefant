@@ -2,10 +2,20 @@
 
 /**
  * Displays the top-level navigation as a bulleted list
- * when [I18n][multilingual] is enabled, which will show
+ * when `[I18n][multilingual]` is enabled, which will show
  * a list of languages linking to their homepages, with
  * `class="current"` added to the current page's `<li>`
  * element for custom styling.
+ *
+ * In PHP code, call it like this:
+ *
+ *     echo $this->run ('navigation/languages');
+ *
+ * In a template, call it like this:
+ *
+ *     {! navigation/languages !}
+ *
+ * Also available in the dynamic objects menu as "Navigation: Languages".
  */
 
 if (! conf ('I18n', 'multilingual')) {

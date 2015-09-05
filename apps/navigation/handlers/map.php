@@ -3,6 +3,16 @@
 /**
  * Displays a complete site map as a multi-level
  * bulleted list.
+ *
+ * In PHP code, call it like this:
+ *
+ *     echo $this->run ('navigation/map');
+ *
+ * In a template, call it like this:
+ *
+ *     {! navigation/map !}
+ *
+ * Also available in the dynamic objects menu as "Navigation: Site Map".
  */
 
 $n = Link::nav ();

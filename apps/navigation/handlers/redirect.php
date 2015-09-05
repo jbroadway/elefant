@@ -1,7 +1,17 @@
 <?php
 
 /**
- * Redirect users to the language homepage.
+ * Redirect users to the current language homepage link.
+ *
+ * In PHP code, call it like this:
+ *
+ *     echo $this->run ('navigation/redirect');
+ *
+ * In a template, call it like this:
+ *
+ *     {! navigation/redirect !}
+ *
+ * Also available in the dynamic objects menu as "Multilingual Homepage Redirect".
  */
 
 $url = Link::href ($i18n->language);
