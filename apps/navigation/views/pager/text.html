@@ -1,11 +1,11 @@
 <div class="pager">
 	<div class="pager-text">
 {% if num > 1 %}
-		<span class="pager-previous"><a href="{{ prev_link|none }}">&laquo; {" Newer results "}</a></span>
+		<span class="pager-previous"><a href="{{ prev_link|none }}">&laquo; {" Newer "} {{plural}}</a></span>
 {% end %}
 
 {% if more %}
-		<span class="pager-next"><a href="{{ next_link|none }}">{" Older results "} &raquo;</a></span>
+		<span class="pager-next"><a href="{{ next_link|none }}">{" Older "} {{plural}} &raquo;</a></span>
 {% end %}
 	</div>
 
