@@ -4,9 +4,19 @@
  * Renders the specified RSS feed `url` as a list of links.
  * Caches the feed for 30 minutes between updates.
  *
+ * In PHP code, call it like this:
+ *
+ *     echo $this->run ('blog/rssviewer', array ('url' => 'http://...'));
+ *
+ * In a view template, call it like this:
+ *
+ *     {! blog/rssviewer?url=http://... !}
+ *
  * Parameters:
  *
  * - `url`: The URL of the RSS feed to be displayed.
+ *
+ * Also available in the dynamic objects menu as "Blog: RSS Viewer".
  */
 
 require_once ('apps/blog/lib/simplepie/autoloader.php');

@@ -1,5 +1,24 @@
 <?php
 
+/**
+ * Display the fully browsable latest posts.
+ *
+ * In PHP code, call it like this:
+ *
+ *     $this->run ('blog/postsfeed');
+ *
+ * In a view template, call it like this:
+ *
+ *     {! blog/postsfeed !}
+ *
+ * Parameters:
+ *
+ * - `number` - Number of posts to show (default=5)
+ * - `tag` - Show posts with this tag only (optional)
+ *
+ * Also available in the dynamic objects menu as "Blog: Latest Posts".
+ */
+
 require_once ('apps/blog/lib/Filters.php');
 
 $preview_chars = (int) Appconf::blog('Blog', 'preview_chars') ? (int) Appconf::blog('Blog', 'preview_chars') : false;

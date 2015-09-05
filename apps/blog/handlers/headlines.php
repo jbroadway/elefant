@@ -3,11 +3,21 @@
 /**
  * Displays the latest blog posts as a bulleted list of links.
  *
+ * In PHP code, call it like this:
+ *
+ *     echo $this->run ('blog/headlines');
+ *
+ * In a view template, call it like this:
+ *
+ *     {! blog/headlines !}
+ *
  * Parameters:
  *
- * - `limit`: Number of posts to show (default=10)
- * - `tag`: Show posts by this tag only (optional)
- * - `dates`: Show post dates (yes, no, default=no)
+ * - `limit` - Number of posts to show (default=10)
+ * - `tag` - Show posts with this tag only (optional)
+ * - `dates` - Show post dates (yes, no, default=no)
+ *
+ * Also available in the dynamic objects menu as "Blog: Headlines".
  */
 
 if (! $this->internal) {

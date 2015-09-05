@@ -2,6 +2,16 @@
 
 /**
  * Renders a tag cloud, with more frequently used tags appearing larger.
+ *
+ * In PHP code, call it like this:
+ *
+ *     echo $this->run ('blog/tags');
+ *
+ * In a view template, call it like this:
+ *
+ *     {! blog/tags !}
+ *
+ * Also available in the dynamic objects menu as "Blog: Tag Cloud".
  */
 
 if (! $this->internal) {
