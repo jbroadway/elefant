@@ -5,7 +5,7 @@
  *
  * Usage:
  *
- * 1. Set your data as follows:
+ * ### 1. Set your data as follows:
  *
  *     $limit = 20;
  *     $num = isset ($this->params[0])
@@ -28,7 +28,7 @@
  *
  *     echo $tpl->render ('myapp/view', $data);
  *
- * 2. In your template
+ * ### 2. In your template
  *
  * Text pager:
  *
