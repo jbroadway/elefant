@@ -164,18 +164,26 @@ $o->next_link = sprintf ($o->url, $o->next);
 $o->prev_link = sprintf ($o->url, $o->prev);
 $o->first_link = sprintf ($o->url, 1);
 $o->last_link = sprintf ($o->url, $o->last_screen);
-$o->extra_links = array ();
 
 foreach ($o->extra as $val => $label) {
 	if (strpos ($val, '/') !== false) {
-		$o->extra_links[$val] = $label;
+		$o->extra[$val] = array (
+			'label' => $label,
+			'url' => $val,
+			'key' => $val
+		);
 	} else {
 		$label_url = str_replace ('%d', '%s', $o->url);
-		$o->extra_links[sprintf ($label_url, $val)] = $label;
+		$_url = sprintf ($label_url, $val);
+		$o->extra[$val] = array (
+			'label' => $label,
+			'url' => $_url,
+			'key' => $val
+		);
 	}
 }
 
-$o->is_extra = isset ($o->extra_links[$_SERVER['REQUEST_URI']]);
+$o->is_extra = isset ($o->extra[$_SERVER['REQUEST_URI']]);
 
 $o->links = array ();
 $start = ($o->num - 3 > 0) ? $o->num - 3 : 1;

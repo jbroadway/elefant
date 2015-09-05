@@ -9,11 +9,11 @@
 	{% end %}
 {% end %}
 		<span class="pager-number pager-last"><a href="{{ last_link|none }}">&raquo;</a></span>
-{% foreach extra_links as link, label %}
-	{% if $data->link == $_SERVER['REQUEST_URI'] %}
-		<span class="pager-extra pager-current">{{ label|__ }}</span>
+{% foreach extra as extra %}
+	{% if $data->extra['url'] == $_SERVER['REQUEST_URI'] || $data->num === $data->extra['key'] %}
+		<span class="pager-extra pager-current">{{ extra['label']|__ }}</span>
 	{% else %}
-		<span class="pager-extra"><a href="{{ link|none }}">{{ label|__ }}</a></span>
+		<span class="pager-extra"><a href="{{ extra['url']|none }}">{{ extra['label']|__ }}</a></span>
 	{% end %}
 {% end %}
 	</div>
