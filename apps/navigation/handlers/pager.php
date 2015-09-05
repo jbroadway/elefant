@@ -147,9 +147,12 @@ $o->plural = isset ($data['plural']) ? $data['plural'] : __ ('results');
 $o->extra = (isset ($data['extra']) && is_array ($data['extra'])) ? $data['extra'] : array ();
 
 // the page number from the current url, or zero
-$url = str_replace ('%d', '([0-9]+)', preg_quote ($o->url));
-$o->num = (preg_match ('|' . $url . '|', $_SERVER['REQUEST_URI'], $matches))
-	? (int) $matches[1]
+$url = str_replace ('%d', '([a-zA-Z0-9]+)', preg_quote ($o->url));
+$o->orig = (preg_match ('|' . $url . '|', $_SERVER['REQUEST_URI'], $matches))
+	? $matches[1]
+	: 1;
+$o->num = is_numeric ($o->orig)
+	? (int) $o->orig
 	: 1;
 
 $o->offset = ($o->num - 1) * $o->limit; // item offset
@@ -183,7 +186,7 @@ foreach ($o->extra as $val => $label) {
 	}
 }
 
-$o->is_extra = isset ($o->extra[$_SERVER['REQUEST_URI']]);
+$o->is_extra = isset ($o->extra[$o->orig]);
 
 $o->links = array ();
 $start = ($o->num - 3 > 0) ? $o->num - 3 : 1;
