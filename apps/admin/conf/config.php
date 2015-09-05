@@ -37,8 +37,7 @@ jquery_source = local
 
 [Admin]
 
-handler = admin/versions
-name = Versions
+name = Admin
 sitemap = "Webpage::sitemap"
 search = "Webpage::search"
 
