@@ -2,7 +2,7 @@
 
 /**
  * Call this to turn a textarea into an in-browser code editor
- * using the CodeMirror (http://codemirror.net/) editor.
+ * using the [CodeMirror](http://codemirror.net/) editor.
  *
  * In PHP code, call it like this:
  *
@@ -39,9 +39,9 @@
  *
  * Additional parameters:
  *
- * - mode - The editor mode for syntax highlighting (default = htmlmixed)
- * - theme - The color theme to use (default = elegant)
- * - lineWrapping - Whether to wrap lines (default = false)
+ * - `mode` - The editor mode for syntax highlighting (default = htmlmixed)
+ * - `theme` - The color theme to use (default = elegant)
+ * - `lineWrapping` - Whether to wrap lines (default = false)
  */
 
 $modes = array (

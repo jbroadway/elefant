@@ -6,7 +6,7 @@
  *
  * Usage:
  *
- * 1. Load this handler either in your handler:
+ * ### 1. Load this handler either in your handler:
  *
  *     $this->run ('admin/util/dates');
  * 
@@ -14,7 +14,7 @@
  *
  *     {! admin/util/dates !}
  *
- * 2. Filter your dates via:
+ * ### 2. Filter your dates via:
  *
  *     {{ date_value|I18n::date }}
  *     {{ date_value|I18n::time }}
@@ -26,7 +26,7 @@
  *     5:30PM
  *     April 16, 2012 - 11:13AM
  *
- * See the I18n class for a list of available filter methods.
+ * See the [[I18n]] class for a list of available filter methods.
  */
 
 $abbr_months = explode (

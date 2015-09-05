@@ -6,7 +6,7 @@
  *
  * Usage:
  *
- * 1. Load this handler either in your handler:
+ * Load this handler either in your handler:
  *
  *     $this->run ('admin/util/modal');
  *
@@ -14,19 +14,19 @@
  *
  *     {! admin/util/modal !}
  *
- * 2. Use the $.open_dialog() function to create your
+ * Use the `$.open_dialog()` function to create your
  * dialog windows:
  *
  *     $.open_dialog ('Title', 'HTML goes here', options);
  *
- * 3. To close the dialog programmatically, you can
- * use the $.close_dialog() function:
+ * To close the dialog programmatically, you can
+ * use the `$.close_dialog()` function:
  *
  *     $.close_dialog ();
  *
- * Valid options are width and height. Note that $.open_dialog()
+ * Valid options are width and height. Note that `$.open_dialog()`
  * returns the current dialog number. A more top level dialog
- * number can be passed to $.close_dialog() and it will cascade
+ * number can be passed to `$.close_dialog()` and it will cascade
  * the close action to all child dialogs too.
  */
 

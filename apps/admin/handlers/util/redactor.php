@@ -3,7 +3,7 @@
 /**
  * Call this to load the required libraries for the Redactor editor.
  * Note: For a full editor with the Elefant integrations, see
- * admin/util/wysiwyg instead.
+ * `admin/util/wysiwyg` instead.
  *
  * In PHP code, call it like this:
  *

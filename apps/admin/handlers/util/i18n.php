@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Includes `$.i18n()` which makes Elefant's `I18n` translation support
+ * Includes `$.i18n()` which makes Elefant's [[I18n]] translation support
  * available in JavaScript code.
  *
  * Usage:
  *
- * 1. In your view template:
+ * ### 1. In your view template:
  *
  *     {! admin/util/i18n !}
  *     <script>
@@ -16,7 +16,7 @@
  *         });
  *     });
  *
- * 2. Now in your included JavaScript, you can use:
+ * ### 2. Now in your included JavaScript, you can use:
  *
  *     console.log ($.i18n ('Original text'));
  */

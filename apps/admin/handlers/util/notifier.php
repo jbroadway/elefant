@@ -2,7 +2,7 @@
 
 /**
  * Provides a public-accessible notifier similar to Elefant's
- * `Controller::add_notification()` mechanism for admin users.
+ * `[[Controller]]::add_notification()` mechanism for admin users.
  *
  * Usage:
  *

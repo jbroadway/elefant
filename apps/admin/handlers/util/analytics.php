@@ -6,6 +6,9 @@
  * your layout templates just before the `</body>` tag like this:
  *
  *     {! admin/util/analytics !}
+ *
+ * To set your Google Analytics ID, visit the [Site Settings](/admin/settings)
+ * link in the admin toolbar.
  */
 
 $analytics_id = Appconf::admin ('Site Settings', 'google_analytics_id');

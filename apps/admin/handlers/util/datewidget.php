@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Call this to turn text inputs with a class="datewidget-date" or
- * class="datewidget-datetime" into date and date/time selectors.
+ * Call this to turn text inputs with a `class="datewidget-date"` or
+ * `class="datewidget-datetime"` into date and date/time selectors.
  *
  * In PHP code, call it like this:
  *

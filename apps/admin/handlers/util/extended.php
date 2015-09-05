@@ -2,11 +2,13 @@
 
 /**
  * Extends a form with a "Custom Fields" section that
- * displays inputs for any ExtendedModel-based class.
+ * displays inputs for any [[ExtendedModel]]-based class.
  *
  * Usage:
  *
- * 1. Add this to your form view template:
+ * ### 1. Call the helper
+ *
+ * Add this to your form view template:
  *
  *     {! admin/util/extended?extends=blog\Post&name=Blog+Posts !}
  *
@@ -14,15 +16,17 @@
  *
  *     {! admin/util/extended?extends=blog\Post&name=Blog+Posts&values=[extra|none]&id=[id] !}
  *
- * 2. For update forms, call this in the form handler function,
- * before calling `$post->put ()`:
+ * ### 2. Call `->update_extended()` on your [[ExtendedModel]]
+ *
+ * For update forms, call this in the form handler function, before calling `$post->put ()`:
  *
  *     $post->update_extended ();
  *
- * 3. Create a link to edit the custom fields for a given
- * class somewhere in your app:
+ * ### 3. Add a link to manage the custom fields
  *
- *     <a href="/admin/extended?extends=blog\Post&name=Blog+Posts">{"Custom Fields"}</a>
+ * Create a link to edit the custom fields for a given class somewhere in your app:
+ *
+ *     <a href="/admin/extended?extends=blog\Post&name=Blog Posts">{"Custom Fields"}</a>
  */
 
 if (! $this->internal) {

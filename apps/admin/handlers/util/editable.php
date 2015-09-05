@@ -1,11 +1,12 @@
 <?php
 
 /**
- * Helper to make things inline editable.
+ * Helper to make inline editable content. Supports single-line text,
+ * paragraph text, and select boxes for input.
  *
- * ## Usage:
+ * Usage:
  *
- * 1\. Load this handler either in your handler:
+ * ### 1. Load this handler either in your handler:
  *
  *     $this->run (
  *         'admin/util/editable',
@@ -18,7 +19,7 @@
  *
  *     {! admin/util/editable?url=/myapp/editable !}
  *
- * 2\. Mark your editable areas in your view template via:
+ * ### 2. Mark your editable areas in your view template via:
  *
  *     <h2 class="editable-text" id="{{id}}">{{name}}</h2>
  *
@@ -37,9 +38,9 @@
  *
  * Valid classes for editable elements currently include:
  *
- * - .editable-text
- * - .editable-textarea
- * - .editable-select
+ * - `.editable-text`
+ * - `.editable-textarea`
+ * - `.editable-select`
  *
  * The plugin reads the following properties of the HTML element as the edit options:
  *
@@ -78,8 +79,6 @@
  *         return;
  *     }
  *     echo Template::sanitize ($_POST['value']);
- *     
- *     ?>
  *
  * To send an error message, use the following code:
  *
@@ -88,7 +87,7 @@
  *     return;
  *
  * To add a notification upon successful requests, you can also use the
- * Controller's `add_notification()` method:
+ * [[Controller]]'s `add_notification()` method:
  *
  *     $this->add_notification (__ ('Changes saved.'));
  *     echo Template::sanitize ($_POST['value']);

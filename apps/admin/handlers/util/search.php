@@ -1,7 +1,7 @@
 <?php
 
 /**
- * For use in conjunction with `Model::where_search()` and
+ * For use in conjunction with `[[Model]]::where_search()` and
  * adding terms and exact matches to a search box on an
  * admin screen.
  *
