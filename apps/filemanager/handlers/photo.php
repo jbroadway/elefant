@@ -11,12 +11,12 @@
  *
  * Options:
  *
- * - key:     A unique ID for the photo spot (alphanumeric, no spaces).
- * - width:   The width of the photo spot (default: 300).
- * - height:  The height of the photo spot (default: 200).
- * - alt:     Text for the alt attribute.
- * - class:   Class name(s) for the class attribute.
- * - default: The path to a default photo, otherwise a placehold.it image is used.
+ * - `key`     - A unique ID for the photo spot (alphanumeric, no spaces).
+ * - `width`   - The width of the photo spot (default = 300).
+ * - `height`  - The height of the photo spot (default = 200).
+ * - `alt`     - Text for the alt attribute.
+ * - `class`   - Class name(s) for the class attribute.
+ * - `default` - The path to a default photo, otherwise a placehold.it image is used.
  */
 
 if (! $this->internal) {

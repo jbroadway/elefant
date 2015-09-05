@@ -1,9 +1,10 @@
 <?php
 
 /**
- * Photo gallery embed handler. Creates a gallery of the images
- * from the specified folder. Used by the WYSIWYG editor's dynamic
- * objects menu, or manually via:
+ * Embeds a photo gallery.
+ *
+ * Creates a gallery of the images from the specified folder. Used by the
+ * WYSIWYG editor's dynamic objects menu, or manually via:
  *
  *     {! filemanager/gallery?path=foldername !}
  *
@@ -18,6 +19,8 @@
  * by the `filemanager_path` option in your config file.
  * `filelist` can either be an array or a string with each file path delimited
  * by `|`.
+ *
+ * Also available in the dynamic objects menu as "Images: Gallery".
  */
 
 require_once ('apps/filemanager/lib/Functions.php');

@@ -68,7 +68,7 @@ style[callback] = "filemanager_style_list"
 
 [filemanager/audio]
 
-label = "Embedded Audio (MP3)"
+label = "Audio Player (MP3)"
 icon = headphones
 acl = filemanager
 
@@ -77,7 +77,7 @@ file[type] = file
 
 [filemanager/video]
 
-label = "Embedded Video (MP4)"
+label = "Video Player (MP4)"
 icon = video-camera
 acl = filemanager
 
@@ -86,7 +86,7 @@ file[type] = file
 
 [filemanager/swf]
 
-label = "Embedded Flash (SWF)"
+label = "Flash Player (SWF)"
 icon = flash
 acl = filemanager
 

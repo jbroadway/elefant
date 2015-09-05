@@ -5,7 +5,7 @@
  *
  * Usage:
  *
- * 1. Load this handler either in your handler:
+ * ### 1. Load this handler either in your handler:
  *
  *     $this->run ('filemanager/util/browser');
  *
@@ -13,7 +13,7 @@
  *
  *      {! filemanager/util/browser !}
  *
- * 2. Use the $.filebrowser() function to open the dialog window:
+ * ### 2. Use the $.filebrowser() function to open the dialog window:
  *
  *      $.filebrowser ({
  *          allowed: ['jpg', 'jpeg', 'png', 'gif'],
@@ -27,14 +27,14 @@
  *
  * Options:
  *
- * - allowed:   An array of allowed file extensions.
- * - callback:  A function to call with the chosen file link.
- * - set_value: The selector of an input field to update with the
+ * - `allowed`   - An array of allowed file extensions.
+ * - `callback`  - A function to call with the chosen file link.
+ * - `set_value` - The selector of an input field to update with the
  *   chosen file link.
- * - thumbs:    Whether to show thumbnails instead of file names.
+ * - `thumbs`    - Whether to show thumbnails instead of file names.
  *   Note: also automatically sets allowed list to jpeg, png, and
  *   gif formats so you don't have to set allowed explicitly.
- * - title:     A custom title for the dialog window.
+ * - `title`     - A custom title for the dialog window.
  */
 
 echo $this->run ('admin/util/modal');

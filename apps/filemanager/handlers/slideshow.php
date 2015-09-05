@@ -1,16 +1,17 @@
 <?php
 
 /**
- * Slideshow embed handler. Creates a slideshow of the images from the
- * specified folder. Used by the WYSIWYG editor's dynamic objects menu,
- * or manually via:
+ * Creates a slideshow of the images from the specified folder.
+ *
+ * Found in the WYSIWYG editor's dynamic objects menu as "Images: Slideshow",
+ * or add this to a template:
  *
  *     {! filemanager/slideshow?path=foldername !}
  *
  * The `foldername` is a folder of images inside `/files/` or the directory set
  * by the 'filemanager_path' option in your config file.
  *
- *  * Alternatively, it can be used via:
+ *  * Alternatively, it can be used via this template tag:
  *
  *      {! filemanager/slideshow?files=filelist&name=idsuffix !}
  *
@@ -20,7 +21,7 @@
  * by `|` or a glob pattern like 'stuff/*_light.jpg'.
  * `idsuffix` will be appended to the CSS id of the slideshow.
  *
-* To set the transition speed in milliseconds add a `speed`
+ * To set the transition speed in milliseconds add a `speed`
  * parameter in the form `SPEED`
  *
  * To set the photo ratio, add a `ratio`

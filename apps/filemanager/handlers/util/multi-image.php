@@ -2,11 +2,11 @@
 
 /**
  * Provides a multi-image selector based on the image browser
- * from filemanager/util/browser.
+ * from [filemanager/util/browser](/helper/filemanager/util/browser).
  *
  * Usage:
  *
- * 1. Load this handler either in your handler:
+ * ### 1. Load this handler either in your handler:
  *
  *     $this->run ('filemanager/util/multi-image');
  *
@@ -14,7 +14,7 @@
  *
  *     {! filemanager/util/multi-image !}
  *
- * 2. Create the HTML elements for the input field and the
+ * ### 2. Create the HTML elements for the input field and the
  * preview area:
  *
  *     <p>
@@ -23,7 +23,7 @@
  *         <input type="hidden" name="images" id="images" />
  *     </p>
  *
- * 3. Use the $.multi_image() function to initialize the plugin:
+ * ### 3. Use the `$.multi_image()` function to initialize the plugin:
  *
  *     $.multi_image ({
  *         field: '#images',
@@ -37,8 +37,8 @@
  *
  * Options:
  *
- * - field:   The selector of an input field to update with the list.
- * - preview: The selector of an element to use to contain the list preview.
+ * - `field`   - The selector of an input field to update with the list.
+ * - `preview` - The selector of an element to use to contain the list preview.
  */
 
 echo $this->run ('filemanager/util/browser');
