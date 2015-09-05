@@ -6,4 +6,8 @@ twitter_id = ""
 
 [Facebook]
 
+[Admin]
+
+name = Social
+
 ; */ ?>
