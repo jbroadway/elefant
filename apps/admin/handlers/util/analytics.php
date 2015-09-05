@@ -7,7 +7,7 @@
  *
  *     {! admin/util/analytics !}
  *
- * To set your Google Analytics ID, visit the [Site Settings](/admin/settings)
+ * To set your Google Analytics ID, visit the Site Settings
  * link in the admin toolbar.
  */
 
