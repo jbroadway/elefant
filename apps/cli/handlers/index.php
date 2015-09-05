@@ -43,6 +43,7 @@ Commands:
   <info>clear-cache</info>                           Clear the cache and compiled templates
   <info>clear-cache <key></info>                     Clear a particular cached object
   <info>list-helpers</info>                          List available server-side helpers
+  <info>helper-docs <helper></info>                  Show documentation for a helper
   <info>generate-key</info>                          Generate a random 32 character key
   <info>generate-password <length(8)></info>         Generate a random password
   <info>encrypt-password <password></info>           Encrypt a password for the db
