@@ -94,6 +94,8 @@
 
 /* remove padding */
 .e-no-padding { padding: 0; }
+.e-no-padding-left { padding-left: 0; }
+.e-no-padding-right { padding-right: 0; }
 
 /* desktop */
 @media (min-width: 992px) {
