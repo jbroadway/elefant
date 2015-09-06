@@ -1,8 +1,21 @@
 <?php
 
 /**
- * Embeds facebook comments into the current page. Used by
- * the WYSIWYG editor's dynamic objects menu.
+ * Embeds facebook comments into the current page.
+ *
+ * In PHP code, call it like this:
+ *
+ *     echo $this->run ('social/facebook/comments');
+ *
+ * In a template, call it like this:
+ *
+ *     {! social/facebook/comments !}
+ *
+ * Parameters:
+ *
+ * - `url` - The URL to pull comments for (optional).
+ *
+ * Also available in the dynamic objects menu as "Facebook: Comments".
  */
 
 if (! isset (self::$called['social/facebook/init'])) {

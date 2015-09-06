@@ -1,8 +1,26 @@
 <?php
 
 /**
- * Embeds a twitter feed widget into the current page. Used by
- * the WYSIWYG editor's dynamic objects menu.
+ * Embeds a Twitter feed widget into the current page.
+ *
+ * In PHP code, call it like this:
+ *
+ *     echo $this->run ('social/twitter/feed', array ('twitter_id' => 'twitter_handle'));
+ *
+ * In a template, call it like this:
+ *
+ *     {! social/twitter/feed?twitter_id=twitter_handle !}
+ *
+ * Parameters:
+ *
+ * - `twitter_id` - The Twitter ID to show a feed of (default = Twitter ID setting).
+ * - `num_of_tweets` - Number of tweets to show (default = 5)
+ * - `show_dates` - Whether to show the tweet dates (default = no)
+ *
+ * Also available in the dynamic objects menu as "Twitter: Feed".
+ *
+ * > Note: Requires you to register a Twitter app, then enter your
+ * > Twitter app credentials on the Accounts > Settings screen.
  */
 
 if (! isset ($data['twitter_id'])) {

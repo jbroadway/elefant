@@ -1,8 +1,41 @@
 <?php
 
 /**
- * Embeds a Google map into the current page. Used by
- * the WYSIWYG editor's dynamic objects menu.
+ * Embeds a Google map into the current page.
+ *
+ * In PHP code, call it like this:
+ *
+ *     echo $this->run (
+ *         'social/google/maps',
+ *         array (
+ *             'address' => '123 Broadway',
+ *             'city' => 'New York',
+ *             'state' => 'NY',
+ *             'country' => 'USA',
+ *             'zip' => 10203
+ *         )
+ *     );
+ *
+ * In a template, call it like this:
+ *
+ *     {! social/google/maps?
+ *         ?address=123 Broadway
+ *         &city=New York
+ *         &state=NY
+ *         &country=USA
+ *         &zip=10203 !}
+ *
+ * Parameters:
+ *
+ * - `address` - Street address
+ * - `city` - City
+ * - `state` - State/province
+ * - `country` - Country
+ * - `zip` - Zip/postal code
+ * - `width` = Width of map (default=100%)
+ * - `height` = Height of map (default=400px)
+ *
+ * Also available in the dynamic objects menu as "Google: Map".
  */
 
 $data['map_id'] = rand ();

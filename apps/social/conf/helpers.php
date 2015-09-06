@@ -10,4 +10,5 @@ social/twitter/feed = 1
 social/twitter/follow = 1
 social/twitter/tweet = 1
 social/video/vimeo = 1
+social/video/vine = 1
 social/video/youtube = 1

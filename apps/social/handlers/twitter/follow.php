@@ -1,8 +1,21 @@
 <?php
 
 /**
- * Embeds a twitter Follow button into the current page. Used by
- * the WYSIWYG editor's dynamic objects menu.
+ * Embeds a Twitter Follow button into the current page.
+ *
+ * In PHP code, call it like this:
+ *
+ *     echo $this->run ('social/twitter/follow');
+ *
+ * In a template, call it like this:
+ *
+ *     {! social/twitter/follow !}
+ *
+ * Parameters:
+ *
+ * - `twitter_id` - The Twitter ID to follow (default = Twitter ID setting).
+ *
+ * Also available in the dynamic objects menu as "Twitter: Follow".
  */
 
 if (! isset (self::$called['social/twitter/init'])) {
