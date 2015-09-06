@@ -1,8 +1,21 @@
 <?php
 
 /**
- * Default log in handler. You can specify a `redirect` value
- * to send them to after logging in.
+ * Default log in handler.
+ *
+ * In PHP code, call it like this:
+ *
+ *     echo $this->run ('user/login');
+ *
+ * In a template, call it like this:
+ *
+ *     {! user/login !}
+ *
+ * Parameters:
+ *
+ * - `redirect` - A URL to redirect to upon successful login (default = `/user`)
+ *
+ * Also available in the dynamic objects menu as "User: Login".
  */
 
 // Check for a custom handler override
