@@ -232,7 +232,7 @@
 					}
 					break;
 				case 'matches':
-					if (value != $(options.form.elements[validator]).attr ('value')) {
+					if (value != $(options.form.elements[validator]).val ()) {
 						return _false;
 					}
 					break;
