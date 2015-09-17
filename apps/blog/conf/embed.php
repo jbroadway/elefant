@@ -46,8 +46,7 @@ icon = rss
 
 url[label] = RSS Link
 url[type] = text
-url[not empty] = 1
-url[regex] = "|^http://.+$|"
+url[url] = 1
 url[message] = Please enter a valid URL.
 
 [blog/postsfeed]
