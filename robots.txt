@@ -14,23 +14,14 @@
 
 User-agent: *
 Crawl-delay: 10
-# Directories
 Disallow: /apps/
-Disallow: /cache/
 Disallow: /conf/
-Disallow: /css/
-Disallow: /files/
-Disallow: /js/
-Disallow: /layouts/
 Disallow: /lib/
 Disallow: /tests/
-# Files
 Disallow: /LICENSE
 Disallow: /README.md
 Disallow: /elefant
-# Apps Paths
+Disallow: /nginx.conf
+Disallow: /phpunit.xml.dist
+Disallow: /composer.json
 Disallow: /admin/
-Disallow: /user/
-# Allow Twitterbot for card images
-User-agent: Twitterbot
-Allow: /files/
