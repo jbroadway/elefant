@@ -182,7 +182,7 @@ create table #prefix#apps (
 	version varchar(16) not null
 );
 
-insert into #prefix#apps (name, version) values ('elefant', '1.3.10');
+insert into #prefix#apps (name, version) values ('elefant', '1.3.11');
 insert into #prefix#apps (name, version) values ('blog', '1.1.4-stable');
 insert into #prefix#apps (name, version) values ('user', '1.1.5-stable');
 insert into #prefix#apps (name, version) values ('filemanager', '1.3.0-beta');
