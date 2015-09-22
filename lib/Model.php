@@ -188,6 +188,17 @@ class Model {
 	 * A list of fields that failed validation on the last `put()` call.
 	 */
 	public $failed = array ();
+	
+	/**
+	 * A display name for this class, for use in Elefant's version control,
+	 * and in the `admin/util/editbuttons` helper.
+	 */
+	public static $display_name = null;
+	
+	/**
+	 * A plural name for this class, for use in Elefant's version control.
+	 */
+	public static $plural_name = null;
 
 	/**
 	 * If `$vals` is false, we're creating a new object from scratch.
