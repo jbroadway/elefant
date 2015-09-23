@@ -15,6 +15,7 @@ RedactorPlugins.filebrowser = function () {
 		},
 	
 		open_dialog: function (button, el, self, evt) {
+			this.filebrowser.text = this.selection.getText ();
 			this.selection.save ();
 			$.filebrowser ({
 				callback: $.proxy (this.filebrowser.insert_file, this)
@@ -34,7 +35,11 @@ RedactorPlugins.filebrowser = function () {
 			} else if (file.match (/\.mp3$/i)) {
 				this.insert.htmlWithoutClean ('<span class="embedded" data-embed="filemanager/audio?file=' + file + '" data-label="Embedded Audio (MP3)" title="Click to edit."></span>');
 			} else {
-				var basename = file.match (/([^\/]+)$/)[1];
+				if (this.filebrowser.text !== undefined && this.filebrowser.text !== '') {
+					var basename = this.filebrowser.text;
+				} else {
+					var basename = file.match (/([^\/]+)$/)[1];
+				}
 				this.insert.html ('<a href="' + file + '">' + basename + '</a>');
 			}
 		}
