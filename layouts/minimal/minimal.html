@@ -1,0 +1,16 @@
+{% inc minimal/inc/head %}
+
+<div class="outer">
+
+{% inc minimal/inc/userbar %}
+{% inc minimal/inc/navbar %}
+
+{% if id == 'index' %}
+	{% inc minimal/inc/index %}
+{% else %}
+	{% inc minimal/inc/body %}
+{% end %}
+
+</div>
+
+{% inc minimal/inc/footer %}

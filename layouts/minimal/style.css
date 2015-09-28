@@ -1,0 +1,312 @@
+html, body {
+	width: 100% !important;
+	max-width: 100% !important;
+	overflow-x: hidden !important;
+}
+
+body {
+	background-color: #414042;
+	color: #414042;
+	font-size: 14px;
+	font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	line-height: 21px;
+}
+
+p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote, hr {
+	margin-top: 0;
+	margin-bottom: 0.8em;
+}
+
+ul, ol {
+	margin-left: 16px;
+}
+
+img {
+	border: 0;
+	max-width: 95%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Ubuntu Condensed', sans-serif;
+	text-transform: uppercase;
+	margin-bottom: 0.8em;
+}
+
+p, ul, ol {
+	margin-bottom: 0.8em;
+}
+
+a {
+	color: #414042;
+}
+
+a:hover {
+	color: #77787a;
+}
+
+img {
+	max-width: 100%;
+}
+
+table {
+	width: 100%;
+}
+
+	tr:nth-child(even) {
+		background-color: #eee;
+	}
+
+	th, td {
+		padding: 5px;
+		text-align: left;
+	}
+	
+	.fc-header tr:nth-child(odd),
+	.fc-content tr:nth-child(odd) {
+		background-color: inherit;
+	}
+
+.outer {
+	background-color: #fff;
+	border-top: 3px solid #414042;
+	position: relative;
+}
+
+#userbar {
+	position: relative;
+}
+
+	#userbar>div {
+		position: absolute;
+		top: 0;
+		right: 0;
+		text-align: right;
+		z-index: 10000;
+	}
+
+#header {
+	padding-top: 10px;
+	position: relative;
+}
+
+	#header>div {
+		padding-bottom: 0;
+	}
+	
+	#logo h1 {
+		margin-bottom: 0.2em;
+	}
+
+	#navbar {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		text-align: right;
+	}
+
+	#navbar ul {
+		list-style-type: none;
+		margin-left: 0;
+		padding-left: 0;
+		margin-bottom: 0;
+	}
+
+	#navbar li {
+		list-style-type: none;
+		margin-left: 0;
+		padding-left: 0;
+		display: inline;
+	}
+
+	#navbar ul a {
+		text-transform: uppercase;
+		text-decoration: none;
+		display: inline-block;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	
+	#navbar ul li:last-of-type a {
+		padding-right: 0;
+	}
+
+#index-photo {
+	padding: 0;
+	border-top: 5px solid #414042;
+}
+
+#body {
+	border-top: 5px solid #414042;
+}
+
+	#content {
+		padding: 25px 25px 20px 10px;
+	}
+
+#index-body .block {
+	text-align: center;
+	padding: 25px;
+}
+
+#sidebar {
+	padding: 25px;
+	background: #f2f3f3;
+}
+
+	#sidebar h3 {
+		text-align: center;
+		font-size: 2em;
+	}
+	
+	#sidebar ul,
+	#sidebar li {
+		list-style-type: none;
+		margin-left: 0;
+		padding-left: 0;
+		margin-bottom: 0.8em;
+	}
+	
+	.blog-post {
+		border-top: 3px solid #414042;
+		padding-top: 15px;
+	}
+	
+		.blog-post h3 {
+			font-size: 1.5em;
+			margin-bottom: 0;
+		}
+
+			.blog-info {
+				font-size: 0.8em;
+			}
+
+			.blog-post h3 a {
+				text-decoration: none;
+			}
+
+#footer {
+	background-color: #414042;
+	color: #fff;
+	text-align: center;
+	padding-bottom: 50px;
+}
+
+	#footer ul {
+		list-style-type: none;
+		margin-left: 0;
+		padding: 15px 0px 15px 0px;
+	}
+
+	#footer li {
+		list-style-type: none;
+		margin-left: 0;
+		padding-left: 0;
+		display: inline;
+	}
+
+	#footer ul a {
+		color: #fff;
+		text-decoration: none;
+		display: inline-block;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	
+	#footer a:hover {
+		color: #ddd;
+	}
+
+input, textarea {
+	padding: 5px;
+	border: 0;
+	font-size: 0.8em;
+	background-color: #f5f5f5;
+	border: 1px solid #aaa;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	outline: none;
+}
+
+input[type=submit],
+button {
+	background-color: #77787a;
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 0.8em;
+	padding: 5px 7px 5px 7px;
+	border: 1px solid #77787a;
+	cursor: pointer;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	outline: none;
+}
+
+@media (max-width: 991px) {
+	#index-photo img {
+		height: auto !important;
+	}
+}
+
+@media (max-width: 768px) {
+	#sidebar {
+		clear: both;
+		max-width: 100%;
+		width: 100%;
+	}
+	
+	.unit-33:last-of-type {
+		float: left;
+	}
+}
+
+@media (max-width: 480px) {
+	#userbar input[type=email],
+	#userbar input[type=password] {
+		width: 30%;
+	}
+	
+	#header {
+		clear: both;
+		padding-top: 120px;
+	}
+
+	#logo {
+		width: 50%;
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		padding-left: 10px;
+	}
+	
+		#logo img {
+			height: auto !important;
+		}
+	
+	#navbar {
+		position: relative;
+		float: right;
+		padding-right: 20px;
+	}
+
+	#navbar ul a {
+		width: 100%;
+		text-align: right;
+		padding-right: 0px;
+	}
+	
+	td {
+		display: block;
+		clear: both;
+		width: 100%;
+		padding: 0;
+		margin-bottom: 0.8em;
+	}
+}

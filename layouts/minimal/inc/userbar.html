@@ -1,0 +1,24 @@
+<div class="e-row" id="userbar">
+	<div class="e-col-60">
+{% if User::is_valid () %}
+		<p>
+			<a href="/user">{{User::val('name')}}</a>
+			&nbsp;|&nbsp;
+			<a href="/user/logout">{"Log out"}</a>
+		</p>
+{% else %}
+		<form method="post" action="/user/login">
+			<p>
+				<input type="email" name="username" placeholder="{"EMAIL"}" size="25" />
+				<input type="password" name="password" placeholder="{"PASSWORD"}" size="25" />
+				<input type="submit" value="{"Log in"}" />
+			</p>
+			<p>
+				<a href="/user/recover">{"Forgot your password?"}</a>
+				&nbsp;|&nbsp;
+				<a href="/user/signup">{"Sign up here"}</a>
+			</p>
+		</form>
+{% end %}
+	</div>
+</div>

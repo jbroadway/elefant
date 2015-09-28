@@ -1,0 +1,9 @@
+<div class="e-row" id="body">
+	<div class="e-col-75" id="content">
+		{% if title != '' %}<h1>{{ title|none }}</h1>{% end %}
+		{{ body|none }}
+	</div>
+	<div class="e-col-25" id="sidebar">
+		{! blocks/index?id=sidebar-[id]&fallback=members !}
+	</div>
+</div>
