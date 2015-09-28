@@ -172,7 +172,7 @@
 			'<a href="#" id="userchooser-add-link" class="clearfix">' + $.i18n ('Add Member') + '</a>' +
 			'<div id="userchooser-search">' +
 				'<form id="userchooser-form">' +
-					'<input type="text" name="userchooser-input" id="userchooser-input" size="30" />' +
+					'<input type="text" name="userchooser-input" id="userchooser-input" size="30" />&nbsp;' +
 					'<input type="submit" value="' + $.i18n ('Search') + '" />' +
 				'</form>' +
 			'</div>' +
