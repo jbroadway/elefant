@@ -23,7 +23,7 @@ default_handler = "admin/page"
 
 ; Default layout template (aka theme) to use for page rendering.
 
-default_layout = "default"
+default_layout = "minimal"
 
 ; Handler for errors, to be called by other handlers via
 ; $controller->error() with 'code', 'title' and an optional
