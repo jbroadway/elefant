@@ -2,6 +2,14 @@ body {
 	background: #f5f5f5;
 	color: #333;
 	padding-top: 0px !important;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 21px;
+}
+
+p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote, hr {
+	margin-top: 0;
+	margin-bottom: 0.8em;
 }
 
 a {
@@ -28,6 +36,7 @@ h4 {
 
 table {
 	empty-cells: show;
+	border-collapse: collapse;
 }
 
 	table tr:hover {
@@ -39,6 +48,7 @@ table {
 			border-bottom: 1px solid #666;
 			font-weight: bold;
 			background: #f5f5f5;
+			text-align: left;
 		}
 
 		table tr th select,
@@ -266,7 +276,6 @@ tt {
 		float: left;
 		width: 16px;
 		height: 20px;
-		margin-top: 3px;
 		padding-right: 5px;
 		background-image: url(admin/arrow-down.png);
 		background-repeat: no-repeat;
@@ -623,6 +632,15 @@ span.dynamic-fileManager {
 		color: #B347AF;
 		font-style: italic;
 		margin-right: -3px;
+	}
+	
+	#title {
+		padding: 0;
+	}
+	
+	#title h2 {
+		padding: 10px;
+		margin-bottom: 0;
 	}
 
 #footer {

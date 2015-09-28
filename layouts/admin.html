@@ -4,9 +4,7 @@
 	<title>{{ Product::name() }} - {{ window_title|none }}</title>
 	<meta charset="{{ i18n.charset }}" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-	<link rel="stylesheet" type="text/css" href="/apps/admin/css/reset.css" />
-	<link rel="stylesheet" type="text/css" href="/apps/admin/css/text.css" />
-	<link rel="stylesheet" type="text/css" href="/apps/admin/css/960.css" />
+	{! admin/util/minimal-grid !}
 	<link rel="stylesheet" type="text/css" href="{{ Product::stylesheet() }}" />
 	<script>var elefant_focus_input = true;</script>
 	{! admin/head !}
@@ -15,18 +13,18 @@
 <body data-admin-last-page="{{ isset ($_COOKIE['elefant_last_page']) ? $_COOKIE['elefant_last_page'] : '' }}"
       class="is-admin page-{{id}}">
 <div id="wrapper">
-	<div class="section section-title container_12">
-		<div id="title" class="grid_12">
+	<div class="section section-title e-row">
+		<div id="title" class="e-col-100">
 			{% if title != '' %}<h2>{{ title|none }}</h2>{% end %}
 		</div>
 	</div>
-	<div class="section section-body container_12">
-		<div id="body" class="grid_12">
+	<div class="section section-body e-row">
+		<div id="body" class="e-col-100">
 			{{ body|none }}
 		</div>
 	</div>
-	<div class="section section-footer container_12">
-		<div id="footer" class="grid_12">
+	<div class="section section-footer e-row">
+		<div id="footer" class="e-col-100">
 			{"Powered by"} <a href="{{ Product::website() }}">{{ Product::name() }} {{ constant('ELEFANT_VERSION') }}</a>
 		</div>
 	</div>

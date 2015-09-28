@@ -5,7 +5,7 @@
 #filemanager-dropzone {
 	height: 100%;
 	border: 2px dashed #e5e5e5;
-	margin: -8px 0px -8px 0px;
+	margin: -8px 0px 1em 0px;
 	padding: 16px 0px 16px 16px;
 }
 
@@ -20,7 +20,7 @@
 		color: #e5e5e5;
 		font-size: 48px;
 		float: right;
-		margin-top: -46px;
+		margin-top: -21px;
 		padding-right: 16px;
 	}
 
