@@ -1,15 +1,17 @@
-<p class="autosave-notice">{"Auto-saved data found."} <a href="#" class="autosave-restore">{"Click to restore."}</a></p>
+<p class="autosave-notice autosave-add">{"Auto-saved data found."} <a href="#" class="autosave-restore">{"Click to restore."}</a></p>
 
 <form method="POST" id="add-form">
+
 <p id="buttons">
 	<span class="notice" id="body-notice">&nbsp; {"You must enter body content."}</span>
 	<input type="submit" value="{"Create Layout"}" class="autosave-clear" />&nbsp;
 	<a href="javascript:history.go(-1)" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
 </p>
 
-<p id="name"><strong>{"New Layout"}</strong> (ex: <tt>layouts/<strong>name</strong>.html</tt>): <input type="text" name="name" id="name-field" size="40" value="{{ name }}" /></p>
+<p id="name"><strong>{"New Layout Name"}</strong>: <input type="text" name="name" id="name-field" size="30" value="{{ name }}" placeholder="theme/name" /></p>
 <span class="notice" id="name-notice1">{"Please enter a name for your layout."}</span>
 <span class="notice" id="name-notice2">{"Your name must be alphanumeric and not a duplicate of an existing layout."}</span>
+
 <div id="layout">
 <div id="tags">{"Insert tag"}:&nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '{ var }}', _codemirror.getCursor (true)); return false">{<span></span>{ var }}</a> &nbsp;
@@ -18,9 +20,11 @@
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '! app/handler !}', _codemirror.getCursor (true)); return false">{<span></span>! handler !}</a> &nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{&quot; text &quot;}', _codemirror.getCursor (true)); return false">{<span></span>" text "}</a></div>
 <textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea>
+
 <div class="preview">{"Preview"}:</div>
 <iframe src="/designer/preview" id="preview" frameborder="0" width="1022" height="300" style="border: 1px solid #ccc"></iframe>
 </div>
+
 </form>
 
 <link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/lib/codemirror.css" />
@@ -89,8 +93,8 @@ $(function () {
 	{% end %}
 
 	// increase editor and preview height if window is tall enough
-	$('.CodeMirror').height ($(window).height () / 2 - 45);
-	$('#preview').height ($(window).height () / 2 - 65);
+	$('.CodeMirror').height ($(window).height () / 2 - 60);
+	$('#preview').height ($(window).height () / 2 - 80);
 	$('html,body').css ({overflow: 'hidden'});
 
 	$('#add-form').autosave ();

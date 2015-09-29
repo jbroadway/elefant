@@ -10,16 +10,19 @@
 	margin-top: 5px;
 	margin-left: -32px;
 }
-#body h2 {
-	font-size: 13px;
-	margin-top: 6px;
-	margin-bottom: 23px;
-}
 form {
-	margin-top: -48px;
+	position: absolute;
+	display: block;
+	left: 0px;
+	top: 0px;
 }
-#layout {
-	position: relative;
+#name {
+	margin-top: 3px;
+	margin-bottom: 0px;
+}
+.body {
+	position: relative !important;
+	margin-top: 0 !important;
 }
 #tags {
 	position: absolute;
@@ -39,18 +42,20 @@ form {
 	padding-left: 3px;
 }
 .autosave-notice {
-	float: right;
-	margin-right: 303px;
-	margin-top: -46px;
+	position: absolute;
+	top: -4px;
+	left: 400px;
+	z-index: 25;
 }
-form br {
+#buttons {
+	float: right;
+	margin-right: 0px;
+}
+br.preview {
 	display: none;
 }
 #footer {
 	display: none;
-}
-.preview {
-	margin-top: 6px;
 }
 .CodeMirror {
 	position: absolute;
@@ -60,4 +65,7 @@ form br {
 	background: #fff;
 	width: 1022px;
 	height: 240px;
+}
+.preview {
+	margin-top: 3px;
 }

@@ -6,6 +6,8 @@
 
 $this->require_admin ();
 
+$this->run ('admin/util/i18n');
+
 $page->title = __ ('Page title');
 $page->preview = true;
 $page->layout = false;
@@ -39,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 
 if ($page->layout === false) {
-	$page->layout = file_get_contents ('layouts/default.html');
+	$page->layout = conf ('General', 'default_layout');
 }
 
 echo '<p>' . __ ('This is a preview of how your layout will look.') . '</p>';

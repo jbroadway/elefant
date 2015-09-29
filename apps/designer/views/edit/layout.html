@@ -1,13 +1,16 @@
-<p class="autosave-notice">{"Auto-saved data found."} <a href="#" class="autosave-restore">{"Click to restore."}</a></p>
+<p class="autosave-notice autosave-edit">{"Auto-saved data found."} <a href="#" class="autosave-restore">{"Click to restore."}</a></p>
 
 <form method="POST" id="edit-form">
-<p style="text-align: right; margin-bottom: 2px; margin-top: -20px">
+
+<p id="buttons">
 	<span class="notice" id="body-notice">&nbsp; {"You must enter body content."}</span>
 	<span id="bgsave-status"></span>
 	<input type="submit" value="{"Save Layout"}" class="autosave-clear" />&nbsp;
 	<input type="submit" value="{"Save &amp; Keep Editing"}" id="bgsave" />&nbsp;
 	<a href="/admin/cancel?type=Designer&id={{ file|urlencode }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
 </p>
+
+<p id="name"><strong>{"Edit Layout"}: {{file}}</strong></p>
 
 <div id="layout">
 <div id="tags">{"Insert tag"}:&nbsp;
@@ -17,9 +20,11 @@
 	<a href="#" onclick="_codemirror.replaceRange ('{' + '! app/handler !}', _codemirror.getCursor (true)); return false">{<span></span>! handler !}</a> &nbsp;
 	<a href="#" onclick="_codemirror.replaceRange ('{&quot; text &quot;}', _codemirror.getCursor (true)); return false">{<span></span>" text "}</a></div>
 <textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea>
+
 <div class="preview">{"Preview"}:</div>
 <iframe src="/designer/preview?layout={{ $_GET.file }}" id="preview" frameborder="0" width="1022" height="300" style="border: 1px solid #ccc"></iframe>
 </div>
+
 </form>
 
 <link rel="stylesheet" type="text/css" href="/apps/designer/js/codemirror/lib/codemirror.css" />
@@ -73,8 +78,8 @@ $(function () {
 	{% end %}
 
 	// increase editor and preview height if window is tall enough
-	$('.CodeMirror').height ($(window).height () / 2 - 65);
-	$('#preview').height ($(window).height () / 2 - 65);
+	$('.CodeMirror').height ($(window).height () / 2 - 60);
+	$('#preview').height ($(window).height () / 2 - 80);
 	$('html,body').css ({overflow: 'hidden'});
 
 	$('#edit-form').autosave ();

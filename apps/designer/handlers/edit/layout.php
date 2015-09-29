@@ -35,7 +35,7 @@ if ($f->submit ()) {
 	$page->title = __ ('Saving Layout Failed');
 	echo '<p>' . __ ('Check that your permissions are correct and try again.') . '</p>';
 } else {
-	$page->title = __ ('Edit Layout') . ': ' . $_GET['file'];
+	$page->window_title = __ ('Edit Layout') . ': ' . Template::sanitize ($_GET['file']);
 }
 
 $o = new StdClass;
@@ -44,6 +44,7 @@ $o->body = @file_get_contents ($_GET['file']);
 
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);
-$page->add_script ('/apps/designer/css/edit_layout.css');
+$this->run ('admin/util/i18n');
+$page->add_script ('/apps/designer/css/layout.css');
 $page->add_script ('/apps/designer/js/jquery.bindWithDelay.js');
 echo $tpl->render ('designer/edit/layout', $o);

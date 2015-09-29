@@ -35,7 +35,7 @@ if ($f->submit ()) {
 	$page->title = __ ('Saving Stylesheet Failed');
 	echo '<p>' . __ ('Check that your permissions are correct and try again.') . '</p>';
 } else {
-	$page->title = __ ('Edit Stylesheet') . ': ' . $_GET['file'];
+	$page->window_title = __ ('Edit Stylesheet') . ': ' . Template::sanitize ($_GET['file']);
 }
 
 $o = new StdClass;
@@ -59,6 +59,7 @@ if (is_array ($files)) {
 
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);
-$page->add_script ('/apps/designer/css/edit_stylesheet.css');
+$this->run ('admin/util/i18n');
+$page->add_script ('/apps/designer/css/stylesheet.css');
 $page->add_script ('/apps/designer/js/jquery.bindWithDelay.js');
 echo $tpl->render ('designer/edit/stylesheet', $o);

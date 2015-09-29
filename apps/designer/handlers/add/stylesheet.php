@@ -57,5 +57,6 @@ if (is_array ($files)) {
 
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);
-$page->add_script ('/apps/designer/css/add_stylesheet.css');
+$this->run ('admin/util/i18n');
+$page->add_script ('/apps/designer/css/stylesheet.css');
 echo $tpl->render ('designer/add/stylesheet', $o);

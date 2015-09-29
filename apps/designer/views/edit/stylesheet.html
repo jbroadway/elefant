@@ -1,4 +1,4 @@
-<p class="autosave-notice">{"Auto-saved data found."} <a href="#" class="autosave-restore">{"Click to restore."}</a></p>
+<p class="autosave-notice autosave-edit">{"Auto-saved data found."} <a href="#" class="autosave-restore">{"Click to restore."}</a></p>
 
 <form method="POST" id="edit-form">
 <p id="buttons">
@@ -9,8 +9,11 @@
 	<a href="/admin/cancel?type=Designer&id={{ file|urlencode }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
 </p>
 
+<p id="name"><strong>{"Edit Stylesheet"}: {{file}}</strong></p>
+
 <div class="body">
 <textarea name="body" id="code-body" cols="90" rows="28">{{ body }}</textarea>
+
 <div class="preview">{"Preview with layout"}: <select name="layout" id="layout">
 {% foreach layouts %}
 	<option value="{{ loop_value }}"{% if $data->loop_value == conf('General', 'default_layout') %} selected{% end %}>{{ loop_value }}</option>
@@ -68,8 +71,8 @@ $(function () {
 	{% end %}
 
 	// increase editor and preview height if window is tall enough
-	$('.CodeMirror').height ($(window).height () / 2 - 45);
-	$('#preview').height ($(window).height () / 2 - 60);
+	$('.CodeMirror').height ($(window).height () / 2 - 60);
+	$('#preview').height ($(window).height () / 2 - 80);
 	$('html,body').css ({overflow: 'hidden'});
 	/*if ($(window).height () > 768) {
 		var height_diff = $(window).height () - 768;

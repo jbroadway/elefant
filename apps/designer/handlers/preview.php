@@ -6,6 +6,8 @@
 
 $this->require_admin ();
 
+$this->run ('admin/util/i18n');
+
 $page->title = __ ('Page title');
 $page->preview = true;
 

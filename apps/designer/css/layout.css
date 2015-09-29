@@ -22,6 +22,7 @@ form {
 }
 #layout {
 	position: relative;
+	margin-top: 0;
 }
 #tags {
 	position: absolute;
@@ -42,8 +43,8 @@ form {
 }
 .autosave-notice {
 	position: absolute;
-	top: 2px;
-	left: 610px;
+	top: -4px;
+	left: 400px;
 	z-index: 25;
 }
 #buttons {
@@ -58,10 +59,13 @@ br.preview {
 }
 .CodeMirror {
 	position: absolute;
-	top: -12px;
+	top: 17px;
 	left: 0;
 	border: 1px solid #ccc;
 	background: #fff;
 	width: 1022px;
 	height: 240px;
+}
+.preview {
+	margin-top: 20px;
 }
