@@ -73,7 +73,7 @@
   font-size: .85em;
 }
 .jGrowl-notification .jGrowl-close {
-  background-color: transparent;
+  background-color: transparent !important;
   color: inherit;
   border: none;
   z-index: 99;
