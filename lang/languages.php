@@ -20,6 +20,15 @@ charset                 = UTF-8
 fallback                = Off
 default                 = On
 
+[es]
+
+name                    = Español
+code                    = es
+locale                  = Off
+charset                 = UTF-8
+fallback                = Off
+default                 = Off
+
 [fr]
 
 name                    = "Français"
