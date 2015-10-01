@@ -1,38 +1,77 @@
 <?php
 
+// keep unauthorized users out
+$this->require_acl ('admin', $this->app);
+
+// set the layout
 $page->layout = 'admin';
 
-$this->require_admin ();
+// get the version and check if the app installed
+$version = Appconf::get ($this->app, 'Admin', 'version');
+$current = $this->installed ($this->app, $version);
 
-if ($this->installed ('filemanager', $appconf['Admin']['version']) === true) {
-	$page->title = __ ('Upgrade completed');
-	echo '<p><a href="/filemanager/index">' . __ ('Continue') . '</a></p>';
-	return;
+if ($current === true) {
+    // app is already installed and up-to-date, stop here
+    $page->title = __ ('Already up-to-date');
+    printf ('<p><a href="/%s">%s</a>', Appconf::get ($this->app, 'Admin', 'handler'), __ ('Home'));
+    return;
 }
 
-$page->title = __ ('Upgrading Files App');
+$page->title = sprintf (
+    '%s: %s',
+    __ ('Upgrading App'),
+    Appconf::get ($this->app, 'Admin', 'name')
+);
 
-$db = DB::get_connection (1);
-$dbtype = $db->getAttribute (PDO::ATTR_DRIVER_NAME);
-switch ($dbtype) {
-	case 'mysql':
-		DB::execute ('create table #prefix#filemanager_prop (
-			file char(128) not null primary key,
-			prop char(32) not null,
-			value char(255) not null,
-			index (prop);
-		)');
-		break;
-	case 'pgsql':
-	case 'sqlite':
-		DB::execute ('create table #prefix#filemanager_prop (
-			file char(128) not null primary key,
-			prop char(32) not null,
-			value char(255) not null
-		)');
-		DB::execute ('create index #prefix#filemanager_prop_name on #prefix#filemanager_prop (prop)');
-		break;
+// grab the database driver
+$conn = conf ('Database', 'master');
+$driver = $conn['driver'];
+
+// get the base new version and current version for comparison
+$base_version = preg_replace ('/-.*$/', '', $version);
+$base_current = preg_replace ('/-.*$/', '', $current);
+
+// find upgrade scripts to apply
+$files = glob ('apps/' . $this->app . '/conf/upgrade_*_' . $driver . '.sql');
+$apply = array ();
+foreach ($files as $k => $file) {
+    if (preg_match ('/^apps\/' . $this->app . '\/conf\/upgrade_([0-9.]+)_' . $driver . '\.sql$/', $file, $regs)) {
+        if (version_compare ($regs[1], $base_current, '>') && version_compare ($regs[1], $base_version, '<=')) {
+            $apply[$regs[1]] = $file;
+        }
+    }
 }
-echo '<p>' . __ ('Done.') . '</p>';
 
-$this->mark_installed ('filemanager', $appconf['Admin']['version']);
+// begin the transaction
+DB::beginTransaction ();
+
+// apply the upgrade scripts
+foreach ($apply as $ver => $file) {
+    // parse the database schema into individual queries
+    $sql = sql_split (file_get_contents ($file));
+
+    // execute each query in turn
+    foreach ($sql as $query) {
+        if (! DB::execute ($query)) {
+            // show error and rollback on failures
+            printf (
+                '<p>%s</p><p class="visible-notice">%s: %s</p>',
+                __ ('Upgrade failed on version %s. Rolling back changes.', $ver),
+                __ ('Error'),
+                DB::error ()
+            );
+            DB::rollback ();
+            return;
+        }
+    }
+
+    // add any custom upgrade logic here
+}
+
+// commit the transaction
+DB::commit ();
+
+// mark the new version installed
+$this->mark_installed ($this->app, $version);
+
+printf ('<p><a href="/%s">%s</a>', Appconf::get ($this->app, 'Admin', 'handler'), __ ('Done.'));
