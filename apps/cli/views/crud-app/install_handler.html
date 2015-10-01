@@ -14,7 +14,7 @@ $current = $this->installed ($this->app, $version);
 if ($current === true) {
     // app is already installed and up-to-date, stop here
     $page->title = __ ('Already installed');
-    printf ('<p><a href="/%s/admin">%s</a>', $this->app, __ ('Continue'));
+    printf ('<p><a href="/%s">%s</a>', Appconf::get ($this->app, 'Admin', 'handler'), __ ('Continue'));
     return;
 
 } elseif ($current !== false) {
@@ -42,10 +42,10 @@ foreach ($sql as $query) {
     if (! DB::execute ($query)) {
         // show error and rollback on failures
         printf (
-            '<p class="visible-notice">%s: %s</p><p>%s</p>',
+            '<p>%s</p><p class="visible-notice">%s: %s</p>',
+            __ ('Install failed.'),
             __ ('Error'),
-            DB::error (),
-            __ ('Install failed.')
+            DB::error ()
         );
         DB::rollback ();
         return;
@@ -56,4 +56,4 @@ foreach ($sql as $query) {
 DB::commit ();
 $this->mark_installed ($this->app, $version);
 
-printf ('<p><a href="/%s/admin">%s</a></p>', $this->app, __ ('Done.'));
+printf ('<p><a href="/%s">%s</a>', Appconf::get ($this->app, 'Admin', 'handler'), __ ('Done.'));
