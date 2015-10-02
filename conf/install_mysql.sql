@@ -155,7 +155,7 @@ create table #prefix#apps (
 	version char(16) not null
 ) default charset=utf8;
 
-insert into #prefix#apps (name, version) values ('elefant', '1.3.11');
+insert into #prefix#apps (name, version) values ('elefant', '1.3.12');
 insert into #prefix#apps (name, version) values ('blog', '1.1.4-stable');
 insert into #prefix#apps (name, version) values ('user', '1.1.5-stable');
 insert into #prefix#apps (name, version) values ('filemanager', '1.3.0-beta');
