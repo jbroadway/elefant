@@ -180,7 +180,7 @@
 			if ($(this).attr ('type') == 'radio') {
 				value = '';
 				for (var i = 0; i < this.length; i++) {
-					var attr = $(this[i]).attr ('checked');
+					var attr = $(this[i]).is (':checked');
 					if (typeof attr !== 'undefined' && attr !== false) {
 						value = $(this[i]).attr ('value');
 						break;
@@ -190,7 +190,7 @@
 				value = '';
 				var sep = '';
 				for (var i = 0; i < this.length; i++) {
-					var attr = $(this[i]).attr ('checked');
+					var attr = $(this[i]).is (':checked');
 					if (typeof attr !== 'undefined' && attr !== false) {
 						value += sep + $(this[i]).attr ('value');
 						sep = ', ';
