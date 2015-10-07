@@ -218,7 +218,10 @@ table {
 		color: #ddd;
 	}
 
-input, textarea {
+input[type=text],
+input[type=email],
+input[type=password],
+textarea {
 	padding: 5px;
 	border: 0;
 	font-size: 0.8em;
