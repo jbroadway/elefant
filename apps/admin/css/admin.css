@@ -13,7 +13,7 @@ body {
 	line-height: 21px;
 }
 
-p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote, hr {
+p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote, hr, table {
 	margin-top: 0;
 	margin-bottom: 0.8em;
 }
