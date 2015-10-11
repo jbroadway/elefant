@@ -36,6 +36,14 @@ h4 {
 	border-bottom: 1px solid #ccc;
 }
 
+h5 {
+	font-size: 15px;
+}
+
+h6 {
+	font-size: 14px;
+}
+
 /**
  * Table styles
  */
