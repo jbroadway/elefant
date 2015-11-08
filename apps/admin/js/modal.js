@@ -1,6 +1,10 @@
 $(function () {
 	// n is the topmost dialog
 	var n = 0;
+	
+	// take the default overflow at the outset, in case another
+	// script modifies it dynamically
+	var default_overflow = $('html').css ('overflow');
 
 	// create the html a new modal dialog
 	function new_modal () {
@@ -44,9 +48,7 @@ $(function () {
 				self.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
 			];
 
-		html.data ('scroll-pos', scrollpos)
-			.data ('prev-overflow', html.css ('overflow'))
-			.css ('overflow', 'hidden');
+		html.data ('scroll-pos', scrollpos).css ('overflow', 'hidden');
 
 		window.scrollTo (scrollpos[0], scrollpos[1]);
 	}
@@ -56,7 +58,7 @@ $(function () {
 		var html = $('html'),
 			scrollpos = html.data ('scroll-pos');
 
-		html.css ('overflow', html.data ('prev-overflow'));
+		html.css ('overflow', default_overflow);
 		window.scrollTo (scrollpos[0], scrollpos[1]);
 	}
 
