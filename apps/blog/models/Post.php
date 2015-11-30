@@ -110,6 +110,10 @@ class Post extends \ExtendedModel {
 	 */
 	public static function tagged ($tag, $limit = 10, $offset = 0) {
 		$ids = \DB::shift_array ('select post_id from #prefix#blog_post_tag where tag_id = ?', $tag);
+
+		if (! is_array ($ids) || count ($ids) === 0) {
+			return array ();
+		}
 		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
 	}
 
@@ -118,6 +122,11 @@ class Post extends \ExtendedModel {
 	 */
 	public static function count_by_tag ($tag, $limit = 10, $offset = 0) {
 		$ids = \DB::shift_array ('select post_id from #prefix#blog_post_tag where tag_id = ?', $tag);
+
+		if (! is_array ($ids) || count ($ids) === 0) {
+			return array ();
+		}
+
 		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->count ();
 	}
 
@@ -126,6 +135,11 @@ class Post extends \ExtendedModel {
 	 */
 	public static function archive ($year, $month, $limit = 10, $offset = 0) {
 		$ids = \DB::shift_array ('select id from #prefix#blog_post where year(ts) = ? and month(ts) = ? and published = "yes"', $year, $month);
+		
+		if (! is_array ($ids) || count ($ids) === 0) {
+			return array ();
+		}
+
 		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
 	}
 
@@ -134,6 +148,11 @@ class Post extends \ExtendedModel {
 	 */
 	public static function count_by_month ($year, $month, $limit = 10, $offset = 0) {
 		$ids = \DB::shift_array ('select id from #prefix#blog_post where year(ts) = ? and month(ts) = ? and published = "yes"', $year, $month);
+		
+		if (! is_array ($ids) || count ($ids) === 0) {
+			return array ();
+		}
+
 		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->count ();
 	}
 
