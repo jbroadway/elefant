@@ -24,6 +24,27 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue ($this->c->clean ('/foo'));
 		$this->assertFalse ($this->c->clean ('/../foo'));
 	}
+	
+	function test_data () {
+		$valid = array ('width' => 500, 'email' => 'joe@example.com');
+		$invalid = array ('width' => '...', 'email' => 'joe');
+		
+		$this->c->data ($valid);
+		$this->assertEquals ($this->c->data ('width'), 500);
+		$this->assertEquals ($this->c->data ('email'), 'joe@example.com');
+
+		$this->assertEquals ($this->c->data ('nonexistant'), null);
+		$this->assertEquals ($this->c->data ('nonexistant', 'default'), 'default');
+
+		$this->c->data ($invalid);
+		$this->assertEquals ($this->c->data ('width'), '...');
+		$this->assertEquals ($this->c->data ('width', 500), '...');
+		$this->assertEquals ($this->c->data ('width', 500, array ('type' => 'numeric')), 500);
+
+		$this->assertEquals ($this->c->data ('email'), 'joe');
+		$this->assertEquals ($this->c->data ('email', 'joe@example.com'), 'joe');
+		$this->assertEquals ($this->c->data ('email', 'joe@example.com', array ('email' => 1)), 'joe@example.com');
+	}
 
 	function test_add_param () {
 		$this->c->params = array ();

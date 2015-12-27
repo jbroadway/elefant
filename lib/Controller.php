@@ -439,6 +439,36 @@ class Controller {
 		$keys = func_get_args ();
 		return array_combine ($keys, $this->params);
 	}
+	
+	/**
+	 * Returns the specified `$data` element, or a default value.
+	 * You can also specify a list of validations. If the validations
+	 * fail, the default is returned (uses the Validator class).
+	 *
+	 * Full usage:
+	 *
+	 *     $width = $this->data ('width', 500, ['type' => 'numeric']);
+	 */
+	public function data ($key, $default = null, $validations = array ()) {
+		if (is_array ($key)) {
+			$this->data = $key;
+			return;
+		}
+		
+		if (! isset ($this->data[$key])) {
+			return $default;
+		}
+
+		$value = $this->data[$key];
+		
+		foreach ($validations as $type => $validator) {
+			if (! Validator::validate ($value, $type, $validator)) {
+				return $default;
+			}
+		}
+		
+		return $value;
+	}
 
 	/**
 	 * Execute the request handler. $internal determines whether the
@@ -463,7 +493,7 @@ class Controller {
 		// Set the handler data
 		$this->internal = $internal;
 		$data = (array) $data;
-		$this->data = $data;
+		$this->data ($data);
 
 		if (! in_array ($this->app, self::$loaded)) {
 			// Load app-specific language files on first call to app
