@@ -12,6 +12,24 @@ $page->title = __ ('Blogger importer');
 $f = new Form ('post');
 
 if ($f->submit ()) {
+	set_time_limit (0);
+	if (! is_dir ('files/imported')) {
+		mkdir ('files/imported', 0777);
+	}
+	
+	// download files from external site into files/imported
+	function blog_import_blogger_fix_links ($matches) {
+		$url = $matches[1];
+		$file = 'files/imported/' . trim (str_replace ('/', '-', $matches[2] . $matches[3]), '-');
+		$file = urldecode ($file);
+		$file = str_replace ('+', '-', $file);
+		if (! file_exists ($file)) {
+			file_put_contents ($file, fetch_url ($url));
+			chmod ($file, 0666);
+		}
+		return '"/' . $file . '"';
+	}
+
 	if (move_uploaded_file ($_FILES['import_file']['tmp_name'], 'cache/blog_' . $_FILES['import_file']['name'])) {
 		$file = 'cache/blog_' . $_FILES['import_file']['name'];
 		
@@ -27,12 +45,30 @@ if ($f->submit ()) {
 				if (strpos ($entry->id, '.layout') !== false) {
 					continue;
 				}
+				if (count ($entry->category) > 0) {
+					$pos = strpos ($entry->category[0]->attributes ()->term, '#comment');
+					if ($pos !== false) {
+						continue;
+					}
+				}
+
+				$body = $entry->content;
+				$body = preg_replace_callback (
+					'/"(https?:\/\/.*?\.blogspot\.com\/[^\s"<>]+?\/([^\s"<>\/]+?\.)(jpg|png|gif))"/i',
+					'blog_import_blogger_fix_links',
+					$body
+				);
+				
+				$ts = explode ('.', $entry->published);
+				$ts = array_shift ($ts);
+				$ts = str_replace ('T', ' ', $ts);
+
 				$post = array (
 					'title' => (string) $entry->title,
 					'author' => (string) $entry->author->name,
-					'ts' => str_replace ('T', ' ', array_shift (explode ('.', $entry->published))),
+					'ts' => $ts,
 					'published' => $_POST['published'],
-					'body' => $entry->content,
+					'body' => $body,
 					'tags' => ''
 				);
 				if (count ($entry->category) > 1) {
