@@ -91,10 +91,15 @@ if (isset ($data['path']) or isset ($_GET['path'])) {
 
     if ($addroot) {
         $files = array_map (
-            function($var) use ($root) {
-                return ($root . trim ($var, '/'));
-            }
-            , $files);
+            function ($var) use ($root) {
+            	$var = trim ($var, '/');
+            	if (strpos ($var, $root) !== 0) {
+	                return ($root . $var);
+   				}
+   				return $var;
+            },
+            $files
+        );
     }
 
 	if (isset ($data['name'])) {
@@ -113,9 +118,12 @@ if (isset ($data['speed'])) {
 }
 
 // get links for each file
-$prop_files = array_map (function ($file) {
-	return preg_replace ('/^files\//', '', $file);
-}, $files);
+$prop_files = array_map (
+	function ($file) {
+		return preg_replace ('/^files\//', '', $file);
+	},
+	$files
+);
 $prop_links = FileManager::prop ($prop_files, 'link');
 $links = array ();
 foreach ($prop_links as $f => $link) {
