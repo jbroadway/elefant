@@ -15,17 +15,19 @@
  *
  *      {! filemanager/slideshow?files=filelist&name=idsuffix !}
  *
- * The `filelist` is a list of images inside `/files/` or the directory set
+ * `files` is a list of images inside `/files/` or the directory set
  * by the `filemanager_path` option in your config file.
- * `filelist` can either be an array or a string with each file path delimited
+ *
+ * `files` can either be an array or a string with each file path delimited
  * by `|` or a glob pattern like 'stuff/*_light.jpg'.
+ *
  * `idsuffix` will be appended to the CSS id of the slideshow.
  *
- * To set the transition speed in milliseconds add a `speed`
- * parameter in the form `SPEED`
+ * To set the transition speed in milliseconds add a `speed` parameter in
+ * the form `SPEED`
  *
- * To set the photo ratio, add a `ratio`
- * parameter in the form `WIDTH:HEIGH`, for example:
+ * To set the photo ratio, add a `ratio` parameter in the form `WIDTH:HEIGH`,
+ * for example:
  *
  *     {! filemanager/slideshow?path=foldername&ratio=4:3&speed=1500 !}
  *
