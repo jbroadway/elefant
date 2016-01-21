@@ -1,6 +1,6 @@
 <div id="slideshow-{{name}}" class="cycle-slideshow crop"
 	data-cycle-fx="fade"
-	data-cycle-pause-on-hover="true"
+	data-cycle-pause-on-hover="false"
 	data-cycle-timeout="{{ timeout }}"
 	data-cycle-slides="> a" 
 	{% if speed %} data-cycle-speed="{{ speed }}" {% end %}
@@ -8,8 +8,7 @@
 	data-cycle-prev="#prev"
 	data-cycle-next="#next"
 	data-cycle-manual-fx="scrollHorz"
-	data-cycle-manual-speed="200"
-	data-paused-text="">
+	data-cycle-manual-speed="200">
 	<div id="prev" class="cycle-prev"></div>
 	<div id="next" class="cycle-next"></div>
 	<!-- <div class="cycle-overlay"></div> -->
