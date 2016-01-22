@@ -150,22 +150,11 @@ class FrontController {
 		View::init ($tpl);
 
 		/**
-		 * Check for a bootstrap.php file in the root of the site
-		 * and if found, use it for additional app-level configurations
-		 * (Dependency Injection, custom logging settings, etc.).
-		 */
-		if (file_exists ('bootstrap.php')) {
-			require ('bootstrap.php');
-		}
-
-		/**
 		 * Initialize the built-in cache support. Provides a
 		 * consistent cache API (based on Memcache) so we can always
 		 * include caching in our handlers and in the front controller.
 		 */
-		if (! isset ($cache) || ! is_object ($cache)) {
-			$cache = Cache::init (conf ('Cache'));
-		}
+		$cache = Cache::init (conf ('Cache'));
 		$controller->cache ($cache);
 
 		/**
@@ -178,6 +167,15 @@ class FrontController {
 		$GLOBALS['controller'] = $controller;
 		$GLOBALS['tpl'] = $tpl;
 		$GLOBALS['cache'] = $cache;
+
+		/**
+		 * Check for a bootstrap.php file in the root of the site
+		 * and if found, use it for additional app-level configurations
+		 * (Dependency Injection, custom logging settings, etc.).
+		 */
+		if (file_exists ('bootstrap.php')) {
+			require ('bootstrap.php');
+		}
 
 		/**
 		 * Run any config level route overrides.
