@@ -35,6 +35,8 @@
 <p><b>{"About"}:</b><br />{{about}}</p>
 {% end %}
 
+<h3 class="print-only">{"Notes"}</h3>
+
 <div id="tabs" class="clear-photo">
 	<ul id="tab-list">
 		<li><a href="#tab-notes">{"Notes"}</a></li>
@@ -47,7 +49,10 @@
 	<div id="tab-notes"></div>
 	<div id="tab-social"></div>
 {% foreach tabs as _name, _content %}
-	<div id="tab-{{_name|URLify::filter}}">{{_content|none}}</div>
+	<div id="tab-{{_name|URLify::filter}}">
+		<h3 class="print-only">{{_name}}</h3>
+		{{_content|none}}
+	</div>
 {% end %}
 </div>
 

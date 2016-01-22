@@ -98,3 +98,21 @@
 		background: linear-gradient(to bottom,  #dddddd 0%,#cccccc 100%); /* W3C */
 		color: #93278f;
 	}
+
+.print-only {
+	display: none;
+}
+
+@media print {
+	.ui-tabs-panel,
+	.ui-tabs-hide,
+	.print-only {
+		display: block !important;
+	}
+	
+	form,
+	#tab-list,
+	#tab-social {
+		display: none !important;
+	}
+}
