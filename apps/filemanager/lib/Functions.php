@@ -117,3 +117,124 @@ function filemanager_sort_mtime_asc ($one, $two) {
 function filemanager_get_thumbnail ($file, $width = 140, $height = 105, $style = "cover") {
 	return Image::resize ($file, $width, $height, $style);
 }
+
+/**
+ * Get a list of available effects for the slideshow dynamic object.
+ */
+function filemanager_effect_list () {
+	return array (
+		array (
+			'key' => 'blindX',
+			'value' => __ ('Blind X')
+		),
+		array (
+			'key' => 'blindY',
+			'value' => __ ('Blind Y')
+		),
+		array (
+			'key' => 'blindZ',
+			'value' => __ ('Blind Z')
+		),
+		array (
+			'key' => 'cover',
+			'value' => __ ('Cover')
+		),
+		array (
+			'key' => 'curtainX',
+			'value' => __ ('Curtain X')
+		),
+		array (
+			'key' => 'curtainY',
+			'value' => __ ('Curtain Y')
+		),
+		array (
+			'key' => 'fade',
+			'value' => __ ('Fade')
+		),
+		array (
+			'key' => 'fadeZoom',
+			'value' => __ ('Fade Zoom')
+		),
+		array (
+			'key' => 'growX',
+			'value' => __ ('Grow X')
+		),
+		array (
+			'key' => 'growY',
+			'value' => __ ('Grow Y')
+		),
+		array (
+			'key' => 'none',
+			'value' => __ ('None')
+		),
+		array (
+			'key' => 'scrollUp',
+			'value' => __ ('Scroll Up')
+		),
+		array (
+			'key' => 'scrollDown',
+			'value' => __ ('Scroll Down')
+		),
+		array (
+			'key' => 'scrollLeft',
+			'value' => __ ('Scroll Left')
+		),
+		array (
+			'key' => 'scrollRight',
+			'value' => __ ('Scroll Right')
+		),
+		array (
+			'key' => 'scrollHorz',
+			'value' => __ ('Scroll Horizontally')
+		),
+		array (
+			'key' => 'scrollVert',
+			'value' => __ ('Scroll Vertically')
+		),
+		array (
+			'key' => 'shuffle',
+			'value' => __ ('Shuffle')
+		),
+		array (
+			'key' => 'slideX',
+			'value' => __ ('Slide X')
+		),
+		array (
+			'key' => 'slideY',
+			'value' => __ ('Slide Y')
+		),
+		array (
+			'key' => 'toss',
+			'value' => __ ('Toss')
+		),
+		array (
+			'key' => 'turnUp',
+			'value' => __ ('Turn Up')
+		),
+		array (
+			'key' => 'turnDown',
+			'value' => __ ('Turn Down')
+		),
+		array (
+			'key' => 'turnLeft',
+			'value' => __ ('Turn Left')
+		),
+		array (
+			'key' => 'turnRight',
+			'value' => __ ('Turn Right')
+		),
+		array (
+			'key' => 'uncover',
+			'value' => __ ('Uncover')
+		),
+		array (
+			'key' => 'wipe',
+			'value' => __ ('Wipe')
+		),
+		array (
+			'key' => 'zoom',
+			'value' => __ ('Zoom')
+		)
+	);
+}
+

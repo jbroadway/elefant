@@ -38,8 +38,15 @@ autoplay[callback] = "filemanager_yes_no"
 speed[label] = "Transition Speed (milliseconds)"
 speed[type] = text
 
-ratio[label] = "Ratio (format: WIDTH:HEIGHT)"
+ratio[label] = "Ratio (format: 16:9)"
 ratio[type] = text
+ratio[initial] = "16:9"
+
+effect[label] = "Transition effect"
+effect[type] = select
+effect[require] = "apps/filemanager/lib/Functions.php"
+effect[callback] = "filemanager_effect_list"
+effect[initial] = fade
 
 [filemanager/gallery]
 

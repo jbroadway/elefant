@@ -24,12 +24,16 @@
  * `idsuffix` will be appended to the CSS id of the slideshow.
  *
  * To set the transition speed in milliseconds add a `speed` parameter in
- * the form `SPEED`
+ * the form `SPEED`.
  *
- * To set the photo ratio, add a `ratio` parameter in the form `WIDTH:HEIGH`,
- * for example:
+ * To set the photo ratio, add a `ratio` parameter in the form `WIDTH:HEIGH`.
  *
- *     {! filemanager/slideshow?path=foldername&ratio=4:3&speed=1500 !}
+ * To change the transition effect, add an `effect` parameter (based on the
+ * list available at http://jquery.malsup.com/cycle/browser.html).
+ *
+ * For example:
+ *
+ *     {! filemanager/slideshow?path=foldername&ratio=4:3&speed=1500&effect=fade !}
  *
  * Note that this will also reorient photos that have been uploaded from
  * devices that don't automatically correct the photo orientation, based
@@ -42,6 +46,8 @@ if (! isset ($data['autoplay']) || $data['autoplay'] === 'yes') {
 } else {
 	$timeout = '0';
 }
+
+$data['effect'] = isset ($data['effect']) ? $data['effect'] : 'fade';
 
 if (isset ($data['path']) or isset ($_GET['path'])) {
 
