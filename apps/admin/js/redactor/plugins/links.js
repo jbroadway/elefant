@@ -84,7 +84,7 @@ RedactorPlugins.links = function () {
 						'<br />' +
 						'<select id="links-page">' +
 						'</select>' +
-						'<input type="text" id="links-url" size="65" placeholder="http://" />' +
+						'<input type="text" id="links-url" size="65" placeholder="http://" />&nbsp;<button id="links-files">' + $.i18n ('Files') + '</button>' +
 						'<input type="email" id="links-email" size="65" placeholder="you@example.com" />' +
 					'</p>' +
 					'<p>' +
@@ -130,6 +130,15 @@ RedactorPlugins.links = function () {
 					}
 				}
 			}
+			
+			$('#links-files').click (function (e) {
+				e.preventDefault ();
+				e.stopPropagation ();
+
+				$.filebrowser ({
+					set_value: '#links-url'
+				});
+			});
 
 			if (page_matched) {
 				this.links.show_pages ();
@@ -207,6 +216,7 @@ RedactorPlugins.links = function () {
 			$('#links-page').show ();
 			$('#links-url').hide ();
 			$('#links-email').hide ();
+			$('#links-files').hide ();
 		},
 	
 		// Show the URL input
@@ -218,6 +228,7 @@ RedactorPlugins.links = function () {
 			$('#links-page').hide ();
 			$('#links-url').show ();
 			$('#links-email').hide ();
+			$('#links-files').show ();
 		},
 	
 		// Show the email input
@@ -229,6 +240,7 @@ RedactorPlugins.links = function () {
 			$('#links-page').hide ();
 			$('#links-url').hide ();
 			$('#links-email').show ();
+			$('#links-files').hide ();
 		}
 	};
 };

@@ -53,7 +53,8 @@ $page->add_script (I18n::export (
 	'Text',
 	'Open link in new tab',
 	'Cancel',
-	'- select -'
+	'- select -',
+	'Files'
 ));
 
 if (file_exists ('apps/admin/js/redactor/lang/' . $i18n->language . '_' . $i18n->locale . '.js')) {
