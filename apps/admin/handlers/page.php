@@ -25,7 +25,7 @@ if ($res) {
 	}
 
 	// verify permissions before serving
-	if (isset ($page->access) && $page->access !== 'public' && ! User::require_login ()) {
+	if (isset ($page->access) && $page->access !== 'public' && ! User::require_admin ()) {
 		if (! User::require_login ()) {
 			$page->title = __ ('Login required');
 			return $this->run ('user/login');
