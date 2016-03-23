@@ -227,7 +227,7 @@
 
 			switch (type) {
 				case 'empty':
-					if (value != '') {
+					if (value.trim () != '') {
 						return _false;
 					}
 					break;
