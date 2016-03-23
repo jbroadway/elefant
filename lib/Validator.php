@@ -168,7 +168,7 @@ class Validator {
 				if ($value === '0') {
 					return false;
 				}
-				return empty ($value);
+				return empty (trim ($value));
 
 			case 'length':
 				if (preg_match ('/^([0-9]+)([+-]?)([0-9]*)$/', $validator, $regs)) {

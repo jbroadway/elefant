@@ -23,6 +23,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse (Validator::validate (15, 'range', '1-10'));
 		$this->assertTrue (Validator::validate ('', 'empty'));
 		$this->assertFalse (Validator::validate ('0', 'empty'));
+		$this->assertTrue (Validator::validate (' ', 'empty'));
 		$this->assertFalse (Validator::validate ('asdf', 'empty'));
 		$this->assertTrue (Validator::validate ('foo@bar.com', 'email'));
 		$this->assertFalse (Validator::validate ('@foo@bar.com', 'email'));
@@ -38,7 +39,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse (Validator::validate ('000101', 'time'));
 		$this->assertTrue (Validator::validate ('Template.php', 'exists', 'lib'));
 		$this->assertFalse (Validator::validate ('ASDF.php', 'exists', 'lib'));
-		$this->assertTrue (Validator::validate ('default', 'exists', 'layouts/%s.html'));
+		$this->assertTrue (Validator::validate ('admin', 'exists', 'layouts/%s.html'));
 		$this->assertTrue (Validator::validate ('foobar', 'contains', 'foo'));
 		$this->assertFalse (Validator::validate ('foobar', 'contains', 'asdf'));
 		$this->assertTrue (Validator::validate ('asdf', 'equals', 'asdf'));
