@@ -46,7 +46,7 @@ class Cache {
 
 		if (! file_exists ($this->dir)) {
 			if (! is_writeable (dirname ($dir))) {
-				die ('Cache folder must be writeable to continue. Please check the <a href="http://www.elefantcms.com/wiki/Installing-Elefant" target="_blank">installation instructions</a> and try again.');
+				die ('Cache folder must be writeable to continue. Please check the <a href="https://www.elefantcms.com/docs/2.0/getting-started/file-permissions" target="_blank">installation instructions</a> and try again.');
 			}
 			mkdir ($this->dir);
 			chmod ($this->dir, 0777);

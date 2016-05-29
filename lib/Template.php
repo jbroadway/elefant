@@ -288,7 +288,7 @@ class Template {
 			$out = file_get_contents ($file);
 			$out = $this->parse_template ($out);
 			if (! is_writeable (dirname ($cache))) {
-				die ('Cache folder must be writeable to continue. Please check the <a href="http://www.elefantcms.com/wiki/Installing-Elefant" target="_blank">installation instructions</a> and try again.');
+				die ('Cache folder must be writeable to continue. Please check the <a href="https://www.elefantcms.com/docs/2.0/getting-started/file-permissions" target="_blank">installation instructions</a> and try again.');
 			}
 			if (! file_put_contents ($cache, $out)) {
 				throw new RuntimeException ('Failed to generate cached template: ' . $cache);
