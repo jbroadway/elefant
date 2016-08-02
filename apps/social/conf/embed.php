@@ -1,5 +1,16 @@
 ; <?php /*
 
+[social/sharingbuttons]
+
+label = Social: Sharing Buttons
+icon = share
+
+url[label] = Link
+url[type] = text
+url[not empty] = 1
+url[regex] = "/^http:\/\/.+$/"
+url[message] = Please enter a valid URL.
+
 [social/facebook/like]
 
 label = Facebook: Like Button
