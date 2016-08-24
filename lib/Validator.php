@@ -165,9 +165,27 @@ class Validator {
 				return (($min <= $value) && ($value <= $max));
 
 			case 'empty':
-				if ($value === '0') {
+				if (is_array ($value)) {
+					if (count ($value) === 0) {
+						return false;
+					}
+
+					foreach ($value as $_v) {
+						if ($_v === '0') {
+							return true;
+						}
+						
+						if (empty (trim ($_v))) {
+							return true;
+						}
+					}
+					
+					return false;
+
+				} elseif ($value === '0') {
 					return false;
 				}
+
 				return empty (trim ($value));
 
 			case 'length':
