@@ -37,8 +37,8 @@ if (isset ($_FILES['file']['error']) && $_FILES['file']['error'] > 0) {
 	return;
 }
 
-if (preg_match ('/\.php$/i', $_FILES['file']['name'])) {
-	echo json_encode (array ('success' => false, 'error' => __ ('Cannot upload PHP files due to security.')));
+if (preg_match ('/\.(php5?|js|rb|py|pl|sh|bash|exe)$/i', $_FILES['file']['name'])) {
+	echo json_encode (array ('success' => false, 'error' => __ ('Cannot upload executable files due to security.')));
 	return;
 }
 
