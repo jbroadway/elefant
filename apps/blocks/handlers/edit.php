@@ -49,7 +49,7 @@ if ($f->submit ()) {
 	$b->yes_no = array ('yes' => __ ('Yes'), 'no' => __ ('No'));
 	$b->failed = $f->failed;
 	$b = $f->merge_values ($b);
-	$page->title = __ ('Edit Block') . ': ' . $b->title;
+	$page->title = __ ('Edit Block') . ': ' . Template::sanitize ($b->title);
 	$this->run ('admin/util/wysiwyg');
 	echo $tpl->render ('blocks/edit/head', $b);
 	echo $tpl->render ('blocks/edit', $b);

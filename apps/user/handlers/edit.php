@@ -52,7 +52,7 @@ if ($f->submit ()) {
 	$u = $f->merge_values ($u);
 	$u->_states = user\Data::states ();
 	$u->_countries = user\Data::countries ();
-	$page->title = __ ('Edit Member') . ': ' . $u->name;
+	$page->title = __ ('Edit Member') . ': ' . Template::sanitize ($u->name);
 	$page->add_script ('/js/json2.js');
 	$page->add_script ('/js/jstorage.js');
 	$page->add_script ('/js/jquery.autosave.js');

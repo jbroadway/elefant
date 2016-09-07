@@ -74,7 +74,7 @@ if ($b->access !== 'public') {
 }
 
 if ($b->show_title == 'yes') {
-	printf ('<' . $level . '>%s</' . $level . '>', $b->title);
+	printf ('<' . $level . '>%s</' . $level . '>', Template::sanitize ($b->title));
 }
 
 $b->locked = $lock->exists ();

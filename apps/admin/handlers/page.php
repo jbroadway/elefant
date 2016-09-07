@@ -74,9 +74,9 @@ if ($wp->access !== 'public' && ! User::require_admin ()) {
 
 // set the page properties
 $page->id = $id;
-$page->title = $wp->title;
-$page->_menu_title = $wp->menu_title;
-$page->_window_title = $wp->window_title;
+$page->title = Template::sanitize ($wp->title);
+$page->_menu_title = Template::sanitize ($wp->menu_title);
+$page->_window_title = Template::sanitize ($wp->window_title);
 $page->description = $wp->description;
 $page->keywords = $wp->keywords;
 $page->layout = $wp->layout;

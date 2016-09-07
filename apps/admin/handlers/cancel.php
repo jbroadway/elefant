@@ -14,7 +14,7 @@ if (! User::require_admin ()) {
 $lock = new Lock ($_GET['type'], $_GET['id']);
 $lock->remove ();
 
-if (isset ($_GET['return']) {
+if (isset ($_GET['return'])) {
 	$_GET['return'] = filter_var ($_GET['return'], FILTER_SANITIZE_URL);
 
 	if (! validator::validate ($_GET['return'], 'localpath')) {

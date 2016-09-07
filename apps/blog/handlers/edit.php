@@ -72,7 +72,7 @@ if ($f->submit ()) {
 	if ($p->title === '') {
 		$page->title = __ ('Add Blog Post');
 	} else {
-		$page->title = __ ('Edit Blog Post') . ': ' . $p->title;
+		$page->title = __ ('Edit Blog Post') . ': ' . Template::sanitize ($p->title);
 	}
 	$page->add_script ('/apps/blog/css/related.css');
 	if (Appconf::blog ('Blog', 'post_format') === 'html') {

@@ -21,6 +21,10 @@ if ($user->error) {
 
 $user = $user->orig ();
 
+if (! is_array ($user->tabs)) {
+	$user->tabs = array ();
+}
+
 $tabs = Appconf::options ('user');
 foreach ($tabs as $handler => $name) {
 	$user->tabs[$name] = $this->run ($handler, array ('user' => $user->id));

@@ -15,10 +15,33 @@
 	<tr{% if loop_value['diff'] %} class="different"{% end %}>
 		<td>{{ loop_index|ucfirst|str_replace ('_', ' ', %s) }}</td>
 		{% if ! is_current %}
-		<td>{{ loop_value['old']|none }}</td>
+		<td{% if loop_value['html'] %} class="html"{% end %}>{{ loop_value['old']|none }}</td>
 		{% end %}
-		<td>{{ loop_value['cur']|none }}</td>
+		<td{% if loop_value['html'] %} class="html"{% end %}>{{ loop_value['cur']|none }}</td>
 	</tr>
 {% end %}
 </table>
 </p>
+
+<style>
+td.html {
+	padding-top: 12px;
+}
+
+.embedded {
+	background-color: #eee;
+	border: 1px solid #ccc;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	background-image: url(/apps/admin/css/admin/dynamic-icon.png);
+	background-repeat: no-repeat;
+	background-position: 5px 44%;
+	padding: 5px 7px 5px 28px;
+	white-space: nowrap;
+}
+
+.embedded:after {
+	content: attr(data-label);
+}
+</style>

@@ -40,17 +40,37 @@ $data = array ();
 $cur_orig = (array) $cur->orig ();
 $old_orig = (array) $old->orig ();
 foreach ($cur_orig as $key => $value) {
+
 	// Skip sensitive user data
 	if ($class === 'User') {
 		if ($key === 'password' || $key === 'expires' || $key === 'session_id') {
 			continue;
 		}
 	}
+	
+	// Only allow certain fields to contain html
+	$is_html = false;
+	if ($class === 'Block' && $key === 'body') {
+		$is_html = true;
+	} else if ($class === 'Webpage' && $key === 'body') {
+		$is_html = true;
+	} else if ($class === 'blog\Post' && $key === 'body') {
+		$is_html = true;
+	} else if ($class === 'Event' && $key === 'details') {
+		$is_html = true;
+	}
+	
+	// Sanitize non-html output
+	if (! $is_html) {
+		$value = Template::sanitize ($value);
+		$old_orig[$key] = Template::sanitize ($old_orig[$key]);
+	}
 
 	$data[$key] = array (
 		'cur' => $value,
 		'old' => $old_orig[$key],
-		'diff' => (in_array ($key, $diff)) ? true : false
+		'diff' => (in_array ($key, $diff)) ? true : false,
+		'html' => $is_html
 	);
 }
 

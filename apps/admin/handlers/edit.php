@@ -47,7 +47,7 @@ if ($f->submit ()) {
 } else {
 	$wp->failed = $f->failed;
 	$wp = $f->merge_values ($wp);
-	$page->title = __ ('Edit Page') . ': ' . $wp->title;
+	$page->title = __ ('Edit Page') . ': ' . Template::sanitize ($wp->title);
 	$this->run ('admin/util/wysiwyg');
 	echo $tpl->render ('admin/edit/head', $wp);
 	echo $tpl->render ('admin/edit', $wp);

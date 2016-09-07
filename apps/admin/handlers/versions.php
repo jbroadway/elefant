@@ -41,7 +41,7 @@ function admin_filter_user_name ($id) {
 	if ($u->error) {
 		return __ ('Nobody');
 	}
-	return $u->name;
+	return Template::sanitize ($u->name);
 }
 
 $name = Versions::display_name ($_GET['type']);

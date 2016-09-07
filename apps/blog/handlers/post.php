@@ -35,7 +35,7 @@ if ($p->published === 'que') {
 	}
 }
 
-$page->title = $p->title;
+$page->title = Template::sanitize ($p->title);
 
 $post = $p->orig ();
 $post->full = true;
