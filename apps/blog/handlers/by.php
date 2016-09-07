@@ -58,7 +58,7 @@ $page->title = __ ('Posts by %s', $tpl->sanitize ($page->author));
 
 $page->add_script (sprintf (
 	'<link rel="alternate" type="application/rss+xml" href="http://%s/blog/rss" />',
-	$_SERVER['HTTP_HOST']
+	Appconf::admin ('Site Settings', 'site_domain')
 ));
 
 echo $tpl->render ('blog/by', $page);

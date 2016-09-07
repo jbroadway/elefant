@@ -12,7 +12,7 @@ class FormTest extends PHPUnit_Framework_TestCase {
 
 	function test_submit () {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
-		$_SERVER['HTTP_HOST'] = 'www.test.com';
+		Appconf::admin ('Site Settings', 'site_domain', 'www.test.com');
 		$_SERVER['HTTP_REFERER'] = 'http://www.test.com/app/foo';
 		$form = new Form ('post');
 		$this->assertEquals ($form->method, 'post');

@@ -81,11 +81,11 @@ switch (Appconf::blog ('Blog', 'comments')) {
 // add rss discovery
 $page->add_script (sprintf (
 	'<link rel="alternate" type="application/rss+xml" href="http://%s/blog/rss" />',
-	$_SERVER['HTTP_HOST']
+	Appconf::admin ('Site Settings', 'site_domain')
 ));
 
 // add opengraph/twitter card meta tags
-$url = ($this->is_https () ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $post->fullurl;
+$url = ($this->is_https () ? 'https' : 'http') . '://' . Appconf::admin ('Site Settings', 'site_domain') . $post->fullurl;
 $desc = blog_filter_truncate (strip_tags ($post->body), 300);
 
 $page->add_meta ('og:type', 'article', 'property');
@@ -97,7 +97,7 @@ $page->add_meta ('og:url', $url, 'property');
 if ($post->thumbnail !== '') {
 	$page->add_meta (
 		'og:image',
-		($this->is_https () ? 'https' : 'http') . '://'. $_SERVER['HTTP_HOST'] . $post->thumbnail,
+		($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . $post->thumbnail,
 		'property'
 	);
 }
@@ -113,6 +113,6 @@ $page->add_meta ('twitter:description', $desc);
 if ($post->thumbnail !== '') {
 	$page->add_meta (
 		'twitter:image',
-		($this->is_https () ? 'https' : 'http') . '://'. $_SERVER['HTTP_HOST'] . $post->thumbnail
+		($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . $post->thumbnail
 	);
 }

@@ -9,7 +9,7 @@ if (! in_array ('google', $appconf['User']['login_methods'])) {
 	return;
 }
 
-$openid = new LightOpenID ($_SERVER['HTTP_HOST']);
+$openid = new LightOpenID (Appconf::admin ('Site Settings', 'site_domain'));
 
 // handle the openid request
 if (! $openid->mode) {

@@ -674,10 +674,10 @@ class Controller {
 		}
 
 		if ($base === false) {
-			// construct the base from HTTP_HOST
+			// construct the base from site_domain
 			$base = $this->is_https ()
-				? 'https://' . $_SERVER['HTTP_HOST']
-				: 'http://' . $_SERVER['HTTP_HOST'];
+				? 'https://' . Appconf::admin ('Site Settings', 'site_domain')
+				: 'http://' . Appconf::admin ('Site Settings', 'site_domain');
 		}
 
 		if (strpos ($url, '/') === 0) {
@@ -1021,7 +1021,7 @@ class Controller {
 	 */
 	public function force_https () {
 		if (! $this->is_https ()) {
-			$this->redirect ('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+			$this->redirect ('https://' . Appconf::admin ('Site Settings', 'site_domain') . $_SERVER['REQUEST_URI']);
 		}
 	}
 
@@ -1031,7 +1031,7 @@ class Controller {
 	 */
 	public function force_http () {
 		if ($this->is_https ()) {
-			$this->redirect ('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+			$this->redirect ('http://' . Appconf::admin ('Site Settings', 'site_domain') . $_SERVER['REQUEST_URI']);
 		}
 	}
 

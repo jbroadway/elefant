@@ -28,6 +28,6 @@ if (! isset ($data['via']) || empty ($data['via'])) {
 }
 
 if (strpos ($data['url'], '/') === 0) {
-	$data['url'] = '//' . $_SERVER['HTTP_HOST'] . $data['url'];
+	$data['url'] = '//' . Appconf::admin ('Site Settings', 'site_domain') . $data['url'];
 }
 echo $tpl->render ('social/twitter/tweet', $data);

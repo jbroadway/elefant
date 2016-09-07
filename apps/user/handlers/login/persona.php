@@ -16,7 +16,7 @@ User::init_session ();
 
 $url = 'https://verifier.login.persona.org/verify';
 $ch = curl_init ($url);
-$data = 'assertion=' . $_POST['assertion'] . '&audience=http://' . $_SERVER['HTTP_HOST'];
+$data = 'assertion=' . $_POST['assertion'] . '&audience=http://' . Appconf::admin ('Site Settings', 'site_domain');
 
 curl_setopt_array ($ch, array (
 	CURLOPT_RETURNTRANSFER => true,

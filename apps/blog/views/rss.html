@@ -6,11 +6,11 @@
 	xmlns="http://purl.org/rss/1.0/"
 >
 
-<channel rdf:about="http://{{ $_SERVER.HTTP_HOST }}/blog">
+<channel rdf:about="http://{{ Appconf::admin ('Site Settings', 'site_domain') }}/blog">
 
 	<title>{{ title }}</title>
-	<link>http://{{ $_SERVER.HTTP_HOST }}/blog</link>
-	<description>{{ $_SERVER.HTTP_HOST }} {"official blog"}.</description>
+	<link>http://{{ Appconf::admin ('Site Settings', 'site_domain') }}/blog</link>
+	<description>{{ Appconf::admin ('Site Settings', 'site_domain') }} {"official blog"}.</description>
 
 	<dc:language>{{ i18n.language }}</dc:language>
 	<dc:date>{{ date }}</dc:date>
@@ -18,7 +18,7 @@
 	<items>
 		<rdf:Seq>
 {% foreach posts %}
-			<rdf:li rdf:resource="http://{{ $_SERVER.HTTP_HOST }}{{ loop_value->url }}" />
+			<rdf:li rdf:resource="http://{{ Appconf::admin ('Site Settings', 'site_domain') }}{{ loop_value->url }}" />
 {% end %}
 		</rdf:Seq>
 	</items>
@@ -26,9 +26,9 @@
 </channel>
 
 {% foreach posts %}
-<item rdf:about="http://{{ $_SERVER.HTTP_HOST }}{{ loop_value->url }}">
+<item rdf:about="http://{{ Appconf::admin ('Site Settings', 'site_domain') }}{{ loop_value->url }}">
 	<title>{{ loop_value->title }}</title>
-	<link>http://{{ $_SERVER.HTTP_HOST }}{{ loop_value->url }}</link>
+	<link>http://{{ Appconf::admin ('Site Settings', 'site_domain') }}{{ loop_value->url }}</link>
 	<description>{{ loop_value->body }}</description>
 	<dc:date>{{ loop_value->ts|str_replace (' ', 'T', %s) }}</dc:date>
 </item>

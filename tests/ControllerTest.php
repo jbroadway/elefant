@@ -69,7 +69,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_absolutize () {
-		$_SERVER['HTTP_HOST'] = 'www.example.com';
+		Appconf::admin ('Site Settings', 'site_domain', 'www.example.com');
 		$this->assertEquals ('http://www.example.com/page', $this->c->absolutize ('/page'));
 		$this->assertEquals ('http://www.example.com/page', $this->c->absolutize ('//www.example.com/page'));
 		$this->assertEquals ('http://www.example.com/page', $this->c->absolutize ('http://www.example.com/page'));

@@ -53,7 +53,7 @@ class I18nTest extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_negotiation_methods () {
-		$_SERVER['HTTP_HOST'] = 'en.example.com';
+		Appconf::admin ('Site Settings', 'site_domain', 'en.example.com');
 		$i18n = new I18n ('lang', array ('negotiation_method' => 'subdomain'));
 
 		$this->assertEquals ($i18n->language, 'en');

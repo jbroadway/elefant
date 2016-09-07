@@ -11,7 +11,7 @@ if (! in_array ('facebook', $appconf['User']['login_methods'])) {
 
 $app_id = $appconf['Facebook']['application_id'];
 $app_secret = $appconf['Facebook']['application_secret'];
-$my_url = 'http://' . $_SERVER['HTTP_HOST'] . '/user/login/facebook?redirect=' . urlencode ($_GET['redirect']);
+$my_url = 'http://' . Appconf::admin ('Site Settings', 'site_domain') . '/user/login/facebook?redirect=' . urlencode ($_GET['redirect']);
 
 @session_start ();
 $code = $_REQUEST['code'];

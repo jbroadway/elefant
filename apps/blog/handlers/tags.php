@@ -30,5 +30,5 @@ echo $tpl->render ('blog/tags', $pg);
 
 $page->add_script (sprintf (
 	'<link rel="alternate" type="application/rss+xml" href="http://%s/blog/rss" />',
-	$_SERVER['HTTP_HOST']
+	Appconf::admin ('Site Settings', 'site_domain')
 ));
