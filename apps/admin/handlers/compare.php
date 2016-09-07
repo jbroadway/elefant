@@ -40,6 +40,13 @@ $data = array ();
 $cur_orig = (array) $cur->orig ();
 $old_orig = (array) $old->orig ();
 foreach ($cur_orig as $key => $value) {
+	// Skip sensitive user data
+	if ($class === 'User') {
+		if ($key === 'password' || $key === 'expires' || $key === 'session_id') {
+			continue;
+		}
+	}
+
 	$data[$key] = array (
 		'cur' => $value,
 		'old' => $old_orig[$key],
