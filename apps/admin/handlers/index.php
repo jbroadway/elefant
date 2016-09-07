@@ -17,6 +17,7 @@ if (isset ($_GET['redirect'])) {
 if (! isset ($_POST['redirect'])
 	|| empty ($_POST['redirect'])
 	|| ! Validator::validate ($_POST['redirect'], 'header')
+	|| ! Validator::validate ($_POST['redirect'], 'localpath')
 ) {
 	$_POST['redirect'] = $appconf['General']['login_redirect'];
 }

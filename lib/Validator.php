@@ -71,6 +71,7 @@ class Validator {
 	 * - `callback` - calls `call_user_func($validator, $value)`
 	 * - `email` - a valid email address
 	 * - `url` - a valid url
+	 * - `localpath` - a valid local url path (begins with /)
 	 * - `range` - number within a range e.g., `123-456`
 	 * - `length` - string of length, $verifier examples: `6, 6+, 6-12, 12-`
 	 * - `gt` - greater than
@@ -243,6 +244,22 @@ class Validator {
 					return false;
 				}
 				return true;
+
+			case 'localpath':
+				$filtered = filter_var ($value, FILTER_SANITIZE_URL);
+				if ($filtered !== $value) {
+					return false;
+				}
+
+				$value = filter_var ($value, FILTER_SANITIZE_URL);
+				if ($value === '/') {
+					return true;
+				}
+				
+				if (preg_match ('|^/[^/]|', $value)) {
+					return true;
+				}
+				return false;
 
 			case 'header':
 				return ! (bool) preg_match ('/[\r\n]/s', $value);

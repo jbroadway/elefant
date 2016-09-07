@@ -18,7 +18,11 @@ if ($f->submit ()) {
 		$this->add_notification (__ ('Block added.'));
 		$this->hook ('blocks/add', $_POST);
 		if (isset ($_GET['return'])) {
-			$this->redirect ($_GET['return']);
+			$_GET['return'] = filter_var ($_GET['return'], FILTER_SANITIZE_URL);
+
+			if (Validator::validate ($_GET['return'], 'localpath')) {
+				$this->redirect ($_GET['return']);
+			}
 		}
 		$this->redirect ('/blocks/admin');
 	}

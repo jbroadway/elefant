@@ -35,7 +35,11 @@ if ($f->submit ()) {
 		$lock->remove ();
 		$this->hook ('blocks/edit', $_POST);
 		if (isset ($_GET['return'])) {
-			$this->redirect ($_GET['return']);
+			$_GET['return'] = filter_var ($_GET['return'], FILTER_SANITIZE_URL);
+
+			if (Validator::validate ($_GET['return'], 'localpath')) {
+				$this->redirect ($_GET['return']);
+			}
 		}
 		$this->redirect ('/blocks/admin');
 	}

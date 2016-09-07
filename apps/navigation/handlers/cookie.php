@@ -21,6 +21,12 @@ setcookie (
 	'/'
 );
 
+$_GET['redirect'] = filter_var ($_GET['redirect'], FILTER_SANITIZE_URL);
+
+if (! validator::validate ($_GET['redirect'], 'localpath')) {
+	$_GET['redirect'] = '/';
+}
+
 isset ($_GET['redirect'])
 	? $this->redirect ($_GET['redirect'])
 	: $this->redirect ($_SERVER['HTTP_REFERER']);

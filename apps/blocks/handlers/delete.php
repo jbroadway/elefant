@@ -32,8 +32,12 @@ if (! $b->remove ()) {
 $this->hook ('blocks/delete', $_POST);
 
 $this->add_notification (__ ('Block deleted.'));
-if (! isset ($_POST['return'])) {
+if (isset ($_POST['return'])) {
+	$_POST['return'] = filter_var ($_POST['return'], FILTER_SANITIZE_URL);
+
+	if (Validator::validate ($_POST['return'], 'localpath')) {
+		$_POST['return'] = $_POST['return'];
+	}
+
 	$this->redirect ('/blocks/admin');
-} else {
-	$this->redirect ($_POST['return']);
 }

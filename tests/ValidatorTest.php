@@ -31,6 +31,10 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue (Validator::validate ('foo+spam@foo.bar.org', 'email'));
 		$this->assertTrue (Validator::validate ("asdf", 'header'));
 		$this->assertFalse (Validator::validate ("asdf\nasdf", 'header'));
+		$this->assertFalse (Validator::validate ('https://google.com/', 'localpath'));
+		$this->assertFalse (Validator::validate ('://google.com/', 'localpath'));
+		$this->assertFalse (Validator::validate ('//google.com/', 'localpath'));
+		$this->assertTrue (Validator::validate ('/foo/bar?asdf=1234', 'localpath'));
 		$this->assertTrue (Validator::validate ('2010-01-01', 'date'));
 		$this->assertFalse (Validator::validate ('2010-01-010', 'date'));
 		$this->assertTrue (Validator::validate ('2010-01-01 00:01:01', 'datetime'));

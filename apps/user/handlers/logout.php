@@ -17,6 +17,12 @@ if (! Validator::validate ($_GET['redirect'], 'header')) {
 	$_GET['redirect'] = '/';
 }
 
+$_GET['redirect'] = filter_var ($_GET['redirect'], FILTER_SANITIZE_URL);
+
+if (! Validator::validate ($_GET['redirect'], 'localpath')) {
+	$_GET['redirect'] = '/';
+}
+
 $redir = parse_url ($_GET['redirect']);
 if ($redir === false || $_GET['redirect'] !== $redir['path'] && $_GET['redirect'] !== $redir['path'] . '?' . $redir['query']) {
 	$_GET['redirect'] = '/';
