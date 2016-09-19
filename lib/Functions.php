@@ -76,6 +76,8 @@ function info ($value, $full = false) {
  */
 function conf ($section = false, $value = false, $update = null) {
 	static $conf;
+	
+	// Read the settings on the first request
 	if ($conf === null) {
 		if (isset ($GLOBALS['conf'])) {
 			$conf =& $GLOBALS['conf'];
@@ -90,16 +92,74 @@ function conf ($section = false, $value = false, $update = null) {
 		} else {
 			$conf = parse_ini_file ('conf/config.php', true);
 		}
+
+		// Read environment variables for setting overrides
+		if (getenv ('ELEFANT_DB_DRIVER')) {
+			$conf['Database']['master']['driver'] = getenv ('ELEFANT_DB_DRIVER');
+		}
+
+		if (getenv ('ELEFANT_DB_FILE')) {
+			$conf['Database']['master']['file'] = getenv ('ELEFANT_DB_FILE');
+		}
+
+		if (getenv ('ELEFANT_DB_HOST')) {
+			$conf['Database']['master']['host'] = getenv ('ELEFANT_DB_HOST');
+		}
+
+		if (getenv ('ELEFANT_DB_NAME')) {
+			$conf['Database']['master']['name'] = getenv ('ELEFANT_DB_NAME');
+		}
+
+		if (getenv ('ELEFANT_DB_USER')) {
+			$conf['Database']['master']['user'] = getenv ('ELEFANT_DB_USER');
+		}
+
+		if (getenv ('ELEFANT_DB_PASS')) {
+			$conf['Database']['master']['pass'] = getenv ('ELEFANT_DB_PASS');
+		}
+		
+		if (getenv ('ELEFANT_TIMEZONE')) {
+			$conf['General']['timezone'] = getenv ('ELEFANT_TIMEZONE');
+		}
+		
+		if (getenv ('ELEFANT_UPDATES')) {
+			$conf['General']['check_for_updates'] = getenv ('ELEFANT_UPDATES');
+		}
+		
+		if (getenv ('ELEFANT_SITE_KEY')) {
+			$conf['General']['site_key'] = getenv ('ELEFANT_SITE_KEY');
+		}
+		
+		if (getenv ('ELEFANT_SESSION_NAME')) {
+			$conf['General']['session_name'] = getenv ('ELEFANT_SESSION_NAME');
+		}
+		
+		if (getenv ('ELEFANT_SESSION_HANDLER')) {
+			$conf['General']['session_save_handler'] = getenv ('ELEFANT_SESSION_HANDLER');
+		}
+		
+		if (getenv ('ELEFANT_SESSION_DOMAIN')) {
+			$conf['General']['session_domain'] = getenv ('ELEFANT_SESSION_DOMAIN');
+		}
+		
+		if (getenv ('ELEFANT_SESSION_DURATION')) {
+			$conf['General']['session_duration'] = getenv ('ELEFANT_SESSION_DURATION');
+		}
 	}
+	
+	// Get or set a setting
 	if ($value) {
 		if ($update !== null) {
 			$conf[$section][$value] = $update;
 		}
+		
 		return @$conf[$section][$value];
 	}
+	
 	if ($section) {
 		return @$conf[$section];
 	}
+	
 	return @$conf;
 }
 
