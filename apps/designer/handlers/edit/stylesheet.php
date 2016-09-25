@@ -22,7 +22,7 @@ if ($lock->exists ()) {
 }
 
 $f = new Form ('post', 'designer/editstylesheet');
-$f->verify_csrf = false;
+
 if ($f->submit ()) {
 	if (@file_put_contents ($_GET['file'], $_POST['body'])) {
 		$this->add_notification (__ ('Stylesheet saved.'));

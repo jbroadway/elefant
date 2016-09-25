@@ -9,7 +9,7 @@ $page->layout = 'admin';
 $this->require_acl ('admin', 'designer');
 
 $f = new Form ('post', 'designer/addstylesheet');
-$f->verify_csrf = false;
+
 if ($f->submit ()) {
 	// determine file path and make any necessary new directories
 	if (strpos ($_POST['name'], '/') !== false) {
