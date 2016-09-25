@@ -10,7 +10,12 @@
  */
 
 if ($this->data['code'] == 404 && @file_exists ('install') && (! @file_exists ('conf/installed') && ! @file_exists ('install/installed'))) {
-	$this->redirect ('install/');
+	if (strpos ($_SERVER['REQUEST_URI'], '/') !== false) {
+		header ('Location: /install/');
+	} else {
+		header ('Location: install/');
+	}
+	exit;
 }
 
 header ('HTTP/1.1 ' . $this->data['code'] . ' ' . $this->data['title']);
