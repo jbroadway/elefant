@@ -380,12 +380,12 @@ class Form {
 	 */
 	public function initialize_csrf () {
 		if ($this->verify_csrf) {
-			$timeshift = (int)( time() / 1800 ) + 1; // Token can be verified between 30 and 60 minutes 
+			$timeshift = (int) (time () / 3600) + 1; // Token can be verified for up to 120 minutes 
 			$site_key = conf ('General', 'site_key');
 			$client = isset ($site_key) ? $site_key : $_SERVER['DOCUMENT_ROOT'];
 			$client .= $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'];
                         
-			$this->csrf_token = md5 ( "".$timeshift.$client );
+			$this->csrf_token = md5 ('' . $timeshift . $client);
 		
 			// Append the CSRF token Javascript if there is a page object
 			if (isset ($GLOBALS['page'])) {
@@ -423,16 +423,16 @@ class Form {
 			return false;
 		}
 
-		$timeshift = (int)( time() / 1800 ); // Token can be verified between 30 and 60 minutes 
+		$timeshift = (int) (time () / 3600); // Token can be verified for up to 120 minutes 
 		$site_key = conf ('General', 'site_key');
 		$client = isset ($site_key) ? $site_key : $_SERVER['DOCUMENT_ROOT'];
 		$client .= $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'];
                         
-		$tokenA = md5 ( "".$timeshift.$client );
-		$tokenB = md5 ( "".($timeshift+1).$client );
+		$tokenA = md5 ('' . $timeshift . $client);
+		$tokenB = md5 ('' . ($timeshift + 1) . $client);
 
-		if ( ($tokenA === $values[$this->csrf_field_name]) ||
-		     ($tokenB === $values[$this->csrf_field_name]) ) {
+		if (($tokenA === $values[$this->csrf_field_name]) ||
+		    ($tokenB === $values[$this->csrf_field_name])) {
 			// Token is correct
 			return true;
 		}
