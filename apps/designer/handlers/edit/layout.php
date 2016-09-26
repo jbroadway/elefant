@@ -8,6 +8,8 @@ $page->layout = 'admin';
 
 $this->require_acl ('admin', 'designer');
 
+require_once ('apps/designer/lib/Functions.php');
+
 if (! preg_match ('/^(layouts|layouts\/[a-z0-9 _-]+|layouts\/[a-z0-9 _-]+\/[a-z0-9 _-]+)\/[a-z0-9 _-]+\.html$/i', $_GET['file'])) {
 	$this->redirect ('/designer');
 }

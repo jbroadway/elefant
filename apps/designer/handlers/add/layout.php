@@ -8,6 +8,8 @@ $page->layout = 'admin';
 
 $this->require_acl ('admin', 'designer');
 
+require_once ('apps/designer/lib/Functions.php');
+
 $f = new Form ('post', 'designer/addlayout');
 
 if ($f->submit ()) {
