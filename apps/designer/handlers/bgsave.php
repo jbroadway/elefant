@@ -25,8 +25,22 @@ if (! preg_match ('/^(css|layouts|layouts\/[a-z0-9 _-]+|layouts\/[a-z0-9 _-]+\/[
 	return;
 }
 
+if (strpos ($_GET['file'], 'layouts/') === 0) {
+	require_once ('apps/designer/lib/Functions.php');
+	
+	if (invalid_php_functions ($_POST['body'])) {
+		$this->add_notification (__ ('Invalid PHP functions detected. Please remove to save changes.'));
+
+		$res = new StdClass;
+		$res->success = false;
+		$res->error = 'Invalid PHP functions detected.';
+		echo json_encode ($res);
+		return;
+	}
+}
+
 if (! @file_put_contents ($_GET['file'], $_POST['body'])) {
-	$error = 'Saving file failed';
+	$error = 'Saving file failed.';
 } else {
 	try {
 		@chmod ($_GET['file'], 0666);
