@@ -674,10 +674,16 @@ class Controller {
 		}
 
 		if ($base === false) {
+			$site_domain = Appconf::admin ('Site Settings', 'site_domain');
+			if ($site_domain === false || $site_domain === '') {
+				error_log ('Elefant CMS: Please set your site domain under Administration > Site Settings.');
+				$site_domain = $_SERVER['HTTP_HOST'];
+			}
+
 			// construct the base from site_domain
 			$base = $this->is_https ()
-				? 'https://' . Appconf::admin ('Site Settings', 'site_domain')
-				: 'http://' . Appconf::admin ('Site Settings', 'site_domain');
+				? 'https://' . $site_domain
+				: 'http://' . $site_domain;
 		}
 
 		if (strpos ($url, '/') === 0) {
