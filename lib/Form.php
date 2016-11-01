@@ -369,9 +369,17 @@ class Form {
 	 * since those are almost certainly abusive.
 	 */
 	public function verify_referrer () {
-		if (strpos ($_SERVER['HTTP_REFERER'], Appconf::admin ('Site Settings', 'site_domain')) === false && $_SERVER['HTTP_REFERER'] !== null) {
+		$domain = Appconf::admin ('Site Settings', 'site_domain');
+
+		if ($domain === '' || $domain === false) {
+			// Can't verify if domain isn't set
+			return true;
+		}
+
+		if (strpos ($_SERVER['HTTP_REFERER'], $domain) === false && $_SERVER['HTTP_REFERER'] !== null) {
 			return false;
 		}
+
 		return true;
 	}
 
