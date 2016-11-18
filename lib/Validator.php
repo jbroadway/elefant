@@ -176,7 +176,8 @@ class Validator {
 							return true;
 						}
 						
-						if (empty (trim ($_v))) {
+						$trimmed = trim ($_v);
+						if (empty ($trimmed)) {
 							return true;
 						}
 					}
@@ -187,7 +188,8 @@ class Validator {
 					return false;
 				}
 
-				return empty (trim ($value));
+				$trimmed = trim ($value);
+				return empty ($trimmed);
 
 			case 'length':
 				if (preg_match ('/^([0-9]+)([+-]?)([0-9]*)$/', $validator, $regs)) {
