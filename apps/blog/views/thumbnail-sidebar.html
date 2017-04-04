@@ -1,0 +1,29 @@
+{! admin/util/dates !}
+
+{% foreach posts as n, post %}
+	{% if n < 3 %}
+	<div class="blog-related-post item">
+		<div class="thumbnail-wrapper">
+			<a href="/blog/post/{{post->id}}/{{post->title|URLify::filter}}">
+				<div class="thumbnail"
+					{% if post->thumbnail != '' %}
+						style="background-image: url('/{{post->thumbnail|Image::resize (%s, 400, 300, 'cover', 'ext')}}')"
+					{% end %}
+				></div>
+			</a>
+		</div>
+		<div class="item-info">
+			<h4><a href="/blog/post/{{post->id}}/{{post->title|URLify::filter}}">{{post->title}}</a></h4>
+			<p>{{post->ts|I18n::short_date_year}}</p>
+		</div>
+	</div>
+	{% end %}
+{% end %}
+
+<ul class="blog-headlines">
+{% foreach posts as n, post %}
+	{% if n >= 3 %}
+	<li>{{ post->ts|I18n::short_date }} <a href="/blog/post/{{ post->id }}/{{ post->title|URLify::filter }}">{{ post->title }}</a></li>
+	{% end %}
+{% end %}
+</ul>

@@ -24,6 +24,11 @@ dates[type] = select
 dates[require] = "apps/blog/lib/Functions.php"
 dates[callback] = "blog_yes_no"
 
+[blog/thumbnail-sidebar]
+
+label = "Blog: Thumbnail Sidebar"
+icon = rss
+
 [blog/bymonth]
 
 label = "Blog: Headlines by Month"
