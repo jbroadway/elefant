@@ -4,7 +4,7 @@
 	"keywords": ["cms", "content management", "wysiwyg", "elefant"],
 	"homepage": "http://www.elefantcms.com/",
 	"license": "MIT",
-	"version": "1.3.10-beta",
+	"version": "2.0.0-stable",
 	"require": {
 		"php": ">=5.3.7"
 	},
