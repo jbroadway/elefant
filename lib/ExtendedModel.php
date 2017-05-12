@@ -214,6 +214,10 @@ class ExtendedModel extends Model {
 		if (is_object ($ext)) {
 			$ext = (array) $ext;
 		}
+		if (! is_array ($ext)) {
+			error_log ('Expected $ext to be an array: ' . gettype ($ext));
+			$ext = array ();
+		}
 		return (object) array_merge ($this->data, $ext);
 	}
 
