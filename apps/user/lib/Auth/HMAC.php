@@ -129,15 +129,15 @@ class HMAC {
 		$data = '';
 		switch ($method) {
 			case 'GET':
-				$data = $method . Appconf::admin ('Site Settings', 'site_domain') . $_SERVER['REQUEST_URI'];
+				$data = $method . \Appconf::admin ('Site Settings', 'site_domain') . $_SERVER['REQUEST_URI'];
 				break;
 			case 'PUT':
-				$data = $method . Appconf::admin ('Site Settings', 'site_domain') . $_SERVER['REQUEST_URI'] . self::$controller->get_put_data ();
+				$data = $method . \Appconf::admin ('Site Settings', 'site_domain') . $_SERVER['REQUEST_URI'] . self::$controller->get_put_data ();
 				break;
 			case 'POST':
 			case 'DELETE':
 			default:
-				$data = $method . Appconf::admin ('Site Settings', 'site_domain') . $_SERVER['REQUEST_URI'] . self::$controller->get_raw_post_data ();
+				$data = $method . \Appconf::admin ('Site Settings', 'site_domain') . $_SERVER['REQUEST_URI'] . self::$controller->get_raw_post_data ();
 				break;
 		}
 
