@@ -86,7 +86,7 @@ class HMAC {
 
 		if (! $api_key) {
 			// API key not yet cached
-			$api = new \Api ($token);
+			$api = new \api\Api ($token);
 			if ($api->error) {
 				return FALSE;
 			}
