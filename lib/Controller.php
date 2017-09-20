@@ -731,13 +731,11 @@ class Controller {
 	 */
 	public function get_put_data () {
 		if ($this->put_data === null) {
-			$stdin = fopen ('php://input', 'r');
-			$out = '';
-			while ($data = fread ($stdin, 1024)) {
-				$out .= $data;
+			if (count ($_FILES) === 0) {
+				$this->put_data = file_get_contents ('php://input');
+			} else {
+				$this->put_data = http_build_query ($_POST);
 			}
-			fclose ($stdin);
-			$this->put_data = $out;
 		}
 		return $this->put_data;
 	}
@@ -746,10 +744,7 @@ class Controller {
 	 * Get the raw POST data.
 	 */
 	public function get_raw_post_data () {
-		if (! isset ($GLOBALS['HTTP_RAW_POST_DATA'])) {
-			$GLOBALS['HTTP_RAW_POST_DATA'] = http_build_query ($_POST);
-		}
-		return $GLOBALS['HTTP_RAW_POST_DATA'];
+		return $this->get_put_data ();
 	}
 
 	/**
