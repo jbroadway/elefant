@@ -27,10 +27,9 @@
  */
 ;(function($) {
 
-  jQuery.event.props.push("dataTransfer");
-
   var default_opts = {
       fallback_id: '',
+      fallback_dropzoneClick : true,
       url: '',
       refresh: 1000,
       paramname: 'userfile',
@@ -72,18 +71,31 @@
         files_count = 0,
         files;
 
-    $('#' + opts.fallback_id).css({
-      display: 'none',
-      width: 0,
-      height: 0
-    });
+    if ( opts.fallback_dropzoneClick === true )
+    {
+      $('#' + opts.fallback_id).css({
+        display: 'none',
+        width: 0,
+        height: 0
+      });
+    }
 
     this.on('drop', drop).on('dragstart', opts.dragStart).on('dragenter', dragEnter).on('dragover', dragOver).on('dragleave', dragLeave);
     $(document).on('drop', docDrop).on('dragenter', docEnter).on('dragover', docOver).on('dragleave', docLeave);
 
-    this.on('click', function(e){
-      $('#' + opts.fallback_id).trigger(e);
-    });
+    if ( opts.fallback_dropzoneClick === true )
+    {
+      if ( this.find('#' + opts.fallback_id).length > 0 )
+      {
+        throw "Fallback element ["+opts.fallback_id+"] cannot be inside dropzone, unless option fallback_dropzoneClick is false";
+      }
+      else
+      {
+        this.on('click', function(e){
+          $('#' + opts.fallback_id).trigger(e);
+        });
+      }
+    }
 
     $('#' + opts.fallback_id).change(function(e) {
       opts.drop(e);
@@ -94,9 +106,9 @@
 
     function drop(e) {
       if( opts.drop.call(this, e) === false ) return false;
-      if(!e.dataTransfer)
+      if(!e.originalEvent.dataTransfer)
         return;
-      files = e.dataTransfer.files;
+      files = e.originalEvent.dataTransfer.files;
       if (files === null || files === undefined || files.length === 0) {
         opts.error(errors[0]);
         return false;
@@ -370,7 +382,8 @@
           xhr.withCredentials = opts.withCredentials;
         }
 
-        var data = atob(e.target.result.split(',')[1]);
+        var encodedString = e.target.result.split(',')[1];
+        var data = encodedString === undefined ? '' : atob(encodedString);
         if (typeof newName === "string") {
           builder = getBuilder(newName, data, mime, boundary);
         } else {
@@ -388,7 +401,7 @@
 
         // Allow url to be a method
         if (jQuery.isFunction(opts.url)) {
-            xhr.open(opts.requestType, opts.url(), true);
+            xhr.open(opts.requestType, opts.url(upload), true);
         } else {
             xhr.open(opts.requestType, opts.url, true);
         }

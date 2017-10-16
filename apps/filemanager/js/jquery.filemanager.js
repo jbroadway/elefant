@@ -207,6 +207,7 @@
 			url: '/filemanager/upload/drop',
 			paramname: 'file',
 			withCredentials: (navigator.userAgent.indexOf('MSIE') === -1) ? true : false,
+			fallback_dropzoneClick: false,
 			data: {
 				path: function () {
 					return filemanager.path
