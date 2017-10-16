@@ -4,16 +4,14 @@
  * capability.
  */
 
-if (! RedactorPlugins) var RedactorPlugins = {};
-
-RedactorPlugins.dynamic = function () {
+$.Redactor.prototype.dynamic = function () {
 	return {
 		// Initialize the plugin
 		init: function () {
 			var button = this.button.add ('dynamic', $.i18n ('Dynamic Objects'));
-			this.button.setAwesome ('dynamic', 'fa-cog');
+			this.button.setIcon (button, '<i class="fa fa-cog"></i>');
 			this.button.addCallback (button, this.dynamic.add_handler);
-			$('.redactor-editor').on ('click', '.embedded', $.proxy (this.dynamic.edit_handler, this));
+			$('.redactor-layer').on ('click', '.embedded', $.proxy (this.dynamic.edit_handler, this));
 		},
 
 		// Open the dialog when the button is clicked
@@ -47,7 +45,7 @@ RedactorPlugins.dynamic = function () {
 				this.code.sync();
 			} else {
 				// enter a new embed
-				this.insert.htmlWithoutClean (
+				this.insert.raw (
 					'<span class="embedded" data-embed="' + embed_code + '" data-label="' + label + '" title="Click to edit."></span>'
 				);
 			}

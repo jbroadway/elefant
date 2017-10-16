@@ -99,6 +99,17 @@
 .e-no-padding-left { padding-left: 0; }
 .e-no-padding-right { padding-right: 0; }
 
+/* redactor/plugins/alignment.css */
+.text-center {
+    text-align: center;
+}
+.text-right {
+    text-align: right;
+}
+.text-justify {
+    text-align: justify;
+}
+
 /* desktop */
 @media (min-width: 992px) {
 	.e-row {

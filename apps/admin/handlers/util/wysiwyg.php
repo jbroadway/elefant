@@ -29,14 +29,17 @@ $this->run ('admin/util/fontawesome');
 $this->run ('admin/util/redactor');
 
 $page->add_style ('/js/jquery-ui/jquery-ui.css');
+$page->add_style ('/apps/admin/js/redactor/plugins/alignment.css');
 
 $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/js/jquery.quickpager.js');
+$page->add_script ('/apps/admin/js/redactor/plugins/alignment.js');
+//$page->add_script ('/apps/admin/js/redactor/plugins/fullscreen.js');
+$page->add_script ('/apps/admin/js/redactor/plugins/properties.js');
+$page->add_script ('/apps/admin/js/redactor/plugins/source.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/table.js');
-$page->add_script ('/apps/admin/js/redactor/plugins/filebrowser.js');
-$page->add_script ('/apps/admin/js/redactor/plugins/imagebrowser.js');
-$page->add_script ('/apps/admin/js/redactor/plugins/links.js');
-$page->add_script ('/apps/admin/js/redactor/plugins/dynamic.js');
+//$page->add_script ('/apps/admin/js/redactor/plugins/textdirection.js');
+$page->add_script ('/apps/admin/js/redactor/plugins/undo.js');
 
 $page->add_script (I18n::export (
 	'Dynamic Objects',
@@ -76,15 +79,15 @@ if (User::require_admin ()) {
 	$page->add_script ('/apps/admin/js/redactor/plugins/dynamic.js');
 
 	$data['buttons'] = array (
-		'formatting', 'bold', 'italic', 'deleted', 'alignment', 'horizontalrule',
-		'unorderedlist', 'orderedlist', 'outdent', 'indent', 'links', 'imagebrowser',
-		'filebrowser', 'table', 'undo', 'html', 'dynamic'
+		'format', 'bold', 'italic', 'deleted', 'alignment', 'horizontalrule',
+		'lists', 'outdent', 'indent', 'undo'/*, 'links', 'imagebrowser',
+		'filebrowser'*/, 'table', 'undo', 'source', 'dynamic'
 	);
 } else {
 	$data['buttons'] = array (
-		'formatting', 'bold', 'italic', 'deleted', 'alignment', 'horizontalrule',
-		'unorderedlist', 'orderedlist', 'outdent', 'indent', 'link',
-		'table', 'undo', 'html'
+		'format', 'bold', 'italic', 'deleted', 'alignment', 'horizontalrule',
+		'lists', 'outdent', 'indent', 'link',
+		'table', 'undo', 'source'
 	);
 }
 

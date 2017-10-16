@@ -3,14 +3,12 @@
  * Requires Elefant's filemanager/util/browser handler.
  */
 
-if (! RedactorPlugins) var RedactorPlugins = {};
-
-RedactorPlugins.imagebrowser = function () {
+$.Redactor.prototype.imagebrowser = function () {
 	return {
 		// Initialize the plugin
 		init: function () {
 			var button = this.button.addAfter ('links', 'imagebrowser', $.i18n ('Insert Image'));
-			this.button.setAwesome ('imagebrowser', 'fa-picture-o');
+			this.button.setIcon (button, '<i class="re-icon-image"></i>');
 			this.button.addCallback (button, this.imagebrowser.open_image_dialog);
 		},
 	

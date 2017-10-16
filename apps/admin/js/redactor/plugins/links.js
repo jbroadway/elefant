@@ -5,9 +5,7 @@
  * their own site.
  */
 
-if (! RedactorPlugins) var RedactorPlugins = {};
-
-RedactorPlugins.links = function () {
+$.Redactor.prototype.links = function () {
 	return {
 		// Initialize the plugin
 		init: function () {
@@ -26,8 +24,8 @@ RedactorPlugins.links = function () {
 			dropdown.point1 = { title: $.i18n ('Insert Link'), func: this.links.insert };
 			dropdown.point2 = { title: $.i18n ('Unlink'), func: this.link.unlink };
 			
-			var button = this.button.addBefore ('html', 'links', $.i18n ('Links'));
-			this.button.setAwesome ('links', 'fa-link');
+			var button = this.button.addBefore ('source', 'links', $.i18n ('Links'));
+			this.button.setIcon (button, '<i class="re-icon-link"></i>');
 			this.button.addDropdown (button, dropdown);
 		},
 	
@@ -35,7 +33,7 @@ RedactorPlugins.links = function () {
 		insert: function (self, evt, button) {
 			this.links.insert_link_node = false;
 			this.links.has_selected_text = false;
-			var sel = this.selection.getCurrent (),
+			var sel = this.selection.get (),
 				url = '', text = '', target = '',
 				page_matched = false,
 				base = window.location.origin
@@ -53,14 +51,14 @@ RedactorPlugins.links = function () {
 				text = sel.text;
 				target = sel.target;
 			} else {
-				var parent = this.selection.getParent ();
+				var parent = this.selection.parent ();
 				if (parent.nodeName === 'A') {
 					this.links.insert_link_node = $(parent);
 					text = this.links.insert_link_node.text ();
 					url = this.links.insert_link_node.attr ('href');
 					target = this.links.insert_link_node.attr ('target');
 				} else {
-					text = this.selection.getText ();
+					text = this.selection.text ();
 				}
 			}
 		

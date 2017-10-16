@@ -1,3 +1,21 @@
+.redactor-toolbar {
+	background-color: #f5f5f5;
+	box-shadow: none;
+}
+
+.redactor-toolbar li a {
+	height: auto;
+}
+
+.redactor-toolbar li a.re-button {
+	padding: 6px 8px 6px 8px;
+}
+
+#redactor-modal #redactor-modal-body input[type=text] {
+	height: 28px !important;
+	font-size: 1em !important;
+}
+
 .redactor-box {
 	border: 0;
 	padding: 0;
@@ -16,24 +34,23 @@
 	overflow: hidden;
 }
 
-.redactor-editor {
+.redactor-layer {
 	margin-top: 0px !important;
-	padding: 0;
+	padding: 0px;
 }
 
-.redactor-editor, .redactor-box textarea {
+.redactor-layer, .redactor-box textarea {
 	border: 1px solid #999;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
-	width: 654px !important;
-	height: 418px !important;
-	padding: 10px 5px 5px 5px !important;
+	height: 500px !important;
+	padding: 10px 10px 10px 10px !important;
 }
 
-.redactor-editor:focus {
-	height: 418px !important;
-	padding: 10px 5px 5px 5px !important;
+.redactor-layer:focus {
+	height: 500px !important;
+	padding: 10px 10px 10px 10px !important;
 	margin-top: 0px !important;
 }
 
@@ -55,7 +72,7 @@
 	color: #111 !important;
 }
 
-.redactor-editor .embedded {
+.redactor-layer .embedded {
 	background-color: #eee;
 	border: 1px solid #ccc;
 	-webkit-border-radius: 4px;
@@ -68,11 +85,11 @@
 	white-space: nowrap;
 }
 
-.redactor-editor .embedded:hover {
+.redactor-layer .embedded:hover {
 	cursor: pointer;
 }
 
-.redactor-editor .embedded:after {
+.redactor-layer .embedded:after {
 	content: attr(data-label);
 }
 
