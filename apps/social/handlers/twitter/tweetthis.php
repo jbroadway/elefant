@@ -15,10 +15,13 @@
  *
  * - `display` - The text to display.
  * - `tweet` - The text to tweet.
+ * - `url` - The URL to link to.
  *
  * Also available in the dynamic objects menu as "Twitter: Tweet This".
  */
 
-$data['http'] = $this->is_https () ? 'https' : 'http';
+$data['url'] = ($data['url'] !== '')
+	? $data['url']
+	: ($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . $_SERVER['REQUEST_URI'];
 
 echo $tpl->render ('social/twitter/tweetthis', $data);

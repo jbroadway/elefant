@@ -283,4 +283,7 @@ tweet[type] = text
 tweet[not empty] = 1
 tweet[message] = Please enter the tweet text.
 
+url[label] = "Link to post (optional)"
+url[type] = text
+
 ; */ ?>
