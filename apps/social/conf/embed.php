@@ -268,4 +268,19 @@ height[initial] = 360
 height[not empty] = 1
 height[message] = Please enter a player height.
 
+[social/twitter/tweetthis]
+
+label = "Twitter: Tweet This"
+icon = twitter
+
+display[label] = Text to display
+display[type] = text
+display[not empty] = 1
+display[message] = Please enter the text to display.
+
+tweet[label] = "Text to tweet (incl. @mentions and #hashtags, will auto-include link to post)"
+tweet[type] = text
+tweet[not empty] = 1
+tweet[message] = Please enter the tweet text.
+
 ; */ ?>
