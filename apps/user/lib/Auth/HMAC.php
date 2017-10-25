@@ -138,6 +138,9 @@ class HMAC {
 				$data = $method . \Appconf::admin ('Site Settings', 'site_domain') . $_SERVER['REQUEST_URI'] . self::$controller->get_put_data ();
 				break;
 		}
+		
+		// Avoid problems with %2f vs %2F
+		$data = strtolower ($data);
 
 		// Call the verifier with the token, hmac hash, and request data
 		if (! call_user_func ($callback, $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'], $data)) {
