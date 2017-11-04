@@ -17,7 +17,7 @@ $lock->remove ();
 if (isset ($_GET['return'])) {
 	$_GET['return'] = filter_var ($_GET['return'], FILTER_SANITIZE_URL);
 
-	if (! validator::validate ($_GET['return'], 'localpath')) {
+	if (! Validator::validate ($_GET['return'], 'localpath')) {
 		$this->redirect ($_GET['return']);
 	}
 }
