@@ -335,6 +335,16 @@
 						return _false;
 					}
 					break;
+				case 'filetype':
+					if (value == '') {
+						return _false;
+					}
+
+					var re = new RegExp ('\.(' + validator.replace (/, ?/, '|') + ')$', 'i');
+					if (! re.test (value)) {
+						return _false;
+					}
+					break;
 				// not implemented: type, callback, header, unique, exists
 			}
 			
