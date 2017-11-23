@@ -11,6 +11,10 @@ if ($pixel_id == null || $pixel_id == false || $pixel_id == '') {
 	return;
 }
 
+if (User::require_admin ()) {
+	return;
+}
+
 if (isset ($data['event'])) {
 	echo $tpl->render ('social/facebook/pixel-event', $data);
 }
