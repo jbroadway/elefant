@@ -340,7 +340,7 @@
 						return _false;
 					}
 
-					var re = new RegExp ('\.(' + validator.replace (/, ?/, '|') + ')$', 'i');
+					var re = new RegExp ('\.(' + validator.replace (/, ?/g, '|') + ')$', 'i');
 					if (! re.test (value)) {
 						return _false;
 					}
