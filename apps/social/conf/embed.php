@@ -92,6 +92,22 @@ url[not empty] = 1
 url[regex] = "/^http:\/\/.+$/"
 url[message] = Please enter a valid URL.
 
+[social/facebook/pixel-event]
+
+label = Facebook: Pixel Conversion Event
+icon = facebook
+
+event[label] = Conversion Event
+event[type] = select
+event[require] = "apps/social/lib/Functions.php"
+event[callback] = "facebook_pixel_events"
+
+purchase_value[label] = "Purchase value (optional)"
+purchase_value[type] = text
+
+purchase_currency[label] = "Currency code (ex: USD, EUR - optional)"
+purchase_currency[type] = text
+
 [social/twitter/follow]
 
 label = Twitter: Follow

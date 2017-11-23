@@ -1,0 +1,11 @@
+<script>
+{% if event == 'Purchase' %}
+	{% if purchase_value != '' %}
+		fbq('track', 'Purchase', {'value':'{{purchase_value}}'{% if purchase_currency != '' %}, 'currency': '{{purchase_currency}}'{% end %}});
+	{% else %}
+		fbq('track', 'Purchase');
+	{% end %}
+{% else %}
+	fbq('track', '{{event}}');
+{% end %}
+</script>
