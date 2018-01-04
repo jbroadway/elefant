@@ -69,6 +69,7 @@ class Validator {
 	 * - `regex` - calls `preg_match($validator, $value)`
 	 * - `type` - calls `is_$validator($value)`
 	 * - `callback` - calls `call_user_func($validator, $value)`
+	 * - `fcallback` - calls `call_user_func($validator, $file_path)`
 	 * - `email` - a valid email address
 	 * - `url` - a valid url
 	 * - `localpath` - a valid local url path (begins with /)
@@ -361,6 +362,20 @@ class Validator {
 							'value' => $_FILES[$name]['name']
 						);
 						break;
+					} else {
+						continue;
+					}
+				}
+				if ($type == 'fcallback') {
+					if (! call_user_func ($validator, $_FILES[$name]['tmp_name'])) {
+						$failed[] = $rule;
+						self::$invalid[$name] = array (
+							'field' => $name,
+							'type' => $type,
+							'validator' => $validator,
+							'value' => $_FILES[$name]['name']
+						);
+						error_log (json_encode ($failed));
 					} else {
 						continue;
 					}
