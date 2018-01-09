@@ -91,6 +91,18 @@ acl = filemanager
 file[label] = MP4 Video
 file[type] = file
 
+[filemanager/videogif]
+
+label = "Video GIF (MP4)"
+icon = video-camera
+acl = filemanager
+
+file[label] = MP4 Video
+file[type] = file
+
+gif[label] = "GIF Fallback (optional)"
+gif[type] = file
+
 [filemanager/swf]
 
 label = "Flash Player (SWF)"
