@@ -1,4 +1,4 @@
-<video autoplay loop muted>
+<video autoplay loop muted id="gif-{{file|basename(%s, 'mp4')|URLify::filter}}">
 	<source src="{{file}}" type="video/mp4" />
 	{% if gif != '' %}<img src="{{gif}}" />{% end %}
 </video>
