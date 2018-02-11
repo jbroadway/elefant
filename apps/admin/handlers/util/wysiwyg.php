@@ -38,6 +38,7 @@ $page->add_script ('/apps/admin/js/redactor/plugins/alignment.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/properties.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/source.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/table.js');
+$page->add_script ('/apps/admin/js/redactor/plugins/superscript.js');
 //$page->add_script ('/apps/admin/js/redactor/plugins/textdirection.js');
 $page->add_script ('/apps/admin/js/redactor/plugins/undo.js');
 
@@ -79,7 +80,7 @@ if (User::require_admin ()) {
 	$page->add_script ('/apps/admin/js/redactor/plugins/dynamic.js');
 
 	$data['buttons'] = array (
-		'format', 'bold', 'italic', 'deleted', 'alignment', 'horizontalrule',
+		'format', 'bold', 'italic', 'deleted', 'superscript', 'alignment', 'horizontalrule',
 		'lists', 'outdent', 'indent', 'undo'/*, 'links', 'imagebrowser',
 		'filebrowser'*/, 'table', 'undo', 'source', 'dynamic'
 	);
