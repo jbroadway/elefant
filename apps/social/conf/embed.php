@@ -194,6 +194,17 @@ height[initial] = 360
 height[not empty] = 1
 height[message] = Please enter a player height.
 
+[social/video/youtube-responsive]
+
+label = "Video: YouTube (responsive)"
+icon = video-camera
+
+url[label] = Link
+url[type] = text
+url[not empty] = 1
+url[regex] = "/^https?:\/\/.+$/"
+url[message] = Please enter a valid URL.
+
 [social/video/vine]
 
 label = "Video: Vine"
