@@ -93,6 +93,9 @@ $(function () {
 		center_modal (num);
 
 		$('#modal-close-' + num).click ($.close_dialog);
+		$('#modal-overlay-' + num).click (function () {
+			$.close_dialog (num);
+		});
 
 		if (num === 1) {
 			disable_scrolling ();
