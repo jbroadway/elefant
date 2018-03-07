@@ -57,5 +57,3 @@ $data['moreinfo'] = isset ($data['moreinfo']) ? $data['moreinfo'] : 'https://wik
 $data['cookie'] = isset ($data['cookie']) ? $data['cookie'] : 'we-love-cookies';
 
 echo $tpl->render ('social/cookienotice', $data);
-
-info ($data, true);
