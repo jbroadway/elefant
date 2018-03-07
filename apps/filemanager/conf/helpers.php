@@ -6,6 +6,7 @@ filemanager/photo = 1
 filemanager/slideshow = 1
 filemanager/swf = 1
 filemanager/video = 1
+filemanager/videogif = 1
 filemanager/util/browser = 1
 filemanager/util/multi-file = 1
 filemanager/util/multi-image = 1
