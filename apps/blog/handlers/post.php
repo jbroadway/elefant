@@ -30,7 +30,7 @@ if ($p->published === 'que') {
 		$p->published = 'yes';
 		$p->put ();
 		Versions::add ($p);
-	} else {
+	} else if (! User::require_acl ('admin', 'blog')) {
 	    return $this->error (404, __ ('Post not found'), '<p>' . __ ('Hmm, we can\'t seem to find the post you wanted at the moment.') . '</p>');
 	}
 }
