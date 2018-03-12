@@ -27,6 +27,18 @@ if (! $res) {
 		} else {
 			$page->posts[$k]->body = $tpl->run_includes (Markdown ($page->posts[$k]->body));
 		}
+		
+		// Strip script, iframe, link, and video tags
+		$html = preg_replace ('#<script(.*?)>(.*?)</script>#is', '', $page->posts[$k]->body);
+		$html = preg_replace ('#<iframe(.*?)>(.*?)</iframe>#is', '', $html);
+		$html = preg_replace ('#<link(.*?)>#is', '', $html);
+		$html = preg_replace ('#<video(.*?)>(.*?)</video>#is', '', $html);
+		
+		// Make sure all URLs are absolutized
+		$html = preg_replace ('/(src|href)="\//i', '\1="' . $this->absolutize ('/'), $html);
+		
+		$page->posts[$k]->body = $html;
+		
 		if ($preview_chars) {
 			$page->posts[$k]->body = blog_filter_truncate ($page->posts[$k]->body, $preview_chars);
 		}
@@ -36,5 +48,5 @@ if (! $res) {
 	$cache->set ('blog_rss', $res, 1800); // half an hour
 }
 $page->layout = FALSE;
-header ('Content-Type: text/xml');
+header ('Content-Type: text/xml; charset=UTF-8');
 echo $res;

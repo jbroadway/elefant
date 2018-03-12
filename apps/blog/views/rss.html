@@ -30,7 +30,7 @@
 	<title>{{ loop_value->title }}</title>
 	<link>http://{{ Appconf::admin ('Site Settings', 'site_domain') }}{{ loop_value->url }}</link>
 	<description>{{ loop_value->body }}</description>
-	<dc:date>{{ loop_value->ts|str_replace (' ', 'T', %s) }}</dc:date>
+	<dc:date>{{ loop_value->ts|str_replace (' ', 'T', %s) }}+00:00</dc:date>
 </item>
 
 {% end %}
