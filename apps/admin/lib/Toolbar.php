@@ -168,7 +168,7 @@ class Toolbar {
 	 * Parse and cache available apps.
 	 */
 	public static function apps ($controller, $editing = false, $recache = false) {
-		if (self::$apps !== null && !recache) return self::$apps;
+		if (self::$apps !== null && !$recache) return self::$apps;
 		
 		$apps = array();
 		$tools = array();
