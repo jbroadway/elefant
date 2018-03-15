@@ -42,7 +42,8 @@ class Toolbar {
 			// filter out resources that are already in use
 			$apps = array_diff_key($apps, $group);
 		}
-		return self::$compiled = array($tools, $apps);
+		self::$compiled = array($tools, $apps);
+		return self::$compiled;
 	}
 	
 	/**
@@ -51,11 +52,15 @@ class Toolbar {
 	 * doesn't exist or is unspecified.
 	 */
 	public static function tools ($c, $editing = false, $recache = false) {
-		if (self::$tools !== false && !$recache)
+		if (self::$tools !== false && !$recache) {
 			return self::$tools;
+		}
 		
-		if (conf('Paths','toolbar') && !file_exists (conf('Paths','toolbar')))
-			return self::$tools = array();
+		if (conf('Paths','toolbar') && !file_exists (conf('Paths','toolbar'))) {
+			self::$tools = array();
+			return self::$tools;
+		}
+		
 		$path = (conf('Paths','toolbar'))?conf('Paths','toolbar'):'conf/tools.php';
 		$tools = parse_ini_file ($path, true);
 		$first = false;
@@ -160,15 +165,21 @@ class Toolbar {
 					unset ($tools[$section]);
 				}
 			}
-		} else $tools = array();
-		return self::$tools = $tools;
+		} else {
+			$tools = array();
+		}
+		
+		self::$tools = $tools;
+		return self::$tools;
 	}
 	
 	/**
 	 * Parse and cache available apps.
 	 */
 	public static function apps ($controller, $editing = false, $recache = false) {
-		if (self::$apps !== null && !$recache) return self::$apps;
+		if (self::$apps !== null && self::$apps !== false && !$recache) {
+			return self::$apps;
+		}
 		
 		$apps = array();
 		$tools = array();
@@ -300,7 +311,8 @@ class Toolbar {
 			}
 			return ($a['name'] < $b['name']) ? -1 : 1;
 		});
-		return self::$apps = $tools;
+		self::$apps = $tools;
+		return self::$apps;
 	}
 	
 	/**
