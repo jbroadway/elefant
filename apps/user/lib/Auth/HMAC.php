@@ -61,6 +61,11 @@ class HMAC {
 	 * Defaults to one hour.
 	 */
 	public static $timeout = 3600;
+	
+	/**
+	 * The user ID of the last user to be verified. Defaults to 0.
+	 */
+	public static $user_id = 0;
 
 	/**
 	 * Returns an array with the verifier and request method callbacks
@@ -104,8 +109,8 @@ class HMAC {
 			return FALSE;
 		}
 
-		// They have the private key, create the user
-		$user = new \User ($api->user_id);
+		// They have the private key, save the user
+		self::$user_id = $api->user_id;
 		return TRUE;
 	}
 
