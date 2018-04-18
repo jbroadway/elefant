@@ -86,7 +86,7 @@ $page->add_script (sprintf (
 
 // add opengraph/twitter card meta tags
 $url = ($this->is_https () ? 'https' : 'http') . '://' . Appconf::admin ('Site Settings', 'site_domain') . $post->fullurl;
-$desc = blog_filter_truncate (strip_tags ($post->body), 300);
+$desc = blog_filter_truncate ($post->body, 300);
 
 $page->add_meta ('og:type', 'article', 'property');
 $page->add_meta ('og:site_name', conf ('General', 'site_name'), 'property');
