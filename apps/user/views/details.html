@@ -9,8 +9,10 @@
 	<a href="/user/delete?id={{id}}" onclick="return confirm ('{"Are you sure you want to delete this user?"}');">{"Delete"}</a>
 </p>
 
-{% if photo != '' %}
-<img src="{{photo}}" id="photo" />
+{% if photo == '' %}
+	<img src="{{Appconf::user ('User', 'default_photo')}}" id="photo" style="width: {{Appconf::user ('User', 'photo_width')}}px; height: {{Appconf::user ('User', 'photo_height')}}px" />
+{% else %}
+	<img src="{{photo}}" align="left" id="photo" style="width: {{Appconf::user ('User', 'photo_width')}}px; height: {{Appconf::user ('User', 'photo_height')}}px" />
 {% end %}
 
 <p>

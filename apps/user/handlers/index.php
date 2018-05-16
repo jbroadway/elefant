@@ -27,4 +27,8 @@ if (! $this->params[0]) {
 	$data->is_current = (User::is_valid () && $this->params[0] === User::$user->id) ? true : false;
 }
 
+if ($data->photo != '' && strpos ($data->photo, '/') !== 0) {
+	$data->photo = '/' . $data->photo;
+}
+
 echo $tpl->render ('user/index', $data);

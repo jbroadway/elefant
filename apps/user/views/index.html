@@ -1,7 +1,7 @@
 {% if photo == '' %}
 	<img src="{{Appconf::user ('User', 'default_photo')}}" align="left" style="margin-right: 15px; width: {{Appconf::user ('User', 'photo_width')}}px; height: {{Appconf::user ('User', 'photo_height')}}px" />
 {% else %}
-	<img src="/{{photo}}" align="left" style="margin-right: 15px; width: {{Appconf::user ('User', 'photo_width')}}px; height: {{Appconf::user ('User', 'photo_height')}}px" />
+	<img src="{{photo}}" align="left" style="margin-right: 15px; width: {{Appconf::user ('User', 'photo_width')}}px; height: {{Appconf::user ('User', 'photo_height')}}px" />
 {% end %}
 
 <p>

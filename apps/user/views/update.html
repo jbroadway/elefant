@@ -28,7 +28,7 @@
 <p>
 	{"Profile photo"}:<br />
 	{% if photo != '' %}
-	<img src="/{{photo}}#{{mt_rand()}}" style="width: {{Appconf::user ('User', 'photo_width')}}px; height: {{Appconf::user ('User', 'photo_height')}}px" /><br />
+	<img src="{{photo_url}}#{{mt_rand()}}" style="width: {{Appconf::user ('User', 'photo_width')}}px; height: {{Appconf::user ('User', 'photo_height')}}px" /><br />
 	{% end %}
 	<input type="file" name="photo" id="photo" size="40" value="{{ photo|quotes }}" />
 </p>

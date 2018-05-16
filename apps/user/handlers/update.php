@@ -24,6 +24,12 @@ $form->data = $form->merge_values ($form->data);
 $form->data->failed = $form->failed;
 $form->data->_states = user\Data::states ();
 $form->data->_countries = user\Data::countries ();
+
+$form->data->photo_url = $form->data->photo;
+if ($form->data->photo_url != '' && strpos ($form->data->photo_url, '/') != 0) {
+	$form->data->photo_url = '/' . $form->data->photo_url;
+}
+
 $page->title = __ ('Update Profile');
 
 echo $form->handle (function ($form) use ($u, $page) {
