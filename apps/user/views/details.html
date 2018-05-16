@@ -10,9 +10,9 @@
 </p>
 
 {% if photo == '' %}
-	<img src="{{Appconf::user ('User', 'default_photo')}}" id="photo" style="width: {{Appconf::user ('User', 'photo_width')}}px; height: {{Appconf::user ('User', 'photo_height')}}px" />
+	<img src="{{Appconf::user ('User', 'default_photo')}}" id="photo" />
 {% else %}
-	<img src="{{photo}}" align="left" id="photo" style="width: {{Appconf::user ('User', 'photo_width')}}px; height: {{Appconf::user ('User', 'photo_height')}}px" />
+	<img src="{{photo}}" align="left" id="photo" />
 {% end %}
 
 <p>
