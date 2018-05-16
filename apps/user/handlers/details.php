@@ -21,6 +21,10 @@ if ($user->error) {
 
 $user = $user->orig ();
 
+if ($user->photo != '' && strpos ($user->photo, '/') !== 0) {
+	$user->photo = '/' . $user->photo;
+}
+
 if (! is_array ($user->tabs)) {
 	$user->tabs = array ();
 }
