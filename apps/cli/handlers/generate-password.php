@@ -24,4 +24,10 @@ if (isset ($_SERVER['argv'][2])) {
 	$length = 8;
 }
 
-echo generate_password ($length) . "\n";
+$include_symbols = true;
+
+if (isset ($_SERVER['argv'][3]) &&  $_SERVER['argv'][3] == '--no-symbols') {
+	$include_symbols = false;
+}
+
+echo generate_password ($length, $include_symbols) . "\n";

@@ -5,8 +5,11 @@
  * length for use in passwords. String may contain any number, lower
  * or uppercase letters, or common symbols.
  */
-function generate_password ($length) {
-	$list = '123467890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_-+=~:;|<>[]{}?"\'';
+function generate_password ($length, $include_symbols = true) {
+	$list = ($include_symbols)
+		? '123467890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_-+=~:;|<>[]{}?"\''
+		: '123467890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
 	$pass = '';
 	while (strlen ($pass) < $length) {
 		$pass .= substr ($list, mt_rand (0, strlen ($list)), 1);
