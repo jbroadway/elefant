@@ -276,7 +276,7 @@ class Page {
 		if ($type !== '') {
 			$type = ' type="' . $type . '"';
 		}
-		if (preg_match ('/\.css$/i', $script)) {
+		if (preg_match ('/\.css$/i', $script) || strpos ($script, '.css?') !== false) {
 			return '<link rel="stylesheet"' . $type . ' href="' . self::assets_version ($script) . "\" />\n";
 		}
 		return '<script' . $type . ' src="' . self::assets_version ($script) . "\"></script>\n";
