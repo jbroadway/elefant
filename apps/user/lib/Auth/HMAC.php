@@ -87,7 +87,10 @@ class HMAC {
 	 * Tokens and secret keys are stored in the `api` table.
 	 */
 	public static function verifier ($token, $hmac, $data) {
-		$api_key = self::$cache->get ('_api_key_' . $token);
+		$cached = self::$cache->get ('_api_key_' . $token);
+		if ($cached && strpos ($cached, ':') !== false) {
+			list ($user_id, $api_key) = explode (':', $cached, 2);
+		}
 
 		if (! $api_key) {
 			// API key not yet cached
@@ -96,11 +99,12 @@ class HMAC {
 				return FALSE;
 			}
 			$api_key = $api->api_key;
+			$user_id = $api->user_id;
 
 			// Cache the API key
-			$res = self::$cache->replace ('_api_key_' . $token, $api_key, 0, self::$timeout);
+			$res = self::$cache->replace ('_api_key_' . $token, $user_id . ':' . $api_key, 0, self::$timeout);
 			if ($res === FALSE) {
-				self::$cache->set ('_api_key_' . $token, $api_key, 0, self::$timeout);
+				self::$cache->set ('_api_key_' . $token, $user_id . ':' . $api_key, 0, self::$timeout);
 			}
 		}
 
@@ -110,7 +114,7 @@ class HMAC {
 		}
 
 		// They have the private key, save the user
-		self::$user_id = $api->user_id;
+		self::$user_id = $user_id;
 		return TRUE;
 	}
 
