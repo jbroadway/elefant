@@ -5,6 +5,10 @@
 label = "Blog: Archives Sidebar"
 icon = rss
 
+limit[label] = "Hide older than (months)"
+limit[type] = numeric
+limit[initial] = 24
+
 [blog/headlines]
 
 label = "Blog: Headlines"

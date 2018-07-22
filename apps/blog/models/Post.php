@@ -166,16 +166,34 @@ class Post extends \ExtendedModel {
 	/**
 	 * Get a list of archive years, months, and count of posts.
 	 */
-	public static function archive_months ($published = true) {
+	public static function archive_months ($published = true, $limit = 0) {
 		$db = \DB::get_connection (1);
 		$dbtype = $db->getAttribute (\PDO::ATTR_DRIVER_NAME);
-		$published = $published ? 'where published = "yes"' : '';
+
+		$q = '';
+		
+		if ($published) {
+			$q .= 'where published = "yes"';
+		}
+		
+		$limit = (int) $limit;
+		
+		if ($limit > 0) {
+			if ($q == '') {
+				$q = 'where ';
+			} else {
+				$q .= ' and ';
+			}
+			
+			$q .= ' ts >= "' . gmdate ('Y-m', strtotime ('-' . $limit . ' month')) . '-01 00:00:00"';
+		}
+
 		switch ($dbtype) {
 			case 'pgsql':
 				$res = \DB::fetch (
 					'select extract(year from ts) as year, extract(month from ts) as month, count(*) as total
 					 from #prefix#blog_post
-					 ' . $published . '
+					 ' . $q . '
 					 group by year, month
 					 order by year desc, month desc'
 				);
@@ -184,7 +202,7 @@ class Post extends \ExtendedModel {
 				$res = \DB::fetch (
 					'select year(ts) as year, month(ts) as month, count(*) as total
 					 from #prefix#blog_post
-					 ' . $published . '
+					 ' . $q . '
 					 group by year, month
 					 order by year desc, month desc'
 				);
@@ -193,7 +211,7 @@ class Post extends \ExtendedModel {
 				$res = \DB::fetch (
 					'select strftime(\'%Y\', ts) as year, strftime(\'%m\', ts) as month, count(*) as total
 					 from #prefix#blog_post
-					 ' . $published . '
+					 ' . $q . '
 					 group by year, month
 					 order by year desc, month desc'
 				);
