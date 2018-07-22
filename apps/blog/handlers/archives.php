@@ -1,6 +1,6 @@
 <?php
 
-//$this->cache = 3600;
+$this->cache = 3600;
 
 $res = blog\Post::archive_months (true, $data['limit']);
 
