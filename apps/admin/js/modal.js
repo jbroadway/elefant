@@ -126,4 +126,17 @@ $(function () {
 
 		return false;
 	}
+	
+	// re-center the modal dialog window
+	$.recenter_modal = function (num) {
+		if (typeof num === 'object') {
+			num = $(num.target).data ('modal');
+		} else {
+			num = num ? num : n;
+		}
+
+		center_modal (num);
+
+		return false;
+	}
 });
