@@ -1,4 +1,4 @@
 <Files ~ "\.(php|sql)$">
-  Order allow,deny
+	Order allow,deny
 	Deny from all
 </Files>
