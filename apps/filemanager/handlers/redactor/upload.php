@@ -6,7 +6,10 @@
 
 $page->layout = false;
 
-$this->require_admin ();
+if (! User::require_acl ('admin') || ! User::require_acl ('filemanager')) {
+	echo json_encode (array ('error' => __ ('Must be logged in to upload')));
+	return;
+}
 
 $root = getcwd () . '/' . conf('Paths','filemanager_path') . '/';
 
@@ -29,6 +32,14 @@ foreach ($_FILES['file']['error'] as $error) {
 		echo json_encode (array ('error' => $errors[$error]));
 		return;
 	}
+}
+
+// some browsers may urlencode the file name
+$_FILES['file']['name'] = urldecode ($_FILES['file']['name']);
+
+if (preg_match ('/\.(php|phtml|pht|php3|php4|php5|phar|js|rb|py|pl|sh|bash|exe)$/i', $_FILES['file']['name'])) {
+	echo json_encode (array ('error' => __ ('Cannot upload executable files due to security.')));
+	return;
 }
 
 if (file_exists ($root . $_FILES['file']['name'])) {

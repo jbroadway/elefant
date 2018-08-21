@@ -70,47 +70,68 @@ switch ($_GET['action']) {
 		break;
 	case 'upload':
 		$ok = 0;
+		
+		// prevent encoded symbols bypassing checks
+		$_POST['dir'] = urldecode ($_POST['dir']);
+		$_POST['newName'] = urldecode ($_POST['newName']);
+
 		if (! isset ($_POST['dir']) || $_POST['dir'] === '/') {
 			$_POST['dir'] = '/files';
 		}
+
 		if ($_POST['dir'] === '/files') {
 			$ok = 3;
 		} else {
 			if (strpos ($_POST['dir'], '..') === false) {
 				$ok++;
 			}
+
 			if (strpos ($_POST['dir'], '/files/') === 0) {
 				$ok++;
 			}
+
 			if (is_dir (getcwd () . $_POST['dir'])) {
 				$ok++;
 			}
 		}
+		
 		if ($ok < 3) {
 			echo __ ('Invalid directory');
 			return;
 		}
+		
 		if (! isset ($_POST['newName'])) {
 			echo __ ('No name specified');
 			break;
 		}
+
 		if (strpos ($_POST['newName'], '..') !== false || strpos ($_POST['newName'], '/') !== false) {
 			echo __ ('Invalid name');
 			return;
 		}
+		
+		if (preg_match ('/\.(php|phtml|pht|php3|php4|php5|phar|js|rb|py|pl|sh|bash|exe)$/i', $_POST['newName'])) {
+			echo __ ('Invalid file type');
+			return;
+		}
+		
 		$dest = ltrim ($_POST['dir'], '/') . '/' . $_POST['newName'];
+
 		if (file_exists ($dest)) {
 			echo __ ('File already exists');
 			return;
 		}
+
 		if (! is_uploaded_file ($_FILES['handle']['tmp_name'])) {
 			echo __ ('File upload failed');
 			return;
 		}
+
 		if (! move_uploaded_file ($_FILES['handle']['tmp_name'], $dest)) {
 			echo __ ('File save failed');
 			return;
 		}
+
 		echo 'File uploaded successfully';
 		return;
 }
