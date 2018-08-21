@@ -11,7 +11,7 @@ $page->title = __ ('CSV Importer');
 
 $imported = 0;
 
-$file = 'cache/user_csv_import.csv';
+$file = 'cache/user_import.csv';
 
 if (! file_exists ($file)) {
 	echo '<p>' . __ ('Uploaded CSV file not found.') . '</p>';
