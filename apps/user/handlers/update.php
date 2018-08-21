@@ -56,6 +56,14 @@ echo $form->handle (function ($form) use ($u, $page) {
 	$u->website = $_POST['website'];
 
 	if (isset ($_FILES['photo']) && is_uploaded_file ($_FILES['photo']['tmp_name'])) {
+		// some browsers may urlencode the file name
+		$_FILES['photo']['name'] = urldecode ($_FILES['photo']['name']);
+		
+		if (! preg_match ('/\.(png|jpe?g)$/i', $_FILES['photo']['name'])) {
+			$form->failed[] = 'photo';
+			return false;
+		}
+		
 		$tmp_file = 'cache/.' . basename ($_FILES['photo']['name']);
 		$old_file = $u->photo;
 		if (move_uploaded_file ($_FILES['photo']['tmp_name'], $tmp_file)) {
