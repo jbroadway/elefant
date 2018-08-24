@@ -20,7 +20,7 @@ if ($lock->exists ()) {
 $wp = new Webpage ($_GET['page']);
 
 $f = new Form ('post', 'admin/edit');
-$f->verify_csrf = false;
+
 if ($f->submit ()) {
 	$wp->id = $_POST['id'];
 	$wp->title = $_POST['title'];

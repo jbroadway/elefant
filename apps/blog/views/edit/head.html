@@ -52,7 +52,7 @@ $(function () {
 			showChoices (subtract_array (choices, $('#tagit').tagit ('assignedTags')));
 		}
 	});
-	$('#edit-form').verify_values ({
+	$('#blog-edit-form').verify_values ({
 		handler: 'blog/edit',
 		callback: function (failed) {
 			// highlight the failed elements
@@ -70,8 +70,8 @@ $(function () {
 	$('#{{ loop_value }}-notice').show ();
 	{% end %}
 
-	$('#edit-form').autosave ();
-	$('#edit-form').bgsave ({
+	$('#blog-edit-form').autosave ();
+	$('#blog-edit-form').bgsave ({
 		url: '/blog/bgsave?id=',
 		id: '{{ id }}',
 		msg_saving: '{"Saving..."}',

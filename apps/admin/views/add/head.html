@@ -5,7 +5,7 @@
 <script src="/js/urlify.js"></script>
 <script>
 $(function () {
-	$('#add-form').verify_values ({
+	$('#admin-add-form').verify_values ({
 		handler: 'admin/add',
 		callback: function (failed) {
 			// highlight the failed elements
@@ -23,7 +23,7 @@ $(function () {
 	$('#{{ loop_value }}-notice').show ();
 	{% end %}
 
-	$('#add-form').autosave ();
+	$('#admin-add-form').autosave ();
 });
 function webpage_add_title_to_id (f) {
 	if (f.elements.id.value == '') {

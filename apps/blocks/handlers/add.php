@@ -9,8 +9,9 @@ $page->layout = 'admin';
 $this->require_acl ('admin', 'blocks', 'admin/add');
 
 $f = new Form ('post', 'blocks/add');
-$f->verify_csrf = false;
+
 if ($f->submit ()) {
+	unset ($_POST['_token_']);
 	$b = new Block ($_POST);
 	$b->put ();
 	Versions::add ($b);

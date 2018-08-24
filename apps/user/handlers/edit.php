@@ -11,7 +11,7 @@ $this->require_acl ('admin', 'user');
 $u = new User ($_GET['id']);
 
 $f = new Form ('post', 'user/edit');
-$f->verify_csrf = false;
+
 if ($f->submit ()) {
 	$u->name = $_POST['name'];
 	$u->email = $_POST['email'];

@@ -9,8 +9,9 @@ $page->layout = 'admin';
 $this->require_acl ('admin', 'admin/pages', 'admin/add');
 
 $f = new Form ('post', 'admin/add');
-$f->verify_csrf = false;
+
 if ($f->submit ()) {
+	unset ($_POST['_token_']);
 	$wp = new Webpage ($_POST);
 	$wp->put ();
 	Versions::add ($wp);
@@ -23,6 +24,7 @@ if ($f->submit ()) {
 	$page->title = __ ('An Error Occurred');
 	echo __ ('Error Message') . ': ' . $wp->error;
 } else {
+	info ($f->error);
 	$pg = new Page;
 	$pg->layout = 'default';
 	$pg->weight = '0';

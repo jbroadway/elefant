@@ -20,7 +20,7 @@ if ($lock->exists ()) {
 $b = new Block ($_GET['id']);
 
 $f = new Form ('post', 'blocks/edit');
-$f->verify_csrf = false;
+
 if ($f->submit ()) {
 	$b->id = $_POST['id'];
 	$b->title = $_POST['title'];

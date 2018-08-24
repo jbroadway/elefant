@@ -5,7 +5,7 @@
 <script type="text/javascript" src="/js/jquery.verify_values.js"></script>
 <script type="text/javascript">
 $(function () {
-	$('#edit-form').verify_values ({
+	$('#blocks-edit-form').verify_values ({
 		handler: 'blocks/edit',
 		callback: function (failed) {
 			// highlight the failed elements
@@ -23,8 +23,8 @@ $(function () {
 	$('#{{ loop_value }}-notice').show ();
 	{% end %}
 
-	$('#edit-form').autosave ();
-	$('#edit-form').bgsave ({
+	$('#blocks-edit-form').autosave ();
+	$('#blocks-edit-form').bgsave ({
 		url: '/blocks/bgsave?id=',
 		id: '{{ id }}',
 		msg_saving: '{"Saving..."}',

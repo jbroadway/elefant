@@ -9,7 +9,7 @@ $page->layout = 'admin';
 $this->require_acl ('admin', 'user');
 
 $f = new Form ('post', 'user/add');
-$f->verify_csrf = false;
+
 if ($f->submit ()) {
 	if (! User::require_acl ('user/edit_roles')) {
 		$_POST['type'] = Appconf::user ('User', 'default_role');
@@ -23,6 +23,7 @@ if ($f->submit ()) {
 	unset ($_POST['verify_pass']);
 	unset ($_POST['_states']);
 	unset ($_POST['_countries']);
+	unset ($_POST['_token_']);
 	$u = new User ($_POST);
 	$u->put ();
 	Versions::add ($u);

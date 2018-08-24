@@ -6,7 +6,7 @@
 <script src="/js/urlify.js"></script>
 <script>
 $(function () {
-	$('#edit-form').verify_values ({
+	$('#admin-edit-form').verify_values ({
 		handler: 'admin/edit',
 		callback: function (failed) {
 			// highlight the failed elements
@@ -24,8 +24,8 @@ $(function () {
 	$('#{{ loop_value }}-notice').show ();
 	{% end %}
 
-	$('#edit-form').autosave ();
-	$('#edit-form').bgsave ({
+	$('#admin-edit-form').autosave ();
+	$('#admin-edit-form').bgsave ({
 		url: '/admin/bgsave?id=',
 		id: '{{ id }}',
 		msg_saving: '{"Saving..."}',

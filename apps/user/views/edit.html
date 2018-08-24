@@ -2,7 +2,7 @@
 
 <div class="form">
 
-<form method="POST" id="add-form">
+<form method="POST" id="{{_form}}">
 <p>{"Name"}:<br /><input type="text" name="name" size="40" value="{{ name }}" />
 <span class="notice" id="name-notice">{"You must enter a name."}</span></p>
 <p>{"Email"}:<br /><input type="text" name="email" size="40" value="{{ email }}" />
@@ -121,7 +121,7 @@
 <script type="text/javascript" src="/js/jquery.verify_values.js"></script>
 <script type="text/javascript">
 $(function () {
-	$('#add-form').verify_values ({
+	$('#{{_form}}').verify_values ({
 		handler: 'user/edit',
 		callback: function (failed) {
 			// highlight the failed elements

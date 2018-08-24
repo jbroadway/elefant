@@ -20,7 +20,7 @@ if ($lock->exists ()) {
 $p = new blog\Post ($_GET['id']);
 
 $f = new Form ('post', 'blog/edit');
-$f->verify_csrf = false;
+
 if ($f->submit ()) {
 	$p->title = $_POST['title'];
 	$p->author = $_POST['author'];
