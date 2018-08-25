@@ -34,6 +34,10 @@
 	line-height: 16px;
 	vertical-align: top;
 	height: 16px;
+	max-height: 16px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 	#userchooser-list li a.user-added {
@@ -82,6 +86,7 @@
 	margin-top: 15px;
 	margin-left: 0px;
 	padding-left: 0px;
+	clear: both;
 }
 
 #userchooser-wrapper .simplePagerNav li {
@@ -110,3 +115,8 @@
 	text-decoration: none;
 }
 
+#userchooser-wrapper .simplePagerNav li.currentPage.simplePageNavFirst a,
+#userchooser-wrapper .simplePagerNav li.currentPage.simplePageNavLast a {
+	background: #eee !important;
+	color: #333 !important;
+}
