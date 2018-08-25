@@ -49,13 +49,13 @@
 				return;
 			}
 			
-			var start = (options.currentPage - 2 > 0) ? options.currentPage - 2 : 1;
+			//var start = (options.currentPage - 2 > 0) ? options.currentPage - 2 : 1;
 			var end = (options.currentPage + 2 < pageCounter) ? options.currentPage + 2 : pageCounter;
 			
 			//Build pager navigation
 			var pageNav = "<ul class='simplePagerNav'>";
 			pageNav += "<li class='simplePageNavFirst'><a rel='1' href='#'>&laquo;</a></li>";
-			for (i=start;i<=end;i++){
+			for (i=1;i<=pageCounter;i++){
 				if (i==options.currentPage) {
 					pageNav += "<li class='currentPage simplePageNav"+i+"'><a rel='"+i+"' href='#'>"+i+"</a></li>";	
 				}
@@ -63,7 +63,7 @@
 					pageNav += "<li class='simplePageNav"+i+"'><a rel='"+i+"' href='#'>"+i+"</a></li>";
 				}
 			}
-			pageNav += "<li class='simplePageNavLast'><a rel='" + (end - 1) + "' href='#'>&raquo;</a></li>";
+			pageNav += "<li class='simplePageNavLast'><a rel='" + pageCounter + "' href='#'>&raquo;</a></li>";
 			pageNav += "</ul>";
 			
 			if(!options.holder) {
