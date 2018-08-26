@@ -15,7 +15,8 @@
 			pageSize: 10,
 			currentPage: 1,
 			holder: null,
-			pagerLocation: "after"
+			pagerLocation: "after",
+			pageCounter: 1
 		};
 		
 		var options = $.extend(defaults, options);
@@ -25,18 +26,18 @@
 	
 						
 			var selector = $(this);	
-			var pageCounter = 1;
+			options.pageCounter = 1;
 			
 			selector.wrap("<div class='simplePagerContainer'></div>");
 			
 			selector.children().each(function(i){ 
 					
-				if(i < pageCounter*options.pageSize && i >= (pageCounter-1)*options.pageSize) {
-				$(this).addClass("simplePagerPage"+pageCounter);
+				if(i < options.pageCounter*options.pageSize && i >= (options.pageCounter-1)*options.pageSize) {
+				$(this).addClass("simplePagerPage"+options.pageCounter);
 				}
 				else {
-					$(this).addClass("simplePagerPage"+(pageCounter+1));
-					pageCounter ++;
+					$(this).addClass("simplePagerPage"+(options.pageCounter+1));
+					options.pageCounter ++;
 				}	
 				
 			});
@@ -45,17 +46,14 @@
 			selector.children().hide();
 			selector.children(".simplePagerPage"+options.currentPage).show();
 			
-			if(pageCounter <= 1) {
+			if(options.pageCounter <= 1) {
 				return;
 			}
-			
-			//var start = (options.currentPage - 2 > 0) ? options.currentPage - 2 : 1;
-			var end = (options.currentPage + 2 < pageCounter) ? options.currentPage + 2 : pageCounter;
 			
 			//Build pager navigation
 			var pageNav = "<ul class='simplePagerNav'>";
 			pageNav += "<li class='simplePageNavFirst'><a rel='1' href='#'>&laquo;</a></li>";
-			for (i=1;i<=pageCounter;i++){
+			for (i=1;i<=options.pageCounter;i++){
 				if (i==options.currentPage) {
 					pageNav += "<li class='currentPage simplePageNav"+i+"'><a rel='"+i+"' href='#'>"+i+"</a></li>";	
 				}
@@ -63,7 +61,7 @@
 					pageNav += "<li class='simplePageNav"+i+"'><a rel='"+i+"' href='#'>"+i+"</a></li>";
 				}
 			}
-			pageNav += "<li class='simplePageNavLast'><a rel='" + pageCounter + "' href='#'>&raquo;</a></li>";
+			pageNav += "<li class='simplePageNavLast'><a rel='" + options.pageCounter + "' href='#'>&raquo;</a></li>";
 			pageNav += "</ul>";
 			
 			if(!options.holder) {
@@ -106,9 +104,27 @@
 				selector.children().hide();			
 				selector.find(".simplePagerPage"+clickedLink).show();
 				
+				update_visible_pager_links (options);
+				
 				return false;
 			});
+			
+			update_visible_pager_links (options);
 		});
+	}
+	
+	function update_visible_pager_links (options) {
+		var cur = parseInt (options.currentPage);
+		var start = (cur - 2 > 0) ? cur - 2 : 1;
+		var end = (cur + 2 < options.pageCounter) ? cur + 2 : options.pageCounter;
+		
+		for (i = 1; i <= options.pageCounter; i++) {
+			if (i < start || i > end) {
+				$('.simplePageNav' + i).hide ();
+			} else {
+				$('.simplePageNav' + i).show ();
+			}
+		}
 	}
 	
 
