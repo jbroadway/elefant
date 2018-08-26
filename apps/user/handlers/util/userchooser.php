@@ -39,7 +39,7 @@
 $this->run ('admin/util/fontawesome');
 $this->run ('admin/util/modal');
 
-$page->add_style ('/apps/user/css/userchooser.css');
+$page->add_style ('/apps/user/css/userchooser.css?v=2');
 $page->add_script ('/js/jquery.quickpager.js?v=2');
 $page->add_script ('/js/jquery.verify_values.js');
 $page->add_script ('/apps/user/js/jquery.adduser.js');

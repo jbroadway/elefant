@@ -135,3 +135,9 @@
 	/*float: left;*/
 	width: 85%;	
 }
+
+.dynamicobjects-content .simplePagerNav li.currentPage.simplePageNavFirst a,
+.dynamicobjects-content .simplePagerNav li.currentPage.simplePageNavLast a {
+	background: #eee !important;
+	color: #333 !important;
+}
