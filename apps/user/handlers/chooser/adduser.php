@@ -11,7 +11,7 @@ $page->layout = false;
 header ('Content-Type: application/json');
 
 $f = new Form ('post', 'user/add');
-$f->verify_csrf = false;
+
 if (! $f->submit ()) {
 	echo json_encode (array (
 		'success' => false,
@@ -30,6 +30,7 @@ $_POST['signed_up'] = $now;
 $_POST['updated'] = $now;
 $_POST['userdata'] = json_encode (array ());
 unset ($_POST['verify_pass']);
+unset ($_POST['_token_']);
 $u = new User ($_POST);
 $u->put ();
 Versions::add ($u);
