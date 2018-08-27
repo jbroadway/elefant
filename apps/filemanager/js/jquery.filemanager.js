@@ -11,6 +11,7 @@
 		img_file: /\.(gif|png|jpe?g)$/i,
 		zip_file: /\.zip$/i,
 		max_filesize: 2,
+		token: '',
 		strings: {
 			
 		}
@@ -211,6 +212,9 @@
 			data: {
 				path: function () {
 					return filemanager.path
+				},
+				token: function () {
+					return filemanager.token
 				}
 			},
 			error: function (err, file) {

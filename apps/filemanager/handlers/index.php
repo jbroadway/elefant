@@ -12,6 +12,10 @@ $root = getcwd () . '/' . conf('Paths','filemanager_path') .'/';
 
 $o = new StdClass;
 
+$f = new Form ('post', $this);
+$f->initialize_csrf ();
+$o->csrf_token = $f->csrf_token;
+
 if (isset ($_GET['path'])) {
 	if (! FileManager::verify_folder ($_GET['path'], $root)) {
 		$page->title = __ ('Invalid Path');
@@ -47,7 +51,7 @@ if ($appconf['General']['aviary_key']) {
 	$o->aviary_key = false;
 }
 
-$page->add_style ('/apps/filemanager/css/filemanager.css');
+$page->add_style ('/apps/filemanager/css/filemanager.css?v=2');
 $page->add_script (
     sprintf (
         '<script>var conf_root = "%s";</script>',

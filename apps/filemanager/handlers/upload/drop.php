@@ -11,6 +11,13 @@ if (! User::require_acl ('admin') || ! User::require_acl ('filemanager')) {
 	return;
 }
 
+$f = new Form ('post', $this);
+$_POST['_token_'] = $_POST['token'];
+if (! $f->verify_csrf ()) {
+	echo json_encode (array ('success' => false, 'error' => __ ('Validation error')));
+	return;
+}
+
 $root = getcwd () . '/' . conf('Paths','filemanager_path') . '/';
 
 if (! FileManager::verify_folder ($_POST['path'], $root)) {

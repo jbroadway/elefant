@@ -45,8 +45,8 @@ $(function () {
 	$.filemanager_init ({
 		path: '{{path}}',
 		aviary_key: {% if aviary_key %}'{{ aviary_key }}'{% else %}false{% end %},
-		max_filesize: {{ (int) ini_get ('upload_max_filesize')}}
-
+		max_filesize: {{ (int) ini_get ('upload_max_filesize')}},
+		token: '{{csrf_token}}'
 	});
 
 	// Image preview on hover
@@ -99,6 +99,7 @@ var i18n = {
 <p>
 	<form action="/filemanager/upload" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="path" value="{{ path }}" />
+	<input type="hidden" name="_token_" value="{{ csrf_token }}" />
 	<a href="#" onclick="return $.filemanager ('mkdir', {file: '{{ path }}'})">{"New folder"}</a>
 	&nbsp;|&nbsp;
 	<span id="filemanager-upload-form">

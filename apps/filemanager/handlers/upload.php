@@ -8,6 +8,13 @@ $page->layout = 'admin';
 
 $this->require_acl ('admin', 'filemanager');
 
+$f = new Form ('post', $this);
+if (! $f->verify_csrf ()) {
+	$page->title = __ ('Validation Error');	
+	echo '<p><a href="/filemanager">' . __ ('Back') . '</a></p>';
+	return;
+}
+
 $root = getcwd () . '/' . conf('Paths','filemanager_path') . '/';
 
 if (! FileManager::verify_folder ($_POST['path'], $root)) {
