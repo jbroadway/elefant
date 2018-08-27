@@ -62,7 +62,7 @@ $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/js/urlify.js');
 $page->add_script ('/apps/filemanager/js/jquery.filedrop.js');
 $page->add_script ('/apps/filemanager/js/jquery.tmpl.beta1.min.js');
-$page->add_script ('/apps/filemanager/js/jquery.filemanager.js');
+$page->add_script ('/apps/filemanager/js/jquery.filemanager.js?v=2');
 $page->add_script (I18n::export (
 	'New folder name:',
 	'Rename:',
