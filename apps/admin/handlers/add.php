@@ -24,7 +24,6 @@ if ($f->submit ()) {
 	$page->title = __ ('An Error Occurred');
 	echo __ ('Error Message') . ': ' . $wp->error;
 } else {
-	info ($f->error);
 	$pg = new Page;
 	$pg->layout = 'default';
 	$pg->weight = '0';
