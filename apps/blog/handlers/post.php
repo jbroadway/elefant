@@ -100,6 +100,11 @@ if ($post->thumbnail !== '') {
 		($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . $post->thumbnail,
 		'property'
 	);
+	
+	list ($width, $height) = getimagesize (substr ($post->thumbnail, 1));
+	
+	$page->add_meta ('og:image:width', $width);
+	$page->add_meta ('og:image:height', $height);
 }
 
 $page->add_meta ('twitter:card', 'summary_large_image');
