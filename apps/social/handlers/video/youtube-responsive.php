@@ -24,6 +24,8 @@
 if (self::$called['social/video/youtube-responsive'] == 1) {
 	echo $tpl->render ('social/video/responsive-css');
 }
+ 
+require_once ('apps/social/lib/Functions.php');
 
 $query = parse_url ($data['url'], PHP_URL_QUERY);
 parse_str ($query, $params);
@@ -34,7 +36,7 @@ if (isset ($params['v'])) {
 }
 
 if (isset ($params['t'])) {
-	$data['timecode'] = '&t=' . $params['t'];
+	$data['timecode'] = '?start=' . youtube_to_seconds ($params['t']);
 } else {
 	$data['timecode'] = '';
 }

@@ -1,6 +1,25 @@
 <?php
 
 /**
+ * Convert YouTube durations to seconds. Based on:
+ * https://gist.github.com/denniszhao/8972cd4ae637cf10fe01
+ */
+function youtube_to_seconds ($timecode) {
+	$timecode = strtoupper ($timecode);
+
+	preg_match_all ('/(\d+)(H|M|S)/', $timecode, $a, PREG_SET_ORDER);
+	
+	$d = ['H' => 3600, 'M' => 60, 'S' => 1];
+	$seconds = 0;
+	
+	for ($i = 0; $i < count ($a); $i++) {
+		$seconds += $a[$i][1] * $d[$a[$i][2]];
+	}
+	
+	return $seconds;
+}
+
+/**
  * Get true/false for any of the social embed options
  * Dynamic Objects dialog.
  */
