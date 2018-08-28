@@ -218,6 +218,7 @@
 			multiple: false,
 			files: [],
 			path: '',
+			token: '',
 			uploading: 0,
 			mimes: {
 				jpg: 'image/jpeg',
@@ -247,6 +248,10 @@
 
 		if (self.opts.thumbs) {
 			self.opts.allowed = ['jpg', 'jpeg', 'png', 'gif'];
+		}
+		
+		if (filemanager_token != '') {
+			self.opts.token = filemanager_token;
 		}
 
 		self.extensions = self.opts.allowed.length
@@ -305,6 +310,9 @@
 				data: {
 					path: function () {
 						return self.opts.path;
+					},
+					token: function () {
+						return self.opts.token;
 					}
 				},
 				error: function (err, file) {

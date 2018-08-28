@@ -39,12 +39,16 @@
 
 echo $this->run ('admin/util/modal');
 
+$f = new Form ('post', $this);
+$f->initialize_csrf ();
+
 $page->add_style ('/apps/filemanager/css/filebrowser.css');
 $page->add_script (
 	sprintf (
-		'<script>var filemanager_path = "%s", filemanager_upload = %d;</script>',
+		'<script>var filemanager_path = "%s", filemanager_upload = %d, filemanager_token = "%s";</script>',
 		conf('Paths','filemanager_path'),
-		(int) User::require_acl ('admin', 'filemanager')
+		(int) User::require_acl ('admin', 'filemanager'),
+		$f->csrf_token
 	)
 );
 $page->add_script ('/apps/filemanager/js/jquery.filedrop.js');
