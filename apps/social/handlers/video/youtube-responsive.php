@@ -33,4 +33,10 @@ if (isset ($params['v'])) {
 	$data['video'] = substr (parse_url ($data['url'], PHP_URL_PATH), 1);
 }
 
+if (isset ($params['t'])) {
+	$data['timecode'] = '&t=' . $params['t'];
+} else {
+	$data['timecode'] = '';
+}
+
 echo $tpl->render ('social/video/youtube-responsive', $data);
