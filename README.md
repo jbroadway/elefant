@@ -127,6 +127,7 @@ to help you work faster and better:
 * [Installation instructions](https://www.elefantcms.com/docs/2.0/getting-started)
 * [Requirements](https://www.elefantcms.com/docs/2.0/getting-started/requirements)
 * [Support forum](http://www.elefantcms.com/community) and [Gitter channel](https://gitter.im/jbroadway/elefant)
+* [Credits](http://www.elefantcms.com/credits)
 
 ## FAQ
 
