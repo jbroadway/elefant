@@ -1,3 +1,6 @@
+{! admin/util/emojiarea !}
+{! admin/util/twemoji !}
+
 <div class="form">
 
 <p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
@@ -43,3 +46,15 @@
 
 </div>
 <div class="clear"></div>
+
+<script>
+$(function () {
+	twemoji.parse (document.querySelector ('#title h2'));
+	
+	$('[name=title], [name=description]').emojioneArea ({
+		unicodeAlt: true,
+		pickerPosition: 'bottom',
+		filtersPosition: 'top'
+	});
+});
+</script>

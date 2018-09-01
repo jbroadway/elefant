@@ -1,5 +1,7 @@
 {! user/util/userchooser !}
 {! filemanager/util/browser !}
+{! admin/util/emojiarea !}
+{! admin/util/twemoji !}
 
 <div class="form">
 
@@ -77,10 +79,22 @@
 .thumbnail-wrapper {
 	margin-bottom: 5px;
 }
+
+.emojionearea {
+	max-width: 500px;
+}
 </style>
 
 <script>
 $(function () {
+	twemoji.parse (document.querySelector ('#title h2'));
+	
+	$('[name=title]').emojioneArea ({
+		unicodeAlt: true,
+		pickerPosition: 'bottom',
+		filtersPosition: 'top'
+	});
+
 	$('#users').click (function () {
 		$.userchooser ({
 			set_name_value: '#author'
