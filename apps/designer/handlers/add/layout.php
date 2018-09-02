@@ -60,5 +60,5 @@ $o->body = '<!DOCTYPE html>
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);
 $this->run ('admin/util/i18n');
-$page->add_script ('/apps/designer/css/layout.css');
+$page->add_script ('/apps/designer/css/layout.css?v=2');
 echo $tpl->render ('designer/add/layout', $o);

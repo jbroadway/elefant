@@ -15,7 +15,7 @@ body {
 
 p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote, hr, table {
 	margin-top: 0;
-	margin-bottom: 0.8em;
+	margin-bottom: 1em;
 }
 
 a {
@@ -319,17 +319,49 @@ tt {
 	display: none !important;
 }
 
+.emojionearea {
+	max-width: 500px;
+	font-size: 12px;
+	border: 1px solid #999 !important;
+    border-radius: 2px !important;
+    -webkit-border-radius: 2px !important;
+    -moz-border-radius: 2px !important;
+    text-shadow: 0 1px 0 #fff;
+    margin: 2px;
+    outline: none;
+}
+
+.emojionearea.focused {
+	box-shadow: none !important;
+	border: 1px solid #999 !important;
+}
+
+.emojionearea-editor {
+	color: #000 !important;
+}
+
+.emojionearea-wrapper,
+.emojionearea-filters,
+.emojionearea-search-panel,
+.emojionearea-emojis-list,
+.emojionearea-wrapper>*,
+.emojionearea-filters>*,
+.emojionearea-search-panel>*,
+.emojionearea-emojis-list>* {
+	z-index: 2001 !important;
+}
+
 /**
  * Form inputs
  */
 
 input[type=text], input[type=password], input[type=email], textarea {
-	font-size: 12px;
+	font-size: 14px;
 	border: 1px solid #999;
     border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
-    padding: 2px 4px;
+    padding: 6px 12px;
     text-shadow: 0 1px 0 #fff;
     outline: none;
 }
@@ -344,7 +376,7 @@ input[disabled] {
 }
 
 input[type=submit], button, .dynamic-embed-object-back {
-    font-size: 12px;
+    font-size: 14px;
 	border: 1px solid #ddd;
     background: #e5e5e5;
     background: -webkit-gradient(linear,0% 40%,0% 70%,from(#eee),to(#e5e5e5));
@@ -354,7 +386,7 @@ input[type=submit], button, .dynamic-embed-object-back {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     color: #555;
-    padding: 3px 10px;
+    padding: 6px 12px;
     text-shadow: 0 1px 0 #fff;
     outline: none;
 }
@@ -369,12 +401,16 @@ input[type=submit]:hover, button:hover, .dynamic-embed-object-back:hover {
 }
 
 /* See blog post edit form [Draft | Published | Scheduled] for a working example */
+.toggle {
+	margin: 2px 2px 12px 2px;
+}
+
 .toggle a {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
 	margin: 0;
-    font-size: 12px;
+    font-size: 14px;
     background: #e5e5e5;
     background: -webkit-gradient(linear,0% 40%,0% 70%,from(#eee),to(#e5e5e5));
     background: -moz-linear-gradient(linear,0% 40%,0% 70%,from(#eee),to(#e5e5e5));
@@ -383,7 +419,7 @@ input[type=submit]:hover, button:hover, .dynamic-embed-object-back:hover {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     color: #333;
-    padding: 3px 15px 3px 15px;
+    padding: 6px 15px 6px 15px;
     text-shadow: 0 1px 0 #fff;
     outline: none;
     text-align: center;
@@ -480,6 +516,7 @@ input[type=submit]:hover, button:hover, .dynamic-embed-object-back:hover {
 	background: #ddd;
 	color: #333;
 }
+
 .dynamic-embed-objects .simplePagerNav {
 	list-style-type: none;
 	margin-top: 15px;

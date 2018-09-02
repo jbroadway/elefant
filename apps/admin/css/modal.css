@@ -13,8 +13,8 @@
 .modal-dialog {
 	display: none;
 	position: absolute;
-	width: 550px;
-	min-height: 300px;
+	width: 600px;
+	min-height: 400px;
 	-webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,.3);
 	-moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,.3);
 	box-shadow: 0px 1px 2px 0px rgba(0,0,0,.3);
@@ -41,7 +41,7 @@
 	font-size: 14px;
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	position: static;
-	width: 528px;
+	width: 578px;
 }
 
 .modal-close-button {
@@ -73,7 +73,7 @@
 	border: 1px solid #fafafa;
 	border-top: 0px none;
 	padding: 15px;
-	height: 233px;
+	height: 333px;
 	overflow-y: auto;
 }
 

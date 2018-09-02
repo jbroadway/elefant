@@ -46,5 +46,10 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 
 <p class="caption"><em>{"Note: Pages that are not publicly visible will not be listed here."}</em></p>
 
-<script type="text/javascript">
+<script>
+$(function () {
+	document.querySelectorAll ('li').forEach (function (li) {
+		twemoji.parse (li);
+	});
+});
 </script>

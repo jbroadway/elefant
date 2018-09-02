@@ -51,7 +51,7 @@ if ($appconf['General']['aviary_key']) {
 	$o->aviary_key = false;
 }
 
-$page->add_style ('/apps/filemanager/css/filemanager.css?v=2');
+$page->add_style ('/apps/filemanager/css/filemanager.css?v=3');
 $page->add_script (
     sprintf (
         '<script>var conf_root = "%s";</script>',

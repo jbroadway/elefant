@@ -60,6 +60,6 @@ if (is_array ($files)) {
 $o->failed = $f->failed;
 $o = $f->merge_values ($o);
 $this->run ('admin/util/i18n');
-$page->add_script ('/apps/designer/css/stylesheet.css');
+$page->add_script ('/apps/designer/css/stylesheet.css?v=2');
 $page->add_script ('/apps/designer/js/jquery.bindWithDelay.js');
 echo $tpl->render ('designer/edit/stylesheet', $o);

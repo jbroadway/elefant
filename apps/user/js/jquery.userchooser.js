@@ -55,7 +55,7 @@
 		}
 
 		$('#userchooser-wrapper').append (list);
-		list.quickPager ();
+		list.quickPager ({pageSize: 16});
 		
 		$('.userchooser-user').click (self.return_user);
 
@@ -94,7 +94,7 @@
 		$('.userchooser-user, .userchooser-disabled').each (function () {
 			if ($(this).data ('id') === id) {
 				$(this).addClass ('user-added');
-				$('.simplePageNav' + Math.ceil ((i + 1) / 10) + ' a').click ();
+				$('.simplePageNav' + Math.ceil ((i + 1) / 16) + ' a').click ();
 			} else {
 				$(this).removeClass ('user-added');
 			}
@@ -179,7 +179,7 @@
 			'<ul id="userchooser-list" class="clearfix"></ul>' +
 		'</div>';
 
-		$.open_dialog (self.opts.title, html, {height: 325});
+		$.open_dialog (self.opts.title, html, {height: 425});
 
 		var list = $('#userchooser-list');
 		
@@ -205,7 +205,7 @@
 			}
 		}
 
-		list.quickPager ();
+		list.quickPager ({pageSize: 16});
 		
 		$('#userchooser-form').submit (self.search_users);
 		$('.userchooser-user').click (self.return_user);

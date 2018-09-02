@@ -65,8 +65,8 @@ $(function () {
 	// open a new modal dialog
 	$.open_dialog = function (title, html, opts) {
 		var defaults = {
-			width: 550,
-			height: 300
+			width: 600,
+			height: 400
 		};
 
 		opts = opts || {};
@@ -87,7 +87,7 @@ $(function () {
 
 		if (opts.height) {
 			modal.css ({height: opts.height + 'px'});
-			modal.children ('.modal-content').css ({height: (opts.height - 67) + 'px'});
+			modal.children ('.modal-content').css ({height: (opts.height - 64) + 'px'});
 		}
 
 		center_modal (num);

@@ -138,7 +138,7 @@
 		}
 
 		// page the list of handlers
-		list.html (ui).quickPager ();
+		list.html (ui).quickPager ({pageSize: 16});
 
 		// handle choosing a handler from the list
 		$('.dynamicobjects-object').click (function () {
@@ -396,7 +396,7 @@
 						}
 					}
 
-					$('.simplePageNav' + Math.ceil (i / 10) + ' a').click ();
+					$('.simplePageNav' + Math.ceil (i / 16) + ' a').click ();
 					break;
 				}
 			}

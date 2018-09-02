@@ -19,10 +19,12 @@ form {
 #name {
 	margin-top: 3px;
 	margin-bottom: 0px;
+	height: 32px;
+	line-height: 32px;
 }
 #layout {
 	position: relative;
-	margin-top: 0;
+	margin-top: 15px;
 }
 #tags {
 	position: absolute;
@@ -30,7 +32,7 @@ form {
 	left: 0;
 	width: 1019px;
 	background: #f1f1f1;
-	margin-top: 5px;
+	margin-top: -5px;
 	border: 1px solid #ccc;
 	border-bottom: 0px;
 	-webkit-border-top-left-radius: 2px;
@@ -43,7 +45,7 @@ form {
 }
 .autosave-notice {
 	position: absolute;
-	top: -4px;
+	top: 3px;
 	left: 400px;
 	z-index: 25;
 }

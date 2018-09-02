@@ -58,7 +58,7 @@
 			return;
 		}
 
-		$.open_dialog (self.opts.title, self.html, {height: 325});
+		$.open_dialog (self.opts.title, self.html, {height: 475});
 
 		$('#adduser-form').submit (self.add_user);
 		$('#adduser-cancel').click (function () {

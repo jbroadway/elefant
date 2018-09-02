@@ -92,7 +92,7 @@
 
 .dynamicobjects-form p {
 	margin: 0.5% 0.25%;
-	background: #eee;
+	background: #f2f2f2;
 	color: #333;
 	padding: 1.5%;
 	min-height: 46px;
@@ -104,9 +104,7 @@
 	margin: 0 0.5% 0 0;
 }
 .dynamicobjects-form input[type=text], .dynamicobjects-form textarea, .dynamicobjects-form select {
-	margin: 0;
-	padding: 0.25%;
-	width: 98%;
+	width: 95%;
 }
 
 .dynamicobjects-form.columns-2 label {
@@ -116,8 +114,6 @@
 }
 .dynamicobjects-form.columns-2 input[type=text], .dynamicobjects-form.columns-2 select {
 	float: left;
-	margin: 0 0 0.5% 0;
-	padding: 1%;
 	width: 95%;
 }
 
@@ -133,7 +129,7 @@
 
 .dynamicobjects-form input[type=text].wysiwyg-file-input {
 	/*float: left;*/
-	width: 85%;	
+	width: 75%;	
 }
 
 .dynamicobjects-content .simplePagerNav li.currentPage.simplePageNavFirst a,
