@@ -340,10 +340,12 @@ tt {
 	color: #000 !important;
 }
 
+.emojionearea-picker,
 .emojionearea-wrapper,
 .emojionearea-filters,
 .emojionearea-search-panel,
 .emojionearea-emojis-list,
+.emojionearea-category-block,
 .emojionearea-wrapper>*,
 .emojionearea-filters>*,
 .emojionearea-search-panel>*,
