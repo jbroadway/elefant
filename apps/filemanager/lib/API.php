@@ -21,11 +21,11 @@ class API extends Restful {
 		}
 
 		foreach ($res['dirs'] as $k => $dir) {
-			$res['dirs'][$k]['mtime'] = I18n::date_time ($dir['mtime']);
+			$res['dirs'][$k]['mtime'] = I18n::short_date_year_time ($dir['mtime']);
 		}
 
 		foreach ($res['files'] as $k => $file) {
-			$res['files'][$k]['mtime'] = I18n::date_time ($file['mtime']);
+			$res['files'][$k]['mtime'] = I18n::short_date_year_time ($file['mtime']);
 			$res['files'][$k]['fsize'] = format_filesize ($file['fsize']);
 		}
 

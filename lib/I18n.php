@@ -558,6 +558,19 @@ class I18n {
 	}
 
 	/**
+	 * Filter for outputting a shortened date and time with year.
+	 * Used with the jQuery localize plugin to convert dates into
+	 * the current user's time zone.
+	 *
+	 * Usage:
+	 *
+	 *     {{ date_value|I18n::short_date_year_time }}
+	 */
+	public static function short_date_year_time ($date) {
+		return self::_date ($date, 'shortdateyeartime', 'M j, Y - g:ia');
+	}
+
+	/**
 	 * Filter for outputting a shortened date and time. Used
 	 * with the jQuery localize plugin to convert dates into
 	 * the current user's time zone.
