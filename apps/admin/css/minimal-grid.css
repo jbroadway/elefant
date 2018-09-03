@@ -113,15 +113,9 @@
 }
 
 /* desktop */
-@media (min-width: 992px) {
-	.e-row {
-		width: 992px;
-		margin: 0px auto 0px auto;
-	}
-}
-
-@media (max-width: 991px) {
-	.e-row { width: 100%; }
+.e-row {
+	width: 98%;
+	margin: 0px auto 0px auto;
 }
 
 /* tablets */

@@ -54,4 +54,4 @@
  * examples.
  */
 
-$page->add_script ('/apps/admin/css/minimal-grid.css');
+$page->add_script ('/apps/admin/css/minimal-grid.css?v=2');
