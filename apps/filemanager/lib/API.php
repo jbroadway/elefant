@@ -38,6 +38,15 @@ class API extends Restful {
 	public function get_dirs () {
 		return FileManager::list_folders ();
 	}
+	
+	/**
+	 * Handle Bitly link requests (/filemanager/api/bitly).
+	 */
+	public function get_bitly () {
+		$file = urldecode (join ('/', func_get_args ()));
+		$link = $this->controller->absolutize ('/files/' . $file);
+		return BitlyLink::lookup ($link);
+	}
 
 	/**
 	 * Handle remove file requests (/filemanager/api/rm).

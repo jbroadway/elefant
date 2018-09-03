@@ -29,6 +29,7 @@
 			\{{if text_file}}
 			<a href="/filemanager/edit?file=${path}">{"Edit"}</a> |
 			\{{/if}}
+			<a href="#" onclick="return $.filemanager ('bitly', {file: '${_path}', name: '${_name}'})">{"Bitly"}</a> |
 			<a href="#" onclick="return $.filemanager ('prop', {file: '${_path}', name: '${_name}'})">{"Properties"}</a> |
 			<a href="#" onclick="return $.filemanager ('mv', {file: '${_path}', name: '${_name}'})">{"Rename"}</a> | 
 			<a href="#" onclick="return $.filemanager ('rm', {file: '${_path}'})">{"Delete"}</a>
@@ -118,9 +119,9 @@ var i18n = {
 <table width="100%">
 	<tr>
 		<th width="45%">{" Name "}</th>
-		<th width="22%">{" Last modified "}</th>
+		<th width="18%">{" Last modified "}</th>
 		<th width="8%">{" File size "}</th>
-		<th width="25%">&nbsp;</th>
+		<th width="29%">&nbsp;</th>
 	</tr>
 	<tbody id="file-list"></tbody>
 </table>

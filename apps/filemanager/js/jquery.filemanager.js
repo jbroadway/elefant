@@ -7,7 +7,7 @@
 		aviary: null,
 		aviary_key: false,
 		aviary_current: false,
-		text_file: /\.(txt|html?|xml|md|csv|css|js|json)$/i,
+		text_file: /\.(txt|html?|xml|md|csv|css|js|json|cfg|yml|yaml)$/i,
 		img_file: /\.(gif|png|jpe?g)$/i,
 		zip_file: /\.zip$/i,
 		max_filesize: 2,
@@ -141,6 +141,36 @@
 								}
 							});
 						}
+					});
+					break;
+				case 'bitly':
+					$.get (options.root + cmd + '/' + options.file, function (res) {
+						var num = $.open_dialog (
+							$.i18n ('Bitly Link'),
+							'<p class="copy-me" data-clipboard-text="' + res.data + '">' + res.data + ' (' + $.i18n ('copy to clipboard') + ')</p>' +
+							'<p class="copied">' + $.i18n ('Copied!') + '</p>' +
+							'<p class="ctrlc">' + $.i18n ('Press Ctrl+C to copy') + '</p>'
+						);
+						
+						var clippy = new ClipboardJS ('.copy-me');
+
+						clippy.on ('success', function () {
+							$('.copied').show ();
+							
+							setTimeout (function () {
+								$('.copied').fadeOut (300);
+							}, 3000);
+						});
+						
+						clippy.on ('error', function (e) {
+							$('.ctrlc').show ();
+							
+							setTimeout (function () {
+								$('.ctrlc').fadeOut (300);
+							}, 3000);
+						});
+					
+						console.log (clippy);
 					});
 					break;
 				case 'prop':

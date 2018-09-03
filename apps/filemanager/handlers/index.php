@@ -51,7 +51,7 @@ if ($appconf['General']['aviary_key']) {
 	$o->aviary_key = false;
 }
 
-$page->add_style ('/apps/filemanager/css/filemanager.css?v=3');
+$page->add_style ('/apps/filemanager/css/filemanager.css?v=4');
 $page->add_script (
     sprintf (
         '<script>var conf_root = "%s";</script>',
@@ -62,7 +62,8 @@ $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/js/urlify.js');
 $page->add_script ('/apps/filemanager/js/jquery.filedrop.js');
 $page->add_script ('/apps/filemanager/js/jquery.tmpl.beta1.min.js');
-$page->add_script ('/apps/filemanager/js/jquery.filemanager.js?v=2');
+$page->add_script ('/apps/filemanager/js/jquery.filemanager.js?v=4');
+$page->add_script ('https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js');
 $page->add_script (I18n::export (
 	'New folder name:',
 	'Rename:',
