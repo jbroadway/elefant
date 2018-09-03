@@ -161,6 +161,11 @@ create table #prefix#filemanager_prop (
 	primary key (file, prop)
 );
 
+create table #prefix#filemanager_bitly_link (
+	link char(255) not null primary key,
+	bitly_link char(30) not null
+);
+
 create table #prefix#apps (
 	name char(48) not null primary key,
 	version char(16) not null
