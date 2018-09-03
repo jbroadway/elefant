@@ -21,7 +21,7 @@
 	<option value="{{ loop_value }}"{% if $data->loop_value == conf('General', 'default_layout') %} selected{% end %}>{{ loop_value }}</option>
 {% end %}
 </select></div>
-<iframe src="/designer/csspreview?layout={{conf('General', 'default_layout')}}" id="preview" frameborder="0" width="1022" height="300" style="border: 1px solid #ccc"></iframe>
+<iframe src="/designer/csspreview?layout={{conf('General', 'default_layout')}}" id="preview" frameborder="0" height="300" style="border: 1px solid #ccc"></iframe>
 </div>
 </form>
 
