@@ -48,14 +48,17 @@ div#photo-{{key}}-overlay {
 	display: none;
 	top: 0;
 	left: 0;
-	width: {{width - 2}}px;
-	height: {{height - 2}}px;
+	width: {{width}}px;
+	height: {{height}}px;
 	border: 1px solid #222;
 	padding: 0;
 	margin: 0;
 	background-image: url(/apps/admin/css/admin/editable-photo.png);
 	background-position: 100% 0px;
 	background-repeat: no-repeat;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 }
 </style>
 {% end %}
