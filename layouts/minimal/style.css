@@ -50,6 +50,11 @@ img {
 	max-width: 100%;
 }
 
+hr {
+	border: 0;
+	border-bottom: 1px solid #ccc;
+}
+
 table {
 	width: 100%;
 }
@@ -61,6 +66,7 @@ table {
 	th, td {
 		padding: 5px;
 		text-align: left;
+		vertical-align: top;
 	}
 	
 	.fc-header tr:nth-child(odd),
@@ -137,6 +143,19 @@ table {
 	border-top: 5px solid #414042;
 }
 
+	#photo-homepage-wrapper {
+		width: 100%;
+	}
+
+	#index-photo img {
+		width: 100% !important;
+		background-position: center;
+	}
+	
+	div#photo-homepage-overlay {
+		width: 100% !important;
+	}
+
 #body {
 	border-top: 5px solid #414042;
 }
@@ -185,6 +204,20 @@ table {
 			.blog-post h3 a {
 				text-decoration: none;
 			}
+
+.blog-comments {
+	margin-bottom: 3px;
+}
+
+	.twitter-share-button {
+		display: inline-block;
+		margin-bottom: -6px;
+	}
+
+	.blog-comments>div { /* g+ */
+		vertical-align: bottom !important;
+		margin-bottom: 0px !important;
+	}
 
 #footer {
 	background-color: #414042;
