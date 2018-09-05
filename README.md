@@ -4,20 +4,16 @@
 system and web framework. Elefant is a fast, lean tool for building everything from
 simple websites to complete web applications.
 
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/jbroadway/elefant?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-<a href='http://www.pledgie.com/campaigns/16594'><img alt='Click here to lend your support to: Elefant CMS and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16594.png?skin_name=chrome' border='0' /></a>
-
 ## Installation help & documentation
 
 Elefant has extensive documentation including installation instructions, user manual,
 designer guides, and developer tutorials here:
 
-* http://www.elefantcms.com/docs
+* https://www.elefantcms.com/docs
 
 You can also find help on our community forum here:
 
-* http://www.elefantcms.com/community
+* https://www.elefantcms.com/community
 
 ## Built for designers
 
@@ -121,13 +117,12 @@ to help you work faster and better:
 
 ## Try it out
 
-[Download the latest release](http://www.elefantcms.com/download) or try the
-[online demo](http://www.elefantcms.com/demo).
+[Download the latest release here.](https://www.elefantcms.com/download)
 
 * [Installation instructions](https://www.elefantcms.com/docs/2.0/getting-started)
 * [Requirements](https://www.elefantcms.com/docs/2.0/getting-started/requirements)
-* [Support forum](http://www.elefantcms.com/community) and [Gitter channel](https://gitter.im/jbroadway/elefant)
-* [Credits](http://www.elefantcms.com/credits)
+* [Support forum](https://www.elefantcms.com/community)
+* [Credits](https://www.elefantcms.com/credits)
 
 ## FAQ
 
