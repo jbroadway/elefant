@@ -1,1 +1,1 @@
-<?php define ('ELEFANT_VERSION', '2.0.5');
+<?php define ('ELEFANT_VERSION', '2.0.6');
