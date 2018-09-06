@@ -103,8 +103,8 @@ if ($post->thumbnail !== '') {
 	
 	list ($width, $height) = getimagesize (substr ($post->thumbnail, 1));
 	
-	$page->add_meta ('og:image:width', $width);
-	$page->add_meta ('og:image:height', $height);
+	$page->add_meta ('og:image:width', $width, 'property');
+	$page->add_meta ('og:image:height', $height, 'property');
 }
 
 $page->add_meta ('twitter:card', 'summary_large_image');
