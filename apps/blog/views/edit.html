@@ -30,6 +30,7 @@
 <span class="notice" id="author-notice">{"You must enter an author."}</span></p>
 
 <p>{"Date/Time"}:<br /><input type="text" name="ts" id="ts" size="30" value="{{ ts }}" />
+<button id="ts-now">{"Now"}</button>
 <span class="notice" id="ts-notice">{"You must select a date/time."}</span></p>
 
 <div>
@@ -142,6 +143,36 @@ $(function () {
 				$('#thumbnail-preview').css ('background-image', 'url(\'' + encodeURI (file) + '\')');
 			}
 		});
+	});
+	
+	$('#ts-now').click (function (e) {
+		e.preventDefault ();
+		
+		var date = new Date (),
+			year = date.getFullYear (),
+			month = date.getMonth () + 1,
+			day = date.getDate (),
+			hour = date.getHours (),
+			minutes = date.getMinutes (),
+			seconds = date.getSeconds (),
+			fix = function (num) {
+				if (num < 10) {
+					num = '0' + num;
+				}
+				return num
+			};
+		
+		day = fix (day);
+		month = fix (month);
+		hour = fix (hour);
+		minutes = fix (minutes);
+		seconds = fix (seconds);
+		
+		var now = year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':' + seconds;
+
+		$('#ts').val (now);
+
+		return false;
 	});
 });
 </script>
