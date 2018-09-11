@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		}
 	}
 	if ($_GET['css'] && preg_match ('/^(layouts|css)\/[a-z0-9\/ _-]+\.css$/i', $_GET['css'])) {
-		$page->layout = str_replace ('</head>', '<style>' . file_get_contents ($_GET['css']) . '</style></head>', $page->layout);
+		$page->layout = str_replace ('</head>', '<style>' . strip_tags (file_get_contents ($_GET['css'])) . '</style></head>', $page->layout);
 	}
 } else {
 	if (! empty ($_POST['layout'])) {
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		}
 	}
 	if ($_POST['css']) {
-		$page->layout = str_replace ('</head>', '<style>' . $_POST['css'] . '</style></head>', $page->layout);
+		$page->layout = str_replace ('</head>', '<style>' . strip_tags ($_POST['css']) . '</style></head>', $page->layout);
 	}	
 }
 
