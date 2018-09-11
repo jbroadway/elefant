@@ -110,7 +110,9 @@ switch ($_GET['action']) {
 			return;
 		}
 		
-		if (preg_match ('/\.(php|phtml|pht|php3|php4|php5|phar|js|rb|py|pl|sh|bash|exe)$/i', $_POST['newName'])) {
+		$_POST['newName'] = trim ($_POST['newName']);
+		
+		if (preg_match ('/\.(php|phtml|pht|php3|php4|php5|phar|js|rb|py|pl|sh|bash|exe|htaccess|htpasswd)$/i', $_POST['newName'])) {
 			echo __ ('Invalid file type');
 			return;
 		}

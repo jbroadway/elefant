@@ -49,7 +49,7 @@ foreach ($_FILES['file']['error'] as $error) {
 }
 
 for ($i = 0; $i < count ($_FILES['file']['name']); $i++) {
-	$_FILES['file']['name'][$i] = urldecode ($_FILES['file']['name'][$i]);
+	$_FILES['file']['name'][$i] = trim (urldecode ($_FILES['file']['name'][$i]));
 	if (@file_exists ($root . $_POST['path'] . '/' . $_FILES['file']['name'][$i])) {
 		$page->title = __ ('File Already Exists') . ': ' . $_FILES['file']['name'][$i];
 		echo '<p>' . __ ('A file by that name already exists.') . '</p>';
@@ -62,7 +62,7 @@ for ($i = 0; $i < count ($_FILES['file']['name']); $i++) {
 		echo '<p><a href="/filemanager">' . __ ('Back') . '</a></p>';
 		return;
 	}
-	if (preg_match ('/\.(php|phtml|pht|php3|php4|php5|phar|js|rb|py|pl|sh|bash|exe)$/i', $_FILES['file']['name'][$i])) {
+	if (preg_match ('/\.(php|phtml|pht|php3|php4|php5|phar|js|rb|py|pl|sh|bash|exe|htaccess|htpasswd)$/i', $_FILES['file']['name'][$i])) {
 		$page->title = __ ('Invalid File Name') . ': ' . $_FILES['file']['name'][$i];
 		echo '<p>' . __ ('Cannot upload executable files due to security.') . '</p>';
 		echo '<p><a href="/filemanager">' . __ ('Back') . '</a></p>';

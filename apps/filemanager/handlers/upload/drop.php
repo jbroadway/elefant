@@ -45,9 +45,9 @@ if (isset ($_FILES['file']['error']) && $_FILES['file']['error'] > 0) {
 }
 
 // some browsers may urlencode the file name
-$_FILES['file']['name'] = urldecode ($_FILES['file']['name']);
+$_FILES['file']['name'] = trim (urldecode ($_FILES['file']['name']));
 
-if (preg_match ('/\.(php|phtml|pht|php3|php4|php5|phar|js|rb|py|pl|sh|bash|exe)$/i', $_FILES['file']['name'])) {
+if (preg_match ('/\.(php|phtml|pht|php3|php4|php5|phar|js|rb|py|pl|sh|bash|exe|htaccess|htpasswd)$/i', $_FILES['file']['name'])) {
 	echo json_encode (array ('success' => false, 'error' => __ ('Cannot upload executable files due to security.')));
 	return;
 }

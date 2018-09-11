@@ -160,6 +160,9 @@ class FileManager {
 		} elseif (! self::verify_file ($file)) {
 			self::$error = __ ('File not found');
 			return false;
+		} elseif (! self::verify_file_name ($file)) {
+			self::$error = __ ('Invalid file name');
+			return false;
 		} elseif (! unlink (self::root () . $file)) {
 			self::$error = __ ('Unable to delete') . ' ' . $file;
 			return false;
@@ -405,7 +408,7 @@ class FileManager {
 		if (! preg_match ('/^[a-zA-Z0-9 _-]+\.[a-zA-Z0-9_-]+$/', $name)) {
 			return false;
 		}
-		if (preg_match ('/\.php$/i', $name)) {
+		if (preg_match ('/\.(php|phtml|pht|php3|php4|php5|phar|js|rb|py|pl|sh|bash|exe|htaccess|htpasswd)$/i', $name)) {
 			return false;
 		}
 		return true;
