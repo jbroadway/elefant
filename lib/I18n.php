@@ -431,6 +431,10 @@ class I18n {
 	 * `short_date_time()` methods.
 	 */
 	private static function _date ($date, $class, $format) {
+		if (is_a ($date, 'DateTime')) {
+			$date = $date->getTimestamp ();
+		}
+		
 		$date = is_numeric ($date) ? $date : strtotime ($date);
 		return sprintf (
 			'<time class="%s" datetime="%s">%s</time>',
