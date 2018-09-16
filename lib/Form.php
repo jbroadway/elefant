@@ -382,18 +382,25 @@ class Form {
 
 		return true;
 	}
+	
+	/**
+	 * Generate a CSRF token and return it for custom use cases.
+	 */
+	public function generate_csrf_token () {
+		$timeshift = (int) (time () / 3600) + 1; // Token can be verified for up to 120 minutes 
+		$site_key = conf ('General', 'site_key');
+		$client = isset ($site_key) ? $site_key : $_SERVER['DOCUMENT_ROOT'];
+		$client .= $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'];
+                        
+		return md5 ('' . $timeshift . $client);
+	}
 
 	/**
-	 * Initialize the CSRF token.
+	 * Generate and initialize the CSRF token.
 	 */
 	public function initialize_csrf () {
 		if ($this->verify_csrf) {
-			$timeshift = (int) (time () / 3600) + 1; // Token can be verified for up to 120 minutes 
-			$site_key = conf ('General', 'site_key');
-			$client = isset ($site_key) ? $site_key : $_SERVER['DOCUMENT_ROOT'];
-			$client .= $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'];
-                        
-			$this->csrf_token = md5 ('' . $timeshift . $client);
+			$this->csrf_token = $this->generate_csrf_token ();
 		
 			// Append the CSRF token Javascript if there is a page object
 			if (isset ($GLOBALS['page'])) {
