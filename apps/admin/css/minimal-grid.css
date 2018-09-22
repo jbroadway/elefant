@@ -80,14 +80,20 @@
 
 /* widths */
 .e-col-100 { width: 100%; }
+.e-col-95  { width: 95%; }
 .e-col-90  { width: 90%; }
+.e-col-85  { width: 85%; }
 .e-col-80  { width: 80%; }
 .e-col-75  { width: 75%; }
 .e-col-70  { width: 70%; }
 .e-col-66  { width: 66.66%; }
+.e-col-65  { width: 65%; }
 .e-col-60  { width: 60%; }
+.e-col-55  { width: 55%; }
 .e-col-50  { width: 50%; }
+.e-col-45  { width: 45%; }
 .e-col-40  { width: 40%; }
+.e-col-35  { width: 35%; }
 .e-col-33  { width: 33.33%; }
 .e-col-30  { width: 30%; }
 .e-col-25  { width: 25%; }
