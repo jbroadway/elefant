@@ -49,10 +49,10 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 		<h4>{"Toolbar Menu"}<a class="inline-caption" href="javascript:;" onclick="$.treeDragDrop.handlers.handleOpenModal();">{"Add Category"}</a></h4>
 		<p class="caption">{"Drag resources to the toolbar tree to include them in the toolbar."}</p>
 		<ul class="tdd-tree">
-		{% if tools|count %}{% foreach tools as section, group %}
+		{% if count ($data->tools) %}{% foreach tools as section, group %}
 			<li id="cat_{{ section|str_replace(' ','_',%s)|strtolower }}" class="section" data-section="{{ section }}"><b>{{ section }}</b>
 				<ul class="tools">
-				{% if group|count %}
+				{% if count ($data->group)%}
 				{% foreach group as tool %}
 					<li id="res_{{ tool['handler']|str_replace(' ','_',%s)|strtolower }}" 
 						class="tool{% if tool['class'] %} {{ tool['class'] }}{% end %}"
