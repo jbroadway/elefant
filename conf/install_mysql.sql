@@ -163,7 +163,7 @@ create table #prefix#apps (
 insert into #prefix#apps (name, version) values ('elefant', '1.3.12');
 insert into #prefix#apps (name, version) values ('blog', '1.1.4-stable');
 insert into #prefix#apps (name, version) values ('user', '1.1.5-stable');
-insert into #prefix#apps (name, version) values ('filemanager', '1.3.0-beta');
+insert into #prefix#apps (name, version) values ('filemanager', '1.3.2-beta');
 
 create table #prefix#extended_fields (
 	id int not null primary key auto_increment,
