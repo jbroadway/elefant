@@ -24,7 +24,7 @@ class Image {
 	 * This makes first requests to a gallery page expensive, but
 	 * subsequent requests much faster.
 	 */
-	public static function resize ($file, $width = 140, $height = 105, $style = 'cover', $format = 'jpg') {
+	public static function resize ($file, $width = 140, $height = 105, $style = 'cover', $format = 'ext') {
 		if (strpos ($file, '/') === 0) {
 			// trim slash in case we get an absolute path
 			$file = ltrim ($file, '/');
