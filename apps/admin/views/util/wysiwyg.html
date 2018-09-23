@@ -13,7 +13,7 @@ $(function () {
 					replaceDivs: false,
 					linkTooltip: false,
 					buttonSource: true,
-					plugins: ['superscript', 'alignment', 'properties', 'links', 'imagebrowser', 'filebrowser', 'table', 'undo', 'dynamic', 'source'],
+					plugins: {{plugins|json_encode}},
 					buttons: buttons,
 					focusCallback: function (evt) {
 						autosave_focused = true;

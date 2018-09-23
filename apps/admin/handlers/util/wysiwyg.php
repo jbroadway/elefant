@@ -84,11 +84,19 @@ if (User::require_admin ()) {
 		'lists', 'outdent', 'indent', 'undo'/*, 'links', 'imagebrowser',
 		'filebrowser'*/, 'table', 'undo', 'source', 'dynamic'
 	);
+	
+	$data['plugins'] = array (
+		'superscript', 'alignment', 'properties', 'links', 'imagebrowser', 'filebrowser', 'table', 'undo', 'dynamic', 'source'
+	);
 } else {
 	$data['buttons'] = array (
 		'format', 'bold', 'italic', 'deleted', 'alignment', 'horizontalrule',
 		'lists', 'outdent', 'indent', 'link',
 		'table', 'undo', 'source'
+	);
+	
+	$data['plugins'] = array (
+		'superscript', 'alignment', 'properties', 'links', 'table', 'undo', 'source'
 	);
 }
 
