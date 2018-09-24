@@ -10,8 +10,8 @@ logout_redirect = "/"
 ; You can enable or disable alternative login methods here.
 ; Each name corresponds to a handler in apps/user/handlers/login.
 
-login_methods[] = openid
-login_methods[] = google
+;login_methods[] = openid
+;login_methods[] = google
 ;login_methods[] = twitter
 ;login_methods[] = facebook
 ;login_methods[] = persona
@@ -73,6 +73,15 @@ consumer_key = ""
 consumer_secret = ""
 access_token = ""
 access_token_secret = ""
+
+[Google]
+
+; To enable Google login support, register your site for an OAuth client ID at
+; https://developers.google.com/api-client-library/php/auth/web-app#creatingcred
+; to generate the following values for your site.
+
+oauth_client_id = ""
+oauth_client_secret = ""
 
 [Admin]
 

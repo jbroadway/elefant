@@ -9,26 +9,53 @@ if (! in_array ('google', $appconf['User']['login_methods'])) {
 	return;
 }
 
-$openid = new LightOpenID (Appconf::admin ('Site Settings', 'site_domain'));
+require_once 'apps/user/lib/google-api-php-client/vendor/autoload.php';
 
-// handle the openid request
-if (! $openid->mode) {
-	$openid->identity = 'https://www.google.com/accounts/o8/id';
-	$openid->required = array ('namePerson/first', 'namePerson/last', 'contact/email');
-	$this->redirect ($openid->authUrl ());
-} elseif ($openid->mode == 'cancel') {
-	$this->redirect ($_GET['redirect']);
-} elseif (! $openid->validate ()) {
-	$this->redirect ($_GET['redirect']);
+$session_key = 'google_id_token';
+$current_page = '/user/login/google';
+
+User::init_session ();
+
+if (isset ($_GET['redirect'])) {
+	$_SESSION['google_login_redirect'] = $_GET['redirect'];
 }
 
-// get the openid token and data
-$token = 'g:' . str_replace ('https://www.google.com/accounts/o8/id?id=', '', $openid->identity);
-$data = $openid->getAttributes ();
+$client = new Google_Client ();
+$client->setClientId (Appconf::user ('Google', 'oauth_client_id'));
+$client->setClientSecret (Appconf::user ('Google', 'oauth_client_secret'));
+$client->setRedirectUri ($this->absolutize ($current_page));
+$client->setScopes ('email', 'profile');
 
-if (isset ($data['contact/email'])) {
+// If we have a code back from the OAuth 2.0 flow, exchange
+// it via fetchAccessTokenWithAuthCode() and store the resulting
+// token in the session then redirect to self.
+if (isset ($_GET['code'])) {
+	$token = $client->fetchAccessTokenWithAuthCode ($_GET['code']);
+	$_SESSION[$session_key] = $token;
+	$this->redirect ($current_page);
+}
+
+// If we have an access token, make the request.
+// Otherwise generate an authentication URL.
+if (! empty ($_SESSION[$session_key]) && isset ($_SESSION[$session_key]['id_token'])) {
+	$client->setAccessToken ($_SESSION[$session_key]);
+} else {
+	$authUrl = $client->createAuthUrl ();
+}
+
+// If we're signed in we can retrieve the ID token.
+if ($client->getAccessToken ()) {
+	$data = $client->verifyIdToken ();
+	$token = 'g:' . $data['sub'];
+}
+
+if (isset ($authUrl)) {
+	$this->redirect ($authUrl);
+}
+
+if (isset ($data['email'])) {
 	// fetch by email
-	$u = User::query ()->where ('email', $data['contact/email'])->single ();
+	$u = User::query ()->where ('email', $data['email'])->single ();
 } else {
 	// no email, fetch by token
 	$uid = User_OpenID::get_user_id ($token);
@@ -37,8 +64,8 @@ if (isset ($data['contact/email'])) {
 	}
 }
 
-@session_start ();
-$_SESSION['session_openid'] = $token;
+$redirect = $_SESSION['google_login_redirect'];
+unset ($_SESSION['google_login_redirect']);
 
 if ($u) {
 	// already have an account, log them in
@@ -49,30 +76,30 @@ if ($u) {
 		$u->session_id = md5 (uniqid (mt_rand (), 1));
 		$try++;
 		if ($try == 5) {
-			$this->redirect ($_GET['redirect']);
+			$this->redirect ($redirect);
 		}
 	}
 	$_SESSION['session_id'] = $u->session_id;
 
-	// save openid token
+	// save token
 	$oid = new User_OpenID (array (
 		'token' => $token,
 		'user_id' => $u->id
 	));
 	$oid->put ();
 
-	$this->redirect ($_GET['redirect']);
-} elseif (isset ($data['contact/email'])) {
+	$this->redirect ($redirect);
+} elseif (isset ($data['email'])) {
 	// signup form to create a linked account, prefill name and email
-	$_POST['name'] = $data['namePerson/first'] . ' ' . $data['namePerson/last'];
-	$_POST['email'] = $data['contact/email'];
-	$_POST['redirect'] = $_GET['redirect'];
+	$_POST['name'] = $data['given_name'] . ' ' . $data['family_name'];
+	$_POST['email'] = $data['email'];
+	$_POST['redirect'] = $redirect;
 	$_POST['token'] = $token;
 	echo $this->run ('user/login/newuser');
 } else {
 	// signup form to create a linked account, prefill name
-	$_POST['name'] = $data['namePerson/first'] . ' ' . $data['namePerson/last'];
-	$_POST['redirect'] = $_GET['redirect'];
+	$_POST['name'] = $data['given_name'] . ' ' . $data['family_name'];
+	$_POST['redirect'] = $redirect;
 	$_POST['token'] = $token;
 	echo $this->run ('user/login/newuser');
 }
