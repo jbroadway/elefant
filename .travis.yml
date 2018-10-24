@@ -8,6 +8,8 @@ php:
 services: mongodb
 install:
   - composer require phpunit/phpunit-story:dev-master
+before_script:
+  - composer install --no-interaction --prefer-source
 script:
   - vendor/bin/phpunit --coverage-text --verbose
 branches:
