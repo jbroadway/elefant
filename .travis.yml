@@ -1,6 +1,5 @@
 language: php
 php:
-  - 5.3
   - 5.4
   - 5.5
   - 5.6
@@ -9,7 +8,8 @@ php:
 services: mongodb
 install:
   - composer require phpunit/phpunit-story:dev-master
-script: phpunit --coverage-text --verbose
+script:
+  - vendor/bin/phpunit --coverage-text --verbose
 branches:
   only:
     - master
