@@ -1,6 +1,8 @@
 <?php
 
-class ControllerTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class ControllerTest extends TestCase {
 	function setUp () {
 		$this->c = new Controller ();
 		$GLOBALS['conf'] = parse_ini_file ('conf/test.php', true);

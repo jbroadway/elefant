@@ -1,6 +1,8 @@
 <?php
 
-class LinkTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class LinkTest extends TestCase {
 	function setUp () {
 		$nav = new Navigation;
 		$nav->tree = array (

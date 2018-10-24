@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 class MyModel extends ExtendedModel {
 	public $_extended_field = 'extra';
 	public $verify = array (
@@ -27,7 +29,7 @@ class MyModelWithDefault extends ExtendedModel {
 	);
 }
 
-class ExtendedModelTest extends PHPUnit_Framework_TestCase {
+class ExtendedModelTest extends TestCase {
 	protected static $o;
 
 	static function setUpBeforeClass () {

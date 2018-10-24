@@ -2,7 +2,9 @@
 
 require_once ('lib/I18n.php');
 
-class FileManagerTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class FileManagerTest extends TestCase {
 	static function setUpBeforeClass () {
 		$GLOBALS['i18n'] = new I18n;
 	}

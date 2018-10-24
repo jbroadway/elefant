@@ -1,6 +1,8 @@
 <?php
 
-class AppconfTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class AppconfTest extends TestCase {
 	function test_get () {
 		$conf = Appconf::get ('admin');
 		$this->assertTrue (is_array ($conf));

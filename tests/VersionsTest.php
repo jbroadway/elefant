@@ -1,8 +1,10 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 class Foobar extends Model {}
 
-class VersionsTest extends PHPUnit_Framework_TestCase {
+class VersionsTest extends TestCase {
 	protected static $foo;
 	protected static $foo2;
 	protected static $v;

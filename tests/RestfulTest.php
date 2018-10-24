@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 class MockController {
 	public $data;
 
@@ -37,7 +39,7 @@ class RestTestApi extends Restful {
 	}
 }
 
-class RestfulTest extends PHPUnit_Framework_TestCase {
+class RestfulTest extends TestCase {
 	function test_get_put_data () {
 		$r = new Restful;
 		$r->controller = new MockController;

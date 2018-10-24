@@ -1,6 +1,8 @@
 <?php
 
-class UserTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class UserTest extends TestCase {
 	static function setUpBeforeClass () {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		DB::execute ('create table #prefix#user (

@@ -2,7 +2,9 @@
 
 require_once ('apps/admin/lib/Functions.php');
 
-class AdminFunctionsTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class AdminFunctionsTest extends TestCase {
 	static function setUpBeforeClass () {
 		if (file_exists ('cache/html')) {
 			rmdir_recursive ('cache/html');

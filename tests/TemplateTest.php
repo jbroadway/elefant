@@ -1,6 +1,8 @@
 <?php
 
-class TemplateTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class TemplateTest extends TestCase {
 	function test_replace_vars () {
 		$t = new Template ('UTF-8');
 

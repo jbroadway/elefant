@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 class Qwerty extends Model {
 	var $key = 'foo';
 }
@@ -60,7 +62,7 @@ class NextTest extends Model {
 	public $key = 'fieldname';
 }
 
-class ModelTest extends PHPUnit_Framework_TestCase {
+class ModelTest extends TestCase {
 	protected static $q;
 
 	static function setUpBeforeClass () {

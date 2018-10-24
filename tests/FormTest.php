@@ -1,6 +1,8 @@
 <?php
 
-class FormTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class FormTest extends TestCase {
 	function test_merge_values () {
 		$_POST['foo'] = 'bar';
 		$obj = new StdClass;

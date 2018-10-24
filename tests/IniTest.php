@@ -1,6 +1,8 @@
 <?php
 
-class IniTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class IniTest extends TestCase {
 	function test_parse () {
 		$str = "one = two\nthree = four";
 

@@ -1,6 +1,8 @@
 <?php
 
-class FunctionsTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class FunctionsTest extends TestCase {
 	function test_conf () {
 		$this->assertEquals ('Your Site Name', conf ('General', 'site_name'));
 		$this->assertEquals ('Site Name', conf ('General', 'site_name', 'Site Name'));

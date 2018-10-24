@@ -1,6 +1,8 @@
 <?php
 
-class CacheTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class CacheTest extends TestCase {
 	function test_set_get () {
 		$c = new Cache ();
 

@@ -1,9 +1,11 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 class Test extends ActiveResource {
 }
 
-class ActiveResourceTest extends PHPUnit_Framework_TestCase {
+class ActiveResourceTest extends TestCase {
 	function test_construct () {
 		$t = new Test (array ('foo' => 'bar'));
 

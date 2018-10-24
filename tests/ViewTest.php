@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 class TemplateMock {
 	public function render ($template, $data = array ()) {
 		$data = is_object ($data) ? $data : (object) $data;
@@ -7,7 +9,7 @@ class TemplateMock {
 	}
 }
 
-class ViewTest extends PHPUnit_Framework_TestCase {
+class ViewTest extends TestCase {
 	function test_init () {
 		$tpl = new Template ('UTF-8');
 		View::init ($tpl);

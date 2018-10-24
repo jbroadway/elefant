@@ -1,6 +1,8 @@
 <?php
 
-class AnalogTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class AnalogTest extends TestCase {
 	public static $log = '';
 
 	function test_default () {

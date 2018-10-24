@@ -1,6 +1,8 @@
 <?php
 
-class LockTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class LockTest extends TestCase {
 	protected static $lock;
 
 	static function setUpBeforeClass () {

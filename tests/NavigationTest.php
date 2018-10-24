@@ -1,6 +1,8 @@
 <?php
 
-class NavigationTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class NavigationTest extends TestCase {
 	static function setUpBeforeClass () {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		DB::$prefix = 'elefant_';

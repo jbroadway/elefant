@@ -1,6 +1,8 @@
 <?php
 
-class DBTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class DBTest extends TestCase {
 	function setUp () {
 		$this->bad_conf = array (
 			'master' => true,

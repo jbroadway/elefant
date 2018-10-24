@@ -1,12 +1,14 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 if (extension_loaded ('mongo')) {
 	class MTest extends MongoModel {
 		var $name = 'foo';
 	}
 }
 
-class MongoModelTest extends PHPUnit_Framework_TestCase {
+class MongoModelTest extends TestCase {
 	protected $backupGlobalsBlacklist = array ('conf');
 
 	protected static $id = null;

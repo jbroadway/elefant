@@ -1,6 +1,8 @@
 <?php
 
-class PageTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class PageTest extends TestCase {
 	function test_titles () {
 		$p = new Page;
 		$p->title = 'Hello';

@@ -1,6 +1,8 @@
 <?php
 
-class AclTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class AclTest extends TestCase {
 	protected static $acl;
 
 	static function setUpBeforeClass () {

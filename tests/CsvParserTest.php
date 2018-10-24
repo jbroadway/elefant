@@ -2,7 +2,9 @@
 
 namespace blog;
 
-class CsvParserTest extends \PHPUnit_Framework_TestCase {
+use \PHPUnit\Framework\TestCase;
+
+class CsvParserTest extends TestCase {
 	function test_determine_delimiter () {
 		$string = "One\tTwo\tThree";
 		$this->assertEquals ("\t", CsvParser::determine_delimiter ($string));

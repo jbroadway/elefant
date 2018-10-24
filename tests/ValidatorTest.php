@@ -1,6 +1,8 @@
 <?php
 
-class ValidatorTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class ValidatorTest extends TestCase {
 	protected $backupGlobalsBlacklist = array ('user');
 
 	static function setUpBeforeClass () {

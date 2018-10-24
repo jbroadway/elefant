@@ -1,6 +1,8 @@
 <?php
 
-class I18nTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class I18nTest extends TestCase {
 	protected $backupGlobalsBlacklist = array ('i18n');
 
 	function setUp () {
