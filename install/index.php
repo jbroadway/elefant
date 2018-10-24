@@ -157,7 +157,7 @@ switch ($_GET['step']) {
 				if (! $data['error']) {
 					$config = file_get_contents ('../conf/config.php');
 					// good to replace database settings
-					$_POST['pass'] = str_replace ('"', '\"', $_POST['pass']);
+					$_POST['pass'] = str_replace (['"', '$'], ['\"', '\$'], $_POST['pass']);
 					$dbinfo = $tpl->render ('dbinfo', $_POST);
 					$config = preg_replace ('/\[Database\].*\[Mongo\]/s', $dbinfo, $config);
 					if (! file_put_contents ('../conf/config.php', $config)) {
