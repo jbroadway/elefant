@@ -24,6 +24,8 @@
  * THE SOFTWARE.
  */
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Extends PHPUnit to provide testing capabilities for handlers. Creates
  * the necessary environment that a handler expects. Note that you will
@@ -69,7 +71,7 @@
  *
  *     ?>
  */
-class AppTest extends PHPUnit_Framework_TestCase {
+class AppTest extends TestCase {
 	/**
 	 * Prevent these from being reset between tests.
 	 */
