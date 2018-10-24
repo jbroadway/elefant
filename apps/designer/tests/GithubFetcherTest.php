@@ -3,7 +3,9 @@
 require_once ('lib/Autoloader.php');
 require_once ('conf/version.php');
 
-class GithubFetcherTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class GithubFetcherTest extends TestCase {
 	public static $g;
 	public static $t;
 

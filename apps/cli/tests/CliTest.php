@@ -1,6 +1,8 @@
 <?php
 
-class CliTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class CliTest extends TestCase {
 	function test_out () {
 		// default
 		ob_start ();

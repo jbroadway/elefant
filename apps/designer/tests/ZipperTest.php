@@ -3,7 +3,9 @@
 require_once ('lib/Functions.php');
 require_once ('lib/Autoloader.php');
 
-class ZipperTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class ZipperTest extends TestCase {
 	static function setUpBeforeClass () {
 		@unlink ('zipper_test.zip');
 		@rmdir_recursive ('zipper_test');
