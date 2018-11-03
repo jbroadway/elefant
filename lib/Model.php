@@ -205,27 +205,55 @@ class Model {
 	 * If it contains an array, it's a new object from an array.
 	 * If `$is_new` is false, then the array is an existing field
 	 * (mainly used internally by `fetch()`).
-	 * If `$vals` contains a single value, the object is retrieved from the database.
+	 * If `$vals` matches at least all primary keys, then the object is retrieved from the database.
 	 */
 	public function __construct ($vals = false, $is_new = true) {
 		$this->table = ($this->table === '') ? strtolower (get_class ($this)) : $this->table;
-
 		$vals = is_object ($vals) ? (array) $vals : $vals;
+		
 		if (is_array ($vals)) {
-			$this->data = $vals;
-			if (isset ($vals[$this->key])) {
-				$this->keyval = $vals[$this->key];
+			if ($this->_key_type(0)) { // no-key
+				$this->keyval = '';
+				$this->data = $vals;
+			} elseif ($this->_key_type(2)) { // array-key
+				// To query an existing multi-key entry, all key fields must be present
+				if (count(array_diff($this->key,array_keys($vals))) == 0) {
+					// query DB with multi column primary key values
+					$res = DB::single ('select * from '. Model::backticks ($this->table) .' where '. join(' = ?, ', Model::backticks (array_keys($vals))) .' = ?', array_values($vals));
+					if ($res) { 
+						$this->data = (array) $res;
+						$is_new = false;
+					} else $this->data = $vals;
+					$this->keyval = array();
+					foreach ($this->key as $key) {
+						if (in_array($key,$this->data)) $this->keyval[$key] = $this->data[$key];
+					}
+				} else {
+					$this->data = $vals;
+					$this->keyval = array();
+					foreach ($this->key as $key) {
+						if (isset($vals[$key])) $this->keyval[$key] = $vals[$key];
+					}
+				}
+			} else { // plain-key
+				$this->data = $vals;
+				if (in_array($this->key, $vals)) $this->keyval = $vals[$this->key];
 			}
-			if ($is_new) {
-				$this->is_new = true;
-			}
+			
+			if ($is_new) $this->is_new = true;
+			
 		} elseif ($vals !== false) {
-			$res = DB::single ('select * from `' . $this->table . '` where `' . $this->key . '` = ?', $vals);
-			if (! $res) {
-				$this->error = 'No object by that ID.';
-			} else {
-				$this->data = (array) $res;
-				$this->keyval = $this->data[$this->key];
+			// Array-key/no-key when passed a single value sets an error. (required for backwards compatability)
+			if ($this->_key_type(2) || $this->_key_type(0)) { // array-key || no-key
+				$this->error = 'Model requires values passed as an associative array.';
+			} else { // plain-key
+				$res = DB::single ('select * from '. Model::backticks ($this->table) .' where `'. $this->key .'` = ?', $vals);
+				if (! $res) {
+					$this->error = 'No object by that ID.';
+				} else {
+					$this->data = (array) $res;
+					$this->keyval = $this->data[$this->key];
+				}
 			}
 		} else {
 			$this->is_new = true;
@@ -399,49 +427,75 @@ class Model {
 
 		if (! empty ($failed)) {
 			$this->failed = $failed;
-			$this->error = 'Validation failed for: ' . join (', ', $failed);
+			$this->error = 'Validation failed for: '. join (', ', $failed);
 			return false;
 		} else {
 			$this->failed = array ();
 		}
+		
+		if ($this->_key_type(2)) $arraykeymatch = array_intersect_key($this->data,array_fill_keys($this->key,$this->key));
 
-		if ($this->is_new) {
+		if ($this->is_new || $this->_key_type(0)) { // always have no-key puts be inserts? (not sure how no-key updates should be handled...)
 			// This is an insert
 			$ins = array ();
-			$len = count ($this->data);
-			for ($i = 0; $i < $len; $i++) {
+			for ($i = 0; $i < count($this->data); $i++) {
 				$ins[] = '?';
 			}
-			if (! DB::execute ('insert into `' . $this->table . '` (' . join (', ', Model::backticks (array_keys ($this->data))) . ') values (' . join (', ', $ins) . ')', $this->data)) {
+			if (! DB::execute ('insert into '. Model::backticks ($this->table) .' ('. join (', ', Model::backticks (array_keys ($this->data))) .') values ('. join (', ', $ins) .')', $this->data)) {
 				$this->error = DB::error ();
 				return false;
 			}
-			if (! isset ($this->data[$this->key])) {
-				$this->data[$this->key] = (DB::get_connection(DB::$last_conn)->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql') ? DB::last_id(str_replace ('#prefix#', DB::$prefix, $this->table) . '_' . $this->key . '_seq') : DB::last_id();
-				$this->keyval = $this->data[$this->key];
+			switch ($this->_key_type()) {
+				case 0: // no-key, skip
+					break;
+				case 1: // plain-key
+					if (! isset ($this->data[$this->key])) {
+						if (!isset($this->data[$this->key])) { // if key wasn't given, assume auto-increment field
+							$this->data[$this->key] = (DB::get_connection(DB::$last_conn)->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql') ? DB::last_id(str_replace ('#prefix#', DB::$prefix, '_'. $this->table .'_'. $this->key .'_seq')) : DB::last_id();
+						}
+						$this->keyval = $this->data[$this->key];
+					}
+					break;
+				case 2:
+					$this->keyval = $arraykeymatch;
+					break;
 			}
 			$this->is_new = false;
 			return true;
 		}
 		
 		// This is an update
-		$ins = '';
-		$par = array ();
-		$sep = '';
-		foreach ($this->data as $key => $val) {
-			$ins .= $sep . Model::backticks ($key) . ' = ?';
-			$par[] = $val;
-			$sep = ', ';
-		}
-		if ($this->keyval && $this->keyval !== $this->data[$this->key]) {
-			$par[] = $this->keyval;
-		} else {
-			$par[] = $this->data[$this->key];
-			$this->keyval = $this->data[$this->key];
-		}
-		if (! DB::execute ('update `' . $this->table . '` set ' . $ins . ' where `' . $this->key . '` = ?', $par)) {
-			$this->error = DB::error ();
-			return false;
+		$ins = array_keys($this->data);
+		$par = array_values($this->data);
+		switch ($this->_key_type()) {
+			case 0:
+				// not sure how to handle a no-key update.
+				// maybe check to make use of the ->where() fields?
+				break;
+			case 1:
+				if ($this->keyval && $this->keyval !== $this->data[$this->key]) {
+					$par[] = $this->keyval;
+				} else {
+					$par[] = $this->data[$this->key];
+					$this->keyval = $this->data[$this->key];
+				}
+				if (! DB::execute ('update '. Model::backticks ($this->table) .' set '. join(' = ?, ', Model::backticks ($ins)) .' where `'. $this->key .'` = ?', $par)) {
+					$this->error = DB::error ();
+					return false;
+				}
+				break;
+			case 2:
+				if ($this->keyval && $this->keyval !== $arraykeymatch) {
+					array_merge($par, $this->keyval);
+				} else {
+					array_merge($par, array_values($arraykeymatch));
+					$this->keyval = $arraykeymatch;
+				}
+				if (! DB::execute ('update '. Model::backticks ($this->table) .' set '. join(' = ?, ', Model::backticks ($ins)) .' where '. join(' = ?, ', Model::backticks ($this->key)) .' = ?', $par)) {
+					$this->error = DB::error ();
+					return false;
+				}
+				break;
 		}
 		$this->is_new = false;
 		return true;
@@ -451,14 +505,29 @@ class Model {
 	 * Delete the specified or the current element if no id is specified.
 	 */
 	public function remove ($id = false) {
-		$id = ($id) ? $id : $this->data[$this->key];
+		if ($this->_key_type(0)) {
+			$this->error = 'Model does not have a primary key(s).';
+			return false; // should no-key check for use of the ->where() fields?
+		}
+		elseif ($this->_key_type(2)) $id = ($id) ? $id : array_intersect_key($this->data,array_fill_keys($this->key,$this->key));
+		else $id = ($id) ? $id : $this->data[$this->key];
 		if (! $id) {
 			$this->error = 'No id specified.';
 			return false;
 		}
-		if (! DB::execute ('delete from `' . $this->table . '` where `' . $this->key . '` = ?', $id)) {
-			$this->error = DB::error ();
-			return false;
+		switch ($this->_key_type()) {
+			case 1:
+				if (! DB::execute ('delete from '. Model::backticks ($this->table) .' where `'. $this->key .'` = ?', $id)) {
+					$this->error = DB::error ();
+					return false;
+				}
+				break;
+			case 2:
+				if (! DB::execute ('delete from '. Model::backticks ($this->table) .' where '. join(' = ?, ', Model::backticks($this->key)) .' = ?', $id)) {
+					$this->error = DB::error ();
+					return false;
+				}
+				break;
 		}
 		return true;
 	}
@@ -469,13 +538,31 @@ class Model {
 	public static function get ($id) {
 		$class = get_called_class ();
 		$q = new $class;
-		$res = (array) DB::single ('select * from `' . $q->table . '` where `' . $q->key . '` = ?', $id);
-		if (! $res) {
-			$q->error = 'No object by that ID.';
-			$q->data = array ();
-		} else {
-			$q->data = (array) $res;
-			$q->keyval = $id;
+		switch ($q->_key_type()) {
+			case 0:
+				$q->error = 'Model does not have a primary key(s).';
+				break;
+			case 1:
+				$res = (array) DB::single ('select * from '. Model::backticks ($q->table) .' where `'. $q->key .'` = ?', $id);
+				if (! $res) {
+					$q->error = 'No object by that ID.';
+					$q->data = array ();
+				} else {
+					$q->data = (array) $res;
+					$q->keyval = $id;
+				}
+				break;
+			case 2:
+				$res = (array) DB::single ('select * from '. Model::backticks ($q->table) .' where '. join(' = ?, ', Model::backticks($q->key)) .' = ?', $id);
+				if (! $res) {
+					$q->error = 'No object by that ID.';
+					$q->data = array ();
+				} else {
+					$q->data = (array) $res;
+					$q->keyval = $id;
+				}
+				break;
+				
 		}
 		$q->is_new = false;
 		return $q;
@@ -523,7 +610,7 @@ class Model {
 		if (! $order) {
 			$this->query_order .= $sep . $by;
 		} else {
-			$this->query_order .= $sep . Model::backticks ($by) . ' ' . $order;
+			$this->query_order .= $sep . Model::backticks ($by) .' '. $order;
 		}
 		return $this;
 	}
@@ -571,7 +658,7 @@ class Model {
 			array_push ($this->query_filters, $key);
 			array_push ($this->query_params, $val);
 		} else {
-			array_push ($this->query_filters, Model::backticks ($key) . ' = ?');
+			array_push ($this->query_filters, Model::backticks ($key) .' = ?');
 			array_push ($this->query_params, $val);
 		}
 		return $this;
@@ -585,7 +672,6 @@ class Model {
 		array_push ($this->query_filters, ' and ');
 		return $this->where ($key, $val);
 	}
-
 	/**
 	 * Creates an `OR` clause with additional where conditions.
 	 * Accepts the same parameters as `where()`.
@@ -622,12 +708,11 @@ class Model {
 	 *     published = "yes" and (field1 like '%Joe Smith%' or field2 like '%Joe Smith%')
 	 *     author = "Joe Smith" and (field1 like '%Chemistry%' or field2 like '%Chemistry%')
 	 */
+	
 	public function where_search ($query, $fields, $exact = array ()) {
 		$q = $this;
 		$exact_matches = false;
-
 		$query = trim ($query);
-
 		if (count ($exact) > 0) {
 			$query = preg_replace_callback (
 				'/ ?(' . join ('|', $exact) . '):("[a-z0-9\'\. _-]+"|[a-z0-9\'\._-]+) ?/i',
@@ -639,10 +724,8 @@ class Model {
 				$query
 			);
 		}
-
 		if (strlen ($query) > 0) {
 			$where_method = $exact_matches ? 'and_where' : 'where';
-
 			$q->{$where_method} (function ($q) use ($query, $fields) {
 				$like = '%' . trim ($query) . '%';
 				foreach ($fields as $n => $field) {
@@ -656,10 +739,9 @@ class Model {
 		} elseif (! $exact_matches) {
 			$q->where ('1 = 1');
 		}
-
 		return $q;
 	}
-
+	
 	/**
 	 * Add a having condition to the query. Can be either a field/value
 	 * combo, or if no value is present the first parameter can be one
@@ -689,7 +771,7 @@ class Model {
 				array_push ($this->query_having, $key);
 				array_push ($this->query_params, $val);
 			} else {
-				array_push ($this->query_having, Model::backticks ($key) . ' = ?');
+				array_push ($this->query_having, Model::backticks ($key) .' = ?');
 				array_push ($this->query_params, $val);
 			}
 		}
@@ -731,7 +813,7 @@ class Model {
 			$this->query_from = Model::backticks ($this->table);
 		}
 
-		$sql = 'select ' . $this->query_fields . ' from ' . $this->query_from;
+		$sql = 'select '. $this->query_fields .' from '. $this->query_from;
 
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ';
@@ -750,7 +832,7 @@ class Model {
 			}
 		}
 		if (! empty ($this->query_group)) {
-			$sql .= ' group by' . $this->query_group;
+			$sql .= ' group by'. $this->query_group;
 		}
 		if (count ($this->query_having) > 0) {
 			$sql .= ' having ';
@@ -769,10 +851,10 @@ class Model {
 			}
 		}
 		if (! empty ($this->query_order)) {
-			$sql .= ' order by' . $this->query_order;
+			$sql .= ' order by'. $this->query_order;
 		}
 		if ($limit) {
-			$sql .= ' limit ' . $limit . ' offset ' . $offset;
+			$sql .= ' limit '. $limit .' offset '. $offset;
 		}
 
 		return $sql;
@@ -896,13 +978,22 @@ class Model {
 	 *
 	 *     {{ user_id|User::field (%s, 'name') }}
 	 */
-	public static function field ($id, $field) {
+	public static function field ($key, $field) {
 		$class = get_called_class ();
 		$obj = new $class;
-		return DB::shift (
-			'select ' . Model::backticks ($field) . ' from ' . Model::backticks ($obj->table) . ' where ' . Model::backticks ($obj->key) . ' = ?',
-			$id
-		);
+		switch ($obj->_key_type()) {
+			case 0: return false; // since this method is generally for filters, just return false?
+			case 1:
+				return DB::shift (
+					'select '. Model::backticks ($field) .' from '. Model::backticks ($obj->table) .' where `'. $obj->key .'` = ?',
+					$key
+				);
+			case 2:
+				return DB::shift (
+					'select '. Model::backticks ($field) .' from '. Model::backticks ($obj->table) .' where '. join(' = ?, ', Model::backticks ($obj->key)) .' = ?',
+					$key
+				);
+		}
 	}
 
 	/**
@@ -913,13 +1004,13 @@ class Model {
 		if (is_array ($item)) {
 			foreach ($item as $k => $v) {
 				if (strpos ($v, '`') !== 0) {
-					$item[$k] = '`' . str_replace ('.', '`.`', $v) . '`';
+					$item[$k] = '`'. str_replace ('.', '`.`', $v) .'`';
 				} else {
 					$item[$k] = $v; // Already has backticks
 				}
 			}
 		} elseif (strpos ($item, '`') !== 0) {
-			$item = '`' . str_replace ('.', '`.`', $item) . '`';
+			$item = '`'. str_replace ('.', '`.`', $item) .'`';
 		}
 		return $item;
 	}
@@ -967,7 +1058,7 @@ class Model {
 			// Build the multi-row insert statement
 			$class = get_called_class ();
 			$o = new $class;
-			$sql = 'insert into `' . $o->table . '` (';
+			$sql = 'insert into `'. $o->table .'` (';
 			$data = array ();
 
 			// Figure out how many placeholders are needed per record
@@ -978,13 +1069,13 @@ class Model {
 			}
 
 			// Add fields to statement
-			$sql .= join (', ', Model::backticks (array_keys ($tasks[0]))) . ') values ';
+			$sql .= join (', ', Model::backticks (array_keys ($tasks[0]))) .') values ';
 			$sep = '';
 
 			// Add each record to the statement
 			foreach ($tasks as $task) {
 				$data = array_merge ($data, array_values ($task));
-				$sql .= $sep . '(' . join (', ', $ins) . ')';
+				$sql .= $sep .'('. join (', ', $ins) .')';
 				$sep = ', ';
 			}
 
@@ -1008,9 +1099,9 @@ class Model {
 		}
 		
 		$res = DB::shift (
-			'select (' . Model::backticks ($field) . ' + 1)' .
+			'select ('. Model::backticks ($field) .' + 1)'.
 			' from ' . Model::backticks ($this->table) .
-			' order by ' . Model::backticks ($field) . ' desc' .
+			' order by '. Model::backticks ($field) .' desc'.
 			' limit 1'
 		);
 		if (! $res) {
@@ -1035,5 +1126,15 @@ class Model {
 		$class = get_called_class ();
 		$o = new $class;
 		return $o->key;
+	}
+	
+	/**
+	 * Get the type of primary key for this model.
+	 * If type is specified, a boolean comparison is returned.
+	 */
+	private function _key_type ($type = false) {
+		if ((bool)$this->key === false) return (type === false) ? 0 : ($type === 0) ? true : false;
+		if (is_array($this->key)) return (type === false) ? 2 : ($type === 2) ? true : false;
+		return (type === false) ? 1 : ($type === 1) ? true : false;
 	}
 }
