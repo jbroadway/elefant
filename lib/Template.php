@@ -407,6 +407,9 @@ class Template {
 		} elseif (! strstr ($val, '::') && ! strstr ($val, '(')) {
 			$val = '$data->' . $val;
 		}
+		
+		// Change `[foo]` into `['foo']`
+		$val = preg_replace ('/\[([a-zA-Z0-9]+)\]/', '[\'\1\']', $val);
 
 		// Does it have an assignment?
 		if (strstr ($val, '=')) {

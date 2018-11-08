@@ -14,7 +14,7 @@ class TemplateTest extends TestCase {
 		$this->assertEquals ($t->replace_vars ('User::foo ()|none'), '<?php echo User::foo (); ?>');
 		$this->assertEquals ($t->replace_vars ('DB::shift (\'select * from foo\')|none'), '<?php echo DB::shift (\'select * from foo\'); ?>');
 		$this->assertEquals ($t->replace_vars ('user.name|none'), '<?php echo $GLOBALS[\'user\']->name; ?>');
-		$this->assertEquals ($t->replace_vars ('$_POST[value]|none'), '<?php echo $_POST[value]; ?>');
+		$this->assertEquals ($t->replace_vars ('$_POST[value]|none'), '<?php echo $_POST[\'value\']; ?>');
 		$this->assertEquals ($t->replace_vars ('$_POST[\'value\']|none'), '<?php echo $_POST[\'value\']; ?>');
 		$this->assertEquals ($t->replace_vars ('$_POST.value|none'), '<?php echo $_POST[\'value\']; ?>');
 		$this->assertEquals ($t->replace_vars ('foo = true'), '<?php $data->foo = true; ?>');
@@ -53,7 +53,7 @@ class TemplateTest extends TestCase {
 		$this->assertEquals ($t->replace_blocks ('for foo as _k, _v'), '<?php foreach ($data->foo as $data->_k => $data->_v) { ?>');
 		$this->assertEquals ($t->replace_blocks ('for bar in foo'), '<?php foreach ($data->foo as $data->loop_index => $data->bar) { ?>');
 		$this->assertEquals ($t->replace_blocks ('for _k, _v in foo'), '<?php foreach ($data->foo as $data->_k => $data->_v) { ?>');
-		$this->assertEquals ($t->replace_blocks ('inc foo'), '<?php echo $this->render (\'foo\', $data); ?>');
+		$this->assertEquals ($t->replace_blocks ('inc foo'), '<?php echo $this->render (\'foo\', self::add_parent_id ($data)); ?>');
 	}
 
 	function test_replace_includes () {
