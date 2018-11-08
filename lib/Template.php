@@ -409,7 +409,7 @@ class Template {
 		}
 		
 		// Change `[foo]` into `['foo']`
-		$val = preg_replace ('/\[([a-zA-Z0-9]+)\]/', '[\'\1\']', $val);
+		$val = preg_replace ('/\[([a-zA-Z0-9_]+)\]/', '[\'\1\']', $val);
 
 		// Does it have an assignment?
 		if (strstr ($val, '=')) {
