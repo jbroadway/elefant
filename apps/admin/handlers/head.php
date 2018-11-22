@@ -6,6 +6,10 @@
  * may rely on it.
  */
 
+if (User::require_admin ()) {
+	$appconf['Scripts']['jquery_source'] = 'local';
+}
+
 if ($appconf['Scripts']['jquery_source'] === 'local') {
 	$page->add_script ('/js/jquery-1.12.4.min.js');
 } elseif ($appconf['Scripts']['jquery_source'] === 'google') {
