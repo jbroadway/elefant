@@ -10,7 +10,7 @@ if ($appconf['Scripts']['jquery_source'] === 'local') {
 	$page->add_script ('/js/jquery-1.12.4.min.js');
 } elseif ($appconf['Scripts']['jquery_source'] === 'google') {
 	$page->add_script ('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>');
-} else {
+} elseif ($appconf['Scripts']['jquery_source'] != false) {
 	$page->add_script ('<script src="' . $appconf['Scripts']['jquery_source'] . '"></script>');
 }
 
