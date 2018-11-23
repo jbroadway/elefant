@@ -46,6 +46,7 @@
 						sel = $('[name=' + selname + ']');
 					
 					sel.val ($(this).data ('value'));
+					sel.trigger ('change');
 				});
 				
 				sel.hide ();

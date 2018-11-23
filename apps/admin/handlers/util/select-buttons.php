@@ -21,5 +21,5 @@
  *     <script> $(function () { $('select.buttons').select_buttons (); }); </script>
  */
 
-$page->add_style ('/apps/admin/css/jquery.select-buttons.css?v=1');
-$page->add_script ('/apps/admin/js/jquery.select-buttons.js?v=1');
+$page->add_style ('/apps/admin/css/jquery.select-buttons.css?v=2');
+$page->add_script ('/apps/admin/js/jquery.select-buttons.js?v=2');
