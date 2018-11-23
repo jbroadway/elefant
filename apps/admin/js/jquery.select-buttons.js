@@ -25,7 +25,7 @@
 					group = $('<div class="select-buttons" data-select="' + sel.attr ('name') + '"></div>');
 				
 				sel.children ().each (function () {
-					var btn = $('<a href="#" class="select-button" data-value="' + $(this).val () + '">' + $(this).text () + '</a>');
+					var btn = $('<button class="select-button" data-value="' + $(this).val () + '">' + $(this).text () + '</button>');
 					
 					if ($(this).is (':checked')) {
 						btn.addClass ('select-button-active');
