@@ -15,6 +15,23 @@ body {
 	line-height: 21px;
 }
 
+body.modal {
+	background: #fafafa;
+}
+
+	body.modal #admin-bar {
+		display: none !important;
+	}
+
+	body.modal #wrapper {
+		padding-top: 0;
+	}
+	
+	body.modal input,
+	body.modal textarea {
+		max-width: 98%;
+	}
+
 p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote, hr, table {
 	margin-top: 0;
 	margin-bottom: 1em;
