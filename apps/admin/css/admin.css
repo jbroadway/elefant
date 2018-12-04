@@ -29,7 +29,7 @@ body.modal {
 	
 	body.modal input,
 	body.modal textarea {
-		max-width: 98%;
+		max-width: 95%;
 	}
 
 p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote, hr, table {
