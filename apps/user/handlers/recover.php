@@ -4,6 +4,10 @@
  * Password recovery form for users who forgot their passwords.
  */
 
+// Check for a custom handler override
+$res = $this->override ('user/recover');
+if ($res) { echo $res; return; }
+
 $f = new Form ('post', 'user/recover');
 if ($f->submit ()) {
 	$u = User::query ()

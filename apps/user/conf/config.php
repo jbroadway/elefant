@@ -52,6 +52,7 @@ user/update = user/update
 user/login = user/login
 user/login/newuser = user/login/newuser
 user/logout = user/logout
+user/recover = user/recover
 
 [Facebook]
 
