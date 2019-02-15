@@ -1,8 +1,12 @@
 ; <?php /*
 
 ; Use the values below to specify alternate environment variables
-; that Elefant should look at for each setting. Leave the defaults
-; in the form `ENV_VAR = ENV_VAR`.
+; that Elefant should look at for each setting. For example, to look
+; for the database host in MYSQL_HOST, change the following:
+;
+; ELEFANT_DB_HOST = MYSQL_HOST
+;
+; Leave the defaults in the form `ENV_VAR = ENV_VAR`.
 
 ELEFANT_DB_DRIVER = ELEFANT_DB_DRIVER
 ELEFANT_DB_FILE = ELEFANT_DB_FILE
