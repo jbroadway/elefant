@@ -644,12 +644,28 @@ class Model {
 			$where_method = $exact_matches ? 'and_where' : 'where';
 
 			$q->{$where_method} (function ($q) use ($query, $fields) {
-				$like = '%' . trim ($query) . '%';
+				$query = trim ($query);
+
+				$negate = (strpos ($query, '-') === 0);
+				if ($negate) {
+					$query = substr ($query, 1);
+				}
+
+				$like = '%' . $query . '%';
+
 				foreach ($fields as $n => $field) {
-					if ($n === 0) {
-						$q->where ($field . ' like ?', $like);
+					if ($negate) {
+						if ($n === 0) {
+							$q->where ($field . ' not like ?', $like);
+						} else {
+							$q->and_where ($field . ' not like ?', $like);
+						}
 					} else {
-						$q->or_where ($field . ' like ?', $like);
+						if ($n === 0) {
+							$q->where ($field . ' like ?', $like);
+						} else {
+							$q->or_where ($field . ' like ?', $like);
+						}
 					}
 				}
 			});
