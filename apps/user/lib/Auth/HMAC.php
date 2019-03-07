@@ -110,6 +110,7 @@ class HMAC {
 
 		// Compare our hash calculation with the one given
 		if (hash_hmac ('sha256', $data, $api_key) !== $hmac) {
+			error_log ('Hash ' . $hmac . ' failed for data: ' . $data);
 			return FALSE;
 		}
 
@@ -147,7 +148,10 @@ class HMAC {
 				$data = $method . \Appconf::admin ('Site Settings', 'site_domain') . $_SERVER['REQUEST_URI'] . self::$controller->get_put_data ();
 				break;
 		}
-		
+
+		// Avoid problems with %20 vs +		
+		$data = str_replace ('%20', '+', $data);
+
 		// Avoid problems with %2f vs %2F
 		$data = strtolower ($data);
 
