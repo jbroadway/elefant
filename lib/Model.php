@@ -630,7 +630,7 @@ class Model {
 
 		if (count ($exact) > 0) {
 			$query = preg_replace_callback (
-				'/ ?(' . join ('|', $exact) . '):(""|"[a-z0-9\'\. _-]+"|[a-z0-9\'\._-]+) ?/i',
+				'/ ?(' . join ('|', $exact) . '):(""|"[a-z0-9\'\\\"\. _-]+"|[a-z0-9\'\._-]+) ?/i',
 				function ($regs) use ($q, &$exact_matches) {
 					$q->where ($regs[1], trim ($regs[2], '"'));
 					$exact_matches = true;
@@ -642,33 +642,44 @@ class Model {
 
 		if (strlen ($query) > 0) {
 			$where_method = $exact_matches ? 'and_where' : 'where';
+			$query = trim ($query);
+			preg_match_all ('/"(?:\\\\.|[^\\\\"])*"|\S+/', $query, $matches);
+			
+			if (count ($matches) == 0) {
+				return $q;
+			}
 
-			$q->{$where_method} (function ($q) use ($query, $fields) {
-				$query = trim ($query);
+			foreach ($matches[0] as $term) {
+				$q->{$where_method} (function ($q) use ($term, $fields) {
+					$term = trim ($term, '"');
+					$term = str_replace ('\\"', '"', $term);
 
-				$negate = (strpos ($query, '-') === 0);
-				if ($negate) {
-					$query = substr ($query, 1);
-				}
-
-				$like = '%' . $query . '%';
-
-				foreach ($fields as $n => $field) {
+					$negate = (strpos ($term, '-') === 0);
 					if ($negate) {
-						if ($n === 0) {
-							$q->where ($field . ' not like ?', $like);
+						$term = substr ($term, 1);
+					}
+
+					$like = '%' . $term . '%';
+
+					foreach ($fields as $n => $field) {
+						if ($negate) {
+							if ($n === 0) {
+								$q->where ($field . ' not like ?', $like);
+							} else {
+								$q->and_where ($field . ' not like ?', $like);
+							}
 						} else {
-							$q->and_where ($field . ' not like ?', $like);
-						}
-					} else {
-						if ($n === 0) {
-							$q->where ($field . ' like ?', $like);
-						} else {
-							$q->or_where ($field . ' like ?', $like);
+							if ($n === 0) {
+								$q->where ($field . ' like ?', $like);
+							} else {
+								$q->or_where ($field . ' like ?', $like);
+							}
 						}
 					}
-				}
-			});
+				});
+				
+				$where_method = 'and_where';
+			}
 		} elseif (! $exact_matches) {
 			$q->where ('1 = 1');
 		}
