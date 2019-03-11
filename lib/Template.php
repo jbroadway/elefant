@@ -441,6 +441,9 @@ class Template {
 			} elseif (trim ($filter) === 'autolink') {
 				$out .= 'Template::autolink (';
 				$end = ')' . $end;
+			} elseif (trim ($filter) === 'absolutize') {
+				$out .= '$this->absolutize (';
+				$end = ')' . $end;
 			} else {
 				$out .= $filter . ' (';
 				$end = ')' . $end;
@@ -620,6 +623,16 @@ class Template {
 	public static function quotes ($val) {
 		return str_replace ('"', '&quot;', $val);
 	}
+	
+	/**
+	 * Absolutize a URL value.
+	 *
+	 * Usage as a template filter:
+	 *
+	 *     <a href="{{ item->photo|absolutize }}">{{item->name}}</a>
+	 */
+	public function absolutize ($val) {
+		return $this->controller->absolutize ($val);
 	
 	/**
 	 * Replace links in text with html links. For use as a
