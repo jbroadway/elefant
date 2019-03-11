@@ -184,6 +184,13 @@
  *
  *     {{ timestamp|date ('F j', %s) }}
  *
+ * Built-in filters include:
+ *
+ * - `quotes` - Escape quotes as HTML entities for form input values. See `Template::quotes()`.
+ * - `sanitize` - Sanitize output against XSS. See `Template::sanitize()`.
+ * - `autolink` - Replace links in text with HTML links. See `Template::autolink()`.
+ * - `absolutize` - Ensure a URL value is absolute. See `Template::absolutize()`.
+ *
  * ## String translations
  *
  * You can use the following tag format to mark strings for translation
