@@ -640,6 +640,7 @@ class Template {
 	 */
 	public function absolutize ($val) {
 		return $this->controller->absolutize ($val);
+	}
 	
 	/**
 	 * Replace links in text with html links. For use as a
