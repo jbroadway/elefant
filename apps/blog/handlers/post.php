@@ -97,7 +97,7 @@ $page->add_meta ('og:url', $url, 'property');
 if ($post->thumbnail !== '') {
 	$page->add_meta (
 		'og:image',
-		($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . $post->thumbnail,
+		($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . str_replace (' ', '%20', $post->thumbnail),
 		'property'
 	);
 	
@@ -118,6 +118,6 @@ $page->add_meta ('twitter:description', $desc);
 if ($post->thumbnail !== '') {
 	$page->add_meta (
 		'twitter:image',
-		($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . $post->thumbnail
+		($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . str_replace (' ', '%20', $post->thumbnail)
 	);
 }
