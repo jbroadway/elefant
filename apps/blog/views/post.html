@@ -18,7 +18,7 @@
 </div>
 {% end %}
 
-{% if count ($data->tag_list) > 0 %}
+{% if is_array ($data->tag_list) && count ($data->tag_list) > 0 %}
 <div class="blog-tags info">
 {"Tags"}: 
 {% foreach tag_list %}
