@@ -60,12 +60,18 @@
 			
 			var $this = $(this),
 				prefix = $this.data ('prefix'),
-				val = $this.find (':selected').val ();
+				val = $this.find (':selected').val (),
+				sep = ':';
+
+			if (typeof prefix == 'undefined') {
+				prefix = '';
+				sep = '';
+			}
 
 			if (val === '' || val.match (/^[a-z0-9\'\._-]+$/i)) {
-				$.search_for (prefix + ':' + val);
+				$.search_for (prefix + sep + val);
 			} else {
-				$.search_for (prefix + ':"' + val + '"');
+				$.search_for (prefix + sep + '"' + val + '"');
 			}
 		});
 	};
