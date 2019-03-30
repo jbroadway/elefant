@@ -160,7 +160,7 @@ class FileManager {
 		} elseif (! self::verify_file ($file)) {
 			self::$error = __ ('File not found');
 			return false;
-		} elseif (! self::verify_file_name ($file)) {
+		} elseif (! self::verify_file_name (basename ($file))) {
 			self::$error = __ ('Invalid file name');
 			return false;
 		} elseif (! unlink (self::root () . $file)) {
