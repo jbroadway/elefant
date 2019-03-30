@@ -93,6 +93,10 @@ class API extends Restful {
 
 		$is_folder = FileManager::verify_folder ($file) ? true : false;
 		
+		if (preg_match ('/\.(php|phtml|pht|php3|php4|php5|phar|js|rb|py|pl|sh|bash|exe|htaccess|htpasswd)$/i', $_POST['rename'])) {
+			return $this->error (__ ('Cannot rename to executable file due to security.'));
+		}
+		
 		if (! FileManager::rename ($file, $_POST['rename'])) {
 			return $this->error (FileManager::error ());
 		}
