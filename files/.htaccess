@@ -1,2 +1,6 @@
 Options -Indexes
 php_flag engine off
+
+<FilesMatch "\.(?!(gif|jpe?g|png|mp4|pdf))$">
+    Header add Content-Disposition "attachment"
+</FilesMatch>
