@@ -183,7 +183,7 @@ class Form {
 	 *     $f = new Form ('post'); // POST requests but no Controller or rules
 	 *     $f = new Form ('post', $this); // POST and Controller set
 	 *     $f = new Form ('post', 'myapp/rules'); // POST and rules set
-	 *     $f = new Form ('post', 'myapp/rules, $this); // Everything set
+	 *     $f = new Form ('post', 'myapp/rules', $this); // Everything set
 	 *     
 	 *     ?>
 	 *
