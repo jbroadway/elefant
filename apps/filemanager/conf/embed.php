@@ -73,6 +73,18 @@ style[type] = select
 style[require] = "apps/filemanager/lib/Functions.php"
 style[callback] = "filemanager_style_list"
 
+[filemanager/util/before-after]
+
+label = "Images: Before/After"
+icon = picture-o
+acl = filemanager
+
+before[label] = "Before Image (JPG, PNG)"
+before[type] = file
+
+after[label] = "After Image (JPG, PNG)"
+after[type] = file
+
 [filemanager/audio]
 
 label = "Audio Player (MP3)"
