@@ -85,6 +85,14 @@ before[type] = file
 after[label] = "After Image (JPG, PNG)"
 after[type] = file
 
+before_text[label] = "Before Text"
+before_text[type] = text
+before_text[initial] = "Before"
+
+after_text[label] = "After Text"
+after_text[type] = text
+after_text[initial] = "After"
+
 [filemanager/audio]
 
 label = "Audio Player (MP3)"
