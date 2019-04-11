@@ -150,7 +150,7 @@ class HMAC {
 		}
 
 		// Avoid problems with %20 vs +		
-		$data = str_replace ('%20', '+', $data);
+		$data = str_replace (['%20', '%28', '%29'], ['+', '(', ')'], $data);
 
 		// Avoid problems with %2f vs %2F
 		$data = strtolower ($data);
