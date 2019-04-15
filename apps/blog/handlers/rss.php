@@ -36,6 +36,7 @@ if (! $res) {
 		
 		// Strip script, iframe, link, and video tags
 		$html = preg_replace ('#<script(.*?)>(.*?)</script>#is', '', $page->posts[$k]->body);
+		$html = preg_replace ('#<style(.*?)>(.*?)</style>#is', '', $page->posts[$k]->body);
 		$html = preg_replace ('#<iframe(.*?)>(.*?)</iframe>#is', '', $html);
 		$html = preg_replace ('#<link(.*?)>#is', '', $html);
 		$html = preg_replace ('#<video(.*?)>(.*?)</video>#is', '', $html);
