@@ -28,6 +28,12 @@ if (! $res) {
 			$page->posts[$k]->body = $tpl->run_includes (Markdown ($page->posts[$k]->body));
 		}
 		
+		if ($post->thumbnail !== '') {
+			$page->posts[$k]->image = ($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . str_replace (' ', '%20', $post->thumbnail);
+		} else {
+			$page->posts[$k]->image = '';
+		}
+		
 		// Strip script, iframe, link, and video tags
 		$html = preg_replace ('#<script(.*?)>(.*?)</script>#is', '', $page->posts[$k]->body);
 		$html = preg_replace ('#<iframe(.*?)>(.*?)</iframe>#is', '', $html);
