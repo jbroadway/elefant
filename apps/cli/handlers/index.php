@@ -33,7 +33,7 @@ Commands:
   <info>update</info>                                       Check for and apply Elefant updates
   <info>permissions</info>                                  Set your filesystem permissions
   <info>conf <Section.setting> [value]</info>               Get or set a global setting
-<info>  appconf <app.Section.setting> [value]</info>        Get or set an app setting
+  <info>appconf <app.Section.setting> [value]</info>        Get or set an app setting
   <info>backup <path></info>                                Save a backup of the site and db
   <info>export-db <file></info>                             Export the db to a file or STDOUT
   <info>import-db <file></info>                             Import a schema file into the db
@@ -42,6 +42,7 @@ Commands:
   <info>crud-app list-types</info>                          List the available CRUD field types
   <info>clear-cache</info>                                  Clear the cache and compiled templates
   <info>clear-cache <key></info>                            Clear a particular cached object
+  <info>get-cache <key></info>                              Get a value from the cache
   <info>list-helpers</info>                                 List available server-side helpers
   <info>helper-docs <helper></info>                         Show documentation for a helper
   <info>generate-key</info>                                 Generate a random 32 character key
