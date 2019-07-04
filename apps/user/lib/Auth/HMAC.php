@@ -66,6 +66,21 @@ class HMAC {
 	 * The user ID of the last user to be verified. Defaults to 0.
 	 */
 	public static $user_id = 0;
+	
+	/**
+	 * The sent hmac token, set only if verification fails.
+	 */
+	public static $sent = '';
+	
+	/**
+	 * The calculated hmac token, set only if verification fails.
+	 */
+	public static $calculated = '';
+	
+	/**
+	 * The sent data, set only if verification fails.
+	 */
+	public static $data = '';
 
 	/**
 	 * Returns an array with the verifier and request method callbacks
@@ -109,8 +124,12 @@ class HMAC {
 		}
 
 		// Compare our hash calculation with the one given
-		if (hash_hmac ('sha256', $data, $api_key) !== $hmac) {
-			error_log ('Hash ' . $hmac . ' failed for data: ' . $data);
+		$calc = hash_hmac ('sha256', $data, $api_key);
+		if ($calc !== $hmac) {
+			self::$calculated = $calc;
+			self::$sent = $hmac;
+			self::$data = $data;
+			error_log (sprintf ("HMAC auth failed\nSENT: %s\nCALC: %s\nDATA: %s", $hmac, $calc, $data));
 			return FALSE;
 		}
 
