@@ -113,7 +113,7 @@ class Versions extends Model {
 	 * Get recent versions by a user or everyone.
 	 */
 	public static function recent ($user = false, $limit = 10, $offset = 0) {
-		$v = Versions::query ();
+		$v = Versions::query ('id, class, pkey, user, max(ts), serialized');
 		if ($user !== false) {
 			$v->where ('user', $user);
 		}
