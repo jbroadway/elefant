@@ -143,6 +143,11 @@ class Model {
 	 * to be inserted or updated on save.
 	 */
 	public $is_new = false;
+	
+	/**
+	 * The type of query being built for the current query.
+	 */
+	public $query_type = 'select';
 
 	/**
 	 * Fields to return for the current query.
@@ -757,8 +762,12 @@ class Model {
 		if ($this->query_from === false) {
 			$this->query_from = Model::backticks ($this->table);
 		}
-
-		$sql = 'select ' . $this->query_fields . ' from ' . $this->query_from;
+		
+		if ($this->query_type == 'select') {
+			$sql = 'select ' . $this->query_fields . ' from ' . $this->query_from;
+		} elseif ($this->query_type == 'delete') {
+			$sql = 'delete from ' . $this->query_from;
+		}
 
 		if (count ($this->query_filters) > 0) {
 			$sql .= ' where ';
@@ -906,6 +915,23 @@ class Model {
 		$res = array ();
 		foreach ($tmp as $obj) {
 			$res[] = $obj->{$value};
+		}
+		return $res;
+	}
+	
+	/**
+	 * Turn a query into a deletion and execute it.
+	 */
+	public function delete ($limit = false, $offset = 0) {
+		$this->query_type = 'delete';
+		$sql = $this->sql ($limit, $offset);
+		if ($sql === false) {
+			return false;
+		}
+		
+		$res = DB::execute ($sql, $this->query_params);
+		if (! $res) {
+			$this->Error = DB::error ();
 		}
 		return $res;
 	}
