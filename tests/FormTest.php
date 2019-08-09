@@ -16,6 +16,8 @@ class FormTest extends TestCase {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 		Appconf::admin ('Site Settings', 'site_domain', 'www.test.com');
 		$_SERVER['HTTP_REFERER'] = 'http://www.test.com/app/foo';
+		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+		$_SERVER['HTTP_USER_AGENT'] = 'PHPUnit';
 		$form = new Form ('post');
 		$this->assertEquals ($form->method, 'post');
 		$this->assertEquals ($form->rules, array ());
@@ -47,6 +49,8 @@ class FormTest extends TestCase {
 	}
 
 	function test_initialize_csrf () {
+		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+		$_SERVER['HTTP_USER_AGENT'] = 'PHPUnit';
 		$form = new Form ();
 		$form->initialize_csrf ();
 		$this->assertRegExp ('/^[a-zA-Z0-9]+$/', $form->csrf_token);
@@ -57,6 +61,8 @@ class FormTest extends TestCase {
 	}
 
 	function test_generate_csrf_script () {
+		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+		$_SERVER['HTTP_USER_AGENT'] = 'PHPUnit';
 		$form = new Form ();
 		$form->csrf_field_name = 'TOKEN';
 		$form->initialize_csrf ();
@@ -70,6 +76,8 @@ class FormTest extends TestCase {
 	}
 
 	function test_verify_csrf () {
+		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+		$_SERVER['HTTP_USER_AGENT'] = 'PHPUnit';
 		$form = new Form ();
 		$form->initialize_csrf ();
 

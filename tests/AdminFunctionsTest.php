@@ -25,16 +25,16 @@ class AdminFunctionsTest extends TestCase {
 	}
 
 	function test_get_layouts () {
+		conf ('General', 'default_layout', 'default');
 		$layouts = admin_get_layouts ();
 		$this->assertTrue (is_array ($layouts));
-		info ($layouts);
 		$this->assertTrue (in_array ('admin', $layouts));
 		$this->assertTrue (in_array ('minimal', $layouts));
 	}
 
 	function test_layout_exists () {
 		$this->assertTrue (admin_layout_exists ('admin'));
-		$this->assertTrue (admin_layout_exists ('default'));
+		$this->assertTrue (admin_layout_exists ('minimal'));
 		$this->assertFalse (admin_layout_exists ('this-is-a-nonexistent-layout'));
 	}
 }

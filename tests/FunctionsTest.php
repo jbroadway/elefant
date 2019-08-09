@@ -8,7 +8,9 @@ class FunctionsTest extends TestCase {
 		$this->assertEquals ('Site Name', conf ('General', 'site_name', 'Site Name'));
 		$this->assertEquals ('Site Name', conf ('General', 'site_name'));
 		$this->assertEquals ('Your Site Name', conf ('General', 'site_name', 'Your Site Name'));
-		$this->assertEquals (array ('control' => '', 'expires' => '86400'), conf ('Cache'));
+		
+		$i18n = conf ('I18n');
+		$this->assertEquals ('http', $i18n['negotiation_method']);
 	}
 
 	function test_simple_auth () {

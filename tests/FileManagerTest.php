@@ -7,17 +7,40 @@ use PHPUnit\Framework\TestCase;
 class FileManagerTest extends TestCase {
 	static function setUpBeforeClass (): void {
 		$GLOBALS['i18n'] = new I18n;
+		
+		conf ('Paths', 'filemanager_path', 'filestest');
+
+		if (! file_exists ('filestest')) {
+			mkdir ('filestest');
+		}
+
+		if (! file_exists ('filestest/design')) {
+			mkdir ('filestest/design');
+		}
+
+		if (! file_exists ('filestest/homepage')) {
+			mkdir ('filestest/homepage');
+		}
+
+		copy ('files/homepage/photo1.jpg', 'filestest/homepage/photo1.jpg');
+		copy ('files/homepage/photo2.jpg', 'filestest/homepage/photo2.jpg');
+		copy ('files/homepage/photo3.jpg', 'filestest/homepage/photo3.jpg');
+		copy ('files/homepage/photo4.jpg', 'filestest/homepage/photo4.jpg');
 	}
 
 	static function tearDownAfterClass (): void {
 		unset ($GLOBALS['i18n']);
 
 		$files = array (
-			'files/touch_test.txt',
-			'files/rename_test.txt',
-			'files/renamed_test.txt',
-			'files/move_test.txt',
-			'files/design/move_test.txt'
+			'filestest/touch_test.txt',
+			'filestest/rename_test.txt',
+			'filestest/renamed_test.txt',
+			'filestest/move_test.txt',
+			'filestest/design/move_test.txt',
+			'filestest/homepage/photo1.jpg',
+			'filestest/homepage/photo2.jpg',
+			'filestest/homepage/photo3.jpg',
+			'filestest/homepage/photo4.jpg'
 		);
 		foreach ($files as $file) {
 			if (file_exists ($file)) {
@@ -25,15 +48,27 @@ class FileManagerTest extends TestCase {
 			}
 		}
 
-		if (file_exists ('files/mkdir_test')) {
-			rmdir ('files/mkdir_test');
+		if (file_exists ('filestest/mkdir_test')) {
+			rmdir ('filestest/mkdir_test');
 		}
 
-		if (file_exists ('files/rmdir_recursive_test/test.txt')) {
-			unlink ('files/rmdir_recursive_test/test.txt');
+		if (file_exists ('filestest/rmdir_recursive_test/test.txt')) {
+			unlink ('filestest/rmdir_recursive_test/test.txt');
 		}
-		if (file_exists ('files/rmdir_recursive_test')) {
-			rmdir ('files/rmdir_recursive_test');
+		if (file_exists ('filestest/rmdir_recursive_test')) {
+			rmdir ('filestest/rmdir_recursive_test');
+		}
+		
+		if (file_exists ('filestest/design')) {
+			rmdir ('filestest/design');
+		}
+		
+		if (file_exists ('filestest/homepage')) {
+			rmdir ('filestest/homepage');
+		}
+		
+		if (file_exists ('filestest')) {
+			rmdir ('filestest');
 		}
 	}
 
@@ -69,51 +104,51 @@ class FileManagerTest extends TestCase {
 	}
 
 	function test_touch_and_unlink () {
-		$this->assertFalse (file_exists ('files/touch_test.txt'));
+		$this->assertFalse (file_exists ('filestest/touch_test.txt'));
 
 		$res = FileManager::touch ('touch_test.txt');
 		$this->assertTrue ($res);
-		$this->assertTrue (file_exists ('files/touch_test.txt'));
+		$this->assertTrue (file_exists ('filestest/touch_test.txt'));
 
 		$res = FileManager::touch ('../invalid');
 		$this->assertFalse ($res);
 		$this->assertEquals ('Invalid folder', FileManager::error ());
 
-		$mtime = filemtime ('files/touch_test.txt');
+		$mtime = filemtime ('filestest/touch_test.txt');
 		sleep (1);
 		FileManager::touch ('touch_test.txt');
-		clearstatcache ('files/touch_test.txt');
-		$mtime2 = filemtime ('files/touch_test.txt');
+		clearstatcache ('filestest/touch_test.txt');
+		$mtime2 = filemtime ('filestest/touch_test.txt');
 		$this->assertNotEquals ($mtime, $mtime2);
 
 		$res = FileManager::unlink ('touch_test.txt');
 		$this->assertTrue ($res);
 
-		$this->assertFalse (file_exists ('files/touch_test.txt'));
+		$this->assertFalse (file_exists ('filestest/touch_test.txt'));
 	}
 
 	function test_rename () {
 		FileManager::touch ('rename_test.txt');
-		$this->assertTrue (file_exists ('files/rename_test.txt'));
+		$this->assertTrue (file_exists ('filestest/rename_test.txt'));
 
 		$res = FileManager::rename ('rename_test.txt', 'renamed_test.txt');
 		$this->assertTrue ($res);
 
-		$this->assertFalse (file_exists ('files/rename_test.txt'));
-		$this->assertTrue (file_exists ('files/renamed_test.txt'));
+		$this->assertFalse (file_exists ('filestest/rename_test.txt'));
+		$this->assertTrue (file_exists ('filestest/renamed_test.txt'));
 		
 		FileManager::unlink ('renamed_test.txt');
 	}
 
 	function test_move () {
 		FileManager::touch ('move_test.txt');
-		$this->assertTrue (file_exists ('files/move_test.txt'));
+		$this->assertTrue (file_exists ('filestest/move_test.txt'));
 		
 		$res = FileManager::move ('move_test.txt', 'design');
 		$this->assertTrue ($res);
 		
-		$this->assertFalse (file_exists ('files/move_test.txt'));
-		$this->assertTrue (file_exists ('files/design/move_test.txt'));
+		$this->assertFalse (file_exists ('filestest/move_test.txt'));
+		$this->assertTrue (file_exists ('filestest/design/move_test.txt'));
 
 		$res = FileManager::move ('design/move_test.txt', '..');
 		$this->assertFalse ($res);
@@ -122,8 +157,8 @@ class FileManagerTest extends TestCase {
 		$res = FileManager::move ('design/move_test.txt', '');
 		$this->assertTrue ($res);
 		
-		$this->assertTrue (file_exists ('files/move_test.txt'));
-		$this->assertFalse (file_exists ('files/design/move_test.txt'));
+		$this->assertTrue (file_exists ('filestest/move_test.txt'));
+		$this->assertFalse (file_exists ('filestest/design/move_test.txt'));
 
 		FileManager::unlink ('move_test.txt');
 	}
@@ -143,7 +178,7 @@ class FileManagerTest extends TestCase {
 
 		$res = FileManager::mkdir ('mkdir_test');
 		$this->assertTrue ($res);
-		$this->assertTrue (is_dir ('files/mkdir_test'));
+		$this->assertTrue (is_dir ('filestest/mkdir_test'));
 
 		$res = FileManager::rmdir ('mkdir_fake_test');
 		$this->assertFalse ($res);
@@ -151,17 +186,17 @@ class FileManagerTest extends TestCase {
 
 		$res = FileManager::rmdir ('mkdir_test');
 		$this->assertTrue ($res);
-		$this->assertFalse (is_dir ('files/mkdir_test'));
+		$this->assertFalse (is_dir ('filestest/mkdir_test'));
 	}
 
 	function test_rmdir_recursive () {
 		$res = FileManager::mkdir ('rmdir_recursive_test');
 		$this->assertTrue ($res);
-		$this->assertTrue (is_dir ('files/rmdir_recursive_test'));
+		$this->assertTrue (is_dir ('filestest/rmdir_recursive_test'));
 		
 		$res = FileManager::touch ('rmdir_recursive_test/test.txt');
 		$this->assertTrue ($res);
-		$this->assertTrue (file_exists ('files/rmdir_recursive_test/test.txt'));
+		$this->assertTrue (file_exists ('filestest/rmdir_recursive_test/test.txt'));
 
 		$res = FileManager::rmdir ('rmdir_recursive_test');
 		$this->assertFalse ($res);
@@ -169,48 +204,48 @@ class FileManagerTest extends TestCase {
 		
 		$res = FileManager::rmdir ('rmdir_recursive_test', true);
 		$this->assertTrue ($res);
-		$this->assertFalse (is_dir ('files/rmdir_recursive_test'));
+		$this->assertFalse (is_dir ('filestest/rmdir_recursive_test'));
 	}
 
 	function test_add_webroot () {
 		$this->assertEquals (
-			'/files/foobar.txt',
+			'/filestest/foobar.txt',
 			FileManager::add_webroot ('foobar.txt')
 		);
 		$this->assertEquals (
-			'/files/foobar.txt',
+			'/filestest/foobar.txt',
 			FileManager::add_webroot ('/foobar.txt')
 		);
 		$this->assertEquals (
-			'/files/foobar.txt',
-			FileManager::add_webroot ('/files/foobar.txt')
+			'/filestest/foobar.txt',
+			FileManager::add_webroot ('/filestest/foobar.txt')
 		);
 		$this->assertEquals (
-			'/files/foobar.txt',
-			FileManager::add_webroot ('files/foobar.txt')
+			'/filestest/foobar.txt',
+			FileManager::add_webroot ('filestest/foobar.txt')
 		);
 		$this->assertEquals (
-			'/files/foo/files/bar.txt',
-			FileManager::add_webroot ('/foo/files/bar.txt')
+			'/filestest/foo/filestest/bar.txt',
+			FileManager::add_webroot ('/foo/filestest/bar.txt')
 		);
 	}
 
 	function test_strip_webroot () {
 		$this->assertEquals (
 			'foobar.txt',
-			FileManager::strip_webroot ('/files/foobar.txt')
+			FileManager::strip_webroot ('/filestest/foobar.txt')
 		);
 		$this->assertEquals (
 			'foobar.txt',
-			FileManager::strip_webroot ('files/foobar.txt')
+			FileManager::strip_webroot ('filestest/foobar.txt')
 		);
 		$this->assertEquals (
 			'foobar.txt',
 			FileManager::strip_webroot ('foobar.txt')
 		);
 		$this->assertEquals (
-			'/foo/bar/files/asdf.txt',
-			FileManager::strip_webroot ('/foo/bar/files/asdf.txt')
+			'/foo/bar/filestest/asdf.txt',
+			FileManager::strip_webroot ('/foo/bar/filestest/asdf.txt')
 		);
 	}
 }

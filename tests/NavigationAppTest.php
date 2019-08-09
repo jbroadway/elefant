@@ -64,25 +64,25 @@ class NavigationAppTest extends AppTest {
 		Link::reset ();
 		Link::current ('index');
 		$res = $this->get ('navigation/top');
-		$this->assertContains ('<li class="current"><a href="/">Home', $res);
-		$this->assertContains ('<li><a href="/other">Other', $res);
+		$this->assertStringContainsString ('<li class="current"><a href="/">Home', $res);
+		$this->assertStringContainsString ('<li><a href="/other">Other', $res);
 		
 		Link::current ('other');
 		$res = $this->get ('navigation/top');
-		$this->assertContains ('<li><a href="/">Home', $res);
-		$this->assertContains ('<li class="current"><a href="/other">Other', $res);
+		$this->assertStringContainsString ('<li><a href="/">Home', $res);
+		$this->assertStringContainsString ('<li class="current"><a href="/other">Other', $res);
 	}
 
 	public function test_section () {
 		Link::reset ();
 		Link::current ('about');
 		$res = $this->get ('navigation/section', array ('section' => 'en'));
-		$this->assertContains ('<li class="current"><a href="/about">About', $res);
-		$this->assertContains ('<li><a href="/contact-us">Contact us', $res);
+		$this->assertStringContainsString ('<li class="current"><a href="/about">About', $res);
+		$this->assertStringContainsString ('<li><a href="/contact-us">Contact us', $res);
 		
 		Link::current ('a-propos');
 		$res = $this->get ('navigation/section', array ('section' => 'fr'));
-		$this->assertContains ('<li class="current"><a href="/a-propos">À propos', $res);
-		$this->assertContains ('<li><a href="/contactez-nous">Contactez-nous', $res);
+		$this->assertStringContainsString ('<li class="current"><a href="/a-propos">À propos', $res);
+		$this->assertStringContainsString ('<li><a href="/contactez-nous">Contactez-nous', $res);
 	}
 }

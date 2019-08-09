@@ -280,6 +280,6 @@ class ExtendedModel extends Model {
 			$this->{$this->_extended_field} = $ext;
 		}
 		$ext = $this->{$this->_extended_field};
-		return $ext[$key];
+		return isset ($ext[$key]) ? $ext[$key] : null;
 	}
 }

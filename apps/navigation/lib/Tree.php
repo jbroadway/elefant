@@ -101,7 +101,7 @@ class Tree {
 				$ids = array_merge ($ids, $this->get_all_ids ($item->children));
 			}
 		}
-		return $ids;
+		return array_unique ($ids);
 	}
 
 	/**

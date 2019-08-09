@@ -7,14 +7,14 @@ class AppconfTest extends TestCase {
 		$conf = Appconf::get ('admin');
 		$this->assertTrue (is_array ($conf));
 		$this->assertTrue (isset ($conf['Admin']));
-		$this->assertEquals ('admin/versions', $conf['Admin']['handler']);
+		$this->assertEquals ('Admin', $conf['Admin']['name']);
 
 		$conf = Appconf::get ('admin', 'Admin');
 		$this->assertTrue (is_array ($conf));
-		$this->assertEquals ('admin/versions', $conf['handler']);
+		$this->assertEquals ('Admin', $conf['name']);
 
-		$conf = Appconf::get ('admin', 'Admin', 'handler');
-		$this->assertEquals ('admin/versions', $conf);
+		$conf = Appconf::get ('admin', 'Admin', 'name');
+		$this->assertEquals ('Admin', $conf);
 	}
 
 	function test_set () {

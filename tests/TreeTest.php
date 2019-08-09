@@ -242,7 +242,7 @@ class TreeTest extends TestCase {
 		self::$n->add (self::$about_node);
 		self::$n->add (self::$contact_node, 'index');
 		self::$n->add (self::$about_node, 'contact');
-		$this->assertEquals (self::$n->get_all_ids (), array ('index', 'contact', 'about', 'about'));
+		$this->assertEquals (self::$n->get_all_ids (), array ('index', 'contact', 'about'));
 		self::$n->remove_path (array ('index', 'contact', 'about'));
 		$contact = self::$n->node ('contact');
 		$this->assertFalse (isset ($contact->children));

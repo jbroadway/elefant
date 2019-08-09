@@ -44,6 +44,9 @@ class VersionsTest extends TestCase {
 		$this->assertEquals (self::$v->class, 'Foobar');
 		$this->assertEquals (self::$v->pkey, 1);
 		$this->assertEquals (self::$v->user, 0);
+		
+		// Sleep so timestamp of new version changes
+		sleep (1);
 	}
 
 	/**

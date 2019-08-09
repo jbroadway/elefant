@@ -59,7 +59,7 @@ class NavigationTest extends TestCase {
 		
 		// Remove and re-add index
 		$n->remove ('index');
-		$this->assertEquals ($n->get_all_ids (), array ());
+		$this->assertEquals ($n->get_all_ids (), array ('blog'));
 
 		$n->add ('index');
 		$index_node = $n->node ('index');
@@ -68,7 +68,7 @@ class NavigationTest extends TestCase {
 			'data' => 'Home',
 			'attr' => (object) array (
 				'id' => 'index',
-				'sort' => 0
+				'sort' => 1
 			)
 		);
 

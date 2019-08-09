@@ -378,6 +378,10 @@ class I18n {
 			}
 
 		} elseif ($method === 'url') {
+			if (! isset ($_SERVER['REQUEST_URI'])) {
+				$_SERVER['REQUEST_URI'] = '';
+			}
+			
 			if (preg_match ('/^\/(' . join ('|', array_keys ($this->languages)) . ')\/?$/', $_SERVER['REQUEST_URI'], $matches)) {
 				// matched /lang or /lang/ -> /lang [language=lang]
 				$this->url_includes_lang = true;
