@@ -2,9 +2,6 @@
 
 class AdminAppTest extends AppTest {
 	public function test_forward () {
-		$res = $this->get ('admin/forward', array ('to' => '/test'));
-		$this->assertContains ('headers already sent', $res);
-
 		$this->userAdmin ();
 
 		$res = $this->get ('admin/forward', array ('to' => '/test'));

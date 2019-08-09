@@ -5,7 +5,7 @@ require_once ('apps/admin/lib/Functions.php');
 use PHPUnit\Framework\TestCase;
 
 class AdminFunctionsTest extends TestCase {
-	static function setUpBeforeClass () {
+	static function setUpBeforeClass (): void {
 		if (file_exists ('cache/html')) {
 			rmdir_recursive ('cache/html');
 		}
@@ -27,8 +27,9 @@ class AdminFunctionsTest extends TestCase {
 	function test_get_layouts () {
 		$layouts = admin_get_layouts ();
 		$this->assertTrue (is_array ($layouts));
+		info ($layouts);
 		$this->assertTrue (in_array ('admin', $layouts));
-		$this->assertTrue (in_array ('default', $layouts));
+		$this->assertTrue (in_array ('minimal', $layouts));
 	}
 
 	function test_layout_exists () {

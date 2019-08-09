@@ -5,13 +5,13 @@ use PHPUnit\Framework\TestCase;
 class AclTest extends TestCase {
 	protected static $acl;
 
-	static function setUpBeforeClass () {
+	public static function setUpBeforeClass(): void {
 		User::$user = (object) array (
 			'type' => 'admin'
 		);
 	}
 
-	static function tearDownAfterClass () {
+	public static function tearDownAfterClass (): void {
 		User::$user = false;
 	}
 

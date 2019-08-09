@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 class ValidatorTest extends TestCase {
 	protected $backupGlobalsBlacklist = array ('user');
 
-	static function setUpBeforeClass () {
+	static function setUpBeforeClass (): void {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 	}
 

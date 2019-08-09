@@ -13,15 +13,14 @@ class MongoModelTest extends TestCase {
 
 	protected static $id = null;
 
-	static function setUpBeforeClass () {
+	static function setUpBeforeClass (): void {
 		$GLOBALS['conf']['Mongo'] = array (
 			'host' => 'localhost:27017',
 			'name' => 'test'
 		);
 	}
 
-	protected function setUp()
-	{
+	protected function setUp(): void {
 		if (!extension_loaded('mongo')) {
 			$this->markTestSkipped('The Mongo extension is not available');
 		} else {
@@ -32,7 +31,7 @@ class MongoModelTest extends TestCase {
 		}
 	}
 
-	static function tearDownAfterClass () {
+	static function tearDownAfterClass (): void {
 		if (extension_loaded ('mongo')) {
 			$t = new MTest ();
 			if (! $t->error) {

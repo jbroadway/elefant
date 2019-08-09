@@ -1,7 +1,7 @@
 <?php
 
 class NavigationAppTest extends AppTest {
-	static function setUpBeforeClass () {
+	static function setUpBeforeClass (): void {
 		parent::setUpBeforeClass ();
 
 		// backup navigation file
@@ -53,7 +53,7 @@ class NavigationAppTest extends AppTest {
 		);
 	}
 
-	static function tearDownAfterClass () {
+	static function tearDownAfterClass (): void {
 		parent::tearDownAfterClass ();
 
 		// restore backed up navigation file

@@ -9,7 +9,7 @@ class VersionsTest extends TestCase {
 	protected static $foo2;
 	protected static $v;
 
-	static function setUpBeforeClass () {
+	static function setUpBeforeClass (): void {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		DB::execute ('create table foobar (id int not null, name char(32) not null)');
 		if (! DB::execute ('create table #prefix#versions (
@@ -31,7 +31,7 @@ class VersionsTest extends TestCase {
 		User::$user = false;
 	}
 
-	static function tearDownAfterClass () {
+	static function tearDownAfterClass (): void {
 		User::$user = false;
 	}
 

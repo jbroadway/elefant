@@ -118,7 +118,7 @@ class AppTest extends TestCase {
 	 * Initializes the `$i18n`, `$cache`, `$page`, and `$tpl` objects
 	 * for use with the controller in testing handlers.
 	 */
-	public static function setUpBeforeClass () {
+	public static function setUpBeforeClass (): void {
 		require_once ('lib/Functions.php');
 		require_once ('lib/DB.php');
 		error_reporting (E_ALL & ~E_NOTICE);
@@ -178,7 +178,7 @@ class AppTest extends TestCase {
 	 * Unset the `$i18n`, `$cache`, `$page`, and `$tpl` objects upon
 	 * completion.
 	 */
-	public static function tearDownAfterClass () {
+	public static function tearDownAfterClass (): void {
 		error_reporting (E_ALL);
 		global $i18n, $cache, $page, $tpl;
 		unset ($i18n);

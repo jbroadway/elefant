@@ -6,13 +6,13 @@ require_once ('lib/Autoloader.php');
 use PHPUnit\Framework\TestCase;
 
 class ZipperTest extends TestCase {
-	static function setUpBeforeClass () {
+	static function setUpBeforeClass (): void {
 		@unlink ('zipper_test.zip');
 		@rmdir_recursive ('zipper_test');
 		@rmdir_recursive ('cache/zip');
 	}
 
-	static function tearDownAfterClass () {
+	static function tearDownAfterClass (): void {
 		unlink ('zipper_test.zip');
 		rmdir_recursive ('zipper_test');
 		rmdir_recursive ('cache/zip');

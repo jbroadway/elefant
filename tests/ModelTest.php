@@ -65,7 +65,7 @@ class NextTest extends Model {
 class ModelTest extends TestCase {
 	protected static $q;
 
-	static function setUpBeforeClass () {
+	static function setUpBeforeClass (): void {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		$sql = sql_split ("create table qwerty ( foo char(12), bar char(12) );
 		create table foo(id int, name char(12));

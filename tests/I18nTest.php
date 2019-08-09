@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 class I18nTest extends TestCase {
 	protected $backupGlobalsBlacklist = array ('i18n');
 
-	function setUp () {
+	function setUp (): void {
 		global $i18n;
 		$_SERVER['REQUEST_URI'] = '/en/pagename';
 		$i18n = new I18n ('lang', array ('negotiation_method' => 'url'));

@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase {
-	static function setUpBeforeClass () {
+	static function setUpBeforeClass (): void {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		DB::execute ('create table #prefix#user (
 			id integer primary key,

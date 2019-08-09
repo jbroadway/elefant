@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 
 class DBTest extends TestCase {
-	function setUp () {
+	function setUp (): void {
 		$this->bad_conf = array (
 			'master' => true,
 			'driver' => 'fake_driver',

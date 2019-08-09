@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 
 class NavigationTest extends TestCase {
-	static function setUpBeforeClass () {
+	static function setUpBeforeClass (): void {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		DB::$prefix = 'elefant_';
 		$sql = sql_split ('

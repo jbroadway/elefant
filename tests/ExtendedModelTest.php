@@ -32,7 +32,7 @@ class MyModelWithDefault extends ExtendedModel {
 class ExtendedModelTest extends TestCase {
 	protected static $o;
 
-	static function setUpBeforeClass () {
+	static function setUpBeforeClass (): void {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		DB::execute ('create table mymodel ( id integer primary key, name char(32), extra text )');
 		DB::execute ('create table mymodelwithdefault ( id integer primary key, name char(32), extra text )');

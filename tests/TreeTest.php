@@ -8,7 +8,7 @@ class TreeTest extends TestCase {
 	protected static $blog_node;
 	protected static $contact_node;
 
-	static function tearDownAfterClass () {
+	static function tearDownAfterClass (): void {
 		if (file_exists ('cache/test_tree.json')) {
 			unlink ('cache/test_tree.json');
 		}

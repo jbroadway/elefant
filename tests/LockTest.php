@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 class LockTest extends TestCase {
 	protected static $lock;
 
-	static function setUpBeforeClass () {
+	static function setUpBeforeClass (): void {
 		DB::open (array ('master' => true, 'driver' => 'sqlite', 'file' => ':memory:'));
 		DB::execute ('drop table #prefix#lock');
 		DB::execute ('create table `#prefix#lock` (
@@ -23,7 +23,7 @@ class LockTest extends TestCase {
 		self::$lock = new Lock ('test', 'one');
 	}
 
-	static function tearDownAfterClass () {
+	static function tearDownAfterClass (): void {
 		User::$user = false;
 		DB::execute ('drop table #prefix#lock');
 	}

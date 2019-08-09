@@ -5,11 +5,11 @@ require_once ('lib/I18n.php');
 use PHPUnit\Framework\TestCase;
 
 class FileManagerTest extends TestCase {
-	static function setUpBeforeClass () {
+	static function setUpBeforeClass (): void {
 		$GLOBALS['i18n'] = new I18n;
 	}
 
-	static function tearDownAfterClass () {
+	static function tearDownAfterClass (): void {
 		unset ($GLOBALS['i18n']);
 
 		$files = array (

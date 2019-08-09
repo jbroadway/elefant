@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 
 class LinkTest extends TestCase {
-	function setUp () {
+	function setUp (): void {
 		$nav = new Navigation;
 		$nav->tree = array (
 			(object) array (
