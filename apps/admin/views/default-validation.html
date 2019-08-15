@@ -12,7 +12,12 @@ $(function () {
 
 			// highlight the failed elements
 			for (var i = 0; i < failed.length; i++) {
-				$('#' + failed[i] + '-notice').show ();
+				var $el = $('#' + failed[i] + '-notice');
+				if ($el.length > 0) {
+					$el.show ();
+				} else {
+					console.error ('No visible notice for validation error on: ' + failed[i]);
+				}
 			}
 		},
 		reset: function (fields) {
@@ -21,8 +26,15 @@ $(function () {
 			}
 		}
 	});
+	
+	var $el;
 	{% foreach _failed %}
-	$('#{{ loop_value }}-notice').show ();
+	$el = $('#{{ loop_value }}-notice');
+	if ($el.length > 0) {
+		$el.show ();
+	} else {
+		console.error ('No visible notice for validation error on: {{ loop_value }}');
+	}
 	{% end %}
 });
 </script>
