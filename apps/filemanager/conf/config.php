@@ -6,10 +6,6 @@
 ; file requests instead of handling them directly.
 proxy_handler = Off
 
-; To enable image editing in the file manager, register
-; for an API key with Aviary.com and enter it here.
-aviary_key = Off
-
 [Admin]
 
 handler = filemanager/index

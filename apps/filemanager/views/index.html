@@ -45,7 +45,7 @@
 $(function () {
 	$.filemanager_init ({
 		path: '{{path}}',
-		aviary_key: {% if aviary_key %}'{{ aviary_key }}'{% else %}false{% end %},
+		aviary_key: false,
 		max_filesize: {{ (int) ini_get ('upload_max_filesize')}},
 		token: '{{csrf_token}}'
 	});
@@ -126,7 +126,3 @@ var i18n = {
 	<tbody id="file-list"></tbody>
 </table>
 </p>
-
-{% if aviary_key %}
-<img src="/apps/admin/css/admin/spacer.png" id="aviary-tmp" height="0" width="0" display: none" />
-{% end %}

@@ -44,13 +44,6 @@ if (isset ($_GET['path'])) {
 	$page->window_title = __ ('Files');
 }
 
-if ($appconf['General']['aviary_key']) {
-	$page->add_script ('https://dme0ih8comzn4.cloudfront.net/imaging/v1/editor.js');
-	$o->aviary_key = $appconf['General']['aviary_key'];
-} else {
-	$o->aviary_key = false;
-}
-
 $page->add_style ('/apps/filemanager/css/filemanager.css?v=4');
 $page->add_script (
     sprintf (
@@ -63,7 +56,7 @@ $page->add_script ('/js/urlify.js');
 $page->add_script ('/apps/filemanager/js/jquery.filedrop.js');
 $page->add_script ('/apps/filemanager/js/jquery.tmpl.beta1.min.js');
 $page->add_script ('/apps/filemanager/js/jquery.filemanager.js?v=4');
-$page->add_script ('https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js');
+$page->add_script ('https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js', 'head', '', 'sha384-5tfO0soa+FisnuBhaHP2VmPXQG/JZ8dLcRL43IkJFzbsXTXT6zIX8q8sIT0VSe2G', 'anonymous');
 $page->add_script (I18n::export (
 	'New folder name:',
 	'Rename:',
