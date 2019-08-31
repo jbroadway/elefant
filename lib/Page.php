@@ -211,8 +211,8 @@ class Page {
 	 * be added once. This makes it a good replacement for adding script include tags
 	 * to view templates.
 	 */
-	public function add_script ($script, $add_to = 'head', $type = '') {
-		$script = self::wrap_script ($script, $type);
+	public function add_script ($script, $add_to = 'head', $type = '', $integrity = '', $crossorigin = '') {
+		$script = self::wrap_script ($script, $type, $integrity, $crossorigin);
 
 		if (! in_array ($script, $this->scripts)) {
 			$this->scripts[] = $script;
@@ -233,8 +233,8 @@ class Page {
 	 * they both do the same thing, and `add_script()` always handled stylesheets
 	 * as well.
 	 */
-	public function add_style ($script, $add_to = 'head', $type = '') {
-		return $this->add_script ($script, $add_to, $type);
+	public function add_style ($script, $add_to = 'head', $type = '', $integrity = '', $crossorigin = '') {
+		return $this->add_script ($script, $add_to, $type, $integrity, $crossorigin);
 	}
 
 	/**
@@ -269,17 +269,24 @@ class Page {
 	 * including `<link>` tags for CSS files. Will pass through
 	 * on scripts that are already HTML.
 	 */
-	public static function wrap_script ($script, $type = '') {
+	public static function wrap_script ($script, $type = '', $integrity = '', $crossorigin = '') {
 		if (strpos ($script, '<') === 0) {
 			return $script;
 		}
 		if ($type !== '') {
 			$type = ' type="' . $type . '"';
 		}
-		if (preg_match ('/\.css$/i', $script) || strpos ($script, '.css?') !== false) {
-			return '<link rel="stylesheet"' . $type . ' href="' . self::assets_version ($script) . "\" />\n";
+		if ($integrity !== '') {
+			$integrity = ' integrity="' . $integrity . '"';
 		}
-		return '<script' . $type . ' src="' . self::assets_version ($script) . "\"></script>\n";
+		if ($crossorigin !== '') {
+			$crossorigin = ' crossorigin="' . $crossorigin . '"';
+		}
+
+		if (preg_match ('/\.css$/i', $script) || strpos ($script, '.css?') !== false) {
+			return '<link rel="stylesheet"' . $type . ' href="' . self::assets_version ($script) . '"' . $integrity . $crossorigin . " />\n";
+		}
+		return '<script' . $type . ' src="' . self::assets_version ($script) . '"' . $integrity . $crossorigin . "></script>\n";
 	}
 
 	/**
