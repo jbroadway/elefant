@@ -4,6 +4,7 @@
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
 	xmlns:webfeeds="http://webfeeds.org/rss/1.0"
+	xmlns:media="http://search.yahoo.com/mrss/"
 	xmlns="http://purl.org/rss/1.0/"
 >
 
@@ -32,7 +33,10 @@
 	<link>http://{{ Appconf::admin ('Site Settings', 'site_domain') }}{{ loop_value->url }}</link>
 	<description>{{ loop_value->body }}</description>
 	<dc:date>{{ loop_value->ts|str_replace (' ', 'T', %s) }}+00:00</dc:date>
-	{% if loop_value->image != '' %}<webfeeds:cover image="{{loop_value->image}}" />{% end %} 
+	{% if loop_value->image != '' %}
+		<webfeeds:cover image="{{loop_value->image}}" />
+		<media:thumbnail url="{{loop_value->image}}" />
+	{% end %} 
 </item>
 
 {% end %}
