@@ -65,9 +65,20 @@ $months = explode (
 
 $page->title = $months[$month - 1] . ' ' . $tpl->sanitize ($year);
 
+$protocol = $this->is_https () ? 'https' : 'http';
+$domain = Appconf::admin ('Site Settings', 'site_domain');
+
+// add rss + jsonfeed discovery
 $page->add_script (sprintf (
-	'<link rel="alternate" type="application/rss+xml" href="http://%s/blog/rss" />',
-	Appconf::admin ('Site Settings', 'site_domain')
+	'<link rel="alternate" type="application/rss+xml" href="%s://%s/blog/rss" />',
+	$protocol,
+	$domain
+));
+
+$page->add_script (sprintf (
+	'<link rel="alternate" type="application/json" href="%s://%s/blog/feed.json" />',
+	$protocol,
+	$domain
 ));
 
 echo $tpl->render ('blog/archive', $page);
