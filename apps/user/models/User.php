@@ -203,7 +203,18 @@ class User extends ExtendedModel {
 			@session_start ();
 
 			if (isset ($_COOKIE[$name])) {
-				setcookie ($name, $_COOKIE[$name], time() + $duration, $path, $domain, $secure, $httponly);
+				if (version_compare(PHP_VERSION, '7.3.0') >= 0) {
+					setcookie ($name, $_COOKIE[$name], [
+						'expires' => time() + $duration,
+						'path' => $path,
+						'domain' => $domain,
+						'secure' => $secure,
+						'httponly' => $httponly,
+						'samesite' => 'Lax'
+					]);
+				} else {
+					setcookie ($name, $_COOKIE[$name], time() + $duration, $path, $domain, $secure, $httponly);
+				}
 			}
 		}
 	}
@@ -543,7 +554,18 @@ class User extends ExtendedModel {
 				$domain = '.' . array_pop ($parts) . '.' . $tld;
 			}
 
-			setcookie ($name, $_COOKIE[$name], time() - 100000, $path, $domain, $secure, $httponly);
+			if (version_compare (PHP_VERSION, '7.3.0') >= 0) {
+				setcookie ($name, $_COOKIE[$name], [
+					'expires' => time() - 100000,
+					'path' => $path,
+					'domain' => $domain,
+					'secure' => $secure,
+					'httponly' => $httponly,
+					'samesite' => 'Lax'
+				]);
+			} else {
+				setcookie ($name, $_COOKIE[$name], time() - 100000, $path, $domain, $secure, $httponly);
+			}
 		}
 
 		if ($redirect_to) {
