@@ -283,6 +283,26 @@ class ModelTest extends TestCase {
 		$this->assertTrue ($res->remove ());
 		$this->assertEquals (DB::shift ('select count() from qwerty'), 0);
 	}
+	
+	function test_delete () {
+		$f1 = new Foo (['id' => 500, 'name' => 'DELETE TEST 1']);
+		$f2 = new Foo (['id' => 501, 'name' => 'DELETE TEST 2']);
+		$f3 = new Foo (['id' => 502, 'name' => 'DELETE TEST 3']);
+		$f4 = new Foo (['id' => 503, 'name' => 'DELETE TEST 4']);
+		$f5 = new Foo (['id' => 504, 'name' => 'DELETE TEST 5']);
+		
+		$f1->put ();
+		$f2->put ();
+		$f3->put ();
+		$f4->put ();
+		$f5->put ();
+		
+		$this->assertEquals (5, Foo::query ()->where ('name like "DELETE TEST %"')->count ());
+		
+		$this->assertTrue (Foo::query ()->where ('name like "DELETE TEST %"')->delete ());
+		
+		$this->assertEquals (0, Foo::query ()->where ('name like "DELETE TEST %"')->count ());
+	}
 
 	function test_verify () {
 		$f = new Foo (array ('id' => 1, 'name' => 'Joe'));
