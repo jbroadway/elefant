@@ -335,6 +335,22 @@ class Form {
 		}
 		return true;
 	}
+	
+	/**
+	 * Mark a field having failed and return false. Usage:
+	 *
+	 *     if ($some_validation_condition === false) {
+	 *         return $form->failed ('field-name');
+	 *     }
+	 */
+	public function failed ($field) {
+		if (is_array ($field)) {
+			$this->failed = $field;
+		} else {
+			$this->failed[] = $field;
+		}
+		return false;
+	}
 
 	/**
 	 * Merge the values from `$_GET` or `$_POST` onto a data array or

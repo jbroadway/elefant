@@ -32,6 +32,20 @@ class FormTest extends TestCase {
 		$this->assertFalse ($form->submit ());
 		$this->assertEquals ($form->error, 'Referrer must match the host name.');
 	}
+	
+	function test_failed () {
+		$form = new Form ('post');
+		$this->assertFalse ($form->failed ('field-name'));
+		$this->assertEquals ($form->failed, ['field-name']);
+		
+		$this->assertFalse ($form->failed ('field-two'));
+		$this->assertEquals ($form->failed, ['field-name', 'field-two']);
+		
+		$form->failed = [];
+		
+		$this->assertFalse ($form->failed (['one', 'two']));
+		$this->assertEquals ($form->failed, ['one', 'two']);
+	}
 
 	function test_verify_request_method () {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
