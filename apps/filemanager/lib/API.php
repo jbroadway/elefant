@@ -13,7 +13,7 @@ class API extends Restful {
 	 * Handle list directory requests (/filemanager/api/ls).
 	 */
 	public function get_ls () {
-		$file = trim (urldecode (join ('/', func_get_args ())));
+		$file = $_GET['file'];
 
 		$res = FileManager::dir ($file);
 		if (! $res) {
@@ -43,7 +43,8 @@ class API extends Restful {
 	 * Handle Bitly link requests (/filemanager/api/bitly).
 	 */
 	public function get_bitly () {
-		$file = trim (urldecode (join ('/', func_get_args ())));
+		$file = $_GET['file'];
+		
 		$link = $this->controller->absolutize ('/files/' . $file);
 		return BitlyLink::lookup ($link);
 	}
@@ -52,7 +53,7 @@ class API extends Restful {
 	 * Handle remove file requests (/filemanager/api/rm).
 	 */
 	public function post_rm () {
-		$file = trim (urldecode (join ('/', func_get_args ())));
+		$file = $_POST['file'];
 
 		$res = FileManager::unlink ($file);
 		if (! $res) {
@@ -71,7 +72,7 @@ class API extends Restful {
 	 * Note: Erases the contents of the folder as well.
 	 */
 	public function post_rmdir () {
-		$file = trim (urldecode (join ('/', func_get_args ())));
+		$file = $_POST['file'];
 
 		$res = FileManager::rmdir ($file, true);
 		if (! $res) {
@@ -89,7 +90,7 @@ class API extends Restful {
 	 * Handle rename requests (/filemanager/api/mv).
 	 */
 	public function post_mv () {
-		$file = trim (urldecode (join ('/', func_get_args ())));
+		$file = $_POST['file'];
 
 		$is_folder = FileManager::verify_folder ($file) ? true : false;
 		
@@ -118,7 +119,7 @@ class API extends Restful {
 	 * folders.
 	 */
 	public function post_drop () {
-		$file = trim (urldecode (join ('/', func_get_args ())));
+		$file = $_POST['file'];
 		
 		if (! FileManager::move ($file, $_POST['folder'])) {
 			return $this->error (FileManager::error ());
@@ -137,7 +138,7 @@ class API extends Restful {
 	 * Handle make directory requests (/filemanager/api/mkdir).
 	 */
 	public function post_mkdir () {
-		$file = trim (urldecode (join ('/', func_get_args ())));
+		$file = $_POST['file'];
 		
 		if (! FileManager::mkdir ($file)) {
 			return $this->error (FileManager::error ());
@@ -157,7 +158,8 @@ class API extends Restful {
 	 * be used to set an individual property's value.
 	 */
 	public function post_prop () {
-		$file = trim (urldecode (join ('/', func_get_args ())));
+		$file = $_POST['file'];
+		
 		if (! FileManager::verify_file ($file)) {
 			return $this->error (__ ('Invalid file name'));
 		}
@@ -204,7 +206,8 @@ class API extends Restful {
 	 * Handle unzip requests via (/filemanager/api/unzip).
 	 */
 	public function post_unzip () {
-		$file = trim (urldecode (join ('/', func_get_args ())));
+		$file = $_POST['file'];
+		
 		if (! FileManager::verify_file ($file)) {
 			return $this->error (__ ('Invalid file name'));
 		}

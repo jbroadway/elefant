@@ -8,7 +8,7 @@ $page->layout = false;
 
 header ('Content-Type: application/json');
 
-$file = urldecode (join ('/', $this->params));
+$file = $_POST['file'];
 
 $out = array (
 	'title' => __ ('Properties'),

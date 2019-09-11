@@ -30,7 +30,7 @@
 				case 'mkdir':
 					var name = downcode ( prompt ($.i18n ('New folder name:'), ''), dir_length );
 					if (name) {
-						$.post (options.root + cmd + '/' + options.file + '/' + name, function (res) {
+						$.post (options.root + cmd, {file: options.file + '/' + name}, function (res) {
 							if (res.success) {
 								$.add_notification (res.data.msg);
 								window.location = '/filemanager?path=' + res.data.data;
@@ -43,7 +43,7 @@
 				case 'mv':
 					var name = downcode ( prompt ($.i18n ('Rename:'), options.name), dir_length);
 					if (name) {
-						$.post (options.root + cmd + '/' + options.file, {rename: name}, function (res) {
+						$.post (options.root + cmd, {file: options.file, rename: name}, function (res) {
 							if (res.success) {
 								$.add_notification (res.data.msg);
 								$.filemanager ('ls', {file: filemanager.path});
@@ -54,7 +54,7 @@
 					}
 					break;
 				case 'drop':
-					$.post (options.root + cmd + '/' + options.file, {folder: options.folder}, function (res) {
+					$.post (options.root + cmd, {file: options.file, folder: options.folder}, function (res) {
 						if (res.success) {
 							$.add_notification (res.data.msg);
 							$.filemanager ('ls', {file: filemanager.path});
@@ -65,7 +65,7 @@
 					break;
 				case 'rm':
 					if (confirm ($.i18n ('Are you sure you want to delete this file?'))) {
-						$.post (options.root + cmd + '/' + options.file, function (res) {
+						$.post (options.root + cmd, {file: options.file}, function (res) {
 							if (res.success) {
 								$.add_notification (res.data.msg);
 								$.filemanager ('ls', {file: filemanager.path});
@@ -77,7 +77,7 @@
 					break;
 				case 'rmdir':
 					if (confirm ($.i18n ('Are you sure you want to delete this folder and all of its contents?'))) {
-						$.post (options.root + cmd + '/' + options.file, function (res) {
+						$.post (options.root + cmd, {file: options.file}, function (res) {
 							if (res.success) {
 								$.add_notification (res.data.msg);
 								$.filemanager ('ls', {file: filemanager.path});
@@ -90,7 +90,7 @@
 				case 'ls':
 					$.template ('tpl_dir', $('#tpl_dir'));
 					$.template ('tpl_file', $('#tpl_file'));
-					$.get (options.root + cmd + '/' + options.file, function (res) {
+					$.get (options.root + cmd + '?file=' + encodeURIComponent (options.file), function (res) {
 						tbody = $('#file-list').html ('');
 						if (res.success && res.data) {
 							if (res.data.dirs) {
@@ -144,7 +144,7 @@
 					});
 					break;
 				case 'bitly':
-					$.get (options.root + cmd + '/' + options.file, function (res) {
+					$.get (options.root + cmd + '?file=' + encodeURIComponent (options.file), function (res) {
 						var num = $.open_dialog (
 							$.i18n ('Bitly Link'),
 							'<p class="copy-me" data-clipboard-text="' + res.data + '">' + res.data + ' (' + $.i18n ('copy to clipboard') + ')</p>' +
@@ -175,7 +175,8 @@
 					break;
 				case 'prop':
 					// display properties dialogue
-					$.post ('/filemanager/properties/' + options.file, function (res) {
+					$.post ('/filemanager/properties', {file: options.file}, function (res) {
+						console.log (res);
 						$.open_dialog (
 							res.title,
 							res.body
@@ -195,7 +196,7 @@
 					break;
 				case 'unzip':
 					// unzip an archive
-					$.post (options.root + cmd + '/' + options.file, function (res) {
+					$.post (options.root + cmd, {file: options.file}, function (res) {
 						if (! res.success) {
 							$.add_notification (res.error);
 							return;
@@ -345,13 +346,14 @@
 			desc = form.elements.desc.value,
 			link = form.elements.link.value,
 			data = {
+				file: file,
 				props: {
 					desc: desc,
 					link: link
 				}
 			};
 
-		$.post ('/filemanager/api/prop/' + file, data, function (res) {
+		$.post ('/filemanager/api/prop', data, function (res) {
 			$.close_dialog ();
 			$.add_notification (res.data.msg);
 		});
