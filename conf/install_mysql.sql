@@ -55,7 +55,7 @@ create table #prefix#user (
 	index(session_id)
 ) default charset=utf8;
 
-insert into #prefix#user (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, 'you@example.com', '$2a$07$1QeR9mu2doQxY0uBcpFlrOIfDxq0BwpR8FsImCgWvAL4Fz9jDByxi', null, now(), 'Admin User', 'admin', now(), now(), '[]');
+insert into #prefix#user (id, email, password, session_id, expires, name, type, signed_up, updated, userdata, about) values (1, 'you@example.com', '$2a$07$1QeR9mu2doQxY0uBcpFlrOIfDxq0BwpR8FsImCgWvAL4Fz9jDByxi', null, now(), 'Admin User', 'admin', now(), now(), '[]', '');
 
 create table #prefix#user_session (
 	session_id char(32) not null primary key,
