@@ -24,6 +24,9 @@
  * THE SOFTWARE.
  */
 
+define ('MODEL_LOCK_EXCLUSIVE', 1);
+define ('MODEL_LOCK_SHARED', 2);
+
 /**
  * A class you can extend to create model objects in your application. Assumes table and
  * class name are identical, but that the table is lowercase. Assumes primary key field
@@ -211,9 +214,38 @@ class Model {
 	 * If `$is_new` is false, then the array is an existing field
 	 * (mainly used internally by `fetch()`).
 	 * If `$vals` contains a single value, the object is retrieved from the database.
+	 * If `$lock_level` is set to MODEL_LOCK_EXCLUSIVE (1), it will add a `FOR UPDATE`
+	 * exclusive lock on the selected row.
+	 * If `$lock_level` is set to MODEL_LOCK_SHARED (2), it will add a `FOR SHARE` /
+	 * `LOCK IN SHARE MODE` shared lock on the selected row.
 	 */
-	public function __construct ($vals = false, $is_new = true) {
+	public function __construct ($vals = false, $is_new = true, $lock_level = 0) {
 		$this->table = ($this->table === '') ? strtolower (get_class ($this)) : $this->table;
+		
+		$db = DB::get_connection ();
+		$dbtype = $db->getAttribute (PDO::ATTR_DRIVER_NAME);
+		
+		$lock = '';
+		if ($lock_level === 1) {
+			switch ($dbtype) {
+				case 'sqlite';
+					break;
+				default:
+					$lock = ' FOR UPDATE';
+					break;
+			}
+		} elseif ($lock_level === 2) {
+			switch ($dbtype) {
+				case 'sqlite':
+					break;
+				case 'pgsql':
+					$lock = ' FOR SHARE';
+					break;
+				default:
+					$lock = ' LOCK IN SHARE MODE';
+					break;
+			}
+		}
 
 		$vals = is_object ($vals) ? (array) $vals : $vals;
 		if (is_array ($vals)) {
@@ -225,7 +257,7 @@ class Model {
 				$this->is_new = true;
 			}
 		} elseif ($vals !== false) {
-			$res = DB::single ('select * from `' . $this->table . '` where `' . $this->key . '` = ?', $vals);
+			$res = DB::single ('select * from `' . $this->table . '` where `' . $this->key . '` = ?' . $lock, $vals);
 			if (! $res) {
 				$this->error = 'No object by that ID.';
 			} else {

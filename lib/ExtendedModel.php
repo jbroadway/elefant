@@ -135,7 +135,7 @@ class ExtendedModel extends Model {
 	 * Need to separate verify list for regular and extended attributes,
 	 * so we override the constructor to do so.
 	 */
-	public function __construct ($vals = false, $is_new = true) {
+	public function __construct ($vals = false, $is_new = true, $lock_level = 0) {
 		$defaults = array ();
 
 		foreach ($this->verify as $k => $v) {
@@ -156,7 +156,7 @@ class ExtendedModel extends Model {
 			unset ($vals['_extended']);
 		}
 
-		parent::__construct ($vals, $is_new);
+		parent::__construct ($vals, $is_new, $lock_level);
 
 		// Pre-populate extended attributes with given default values
 		if (! empty ($defaults)) {
