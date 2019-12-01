@@ -22,6 +22,7 @@ if (User::require_admin () && $page->preview == false) {
 	$page->add_style ('/apps/admin/css/jquery.jgrowl.css');
 	$page->add_style ('/apps/admin/css/modal.css');
 	$page->add_style (Product::toolbar_stylesheet ());
+	$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome.min.css');
 
 	$page->add_script ("<script>$(function(){\$.elefant_version='" . ELEFANT_VERSION . "';});</script>\n");
 	$page->add_script ("<script>$(function(){\$.elefant_updates=" . (int) conf ('General', 'check_for_updates') . ";});</script>\n");
