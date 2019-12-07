@@ -615,6 +615,18 @@ class Model {
 	}
 
 	/**
+	 * Add a where `key in(values)` condition to the query from a list of values.
+	 */
+	public function where_in ($key, $vals) {
+		$qmarks = array_fill (0, count ($vals), '?');
+		array_push ($this->query_filters, Model::backticks ($key) . ' in(' . join (',', $qmarks) . ')');
+		foreach ($vals as $v) {
+			array_push ($this->query_params, $v);
+		}
+		return $this;
+	}
+
+	/**
 	 * Creates an `AND` clause with additional where conditions.
 	 * Accepts the same parameters as `where()`.
 	 */

@@ -186,6 +186,12 @@ class ModelTest extends TestCase {
 		// Field array
 		$sql = self::$q->query (array ('foo', 'bar'))->sql ();
 		$this->assertEquals ('select `foo`, `bar` from `qwerty`', $sql);
+		
+		// Where in()
+		$sql = self::$q->query ()
+			->where_in ('foo', ['one', 'two', 'three'])
+			->sql ();
+		$this->assertEquals ('select * from `qwerty` where `foo` in(?,?,?)', $sql);
 
 		// Group by
 		$sql = self::$q->query ()
