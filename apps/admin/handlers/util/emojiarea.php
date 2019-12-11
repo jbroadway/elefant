@@ -25,5 +25,5 @@
  * https://github.com/emojione/emojione
  */
 
-$page->add_style ('//cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.css');
-$page->add_script ('//cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.js');
+$page->add_style ('//cdn.jsdelivr.net/gh/mervick/emojionearea@master/dist/emojionearea.min.css');
+$page->add_script ('//cdn.jsdelivr.net/gh/mervick/emojionearea@master/dist/emojionearea.min.js');

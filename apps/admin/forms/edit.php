@@ -3,7 +3,7 @@
 [id]
 
 not empty = 1
-regex = "/^[a-zA0-9_-]+$/"
+regex = "/^[a-z0-9_-]+$/"
 not exists = "apps"
 
 [title]
