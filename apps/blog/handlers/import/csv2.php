@@ -44,6 +44,8 @@ $author = false;
 $date = false;
 $content = false;
 $tags = false;
+$keywords = false;
+$description = false;
 
 foreach ($_POST as $k => $v) {
 	if (strpos ($k, 'map-') === 0 && $v !== '') {
@@ -62,8 +64,12 @@ foreach ($res as $row) {
 		'ts' => ($date !== false) ? gmdate ('Y-m-d H:i:s', strtotime ($row[$date])) : gmdate ('Y-m-d H:i:s'),
 		'published' => $_POST['published'],
 		'body' => ($content !== false) ? $row[$content] : '',
-		'tags' => ($tags !== false) ? $row[$tags] : ''
+		'tags' => ($tags !== false) ? $row[$tags] : '',
+		'keywords' => ($keywords !== false) ? $row[$keywords] : '',
+		'description' => ($description !== false) ? $row[$description] : ''
 	);
+	
+	$post['slug'] = URLify::filter ($post['title']);
 
 	$p = new blog\Post ($post);
 	if ($p->put ()) {
