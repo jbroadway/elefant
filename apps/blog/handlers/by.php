@@ -43,6 +43,7 @@ foreach ($posts as $post) {
 	}
 	
 	$post->url = '/blog/post/' . $post->id . '/' . $post->slug;
+	$post->fullurl = $post->url;
 	$post->tag_list = (strlen ($post->tags) > 0) ? explode (',', $post->tags) : array ();
 	$post->social_buttons = $appconf['Social Buttons'];
 	if (Appconf::blog ('Blog', 'post_format') === 'html') {
