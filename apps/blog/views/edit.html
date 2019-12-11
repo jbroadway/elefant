@@ -7,13 +7,24 @@
 
 <form method="POST" id="blog-edit-form">
 
-<p style="text-align: right; margin-top: -3em">
-	<input type="submit" value="{"Save Blog Post"}" class="autosave-clear" />&nbsp;
-	<input type="submit" value="{"Save &amp; Keep Editing"}" id="bgsave" />&nbsp;
-	<input type="submit" value="{"Preview"}" onclick="return webpage_preview (this.form)" />&nbsp;
-	<a href="/admin/cancel?type=Blog&id={{ id }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>&nbsp;
-	<span id="bgsave-status"></span>
-</p>
+<div class="e-row-variable e-no-padding-left">
+	<div id="title" class="e-col-50 e-no-padding-left">
+		{% if title == '' %}
+			<h2>{"Add Blog Post"}</h2>
+		{% else %}
+			<h2>{"Edit Blog Post"}: {{title}}</h2>
+		{% end %}
+	</div>
+	<div id="save-buttons" class="e-col-50 e-no-padding">
+		<p style="text-align: right">
+			<input type="submit" value="{"Save Blog Post"}" class="autosave-clear" />&nbsp;
+			<input type="submit" value="{"Save &amp; Keep Editing"}" id="bgsave" />&nbsp;
+			<input type="submit" value="{"Preview"}" onclick="return webpage_preview (this.form)" />&nbsp;
+			<a href="/admin/cancel?type=Blog&id={{ id }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>&nbsp;
+			<span id="bgsave-status"></span>
+		</p>
+	</div>
+</div>
 
 <div class="e-row-variable">
 	<div class="e-col-60 e-no-padding-left blog-main">
@@ -101,6 +112,12 @@
 <div class="clear"></div>
 
 <style>
+#title,
+#title h2 {
+	margin-left: 0;
+	padding-left: 0;
+}
+
 .form {
 	width: auto !important;
 }

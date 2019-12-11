@@ -79,9 +79,9 @@ if ($f->submit ()) {
 	$p->failed = $f->failed;
 	$p = $f->merge_values ($p);
 	if ($p->title === '') {
-		$page->title = __ ('Add Blog Post');
+		$page->window_title = __ ('Add Blog Post');
 	} else {
-		$page->title = __ ('Edit Blog Post') . ': ' . Template::sanitize ($p->title);
+		$page->window_title = __ ('Edit Blog Post') . ': ' . Template::sanitize ($p->title);
 	}
 	$page->add_script ('/apps/blog/css/related.css');
 	if (Appconf::blog ('Blog', 'post_format') === 'html') {
