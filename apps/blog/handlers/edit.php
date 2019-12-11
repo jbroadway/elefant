@@ -17,7 +17,13 @@ if ($lock->exists ()) {
 	$lock->add ();
 }
 
+$page->add_script ('/js/urlify.js');
+
 $p = new blog\Post ($_GET['id']);
+
+if ($p->slug == '') {
+	$p->slug = URLify::filter ($p->title);
+}
 
 $f = new Form ('post', 'blog/edit');
 
@@ -29,6 +35,9 @@ if ($f->submit ()) {
 	$p->body = $_POST['body'];
 	$p->tags = $_POST['tags'];
 	$p->thumbnail = $_POST['thumbnail'];
+	$p->slug = $_POST['slug'];
+	$p->description = $_POST['description'];
+	$p->keywords = $_POST['keywords'];
 
 	$p->update_extended ();
 
@@ -57,7 +66,7 @@ if ($f->submit ()) {
 		// reset blog rss cache
 		$cache->delete ('blog_rss');
 
-		$_POST['page'] = 'blog/post/' . $p->id . '/' . URLify::filter ($p->title);
+		$_POST['page'] = 'blog/post/' . $p->id . '/' . $p->slug;
 		$lock->remove ();
 		$this->hook ('blog/edit', $_POST);
 		$this->redirect ('/blog/admin');

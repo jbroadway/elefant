@@ -82,7 +82,7 @@ handler = blog/admin
 name = Blog Posts
 install = blog/upgrade
 upgrade = blog/upgrade
-version = 1.1.4-stable
+version = 1.1.5-stable
 sitemap = "blog\Post::sitemap"
 search = "blog\Post::search"
 

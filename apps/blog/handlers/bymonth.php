@@ -26,6 +26,11 @@ if (isset ($data['tag']) && $data['tag'] !== '') {
 
 $bymonth = array ();
 foreach ($posts as $post) {
+	if ($post->slug == '') {
+		$post->slug = URLify::filter ($post->title);
+		$post->put ();
+	}
+	
 	$time = strtotime ($post->ts);
 	$mmyy = __ (gmdate ('F')) . ' ' . gmdate ('Y');
 	if (! is_array ($bymonth[$mmyy])) {

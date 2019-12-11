@@ -3,7 +3,7 @@
 
 <ul>
 	{% for p in post %}
-	<li><a href="/blog/post/{{ p->id }}/{{ p->title|URLify::filter }}">{{ p->title }}</a></li>
+	<li><a href="/blog/post/{{ p->id }}/{{ p->slug }}">{{ p->title }}</a></li>
 	{% end %}
 </ul>
 {% end %}

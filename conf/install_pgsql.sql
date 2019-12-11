@@ -139,6 +139,9 @@ create table #prefix#blog_post (
 	tags text not null,
 	extra text not null,
 	thumbnail char(128) not null default '',
+	slug char(128) not null default '',
+	description text not null default '',
+	keywords text not null default '',
 	check (published in ('yes', 'no', 'que'))
 );
 
@@ -188,7 +191,7 @@ create table #prefix#apps (
 );
 
 insert into #prefix#apps (name, version) values ('elefant', '1.3.12');
-insert into #prefix#apps (name, version) values ('blog', '1.1.4-stable');
+insert into #prefix#apps (name, version) values ('blog', '1.1.5-stable');
 insert into #prefix#apps (name, version) values ('user', '1.1.5-stable');
 insert into #prefix#apps (name, version) values ('filemanager', '1.3.2-beta');
 

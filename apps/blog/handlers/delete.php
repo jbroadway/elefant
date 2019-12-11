@@ -24,6 +24,9 @@ require_once ('apps/blog/lib/Filters.php');
 $p = new blog\Post ($_POST['id']);
 $tags = $p->tags;
 $title = $p->title;
+$slug = ($p->slug != '')
+	? $p->slug
+	: URLify::filter ($title);
 
 $_POST = array_merge ($_POST, (array) $p->orig ());
 
@@ -38,7 +41,7 @@ $cache->delete ('blog_rss');
 
 DB::execute ('delete from #prefix#blog_post_tag where post_id = ?', $_POST['id']);
 
-$_POST['page'] = 'blog/post/' . $_POST['id'] . '/' . URLify::filter ($title);
+$_POST['page'] = 'blog/post/' . $_POST['id'] . '/' . $slug;
 $_POST['url'] = '/' . $_POST['page'];
 $this->hook ('blog/delete', $_POST);
 $this->add_notification (__ ('Blog post deleted.'));

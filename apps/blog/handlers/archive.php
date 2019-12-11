@@ -40,8 +40,13 @@ if (Appconf::blog ('Blog', 'post_format') === 'markdown') {
 }
 
 foreach ($posts as $post) {
+	if ($post->slug == '') {
+		$post->slug = URLify::filter ($post->title);
+		$post->put ();
+	}
+	
 	$post->url = '/blog/post/' . $post->id . '/';
-	$post->fullurl = $post->url . URLify::filter ($post->title);
+	$post->fullurl = $post->url . $post->slug;
 	$post->tag_list = (strlen ($post->tags) > 0) ? explode (',', $post->tags) : array ();
 	$post->social_buttons = $appconf['Social Buttons'];
 	if (Appconf::blog ('Blog', 'post_format') === 'html') {

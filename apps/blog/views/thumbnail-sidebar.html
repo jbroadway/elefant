@@ -4,7 +4,7 @@
 	{% if n < 3 %}
 	<div class="blog-related-post item">
 		<div class="thumbnail-wrapper">
-			<a href="/blog/post/{{post->id}}/{{post->title|URLify::filter}}">
+			<a href="/blog/post/{{post->id}}/{{post->slug}}">
 				<div class="thumbnail"
 					{% if post->thumbnail != '' %}
 						style="background-image: url('/{{post->thumbnail|Image::resize (%s, 400, 264, 'cover', 'ext')}}')"
@@ -13,7 +13,7 @@
 			</a>
 		</div>
 		<div class="item-info">
-			<h4><a href="/blog/post/{{post->id}}/{{post->title|URLify::filter}}">{{post->title}}</a></h4>
+			<h4><a href="/blog/post/{{post->id}}/{{post->slug}}">{{post->title}}</a></h4>
 			<p>{{post->ts|I18n::short_date_year}}</p>
 		</div>
 	</div>
@@ -23,7 +23,7 @@
 <ul class="blog-headlines">
 {% foreach posts as n, post %}
 	{% if n >= 3 %}
-	<li>{{ post->ts|I18n::short_date }} <a href="/blog/post/{{ post->id }}/{{ post->title|URLify::filter }}">{{ post->title }}</a></li>
+	<li>{{ post->ts|I18n::short_date }} <a href="/blog/post/{{ post->id }}/{{ post->slug }}">{{ post->title }}</a></li>
 	{% end %}
 {% end %}
 </ul>

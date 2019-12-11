@@ -95,14 +95,14 @@ class Post extends \ExtendedModel {
 	 * Get posts by the specified author.
 	 */
 	public static function by ($author, $limit = 10, $offset = 0) {
-		return self::query ()->where ('published', 'yes')->where ('author', $author)->order ('ts desc')->fetch_orig ($limit, $offset);
+		return self::query ()->where ('published', 'yes')->where ('author', $author)->order ('ts desc')->fetch ($limit, $offset);
 	}
 
 	/**
 	 * Get the latest headlines only.
 	 */
 	public static function headlines ($limit = 10) {
-		return self::query (array ('id', 'ts', 'title'))->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit);
+		return self::query (array ('id', 'ts', 'title'))->where ('published', 'yes')->order ('ts desc')->fetch ($limit);
 	}
 
 	/**
@@ -114,7 +114,7 @@ class Post extends \ExtendedModel {
 		if (! is_array ($ids) || count ($ids) === 0) {
 			return array ();
 		}
-		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
+		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch ($limit, $offset);
 	}
 
 	/**
@@ -140,7 +140,7 @@ class Post extends \ExtendedModel {
 			return array ();
 		}
 
-		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
+		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch ($limit, $offset);
 	}
 
 	/**
@@ -236,7 +236,12 @@ class Post extends \ExtendedModel {
 		
 		$urls = array ();
 		foreach ($posts as $post) {
-			$urls[] = '/blog/post/' . $post->id . '/' . \URLify::filter ($post->title);
+			if ($post->slug == '') {
+				$post->slug = URLify::filter ($post->title);
+				$post->put ();
+			}
+			
+			$urls[] = '/blog/post/' . $post->id . '/' . $post->slug;
 		}
 		return $urls;
 	}
@@ -248,10 +253,15 @@ class Post extends \ExtendedModel {
 	public static function search () {
 		$posts = self::query ()
 			->where ('published', 'yes')
-			->fetch_orig ();
+			->fetch ();
 		
 		foreach ($posts as $i => $post) {
-			$url = 'blog/post/' . $post->id . '/' . \URLify::filter ($post->title);
+			if ($post->slug == '') {
+				$post->slug = URLify::filter ($post->title);
+				$post->put ();
+			}
+			
+			$url = 'blog/post/' . $post->id . '/' . $post->slug;
 			if (! \Search::add (
 				$url,
 				array (

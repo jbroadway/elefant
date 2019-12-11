@@ -32,7 +32,7 @@ if ($o->error) {
 	} else {
 		Versions::add ($o);
 		require_once ('apps/blog/lib/Filters.php');
-		$_POST['page'] = 'blog/post/' . $o->id . '/' . URLify::filter ($o->title);
+		$_POST['page'] = 'blog/post/' . $o->id . '/' . $o->slug;
 		$this->hook ('blog/edit', $_POST);
 	}
 }
