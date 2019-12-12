@@ -17,11 +17,12 @@
 	</div>
 	<div id="save-buttons" class="e-col-50 e-no-padding">
 		<p style="text-align: right">
+			<span id="bgsave-status"></span>
 			<input type="submit" value="{"Save Blog Post"}" class="autosave-clear" />&nbsp;
 			<input type="submit" value="{"Save &amp; Keep Editing"}" id="bgsave" />&nbsp;
 			<input type="submit" value="{"Preview"}" onclick="return webpage_preview (this.form)" />&nbsp;
 			<a href="/admin/cancel?type=Blog&id={{ id }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>&nbsp;
-			<span id="bgsave-status"></span>
+			
 		</p>
 	</div>
 </div>
