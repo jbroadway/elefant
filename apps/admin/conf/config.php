@@ -35,6 +35,10 @@ autofill_column = "Extras"
 ; the Google CDN, or the URL of another location.
 jquery_source = local
 
+; The place to load FontAwesome from, either 'local', or a user-defined
+; alternative link such as LineAwesome or Ficons.
+fontawesome_source = local
+
 [Admin]
 
 name = Admin
