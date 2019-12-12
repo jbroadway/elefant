@@ -17,8 +17,4 @@
  *     <i class="fa fa-cogs"></i>
  */
 
-if ($appconf['Scripts']['fontawesome_source'] === 'local') {
-	$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome.min.css');
-} else {
-	$page->add_style ($appconf['Scripts']['fontawesome_source']);
-}
+$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome.min.css');
