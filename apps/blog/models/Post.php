@@ -169,12 +169,16 @@ class Post extends \ExtendedModel {
 		}
 		
 		$start = $year . '-' . $month . '-01 00:00:00.000';
-		$end = $year . '-' . $month . '-' . cal_days_in_month (CAL_GREGORIAN, $month, $year) . ' 23:59:59.000';
+		$end = $year . '-' . $month . '-' . self::days_in_month ($month, $year) . ' 23:59:59.000';
 		
 		return self::query ()
 			->where ('ts between "' . $start . '" and "' . $end . '"')
 			->where ('published', 'yes')
 			->count ();
+	}
+	
+	private static function days_in_month ($month, $year) {
+		return date ('t', mktime (0, 0, 0, $month, 1, $year));
 	}
 
 	/**
