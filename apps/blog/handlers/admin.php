@@ -39,7 +39,7 @@ $posts = blog\Post::query ('id, title, ts, author, published, tags')
 		blog_admin_where_month ($q, $m);
 	})
 	->order ('ts desc')
-	->fetch_orig ($limit, $offset);
+	->fetch ($limit, $offset);
 
 $count = blog\Post::query ()
 	->where_search ($q, $q_fields, $q_exact)
@@ -49,6 +49,11 @@ $count = blog\Post::query ()
 	->count ();
 
 foreach ($posts as $k => $p) {
+	if ($p->slug == '') {
+		$p->slug = URLify::filter ($p->title);
+		$p->put ();
+	}
+	
 	$posts[$k]->locked = $lock->exists ('Blog', $p->id);
 	$posts[$k]->tags = preg_split ('/, ?/', $posts[$k]->tags);
 }

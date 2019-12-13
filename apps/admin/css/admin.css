@@ -195,27 +195,31 @@ tt {
 	}
 
 	.pager-number {
-		width: 20px;
+		min-width: 20px;
 		height: 19px;
 		display: block;
 		float: left;
 		text-align: center;
-		margin-left: 3px;
-		margin-right: 3px;
+		margin-left: 1px;
+		margin-right: 1px;
 		-webkit-border-radius: 2px;
 		-moz-border-radius: 2px;
 		border-radius: 2px;
+		padding-left: 2px;
+		padding-right: 2px;
 	}
 
 	.pager-number a {
 		text-decoration: none;
 		display: block;
-		width: 20px;
+		min-width: 20px;
 		height: 19px;
 		border: 1px solid #ddd;
 		-webkit-border-radius: 2px;
 		-moz-border-radius: 2px;
 		border-radius: 2px;
+		padding-left: 2px;
+		padding-right: 2px;
 	}
 
 	.pager-number a:hover {

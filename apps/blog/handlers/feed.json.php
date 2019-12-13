@@ -30,7 +30,12 @@ if (! $res) {
 	}
 
 	foreach ($page->posts as $k => $post) {
-		$page->posts[$k]->url = '/blog/post/' . $post->id . '/' . URLify::filter ($post->title);
+		if ($post->slug == '') {
+			$post->slug = URLify::filter ($post->title);
+			$post->put ();
+		}
+		
+		$page->posts[$k]->url = '/blog/post/' . $post->id . '/' . $post->slug;
 		if (Appconf::blog ('Blog', 'post_format') === 'html') {
 			$page->posts[$k]->body = $tpl->run_includes ($page->posts[$k]->body);
 		} else {

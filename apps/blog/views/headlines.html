@@ -4,6 +4,6 @@
 
 <ul class="blog-headlines">
 {% foreach posts %}
-	<li>{% if dates %}{{ loop_value->ts|I18n::short_date }} {% end %}<a href="/blog/post/{{ loop_value->id }}/{{ loop_value->title|URLify::filter }}">{{ loop_value->title }}</a></li>
+	<li>{% if dates %}{{ loop_value->ts|I18n::short_date }} {% end %}<a href="/blog/post/{{ loop_value->id }}/{{ loop_value->slug }}">{{ loop_value->title }}</a></li>
 {% end %}
 </ul>

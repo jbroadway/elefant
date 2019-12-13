@@ -15,7 +15,9 @@ $p = new blog\Post (array (
 	'body' => '',
 	'tags' => '',
 	'extra' => '',
-	'published' => 'no'
+	'published' => 'no',
+	'description' => '',
+	'keywords' => ''
 ));
 $p->put ();
 Versions::add ($p);

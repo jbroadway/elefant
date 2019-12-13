@@ -5,15 +5,62 @@
 
 <div class="form">
 
-<p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
-
 <form method="POST" id="blog-edit-form">
 
-<p>{"Title"}:<br /><input type="text" name="title" size="65" value="{{ title|quotes }}" />
+<div class="e-row-variable e-no-padding-left">
+	<div id="title" class="e-col-50 e-no-padding-left">
+		{% if title == '' %}
+			<h2>{"Add Blog Post"}</h2>
+		{% else %}
+			<h2>{"Edit Blog Post"}: {{title}}</h2>
+		{% end %}
+	</div>
+	<div id="save-buttons" class="e-col-50 e-no-padding">
+		<p style="text-align: right">
+			<span id="bgsave-status"></span>
+			<input type="submit" value="{"Save Blog Post"}" class="autosave-clear" />&nbsp;
+			<input type="submit" value="{"Save &amp; Keep Editing"}" id="bgsave" />&nbsp;
+			<input type="submit" value="{"Preview"}" onclick="return webpage_preview (this.form)" />&nbsp;
+			<a href="/admin/cancel?type=Blog&id={{ id }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>&nbsp;
+			
+		</p>
+	</div>
+</div>
+
+<div class="e-row-variable">
+	<div class="e-col-75 e-no-padding-left blog-main">
+
+<p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
+
+<p>{"Title"}<br /><input type="text" name="title" size="65" value="{{ title|quotes }}" />
 <span class="notice" id="title-notice">{"You must enter a title."}</span></p>
 
+<p>{"Permalink"} (ex: <tt>/blog/post/{{id}}/<strong>my-post-title</strong></tt>)<br />
+<input type="text" name="slug" size="55" value="{{ slug|quotes }}" />
+<span class="notice" id="slug-notice"><br />{"Your slug must be a lowercase alphanumeric value."}</span></p>
+
+<p><textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
+
+<div class="meta blog-section">
+	<h3 style="margin-bottom: 0">{"Meta"}</h3>
+
+	<div class="e-row e-no-padding">
+		<div class="e-col-50 e-no-padding-left">
+	<p>{"Description"}<br />
+	<textarea name="description" id="description" rows="3">{{ description }}</textarea></p>
+		</div>
+		<div class="e-col-50 e-no-padding-right">
+	<p>{"Keywords"}<br />
+	<textarea name="keywords" id="keywords" rows="3">{{ keywords }}</textarea></p>
+		</div>
+	</div>
+</div>
+
+	</div>
+	<div class="e-col-25 blog-side">
+
 <div id="thumbnail-div">
-	{"Thumbnail"}:<br />
+	{"Thumbnail"}<br />
 	<div class="thumbnail-wrapper">
 		<div class="thumbnail" id="thumbnail-preview"
 		{% if thumbnail !== '' %}
@@ -25,16 +72,10 @@
 	<input type="submit" id="thumbnail-browse" value="{"Choose"}" />
 </div>
 
-<p>{"Author"}:<br /><input type="text" name="author" id="author" size="30" value="{{ author|quotes }}" />
-<input type="submit" value="{"Choose"}" id="users" />
-<span class="notice" id="author-notice">{"You must enter an author."}</span></p>
-
-<p>{"Date/Time"}:<br /><input type="text" name="ts" id="ts" size="30" value="{{ ts }}" />
-<button id="ts-now">{"Now"}</button>
-<span class="notice" id="ts-notice">{"You must select a date/time."}</span></p>
+<div class="blog-section info">
 
 <div>
-{"Status"}:<br />
+{"Status"}<br />
 <p class="toggle" data-field="published">
 	<a href="#" data-value="no">{"Draft"}</a
 	><a href="#" data-value="yes">{"Published"}</a
@@ -43,42 +84,115 @@
 <input type="hidden" name="published" id="published" value="{{ published }}" />
 </div>
 
-<p><textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
+<p>{"Date/Time"}<br /><input type="text" name="ts" id="ts" size="15" value="{{ ts }}" />
+<button id="ts-now">{"Now"}</button>
+<span class="notice" id="ts-notice">{"You must select a date/time."}</span></p>
 
-<p>{"Tags (comma-separated)"}:
-<ul id="tagit" style="width: 580px; padding-top: 0px; margin-top: -8px">
+<p>{"Author"}<br /><input type="text" name="author" id="author" size="15" value="{{ author|quotes }}" />
+<input type="submit" value="{"Choose"}" id="users" />
+<span class="notice" id="author-notice">{"You must enter an author."}</span></p>
+
+<p>{"Tags (comma-separated)"}
+<ul id="tagit">
 {% foreach tag_list %}
 	<li>{{ loop_value }}</li>
 {% end %}
 </ul>
 <input type="hidden" name="tags" id="tags"></p>
 
+</div>
+
 {! admin/util/extended?extends=blog\Post&name=Blog+Posts&values=[extra|none]&id=[id] !}
 
-<p>
-	<input type="submit" value="{"Save Blog Post"}" class="autosave-clear" />&nbsp;
-	<input type="submit" value="{"Save &amp; Keep Editing"}" id="bgsave" />&nbsp;
-	<input type="submit" value="{"Preview"}" onclick="return webpage_preview (this.form)" />&nbsp;
-	<a href="/admin/cancel?type=Blog&id={{ id }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>&nbsp;
-	<span id="bgsave-status"></span>
-</p>
+	</div>
+</div>
+
 </form>
 
 </div>
 <div class="clear"></div>
 
 <style>
-#blog-edit-form {
-	position: relative;
+#title,
+#title h2 {
+	margin-left: 0;
+	padding-left: 0;
 }
+
+.form {
+	width: auto !important;
+}
+
+.blog-main>div,
+.blog-main>p {
+	margin-bottom: 1em;
+}
+
+.blog-side>div,
+.blog-side>p {
+	min-width: 275px;
+	max-width: 275px;
+	margin-bottom: 1em;
+	margin-left: auto;
+}
+
+input,
+textarea {
+	max-width: 95%;
+}
+
+.blog-section {
+	background-color: #fff;
+	border: 1px solid #e5e5e5;
+	border-radius: 2px;
+	/*box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.2);*/
+	padding: 10px 0px 0px 5px;
+}
+
+.blog-section.info {
+	padding-left: 10px;
+}
+
+.meta p {
+	margin-bottom: 0;
+}
+
+.meta h3 {
+	padding-left: 7px;
+	margin-bottom: 0;
+}
+
+#description,
+#keywords {
+	width: 90%;
+}
+
 #thumbnail-div {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 150px;
+	width: 285px;
+	max-width: 285px;
+	min-width: 285px;
 }
+
 .thumbnail-wrapper {
 	margin-bottom: 5px;
+	margin-left: 0;
+}
+
+#tagit {
+	 max-width: 250px;
+	 padding-top: 0px;
+	 margin-top: -8px;
+	 margin-left: 0;
+}
+
+.toggle {
+	margin-bottom: 1.5em !important;
+}
+
+#extended-header-blogpost,
+#extended-fields-blogpost {
+	max-width: 285px;
+	margin-left: auto;
 }
 </style>
 
@@ -90,6 +204,19 @@ $(function () {
 		unicodeAlt: true,
 		pickerPosition: 'bottom',
 		filtersPosition: 'top'
+	});
+	
+	$('[name=slug]').click (function () {
+		if ($(this).val () == '') {
+			var text = $('[name=title]').val ();
+			text = URLify (text);
+			$(this).val (text);
+		}
+	}).blur (function () {
+		console.log ('blur')
+		var text = $(this).val ();
+		text = URLify (text)
+		$(this).val (text);
 	});
 
 	$('#users').click (function () {

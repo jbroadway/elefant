@@ -12,7 +12,14 @@ $limit = 8;
 $posts = blog\Post::query (array ('id', 'ts', 'title', 'thumbnail'))
 	->where ('published', 'yes')
 	->order ('ts desc')
-	->fetch_orig ($limit);
+	->fetch ($limit);
+
+foreach ($posts as $post) {
+	if ($post->slug == '') {
+		$post->slug = URLify::filter ($post->title);
+		$post->put ();
+	}
+}
 
 $page->add_script ('/apps/blog/css/related.css');
 

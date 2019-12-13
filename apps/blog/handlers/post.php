@@ -37,10 +37,15 @@ if ($p->published === 'que') {
 
 $page->title = Template::sanitize ($p->title);
 
+if ($p->slug == '') {
+	$p->slug = URLify::filter ($p->title);
+	$p->put ();
+}
+
 $post = $p->orig ();
 $post->full = true;
 $post->url = '/blog/post/' . $post->id . '/';
-$post->fullurl = $post->url . URLify::filter ($post->title);
+$post->fullurl = $post->url . $post->slug;
 $post->tag_list = (strlen ($post->tags) > 0) ? explode (',', $post->tags) : array ();
 if (Appconf::blog ('Blog', 'post_format') === 'html') {
 	$post->body = $tpl->run_includes ($post->body);
@@ -96,15 +101,19 @@ $page->add_script (sprintf (
 
 // add opengraph/twitter card meta tags
 $url = $protocol . '://' . $domain . $post->fullurl;
-$desc = blog_filter_truncate ($post->body, 300);
+$desc = ($post->description != '')
+	? $post->description
+	: blog_filter_truncate ($post->body, 300);
 
+$page->add_meta ('description', $desc);
+$page->add_meta ('keywords', $post->keywords);
 $page->add_meta ('og:type', 'article', 'property');
 $page->add_meta ('og:site_name', conf ('General', 'site_name'), 'property');
 $page->add_meta ('og:title', $post->title, 'property');
 $page->add_meta ('og:description', $desc, 'property');
 $page->add_meta ('og:url', $url, 'property');
 
-if ($post->thumbnail !== '') {
+if ($post->thumbnail !== '' && file_exists ($post->thumbnail)) {
 	$page->add_meta (
 		'og:image',
 		($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . str_replace (' ', '%20', $post->thumbnail),

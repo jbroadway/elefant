@@ -36,7 +36,15 @@ if (isset ($data['tag']) && $data['tag'] !== '') {
 } else {
 	$posts = $p->headlines ($limit);
 }
+
+foreach ($posts as $post) {
+	if ($post->slug == '') {
+		$post->slug = URLify::filter ($post->title);
+	}
+}
+
 $dates = (isset ($data['dates']) && $data['dates'] === 'yes') ? true : false;
+
 echo $tpl->render ('blog/headlines', array (
 	'posts' => $posts,
 	'dates' => $dates

@@ -26,6 +26,12 @@ $posts = blog\Post::query ('id, thumbnail, title, ts')
 $this->run ('admin/util/minimal-grid');
 $page->add_script ('/apps/blog/css/related.css');
 
+foreach ($posts as $post) {
+	if ($post->slug == '') {
+		$post->slug = URLify::filter ($post->title);
+	}
+}
+
 echo $tpl->render (
 	'blog/related',
 	array (

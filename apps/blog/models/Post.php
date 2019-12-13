@@ -95,14 +95,14 @@ class Post extends \ExtendedModel {
 	 * Get posts by the specified author.
 	 */
 	public static function by ($author, $limit = 10, $offset = 0) {
-		return self::query ()->where ('published', 'yes')->where ('author', $author)->order ('ts desc')->fetch_orig ($limit, $offset);
+		return self::query ()->where ('published', 'yes')->where ('author', $author)->order ('ts desc')->fetch ($limit, $offset);
 	}
 
 	/**
 	 * Get the latest headlines only.
 	 */
 	public static function headlines ($limit = 10) {
-		return self::query (array ('id', 'ts', 'title'))->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit);
+		return self::query (array ('id', 'ts', 'title'))->where ('published', 'yes')->order ('ts desc')->fetch ($limit);
 	}
 
 	/**
@@ -114,7 +114,7 @@ class Post extends \ExtendedModel {
 		if (! is_array ($ids) || count ($ids) === 0) {
 			return array ();
 		}
-		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
+		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch ($limit, $offset);
 	}
 
 	/**
@@ -134,26 +134,51 @@ class Post extends \ExtendedModel {
 	 * Get posts by a certain year and month.
 	 */
 	public static function archive ($year, $month, $limit = 10, $offset = 0) {
-		$ids = \DB::shift_array ('select id from #prefix#blog_post where year(ts) = ? and month(ts) = ? and published = "yes"', $year, $month);
-		
-		if (! is_array ($ids) || count ($ids) === 0) {
-			return array ();
+		if (! is_numeric ($year)) {
+			error_log ('Year must be numeric');
+			return [];
 		}
-
-		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch_orig ($limit, $offset);
+		
+		if (! is_numeric ($month)) {
+			error_log ('Month must be numeric');
+			return [];
+		}
+		
+		$start = $year . '-' . $month . '-01 00:00:00.000';
+		$end = $year . '-' . $month . '-' . cal_days_in_month (CAL_GREGORIAN, $month, $year) . ' 23:59:59.000';
+		
+		return self::query ()
+			->where ('ts between "' . $start . '" and "' . $end . '"')
+			->where ('published', 'yes')
+			->order ('ts desc')
+			->fetch_orig ($limit, $offset);
 	}
 
 	/**
 	 * Count posts by a certain year and month.
 	 */
 	public static function count_by_month ($year, $month, $limit = 10, $offset = 0) {
-		$ids = \DB::shift_array ('select id from #prefix#blog_post where year(ts) = ? and month(ts) = ? and published = "yes"', $year, $month);
-		
-		if (! is_array ($ids) || count ($ids) === 0) {
-			return array ();
+		if (! is_numeric ($year)) {
+			error_log ('Year must be numeric');
+			return 0;
 		}
-
-		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->count ();
+		
+		if (! is_numeric ($month)) {
+			error_log ('Month must be numeric');
+			return 0;
+		}
+		
+		$start = $year . '-' . $month . '-01 00:00:00.000';
+		$end = $year . '-' . $month . '-' . self::days_in_month ($month, $year) . ' 23:59:59.000';
+		
+		return self::query ()
+			->where ('ts between "' . $start . '" and "' . $end . '"')
+			->where ('published', 'yes')
+			->count ();
+	}
+	
+	private static function days_in_month ($month, $year) {
+		return date ('t', mktime (0, 0, 0, $month, 1, $year));
 	}
 
 	/**
@@ -236,7 +261,12 @@ class Post extends \ExtendedModel {
 		
 		$urls = array ();
 		foreach ($posts as $post) {
-			$urls[] = '/blog/post/' . $post->id . '/' . \URLify::filter ($post->title);
+			if ($post->slug == '') {
+				$post->slug = URLify::filter ($post->title);
+				$post->put ();
+			}
+			
+			$urls[] = '/blog/post/' . $post->id . '/' . $post->slug;
 		}
 		return $urls;
 	}
@@ -248,10 +278,15 @@ class Post extends \ExtendedModel {
 	public static function search () {
 		$posts = self::query ()
 			->where ('published', 'yes')
-			->fetch_orig ();
+			->fetch ();
 		
 		foreach ($posts as $i => $post) {
-			$url = 'blog/post/' . $post->id . '/' . \URLify::filter ($post->title);
+			if ($post->slug == '') {
+				$post->slug = URLify::filter ($post->title);
+				$post->put ();
+			}
+			
+			$url = 'blog/post/' . $post->id . '/' . $post->slug;
 			if (! \Search::add (
 				$url,
 				array (
