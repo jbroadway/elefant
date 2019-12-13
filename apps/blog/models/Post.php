@@ -134,26 +134,47 @@ class Post extends \ExtendedModel {
 	 * Get posts by a certain year and month.
 	 */
 	public static function archive ($year, $month, $limit = 10, $offset = 0) {
-		$ids = \DB::shift_array ('select id from #prefix#blog_post where year(ts) = ? and month(ts) = ? and published = "yes"', $year, $month);
-		
-		if (! is_array ($ids) || count ($ids) === 0) {
-			return array ();
+		if (! is_numeric ($year)) {
+			error_log ('Year must be numeric');
+			return [];
 		}
-
-		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->fetch ($limit, $offset);
+		
+		if (! is_numeric ($month)) {
+			error_log ('Month must be numeric');
+			return [];
+		}
+		
+		$start = $year . '-' . $month . '-01 00:00:00.000';
+		$end = $year . '-' . $month . '-' . cal_days_in_month (CAL_GREGORIAN, $month, $year) . ' 23:59:59.000';
+		
+		return self::query ()
+			->where ('ts between "' . $start . '" and "' . $end . '"')
+			->where ('published', 'yes')
+			->order ('ts desc')
+			->fetch_orig ($limit, $offset);
 	}
 
 	/**
 	 * Count posts by a certain year and month.
 	 */
 	public static function count_by_month ($year, $month, $limit = 10, $offset = 0) {
-		$ids = \DB::shift_array ('select id from #prefix#blog_post where year(ts) = ? and month(ts) = ? and published = "yes"', $year, $month);
-		
-		if (! is_array ($ids) || count ($ids) === 0) {
-			return array ();
+		if (! is_numeric ($year)) {
+			error_log ('Year must be numeric');
+			return 0;
 		}
-
-		return self::query ()->where ('id in(' . join (',', $ids) . ')')->where ('published', 'yes')->order ('ts desc')->count ();
+		
+		if (! is_numeric ($month)) {
+			error_log ('Month must be numeric');
+			return 0;
+		}
+		
+		$start = $year . '-' . $month . '-01 00:00:00.000';
+		$end = $year . '-' . $month . '-' . cal_days_in_month (CAL_GREGORIAN, $month, $year) . ' 23:59:59.000';
+		
+		return self::query ()
+			->where ('ts between "' . $start . '" and "' . $end . '"')
+			->where ('published', 'yes')
+			->count ();
 	}
 
 	/**

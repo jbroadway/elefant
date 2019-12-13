@@ -113,7 +113,7 @@ $page->add_meta ('og:title', $post->title, 'property');
 $page->add_meta ('og:description', $desc, 'property');
 $page->add_meta ('og:url', $url, 'property');
 
-if ($post->thumbnail !== '') {
+if ($post->thumbnail !== '' && file_exists ($post->thumbnail)) {
 	$page->add_meta (
 		'og:image',
 		($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . str_replace (' ', '%20', $post->thumbnail),
