@@ -246,10 +246,113 @@ tt {
 		float: right;
 	}
 
+/* Single column form styles */
+
 .form {
 	width: 720px;
 	margin: auto;
 }
+
+/* Two-column edit form styles */
+
+.editform {
+	width: auto !important;
+	margin-right: 1em;
+}
+
+	.editform-title,
+	.editform-title h2 {
+		margin-left: 0;
+		padding-left: 0;
+	}
+	
+	.editform-buttons {
+		text-align: right;
+	}
+
+	.editform-main>div,
+	.editform-main>p {
+		margin-bottom: 1em;
+	}
+
+	.editform-side>div,
+	.editform-side>p {
+		min-width: 275px;
+		max-width: 275px;
+		margin-bottom: 1em;
+		margin-left: auto;
+	}
+
+	.editform input,
+	.editform textarea {
+		max-width: 95%;
+	}
+
+	.editform-section {
+		background-color: #fff;
+		border: 1px solid #e5e5e5;
+		border-radius: 2px;
+		/*box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.2);*/
+		padding: 10px 0px 0px 5px;
+	}
+
+	.editform-section.info {
+		padding-left: 10px;
+	}
+	
+	.editform .extended-header,
+	.editform .extended-fields {
+		max-width: 285px;
+		margin-left: auto;
+	}
+	
+		@media screen and (max-width: 834px) {
+			.editform-main {
+				width: 98%;
+				max-width: 98%;
+			}
+			
+			.editform-side {
+				width: 98%;
+				max-width: 98%;
+			}
+			
+			.editform-side>div,
+			.editform-side>p {
+				margin-left: 0;
+				margin-right: auto;
+			}
+			
+			.editform .extended-header,
+			.editform .extended-fields {
+				margin-left: 0;
+				margin-right: auto;
+			}
+		}
+	
+		@media screen and (max-width: 768px) {
+			.editform-title {
+				width: 98%;
+				max-width: 98%;
+			}
+			
+			.editform-buttons {
+				width: 98%;
+				max-width: 98%;
+				margin-top: -2.8em;
+			}
+		}
+	
+		@media screen and (max-width: 507px) {
+			.editform-buttons button,
+			.editform-buttons input[type=submit],
+			.editform-buttons a {
+				display: block;
+				margin-bottom: 0.5em;
+				margin-left: auto;
+			}
+		}
+	}
 
 .wysiwyg {
 	border: 0px none !important;

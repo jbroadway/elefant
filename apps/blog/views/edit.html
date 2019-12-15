@@ -3,31 +3,30 @@
 {! admin/util/emojiarea !}
 {! admin/util/twemoji !}
 
-<div class="form">
+<div class="editform">
 
 <form method="POST" id="blog-edit-form">
 
 <div class="e-row-variable e-no-padding-left">
-	<div id="title" class="e-col-50 e-no-padding-left">
+	<div id="title" class="e-col-25 e-no-padding-left editform-title">
 		{% if title == '' %}
 			<h2>{"Add Blog Post"}</h2>
 		{% else %}
-			<h2>{"Edit Blog Post"}: {{title}}</h2>
+			<h2>{"Edit Blog Post"}</h2>
 		{% end %}
 	</div>
-	<div id="save-buttons" class="e-col-50 e-no-padding">
+	<div id="save-buttons" class="e-col-75 e-no-padding editform-buttons">
 		<p style="text-align: right">
 			<span id="bgsave-status"></span>
-			<input type="submit" value="{"Save Blog Post"}" class="autosave-clear" />&nbsp;
-			<input type="submit" value="{"Save &amp; Keep Editing"}" id="bgsave" />&nbsp;
-			<input type="submit" value="{"Preview"}" onclick="return webpage_preview (this.form)" />&nbsp;
-			<a href="/admin/cancel?type=Blog&id={{ id }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>&nbsp;
-			
+			<input type="submit" value="{"Save Blog Post"}" class="autosave-clear" />
+			<input type="submit" value="{"Save &amp; Keep Editing"}" id="bgsave" />
+			<input type="submit" value="{"Preview"}" onclick="return webpage_preview (this.form)" />
+			<a href="/admin/cancel?type=Blog&id={{ id }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
 		</p>
 	</div>
 </div>
 
-<div class="e-row-variable">
+<div class="e-row-variable e-no-padding-left">
 	<div class="e-col-75 e-no-padding-left editform-main">
 
 <p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
@@ -113,46 +112,6 @@
 <div class="clear"></div>
 
 <style>
-#title,
-#title h2 {
-	margin-left: 0;
-	padding-left: 0;
-}
-
-.form {
-	width: auto !important;
-}
-
-.editform-main>div,
-.editform-main>p {
-	margin-bottom: 1em;
-}
-
-.editform-side>div,
-.editform-side>p {
-	min-width: 275px;
-	max-width: 275px;
-	margin-bottom: 1em;
-	margin-left: auto;
-}
-
-input,
-textarea {
-	max-width: 95%;
-}
-
-.editform-section {
-	background-color: #fff;
-	border: 1px solid #e5e5e5;
-	border-radius: 2px;
-	/*box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.2);*/
-	padding: 10px 0px 0px 5px;
-}
-
-.editform-section.info {
-	padding-left: 10px;
-}
-
 .meta p {
 	margin-bottom: 0;
 }
@@ -187,12 +146,6 @@ textarea {
 
 .toggle {
 	margin-bottom: 1.5em !important;
-}
-
-#extended-header-blogpost,
-#extended-fields-blogpost {
-	max-width: 285px;
-	margin-left: auto;
 }
 </style>
 
