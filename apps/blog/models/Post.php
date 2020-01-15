@@ -63,6 +63,10 @@ class Post extends \ExtendedModel {
 	public static $plural_name = 'Blog Posts';
 
 	public static function _publish_queued ($posts) {
+		if (! is_array ($posts)) {
+			$posts = [];
+		}
+
 		foreach (array_keys ($posts) as $k) {
 			if ($posts[$k]->published === 'que') {
 				$posts[$k]->published = 'yes';
@@ -70,6 +74,7 @@ class Post extends \ExtendedModel {
 				\Versions::add ($posts[$k]);
 			}
 		}
+
 		return $posts;
 	}
 
