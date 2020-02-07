@@ -135,7 +135,7 @@ class Versions extends Model {
 				// return for a class type
 				return count (Versions::query ()
 					->where ('class', $obj)
-					->group ('pkey')
+					->order ('pkey')
 					->fetch_field ('pkey'));
 			}
 
