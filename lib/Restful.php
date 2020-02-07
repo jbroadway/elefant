@@ -189,6 +189,7 @@ class Restful {
 		$res = new StdClass;
 		$res->success = false;
 		$res->error = $message;
+		error_log ($message);
 		echo json_encode ($res);
 		return null;
 	}
