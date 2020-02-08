@@ -40,4 +40,16 @@ class Block extends Model {
 	 * The database table name.
 	 */
 	public $table = '#prefix#block';
+	
+	/**
+	 * Link format for version history.
+	 */
+	public static $versions_link = '/blocks/edit?id={{id}}';
+
+	/**
+	 * Fields to display as links in version history.
+	 */
+	public static $versions_display_fields = [
+		'title' => 'Title'
+	];
 }

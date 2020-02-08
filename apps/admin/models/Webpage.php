@@ -62,6 +62,18 @@ class Webpage extends ExtendedModel {
 	 * Plural display name for this model type.
 	 */
 	public static $plural_name = 'Web Pages';
+	
+	/**
+	 * Link format for version history.
+	 */
+	public static $versions_link = '/admin/edit?page={{id}}';
+
+	/**
+	 * Fields to display as links in version history.
+	 */
+	public static $versions_display_fields = [
+		'title' => 'Title'
+	];
 
 	/**
 	 * Override the getter for head to include the description

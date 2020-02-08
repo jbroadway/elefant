@@ -61,6 +61,18 @@ class Post extends \ExtendedModel {
 	 * Plural display name for this model type.
 	 */
 	public static $plural_name = 'Blog Posts';
+	
+	/**
+	 * Link format for version history.
+	 */
+	public static $versions_link = '/blog/edit?id={{id}}';
+
+	/**
+	 * Fields to display as links in version history.
+	 */
+	public static $versions_display_fields = [
+		'title' => 'Title'
+	];
 
 	public static function _publish_queued ($posts) {
 		if (! is_array ($posts)) {

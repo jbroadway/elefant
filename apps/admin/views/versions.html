@@ -29,14 +29,26 @@
 	<p style="clear: both">
 	<table width="100%">
 		<tr>
-			<th width="30%">{"ID"}</th>
-			<th width="30%">{"Last changed"}</th>
-			<th width="25%">{"Author"}</th>
-			<th width="15%">&nbsp;</th>
+			<th>{"ID"}</th>
+			{% foreach display_fields as _field, _label %}
+				<th>{{_label|__}}</th>
+			{% end %}
+			<th style="min-width: 250px">{"Last changed"}</th>
+			<th style="min-width: 200px">{"Author"}</th>
+			<th style="min-width: 100px">&nbsp;</th>
 		</tr>
 	{% foreach history %}
 		<tr>
 			<td>{{ loop_value->pkey }}</td>
+			
+			{% foreach display_fields as _field, _label %}
+				{% if link != '' %}
+					<td><a href="{{ link|Versions::fill_link (%s, $data->loop_value) }}">{{ _field|Versions::display_field (%s, $data->loop_value) }}</a></td>
+				{% else %}
+					<td>{{ _field|Versions::display_field (%s, $data->loop_value) }}</td>
+				{% end %}
+			{% end %}
+			
 			<td>{{ loop_value->ts|I18n::date_time }}</td>
 			<td>{{ loop_value->user|admin_filter_user_name }}</td>
 			<td style="text-align: right"><a href="/admin/versions?type={{ type }}&id={{ loop_value->pkey }}">{"Show versions"}</a></td>

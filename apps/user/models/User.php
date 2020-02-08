@@ -126,6 +126,18 @@ class User extends ExtendedModel {
 	 * Acl object for `require_acl()` method. Get and set via `User::acl()`.
 	 */
 	public static $acl = null;
+	
+	/**
+	 * Link format for version history.
+	 */
+	public static $versions_link = '/user/details?id={{id}}';
+
+	/**
+	 * Fields to display as links in version history.
+	 */
+	public static $versions_display_fields = [
+		'name' => 'Name'
+	];
 
 	/**
 	 * Get all social links for the current user.

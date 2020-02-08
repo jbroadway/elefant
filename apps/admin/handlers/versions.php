@@ -64,5 +64,7 @@ echo $tpl->render ('admin/versions', array (
 	'total' => $count,
 	'count' => count ($history),
 	'url' => sprintf ('/admin/versions?type=%s&id=%s&offset=%%d', $_GET['type'], $_GET['id']),
-	'deleted' => $deleted
+	'deleted' => $deleted,
+	'display_fields' => Versions::display_fields ($_GET['type']),
+	'link' => Versions::link ($_GET['type'])
 ));

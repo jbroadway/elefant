@@ -246,4 +246,46 @@ class Versions extends Model {
 		$ar = new ActiveResource;
 		return $ar->pluralize ($name);
 	}
+
+	/**
+	 * Get the link for a class, if any.
+	 */	
+	public static function link ($name) {
+		if (isset ($name::$versions_link)) {
+			return $name::$versions_link;
+		}
+		return '';
+	}
+
+	/**
+	 * Fill a link with an individual version entry's ID.
+	 */	
+	public static function fill_link ($link, $row) {
+		$data = json_decode ($row->serialized);
+		
+		return $GLOBALS['tpl']->render_string ($link, $data);
+	}
+
+	/**
+	 * Get the display fields for a class, if any.
+	 */	
+	public static function display_fields ($name) {
+		if (isset ($name::$versions_display_fields) && is_array ($name::$versions_display_fields)) {
+			return $name::$versions_display_fields;
+		}
+		return [];
+	}
+
+	/**
+	 * Display an individual serialized field's value.
+	 */	
+	public static function display_field ($name, $row) {
+		$data = json_decode ($row->serialized);
+
+		if (isset ($data->{$name})) {
+			return $data->{$name};
+		}
+
+		return '';
+	}
 }
