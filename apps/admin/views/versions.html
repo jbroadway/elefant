@@ -15,15 +15,16 @@
 <p><a href="/admin/versions?type={{type|urlencode}}">&laquo; {"All"} {{plural}}</a></p>
 {% end %}
 
-<p style="float: left">
+<div class="e-row-variable">
+	<div class="e-col-50 e-no-padding-left">
 {! navigation/pager?style=results&url=[url]&total=[total]&count=[count]&limit=[limit] !}
-</p>
-
+	</div>
+	<div class="e-col-50 e-no-padding-right" style="float: right">
 {% if total > $data->limit %}
-<div style="float: right">
-{! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
-</div>
+	{! navigation/pager?style=numbers&url=[url]&total=[total]&count=[count]&limit=[limit] !}
 {% end %}
+	</div>
+</div>
 
 {% if id === false %}
 	<p style="clear: both">
