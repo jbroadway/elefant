@@ -25,5 +25,5 @@
  * https://github.com/emojione/emojione
  */
 
-$page->add_style ('//cdn.jsdelivr.net/gh/mervick/emojionearea@master/dist/emojionearea.min.css');
-$page->add_script ('//cdn.jsdelivr.net/gh/mervick/emojionearea@master/dist/emojionearea.min.js');
+$page->add_style ('https://cdn.jsdelivr.net/npm/emojionearea@3.4.1/dist/emojionearea.min.css', 'head', '', 'sha256-LKawN9UgfpZuYSE2HiCxxDxDgLOVDx2R4ogilBI52oc=', 'anonymous');
+$page->add_script ('https://cdn.jsdelivr.net/npm/emojionearea@3.4.1/dist/emojionearea.min.js', 'head', '', 'sha256-hhA2Nn0YvhtGlCZrrRo88Exx/6H8h2sd4ITCXwqZOdo=', 'anonymous');
