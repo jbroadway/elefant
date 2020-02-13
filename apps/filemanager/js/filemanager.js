@@ -47,7 +47,7 @@ var filemanager = (function ($) {
 		}
 
 		$.get (
-			self.prefix + 'ls/' + opts.path,
+			self.prefix + 'ls?file=' + encodeURIComponent (opts.path),
 			callback
 		);
 	};
@@ -71,7 +71,8 @@ var filemanager = (function ($) {
 		}
 
 		$.post (
-			self.prefix + 'mkdir/' + opts.path + '/' + opts.name,
+			self.prefix + 'mkdir',
+			{ file: + opts.path + '/' + opts.name },
 			callback
 		);
 	};
@@ -83,7 +84,8 @@ var filemanager = (function ($) {
 		}
 
 		$.post (
-			self.prefix + 'rm/' + opts.path,
+			self.prefix + 'rm',
+			{ file: opts.path },
 			callback
 		);
 	};
@@ -95,7 +97,8 @@ var filemanager = (function ($) {
 		}
 
 		$.post (
-			self.prefix + 'rmdir/' + opts.path,
+			self.prefix + 'rmdir',
+			{ file: opts.path },
 			callback
 		);
 	};
@@ -111,8 +114,8 @@ var filemanager = (function ($) {
 		}
 
 		$.post (
-			self.prefix + 'rm/' + opts.path,
-			{rename: opts.rename},
+			self.prefix + 'rm',
+			{ file: opts.path, rename: opts.rename },
 			callback
 		);
 	};
@@ -128,8 +131,8 @@ var filemanager = (function ($) {
 		}
 
 		$.post (
-			self.prefix + 'drop/' + opts.path,
-			{folder: opts.folder},
+			self.prefix + 'drop',
+			{ file: opts.path, folder: opts.folder },
 			callback
 		);
 	};
@@ -149,8 +152,8 @@ var filemanager = (function ($) {
 		}
 
 		$.post (
-			self.prefix + 'prop/' + opts.path,
-			{prop: opts.prop, value: opts.value},
+			self.prefix + 'prop',
+			{ file: opts.path, prop: opts.prop, value: opts.value },
 			callback
 		);
 	};

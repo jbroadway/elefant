@@ -52,8 +52,8 @@ $page->add_script (
 	)
 );
 $page->add_script ('/apps/filemanager/js/jquery.filedrop.js');
-$page->add_script ('/apps/filemanager/js/filemanager.js');
-$page->add_script ('/apps/filemanager/js/jquery.filebrowser.js?v=2');
+$page->add_script ('/apps/filemanager/js/filemanager.js?v=2');
+$page->add_script ('/apps/filemanager/js/jquery.filebrowser.js?v=3');
 $page->add_script (
 	sprintf (
 		'<script>var filebrowser_max_filesize = %s;</script>',

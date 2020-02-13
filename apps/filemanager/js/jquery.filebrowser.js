@@ -62,6 +62,7 @@
 	// Callback to update list of files
 	self.update_list = function (res) {
 		if (! res.success) {
+			console.error (res.data)
 			return;
 		}
 
@@ -136,10 +137,8 @@
 
 	// Fetch folder of files
 	self.fetch_list = function () {
-		$('#filebrowser-dirs option:selected').each (function () {
-			self.opts.path = $(this).val ();
-			filemanager.ls ({path: self.opts.path}, self.update_list);
-		});
+		self.opts.path = $('#filebrowser-dirs option:selected').val ();
+		filemanager.ls ({path: self.opts.path}, self.update_list);
 	};
 
 	// Select a file; return it if not multiple
@@ -288,7 +287,7 @@
 		self.list = $('#filebrowser-list');
 		self.upload = $('#filebrowser-upload');
 
-		self.dirs.change (self.fetch_list);
+		self.dirs.on ('change', self.fetch_list);
 
 		filemanager.dirs (self.update_dirs);
 		filemanager.ls ({path: self.opts.path}, self.update_list);
