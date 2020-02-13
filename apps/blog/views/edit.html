@@ -1,7 +1,6 @@
 {! user/util/userchooser !}
 {! filemanager/util/browser !}
 {! admin/util/emojiarea !}
-{! admin/util/twemoji !}
 
 <div class="editform">
 
@@ -113,8 +112,6 @@
 
 <script>
 $(function () {
-	twemoji.parse (document.querySelector ('#title h2'));
-	
 	$('[name=title]').emojioneArea ({
 		unicodeAlt: true,
 		pickerPosition: 'bottom',
@@ -128,7 +125,6 @@ $(function () {
 			$(this).val (text);
 		}
 	}).blur (function () {
-		console.log ('blur')
 		var text = $(this).val ();
 		text = URLify (text)
 		$(this).val (text);
