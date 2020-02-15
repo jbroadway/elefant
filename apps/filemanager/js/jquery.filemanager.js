@@ -28,8 +28,9 @@
 			
 			switch (cmd) {
 				case 'mkdir':
-					var name = downcode ( prompt ($.i18n ('New folder name:'), ''), dir_length );
-					if (name) {
+					var name = prompt ($.i18n ('New folder name:'), '');
+					if (name != null) {
+						name = downcode (name, dir_length);
 						$.post (options.root + cmd, {file: options.file + '/' + name}, function (res) {
 							if (res.success) {
 								$.add_notification (res.data.msg);
@@ -41,8 +42,9 @@
 					}
 					break;
 				case 'mv':
-					var name = downcode ( prompt ($.i18n ('Rename:'), options.name), dir_length);
-					if (name) {
+					var name = prompt ($.i18n ('Rename:'), options.name);
+					if (name != null) {
+						name = downcode (name, dir_length);
 						$.post (options.root + cmd, {file: options.file, rename: name}, function (res) {
 							if (res.success) {
 								$.add_notification (res.data.msg);
