@@ -263,7 +263,7 @@ class User extends ExtendedModel {
 			$controller->redirect ('/user/too-many-attempts');
 		}
 
-		if ($u && crypt ($pass, $u->password) == $u->password) {
+		if ($u && hash_equals (crypt ($pass, $u->password), $u->password)) {
 			$class = get_called_class ();
 			self::$user = new $class ((array) $u, FALSE);
 			if (Appconf::user ('User', 'multi_login')) {
