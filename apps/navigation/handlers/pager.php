@@ -209,7 +209,7 @@ if ($data['style'] === 'results') {
 			($o->offset + 1),
 			$o->last,
 			$o->total,
-			$o->label
+			$o->plural
 		);
 	}
 	echo '</div>';
