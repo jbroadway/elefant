@@ -2,7 +2,7 @@
 
 /**
  * Provides RESTful CRUD API access to the objects specified in
- * `apps/api/conf/config.php`. Requests all require providing
+ * `apps/api/conf/config.php`. Add/edit/delete requests require
  * an API token and an HMAC value calculated using a secret key
  * and the concatenation of the following data:
  *
@@ -16,7 +16,7 @@
  *
  *   $token = 'my token';
  *   $secret = 'my secret api key';
- *   $data = 'GETwww.example.com/hello?name=John&last=Doe';
+ *   $data = 'getwww.example.com/hello?name=john&last=doe';
  *   $hash = hash_hmac ('sha256', $data, $secret);
  *
  *   // Now make an HTTP Basic client request and use
@@ -29,13 +29,12 @@
  * to request token and hash.
  *
  * Note: See `apps/api/models/Api.php` for info on generating access
- * tokens.
+ * tokens. See `user\Auth\HMAC::method()` for info on how the HMAC
+ * data should be encoded.
  */
 
 $page->layout = false;
 header ('Content-Type: application/json');
-
-$this->require_auth (user\Auth\HMAC::init ($this, $cache));
 
 $error = false;
 
@@ -66,6 +65,8 @@ if (! isset ($appconf['Objects'][$this->params[0]])) {
 			 *
 			 *   {"success":true,"data":{"keyfieldname": "value"}}
 			 */
+			$this->require_auth (user\Auth\HMAC::init ($this, $cache));
+
 			if (strtolower ($_SERVER['REQUEST_METHOD']) != 'post') {
 				$error = 'Request method must be POST';
 				break;
@@ -98,6 +99,8 @@ if (! isset ($appconf['Objects'][$this->params[0]])) {
 			 *
 			 *   {"success":true,"data":{"keyfieldname": "value"}}
 			 */
+			$this->require_auth (user\Auth\HMAC::init ($this, $cache));
+
 			if (strtolower ($_SERVER['REQUEST_METHOD']) != 'post') {
 				$error = 'Request method must be POST';
 				break;
@@ -132,6 +135,8 @@ if (! isset ($appconf['Objects'][$this->params[0]])) {
 			 *
 			 *   {"success":true,"data":{"keyfieldname":"value"}}
 			 */
+			$this->require_auth (user\Auth\HMAC::init ($this, $cache));
+
 			$obj = new $class ($this->params[2]);
 			if ($obj->error) {
 				$error = $obj->error;
@@ -142,6 +147,7 @@ if (! isset ($appconf['Objects'][$this->params[0]])) {
 			}
 			break;
 		case 'find':
+		case 'list':
 			/**
 			 * Fetch all objects matching a search. Parameters include:
 			 *
