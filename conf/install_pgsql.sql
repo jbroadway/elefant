@@ -121,11 +121,15 @@ create index #prefix#versions_user on #prefix#versions ("user", ts);
 create table #prefix#api (
 	token varchar(35) not null primary key,
 	api_key varchar(35) not null,
-	user_id integer not null
+	user_id integer not null,
+	issued timestamp not null,
+	valid char(3) not null default 'yes',
+	check (valid in ('yes', 'no'))
 );
 
-create index #prefix#api_token on #prefix#api (token, api_key);
+create index #prefix#api_token on #prefix#api (token, api_key, valid);
 create index #prefix#api_user on #prefix#api (user_id);
+create index #prefix#api_issued on #prefix#api (issued);
 
 create sequence #prefix#blog_post_id_seq;
 

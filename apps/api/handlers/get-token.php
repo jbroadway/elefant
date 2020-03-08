@@ -15,12 +15,17 @@ if (! isset ($_SERVER['argv'][2])) {
 }
 
 $user = new User ($_SERVER['argv'][2]);
+
 if ($user->error) {
 	Cli::out ('Error: User not found.', 'error');
 	return;
 }
 
-$a = api\Api::query ()->where ('user_id', $user->id)->single ();
+$a = api\Api::query ()
+	->where ('user_id', $user->id)
+	->where ('valid', 'yes')
+	->single ();
+
 if ($a && ! $a->error) {
 	echo $a->token . ':' . $a->api_key . "\n";
 	return;

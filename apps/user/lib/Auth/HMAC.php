@@ -113,6 +113,11 @@ class HMAC {
 			if ($api->error) {
 				return FALSE;
 			}
+			
+			if ($api->valid != 'yes') {
+				return FALSE;
+			}
+			
 			$api_key = $api->api_key;
 			$user_id = $api->user_id;
 

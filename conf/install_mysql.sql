@@ -103,8 +103,11 @@ create table #prefix#api (
 	token char(35) not null primary key,
 	api_key char(35) not null,
 	user_id int not null,
-	index (token, api_key),
-	index (user_id)
+	issued datetime not null,
+	valid enum('yes','no') not null default 'yes',
+	index (token, api_key, valid),
+	index (user_id),
+	index (issued)
 ) default charset=utf8;
 
 create table #prefix#blog_post (

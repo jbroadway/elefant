@@ -66,11 +66,15 @@ class Api extends \Model {
 		if ($a && ! $a->error) {
 			$a->token = md5 (uniqid (mt_rand (), 1));
 			$a->api_key = md5 (uniqid (mt_rand (), 1));
+			$a->issued = gmdate ('Y-m-d H:i:s');
+			$a->valid = 'yes';
 		} else {
 			$a = new Api (array (
 				'token' => md5 (uniqid (mt_rand (), 1)),
 				'api_key' => md5 (uniqid (mt_rand (), 1)),
-				'user_id' => $user_id
+				'user_id' => $user_id,
+				'issued' => gmdate ('Y-m-d H:i:s'),
+				'valid' => 'yes'
 			));
 		}
 		while (! $a->put ()) {
