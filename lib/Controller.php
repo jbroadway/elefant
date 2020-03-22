@@ -1097,20 +1097,26 @@ class Controller {
 	 * should be performed.
 	 */
 	public function installed ($app, $version) {
-		$v = DB::shift ('select version from #prefix#apps where name = ?', $app);
-		if (! $v) {
+		if ($this->_versions == null) {
+			$this->_versions = DB::pairs ('select name, version from #prefix#apps');
+		}
+		if (! isset ($this->_versions[$app])) {
 			return false;
 		}
-		if (version_compare ($version, $v) === 0) {
+		if (version_compare ($version, $this->_versions[$app]) === 0) {
 			return true;
 		}
-		return $v;
+		return $this->_versions[$app];
 	}
+	
+	private $_versions = null;
 
 	/**
 	 * Mark an app and version as installed.
 	 */
 	public function mark_installed ($app, $version) {
+		$this->_versions = null; // Clear the cache
+
 		$v = DB::shift ('select version from #prefix#apps where name = ?', $app);
 		if ($v) {
 			return DB::execute ('update #prefix#apps set version = ? where name = ?', $version, $app);
