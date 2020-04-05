@@ -282,6 +282,9 @@ class Controller {
 	public function __construct ($hooks = array ()) {
 		if (defined ('STDIN')) {
 			$this->cli = true;
+			
+			// Don't use zlib on cli
+			conf ('General', 'compress_output', false);
 		}
 		self::$hooks = $hooks;
 	}
