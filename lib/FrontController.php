@@ -42,26 +42,12 @@ class FrontController {
 	 */
 	public static function run ($argv, $argc) {
 		/**
-		 * For compatibility with PHP 5.4's built-in web server, we bypass
+		 * For compatibility with PHP's built-in web server, we bypass
 		 * the front controller for requests with file extensions and
 		 * return false.
 		 */
 		if (php_sapi_name () === 'cli-server' && isset ($_SERVER['REQUEST_URI']) && preg_match ('/\.[a-zA-Z0-9]+$/', parse_url ($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
 			return false;
-		}
-
-		/**
-		 * Normalize slashes for servers that are still poorly
-		 * configured...
-		 */
-		if (get_magic_quotes_gpc ()) {
-			function stripslashes_gpc (&$value) {
-				$value = stripslashes ($value);
-			}
-			array_walk_recursive ($_GET, 'stripslashes_gpc');
-			array_walk_recursive ($_POST, 'stripslashes_gpc');
-			array_walk_recursive ($_COOKIE, 'stripslashes_gpc');
-			array_walk_recursive ($_REQUEST, 'stripslashes_gpc');
 		}
 
 		/**
@@ -90,9 +76,9 @@ class FrontController {
 		 * Set the default timezone to avoid warnings in date functions,
 		 * and configure session settings.
 		 */
-		date_default_timezone_set(conf ('General', 'timezone'));
-		ini_set ('session.cookie_httponly', 1);
-		ini_set ('session.use_only_cookies', 1);
+		date_default_timezone_set (conf ('General', 'timezone'));
+		@ini_set ('session.cookie_httponly', 1);
+		@ini_set ('session.use_only_cookies', 1);
 
 		/**
 		 * Set the default error reporting level to All except Notices,
@@ -135,10 +121,8 @@ class FrontController {
 		}
 
 		/**
-		 * Initialize some core objects. These function as singletons
-		 * because only one instance of them per request is desired
-		 * (no duplicate execution for things like loading translation
-		 * files).
+		 * Initialize core objects and make them available to handlers
+		 * through the controller.
 		 */
 		$i18n = new I18n ('lang', conf ('I18n'));
 		$page = new Page;
@@ -225,7 +209,7 @@ class FrontController {
 		$page->body = $controller->handle ($handler, false);
 
 		/**
-		 * Control caching of the response
+		 * Control caching of the response.
 		 */
 		if (conf ('Cache', 'control') && !conf ('General', 'debug')) {
 			/* Cache control is ON */
