@@ -285,6 +285,8 @@ class Controller {
 			
 			// Don't use zlib on cli
 			conf ('General', 'compress_output', false);
+			
+			set_exception_handler('Cli::exception_handler');
 		}
 		self::$hooks = $hooks;
 	}

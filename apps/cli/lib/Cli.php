@@ -62,4 +62,12 @@ class Cli {
 			)
 		);
 	}
+	
+	/**
+	 * Used by Controller to print coloured stack traces on the command line.
+	 */
+	public static function exception_handler ($e) {
+		Cli::out ($e->getTraceAsString (), 'error');
+		exit;
+	}
 }
