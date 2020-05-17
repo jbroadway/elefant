@@ -81,7 +81,7 @@
 {% foreach posts %}
 	<tr>
 		<td class="title">
-			<a href="/blog/post/{{ loop_value->id }}/{{ loop_value->slug }}" target="_blank">{{ loop_value->title }}</a><br />
+			<a href="/blog/post/{{ loop_value->id }}/{{ loop_value->slug }}">{{ loop_value->title }}</a><br />
 		</td>
 		<td>
 			{{ loop_value->ts|I18n::short_date }} -
