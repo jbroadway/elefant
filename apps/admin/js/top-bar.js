@@ -168,7 +168,7 @@ $(function () {
 			}
 
 			function toggle_custom_tools_close () {
-				admin_tools_list.stop ().css ('overflow-y', 'hidden').slideUp ('slow');
+				admin_tools_list.stop ().css ('overflow-y', 'hidden').slideUp ('fast');
 			}
 
 			function toggle_custom_tools (e) {
@@ -189,21 +189,24 @@ $(function () {
 			
 				return false;
 			}
+			
+			function hide_custom_tools (e) {
+				var $admin_bar = $('#admin-bar');
+
+				if ($admin_bar.is (':visible') && ! $admin_bar[0].contains (e.target)) {
+					toggle_custom_tools_close ();
+				}
+			}
 
 			if (navigator.pointerEnabled) {
 				$('#admin-tools-arrow').on ('pointerdown', toggle_custom_tools);
+				$(window).on ('pointerdown', hide_custom_tools);
 			} else if (navigator.msPointerEnabled) {
 				$('#admin-tools-arrow').on ('MSPointerDown', toggle_custom_tools);
+				$(window).on ('MSPointerDown', hide_custom_tools);
 			} else {
-				admin_tools.hover (
-					function(){if(admin_tools_list.is(':visible')){toggle_custom_tools_open();}},
-					toggle_custom_tools_close
-				);
-
-				$('#admin-tools-arrow').hover (
-					toggle_custom_tools_open,
-					function () {}
-				).on ('touchdown click', toggle_custom_tools);
+				$('#admin-tools-arrow').on ('touchdown click', toggle_custom_tools);
+				$(window).on ('touchdown click', hide_custom_tools);
 			}
 
 		} else {
