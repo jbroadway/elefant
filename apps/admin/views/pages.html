@@ -60,7 +60,7 @@
 			{"Editing Locked"}
 			{% else %}
 				{% if User::require_acl ('admin/edit') %}
-				<a href="/admin/edit?page={{ loop_value->id }}">{"Edit"}</a>
+				<a href="/admin/edit?page={{ loop_value->id }}&redirect=admin">{"Edit"}</a>
 				{% end %}
 				{% if User::require_acl ('admin/delete') %}
 				|

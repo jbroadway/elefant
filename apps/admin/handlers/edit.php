@@ -40,7 +40,11 @@ if ($f->submit ()) {
 		$_POST['page'] = $_GET['page'];
 		$lock->remove ();
 		$this->hook ('admin/edit', $_POST);
-		$this->redirect ('/' . $_POST['id']);
+		if (isset ($_GET['redirect']) && $_GET['redirect'] == 'admin') {
+			$this->redirect ('/admin/pages');
+		} else {
+			$this->redirect ('/' . $_POST['id']);
+		}
 	}
 	$page->title = __ ('An Error Occurred');
 	echo __ ('Error Message') . ': ' . $wp->error;
