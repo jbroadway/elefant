@@ -69,7 +69,12 @@ if ($f->submit ()) {
 		$_POST['page'] = 'blog/post/' . $p->id . '/' . $p->slug;
 		$lock->remove ();
 		$this->hook ('blog/edit', $_POST);
-		$this->redirect ('/blog/admin');
+		
+		if (isset ($_GET['redirect']) && $_GET['redirect'] == 'post') {
+			$this->redirect ('/blog/post/' . $p->id . '/' . $p->slug);
+		} else {
+			$this->redirect ('/blog/admin');
+		}
 	}
 	$page->title = __ ('An Error Occurred');
 	echo __ ('Error Message') . ': ' . $p->error;

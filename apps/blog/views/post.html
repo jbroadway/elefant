@@ -7,7 +7,7 @@
 {% end %}
 <p class="blog-info info">{{ ts|I18n::date_time }}<span class="blog-by"> - {" by "} <a href="/blog/by/{{ author }}">{{ author }}</a></span>
 {% if User::require_acl ('admin', 'blog') %}
-<span class="hide-in-preview">&nbsp;|&nbsp; <a href="/blog/edit?id={{ id }}">{"Edit Post"}</a></span>
+<span class="hide-in-preview">&nbsp;|&nbsp; <a href="/blog/edit?id={{ id }}&redirect=post">{"Edit Post"}</a></span>
 {% end %}
 </p>
 {{ body|none }}
