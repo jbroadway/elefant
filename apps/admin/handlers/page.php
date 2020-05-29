@@ -79,6 +79,7 @@ $page->_menu_title = Template::sanitize ($wp->menu_title);
 $page->_window_title = Template::sanitize ($wp->window_title);
 $page->description = $wp->description;
 $page->keywords = $wp->keywords;
+$page->thumbnail = $wp->thumbnail;
 $page->layout = $wp->layout;
 $page->head = $wp->head;
 $page->access = $wp->access;
