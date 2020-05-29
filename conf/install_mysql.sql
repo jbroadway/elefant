@@ -11,6 +11,7 @@ create table #prefix#webpage (
 	keywords text,
 	body text,
 	extra text,
+	thumbnail char(128) not null default '',
 	index (access)
 ) default charset=utf8;
 

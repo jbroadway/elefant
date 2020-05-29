@@ -398,6 +398,28 @@ tt {
 		margin-top: -18px;
 	}
 
+.thumbnail-wrapper {
+	background-color: #ccc;
+	position: relative;
+	margin: 0;
+	padding: 0;
+	padding-bottom: 66%;
+	width: 100%;
+	height: 0;
+}
+
+	.thumbnail,
+	.thumbnail-preview {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-image: url(/apps/admin/css/default.jpg);
+		background-position: 50% 50%;
+		background-size: cover;
+	}
+
 #extra-options {
 	display: none;
 }

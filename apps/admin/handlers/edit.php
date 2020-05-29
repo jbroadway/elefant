@@ -31,6 +31,7 @@ if ($f->submit ()) {
 	$wp->description = $_POST['description'];
 	$wp->keywords = $_POST['keywords'];
 	$wp->body = $_POST['body'];
+	$wp->thumbnail = $_POST['thumbnail'];
 	$wp->update_extended ();
 	$wp->put ();
 	if (! $wp->error) {
@@ -51,7 +52,7 @@ if ($f->submit ()) {
 } else {
 	$wp->failed = $f->failed;
 	$wp = $f->merge_values ($wp);
-	$page->title = __ ('Edit Page') . ': ' . Template::sanitize ($wp->title);
+	$page->window_title = __ ('Edit Page') . ': ' . Template::sanitize ($wp->title);
 	$this->run ('admin/util/wysiwyg');
 	echo $tpl->render ('admin/edit/head', $wp);
 	echo $tpl->render ('admin/edit', $wp);

@@ -1,19 +1,80 @@
 {! admin/util/emojiarea !}
+{! filemanager/util/browser !}
 {! admin/util/twemoji !}
 
-<div class="form">
+<div class="editform">
+
+<form method="POST" id="admin-edit-form">
+
+<div class="e-row-variable e-no-padding-left">
+	<div class="e-col-25 e-no-padding-left editform-title">
+		<h2>{"Edit Page"}</h2>
+	</div>
+	<div id="save-buttons" class="e-col-75 e-no-padding editform-buttons">
+		<p style="text-align: right">
+			<span id="bgsave-status"></span>
+			<input type="submit" value="{"Save Page"}" class="autosave-clear" />
+			<input type="submit" value="{"Save &amp; Keep Editing"}" id="bgsave" />
+			<input type="submit" value="{"Preview"}" onclick="return webpage_preview (this.form)" />
+			<a href="/admin/cancel?type=Webpage&id={{ id }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
+		</p>
+	</div>
+</div>
+
+<div class="e-row-variable e-no-padding-left">
+	<div class="e-col-75 e-no-padding-left editform-main">
 
 <p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
 
-<form method="POST" id="admin-edit-form">
 <p>{"Page title"}:<br /><input type="text" name="title" size="50" value="{{ title|quotes }}" onblur="webpage_add_title_to_id (this.form)" />
 <span class="notice" id="title-notice">{"You must enter a page title."}</span></p>
+
 <p>{"Page ID"} (ex: <tt>{{ Appconf::admin ('Site Settings', 'site_domain') }}/<strong>your-page-id</strong></tt>):<br /><input type="text" name="id" size="35" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
 <span class="notice" id="id-notice">{"Your ID must be a lowercase alphanumeric value. It must also not share the name of an app."}</span></p>
+
 <p>{"Body"}: <span class="notice" id="body-notice">{"You must enter body content."}</span><br />
 <textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 
-<h4>{"Extra Options"}</h4>
+<div class="meta editform-section">
+	<h3 style="margin-bottom: 0">{"Meta"}</h3>
+
+	<div class="e-row e-no-padding">
+		<div class="e-col-50 e-no-padding-left">
+	<p>{"Description"}<br />
+	<textarea name="description" id="description" rows="3">{{ description }}</textarea></p>
+		</div>
+		<div class="e-col-50 e-no-padding-right">
+	<p>{"Keywords"}<br />
+	<textarea name="keywords" id="keywords" rows="3">{{ keywords }}</textarea></p>
+		</div>
+	</div>
+</div>
+
+	</div>
+	<div class="e-col-25 editform-side">
+
+<div id="thumbnail-div">
+	{"Thumbnail"}<br />
+	<div class="thumbnail-wrapper">
+		<div class="thumbnail" id="thumbnail-preview"
+		{% if thumbnail !== '' %}
+			style="background-image: url('{{thumbnail}}')"
+		{% end %}
+		></div>
+	</div>
+	<input type="hidden" name="thumbnail" id="thumbnail" size="40" value="{{ thumbnail|quotes }}" />
+	<input type="submit" id="thumbnail-browse" value="{"Choose"}" />
+</div>
+
+<div class="editform-section info">
+
+<div>
+{"Access"}:<br />
+<p class="toggle" data-field="access">
+{% foreach User::access_list () %}<a href="#" data-value="{{ loop_index }}">{{ loop_value }}</a>{% end %}
+</p>
+<input type="hidden" name="access" id="access" value="{{ access }}" />
+</div>
 
 <p>{"Page layout"}:<br />
 <select name="layout">
@@ -21,27 +82,19 @@
 	<option value="{{ _layout }}"{% if _layout == $data->layout %} selected{% end %}>{{ _name }}</option>
 {% end %}
 </select></p>
-<p>{"Access"}:<br />
-<select name="access">
-{% foreach User::access_list () %}
-	<option value="{{ loop_index }}"{% if access === $data->loop_index %} selected{% end %}>{{ loop_value }}</option>
-{% end %}
-</select></p>
-<p>{"Alternate menu title"}:<br /><input type="text" name="menu_title" size="40" value="{{ menu_title|quotes }}" /></p>
-<p>{"Alternate window title"}:<br /><input type="text" name="window_title" size="40" value="{{ window_title|quotes }}" /></p>
+
+<p>{"Alternate menu title"}:<br /><input type="text" name="menu_title" size="26" value="{{ menu_title|quotes }}" /></p>
+
+<p>{"Alternate window title"}:<br /><input type="text" name="window_title" size="26" value="{{ window_title|quotes }}" /></p>
 <span class="notice" id="layout-notice">{"The layout you entered doesn't exist."}</span></p>
-<p>{"Description"}:<br /><textarea name="description" cols="60" rows="4">{{ description }}</textarea></p>
-<p>{"Keywords (comma-separated)"}:<br /><textarea name="keywords" cols="60" rows="4">{{ keywords }}</textarea></p>
+
+</div>
 
 {! admin/util/extended?extends=Webpage&name=Pages&values=[extra|none]&id=[id] !}
 
-<p>
-	<input type="submit" value="{"Save Page"}" class="autosave-clear" />&nbsp;
-	<input type="submit" value="{"Save &amp; Keep Editing"}" id="bgsave" />&nbsp;
-	<input type="submit" value="{"Preview"}" onclick="return webpage_preview (this.form)" />&nbsp;
-	<a href="/admin/cancel?type=Webpage&id={{ id }}&return={{ $_SERVER['HTTP_REFERER']|urlencode }}" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>&nbsp;
-	<span id="bgsave-status"></span>
-</p>
+	</div>
+</div>
+
 </form>
 
 </div>
@@ -49,12 +102,82 @@
 
 <script>
 $(function () {
-	twemoji.parse (document.querySelector ('#title h2'));
-	
 	$('[name=title], [name=description]').emojioneArea ({
 		unicodeAlt: true,
 		pickerPosition: 'bottom',
 		filtersPosition: 'top'
 	});
+	
+	/**
+	 * Takes the following HTML and enables a toggle on them:
+	 *
+	 * <p class="toggle" data-field="access">
+	 *     <a href="#" data-value="public">{"Public"}</a>
+	 *     <!-- etc -->
+	 * </p>
+	 * <input type="hidden" name="access" id="access" value="{{access}}" />
+	 */
+	$('.toggle').each (function () {
+		var $this = $(this),
+			field = $this.data ('field'),
+			$field = $('#' + field);
+		
+		$this.find ('a').removeClass ('toggle-active').click (function (e) {
+			e.preventDefault ();
+
+			var val = $(this).data ('value');
+			$field.val (val);
+
+			$this.find ('a').removeClass ('toggle-active');
+			$(this).addClass ('toggle-active');
+		});
+
+		$this.find ('a[data-value={{access}}]').addClass ('toggle-active');
+	});
+
+	$('#thumbnail-browse').click (function (e) {
+		e.preventDefault ();
+		$.filebrowser ({
+			allowed: ['jpg', 'jpeg', 'png', 'gif'],
+			set_value: '#thumbnail',
+			title: "{"Choose an image"}",
+			thumbs: true,
+			callback: function (file) {
+				$('#thumbnail-preview').css ('background-image', 'url(\'' + encodeURI (file) + '\')');
+			}
+		});
+	});
 });
 </script>
+
+<style>
+.meta p {
+	margin-bottom: 0;
+}
+
+.meta h3 {
+	padding-left: 7px;
+	margin-bottom: 0;
+}
+
+#description,
+#keywords {
+	width: 90%;
+	height: 102px !important;
+}
+
+#thumbnail-div {
+	width: 285px;
+	max-width: 285px;
+	min-width: 285px;
+}
+
+.thumbnail-wrapper {
+	margin-bottom: 5px;
+	margin-left: 0;
+}
+
+.toggle {
+	margin-bottom: 1.5em !important;
+}
+</style>
