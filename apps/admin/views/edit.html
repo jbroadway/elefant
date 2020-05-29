@@ -29,7 +29,7 @@
 <p>{"Page title"}:<br /><input type="text" name="title" size="50" value="{{ title|quotes }}" onblur="webpage_add_title_to_id (this.form)" />
 <span class="notice" id="title-notice">{"You must enter a page title."}</span></p>
 
-<p>{"Page ID"} (ex: <tt>{{ Appconf::admin ('Site Settings', 'site_domain') }}/<strong>your-page-id</strong></tt>):<br /><input type="text" name="id" size="35" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
+<p>{"Page ID"} (ex: <tt>{{ Appconf::admin ('Site Settings', 'site_domain') }}/<strong>your-page-id</strong></tt>):<br /><input type="text" name="id" size="55" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
 <span class="notice" id="id-notice">{"Your ID must be a lowercase alphanumeric value. It must also not share the name of an app."}</span></p>
 
 <p>{"Body"}: <span class="notice" id="body-notice">{"You must enter body content."}</span><br />
@@ -82,11 +82,11 @@
 	<option value="{{ _layout }}"{% if _layout == $data->layout %} selected{% end %}>{{ _name }}</option>
 {% end %}
 </select></p>
+<span class="notice" id="layout-notice">{"The layout you entered doesn't exist."}</span></p>
 
 <p>{"Alternate menu title"}:<br /><input type="text" name="menu_title" size="26" value="{{ menu_title|quotes }}" /></p>
 
 <p>{"Alternate window title"}:<br /><input type="text" name="window_title" size="26" value="{{ window_title|quotes }}" /></p>
-<span class="notice" id="layout-notice">{"The layout you entered doesn't exist."}</span></p>
 
 </div>
 

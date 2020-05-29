@@ -26,10 +26,12 @@ if ($f->submit ()) {
 } else {
 	$pg = new Page;
 	$pg->layout = 'default';
+	$pg->thumbnail = '';
+	$pg->access = 'public';
 	$pg->weight = '0';
 	$pg->failed = $f->failed;
 	$pg = $f->merge_values ($pg);
-	$page->title = __ ('Add Page');
+	$page->window_title = __ ('Add Page');
 	$this->run ('admin/util/wysiwyg');
 	echo $tpl->render ('admin/add/head', $pg);
 	echo $tpl->render ('admin/add', $pg);
