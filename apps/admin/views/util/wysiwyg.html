@@ -1,7 +1,7 @@
 <script>
 $(function () {
 	/**
-	 * This initializes the Redactor editor with the integration
+	 * This initializes the Quill editor with the integration
 	 * points/plugins that tie into Elefant's pages, files, and
 	 * dynamic objects embedding.
 	 */
@@ -9,21 +9,53 @@ $(function () {
 		wysiwyg: function (options) {
 			var buttons = {{buttons|json_encode}},
 				defaults = {
+					modules: {
+						toolbar: [
+							[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+							['bold', 'italic', 'underline', 'strike', 'code'],
+							[{ 'list': 'ordered'}, { 'list': 'bullet' }],
+							[{ 'indent': '-1'}, { 'indent': '+1' }],
+							[{ 'script': 'sub'}, { 'script': 'super' }],
+							['blockquote', 'code-block'],
+							[{'align': []}],
+							['link', 'image', 'video'], // file
+							[{ 'direction': 'rtl' }],
+							['undo', 'redo'],
+							['clean']
+						],
+						history: {
+							delay: 2000,
+							maxStack: 500,
+							userOnly: true
+						}
+					},
+					theme: 'snow',
 					lang: '{{language}}',
-					replaceDivs: false,
-					linkTooltip: false,
+					//replaceDivs: false,
+					//linkTooltip: false,
 					buttonSource: true,
 					plugins: {{plugins|json_encode}},
 					buttons: buttons,
 					focusCallback: function (evt) {
 						autosave_focused = true;
 					}
-				};
+				},
+				editor = null;
 
 			options = $.extend (defaults, options);
 
 			return this.each (function () {
-				$(this).redactor (options);
+				editor = new Quill (this, options);
+				var toolbar = editor.getModule ('toolbar');
+				
+				toolbar.addHandler ('undo', function (value) {
+					console.log ('undo');
+					this.quill.history.undo ();
+				});
+				
+				toolbar.addHandler ('redo', function (value) {
+					this.quill.history.redo ();
+				});
 			});
 		}
 	});

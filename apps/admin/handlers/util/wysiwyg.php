@@ -26,21 +26,20 @@
  */
 
 $this->run ('admin/util/fontawesome');
-$this->run ('admin/util/redactor');
+$this->run ('admin/util/quill');
 
 $page->add_style ('/js/jquery-ui/jquery-ui.css');
-$page->add_style ('/apps/admin/js/redactor/plugins/alignment.css');
 
 $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/js/jquery.quickpager.js');
-$page->add_script ('/apps/admin/js/redactor/plugins/alignment.js');
-//$page->add_script ('/apps/admin/js/redactor/plugins/fullscreen.js');
-$page->add_script ('/apps/admin/js/redactor/plugins/properties.js');
-$page->add_script ('/apps/admin/js/redactor/plugins/source.js');
-$page->add_script ('/apps/admin/js/redactor/plugins/table.js');
-$page->add_script ('/apps/admin/js/redactor/plugins/superscript.js');
-//$page->add_script ('/apps/admin/js/redactor/plugins/textdirection.js');
-$page->add_script ('/apps/admin/js/redactor/plugins/undo.js');
+$page->add_script ('/apps/admin/js/redactor/_plugins/alignment/alignment.js');
+//$page->add_script ('/apps/admin/js/redactor/_plugins/fullscreen/fullscreen.js');
+$page->add_script ('/apps/admin/js/redactor/_plugins/properties/properties.js');
+$page->add_script ('/apps/admin/js/redactor/_plugins/source/source.js');
+$page->add_script ('/apps/admin/js/redactor/_plugins/table/table.js');
+$page->add_script ('/apps/admin/js/redactor/_plugins/superscript/superscript.js');
+//$page->add_script ('/apps/admin/js/redactor/_plugins/textdirection/textdirection.js');
+$page->add_script ('/apps/admin/js/redactor/_plugins/undo/undo.js');
 
 $page->add_script (I18n::export (
 	'Dynamic Objects',
@@ -61,11 +60,11 @@ $page->add_script (I18n::export (
 	'Files'
 ));
 
-if (file_exists ('apps/admin/js/redactor/lang/' . $i18n->language . '_' . $i18n->locale . '.js')) {
-	$page->add_script ('/apps/admin/js/redactor/lang/' . $i18n->language . '_' . $i18n->locale . '.js');
+if (file_exists ('apps/admin/js/redactor/_lang/' . $i18n->language . '_' . $i18n->locale . '.js')) {
+	$page->add_script ('/apps/admin/js/redactor/_lang/' . $i18n->language . '_' . $i18n->locale . '.js');
 	$data['language'] = $i18n->language . '_' . $i18n->locale;
-} elseif (file_exists ('apps/admin/js/redactor/lang/' . $i18n->language . '.js')) {
-	$page->add_script ('/apps/admin/js/redactor/lang/' . $i18n->language . '.js');
+} elseif (file_exists ('apps/admin/js/redactor/_lang/' . $i18n->language . '.js')) {
+	$page->add_script ('/apps/admin/js/redactor/_lang/' . $i18n->language . '.js');
 	$data['language'] = $i18n->language;
 } else {
 	$data['language'] = 'en';
