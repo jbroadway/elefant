@@ -89,7 +89,8 @@ class Webpage extends ExtendedModel {
 			}
 			
 			$head .= '<meta property="og:url" content="' . $GLOBALS['controller']->absolutize ($this->data['id']) . "\" />\n";
-			
+			$head .= '<meta property="og:site_name" content="' . Template::sanitize (conf ('General', 'site_name')) . "\" />\n";
+
 			if (isset ($this->data['window_title']) && $this->data['window_title'] !== '') {
 				$head .= '<meta property="og:title" content="' . Template::sanitize ($this->data['window_title']) . "\" />\n";
 				$head .= '<meta property="twitter:title" content="' . Template::sanitize ($this->data['window_title']) . "\" />\n";
