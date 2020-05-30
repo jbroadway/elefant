@@ -18,7 +18,7 @@
 	<tr>
 		<td>{{ loop_value[name] }}</a></td>
 		<td>{{ loop_index }}</td>
-		<td>{% if loop_value[fallback] %}{{ loop_value[fallback] }}{% else %}{"None"}{% end %}</td>
+		<td>{% if isset ($data->loop_value['fallback']) %}{{ loop_value['fallback'] }}{% else %}{"None"}{% end %}</td>
 		<td>{{ loop_value[charset] }}</td>
 		<td style="text-align: right">{{ loop_index|translator_completed|round }}%</td>
 		<td style="text-align: right">
