@@ -52,10 +52,6 @@ if (preg_match ('/\.(php|phtml|pht|php3|php4|php5|phar|js|rb|py|pl|sh|bash|exe|h
 	return;
 }
 
-if (@file_exists ($root . $_POST['path'] . '/' . $_FILES['file']['name'])) {
-	echo json_encode (array ('success' => false, 'error' => __ ('A file by that name already exists.')));
-	return;
-}
 if (strpos ($_FILES['file']['name'], '..') !== false) {
 	echo json_encode (array ('success' => false, 'error' => __ ('The file name contains invalid characters.')));
 	return;

@@ -50,12 +50,6 @@ foreach ($_FILES['file']['error'] as $error) {
 
 for ($i = 0; $i < count ($_FILES['file']['name']); $i++) {
 	$_FILES['file']['name'][$i] = trim (urldecode ($_FILES['file']['name'][$i]));
-	if (@file_exists ($root . $_POST['path'] . '/' . $_FILES['file']['name'][$i])) {
-		$page->title = __ ('File Already Exists') . ': ' . $_FILES['file']['name'][$i];
-		echo '<p>' . __ ('A file by that name already exists.') . '</p>';
-		echo '<p><a href="/filemanager">' . __ ('Back') . '</a></p>';
-		return;
-	}
 	if (strpos ($_FILES['file']['name'][$i], '..') !== false) {
 		$page->title = __ ('Invalid File Name') . ': ' . $_FILES['file']['name'][$i];
 		echo '<p>' . __ ('The file name contains invalid characters.') . '</p>';

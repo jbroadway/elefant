@@ -64,7 +64,8 @@ $page->add_script (I18n::export (
 	'Are you sure you want to delete this folder and all of its contents?',
 	'Your browser does not support drag and drop file uploads.',
 	'Please upload fewer files at a time.',
-	'The following file is too large to upload'
+	'The following file is too large to upload',
+	'Overwrite existing file?'
 ));
 
 echo $tpl->render ('filemanager/index', $o);
