@@ -1,6 +1,9 @@
-<div class="form">
+{! filemanager/util/browser !}
 
 <form method="post" id="{{_form}}">
+
+<div class="e-row settingsform">
+	<div class="e-col-75">
 
 <p>
 	{"Site name"}:<br />
@@ -28,13 +31,66 @@
 	<input type="text" name="google_analytics_id" size="40" value="{{ google_analytics_id|quotes }}" />
 </p>
 
-
 <p>
 	<input type="submit" value="{"Save Settings"}" />
 	&nbsp;
 	<a href="/" onclick="return confirm ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
 </p>
 
+	</div>
+	<div class="e-col-25 e-no-padding-left">
+
+<div id="thumbnail-div">
+	{"Default thumbnail"}<br />
+	<div class="thumbnail-wrapper">
+		<div class="thumbnail" id="thumbnail-preview"
+		{% if default_thumbnail !== '' %}
+			style="background-image: url('{{default_thumbnail}}')"
+		{% end %}
+		></div>
+	</div>
+	<input type="hidden" name="default_thumbnail" id="thumbnail" size="40" value="{{ default_thumbnail|quotes }}" />
+	<input type="submit" id="thumbnail-browse" value="{"Choose"}" />
+</div>	
+	
+	</div>
+</div>
+
 </form>
 
-</div>
+<div class="clear"></div>
+
+<script>
+$(function () {
+	$('#thumbnail-browse').click (function (e) {
+		e.preventDefault ();
+		$.filebrowser ({
+			allowed: ['jpg', 'jpeg', 'png', 'gif'],
+			set_value: '#thumbnail',
+			title: "{"Choose an image"}",
+			thumbs: true,
+			callback: function (file) {
+				$('#thumbnail-preview').css ('background-image', 'url(\'' + encodeURI (file) + '\')');
+			}
+		});
+	});
+});
+</script>
+
+<style>
+.settingsform {
+	max-width: 960px;
+}
+
+#thumbnail-div {
+	width: 285px;
+	max-width: 285px;
+	min-width: 285px;
+}
+
+.thumbnail-wrapper {
+	margin-bottom: 5px;
+	margin-left: 0;
+}
+</style>
+

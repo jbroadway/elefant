@@ -109,6 +109,10 @@ class Webpage extends ExtendedModel {
 			if (isset ($this->data['keywords'])) {
 				$head .= '<meta name="keywords" content="' . Template::sanitize ($this->data['keywords']) . "\" />\n";
 			}
+			
+			if (! isset ($this->data['thumbnail']) || $this->data['thumbnail'] == '') {
+				$this->data['thumbnail'] = conf ('General', 'default_thumbnail');
+			}
 
 			if (isset ($this->data['thumbnail']) && $this->data['thumbnail'] != '') {
 	

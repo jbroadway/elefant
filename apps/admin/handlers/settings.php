@@ -14,11 +14,11 @@ $page->title = __ ('Site Settings');
 // create the form
 $form = new Form ('post', $this);
 
-// set the form data from the global conf() settings, since they've already
-// been rewritten with the Appconf::storyteller() ones in bootstrap.php
+// set the form data from the global conf() settings
 $form->data = array (
     'site_name' => conf ('General', 'site_name'),
     'site_domain' => conf ('General', 'site_domain') ? conf ('General', 'site_domain') : $_SERVER['HTTP_HOST'],
+    'default_thumbnail' => conf ('General', 'default_thumbnail'),
     'email_from' => conf ('General', 'email_from'),
     'timezone' => conf ('General', 'timezone'),
     'google_analytics_id' => conf ('General', 'google_analytics_id')
@@ -30,6 +30,7 @@ echo $form->handle (function ($form) {
         'Site Settings' => array (
         	'site_name' => $_POST['site_name'],
         	'site_domain' => $_POST['site_domain'],
+        	'default_thumbnail' => $_POST['default_thumbnail'],
             'email_from' => $_POST['email_from'],
             'timezone' => $_POST['timezone'],
             'google_analytics_id' => $_POST['google_analytics_id']

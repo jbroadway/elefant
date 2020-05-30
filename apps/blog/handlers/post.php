@@ -112,6 +112,10 @@ $page->add_meta ('og:site_name', conf ('General', 'site_name'), 'property');
 $page->add_meta ('og:title', $post->title, 'property');
 $page->add_meta ('og:description', $desc, 'property');
 $page->add_meta ('og:url', $url, 'property');
+			
+if ($post->thumbnail == '') {
+	$post->thumbnail = conf ('General', 'default_thumbnail');
+}
 
 if ($post->thumbnail !== '' && file_exists ($post->thumbnail)) {
 	$page->add_meta (
