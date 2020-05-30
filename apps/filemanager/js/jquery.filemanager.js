@@ -14,7 +14,9 @@
 		token: '',
 		strings: {
 			
-		}
+		},
+		dirs: [],
+		files: []
 	};
 
 	$.extend ({
@@ -101,6 +103,8 @@
 									res.data.dirs[i]._path = res.data.dirs[i].path.replace (/'/g, '\\\'');
 									$.tmpl ('tpl_dir', res.data.dirs[i]).appendTo (tbody);
 								}
+								
+								dirs = res.data.dirs
 							}
 							if (res.data.files) {
 								for (var i = 0; i < res.data.files.length; i++) {
@@ -115,6 +119,8 @@
                                     res.data.files[i].conf_root = conf_root + '/';
 									$.tmpl ('tpl_file', res.data.files[i]).appendTo (tbody);
 								}
+								
+								files = res.data.files
 							}
 
 							$.localize_dates ();
@@ -284,8 +290,29 @@
 			dropLeave: function () {
 				$('#filemanager-dropzone').removeClass ('filemanager-over');
 			},
-			drop: function () {
+			drop: function (e) {
 				$('#filemanager-dropzone').removeClass ('filemanager-over');
+				
+				// Confirm if overwriting
+				if (!e.originalEvent.dataTransfer) {
+					return false;
+				}
+				
+				var uploads = e.originalEvent.dataTransfer.files;
+				
+				if (uploads === null || uploads === undefined || uploads.length === 0) {
+					return false;
+				}
+				
+				for (i = 0; i < uploads.length; i++) {
+					for (j = 0; j < files.length; j++) {
+						if (files[j].name == uploads[i].name) {
+							if (! confirm ($.i18n ('Overwrite existing file? ' + uploads[i].name))) {
+								return false;
+							}
+						}
+					}
+				}
 			},
 			uploadStarted: function (i, file, len) {
 				// Save the total so we only notify at the end

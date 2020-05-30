@@ -571,10 +571,7 @@
       // to sending ArrayBufferView.  Sadly, no proper way to detect this
       // functionality has been discovered.  Happily, Chrome 22 also introduced
       // the base ArrayBufferView class, not present in Chrome 21.
-      if ('ArrayBufferView' in window)
-        this.send(ui8a);
-      else
-        this.send(ui8a.buffer);
+      this.send(ui8a);
     };
   } catch (e) {}
 

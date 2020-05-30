@@ -44,7 +44,9 @@ if (isset ($_GET['path'])) {
 	$page->window_title = __ ('Files');
 }
 
-$page->add_style ('/apps/filemanager/css/filemanager.css?v=4');
+$cache_version = '6';
+
+$page->add_style ('/apps/filemanager/css/filemanager.css?v=' . $cache_version);
 $page->add_script (
     sprintf (
         '<script>var conf_root = "%s";</script>',
@@ -53,9 +55,9 @@ $page->add_script (
 );
 $page->add_script ('/js/jquery-ui/jquery-ui.min.js');
 $page->add_script ('/js/urlify.js');
-$page->add_script ('/apps/filemanager/js/jquery.filedrop.js');
+$page->add_script ('/apps/filemanager/js/jquery.filedrop.js?v=' . $cache_version);
 $page->add_script ('/apps/filemanager/js/jquery.tmpl.beta1.min.js');
-$page->add_script ('/apps/filemanager/js/jquery.filemanager.js?v=5');
+$page->add_script ('/apps/filemanager/js/jquery.filemanager.js?v=' . $cache_version);
 $page->add_script ('https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js', 'head', '', 'sha384-5tfO0soa+FisnuBhaHP2VmPXQG/JZ8dLcRL43IkJFzbsXTXT6zIX8q8sIT0VSe2G', 'anonymous');
 $page->add_script (I18n::export (
 	'New folder name:',
