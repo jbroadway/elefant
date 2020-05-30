@@ -68,6 +68,7 @@
 	</div>
 	<input type="hidden" name="thumbnail" id="thumbnail" size="40" value="{{ thumbnail|quotes }}" />
 	<input type="submit" id="thumbnail-browse" value="{"Choose"}" />
+	<input type="submit" id="thumbnail-clear" value="{"Clear"}" />
 </div>
 
 <div class="editform-section info">
@@ -170,6 +171,13 @@ $(function () {
 	);
 	{% end %}
 
+	/**
+	 * Thumbnail field behaviours.
+	 */
+	{% if thumbnail == '' %}
+		$('#thumbnail-clear').hide ();
+	{% end %}
+
 	$('#thumbnail-browse').click (function (e) {
 		e.preventDefault ();
 		$.filebrowser ({
@@ -179,8 +187,16 @@ $(function () {
 			thumbs: true,
 			callback: function (file) {
 				$('#thumbnail-preview').css ('background-image', 'url(\'' + encodeURI (file) + '\')');
+				$('#thumbnail-clear').show ();
 			}
 		});
+	});
+	
+	$('#thumbnail-clear').click (function (e) {
+		e.preventDefault ();
+		$('#thumbnail').val ('');
+		$('#thumbnail-preview').css ('background-image', 'url(\'/apps/admin/css/default.jpg\')');
+		$(e.target).hide ();
 	});
 	
 	$('#ts-now').click (function (e) {
