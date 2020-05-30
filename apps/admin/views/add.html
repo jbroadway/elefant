@@ -24,13 +24,13 @@
 
 <p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
 
-<p>{"Page title"}:<br /><input type="text" name="title" size="50" value="{{ title }}" onblur="webpage_add_title_to_id (this.form)" />
+<p>{"Page title"}<br /><input type="text" name="title" size="50" value="{{ title }}" onblur="webpage_add_title_to_id (this.form)" />
 <span class="notice" id="title-notice">{"You must enter a page title."}</span></p>
 
-<p>{"Page ID"} (ex: <tt>{{ Appconf::admin ('Site Settings', 'site_domain') }}/<strong>your-page-id</strong></tt>):<br /><input type="text" name="id" size="55" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
+<p>{"Page ID"} (ex: <tt>{{ Appconf::admin ('Site Settings', 'site_domain') }}/<strong>your-page-id</strong></tt>)<br /><input type="text" name="id" size="55" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
 <span class="notice" id="id-notice">{"Your ID must be a lowercase alphanumeric value and can't already exist. It must also not share the name of an app."}</span></p>
 
-<p>{"Body"}: <span class="notice" id="body-notice">{"You must enter body content."}</span><br />
+<p>{"Body"} <span class="notice" id="body-notice">{"You must enter body content."}</span><br />
 <textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 
 <div class="meta editform-section">
@@ -68,14 +68,14 @@
 <div class="editform-section info">
 
 <div>
-{"Access"}:<br />
+{"Access"}<br />
 <p class="toggle" data-field="access">
 {% foreach User::access_list () %}<a href="#" data-value="{{ loop_index }}">{{ loop_value }}</a>{% end %}
 </p>
 <input type="hidden" name="access" id="access" value="{{ access }}" />
 </div>
 
-<p>{"Page layout"}:<br />
+<p>{"Page layout"}<br />
 <select name="layout">
 {% foreach admin\Layout::options() as _layout, _name %}
 	<option value="{{ _layout }}"{% if _layout == $data->layout %} selected{% end %}>{{ _name }}</option>
@@ -83,13 +83,13 @@
 </select></p>
 <span class="notice" id="layout-notice">{"The layout you entered doesn't exist."}</span></p>
 
-<p>{"Alternate menu title"}:<br /><input type="text" name="menu_title" size="26" value="{{ menu_title|quotes }}" /></p>
+<p>{"Alternate menu title"}<br /><input type="text" name="menu_title" size="26" value="{{ menu_title|quotes }}" /></p>
 
-<p>{"Alternate window title"}:<br /><input type="text" name="window_title" size="26" value="{{ window_title|quotes }}" /></p>
+<p>{"Alternate window title"}<br /><input type="text" name="window_title" size="26" value="{{ window_title|quotes }}" /></p>
 
 </div>
 
-{! admin/util/extended?extends=Webpage&name=Pages !}
+{! admin/util/extended?extends=Webpage&name=Pages&modal=true !}
 
 	</div>
 </div>
