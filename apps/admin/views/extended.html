@@ -9,10 +9,10 @@
 	<div class="field" id="new-field">
 	<form class="field-form" id="new-field-form">
 		<p>
-			{"Field name"}:
+			{"Field name"}
 			<input type="text" name="label" size="35" />
 			&nbsp;<span class="vertical-hr">|</span>&nbsp;
-			{"Type"}:
+			{"Type"}
 			<select name="type" id="new-field-type">
 				<option value="text">{"Single-line text"}</option>
 				<option value="textarea">{"Paragraph text"}</option>
@@ -35,7 +35,7 @@
 			<a href="#" id="new-field-cancel">{"Cancel"}</a>
 		</p>
 		<p style="float: left; display: none" id="new-field-options">
-			{"Drop down options (one per line)"}:<br />
+			{"Drop down options (one per line)"}<br />
 			<textarea name="options" cols="60" rows="4"></textarea>
 		</p>
 		<br style="clear: both" />
@@ -50,10 +50,10 @@
 		<div class="field-handle" id="\{{id}}-handle"></div>
 		<form class="field-form" id="\{{id}}-form">
 			<p>
-				{"Field name"}:
+				{"Field name"}
 				<input type="text" name="label" value="\{{label}}" size="35" />
 				&nbsp;<span class="vertical-hr">|</span>&nbsp;
-				{"Type"}:
+				{"Type"}
 				<select name="type" id="\{{id}}-type">
 					<option value="text"\{{#if text}} selected\{{/if}}>{"Single-line text"}</option>
 					<option value="textarea"\{{#if textarea}} selected\{{/if}}>{"Paragraph text"}</option>
@@ -76,7 +76,7 @@
 				<a href="#" id="\{{id}}-delete">{"Delete"}</a>
 			</p>
 			<p style="float: left\{{#unless select}}; display: none\{{/unless}}" id="\{{id}}-options">
-				{"Drop down options (one per line)"}:<br />
+				{"Drop down options (one per line)"}<br />
 				<textarea name="options" cols="60" rows="3">\{{{options}}}</textarea>
 			</p>
 			<br style="clear: both" />
