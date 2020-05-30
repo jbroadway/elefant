@@ -90,7 +90,8 @@ class Webpage extends ExtendedModel {
 			
 			$head .= '<meta property="og:url" content="' . $GLOBALS['controller']->absolutize ($this->data['id']) . "\" />\n";
 			$head .= '<meta property="og:site_name" content="' . Template::sanitize (conf ('General', 'site_name')) . "\" />\n";
-
+			$head .= '<meta property="og:type" content="article" />' . "\n";
+			
 			if (isset ($this->data['window_title']) && $this->data['window_title'] !== '') {
 				$head .= '<meta property="og:title" content="' . Template::sanitize ($this->data['window_title']) . "\" />\n";
 				$head .= '<meta property="twitter:title" content="' . Template::sanitize ($this->data['window_title']) . "\" />\n";
@@ -118,7 +119,6 @@ class Webpage extends ExtendedModel {
 
 				$link = $GLOBALS['controller']->absolutize (str_replace (' ', '%20', $this->data['thumbnail']));
 
-				$head .= '<meta property="og:type" content="article" />' . "\n";
 				$head .= '<meta property="twitter:card" content="summary_large_image" />' . "\n";
 				$head .= '<meta property="og:image" content="' . Template::sanitize ($link) . "\" />\n";
 				$head .= '<meta property="twitter:image" content="' . Template::sanitize ($link) . "\" />\n";
