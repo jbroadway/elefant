@@ -261,6 +261,7 @@ body {
 			text-align: right;
 			background-color:initial!important;
 			color: #93278f;
+			outline: none;
 		}
 
 	#admin-update-available {
