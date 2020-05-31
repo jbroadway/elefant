@@ -55,13 +55,19 @@ require_once'lib/Ini.php';
 require_once'lib/Restful.php';
 require_once 'lib/Page.php';
 require_once 'lib/Form.php';
+require_once 'apps/admin/lib/Lock.php';
 require_once 'apps/admin/models/Webpage.php';
 require_once 'apps/blocks/models/Block.php';
 require_once 'apps/blog/models/Post.php';
+require_once 'apps/filemanager/lib/FileManager.php';
+require_once 'apps/filemanager/lib/Image.php';
+require_once 'apps/navigation/lib/Tree.php';
+require_once 'apps/navigation/lib/Link.php';
+require_once 'apps/navigation/lib/Navigation.php';
 require_once 'apps/user/models/User.php';
 require_once 'apps/user/models/Session.php';
 require_once 'lib/vendor/URLify.php';
 
 if (file_exists ('bootstrap.php')) {
-	require_once'bootstrap.php';
+	require_once 'bootstrap.php';
 }
