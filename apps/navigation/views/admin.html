@@ -22,6 +22,19 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 	margin-top:10px;
 }
 
+.tree li,
+.trashbin li {
+	position: relative;
+}
+
+.tree li span,
+.trashbin li span {
+	display: inline-block;
+	position: absolute;
+	left: 50%;
+	color: #888;
+}
+
 </style>
 
 <div class="treeDragDrop">
@@ -36,7 +49,7 @@ body:not(.cursorGrabbing) .treeDragDrop li, .tdd-dragContainer li{
 		<p class="caption">{"Drag pages here to remove them from the tree."}</p>
 		<ul class="tdd-trashbin">
 		{% foreach other_pages %}
-			<li id="{{ loop_index }}">{{ loop_value }}</li>
+			<li id="{{ loop_index }}">{{ loop_value }} <span>/{{ loop_index }}</span></li>
 		{% end %}
 		</ul>
 		
