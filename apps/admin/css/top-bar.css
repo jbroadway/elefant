@@ -176,7 +176,7 @@ body {
 		text-decoration: none;
 		text-align: center;
 		display: block;
-		width: 100%;
+		max-width: 50%;
 		height: 30px;
 		margin: auto;
 		margin-top: -48px;
