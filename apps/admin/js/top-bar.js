@@ -161,7 +161,7 @@ $(function () {
 			var admin_tools = $('#admin-bar'),
 				admin_tools_list = $('#admin-tools-list');
 			
-			$('#admin-bar>a').after ('<span id="admin-tools-arrow"></span>');
+			$('#admin-bar>a').after ('<span id="admin-tools-arrow" title="' + $.i18n ('Open Admin Toolbar (Alt+E)') + '"></span>');
 
 			function toggle_custom_tools_open () {
 				admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast', function(){admin_tools_list.css ('overflow-y', 'auto');});
@@ -172,10 +172,10 @@ $(function () {
 			}
 
 			function toggle_custom_tools (e) {
-				e.preventDefault ();
+				if (e != null) e.preventDefault ();
 
 				// fix for clicks on tools menu links
-				if ($(e.target).attr ('id') !== 'admin-bar' && $(e.target).attr ('id') !== 'admin-tools-arrow') {
+				if (e != null && $(e.target).attr ('id') !== 'admin-bar' && $(e.target).attr ('id') !== 'admin-tools-arrow') {
 					window.location.href = $(e.target).attr ('href');
 					return false;
 				}
@@ -184,7 +184,7 @@ $(function () {
 					admin_tools_list.stop ().css ('overflow-y', 'hidden').slideUp ('fast');
 				} else {
 					admin_tools_list.stop ().css ('height', 'auto').slideDown ('fast', function(){admin_tools_list.css ('overflow-y', 'auto');});
-					$('#admin-tools-list a')[0].focus ();
+					$('#admin-tools-list a').first ().focus ();
 				}
 			
 				return false;
@@ -208,6 +208,13 @@ $(function () {
 				$('#admin-tools-arrow').on ('touchdown click', toggle_custom_tools);
 				$(window).on ('touchdown click', hide_custom_tools);
 			}
+			
+			document.onkeydown = function (z) {
+				if (z.altKey && z.code === 'KeyE') {
+					z.preventDefault ();
+					toggle_custom_tools (null);
+				}
+			};
 
 		} else {
 			// default tools menu

@@ -46,6 +46,8 @@ body {
 	#admin-bar img {
 		margin-top: 0px;
 		border: 0px none;
+		position: relative;
+		z-index; 100001;
 	}
 
 #admin-links {
@@ -183,8 +185,17 @@ body {
 		
 		background-image: url(/apps/admin/css/admin/tools-arrow.png);
 		background-repeat: no-repeat;
-		background-position: 50% 50%;
+		background-position: calc(50% - 10px) calc(50% - 2px);
+		position: relative;
 	}
+	
+		#admin-tools-arrow:after {
+			content: "(Alt+E)";
+			position: absolute;
+			top: 2px;
+			left: 50%;
+			color: #666;
+		}
 	
 		#admin-tools-arrow a {
 			margin-left: 50px;
