@@ -332,6 +332,10 @@ class DB {
 			list ($stmt, $args) = self::prepare (func_get_args ());
 			$stmt->execute ($args);
 			$res = $stmt->fetch (PDO::FETCH_NUM);
+			if (! is_array ($res)) {
+				self::$error = 'Result not found';
+				return false;
+			}
 			return $res[0];
 		} catch (PDOException $e) {
 			self::$error = $e->getMessage ();
