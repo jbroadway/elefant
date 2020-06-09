@@ -532,6 +532,53 @@ class Model {
 		}
 		return new $class;
 	}
+	
+	/**
+	 * Begin a new select query on the same object, resetting the internal
+	 * query state in the process. Optionally you can pass the fields you
+	 * want to return in the query, so you can optimize and not return
+	 * them all.
+	 */
+	public function select ($fields = false) {
+		$this->query_type = 'select';
+		$this->query_fields = ($fields) ? $fields : '*';
+		$this->query_order = '';
+		$this->query_group = '';
+		$this->query_filters = array ();
+		$this->query_params = array ();
+		$this->query_having = array ();
+		$this->query_from = false;
+
+		return $this;
+	}
+	
+	/**
+	 * Resets the query parameters for building a new query. Note that this
+	 * is not necessary for most queries, since `::query()` begins by creating
+	 * a new instance and `select()` resets the query state automatically,
+	 * however there may be cases where queries may be built dynamically and
+	 * need resetting without beginning a new query yet.
+	 */
+	public function reset () {
+		$this->query_type = 'select';
+		$this->query_fields = '*';
+		$this->query_order = '';
+		$this->query_group = '';
+		$this->query_filters = array ();
+		$this->query_params = array ();
+		$this->query_having = array ();
+		$this->query_from = false;
+	}
+	
+	/**
+	 * Specify a new field list for an SQL query. Overrides any values set
+	 * in `query()` or `select()` and sets the value of `$this->query_fields`
+	 * with a custom value.
+	 */
+	public function fields ($fields) {
+		$this->query_fields = $fields;
+		return $this;
+	}
 
 	/**
 	 * Specify an alternate `from` clause for an SQL query. Overrides

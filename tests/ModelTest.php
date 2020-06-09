@@ -265,6 +265,52 @@ class ModelTest extends TestCase {
 		$this->assertEquals ($n, self::$q);
 		$this->assertEquals ($n->bar, 'foobar');
 	}
+	
+	function test_select () {
+		$q = self::$q->query ();
+		
+		$query = $q->select ();
+		$this->assertEquals ($query, $q);
+		
+		$res = $query->fetch_assoc ('foo', 'bar');
+		$this->assertEquals ($res, array ('asdf' => 'foobar'));
+	}
+	
+	function test_fields () {
+		$q = self::$q->query ();
+		
+		$this->assertEquals ($q->query_fields, '*');
+
+		$q->fields ('one, two');
+		
+		$this->assertEquals ($q->query_fields, 'one, two');
+	}
+	
+	function test_reset () {
+		$q = self::$q->query ();
+		
+		$q->query_type = 'delete';
+		$q->fields ('one, two')
+			->where ('one = ?', 'foo')
+			->order ('one desc')
+			->group ('two');
+		
+		$this->assertEquals ($q->query_type, 'delete');
+		$this->assertEquals ($q->query_fields, 'one, two');
+		$this->assertEquals ($q->query_order, ' one desc');
+		$this->assertEquals ($q->query_group, ' `two`');
+		$this->assertEquals ($q->query_filters, ['one = ?']);
+		$this->assertEquals ($q->query_params, ['foo']);
+
+		$q->reset ();
+		
+		$this->assertEquals ($q->query_type, 'select');
+		$this->assertEquals ($q->query_fields, '*');
+		$this->assertEquals ($q->query_order, '');
+		$this->assertEquals ($q->query_group, '');
+		$this->assertEquals ($q->query_filters, []);
+		$this->assertEquals ($q->query_params, []);
+	}
 
 	function test_fetch_assoc () {
 		// fetch_assoc()
