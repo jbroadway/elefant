@@ -80,7 +80,7 @@ if (! $this->internal) {
 
 	// Add meta tags for blog homepage
 	$page->add_meta ('og:url', $this->absolutize ('/blog'), 'property');
-	$page->add_meta ('og:site_name', $site_name);
+	$page->add_meta ('og:site_name', $site_name, 'property');
 	$page->add_meta ('og:type', 'article', 'property');
 	$page->add_meta ('og:title', $blog_title, 'property');
 	$page->add_meta ('twitter:title', $blog_title, 'property');
