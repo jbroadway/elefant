@@ -17,6 +17,9 @@ timezone = GMT
 ; Google Analytics ID
 google_analytics_id = Off
 
+; Default thumbnail for social shares.
+default_thumbnail = Off
+
 [General]
 
 ; Set this to the location you want to redirect admins to after
