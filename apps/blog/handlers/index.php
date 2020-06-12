@@ -73,7 +73,32 @@ if (! is_array ($posts) || count ($posts) === 0) {
 }
 
 if (! $this->internal) {
-	$page->window_title = Appconf::blog ('Blog', 'title');
+	$blog_title = Appconf::blog ('Blog', 'title');
+	$site_name = conf ('General', 'site_name');
+
+	$page->window_title = $blog_title;
+
+	// Add meta tags for blog homepage
+	$page->add_meta ('og:url', $this->absolutize ('/blog'), 'property');
+	$page->add_meta ('og:site_name', $site_name);
+	$page->add_meta ('og:type', 'article', 'property');
+	$page->add_meta ('og:title', $blog_title, 'property');
+	$page->add_meta ('twitter:title', $blog_title, 'property');
+	
+	$thumbnail = conf ('General', 'default_thumbnail');
+	
+	if ($thumbnail && $thumbnail != '') {
+		list ($width, $height) = getimagesize (substr ($thumbnail, 1));
+
+		$page->add_meta ('og:image:width', $width, 'property');
+		$page->add_meta ('og:image:height', $height, 'property');
+
+		$thumbnail_link = $this->absolutize (str_replace (' ', '%20', $thumbnail));
+		
+		$page->add_meta ('og:image', $thumbnail_link, 'property');
+		$page->add_meta ('twitter:card', 'summary_large_image', 'property');
+		$page->add_meta ('twitter:image', $thumbnail_link, 'property');
+	}
 }
 
 $protocol = $this->is_https () ? 'https' : 'http';
