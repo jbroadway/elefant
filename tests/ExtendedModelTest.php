@@ -29,6 +29,20 @@ class MyModelWithDefault extends ExtendedModel {
 	);
 }
 
+class MyModelJsonPretty extends ExtendedModel {
+	public $_extended_field = 'extra';
+	public $_json_flags = JSON_PRETTY_PRINT;
+	public $verify = array (
+		'name' => array (
+			'not empty' => 1
+		),
+		'foo' => array (
+			'not empty' => 1,
+			'extended' => 1
+		)
+	);
+}
+
 class ExtendedModelTest extends TestCase {
 	protected static $o;
 
@@ -131,5 +145,21 @@ class ExtendedModelTest extends TestCase {
 		$extra = array ('foo' => 'qwerty');
 		$this->assertEquals ($extra, self::$o->ext ());
 		$this->assertEquals (json_encode ($extra), self::$o->data['extra']);
+	}
+
+	function test_json_flags () {
+		$m = new MyModelJsonPretty ();
+		
+		$extra = [
+			'foo' => 'qwerty',
+			'bar' => 'asdf'
+		];
+		
+		foreach ($extra as $k => $v) {
+			$m->ext ($k, $v);
+		}
+
+		$this->assertEquals ($extra, $m->ext ());
+		$this->assertEquals (json_encode ($extra, JSON_PRETTY_PRINT), $m->data['extra']);
 	}
 }

@@ -120,6 +120,11 @@ class ExtendedModel extends Model {
 	 * contains your extended properties.
 	 */
 	public $_extended_field;
+	
+	/**
+	 * Optional flags to pass to json_encode() when saving changes.
+	 */
+	public $_json_flags = 0;
 
 	/**
 	 * This is the unserialized array of extended data from the extended field.
@@ -235,7 +240,7 @@ class ExtendedModel extends Model {
 				if (isset ($this->data[$this->_extended_field])) {
 					$this->_extended = (array) json_decode ($this->data[$this->_extended_field]);
 				} else {
-					$this->data[$this->_extended_field] = json_encode (array ());
+					$this->data[$this->_extended_field] = json_encode (array (), $this->_json_flags);
 					$this->_extended = array ();
 				}
 			}
@@ -257,7 +262,7 @@ class ExtendedModel extends Model {
 	public function __set ($key, $val) {
 		if ($key === $this->_extended_field) {
 			$this->_extended = $val;
-			$this->data[$key] = json_encode ($val);
+			$this->data[$key] = json_encode ($val, $this->_json_flags);
 			return;
 		} elseif (isset ($this->_extended_verify[$key])) {
 			return $this->ext ($key, $val);
