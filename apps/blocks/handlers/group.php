@@ -15,6 +15,29 @@
  *        &id[]=block-two
  *        &id[]=block-three !}
  *
+ * Or you can specify a wildcard and it will fetch all blocks that match,
+ * sorted by ID ascending:
+ *
+ *     {! blocks/group?wildcard=page-* !}
+ *
+ * This can be combined with the page ID and a unit size to create a series
+ * of editable divs on a page, like this:
+ *
+ *     {! blocks/group?wildcard=[id]-*&units=100 !}
+ *
+ * The above tag would fetch any blocks beginning with the current page ID
+ * followed by a hyphen `-` and anything else (numbers, text), and wrap them
+ * in divs like this:
+ *
+ *     <div class="block e-col-100" id="block-pageid-1">
+ *         <h2>Block title</h2>
+ *         <p>Block contents...</p>
+ *     </div>
+ *     <div class="block e-col-100" id="block-pageid-2">
+ *         <h2>Block title</h2>
+ *         <p>Block contents...</p>
+ *     </div>
+ *
  * You can also set a `level` parameter to specify which heading level
  * to use for the block titles:
  *
@@ -70,13 +93,19 @@
  * page content.
  */
 
-$ids = (count ($this->params) > 0) ? $this->params : (isset ($data['id']) ? $data['id'] : array ());
-if (! is_array ($ids)) {
-	$ids = array ($ids);
-}
+$wildcard = isset ($data['wildcard']);
 
-if (count ($ids) === 0) {
-	return;
+if (! $wildcard) {
+	$ids = (count ($this->params) > 0) ? $this->params : (isset ($data['id']) ? $data['id'] : array ());
+	if (! is_array ($ids)) {
+		$ids = array ($ids);
+	}
+
+	if (count ($ids) === 0) {
+		return;
+	}
+} else {
+	$ids = [$data['wildcard']];
 }
 
 $level = (isset ($data['level']) && preg_match ('/^h[1-6]$/', $data['level'])) ? $data['level'] : 'h3';
@@ -89,16 +118,29 @@ if (isset ($data['units'])) {
 	$units = 'auto';
 }
 
-$qs = array ();
-foreach ($ids as $id) {
-	$qs[] = '?';
-}
-
 $lock = new Lock ();
-$locks = $lock->exists ('Block', $ids);
-$query = Block::query ()->where ('id in(' . join (', ', $qs) . ')');
-$query->query_params = $ids;
-$blocks = $query->fetch ();
+$locks = [];
+$blocks = [];
+
+if (! $wildcard) {
+	$qs = array ();
+	foreach ($ids as $id) {
+		$qs[] = '?';
+	}
+
+	$locks = $lock->exists ('Block', $ids);
+	$query = Block::query ()->where ('id in(' . join (', ', $qs) . ')');
+	$query->query_params = $ids;
+	$blocks = $query->fetch_orig ();
+} else {
+	$idsearch = str_replace ('*', '%', $ids[0]);
+	$blocks = Block::query ()->where ('id like ?', $idsearch)
+		->order ('id', 'asc')
+		->fetch_orig ();
+	
+	$ids = array_column ($blocks, 'id');
+	$locks = $lock->exists ('Block', $ids);
+}
 
 $list = array ();
 foreach ($blocks as $block) {
@@ -106,7 +148,7 @@ foreach ($blocks as $block) {
 }
 
 $total = count ($blocks);
-if ($units === 'auto' || $total !== count ($units)) {
+if ($units === 'auto' || (! $wildcard && $total !== count ($units))) {
 	if ($total === 2) {
 		$units = array (66, 33);
 	} elseif ($total > 0) {
@@ -115,6 +157,11 @@ if ($units === 'auto' || $total !== count ($units)) {
 		for ($k = 0; $k < $total; $k++) {
 			$units[$k] = $w;
 		}
+	}
+} elseif ($wildcard && count ($units) === 1) {
+	$unit = $units[0];
+	for ($k = 0; $k < $total; $k++) {
+		$units[$k] = $unit;
 	}
 }
 
