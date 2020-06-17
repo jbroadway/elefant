@@ -133,7 +133,7 @@ if (! $wildcard) {
 	$query->query_params = $ids;
 	$blocks = $query->fetch_orig ();
 } else {
-	$idsearch = str_replace ('*', '%', $ids[0]);
+	$idsearch = str_replace ('*', '%', $data['wildcard']);
 	$blocks = Block::query ()->where ('id like ?', $idsearch)
 		->order ('id', 'asc')
 		->fetch_orig ();
@@ -165,6 +165,8 @@ if ($units === 'auto' || (! $wildcard && $total !== count ($units))) {
 	}
 }
 
+$next_wildcard = 1;
+
 foreach ($ids as $k => $id) {
 	if (! isset ($list[$id])) {
 		if ($divs) {
@@ -172,7 +174,7 @@ foreach ($ids as $k => $id) {
 		}
 
 		if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
-			echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false)) . PHP_EOL;
+			echo $tpl->render ('blocks/editable', (object) ['id' => $id, 'locked' => false]) . PHP_EOL;
 		}
 
 		if ($divs) {
@@ -194,14 +196,18 @@ foreach ($ids as $k => $id) {
 	}
 
 	if ($divs) {
-		printf ('<div class="e-col-%d block" id="block-%s">' . PHP_EOL, $units[$k], $b->id);
+		if ($b->background != '') {
+			printf ('<div class="e-col-%d block" id="block-%s" style="background-image: url(\'' . $b->background . '\'); background-size: cover; background-position: 50%% 50%%">' . PHP_EOL, $units[$k], $b->id);
+		} else {
+			printf ('<div class="e-col-%d block" id="block-%s">' . PHP_EOL, $units[$k], $b->id);
+		}
 	}
 
 	if ($b->show_title == 'yes') {
 		printf ('<' . $level . '>%s</' . $level . '>' . PHP_EOL, $b->title);
 	}
 
-	$b->locked = in_array ($id, $locks);
+	$b->locked = is_array ($locks) ? in_array ($id, $locks) : false;
 
 	if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
 		echo $tpl->render ('blocks/editable', $b) . PHP_EOL;
@@ -212,4 +218,22 @@ foreach ($ids as $k => $id) {
 	if ($divs) {
 		echo '</div>' . PHP_EOL;
 	}
+	
+	// Determine next ID for wildcard add link
+	if ($wildcard) {
+		$prefix = str_replace ('*', '', $data['wildcard']);
+		$block_id = str_replace ($prefix, '', $b->id);
+		if (is_numeric ($block_id)) {
+			$block_id = intval ($block_id);
+			if ($block_id >= $next_wildcard) {
+				$next_wildcard = $block_id + 1;
+			}
+		}
+	}
+}
+
+// Add wildcard add block link
+if ($wildcard && User::require_acl ('admin', 'blocks', 'admin/add')) {
+	$next_id = str_replace ('*', $next_wildcard, $data['wildcard']);
+	echo $tpl->render ('blocks/editable', (object) ['id' => $next_id, 'locked' => false]) . PHP_EOL;
 }
