@@ -36,8 +36,8 @@ if (isset ($_POST['return'])) {
 	$_POST['return'] = filter_var ($_POST['return'], FILTER_SANITIZE_URL);
 
 	if (Validator::validate ($_POST['return'], 'localpath')) {
-		$_POST['return'] = $_POST['return'];
+		$this->redirect ($_POST['return']);
 	}
-
+	
 	$this->redirect ('/blocks/admin');
 }
