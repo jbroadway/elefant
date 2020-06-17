@@ -23,7 +23,8 @@ create table #prefix#block (
 	title char(72) not null,
 	body text,
 	access char(12) not null,
-	show_title char(3) not null
+	show_title char(3) not null,
+	background char(128) not null default ''
 );
 
 create index #prefix#block_access on #prefix#block (id, access);

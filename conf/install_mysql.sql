@@ -23,6 +23,7 @@ create table #prefix#block (
 	body text,
 	access enum('public','member','private') not null default 'public',
 	show_title enum('yes','no') not null default 'yes',
+	background char(128) not null default '',
 	index (access)
 ) default charset=utf8;
 
