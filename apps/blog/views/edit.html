@@ -162,7 +162,7 @@ $(function () {
 			$(this).addClass ('toggle-active');
 		});
 
-		$this.find ('a[data-value={{published}}]').addClass ('toggle-active');
+		$this.find ('a[data-value=' + $field.val () + ']').addClass ('toggle-active');
 	});
 
 	{% if Appconf::blog ('Blog', 'post_format') === 'markdown' %}

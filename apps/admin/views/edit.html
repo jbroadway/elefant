@@ -133,7 +133,7 @@ $(function () {
 			$(this).addClass ('toggle-active');
 		});
 
-		$this.find ('a[data-value={{access}}]').addClass ('toggle-active');
+		$this.find ('a[data-value=' + $field.val () + ']').addClass ('toggle-active');
 	});
 	
 	/**
