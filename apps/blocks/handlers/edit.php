@@ -27,6 +27,7 @@ if ($f->submit ()) {
 	$b->body = $_POST['body'];
 	$b->access = $_POST['access'];
 	$b->show_title = $_POST['show_title'];
+	$b->background = $_POST['background'];
 	$b->put ();
 	Versions::add ($b);
 	if (! $b->error) {
@@ -49,7 +50,7 @@ if ($f->submit ()) {
 	$b->yes_no = array ('yes' => __ ('Yes'), 'no' => __ ('No'));
 	$b->failed = $f->failed;
 	$b = $f->merge_values ($b);
-	$page->title = __ ('Edit Block') . ': ' . Template::sanitize ($b->title);
+	$page->window_title = __ ('Edit Block') . ': ' . Template::sanitize ($b->title);
 	$this->run ('admin/util/wysiwyg');
 	echo $tpl->render ('blocks/edit/head', $b);
 	echo $tpl->render ('blocks/edit', $b);

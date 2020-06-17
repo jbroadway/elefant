@@ -1,37 +1,77 @@
 {! admin/util/emojiarea !}
+{! filemanager/util/browser !}
 {! admin/util/twemoji !}
 
-<div class="form">
+<div class="editform">
+
+<form method="POST" id="blocks-add-form">
+
+<div class="e-row-variable e-no-padding-left">
+	<div class="e-col-25 e-no-padding-left editform-title">
+		<h2>{"Add Block"}</h2>
+	</div>
+	<div id="save-buttons" class="e-col-75 e-no-padding editform-buttons">
+		<p style="text-align: right">
+			<input type="submit" value="{"Add Block"}" class="autosave-clear" />&nbsp;
+			<a href="javascript:history.go(-1)" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
+		</p>
+	</div>
+</div>
+
+<div class="e-row-variable e-no-padding-left">
+	<div class="e-col-75 e-no-padding-left editform-main">
 
 <p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
 
-<form method="POST" id="blocks-add-form">
 <p>{"Block title"}:<br /><input type="text" name="title" size="50" value="{{ title }}" onblur="webpage_add_title_to_id (this.form)" />
 <span class="notice" id="title-notice">{"You must enter a block title."}</span></p>
-<p>{"Block ID"} (ex: <tt>{<span></span>! blocks/<strong>your-block-id</strong> !<span></span>}</tt>):<br /><input type="text" name="id" size="35" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
+
+<p>{"Block ID"} (ex: <tt>{<span></span>! blocks/<strong>your-block-id</strong> !<span></span>}</tt>):<br /><input type="text" name="id" size="55" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
 <span class="notice" id="id-notice">{"Your ID must be a lowercase alphanumeric value and can't already exist."}</span></p>
+
 <p>{"Body"}: <span class="notice" id="body-notice">{"You must enter body content."}</span><br />
 <textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 
-<h4>{"Extra Options"}</h4>
+	</div>
+	<div class="e-col-25 editform-side">
 
-<p>{"Access"}:<br />
-<select name="access">
-{% foreach User::access_list () %}
-	<option value="{{ loop_index }}"{% if access === $data->loop_index %} selected{% end %}>{{ loop_value }}</option>
-{% end %}
-</select></p>
-<p>{"Display title"}:<br />
-<select name="show_title">
-{% foreach yes_no %}
-	<option value="{{ loop_index }}"{% if loop_index == $data->show_title %} selected{% end %}>{{ loop_value|none }}</option>
-{% end %}
-</select></p>
+<div id="background-div">
+	{"Background image"}<br />
+	<div class="thumbnail-wrapper">
+		<div class="thumbnail" id="background-preview"
+		{% if background !== '' %}
+			style="background-image: url('{{background}}')"
+		{% end %}
+		></div>
+	</div>
+	<input type="hidden" name="background" id="background" size="40" value="{{ background|quotes }}" />
+	<input type="submit" id="background-browse" value="{"Choose"}" />
+	<input type="submit" id="background-clear" value="{"Clear"}" />
+</div>
 
-<p>
-	<input type="submit" value="{"Add Block"}" class="autosave-clear" />&nbsp;
-	<a href="javascript:history.go(-1)" onclick="return $.cancel_autosave ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>
+<div class="editform-section info">
+
+<div>
+{"Access"}:<br />
+<p class="toggle" data-field="access">
+{% foreach User::access_list () %}<a href="#" data-value="{{ loop_index }}">{{ loop_value }}</a>{% end %}
 </p>
+<input type="hidden" name="access" id="access" value="{{ access }}" />
+</div>
+
+<div>
+{"Show title"}:<br />
+<p class="toggle" data-field="show_title">
+{% foreach yes_no %}<a href="#" data-value="{{ loop_index }}">{{ loop_value }}</a>{% end %}
+</p>
+<input type="hidden" name="show_title" id="show_title" value="{{ show_title }}" />
+</div>
+
+</div>
+
+	</div>
+</div>
+
 </form>
 
 </div>
@@ -39,12 +79,82 @@
 
 <script>
 $(function () {
-	twemoji.parse (document.querySelector ('#title h2'));
-	
 	$('[name=title]').emojioneArea ({
 		unicodeAlt: true,
 		pickerPosition: 'bottom',
 		filtersPosition: 'top'
 	});
+	
+	/**
+	 * Takes the following HTML and enables a toggle on them:
+	 *
+	 * <p class="toggle" data-field="access">
+	 *     <a href="#" data-value="public">{"Public"}</a>
+	 *     <!-- etc -->
+	 * </p>
+	 * <input type="hidden" name="access" id="access" value="{{access}}" />
+	 */
+	$('.toggle').each (function () {
+		var $this = $(this),
+			field = $this.data ('field'),
+			$field = $('#' + field);
+		
+		$this.find ('a').removeClass ('toggle-active').click (function (e) {
+			e.preventDefault ();
+
+			var val = $(this).data ('value');
+			$field.val (val);
+
+			$this.find ('a').removeClass ('toggle-active');
+			$(this).addClass ('toggle-active');
+		});
+
+		$this.find ('a[data-value=' + $field.val () + ']').addClass ('toggle-active');
+	});
+
+	/**
+	 * Background field behaviours.
+	 */
+	{% if background == '' %}
+		$('#background-clear').hide ();
+	{% end %}
+
+	$('#background-browse').click (function (e) {
+		e.preventDefault ();
+		$.filebrowser ({
+			allowed: ['jpg', 'jpeg', 'png', 'gif'],
+			set_value: '#background',
+			title: "{"Choose an image"}",
+			thumbs: true,
+			callback: function (file) {
+				$('#background-preview').css ('background-image', 'url(\'' + encodeURI (file) + '\')');
+				$('#background-clear').show ();
+			}
+		});
+	});
+	
+	$('#background-clear').click (function (e) {
+		e.preventDefault ();
+		$('#background').val ('');
+		$('#background-preview').css ('background-image', 'url(\'/apps/admin/css/default.jpg\')');
+		$(e.target).hide ();
+	});
 });
 </script>
+
+<style>
+#background-div {
+	width: 285px;
+	max-width: 285px;
+	min-width: 285px;
+}
+
+.thumbnail-wrapper {
+	margin-bottom: 5px;
+	margin-left: 0;
+}
+
+.toggle {
+	margin-bottom: 1.5em !important;
+}
+</style>
