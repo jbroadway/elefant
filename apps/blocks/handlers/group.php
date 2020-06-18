@@ -20,22 +20,26 @@
  *
  *     {! blocks/group?wildcard=page-* !}
  *
- * This can be combined with the page ID and a unit size to create a series
- * of editable divs on a page, like this:
+ * This can be combined with the page ID and the rows parameter to create a
+ * series of editable divs on a page, like this:
  *
- *     {! blocks/group?wildcard=[id]-*&units=100 !}
+ *     {! blocks/group?wildcard=[id]-*&rows=on !}
  *
  * The above tag would fetch any blocks beginning with the current page ID
  * followed by a hyphen `-` and anything else (numbers, text), and wrap them
  * in divs like this:
  *
- *     <div class="block e-col-100" id="block-pageid-1">
- *         <h2>Block title</h2>
- *         <p>Block contents...</p>
+ *     <div class="block-outer e-row" id="block-outer-pageid-1">
+ *         <div class="block e-col-100" id="block-pageid-1">
+ *             <h2>Block title</h2>
+ *             <p>Block contents...</p>
+ *         </div>
  *     </div>
- *     <div class="block e-col-100" id="block-pageid-2">
+ *     <div class="block-outer e-row" id="block-outer-pageid-2">
+ *         <div class="block e-col-100" id="block-pageid-2">
  *         <h2>Block title</h2>
  *         <p>Block contents...</p>
+ *         </div>
  *     </div>
  *
  * You can also set a `level` parameter to specify which heading level
@@ -109,11 +113,18 @@ if (! $wildcard) {
 }
 
 $level = (isset ($data['level']) && preg_match ('/^h[1-6]$/', $data['level'])) ? $data['level'] : 'h3';
-$divs = isset ($data['divs']) ? true : false;
-if (isset ($data['units'])) {
+$rows = isset ($data['rows']) ? true : false;
+$divs = ($rows || isset ($data['divs'])) ? true : false;
+
+if ($rows || $divs || isset ($data['units'])) {
 	echo $this->run ('admin/util/minimal-grid');
+}
+
+if (isset ($data['units'])) {
 	$units = explode (',', $data['units']);
 	$divs = true;
+} elseif ($rows) {
+	$units = ['100'];
 } else {
 	$units = 'auto';
 }
@@ -169,7 +180,10 @@ $next_wildcard = 1;
 
 foreach ($ids as $k => $id) {
 	if (! isset ($list[$id])) {
-		if ($divs) {
+		if ($rows) {
+			printf ('<div class="e-row block-outer block-outer-missing" id="block-outer-%s">' . PHP_EOL, $id);
+			printf ('<div class="e-col-%d block block-missing" id="block-%s">' . PHP_EOL, $units[$k], $id);
+		} elseif ($divs) {
 			printf ('<div class="e-col-%d block block-missing" id="block-%s">' . PHP_EOL, $units[$k], $id);
 		}
 
@@ -177,7 +191,10 @@ foreach ($ids as $k => $id) {
 			echo $tpl->render ('blocks/editable', (object) ['id' => $id, 'locked' => false]) . PHP_EOL;
 		}
 
-		if ($divs) {
+		if ($rows) {
+			echo '</div>' . PHP_EOL;
+			echo '</div>' . PHP_EOL;
+		} elseif ($divs) {
 			echo '</div>' . PHP_EOL;
 		}
 		continue;
@@ -195,9 +212,17 @@ foreach ($ids as $k => $id) {
 		}
 	}
 
-	if ($divs) {
+	if ($rows) {
 		if ($b->background != '') {
-			printf ('<div class="e-col-%d block" id="block-%s" style="background-image: url(\'' . $b->background . '\'); background-size: cover; background-position: 50%% 50%%">' . PHP_EOL, $units[$k], $b->id);
+			printf ('<div class="e-row block-outer" id="block-outer-%s" style="background-image: url(\'%s\'); background-size: cover; background-position: 50%% 50%%">' . PHP_EOL, $b->id, $b->background);
+			printf ('<div class="e-col-%d block" id="block-%s">' . PHP_EOL, $units[$k], $b->id);
+		} else {
+			printf ('<div class="e-row block-outer" id="block-outer-%s">' . PHP_EOL, $b->id);
+			printf ('<div class="e-col-%d block" id="block-%s">' . PHP_EOL, $units[$k], $b->id);
+		}
+	} elseif ($divs) {
+		if ($b->background != '') {
+			printf ('<div class="e-col-%d block" id="block-%s" style="background-image: url(\'%s\'); background-size: cover; background-position: 50%% 50%%">' . PHP_EOL, $units[$k], $b->id, $b->background);
 		} else {
 			printf ('<div class="e-col-%d block" id="block-%s">' . PHP_EOL, $units[$k], $b->id);
 		}
@@ -215,7 +240,10 @@ foreach ($ids as $k => $id) {
 
 	echo $tpl->run_includes ($b->body) . PHP_EOL;
 	
-	if ($divs) {
+	if ($rows) {
+		echo '</div>' . PHP_EOL;
+		echo '</div>' . PHP_EOL;
+	} elseif ($divs) {
 		echo '</div>' . PHP_EOL;
 	}
 	
