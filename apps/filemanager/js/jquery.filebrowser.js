@@ -124,7 +124,8 @@
 					.attr ('title', res.data.files[i].name)
 					.data ('file', res.data.files[i].path)
 					.click (self.select_file)
-					.append ('<img src="' + self.prefix + res.data.files[i].path + '" />');
+					.append ('<img src="' + self.prefix + res.data.files[i].path + '" />')
+					.append ('<span class="filebrowser-filename">' + res.data.files[i].name + '</span>');
 
 				if (self.opts.files.indexOf (res.data.files[i].path) !== -1) {
 					a.addClass ('filebrowser-selected');
@@ -280,7 +281,11 @@
 			'</div>';
 		$.open_dialog (
 			self.opts.title,
-			form
+			form,
+			{
+				width: 800,
+				height: 600
+			}
 		);
 
 		self.dirs = $('#filebrowser-dirs');

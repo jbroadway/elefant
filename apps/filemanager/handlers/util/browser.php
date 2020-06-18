@@ -42,7 +42,7 @@ echo $this->run ('admin/util/modal');
 $f = new Form ('post', $this);
 $f->initialize_csrf ();
 
-$page->add_style ('/apps/filemanager/css/filebrowser.css');
+$page->add_style ('/apps/filemanager/css/filebrowser.css?v=4');
 $page->add_script (
 	sprintf (
 		'<script>var filemanager_path = "%s", filemanager_upload = %d, filemanager_token = "%s";</script>',
@@ -53,7 +53,7 @@ $page->add_script (
 );
 $page->add_script ('/apps/filemanager/js/jquery.filedrop.js');
 $page->add_script ('/apps/filemanager/js/filemanager.js?v=2');
-$page->add_script ('/apps/filemanager/js/jquery.filebrowser.js?v=3');
+$page->add_script ('/apps/filemanager/js/jquery.filebrowser.js?v=4');
 $page->add_script (
 	sprintf (
 		'<script>var filebrowser_max_filesize = %s;</script>',

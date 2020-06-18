@@ -30,13 +30,29 @@
 	display: inline-block;
 	vertical-align: bottom;
 	margin-right: 10px;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 	border: 1px solid #fafafa;
 }
 
 .filebrowser-thumb img {
-	max-width: 100px;
+	max-width: 135px;
+	width: 135px;
+	max-height: 180px;
 	border: 1px solid #ddd;
+	object-position: 50% 0%;
+	object-fit: cover;
+}
+
+.filebrowser-filename {
+	display: block;
+	max-width: 135px;
+	width: 135px;
+	color: #888;
+	margin-top: -6px;
+	font-size: 0.8em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 #filebrowser-upload {
