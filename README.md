@@ -24,17 +24,17 @@ possible and also takes advantage of bytecode caching (e.g., APC).
 
 **Dead simple, concise template tags**
 
-[Familiar syntax](https://www.elefantcms.com/docs/2.0/designers/template-language) to other template
+[Familiar syntax](https://www.elefantcms.com/docs/2.2/designers/template-language) to other template
 languages, with some added conveniences for dynamic embeds and internationalization.
 
 **Clean, easy to use site editor for your users**
 
-Elefant comes out of the box with a [full-featured CMS](https://www.elefantcms.com/docs/2.0/user-manual)
-for your users. You can even [white label it](https://www.elefantcms.com/docs/2.0/designers/white-labelling-the-cms).
+Elefant comes out of the box with a [full-featured CMS](https://www.elefantcms.com/docs/2.2/user-manual)
+for your users. You can even [white label it](https://www.elefantcms.com/docs/2.2/designers/white-labelling-the-cms).
 
 **Syntax highlighted template and CSS editor**
 
-Sophisticated [in-browser editing](https://www.elefantcms.com/docs/2.0/designers)
+Sophisticated [in-browser editing](https://www.elefantcms.com/docs/2.2/designers)
 with highlights and references at your finger tips.
 
 **Live preview while editing templates and CSS**
@@ -56,13 +56,13 @@ code quickly.
 **Extensively documented**
 
 Including full [API reference](https://www.elefantcms.com/visor),
-[user manual](https://www.elefantcms.com/docs/2.0/user-manual),
-[tutorials, and much more](https://www.elefantcms.com/docs/2.0/developers).
+[user manual](https://www.elefantcms.com/docs/2.2/user-manual),
+[tutorials, and much more](https://www.elefantcms.com/docs/2.2/developers).
 
 **Strong security by default**
 
-[Flexible form building](https://www.elefantcms.com/docs/2.0/developers/form-handling),
-[input validation](https://www.elefantcms.com/docs/2.0/developers/input-validation),
+[Flexible form building](https://www.elefantcms.com/docs/2.2/developers/form-handling),
+[input validation](https://www.elefantcms.com/docs/2.2/developers/input-validation),
 and automatic prevention of XSS, SQL injection, CSRF, and other types of attacks.
 
 **Very fast and low memory**
@@ -78,7 +78,7 @@ help you fix bugs faster.
 
 **Minimalist HMVC/Model2 architecture**
 
-Elefant takes a [unique but proven approach](https://www.elefantcms.com/docs/2.0/developers/request-response-cycle)
+Elefant takes a [unique but proven approach](https://www.elefantcms.com/docs/2.2/developers/request-response-cycle)
 that helps minimize boilerplate without sacrificing code organization as your project grows.
 
 **Shared apps to save you time**
@@ -94,7 +94,7 @@ ensuring a stable base to build on.
 
 **Internationalization**
 
-Elefant apps are automatically [i18n aware](https://www.elefantcms.com/docs/2.0/administration/multilingual-setup),
+Elefant apps are automatically [i18n aware](https://www.elefantcms.com/docs/2.2/administration/multilingual-setup),
 with built-in multilingual capabilities and locale awareness.
 
 ## More developer goodness
@@ -103,14 +103,14 @@ Elefant builds on over 12 years of PHP experience, and aims to simplify rapid PH
 development again. As such, Elefant takes into consideration all the little details
 to help you work faster and better:
 
-* Really simple, [automatic URL routing](https://www.elefantcms.com/docs/2.0/developers/mapping-your-routes) w/ friendly URLs
-* [Minimal but secure and fast ORM](https://www.elefantcms.com/docs/2.0/developers/modelling-your-data) (based on PDO)
+* Really simple, [automatic URL routing](https://www.elefantcms.com/docs/2.2/developers/mapping-your-routes) w/ friendly URLs
+* [Minimal but secure and fast ORM](https://www.elefantcms.com/docs/2.2/developers/modelling-your-data) (based on PDO)
 * Output filtering is turned *on by default*
-* Tight [cache integration](https://www.elefantcms.com/docs/2.0/developers/caching) (supports APC/APCu, filesystem, Memcache, Redis, and XCache)
+* Tight [cache integration](https://www.elefantcms.com/docs/2.2/developers/caching) (supports APC/APCu, filesystem, Memcache, Redis, and XCache)
 * Matching server- and client-side input validation
-* Dead-simple [form handling](https://www.elefantcms.com/docs/2.0/developers/form-handling)
-* Customizable [user authentication](https://www.elefantcms.com/docs/2.0/developers/users-and-access-control)
-* [CLI tool](https://www.elefantcms.com/docs/2.0/developers/writing-command-line-scripts) for common tasks
+* Dead-simple [form handling](https://www.elefantcms.com/docs/2.2/developers/form-handling)
+* Customizable [user authentication](https://www.elefantcms.com/docs/2.2/developers/users-and-access-control)
+* [CLI tool](https://www.elefantcms.com/docs/2.2/developers/writing-command-line-scripts) for common tasks
 * As little scaffolding as possible
 * Gzip output compression
 * [Assetic](https://github.com/jbroadway/assetic) integration
@@ -119,8 +119,8 @@ to help you work faster and better:
 
 [Download the latest release here.](https://www.elefantcms.com/download)
 
-* [Installation instructions](https://www.elefantcms.com/docs/2.0/getting-started)
-* [Requirements](https://www.elefantcms.com/docs/2.0/getting-started/requirements)
+* [Installation instructions](https://www.elefantcms.com/docs/2.2/getting-started)
+* [Requirements](https://www.elefantcms.com/docs/2.2/getting-started/requirements)
 * [Support forum](https://www.elefantcms.com/community)
 * [Credits](https://www.elefantcms.com/credits)
 
