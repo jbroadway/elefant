@@ -29,16 +29,20 @@
  * followed by a hyphen `-` and anything else (numbers, text), and wrap them
  * in divs like this:
  *
- *     <div class="block-outer e-row" id="block-outer-pageid-1">
- *         <div class="block e-col-100" id="block-pageid-1">
- *             <h2>Block title</h2>
- *             <p>Block contents...</p>
+ *     <div class="block-outer" id="block-outer-pageid-1">
+ *         <div class="e-row">
+ *             <div class="block e-col-100" id="block-pageid-1">
+ *                 <h2>Block title</h2>
+ *                 <p>Block contents...</p>
+ *             </div>
  *         </div>
  *     </div>
- *     <div class="block-outer e-row" id="block-outer-pageid-2">
- *         <div class="block e-col-100" id="block-pageid-2">
- *         <h2>Block title</h2>
- *         <p>Block contents...</p>
+ *     <div class="block-outer" id="block-outer-pageid-2">
+ *         <div class="e-row">
+ *             <div class="block e-col-100" id="block-pageid-2">
+ *             <h2>Block title</h2>
+ *             <p>Block contents...</p>
+ *             </div>
  *         </div>
  *     </div>
  *
@@ -181,10 +185,11 @@ $next_wildcard = 1;
 foreach ($ids as $k => $id) {
 	if (! isset ($list[$id])) {
 		if ($rows) {
-			printf ('<div class="e-row block-outer block-outer-missing" id="block-outer-%s">' . PHP_EOL, $id);
-			printf ('<div class="e-col-%d block block-missing" id="block-%s">' . PHP_EOL, $units[$k], $id);
+			printf ('<div class="block-outer block-outer-missing" id="block-outer-%s">%s', $id, PHP_EOL);
+			printf ('<div class="e-row">%s', PHP_EOL);
+			printf ('<div class="e-col-%d block block-missing" id="block-%s">%s', $units[$k], $id, PHP_EOL);
 		} elseif ($divs) {
-			printf ('<div class="e-col-%d block block-missing" id="block-%s">' . PHP_EOL, $units[$k], $id);
+			printf ('<div class="e-col-%d block block-missing" id="block-%s">%s', $units[$k], $id, PHP_EOL);
 		}
 
 		if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
@@ -192,6 +197,7 @@ foreach ($ids as $k => $id) {
 		}
 
 		if ($rows) {
+			echo '</div>' . PHP_EOL;
 			echo '</div>' . PHP_EOL;
 			echo '</div>' . PHP_EOL;
 		} elseif ($divs) {
@@ -214,17 +220,19 @@ foreach ($ids as $k => $id) {
 
 	if ($rows) {
 		if ($b->background != '') {
-			printf ('<div class="e-row block-outer" id="block-outer-%s" style="background-image: url(\'%s\'); background-size: cover; background-position: 50%% 50%%">' . PHP_EOL, $b->id, $b->background);
-			printf ('<div class="e-col-%d block" id="block-%s">' . PHP_EOL, $units[$k], $b->id);
+			printf ('<div class="block-outer" id="block-outer-%s" style="background-image: url(\'%s\'); background-size: cover; background-position: 50%% 50%%">%s', $b->id, $b->background, PHP_EOL);
+			printf ('<div class="e-row">%s', PHP_EOL);
+			printf ('<div class="e-col-%d block" id="block-%s">%s', $units[$k], $b->id, PHP_EOL);
 		} else {
-			printf ('<div class="e-row block-outer" id="block-outer-%s">' . PHP_EOL, $b->id);
-			printf ('<div class="e-col-%d block" id="block-%s">' . PHP_EOL, $units[$k], $b->id);
+			printf ('<div class="block-outer" id="block-outer-%s">%s', $b->id, PHP_EOL);
+			printf ('<div class="e-row">%s', PHP_EOL);
+			printf ('<div class="e-col-%d block" id="block-%s">%s', $units[$k], $b->id, PHP_EOL);
 		}
 	} elseif ($divs) {
 		if ($b->background != '') {
-			printf ('<div class="e-col-%d block" id="block-%s" style="background-image: url(\'%s\'); background-size: cover; background-position: 50%% 50%%">' . PHP_EOL, $units[$k], $b->id, $b->background);
+			printf ('<div class="e-col-%d block" id="block-%s" style="background-image: url(\'%s\'); background-size: cover; background-position: 50%% 50%%">%s', $units[$k], $b->id, $b->background, PHP_EOL);
 		} else {
-			printf ('<div class="e-col-%d block" id="block-%s">' . PHP_EOL, $units[$k], $b->id);
+			printf ('<div class="e-col-%d block" id="block-%s">%s', $units[$k], $b->id, PHP_EOL);
 		}
 	}
 
@@ -241,6 +249,7 @@ foreach ($ids as $k => $id) {
 	echo $tpl->run_includes ($b->body) . PHP_EOL;
 	
 	if ($rows) {
+		echo '</div>' . PHP_EOL;
 		echo '</div>' . PHP_EOL;
 		echo '</div>' . PHP_EOL;
 	} elseif ($divs) {
