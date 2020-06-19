@@ -4,7 +4,7 @@
 
 <script type="text/x-jquery-tmpl" id="tpl_dir">
 	<tr>
-		<td><div class="dropzone draggable" data-folder="${path}"><img src="/apps/admin/css/admin/folder.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/filemanager?path=${path}">${name}</a></div></td>
+		<td><div class="dropzone draggable" data-folder="${path}" title="{"Drag to change folders"}"><img src="/apps/admin/css/admin/folder.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/filemanager?path=${path}">${name}</a></div></td>
 		<td>\{{html mtime}}</td>
 		<td>&nbsp;</td>
 		<td style="text-align: right">
@@ -14,9 +14,18 @@
 	</tr>
 </script>
 
+<script type="text/x-jquery-tmpl" id="tpl_no_results">
+	<tr>
+		<td><div>{"No results."}</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+</script>
+
 <script type="text/x-jquery-tmpl" id="tpl_file">
 	<tr>
-		<td><div class="draggable" data-file="${_path}"><img src="/apps/admin/css/admin/file.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/${conf_root}${path}" target="_blank"\{{if is_img}} class="file-img"\{{/if}}>${name}</a></div></td>
+		<td><div class="draggable" data-file="${_path}" title="{"Drag to change folders"}"><img src="/apps/admin/css/admin/file.png" alt="${name}" style="padding-right: 5px; margin-top: -2px" /> <a href="/${conf_root}${path}" target="_blank"\{{if is_img}} class="file-img"\{{/if}}>${name}</a></div></td>
 		<td>\{{html mtime}}</td>
 		<td>${fsize}</td>
 		<td style="text-align: right">
@@ -78,22 +87,37 @@ var i18n = {
 };
 </script>
 
-<p style="float: right; margin-top: 6px;"><a href="/filemanager/settings">{"Settings"}</a></p>
+<div class="e-row-variable e-no-padding-left">
+	<div class="e-col-25 e-no-padding-left editform-title">
 
-<h2>
-{% if path == '' %}
-	{"Files"}
-{% else %}
-	<a href="/filemanager" class="dropzone" data-folder="">{"Files"}</a>
-	{% foreach parts %}
-		{% if loop_index == $data->lastpath %}
-			/ {{ loop_index }}
+		<h2>
+		{% if path == '' %}
+			{"Files"}
 		{% else %}
-			/ <a href="/filemanager?path={{ loop_value }}" class="dropzone" data-folder="{{ loop_value }}">{{ loop_index }}</a>
+			<a href="/filemanager" class="dropzone" data-folder="">{"Files"}</a>
+			{% foreach parts %}
+				{% if loop_index == $data->lastpath %}
+					/ {{ loop_index }}
+				{% else %}
+					/ <a href="/filemanager?path={{ loop_value }}" class="dropzone" data-folder="{{ loop_value }}">{{ loop_index }}</a>
+				{% end %}
+			{% end %}
 		{% end %}
-	{% end %}
-{% end %}
-</h2>
+		</h2>
+
+	</div>
+	<div id="save-buttons" class="e-col-75 e-no-padding editform-buttons">
+
+		<p style="text-align: right">
+			<a href="/filemanager/settings">{"Settings"}</a>
+			&nbsp;&nbsp;
+			<input type="text" id="search-input" size="30" placeholder="{"Search..."}" />
+			<input type="submit" id="search-button" value="{"Search"}" />
+			<input type="submit" id="search-clear" class="hidden" value="{"Clear"}" />
+		</p>
+
+	</div>
+</div>
 
 <div id="filemanager-dropzone" title="{"Drag files here to upload."}">
 

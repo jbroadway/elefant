@@ -2,6 +2,10 @@
 	cursor: move !important;
 }
 
+.hidden {
+	display: none;
+}
+
 #filemanager-dropzone {
 	height: 100%;
 	border: 2px dashed #e5e5e5;

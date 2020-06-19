@@ -149,6 +149,55 @@ class FileManager {
 		usort ($out['files'], array ('FileManager', 'fsort'));
 		return $out;
 	}
+	
+	/**
+	 * Search for all directories and files that match a query. Returns an
+	 * array with 'dirs' and 'files'. Each directory has a 'name', 'path',
+	 * and 'mtime'. Each file also has 'fsize'.
+	 */
+	public static function search ($query) {
+		$d = dir (self::root ());
+		
+		$out = ['dirs' => [], 'files' => []];
+		
+		self::match_recursive ('', $query, $out);
+		
+		return $out;
+	}
+	
+	private static function match_recursive ($path, $query, &$out) {
+		$current = rtrim (self::root () . $path, '/');
+		$list = scandir ($current);
+		
+		$query = strtolower ($query);
+		
+		foreach ($list as $entry) {
+			if (preg_match ('/^\./', $entry)) {
+				continue;
+			}
+			
+			$lower = strtolower ($entry);
+			
+			if (is_dir ($current . '/' . $entry)) {
+				if (strpos ($lower, $query) !== false) {
+					$out['dirs'][] = [
+						'name' => $entry,
+						'path' => ltrim ($path . '/' . $entry, '/'),
+						'mtime' => filemtime ($current . '/' . $entry)
+					];
+				}
+
+				self::match_recursive ($path . '/' . $entry, $query, $out);
+			} elseif (strpos ($lower, $query) !== false) {
+				$out['files'][] = [
+					'name' => $entry,
+					'path' => ltrim ($path . '/' . $entry, '/'),
+					'mtime' => filemtime ($current . '/' . $entry),
+					'fsize' => filesize ($current . '/' . $entry)
+				];
+			}
+		}
+	}
 
 	/**
 	 * Delete a file.

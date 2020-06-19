@@ -17,6 +17,7 @@
  * - filemanager.rm ({path: ''}, callback);
  * - filemanager.mv ({path: 'foo.txt', rename: 'bar.txt'}, callback);
  * - filemanager.prop ({path: 'foo.txt', prop: 'description', value: 'Foo'}, callback);
+ * - filemanager.search ({query: ''}, callback);
  */
 var filemanager = (function ($) {
 	var self = {};
@@ -154,6 +155,19 @@ var filemanager = (function ($) {
 		$.post (
 			self.prefix + 'prop',
 			{ file: opts.path, prop: opts.prop, value: opts.value },
+			callback
+		);
+	};
+	
+	// Search for files
+	self.search = function (opts, callback) {
+		if (! _has (opts, 'query')) {
+			throw new Error ('filemanager.search() - Missing parameter: query');
+		}
+		
+		$.post (
+			self.prefix + 'search',
+			{ query: opts.query },
 			callback
 		);
 	};

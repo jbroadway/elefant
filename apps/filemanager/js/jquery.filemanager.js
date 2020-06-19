@@ -91,6 +91,74 @@
 						});
 					}
 					break;
+				case 'search':
+					$.template ('tpl_dir', $('#tpl_dir'));
+					$.template ('tpl_file', $('#tpl_file'));
+					$.template ('tpl_no_results', $('#tpl_no_results'));
+					$.get (options.root + cmd + '?query=' + encodeURIComponent (options.query), function (res) {
+						if (res.success && res.data) {
+							tbody = $('#file-list').html ('');
+							
+							if (res.data.dirs.length == 0 && res.data.files.length == 0) {
+								$.tmpl ('tpl_no_results', {}).appendTo (tbody);
+							}
+							
+							if (res.data.dirs) {
+								for (var i = 0; i < res.data.dirs.length; i++) {
+									res.data.dirs[i]._name = res.data.dirs[i].name.replace (/'/g, '\\\'');
+									res.data.dirs[i]._path = res.data.dirs[i].path.replace (/'/g, '\\\'');
+									$.tmpl ('tpl_dir', res.data.dirs[i]).appendTo (tbody);
+								}
+								
+								dirs = res.data.dirs
+							}
+							if (res.data.files) {
+								for (var i = 0; i < res.data.files.length; i++) {
+									res.data.files[i].is_img = res.data.files[i].name.match (filemanager.img_file);
+									res.data.files[i].image_file = (filemanager.aviary !== null)
+										? res.data.files[i].name.match (filemanager.img_file)
+										: false;
+									res.data.files[i].zip_file = res.data.files[i].name.match (filemanager.zip_file);
+									res.data.files[i].text_file = res.data.files[i].name.match (filemanager.text_file);
+									res.data.files[i]._name = res.data.files[i].name.replace (/'/g, '\\\'');
+									res.data.files[i]._path = res.data.files[i].path.replace (/'/g, '\\\'');
+                                    res.data.files[i].conf_root = conf_root + '/';
+									$.tmpl ('tpl_file', res.data.files[i]).appendTo (tbody);
+								}
+								
+								files = res.data.files
+							}
+
+							$.localize_dates ();
+
+							$('.draggable').draggable ({
+								cursor: 'move',
+								revert: 'invalid'
+							});
+
+							$('.dropzone').droppable ({
+								accept: '.draggable',
+								tolerance: 'pointer',
+								drop: function (event, ui) {
+									var type = ui.draggable[0].nodeName.toLowerCase (),
+										src = ui.draggable,
+										folder = $(this).data ('folder');
+
+									if (type === 'a' || type === 'img') {
+										src = src.parent ();
+									}
+
+									var file = src.data ('file');
+									file = file ? file : src.data ('folder');
+								
+									$.filemanager ('drop', {file: file, folder: folder});
+								}
+							});
+						} else {
+							$.add_notification (res.error);
+						}
+					});
+					break;
 				case 'ls':
 					$.template ('tpl_dir', $('#tpl_dir'));
 					$.template ('tpl_file', $('#tpl_file'));
@@ -241,6 +309,41 @@
 				}
 			});
 		}
+		
+		$('#search-input').on ('keyup', function (e) {
+			if (e.key === 'Enter') {
+				e.preventDefault ();
+
+				var query = $('#search-input').val ();
+				
+				if (query == '') return;
+				
+				$('#search-clear').removeClass ('hidden');
+
+				$.filemanager ('search', {query: query});
+			}
+		})
+		
+		$('#search-button').on ('click', function (e) {
+			e.preventDefault ();
+			
+			var query = $('#search-input').val ();
+			
+			if (query == '') return;
+			
+			$('#search-clear').removeClass ('hidden');
+
+			$.filemanager ('search', {query: query});
+		});
+		
+		$('#search-clear').on ('click', function (e) {
+			e.preventDefault ();
+			
+			$('#search-input').val ('');
+			$('#search-clear').addClass ('hidden');
+			
+			$.filemanager ('ls', {file: filemanager.path});
+		});
 
 		$('#filemanager-dropzone').filedrop ({
 			fallback_id: 'file-upload',

@@ -44,7 +44,7 @@ if (isset ($_GET['path'])) {
 	$page->window_title = __ ('Files');
 }
 
-$cache_version = '6';
+$cache_version = '7';
 
 $page->add_style ('/apps/filemanager/css/filemanager.css?v=' . $cache_version);
 $page->add_script (

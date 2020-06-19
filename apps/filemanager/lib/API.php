@@ -203,6 +203,33 @@ class API extends Restful {
 	}
 	
 	/**
+	 * Handle file searches.
+	 */
+	public function get_search () {
+		$query = isset ($_GET['query']) ? $_GET['query'] : '';
+		
+		if ($query == '') {
+			return [];
+		}
+
+		$res = FileManager::search ($query);
+		if (! $res) {
+			return $this->error (FileManager::error ());
+		}
+
+		foreach ($res['dirs'] as $k => $dir) {
+			$res['dirs'][$k]['mtime'] = I18n::short_date_year_time ($dir['mtime']);
+		}
+
+		foreach ($res['files'] as $k => $file) {
+			$res['files'][$k]['mtime'] = I18n::short_date_year_time ($file['mtime']);
+			$res['files'][$k]['fsize'] = format_filesize ($file['fsize']);
+		}
+
+		return $res;
+	}
+	
+	/**
 	 * Handle unzip requests via (/filemanager/api/unzip).
 	 */
 	public function post_unzip () {
