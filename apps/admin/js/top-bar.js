@@ -210,7 +210,7 @@ $(function () {
 			}
 			
 			document.onkeydown = function (z) {
-				if (z.altKey && z.code === 'KeyE') {
+				if (z.code === 'KeyE' && z.altKey && z.ctrlKey == false && z.shiftKey == false && z.metaKey == false) {
 					z.preventDefault ();
 					toggle_custom_tools (null);
 				}
