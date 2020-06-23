@@ -39,6 +39,8 @@ class FrontController {
 	/**
 	 * The front controller only has one static method, `run()`, which
 	 * 
+	 * @param null|string[] $argv
+	 * @param int|null $argc
 	 */
 	public static function run ($argv, $argc) {
 		/**

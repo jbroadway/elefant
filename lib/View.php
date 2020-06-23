@@ -109,7 +109,7 @@ class View {
 	 *         public function render ($template, $data = array ());
 	 *     }
 	 */
-	public static function init ($tpl) {
+	public static function init (Template $tpl) {
 		self::$tpl = $tpl;
 	}
 

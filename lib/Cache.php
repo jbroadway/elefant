@@ -58,7 +58,7 @@ class Cache {
 	 * and return the cache object (lib/MemcacheExt, lib/MemcacheAPC,
 	 * lib/MemcacheXCache, lib/MemcacheRedis, or lib/Cache).
 	 */
-	public static function init ($conf) {
+	public static function init (array $conf) {
 		$server = isset ($conf['server']) ? $conf['server'] : false;
 		$dir = isset ($conf['location']) ? $conf['location'] : 'cache/datastore';
 		$backend = isset ($conf['backend']) ? $conf['backend'] : 'memcache';
@@ -162,7 +162,7 @@ class Cache {
 	/**
 	 * Emulates `Memcache::add`.
 	 */
-	public function add ($key, $val, $flags = 0, $timeout = false) {
+	public function add ($key, $val, int $flags = 0, $timeout = false) {
 		if (is_array ($val) || is_object ($val)) {
 			$val = serialize ($val);
 		}
@@ -199,7 +199,7 @@ class Cache {
 	/**
 	 * Emulates `Memcache::set`.
 	 */
-	public function set ($key, $val, $flags = 0, $timeout = false) {
+	public function set ($key, $val, int $flags = 0, $timeout = false) {
 		if (is_array ($val) || is_object ($val)) {
 			$val = serialize ($val);
 		}

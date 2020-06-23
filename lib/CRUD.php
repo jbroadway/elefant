@@ -105,7 +105,7 @@ class CRUD extends Restful {
 	 * Strip the non-visible properties from an object.
 	 * Returns it as an associative array.
 	 */
-	private function strip_object ($obj) {
+	private function strip_object (object $obj) {
 		$obj = (array) $obj->orig ();
 		
 		foreach ($obj as $k => $v) {

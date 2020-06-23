@@ -293,6 +293,8 @@ class Controller {
 
 	/**
 	 * Get or set the template object.
+	 *
+	 * @param Template|false $tpl
 	 */
 	public function template ($tpl = false) {
 		if ($tpl) {
@@ -313,6 +315,8 @@ class Controller {
 
 	/**
 	 * Get or set the page object.
+	 *
+	 * @param Page|false $page
 	 */
 	public function page ($page = false) {
 		if ($page) {
@@ -323,6 +327,8 @@ class Controller {
 
 	/**
 	 * Get or set the i18n object.
+	 *
+	 * @param I18n|false $i18n
 	 */
 	public function i18n ($i18n = false) {
 		if ($i18n) {
@@ -333,8 +339,10 @@ class Controller {
 
 	/**
 	 * Run an internal request from one handler to another.
+	 *
+	 * @param (int|mixed|string)[]|object $data
 	 */
-	public function run ($uri, $data = array (), $internal = true) {
+	public function run ($uri, $data = [], $internal = true) {
 		$c = new Controller (count (self::$hooks) > 0 ? self::$hooks : conf ('Hooks'));
 		$c->page ($this->_page);
 		$c->i18n ($this->_i18n);
@@ -370,7 +378,7 @@ class Controller {
 	 *
 	 *     ?>
 	 */
-	public function error ($code = 404, $title = 'Page not found', $message = '') {
+	public function error (int $code = 404, $title = 'Page not found', $message = '') {
 		// Erase any existing output up to this point
 		ob_clean ();
 
@@ -396,7 +404,7 @@ class Controller {
 	 * Hooks may also be listed in the global `conf/config.php` in
 	 * the same format.
 	 */
-	public function hook ($type, $data = array ()) {
+	public function hook (string $type, array $data = []) {
 		$pos = strpos ($type, '/');
 		if ($pos > 0) {
 			$app = substr ($type, 0, $pos);
@@ -453,8 +461,10 @@ class Controller {
 	 * Full usage:
 	 *
 	 *     $width = $this->data ('width', 500, ['type' => 'numeric']);
+	 *
+	 * @param array|string $key
 	 */
-	public function data ($key, $default = null, $validations = array ()) {
+	public function data ($key, $default = null, $validations = []) {
 		if (is_array ($key)) {
 			$this->data = $key;
 			return;
@@ -479,8 +489,10 @@ class Controller {
 	 * Execute the request handler. $internal determines whether the
 	 * request originated internally from another handler or template,
 	 * or externally from a browser request.
+	 *
+	 * @param array|object $data
 	 */
-	public function handle ($handler, $internal = true, $data = array ()) {
+	public function handle ($handler, bool $internal = true, $data = []) {
 		// Create local references to the page, template, cache, and i18n objects
 		// for easier reference in handlers (e.g., simply `$tpl->render()`).
 		$page = $this->_page;
@@ -634,6 +646,8 @@ class Controller {
 
 	/**
 	 * Is this URL clean of any directory manipulation attempts?
+	 *
+	 * @param string|mixed $url
 	 */
 	public function clean ($url) {
 		return ! strstr ($url, '..');
@@ -641,6 +655,8 @@ class Controller {
 
 	/**
 	 * Adds to the start, since `route()` parse them off the end of the URI.
+	 *
+	 * @param string|array $param
 	 */
 	public function add_param ($param) {
 		$param = is_array ($param) ? $param[1] : $param;
@@ -665,7 +681,7 @@ class Controller {
 	 * Turn a relative URL into an absolute URL. If the `$base` is false,
 	 * it will use the HTTP_HOST to construct a base for you.
 	 */
-	public function absolutize ($url, $base = false) {
+	public function absolutize (string $url, $base = false) {
 		if (strpos ($url, '://') !== false) {
 			// already contains scheme
 			return $url;
@@ -706,7 +722,7 @@ class Controller {
 	/**
 	 * Redirect the current request and exit.
 	 */
-	public function redirect ($url, $exit = true) {
+	public function redirect (string $url, $exit = true) {
 		$this->header ('Location: ' . $this->absolutize ($url));
 		if ($exit) {
 			$this->quit ();
@@ -989,7 +1005,7 @@ class Controller {
 	 * Wraps `header()` with a check for `headers_sent()` to avoid
 	 * "headers already sent" errors.
 	 */
-	public function header ($header, $replace = true, $http_response_code = null) {
+	public function header (string $header, bool $replace = true, $http_response_code = null) {
 		if (headers_sent ()) {
 			return false;
 		}

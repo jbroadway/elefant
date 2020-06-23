@@ -434,7 +434,7 @@ class I18n {
 	 * the `date()`, `short_date()`, `time()`, `date_time()` and
 	 * `short_date_time()` methods.
 	 */
-	private static function _date ($date, $class, $format) {
+	private static function _date ($date, string $class, string $format) {
 		if (is_a ($date, 'DateTime')) {
 			$date = $date->getTimestamp ();
 		}

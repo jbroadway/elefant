@@ -28,8 +28,8 @@
  * For Zend's own inclusions.
  */
 ini_set ('include_path', ini_get ('include_path') . PATH_SEPARATOR . 'lib/vendor');
-require_once ('Zend/Mail.php');
-require_once ('Zend/Mime/Part.php');
+require_once ('lib/vendor/Zend/Mail.php');
+require_once ('lib/vendor/Zend/Mime/Part.php');
 
 /**
  * Mailer is a wrapper around Zend_Mail configured from Elefant's global
@@ -113,12 +113,12 @@ class Mailer {
 					$host = $config['host'];
 					unset ($config['host']);
 					unset ($config['type']);
-					require_once ('Zend/Mail/Transport/Smtp.php');
+					require_once ('lib/vendor/Zend/Mail/Transport/Smtp.php');
 					self::$transport = new Zend_Mail_Transport_Smtp ($host, $config);
 					break;
 
 				case 'sendmail':
-					require_once ('Zend/Mail/Transport/Sendmail.php');
+					require_once ('lib/vendor/Zend/Mail/Transport/Sendmail.php');
 					self::$transport = new Zend_Mail_Transport_Sendmail ();
 					break;
 
@@ -129,7 +129,7 @@ class Mailer {
 					if (! file_exists (self::$config['transport']['path'])) {
 						mkdir (self::$config['transport']['path']);
 					}
-					require_once ('Zend/Mail/Transport/File.php');
+					require_once ('lib/vendor/Zend/Mail/Transport/File.php');
 					self::$transport = new Zend_Mail_Transport_File (array (
 						'path' => self::$config['transport']['path'],
 						'callback' => function ($transport) {
@@ -165,6 +165,8 @@ class Mailer {
 	 * Returns the `Zend_Mail` object after calling `send()`, unless false
 	 * is passed as the second parameter, in which case `send()` is not
 	 * called and the `Zend_Mail` object is returned immediately.
+	 *
+	 * @param int|true $send
 	 */
 	public static function send ($msg, $send = true) {
 		if ($send === true && conf ('Mailer', 'use_resque')) {

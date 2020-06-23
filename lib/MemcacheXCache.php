@@ -68,7 +68,7 @@ class MemcacheXCache {
 	/**
 	 * Emulates `Memcache::get`.
 	 */
-	public function get ($key) {
+	public function get (string $key) {
 		$value = xcache_get (self::$key_prefix.$key);
 		if (preg_match ('/^(a|O):[0-9]+:/', $value)) {
 			return unserialize ($value);
@@ -92,7 +92,7 @@ class MemcacheXCache {
 	/**
 	 * Emulates `Memcache::set`.
 	 */
-	public function set ($key, $value, $flag = 0, $expire = false) {
+	public function set (string $key, $value, int $flag = 0, $expire = false) {
 		if (is_array ($value) || is_object ($value)) {
 			$value = serialize ($value);
 		}

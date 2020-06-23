@@ -522,6 +522,8 @@ class Model {
 	 * Begin a new query. Resets the internal state for a new query.
 	 * Optionally you can pass the fields you want to return in
 	 * the query, so you can optimize and not return them all.
+	 *
+	 * @param false|string|string[] $fields
 	 */
 	public static function query ($fields = false) {
 		$class = get_called_class ();
@@ -635,6 +637,9 @@ class Model {
 	 * - A custom where clause, e.g., `name like "%value%"`
 	 * - An associative array of clauses grouped by parentheses
 	 * - A closure function that creates one or more grouped clauses
+	 *
+	 * @param array|Closure|string $key
+	 * @param null|string $val
 	 */
 	public function where ($key, $val = null) {
 		if ($val === null) {
@@ -791,6 +796,8 @@ class Model {
 	 * - A custom having clause, e.g., `name like "%value%"`
 	 * - An associative array of clauses grouped by parentheses
 	 * - A closure function that creates one or more grouped clauses
+	 *
+	 * @param array|Closure|string $key
 	 */
 	public function having ($key, $val = null) {
 		if (! empty ($this->query_group)) {
@@ -1052,6 +1059,8 @@ class Model {
 	/**
 	 * Add backticks to a name or list of names to prevent clashing with
 	 * reserved words in SQL.
+	 *
+	 * @param array|string $item
 	 */
 	public static function backticks ($item) {
 		if (is_array ($item)) {

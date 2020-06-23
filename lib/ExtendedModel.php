@@ -274,6 +274,8 @@ class ExtendedModel extends Model {
 	 * This method provides an easy getter/setter for the extended field values.
 	 * It works around the fact that accessing the array elements directly from the
 	 * extended field won't trigger the __get() and __set() magic methods.
+	 *
+	 * @param array-key|null $key
 	 */
 	public function ext ($key = null, $val = null) {
 		if ($key === null) {

@@ -69,7 +69,7 @@ class Appconf {
 	 * Get the configuration settings for an app.
 	 * Returns an array of all settings.
 	 */
-	private static function _conf ($app) {
+	private static function _conf (string $app) {
 		if (! isset (self::$appconf[$app])) {
 			try {
 				// First load the default configuration
@@ -138,6 +138,9 @@ class Appconf {
 	 *
 	 * If no $setting is specified, the section will be returned
 	 * as an array.
+	 *
+	 * @param string $app
+	 * @param null|string $section
 	 */
 	public static function get ($app, $section = null, $setting = null) {
 		$conf = self::_conf ($app);

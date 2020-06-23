@@ -106,7 +106,7 @@ class DB {
 	 * Open a database connection and add it to the pool. Accepts
 	 * an array of connection info taken from the global `conf()`.
 	 */
-	public static function open ($conf) {
+	public static function open (array $conf) {
 		if (! self::$connections) {
 			self::$connections = array ();
 		}
@@ -173,6 +173,8 @@ class DB {
 	 * master connection, `-1` and it will return a random connection from
 	 * only the slaves, `0` and it will return a random connection which
 	 * could be any of the slaves or the master.
+	 *
+	 * @param int|string $master
 	 */
 	public static function get_connection ($master = 0) {
 		if (count (self::$connections) === 0) {
@@ -211,7 +213,7 @@ class DB {
 	 * Normalizes arguments passed as an array, object, or as
 	 * multiple extra parameters.
 	 */
-	public static function args ($args) {
+	public static function args (array $args) {
 		if (count ($args) === 0) {
 			return null;
 		} elseif (count ($args) === 1 && is_object ($args[0])) {
@@ -246,7 +248,7 @@ class DB {
 	 * with a database table name prefix set in the global
 	 * configuration.
 	 */
-	public static function prepare ($args, $master = 0) {
+	public static function prepare (array $args, int $master = 0) {
 		$db = self::get_connection ($master);
 		$sql = array_shift ($args);
 		$args = self::args ($args);
@@ -379,8 +381,10 @@ class DB {
 	
 	/**
 	 * Get the last inserted id value.
+	 *
+	 * @param null|string $name
 	 */
-	public static function last_id ($name=null) {
+	public static function last_id ($name = null) {
 		return self::$connections[self::$last_conn]->lastInsertId ($name);
 	}
 	

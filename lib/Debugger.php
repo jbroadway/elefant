@@ -226,6 +226,8 @@ class Debugger {
 
 	/**
 	 * Highlight code for a trace step.
+	 *
+	 * @param false|string $line
 	 */
 	public static function highlight ($line) {
 		if (strpos ($line, '<?php') !== false) {
@@ -241,7 +243,7 @@ class Debugger {
 	/**
 	 * Show the context of a trace step.
 	 */
-	public static function show_context ($context) {
+	public static function show_context (array $context) {
 		echo '<h2>Error Context</h2>';
 		foreach ($context as $name => $value) {
 			echo '<p class="code"><span class="code">';
@@ -339,7 +341,7 @@ class Debugger {
 	/**
 	 * Checks if an array is associative.
 	 */
-	public static function is_assoc ($array) {
+	public static function is_assoc (array $array) {
 		if (! is_array ($array) || empty ($array)) {
 			return false;
 		}

@@ -256,8 +256,10 @@ class Template {
 	/**
 	 * Render a template with the given data. Generate the PHP template if
 	 * necessary.
+	 *
+	 * @param array|object $data
 	 */
-	public function render ($template, $data = array ()) {
+	public function render (string $template, $data = []) {
 		if (is_array ($data)) {
 			$data = (object) $data;
 		}
@@ -310,8 +312,10 @@ class Template {
 	/**
 	 * Render a template from a string with the given data. Generates
 	 * the PHP and caches it.
+	 *
+	 * @param array|object $data
 	 */
-	public function render_string ($template, $data = array (), $file_prefix = '_string_') {
+	public function render_string ($template, $data = [], string $file_prefix = '_string_') {
 		if (is_array ($data)) {
 			$data = (object) $data;
 		}
@@ -335,8 +339,10 @@ class Template {
 	/**
 	 * Render a template string for preview purposes. Generates a temporary
 	 * cached version but unlinks it immediately after use.
+	 *
+	 * @param array|object $data
 	 */
-	public function render_preview ($template, $data = array ()) {
+	public function render_preview ($template, $data = []) {
 		$out = $this->render_string ($template, $data, '_preview_');
 		$cache_file = $this->cache_folder . '/_preview_' . md5 ($template) . '.php';
 		unlink ($cache_file);
@@ -349,7 +355,7 @@ class Template {
 	 * template, so it can't accidentally embed user data into the PHP
 	 * code, eliminating the possibility of exposing a security hole.
 	 */
-	public function parse_template ($val) {
+	public function parse_template (string $val) {
 		$val = str_replace (
 			array (
 				'\\{{', '\\}}', '\\{%', '\\%}', '\\{"', '\\"}', '\\{\'', '\\\'}',
@@ -392,6 +398,8 @@ class Template {
 	 *     {{ some_var|strrev|strtolower }}			# filters can be chained
 	 *     {{ some_var|my_function }}				# calling a custom function
 	 *     {{ some_var|date (%s, "F j, Y") }}		# use %s for multiple-parameter functions
+	 *
+	 * @param array|string $regs
 	 */
 	public function replace_vars ($regs) {
 		$val = is_array ($regs) ? $regs[1] : $regs;
@@ -464,6 +472,8 @@ class Template {
 	 * Replace `{! app/handler?param=value !}` with calls to `Controller::run()`.
 	 * You can also substitute sub-expressions for values using `[]` tags, like
 	 * this: `{! app/handler?param=[varname] !}`
+	 *
+	 * @param array|string $regs
 	 */
 	public function replace_includes ($regs) {
 		$val = is_array ($regs) ? $regs[1] : $regs;
@@ -519,6 +529,8 @@ class Template {
 	 * Replace `{# app/handler?param=value #}` with the hard-coded output from
 	 * a call to `Controller::run()`. Note that you cannot use sub-expressions
 	 * here like you can with the dynamic `{! app/handler !}` calls.
+	 *
+	 * @param array|string $regs
 	 */
 	public function hard_codes ($regs) {
 		$val = is_array ($regs) ? $regs[1] : $regs;
@@ -578,6 +590,8 @@ class Template {
 	 *
 	 *     {" some text here "}
 	 *     {' some text here '}
+	 *
+	 * @param array|string $regs
 	 */
 	public function replace_strings ($regs) {
 		$val = is_array ($regs) ? $regs[1] : $regs;
@@ -610,12 +624,14 @@ class Template {
 	 * Not all cases of the first example are necessarily a security hole,
 	 * but it should only be used if you know the source and have validated
 	 * your data beforehand.
+	 *
+	 * @param false|int|string|bool $val
 	 */
-	public static function sanitize ($val, $charset = 'UTF-8') {
+	public static function sanitize ($val, string $charset = 'UTF-8') {
 		if (! defined ('ENT_SUBSTITUTE')) {
 			define ('ENT_SUBSTITUTE', ENT_IGNORE);
 		}
-		return htmlspecialchars ($val, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
+		return htmlspecialchars (strval ($val), ENT_QUOTES | ENT_SUBSTITUTE, $charset);
 	}
 
 	/**

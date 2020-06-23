@@ -182,7 +182,7 @@ class Restful {
 	/**
 	 * Echo a JSON-encoded error response object and return null.
 	 */
-	public function error ($message, $code = null) {
+	public function error (string $message, $code = null) {
 		if ($code !== null) {
 			$this->controller->status_code ($code);
 		}

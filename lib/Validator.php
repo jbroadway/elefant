@@ -107,7 +107,7 @@ class Validator {
 	 * before 'not', for example "each email" would make sure each is a valid
 	 * email address, and "each not empty" would make sure each is not empty.
 	 */
-	public static function validate ($value, $type, $validator = false) {
+	public static function validate ($value, string $type, $validator = false) {
 		if ($type === 'default') {
 			return true;
 		}
@@ -314,7 +314,7 @@ class Validator {
 	 * Returns an array of failed fields. If the array is empty, everything
 	 * passed.
 	 */
-	public static function validate_list ($values, $validations = array ()) {
+	public static function validate_list (array $values, $validations = []) {
 		if (is_string ($validations) && file_exists ($validations)) {
 			$validations = parse_ini_file ($validations, true);
 		}

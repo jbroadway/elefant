@@ -160,7 +160,7 @@ class Page {
 	 * layout template at all, and if so, which one. Also determines
 	 * whether to render as a preview or as a real page.
 	 */
-	public function render ($tpl, $controller) {
+	public function render (Template $tpl, Controller $controller) {
 		if ($this->layout === false || self::$bypass_layout) {
 			// No layout, return the body as-is
 			return $this->body;

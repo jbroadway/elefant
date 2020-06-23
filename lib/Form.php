@@ -356,7 +356,7 @@ class Form {
 	 * Merge the values from `$_GET` or `$_POST` onto a data array or
 	 * object for re-rendering a form with the latest data entered.
 	 */
-	public function merge_values ($obj) {
+	public function merge_values (object $obj) {
 		$values = ($this->method === 'post') ? $_POST : $_GET;
 		
 		foreach ($values as $k => $v) {
@@ -481,7 +481,7 @@ class Form {
 	/**
 	 * Alias of `Validator::validate_list()`.
 	 */
-	public function verify_values ($values, $validations = array ()) {
+	public function verify_values (array $values, $validations = []) {
 		$failed = Validator::validate_list ($values, $validations);
 		$this->invalid = Validator::$invalid;
 		return $failed;

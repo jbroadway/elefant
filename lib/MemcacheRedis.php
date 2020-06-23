@@ -57,8 +57,11 @@ class MemcacheRedis {
 	/**
 	 * Emulates `Memcache::addServer` via `connect`. Also adds
 	 * serialization via PHP's serialize/unserialize functions.
+	 *
+	 * @param int|string $port
+	 * @param false|string $password
 	 */
-	public function addServer ($server, $port = 6379, $password = false) {
+	public function addServer (string $server, $port = 6379, $password = false) {
 		$res = self::$redis->connect ($server, $port);
 		if ($res) {
 			if ($password !== false) {
@@ -105,7 +108,7 @@ class MemcacheRedis {
 	/**
 	 * Emulates `Memcache::set` via `set` and `setex`.
 	 */
-	public function set ($key, $value, $flag = 0, $expire = false) {
+	public function set ($key, $value, int $flag = 0, $expire = false) {
 		if ($expire) {
 			return self::$redis->setex ($key, $expire, $value);
 		}
