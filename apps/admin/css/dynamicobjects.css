@@ -4,6 +4,7 @@
 .dynamicobjects-list {
 	padding: 0px;
 	margin: 0px;
+	margin-top: 5px;
 }
 
 .dynamicobjects-list li {
@@ -37,7 +38,7 @@
 }
 
 .dynamicobjects-list li a.current, .dynamicobjects-list li a:hover{
-	background: #ddd;
+	background: #e5e5e5;
 	color: #333;
 }
 .dynamicobjects-content .simplePagerNav {
@@ -45,6 +46,7 @@
 	margin-top: 15px;
 	margin-left: 0px;
 	padding-left: 0px;
+	clear: both;
 }
 
 .dynamicobjects-content .simplePagerNav li {
@@ -58,6 +60,7 @@
 	display: block;
 	float: left;
 	margin:0.25%;
+	margin-top: 15px;
 	padding: 3px 6px 3px 6px;
 	background: #eee;
 	color: #333;
@@ -91,10 +94,9 @@
 }
 
 .dynamicobjects-form p {
-	margin: 0.5% 0.25%;
-	background: #f2f2f2;
+	margin: 0.5% 0px 0.25% 0px;
 	color: #333;
-	padding: 1.5%;
+	padding: 1.5% 0px 1.5% 0px;
 	min-height: 46px;
 }
 
@@ -103,8 +105,11 @@
 	padding: 0.5% 0.25% 0.25% 0.25%;
 	margin: 0 0.5% 0 0;
 }
-.dynamicobjects-form input[type=text], .dynamicobjects-form textarea, .dynamicobjects-form select {
+.dynamicobjects-form input[type=text], .dynamicobjects-form textarea {
 	width: 95%;
+}
+.dynamicobjects-form select {
+	width: 100%;
 }
 
 .dynamicobjects-form.columns-2 label {
@@ -129,7 +134,7 @@
 
 .dynamicobjects-form input[type=text].wysiwyg-file-input {
 	/*float: left;*/
-	width: 75%;	
+	width: 82%;	
 }
 
 .dynamicobjects-content .simplePagerNav li.currentPage.simplePageNavFirst a,

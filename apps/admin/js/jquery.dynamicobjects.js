@@ -110,7 +110,7 @@
 			? self.parse_embed_string (self.opts.current)
 			: false;
 
-		$.open_dialog (self.opts.title, html);
+		$.open_dialog (self.opts.title, html, {width: 640, height: 480});
 
 		// build the list of handlers
 		var ui = '',
