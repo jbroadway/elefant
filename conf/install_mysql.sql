@@ -27,6 +27,11 @@ create table #prefix#block (
 	index (access)
 ) default charset=utf8;
 
+create table #prefix#block_group_order (
+	order_id char(255) not null primary key,
+	sorting_order text
+) default charset=utf8;
+
 insert into #prefix#block (id, title, access, body, show_title) values ('members', 'Members', 'public', '<p><span class="embedded" data-embed="user/sidebar" data-label="User: Sidebar" title="Click to edit."></span><br></p>', 'no');
 
 create table #prefix#user (

@@ -136,12 +136,15 @@ if (isset ($data['units'])) {
 $lock = new Lock ();
 $locks = [];
 $blocks = [];
+$order_id = '';
 
 if (! $wildcard) {
 	$qs = array ();
 	foreach ($ids as $id) {
 		$qs[] = '?';
 	}
+	
+	$order_id = join (',', $ids);
 
 	$locks = $lock->exists ('Block', $ids);
 	$query = Block::query ()->where ('id in(' . join (', ', $qs) . ')');
@@ -152,9 +155,17 @@ if (! $wildcard) {
 	$blocks = Block::query ()->where ('id like ?', $idsearch)
 		->order ('id', 'asc')
 		->fetch_orig ();
+
+	$order_id = $data['wildcard'];
 	
 	$ids = array_column ($blocks, 'id');
 	$locks = $lock->exists ('Block', $ids);
+}
+
+// Apply custom sorting order, if set
+$order = blocks\GroupOrder::for ($order_id);
+if ($order != false) {
+	$ids = blocks\GroupOrder::apply_order ($ids, $order);
 }
 
 $list = array ();
