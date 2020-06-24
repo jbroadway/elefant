@@ -4,10 +4,6 @@
  * Wrapper for embedding `blocks/group` blocks into content via Dynamic Objects.
  */
 
-if ($data['rows'] != 'on') {
-	echo '<div class="e-row-variable">' . PHP_EOL;
-}
-
 $opts = [
 	'level' => $data['level'],
 	'divs' => 'on'
@@ -18,6 +14,7 @@ if ($data['units'] == '100') {
 	$opts['rows'] = 'on';
 } else {
 	$opts['units'] = $data['units'];
+	echo '<div class="e-row-variable">' . PHP_EOL;
 }
 
 // If wildcard contains a list of IDs, set the ID list instead
@@ -30,6 +27,6 @@ if (strpos ($data['wildcard'], ',') !== false) {
 
 echo $this->run ('blocks/group', $opts);
 
-if ($data['rows'] != 'on') {
+if ($data['units'] != '100') {
 	echo '</div>' . PHP_EOL;
 }
