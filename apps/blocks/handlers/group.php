@@ -117,8 +117,8 @@ if (! $wildcard) {
 }
 
 $level = (isset ($data['level']) && preg_match ('/^h[1-6]$/', $data['level'])) ? $data['level'] : 'h3';
-$rows = isset ($data['rows']) ? true : false;
-$divs = ($rows || isset ($data['divs'])) ? true : false;
+$rows = (isset ($data['rows']) && $data['rows'] == 'on') ? true : false;
+$divs = ($rows || (isset ($data['divs']) && $data['divs'] == 'on')) ? true : false;
 
 if ($rows || $divs || isset ($data['units'])) {
 	echo $this->run ('admin/util/minimal-grid');
@@ -270,7 +270,7 @@ foreach ($ids as $k => $id) {
 }
 
 // Add wildcard add block link
-if ($wildcard && User::require_acl ('admin', 'blocks', 'admin/add')) {
+if ($wildcard && $rows && User::require_acl ('admin', 'blocks', 'admin/add')) {
 	$next_id = str_replace ('*', $next_wildcard, $data['wildcard']);
 	echo $tpl->render ('blocks/editable', (object) ['id' => $next_id, 'locked' => false]) . PHP_EOL;
 }
