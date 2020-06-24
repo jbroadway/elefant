@@ -193,6 +193,8 @@ if ($units === 'auto' || (! $wildcard && $total !== count ($units))) {
 
 $next_wildcard = 1;
 
+if ($rows) echo '<div class="block-group-wrapper">' . PHP_EOL;
+
 foreach ($ids as $k => $id) {
 	if (! isset ($list[$id])) {
 		if ($rows) {
@@ -204,7 +206,7 @@ foreach ($ids as $k => $id) {
 		}
 
 		if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
-			echo $tpl->render ('blocks/editable', (object) ['id' => $id, 'locked' => false]) . PHP_EOL;
+			echo $tpl->render ('blocks/editable', (object) ['id' => $id, 'locked' => false, 'sorting' => true]) . PHP_EOL;
 		}
 
 		if ($rows) {
@@ -231,11 +233,11 @@ foreach ($ids as $k => $id) {
 
 	if ($rows) {
 		if ($b->background != '') {
-			printf ('<div class="block-outer" id="block-outer-%s" style="background-image: url(\'%s\'); background-size: cover; background-position: 50%% 50%%">%s', $b->id, $b->background, PHP_EOL);
+			printf ('<div class="block-outer" id="block-outer-%s" data-block-id="%s" data-order-id="%s" style="background-image: url(\'%s\'); background-size: cover; background-position: 50%% 50%%">%s', $b->id, $b->id, $order_id, $b->background, PHP_EOL);
 			printf ('<div class="e-row">%s', PHP_EOL);
 			printf ('<div class="e-col-%d block" id="block-%s">%s', $units[$k], $b->id, PHP_EOL);
 		} else {
-			printf ('<div class="block-outer" id="block-outer-%s">%s', $b->id, PHP_EOL);
+			printf ('<div class="block-outer" id="block-outer-%s" data-block-id="%s" data-order-id="%s">%s', $b->id, $b->id, $order_id, PHP_EOL);
 			printf ('<div class="e-row">%s', PHP_EOL);
 			printf ('<div class="e-col-%d block" id="block-%s">%s', $units[$k], $b->id, PHP_EOL);
 		}
@@ -254,6 +256,7 @@ foreach ($ids as $k => $id) {
 	$b->locked = is_array ($locks) ? in_array ($id, $locks) : false;
 
 	if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
+		if ($rows) $b->sorting = true;
 		echo $tpl->render ('blocks/editable', $b) . PHP_EOL;
 	}
 
@@ -284,4 +287,14 @@ foreach ($ids as $k => $id) {
 if ($wildcard && $rows && User::require_acl ('admin', 'blocks', 'admin/add')) {
 	$next_id = str_replace ('*', $next_wildcard, $data['wildcard']);
 	echo $tpl->render ('blocks/editable', (object) ['id' => $next_id, 'locked' => false]) . PHP_EOL;
+}
+
+// Add group order script
+if ($rows) {
+	echo '</div>' . PHP_EOL; // End block-group-wrapper
+
+	if (User::require_acl ('admin', 'blocks')) {
+		$page->add_style ('/apps/blocks/css/grouporder.css');
+		$page->add_script ('/apps/blocks/js/grouporder.js', 'tail');
+	}
 }

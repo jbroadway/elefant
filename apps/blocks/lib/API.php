@@ -6,7 +6,7 @@ class API extends \Restful {
 	/**
 	 * Update the sorting order of a block group.
 	 */
-	public function update_order () {
+	public function post_update_order () {
 		if (! isset ($_POST['order_id'])) return $this->error ('Missing parameter: order_id');
 		if (! isset ($_POST['block_ids'])) return $this->error ('Missing parameter: block_ids');
 		

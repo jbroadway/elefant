@@ -1,0 +1,4 @@
+.block-outer:first-of-type .block-move-up,
+.block-outer:last-of-type .block-move-down {
+	display: none;
+}
