@@ -1,9 +1,9 @@
 <form method="POST" action="/user/login" id="login-form">
 <input type="hidden" name="redirect" value="{{ $_POST.redirect }}" />
 <p>{"Email"}:<br />
-<input type="email" name="username" value="{{ $_POST.username }}" /></p>
+<input type="email" name="username" value="{{ $_POST.username }}" autocomplete="username" /></p>
 <p>{"Password"}:<br />
-<input type="password" name="password" value="{{ $_POST.password }}" /></p>
+<input type="password" name="password" value="{{ $_POST.password }}" autocomplete="current-password" /></p>
 <p><input type="submit" value="{"Sign in"}" /></p>
 </form>
 

@@ -9,8 +9,8 @@
 {% else %}
 		<form method="post" action="/user/login">
 			<p>
-				<input type="email" name="username" placeholder="{"EMAIL"}" size="25" />
-				<input type="password" name="password" placeholder="{"PASSWORD"}" size="25" />
+				<input type="email" name="username" placeholder="{"EMAIL"}" size="25" autocomplete="username" />
+				<input type="password" name="password" placeholder="{"PASSWORD"}" size="25" autocomplete="current-password" />
 				<input type="submit" value="{"Log in"}" />
 			</p>
 			<p>
