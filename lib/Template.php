@@ -232,6 +232,11 @@ class Template {
 	 * File extension.
 	 */
 	public $file_extension = 'html';
+	
+	/**
+	 * Override this to change the default filter for variables.
+	 */
+	public $default_filter = 'Template::sanitize';
 
 	/**
 	 * The controller object used to run includes. The controller can be
@@ -395,6 +400,7 @@ class Template {
 	 */
 	public function replace_vars ($regs) {
 		$val = is_array ($regs) ? $regs[1] : $regs;
+		$label = $val;
 
 		// Get any filters
 		$filters = explode ('|', $val);
@@ -425,7 +431,7 @@ class Template {
 
 		// Apply default filter or none
 		if (count ($filters) === 0) {
-			return '<?php echo Template::sanitize (' . $val . ', \'' . $this->charset . '\'); ?>';
+			return '<?php echo ' . $this->default_filter . ' (' . $val . ', \'' . $this->charset . '\', \'' . $label . '\'); ?>';
 		} elseif (trim ($filters[0]) === 'none') {
 			return '<?php echo ' . $val . '; ?>';
 		}
@@ -611,7 +617,7 @@ class Template {
 	 * but it should only be used if you know the source and have validated
 	 * your data beforehand.
 	 */
-	public static function sanitize ($val, $charset = 'UTF-8') {
+	public static function sanitize ($val, $charset = 'UTF-8', $label = '') {
 		if (! defined ('ENT_SUBSTITUTE')) {
 			define ('ENT_SUBSTITUTE', ENT_IGNORE);
 		}
