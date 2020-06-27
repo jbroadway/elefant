@@ -212,7 +212,7 @@ class Page {
 	 * to view templates.
 	 */
 	public function add_script ($script, $add_to = 'head', $type = '', $integrity = '', $crossorigin = '') {
-		$script = self::wrap_script ($script, $type, $integrity, $crossorigin);
+		$script = self::wrap_script ($script, $type, $integrity, $crossorigin, $add_to);
 
 		if (! in_array ($script, $this->scripts)) {
 			$this->scripts[] = $script;
@@ -220,6 +220,8 @@ class Page {
 			if ($this->is_being_rendered) {
 				echo $script;
 			} elseif ($add_to === 'head') {
+				$this->head .= $script;
+			} elseif ($add_to === 'defer') {
 				$this->head .= $script;
 			} elseif ($add_to === 'tail') {
 				$this->tail .= $script;
@@ -269,7 +271,7 @@ class Page {
 	 * including `<link>` tags for CSS files. Will pass through
 	 * on scripts that are already HTML.
 	 */
-	public static function wrap_script ($script, $type = '', $integrity = '', $crossorigin = '') {
+	public static function wrap_script ($script, $type = '', $integrity = '', $crossorigin = '', $add_to = '') {
 		if (strpos ($script, '<') === 0) {
 			return $script;
 		}
@@ -282,11 +284,12 @@ class Page {
 		if ($crossorigin !== '') {
 			$crossorigin = ' crossorigin="' . $crossorigin . '"';
 		}
+		$extra = ($add_to === 'defer') ? ' ' . $add_to : '';
 
 		if (preg_match ('/\.css$/i', $script) || strpos ($script, '.css?') !== false) {
 			return '<link rel="stylesheet"' . $type . ' href="' . self::assets_version ($script) . '"' . $integrity . $crossorigin . " />\n";
 		}
-		return '<script' . $type . ' src="' . self::assets_version ($script) . '"' . $integrity . $crossorigin . "></script>\n";
+		return '<script' . $type . ' src="' . self::assets_version ($script) . '"' . $integrity . $crossorigin . $extra . "></script>\n";
 	}
 
 	/**
