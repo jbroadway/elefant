@@ -431,7 +431,7 @@ class Template {
 
 		// Apply default filter or none
 		if (count ($filters) === 0) {
-			return '<?php echo ' . $this->default_filter . ' (' . $val . ', \'' . $this->charset . '\', \'' . $label . '\'); ?>';
+			return '<?php echo ' . $this->default_filter . ' (' . $val . ', \'' . $this->charset . '\', \'' . str_replace ('\'', '\\\'', $label) . '\'); ?>';
 		} elseif (trim ($filters[0]) === 'none') {
 			return '<?php echo ' . $val . '; ?>';
 		}
@@ -450,7 +450,7 @@ class Template {
 				$end = ')' . $end;
 			} elseif (trim ($filter) === 'sanitize') {
 				$out .= 'Template::sanitize (';
-				$end = ', \'' . $this->charset . '\')' . $end;
+				$end = ', \'' . $this->charset . '\', \'' . str_replace ('\'', '\\\'', $label) . '\')' . $end;
 			} elseif (trim ($filter) === 'autolink') {
 				$out .= 'Template::autolink (';
 				$end = ')' . $end;
