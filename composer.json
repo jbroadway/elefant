@@ -9,8 +9,7 @@
 		"php": ">=7.2"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^4.8.36 || ^5.7 || ^6.5",
-		"carlosas/phpat": "^0.5.3"
+		"phpunit/phpunit": "^4.8.36 || ^5.7 || ^6.5"
 	},
 	"config": {
 		"process-timeout": 600,
