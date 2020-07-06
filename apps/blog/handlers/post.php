@@ -117,7 +117,7 @@ if ($post->thumbnail == '') {
 	$post->thumbnail = conf ('General', 'default_thumbnail');
 }
 
-if ($post->thumbnail !== '') {
+if ($post->thumbnail != '') {
 	$page->add_meta (
 		'og:image',
 		($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . str_replace (' ', '%20', $post->thumbnail),
