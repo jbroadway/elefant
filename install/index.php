@@ -55,6 +55,7 @@ if (get_magic_quotes_gpc ()) {
 // get the global configuration
 date_default_timezone_set('GMT');
 
+require_once ('../conf/version.php');
 require_once ('../lib/Functions.php');
 require_once ('../lib/I18n.php');
 require_once ('../lib/Form.php');
@@ -62,6 +63,7 @@ require_once ('../lib/DB.php');
 require_once ('../lib/Template.php');
 require_once ('../lib/Model.php');
 require_once ('../lib/ExtendedModel.php');
+require_once ('../lib/Appconf.php');
 require_once ('../apps/admin/models/Webpage.php');
 require_once ('../apps/blocks/models/Block.php');
 require_once ('../apps/user/models/User.php');
@@ -141,6 +143,14 @@ switch ($_GET['step']) {
 				// create the database
 				$sqldata = sql_split (file_get_contents ('../conf/install_' . $_POST['driver'] . '.sql'));
 				foreach ($sqldata as $sql) {
+					// replace ELEFANT_VERSION and appconf versions
+					$sql = str_replace ('#ELEFANT_VERSION#', ELEFANT_VERSION, $sql);
+					while (preg_match ('/#appconf\.([^.#]+)\.([^.#]+)\.([^.#]+)#/', $sql, $regs)) {
+						chdir ('..');
+						$sql = str_replace ($regs[0], Appconf::get ($regs[1], $regs[2], $regs[3]), $sql);
+						chdir ('install');
+					}
+
 					if (! DB::execute ($sql)) {
 						$data['error'] = DB::error ();
 						DB::execute ('rollback');

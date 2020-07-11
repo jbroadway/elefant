@@ -173,10 +173,10 @@ create table #prefix#apps (
 	version char(16) not null
 ) default charset=utf8;
 
-insert into #prefix#apps (name, version) values ('elefant', '1.3.12');
-insert into #prefix#apps (name, version) values ('blog', '1.1.5-stable');
-insert into #prefix#apps (name, version) values ('user', '1.1.5-stable');
-insert into #prefix#apps (name, version) values ('filemanager', '1.3.2-beta');
+insert into #prefix#apps (name, version) values ('elefant', '#ELEFANT_VERSION#');
+insert into #prefix#apps (name, version) values ('blog', '#appconf.blog.Admin.version#');
+insert into #prefix#apps (name, version) values ('user', '#appconf.user.Admin.version#');
+insert into #prefix#apps (name, version) values ('filemanager', '#appconf.filemanager.Admin.version#');
 
 create table #prefix#extended_fields (
 	id int not null primary key auto_increment,
