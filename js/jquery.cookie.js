@@ -80,7 +80,8 @@ jQuery.cookie = function (key, value, options) {
             options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
             options.path ? '; path=' + options.path : '',
             options.domain ? '; domain=' + options.domain : '',
-            options.secure ? '; secure' : ''
+            options.secure ? '; secure' : '',
+            options.samesite ? '; samesite=' + options.samesite : '; samesite=Lax'
         ].join(''));
     }
 

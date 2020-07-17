@@ -215,7 +215,7 @@ class User extends ExtendedModel {
 			@session_start ();
 
 			if (isset ($_COOKIE[$name])) {
-				if (version_compare(PHP_VERSION, '7.3.0') >= 0) {
+				if (version_compare (PHP_VERSION, '7.3.0') >= 0) {
 					setcookie ($name, $_COOKIE[$name], [
 						'expires' => time() + $duration,
 						'path' => $path,
