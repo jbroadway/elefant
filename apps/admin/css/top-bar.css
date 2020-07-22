@@ -337,10 +337,11 @@ p.admin-options a {
 	width: 29px;
 	height: 24px;
 	background-color: #f5f5f5;
+	text-align: left;
 }
 
 p.admin-options a {
-	color: #333;
+	color: #333 !important;
 }
 
 #preview-bar a {
@@ -350,11 +351,11 @@ p.admin-options a {
 
 #preview-bar a:hover,
 .admin-options a:hover {
-	background: #eee;
+	background: #eee !important;
 	text-decoration: none !important;
 	margin: 0;
 	padding: 0;
-	color: #111;
+	color: #111 !important;
 }
 
 #preview-bar a i {
