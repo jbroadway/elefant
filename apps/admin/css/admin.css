@@ -144,6 +144,10 @@ table {
 	.redactor-styles table {
 		table-layout: fixed;
 	}
+	
+	.redactor-styles table tr {
+		vertical-align: top;
+	}
 
 tt {
 	color: #000;
