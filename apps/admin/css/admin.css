@@ -140,6 +140,10 @@ table {
 		table tr td:last-child {
 			padding-right: 0;
 		}
+	
+	.redactor-styles table {
+		table-layout: fixed;
+	}
 
 tt {
 	color: #000;
