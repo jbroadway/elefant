@@ -129,8 +129,8 @@ create table #prefix#blog_post (
 	extra text not null,
 	thumbnail char(128) not null default '',
 	slug char(128) not null default '',
-	description text not null default '',
-	keywords text not null default '',
+	description text not null,
+	keywords text not null,
 	index (ts),
 	index (ts, published)
 ) default charset=utf8;
