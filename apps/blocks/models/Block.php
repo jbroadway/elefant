@@ -52,4 +52,32 @@ class Block extends Model {
 	public static $versions_display_fields = [
 		'title' => 'Title'
 	];
+
+	/**
+	 * Get a list of classes that can be applied to blocks. Looks for a `blocks.css`
+	 * file in your `default_layout` folder, otherwise reads all `*.css` files found
+	 * there and parses them for lines of the form `.block-outer.custom-class-name`.
+	 * These will then be made available for selection in the block editor, and applied
+	 * to any `blocks/group?rows=on` output.
+	 */
+	public static function get_styles () {
+		$layout = conf ('General', 'default_layout');
+		$files = file_exists ('layouts/' . $layout . '/blocks.css')
+			? ['layouts/' . $layout . '/blocks.css']
+			: glob ('layouts/' . $layout . '/*.css');
+		$classes = [];
+	
+		foreach ($files as $file) {
+			$css = file_get_contents ($file);
+		
+			if (preg_match_all ('/\.block-outer\.([a-zA-Z0-9_-]+)/', $css, $regs, PREG_SET_ORDER)) {
+				foreach ($regs as $match) {
+					$label = ucwords (str_replace (['-', '_'], ' ', $match[1]));
+					$classes[$match[1]] = $label;
+				}
+			}
+		}
+	
+		return $classes;
+	}
 }

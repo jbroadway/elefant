@@ -28,6 +28,7 @@ if ($f->submit ()) {
 	$b->access = $_POST['access'];
 	$b->show_title = $_POST['show_title'];
 	$b->background = $_POST['background'];
+	$b->style = $_POST['style'];
 	$b->put ();
 	Versions::add ($b);
 	if (! $b->error) {

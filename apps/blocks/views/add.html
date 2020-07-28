@@ -23,13 +23,13 @@
 
 <p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
 
-<p>{"Block title"}:<br /><input type="text" name="title" size="50" value="{{ title }}" onblur="webpage_add_title_to_id (this.form)" />
+<p>{"Block title"}<br /><input type="text" name="title" size="50" value="{{ title }}" onblur="webpage_add_title_to_id (this.form)" />
 <span class="notice" id="title-notice">{"You must enter a block title."}</span></p>
 
-<p>{"Block ID"} (ex: <tt>{<span></span>! blocks/<strong>your-block-id</strong> !<span></span>}</tt>):<br /><input type="text" name="id" size="55" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
+<p>{"Block ID"} (ex: <tt>{<span></span>! blocks/<strong>your-block-id</strong> !<span></span>}</tt>)<br /><input type="text" name="id" size="55" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
 <span class="notice" id="id-notice">{"Your ID must be a lowercase alphanumeric value and can't already exist."}</span></p>
 
-<p>{"Body"}: <span class="notice" id="body-notice">{"You must enter body content."}</span><br />
+<p><span class="notice" id="body-notice">{"You must enter body content."}<br /></span>
 <textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 
 	</div>
@@ -51,8 +51,17 @@
 
 <div class="editform-section info">
 
+<p>{"Style"}<br />
+<select name="style">
+	<option value="">{"- select -"}</option>
+{% foreach Block::get_styles() as _style, _name %}
+	<option value="{{ _style }}"{% if _style == $data->style %} selected{% end %}>{{ _name }}</option>
+{% end %}
+</select>
+</p>
+
 <div>
-{"Access"}:<br />
+{"Access"}<br />
 <p class="toggle" data-field="access">
 {% foreach User::access_list () %}<a href="#" data-value="{{ loop_index }}">{{ loop_value }}</a>{% end %}
 </p>
@@ -60,7 +69,7 @@
 </div>
 
 <div>
-{"Show title"}:<br />
+{"Show title"}<br />
 <p class="toggle" data-field="show_title">
 {% foreach yes_no %}<a href="#" data-value="{{ loop_index }}">{{ loop_value }}</a>{% end %}
 </p>

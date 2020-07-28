@@ -233,11 +233,11 @@ foreach ($ids as $k => $id) {
 
 	if ($rows) {
 		if ($b->background != '') {
-			printf ('<div class="block-outer" id="block-outer-%s" data-block-id="%s" data-order-id="%s" style="background-image: url(\'%s\'); background-size: cover; background-position: 50%% 50%%">%s', $b->id, $b->id, $order_id, $b->background, PHP_EOL);
+			printf ('<div class="block-outer %s" id="block-outer-%s" data-block-id="%s" data-order-id="%s" style="background-image: url(\'%s\'); background-size: cover; background-position: 50%% 50%%">%s', $b->style, $b->id, $b->id, $order_id, $b->background, PHP_EOL);
 			printf ('<div class="e-row">%s', PHP_EOL);
 			printf ('<div class="e-col-%d block" id="block-%s">%s', $units[$k], $b->id, PHP_EOL);
 		} else {
-			printf ('<div class="block-outer" id="block-outer-%s" data-block-id="%s" data-order-id="%s">%s', $b->id, $b->id, $order_id, PHP_EOL);
+			printf ('<div class="block-outer %s" id="block-outer-%s" data-block-id="%s" data-order-id="%s">%s', $b->style, $b->id, $b->id, $order_id, PHP_EOL);
 			printf ('<div class="e-row">%s', PHP_EOL);
 			printf ('<div class="e-col-%d block" id="block-%s">%s', $units[$k], $b->id, PHP_EOL);
 		}
