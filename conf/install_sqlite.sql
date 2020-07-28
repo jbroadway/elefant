@@ -24,7 +24,8 @@ create table #prefix#block (
 	body text,
 	access char(12) not null,
 	show_title char(3) not null,
-	background char(128) not null default ''
+	background char(128) not null default '',
+	style char(72) not null default ''
 );
 
 create table #prefix#block_group_order (
