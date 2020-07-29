@@ -28,7 +28,7 @@
  * Provides a Memcache-compatible wrapper for the Redis PHP extension. For more
  * info, see:
  *
- * https://github.com/nicolasff/phpredis
+ * https://github.com/phpredis/phpredis
  *
  * This allows you to use Redis as a drop-in replacement for Memcache as a cache
  * store in Elefant.
@@ -42,6 +42,8 @@ class MemcacheRedis {
 	 * Redis connection object.
 	 */
 	public static $redis;
+	
+	private $servers_set = false;
 
 	/**
 	 * Constructor method receives or creates a new Redis object.
@@ -53,12 +55,45 @@ class MemcacheRedis {
 			self::$redis = new Redis ();
 		}
 	}
+	
+	/**
+	 * Set the server list directly. Used to handle full url-based connection
+	 * strings with usernames and passwords. Note: Usernames require Redis 6.0+.
+	 */
+	public function setServers ($servers) {
+		foreach ($servers as $s) {
+			$url = parse_url ($s);
+			if ($url === false) continue;
+			
+			$host = in_array ($url['scheme'], ['tls', 'rediss'])
+				? 'tls://' . $url['host']
+				: $url['host'];
+			
+			if ($url['pass'] !== null) {
+				if ($url['user'] !== null && $url['user'] !== '' && $url['user'] !== 'default') {
+					$res = self::$redis->connect ($host, $url['port'], 0, null, 0, 0, ['auth' => [$url['user'], $url['pass']]]);
+				} else {
+					$res = self::$redis->connect ($host, $url['port'], 0, null, 0, 0, ['auth' => $url['pass']]);
+				}
+			} else {
+				$res = self::$redis->connect ($host, $url['port']);
+			}
+			
+			if ($res) {
+				self::$redis->setOption (Redis::OPT_SERIALIZER, Redis::SERIALIZER_PHP);
+			}
+		}
+		
+		$this->servers_set = true;
+	}
 
 	/**
 	 * Emulates `Memcache::addServer` via `connect`. Also adds
 	 * serialization via PHP's serialize/unserialize functions.
 	 */
 	public function addServer ($server, $port = 6379, $password = false) {
+		if ($this->servers_set) return;
+		
 		$res = self::$redis->connect ($server, $port);
 		if ($res) {
 			if ($password !== false) {
