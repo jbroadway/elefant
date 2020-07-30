@@ -161,7 +161,7 @@ class MemcacheRedis {
 	 * Emulates `Memcache::delete`.
 	 */
 	public function delete ($key) {
-		return self::$redis->delete ($key);
+		return self::$redis->unlink ($key);
 	}
 
 	/**
