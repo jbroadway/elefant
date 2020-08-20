@@ -844,7 +844,7 @@ class Controller {
 		// Check for custom routes
 		if (count ($obj->custom_routes)) {
 			// test custom routes for a match
-			$_request_uri = join ($this->params, '/');
+			$_request_uri = implode ('/', $this->params);
 
 			foreach ($obj->custom_routes as $_route => $_method) {
 				// ensure method exists
