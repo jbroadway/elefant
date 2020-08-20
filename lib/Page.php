@@ -145,7 +145,12 @@ class Page {
 	 * Constructor method
 	 */
 	public function __construct () {
-		$method = isset ($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']) ? $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] : $_SERVER['REQUEST_METHOD'];
+		$method = isset ($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])
+			? $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']
+			: (isset ($_SERVER['REQUEST_METHOD'])
+				? $_SERVER['REQUEST_METHOD']
+				: 'GET');
+
 		$cacheable = array ('GET', 'HEAD');
 
 		if (in_array ($method, $cacheable) ) {
