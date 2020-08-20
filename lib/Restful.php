@@ -100,6 +100,12 @@ class Restful {
 	 * a `{"success":true,"data":"..."}` structure around it.
 	 */
 	public $wrap = true;
+	
+	/**
+	 * Whether to suppress error logs and echo statements,
+	 * primarily for unit testing.
+	 */
+	public $suppress_output = false;
 
 	/**
 	 * List any custom routes in this array. Useful for complex
@@ -140,6 +146,67 @@ class Restful {
 	 *     }
 	 */
 	public $custom_routes = array ();
+	
+	/**
+	 * Get the specified parameters from the PUT request data.
+	 * Wraps `get_put_data(true)` with additional capabilities
+	 * to more easily validate input.
+	 *
+	 * If provided with a list of parameters, it will return only
+	 * the parameters specified. If the expected parameter list is
+	 * provided as an associative array, its keys will be the
+	 * parameter names and the values will either be `true` for
+	 * required fields, `false` for optional fields, or an
+	 * associative array of input validations that will be passed
+	 * to `Validator::validate_list()`.
+	 *
+	 * Validation rules can be mixed and matched, so you can specify
+	 * one field optional with a `false` boolean and another with a
+	 * set of validation rules.
+	 */
+	public function get_params ($params = null) {
+		$data = $this->get_put_data (true);
+		
+		// Return as-is if no parameter list is provided
+		if (! is_array ($params)) {
+			return $data;
+		}
+		
+		$out = [];
+
+		$is_assoc = (array_values ($params) !== $params);
+		
+		foreach ($params as $key => $value) {
+			if ($is_assoc) {
+				// If values are boolean and true, they're required
+				if ($value === true && ! isset ($data->{$key})) {
+					$this->error ('Missing parameter: ' . $key, 400);
+					return false;
+				
+				// If values are an array, they're a list of validation rules
+				} elseif (is_array ($value)) {
+					$failed = Validator::validate_list ([$key => $data->{$key}], [$key => $value]);
+
+					if (count ($failed) > 0) {
+						$this->error ('Invalid parameter: ' . $key, 400);
+						return false;
+					}
+				}
+				
+				$out[$key] = isset ($data->{$key}) ? $data->{$key} : null;
+			} else {
+				// For non-associative arrays, all are considered required
+				if (! isset ($data->{$value})) {
+					$this->error ('Missing parameter: ' . $value, 400);
+					return false;
+				}
+				
+				$out[$value] = isset ($data->{$value}) ? $data->{$value} : null;
+			}
+		}
+		
+		return (object) $out;
+	}
 
 	/**
 	 * Get and optionally JSON decode the PUT requests data.
@@ -172,9 +239,9 @@ class Restful {
 			$res = new StdClass;
 			$res->success = true;
 			$res->data = $data;
-			echo json_encode ($res);
+			if (! $this->suppress_output) echo json_encode ($res);
 		} else {
-			echo json_encode ($data);
+			if (! $this->suppress_output) echo json_encode ($data);
 		}
 		return true;
 	}
@@ -189,8 +256,10 @@ class Restful {
 		$res = new StdClass;
 		$res->success = false;
 		$res->error = $message;
-		error_log ($message);
-		echo json_encode ($res);
+		if (! $this->suppress_output) {
+			error_log ($message);
+			echo json_encode ($res);
+		}
 		return null;
 	}
 

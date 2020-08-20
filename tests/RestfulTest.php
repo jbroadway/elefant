@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 class MockController {
 	public $data;
+	public $status_code = false;
 
 	public function get_put_data () {
 		return $this->data;
@@ -11,6 +12,11 @@ class MockController {
 
 	public function get_raw_post_data () {
 		return $this->data;
+	}
+	
+	public function status_code ($code = null, $text = '') {
+		$this->status_code = $code;
+		return $code;
 	}
 }
 
@@ -40,6 +46,48 @@ class RestTestApi extends Restful {
 }
 
 class RestfulTest extends TestCase {
+	function test_get_params () {
+		$r = new Restful;
+		$r->suppress_output = true;
+		$r->controller = new MockController;
+		$r->controller->data = '{"foo":"bar"}';
+		$decoded = json_decode ($r->controller->data);
+		
+		$this->assertEquals ($r->get_params (), $decoded);
+		$this->assertEquals ($r->get_params (['foo']), $decoded);
+		$this->assertEquals ($r->get_params (['foo' => true]), $decoded);
+		
+		$this->assertEquals ($r->get_params (['bar']), false);
+		$this->assertEquals ($r->get_params (['bar' => true]), false);
+		$this->assertEquals ($r->get_params (['bar' => false]), (object) ['bar' => null]);
+
+		$missing_bar = (object) ['foo' => 'bar', 'bar' => null];
+
+		$this->assertEquals ($r->get_params ([
+			'foo' => true,
+			'bar' => false
+		]), $missing_bar);
+
+		$r->controller->data = '{"foo":"bar","qwerty":"asdf"}';
+		$decoded = json_decode ($r->controller->data);
+
+		$this->assertEquals ($r->get_params ([
+			'foo' => true,
+			'qwerty' => false
+		]), $decoded);
+
+		$this->assertEquals ($r->get_params ([
+			'foo' => true,
+			'qwerty' => ['not empty' => true]
+		]), $decoded);
+
+		$r->controller->data = '{"foo":"","qwerty":"asdf"}';
+		
+		$this->assertEquals ($r->get_params ([
+			'foo' => ['not empty' => true]
+		]), false);
+	}
+	
 	function test_get_put_data () {
 		$r = new Restful;
 		$r->controller = new MockController;
