@@ -372,6 +372,18 @@ class User extends ExtendedModel {
 	}
 
 	/**
+	 * Alternative to `require_login()` that also checks that their
+	 * account has been verified via email.
+	 */
+	public static function require_verification () {
+		if (! self::require_login ()) {
+			return false;
+		}
+		
+		return (! isset (self::$user->userdata['verifier']));
+	}
+
+	/**
 	 * Alias of `require_acl('admin')`. Simplifies authorization
 	 * for general admin access down to:
 	 *
