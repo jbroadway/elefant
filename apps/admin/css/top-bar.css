@@ -305,7 +305,8 @@ body {
 		}
 
 #preview-bar,
-p.admin-options {
+p.admin-options,
+div.admin-options {
 	display: block;
 	line-height: 21px;
 	font-size: 13px;
@@ -314,7 +315,8 @@ p.admin-options {
 }
 
 #preview-bar a,
-p.admin-options {
+p.admin-options,
+div.admin-options {
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing: content-box;
 	box-sizing: content-box;
@@ -326,7 +328,8 @@ p.admin-options {
 }
 
 #preview-bar a,
-p.admin-options a {
+p.admin-options a,
+div.admin-options a {
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing: content-box;
 	box-sizing: content-box;
@@ -341,7 +344,8 @@ p.admin-options a {
 	text-align: left;
 }
 
-p.admin-options a {
+p.admin-options a,
+div.admin-options a {
 	color: #333 !important;
 }
 
