@@ -21,7 +21,8 @@ $form->data = array (
     'default_thumbnail' => conf ('General', 'default_thumbnail'),
     'email_from' => conf ('General', 'email_from'),
     'timezone' => conf ('General', 'timezone'),
-    'google_analytics_id' => conf ('General', 'google_analytics_id')
+    'google_analytics_id' => conf ('General', 'google_analytics_id'),
+    'vendor_autoload' => conf ('General', 'vendor_autoload') ? 'enabled' : 'disabled'
 );
 
 echo $form->handle (function ($form) {
@@ -33,7 +34,8 @@ echo $form->handle (function ($form) {
         	'default_thumbnail' => $_POST['default_thumbnail'],
             'email_from' => $_POST['email_from'],
             'timezone' => $_POST['timezone'],
-            'google_analytics_id' => $_POST['google_analytics_id']
+            'google_analytics_id' => $_POST['google_analytics_id'],
+            'vendor_autoload' => ($_POST['vendor_autoload'] == 'enabled') ? true : false
         )
     ));
 

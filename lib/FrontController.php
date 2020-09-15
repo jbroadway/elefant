@@ -153,6 +153,13 @@ class FrontController {
 		$GLOBALS['cache'] = $cache;
 
 		/**
+		 * Check whether we should auto-include the Composer autoloader.
+		 */		
+		if (conf ('General', 'vendor_autoload') && file_exists ('lib/vendor/autoload.php')) {
+			require ('lib/vendor/autoload.php');
+		}
+
+		/**
 		 * Check for a bootstrap.php file in the root of the site
 		 * and if found, use it for additional app-level configurations
 		 * (Dependency Injection, custom logging settings, etc.).

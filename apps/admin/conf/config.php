@@ -20,6 +20,12 @@ google_analytics_id = Off
 ; Default thumbnail for social shares.
 default_thumbnail = Off
 
+; Should Elefant auto-include the lib/vendor/autoload.php
+; autoloader? This enables you to autoload packages installed
+; via Composer.
+
+vendor_autoload = Off
+
 [General]
 
 ; Set this to the location you want to redirect admins to after
