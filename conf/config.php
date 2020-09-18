@@ -146,6 +146,17 @@ master[file] = "conf/site.db"
 
 prefix = "elefant_"
 
+[JobQueue]
+
+; Settings to connect the JobQueue go here. Note that you must
+; have Beanstalkd and the Pheanstalk Composer package installed
+; to use the `beanstalkd` job queue service, or queued tasks will
+; not be executed.
+
+;backend = beanstalkd
+;host = 127.0.0.1
+;port = 11300
+
 [Mongo]
 
 ; Settings to connect to MongoDB. Must have PHP Mongo extension
