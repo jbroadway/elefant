@@ -9,7 +9,7 @@ require_once ('apps/blog/lib/Filters.php');
 
 $limit = 8;
 
-$posts = blog\Post::query (array ('id', 'ts', 'title', 'thumbnail'))
+$posts = blog\Post::query (array ('id', 'ts', 'title', 'thumbnail', 'slug'))
 	->where ('published', 'yes')
 	->order ('ts desc')
 	->fetch ($limit);

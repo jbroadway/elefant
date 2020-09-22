@@ -119,7 +119,7 @@ class Post extends \ExtendedModel {
 	 * Get the latest headlines only.
 	 */
 	public static function headlines ($limit = 10) {
-		return self::query (array ('id', 'ts', 'title'))->where ('published', 'yes')->order ('ts desc')->fetch ($limit);
+		return self::query (array ('id', 'ts', 'title', 'slug'))->where ('published', 'yes')->order ('ts desc')->fetch ($limit);
 	}
 
 	/**

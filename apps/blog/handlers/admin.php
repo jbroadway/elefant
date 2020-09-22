@@ -33,7 +33,7 @@ function blog_admin_where_month ($q, $m) {
 	}
 }
 
-$posts = blog\Post::query ('id, title, ts, author, published, tags')
+$posts = blog\Post::query ('id, title, ts, author, published, tags, slug')
 	->where_search ($q, $q_fields, $q_exact)
 	->and_where (function ($q) use ($m) {
 		blog_admin_where_month ($q, $m);

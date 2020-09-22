@@ -7,7 +7,7 @@
 $id = $data['id'];
 $tags = explode (',', $data['tags']);
 
-$posts = blog\Post::query ('id, thumbnail, title, ts')
+$posts = blog\Post::query ('id, thumbnail, title, ts, slug')
 	->where ('published', 'yes')
 	->where ('id != ?', $id)
 	->and_where (function ($q) use ($tags) {
