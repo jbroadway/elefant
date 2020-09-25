@@ -42,7 +42,6 @@ if (Appconf::blog ('Blog', 'post_format') === 'markdown') {
 foreach ($posts as $post) {
 	if ($post->slug == '') {
 		$post->slug = URLify::filter ($post->title);
-		$post->put ();
 	}
 	
 	$post->url = '/blog/post/' . $post->id . '/';
