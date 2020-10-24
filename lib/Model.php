@@ -207,6 +207,11 @@ class Model {
 	 * A plural name for this class, for use in Elefant's version control.
 	 */
 	public static $plural_name = null;
+	
+	/**
+	 * Cache store for `prefetch_field`.
+	 */
+	private static $_prefetch = [];
 
 	/**
 	 * If `$vals` is false, we're creating a new object from scratch.
@@ -1033,6 +1038,19 @@ class Model {
 	public function orig () {
 		return (object) $this->data;
 	}
+	
+	/**
+	 * Pre-fetch the values of a field for a given list of IDs,
+	 * to reduce the number of database calls when using `field()`
+	 * repeatedly.
+	 */
+	public static function prefetch_field ($ids, $field) {
+		$class = get_called_class ();
+		$obj = new $class;
+		self::$_prefetch[$field] = self::query ($field)
+			->where_in ($obj->key, $ids)
+			->fetch_assoc ($obj->key, $field);
+	}
 
 	/**
 	 * Return a single field's value for the object with the given ID.
@@ -1041,6 +1059,10 @@ class Model {
 	 *     {{ user_id|User::field (%s, 'name') }}
 	 */
 	public static function field ($id, $field) {
+		if (isset (self::$_prefetch[$field]) && isset (self::$_prefetch[$field][$id])) {
+			return self::$_prefetch[$field][$id];
+		}
+		
 		$class = get_called_class ();
 		$obj = new $class;
 		return DB::shift (
