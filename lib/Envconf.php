@@ -68,8 +68,10 @@ class Envconf {
 	public static function get ($app, $section, $setting) {
 		$envkey = strtoupper ($app . '_' . $section . '_' . $setting);
 
-		if (isset ($_ENV[$envkey])) {
-			return $_ENV[$envkey];
+		$env = getenv ($envkey);
+		
+		if ($env !== false) {
+			return $env;
 		}
 		
 		return Appconf::get ($app, $section, $setting);
