@@ -296,7 +296,7 @@ class Form {
 		$o->_failed = $this->failed;
 		$o->_invalid = $this->invalid;
 		$o->_rules = $this->_rules;
-		$page->add_script ('/js/jquery.verify_values.js');
+		$page->add_script ('/js/jquery.verify_values.js?v=2');
 		if ($this->js_validation) {
 			return $tpl->render ('admin/default-validation', $o) . $tpl->render ($this->view, $o);
 		}

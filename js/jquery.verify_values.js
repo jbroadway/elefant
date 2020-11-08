@@ -172,7 +172,7 @@
 				return true;
 			}
 
-			if (options.skip_if_empty == true && value == '') {
+			if (options.skip_if_empty == true && (value == '' || value == undefined)) {
 				return true;
 			}
 
