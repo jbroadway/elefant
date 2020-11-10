@@ -12,6 +12,14 @@ class FunctionsTest extends TestCase {
 		$i18n = conf ('I18n');
 		$this->assertEquals ('http', $i18n['negotiation_method']);
 	}
+	
+	function test_envconf () {
+		$this->assertEquals ('Your Site Name', envconf ('General', 'site_name'));
+		putenv ('GENERAL_SITE_NAME=New Site Name');
+		$this->assertEquals ('New Site Name', envconf ('General', 'site_name'));
+		putenv ('GENERAL_SITE_NAME');
+		$this->assertEquals ('Your Site Name', envconf ('General', 'site_name'));
+	}
 
 	function test_simple_auth () {
 		$verifier = function ($user, $pass) {

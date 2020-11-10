@@ -183,6 +183,32 @@ function conf ($section = false, $value = false, $update = null) {
 }
 
 /**
+ * Wrapper for `conf()` that checks for an equivalent environment variable
+ * and returns that first if found. The naming of the environment variables
+ * are the concatenated names of the section and setting name. For example:
+ *
+ *     <?php
+ *     
+ *     // Returns $_ENV['GENERAL_SITE_NAME'] if set.
+ *     // Otherwise, returns conf ('General', 'site_name')
+ *     $site_name = envconf ('General', 'site_name');
+ *
+ * Note that, unlike `conf()`, this function can only be used to read
+ * individual values, and cannot be used to update them either.
+ */
+function envconf ($section, $value) {
+	$envkey = strtoupper ($section . '_' . $value);
+	
+	$env = getenv ($envkey);
+	
+	if ($env !== false) {
+		return $env;
+	}
+	
+	return conf ($section, $value);
+}
+
+/**
  * Implements a simple authentication mechanism based on callbacks.
  * You provide a verifier function and a communication method function.
  * It then returns them like this:
