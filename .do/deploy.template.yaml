@@ -36,4 +36,3 @@ spec:
   - key: ELEFANT_DB_PASS
     value: ${elefant-db.PASSWORD}
     scope: RUN_TIME
-  build_command: ./elefant install
