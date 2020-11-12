@@ -2,7 +2,7 @@ name: elefant-cms
 services:
 - environment_slug: php
   github:
-    branch: master
+    branch: do-deploy
     deploy_on_push: true
     repo: jbroadway/elefant
   name: elefant-cms
