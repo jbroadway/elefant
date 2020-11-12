@@ -135,7 +135,10 @@ foreach ($sqldata as $sql) {
 }
 
 // change the admin user's password
-$pass = generate_password (8);
+$pass = getenv ('ELEFANT_DEFAULT_PASS');
+if ($pass === false) {
+	$pass = generate_password (8);
+}
 $date = gmdate ('Y-m-d H:i:s');
 if (! DB::execute (
 	"update `#prefix#user` set `email` = ?, `password` = ? where `id` = 1",
