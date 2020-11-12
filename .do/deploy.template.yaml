@@ -20,7 +20,7 @@ spec:
       value: "please enter a random string here"
       scope: RUN_TIME
     - key: ELEFANT_DB_DRIVER
-      value: "mysql"
+      value: "pgsql"
       scope: RUN_TIME
     - key: ELEFANT_DB_HOST
       value: "${elefant-db.HOSTNAME}:${elefant-db.PORT}"
@@ -36,4 +36,3 @@ spec:
       scope: RUN_TIME
   databases:
   - name: elefant-db
-    engine: MYSQL
