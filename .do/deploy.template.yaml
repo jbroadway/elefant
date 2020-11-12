@@ -7,32 +7,32 @@ spec:
       repo_clone_url: https://github.com/jbroadway/elefant.git
     envs:
     - key: ELEFANT_SITE_NAME
-    scope: RUN_TIME
+      scope: RUN_TIME
     - key: ELEFANT_DOMAIN
-    value: ${APP_DOMAIN}
-    scope: RUN_TIME
+      value: ${APP_DOMAIN}
+      scope: RUN_TIME
     - key: ELEFANT_EMAIL_FROM
-    scope: RUN_TIME
+      scope: RUN_TIME
     - key: ELEFANT_TIMEZONE
-    value: "GMT"
-    scope: RUN_TIME
+      value: "GMT"
+      scope: RUN_TIME
     - key: ELEFANT_SITE_KEY
-    value: "please enter a random string here"
-    scope: RUN_TIME
+      value: "please enter a random string here"
+      scope: RUN_TIME
     - key: ELEFANT_DB_DRIVER
-    value: "mysql"
-    scope: RUN_TIME
+      value: "mysql"
+      scope: RUN_TIME
     - key: ELEFANT_DB_HOST
-    value: "${elefant-db.HOSTNAME}:${elefant-db.PORT}"
-    scope: RUN_TIME
+      value: "${elefant-db.HOSTNAME}:${elefant-db.PORT}"
+      scope: RUN_TIME
     - key: ELEFANT_DB_NAME
-    value: ${elefant-db.DATABASE}
-    scope: RUN_TIME
+      value: ${elefant-db.DATABASE}
+      scope: RUN_TIME
     - key: ELEFANT_DB_USER
-    value: ${elefant-db.USERNAME}
-    scope: RUN_TIME
+      value: ${elefant-db.USERNAME}
+      scope: RUN_TIME
     - key: ELEFANT_DB_PASS
-    value: ${elefant-db.PASSWORD}
-    scope: RUN_TIME
+      value: ${elefant-db.PASSWORD}
+      scope: RUN_TIME
   databases:
   - name: elefant-db
