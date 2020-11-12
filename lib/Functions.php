@@ -76,6 +76,7 @@ function info ($value, $full = false) {
  */
 function conf ($section = false, $value = false, $update = null) {
 	static $conf;
+	static $env = [];
 	
 	// Read the settings on the first request
 	if ($conf === null) {
@@ -118,14 +119,17 @@ function conf ($section = false, $value = false, $update = null) {
 		// Read environment variables for setting overrides
 		if (getenv ($map['ELEFANT_SITE_NAME'])) {
 			$conf['General']['site_name'] = getenv ($map['ELEFANT_SITE_NAME']);
+			$env['General']['site_name'] = true;
 		}
 		
 		if (getenv ($map['ELEFANT_EMAIL_FROM'])) {
 			$conf['General']['email_from'] = getenv ($map['ELEFANT_EMAIL_FROM']);
+			$env['General']['email_from'] = true;
 		}
 		
 		if (getenv ($map['ELEFANT_DOMAIN'])) {
 			$conf['General']['site_domain'] = getenv ($map['ELEFANT_DOMAIN']);
+			$env['General']['site_domain'] = true;
 		}
 		
 		if (getenv ($map['ELEFANT_DB_DRIVER'])) {
@@ -154,37 +158,48 @@ function conf ($section = false, $value = false, $update = null) {
 		
 		if (getenv ($map['ELEFANT_TIMEZONE'])) {
 			$conf['General']['timezone'] = getenv ($map['ELEFANT_TIMEZONE']);
+			$env['General']['timezone'] = true;
 		}
 		
 		if (getenv ($map['ELEFANT_UPDATES'])) {
 			$conf['General']['check_for_updates'] = getenv ($map['ELEFANT_UPDATES']);
+			$env['General']['check_for_updates'] = true;
 		}
 		
 		if (getenv ($map['ELEFANT_SITE_KEY'])) {
 			$conf['General']['site_key'] = getenv ($map['ELEFANT_SITE_KEY']);
+			$env['General']['site_key'] = true;
 		}
 		
 		if (getenv ($map['ELEFANT_SESSION_NAME'])) {
 			$conf['General']['session_name'] = getenv ($map['ELEFANT_SESSION_NAME']);
+			$env['General']['session_name'] = true;
 		}
 		
 		if (getenv ($map['ELEFANT_SESSION_HANDLER'])) {
 			$conf['General']['session_save_handler'] = getenv ($map['ELEFANT_SESSION_HANDLER']);
+			$env['General']['session_save_handler'] = true;
 		}
 		
 		if (getenv ($map['ELEFANT_SESSION_DOMAIN'])) {
 			$conf['General']['session_domain'] = getenv ($map['ELEFANT_SESSION_DOMAIN']);
+			$env['General']['session_domain'] = true;
 		}
 		
 		if (getenv ($map['ELEFANT_SESSION_DURATION'])) {
 			$conf['General']['session_duration'] = getenv ($map['ELEFANT_SESSION_DURATION']);
+			$env['General']['session_duration'] = true;
 		}
 	}
 	
 	// Get or set a setting
 	if ($value) {
 		if ($update !== null) {
-			$conf[$section][$value] = $update;
+			// Only update values if they haven't been set via environment variables
+			$set_from_env = (isset ($env[$section]) && isset ($env[$section][$value]) && $env[$section][$value] == true);
+			if (! $set_from_env) {
+				$conf[$section][$value] = $update;
+			}
 		}
 		
 		return @$conf[$section][$value];
