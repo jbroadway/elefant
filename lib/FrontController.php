@@ -76,7 +76,7 @@ class FrontController {
 		 * Set the default timezone to avoid warnings in date functions,
 		 * and configure session settings.
 		 */
-		date_default_timezone_set (envconf ('General', 'timezone'));
+		date_default_timezone_set (conf ('General', 'timezone'));
 		@ini_set ('session.cookie_httponly', 1);
 		@ini_set ('session.use_only_cookies', 1);
 
@@ -89,7 +89,7 @@ class FrontController {
 		 * the error log for errors.
 		 */
 		error_reporting (E_ALL & ~E_NOTICE);
-		if (envconf ('General', 'display_errors')) {
+		if (conf ('General', 'display_errors')) {
 			ini_set ('display_errors', 'On');
 		} else {
 			ini_set ('display_errors', 'Off');
@@ -99,7 +99,7 @@ class FrontController {
 		 * Enable the debugger if conf[General][debug] is true.
 		 */
 		require ('lib/Debugger.php');
-		Debugger::start (envconf ('General', 'debug'));
+		Debugger::start (conf ('General', 'debug'));
 
 		/**
 		 * Include the core libraries used by the front controller
@@ -127,7 +127,7 @@ class FrontController {
 		$i18n = new I18n ('lang', conf ('I18n'));
 		$page = new Page;
 		$controller = new Controller (conf ('Hooks'));
-		$tpl = new Template (envconf ('General', 'charset'), $controller);
+		$tpl = new Template (conf ('General', 'charset'), $controller);
 		$controller->page ($page);
 		$controller->i18n ($i18n);
 		$controller->template ($tpl);
@@ -180,7 +180,7 @@ class FrontController {
 					|| 
 					($_strict && $_SERVER['REQUEST_URI'] == $_route) // match exact
 				) {
-					$page->body = $controller->run (envconf ('General', 'error_handler'), array (
+					$page->body = $controller->run (conf ('General', 'error_handler'), array (
 						'code' => 404,
 						'title' => 'Page not found.',
 						'message' => ''
@@ -218,19 +218,19 @@ class FrontController {
 		/**
 		 * Control caching of the response.
 		 */
-		if (envconf ('Cache', 'control') && !envconf ('General', 'debug')) {
+		if (conf ('Cache', 'control') && !conf ('General', 'debug')) {
 			/* Cache control is ON */
 			if (session_id () === '' && $page->cache_control)
 			{
 				if (isset ($_SERVER["SERVER_SOFTWARE"]) && strpos ($_SERVER["SERVER_SOFTWARE"],"nginx") !== false) {
 					/* Allow NGINX to cache this request  - see http://wiki.nginx.org/X-accel */
 					$controller->header ('X-Accel-Buffering: yes');
-					$controller->header ('X-Accel-Expires: ' . envconf ('Cache', 'expires'));
+					$controller->header ('X-Accel-Expires: ' . conf ('Cache', 'expires'));
 				}
 				/* Standard http headers */
 				$controller->header ('Cache-Control: public, no-cache="set-cookie", must-revalidate, proxy-revalidate, max-age=0');
 				$controller->header ('Pragma: public');
-				$controller->header ('Expires: ' . gmdate ('D, d M Y H:i:s', time () + envconf ('Cache', 'expires')) . ' GMT');
+				$controller->header ('Expires: ' . gmdate ('D, d M Y H:i:s', time () + conf ('Cache', 'expires')) . ' GMT');
 			} else {
 				if (isset ($_SERVER["SERVER_SOFTWARE"]) && strpos ($_SERVER["SERVER_SOFTWARE"],"nginx") !== false) {
 					/* Do NOT allow NGINX to cache this request - see http://wiki.nginx.org/X-accel */

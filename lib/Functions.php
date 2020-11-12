@@ -97,6 +97,9 @@ function conf ($section = false, $value = false, $update = null) {
 		$map = file_exists ('conf/envmap.php')
 			? parse_ini_file ('conf/envmap.php', false)
 			: [
+				'ELEFANT_SITE_NAME' => 'ELEFANT_SITE_NAME',
+				'ELEFANT_EMAIL_FROM' => 'ELEFANT_EMAIL_FROM',
+				'ELEFANT_DOMAIN' => 'ELEFANT_DOMAIN',
 				'ELEFANT_DB_DRIVER' => 'ELEFANT_DB_DRIVER',
 				'ELEFANT_DB_FILE' => 'ELEFANT_DB_FILE',
 				'ELEFANT_DB_HOST' => 'ELEFANT_DB_HOST',
@@ -113,6 +116,18 @@ function conf ($section = false, $value = false, $update = null) {
 			];
 
 		// Read environment variables for setting overrides
+		if (getenv ($map['ELEFANT_SITE_NAME'])) {
+			$conf['General']['site_name'] = getenv ($map['ELEFANT_SITE_NAME']);
+		}
+		
+		if (getenv ($map['ELEFANT_EMAIL_FROM'])) {
+			$conf['General']['email_from'] = getenv ($map['ELEFANT_EMAIL_FROM']);
+		}
+		
+		if (getenv ($map['ELEFANT_DOMAIN'])) {
+			$conf['General']['site_domain'] = getenv ($map['ELEFANT_DOMAIN']);
+		}
+		
 		if (getenv ($map['ELEFANT_DB_DRIVER'])) {
 			$conf['Database']['master']['driver'] = getenv ($map['ELEFANT_DB_DRIVER']);
 		}
