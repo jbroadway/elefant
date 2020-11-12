@@ -36,3 +36,4 @@ spec:
       scope: RUN_TIME
   databases:
   - name: elefant-db
+    engine: MYSQL
