@@ -12,8 +12,8 @@ class BeanstalkdJobQueue {
 	private static function conn () {
 		if (self::$pheanstalk === null) {
 			self::$pheanstalk = Pheanstalk::create (
-				conf ('JobQueue', 'host'),
-				conf ('JobQueue', 'port')
+				envconf ('JobQueue', 'host'),
+				envconf ('JobQueue', 'port')
 			);
 		}
 
