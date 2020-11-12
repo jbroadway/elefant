@@ -2,6 +2,7 @@ spec:
   name: elefant-cms
   services:
   - environment_slug: php
+    build_command: ./elefant install
     git:
       branch: do-deploy
       repo_clone_url: https://github.com/jbroadway/elefant.git
@@ -13,6 +14,9 @@ spec:
       scope: RUN_TIME
     - key: ELEFANT_EMAIL_FROM
       scope: RUN_TIME
+    - key: ELEFANT_DEFAULT_PASS
+      value: "IHeartElefant"
+      scope: BUILD_TIME
     - key: ELEFANT_TIMEZONE
       value: "GMT"
       scope: RUN_TIME
