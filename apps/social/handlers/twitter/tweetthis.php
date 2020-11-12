@@ -22,6 +22,6 @@
 
 $data['url'] = ($data['url'] !== '')
 	? $data['url']
-	: ($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . $_SERVER['REQUEST_URI'];
+	: ($this->is_https () ? 'https' : 'http') . '://'. conf ('General', 'site_domain') . $_SERVER['REQUEST_URI'];
 
 echo $tpl->render ('social/twitter/tweetthis', $data);

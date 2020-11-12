@@ -42,7 +42,7 @@ switch (Appconf::blog ('Blog', 'comments')) {
 }
 
 $protocol = $this->is_https () ? 'https' : 'http';
-$domain = Appconf::admin ('Site Settings', 'site_domain');
+$domain = conf ('General', 'site_domain');
 
 // add rss + jsonfeed discovery
 $page->add_script (sprintf (

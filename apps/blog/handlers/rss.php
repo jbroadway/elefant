@@ -34,7 +34,7 @@ if (! $res) {
 		}
 		
 		if ($post->thumbnail !== '') {
-			$page->posts[$k]->image = ($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . str_replace (' ', '%20', $post->thumbnail);
+			$page->posts[$k]->image = ($this->is_https () ? 'https' : 'http') . '://'. conf ('General', 'site_domain') . str_replace (' ', '%20', $post->thumbnail);
 		} else {
 			$page->posts[$k]->image = '';
 		}

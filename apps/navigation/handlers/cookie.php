@@ -17,9 +17,9 @@ $lang = count ($this->params) ? $this->params[0] : $i18n->language;
 $domain = $domain ? $domain : conf ('General', 'session_domain');
 
 if ($domain === 'full') {
-	$domain = Appconf::admin ('Site Settings', 'site_domain');
+	$domain = conf ('General', 'site_domain');
 } elseif ($domain === 'top') {
-	$parts = explode ('.', Appconf::admin ('Site Settings', 'site_domain'));
+	$parts = explode ('.', conf ('General', 'site_domain'));
 	$tld = array_pop ($parts);
 	$domain = '.' . array_pop ($parts) . '.' . $tld;
 }

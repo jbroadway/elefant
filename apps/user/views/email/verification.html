@@ -6,7 +6,7 @@ free from spammers and other types of unauthorized usage.
 
 To verify your email address, click here:
 
-http://{{ Appconf::admin ('Site Settings', 'site_domain') }}/user/verify?verifier={{ verifier }}&email={{ email|urlencode }}
+http://{{ conf ('General', 'site_domain') }}/user/verify?verifier={{ verifier }}&email={{ email|urlencode }}
 
 
 Thanks again for joining, and if you have any questions just

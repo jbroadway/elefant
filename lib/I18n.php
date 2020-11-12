@@ -397,7 +397,7 @@ class I18n {
 			}
 
 		} elseif ($method === 'subdomain') {
-			if (preg_match ('/^(' . join ('|', array_keys ($this->languages)) . ')\./', Appconf::admin ('Site Settings', 'site_domain'), $matches)) {
+			if (preg_match ('/^(' . join ('|', array_keys ($this->languages)) . ')\./', conf ('General', 'site_domain'), $matches)) {
 				return $matches[1];
 			}
 		}

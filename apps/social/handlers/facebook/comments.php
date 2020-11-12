@@ -24,6 +24,6 @@ if (! isset (self::$called['social/facebook/init'])) {
 
 $data['url'] = isset ($data['url'])
 	? $data['url']
-	: '//' . Appconf::admin ('Site Settings', 'site_domain') . filter_var ($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL);
+	: '//' . conf ('General', 'site_domain') . filter_var ($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL);
 
 echo $tpl->render ('social/facebook/comments', $data);

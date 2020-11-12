@@ -385,7 +385,7 @@ class Form {
 	 * since those are almost certainly abusive.
 	 */
 	public function verify_referrer () {
-		$domain = Appconf::admin ('Site Settings', 'site_domain');
+		$domain = conf ('General', 'site_domain');
 
 		if ($domain === '' || $domain === false) {
 			// Can't verify if domain isn't set

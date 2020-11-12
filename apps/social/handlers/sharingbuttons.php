@@ -44,7 +44,7 @@ if (! isset ($data['url'])) {
 
 if (strpos ($data['url'], '/') === 0) {
 	$protocol = $this->is_https () ? 'https' : 'http';
-	$data['url'] = $protocol . '://' . Appconf::admin ('Site Settings', 'site_domain') . $data['url'];
+	$data['url'] = $protocol . '://' . conf ('General', 'site_domain') . $data['url'];
 }
 
 echo $tpl->render ('social/sharingbuttons', $data);

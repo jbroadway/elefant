@@ -679,7 +679,7 @@ class Controller {
 		}
 
 		if ($base === false) {
-			$site_domain = Appconf::admin ('Site Settings', 'site_domain');
+			$site_domain = conf ('General', 'site_domain');
 			if ($site_domain === false || $site_domain === '') {
 				error_log ('Elefant CMS: Please set your site domain under Administration > Site Settings.');
 				$site_domain = $_SERVER['HTTP_HOST'];
@@ -1027,7 +1027,7 @@ class Controller {
 	 */
 	public function force_https () {
 		if (! $this->is_https ()) {
-			$this->redirect ('https://' . Appconf::admin ('Site Settings', 'site_domain') . $_SERVER['REQUEST_URI']);
+			$this->redirect ('https://' . conf ('General', 'site_domain') . $_SERVER['REQUEST_URI']);
 		}
 	}
 
@@ -1037,7 +1037,7 @@ class Controller {
 	 */
 	public function force_http () {
 		if ($this->is_https ()) {
-			$this->redirect ('http://' . Appconf::admin ('Site Settings', 'site_domain') . $_SERVER['REQUEST_URI']);
+			$this->redirect ('http://' . conf ('General', 'site_domain') . $_SERVER['REQUEST_URI']);
 		}
 	}
 

@@ -27,7 +27,7 @@
 <p>{"Page title"}<br /><input type="text" name="title" size="50" value="{{ title }}" onblur="webpage_add_title_to_id (this.form)" />
 <span class="notice" id="title-notice">{"You must enter a page title."}</span></p>
 
-<p>{"Page ID"} (ex: <tt>{{ Appconf::admin ('Site Settings', 'site_domain') }}/<strong>your-page-id</strong></tt>)<br /><input type="text" name="id" size="55" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
+<p>{"Page ID"} (ex: <tt>{{ conf ('General', 'site_domain') }}/<strong>your-page-id</strong></tt>)<br /><input type="text" name="id" size="55" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
 <span class="notice" id="id-notice">{"Your ID must be a lowercase alphanumeric value and can't already exist. It must also not share the name of an app."}</span></p>
 
 <p><span class="notice" id="body-notice">{"You must enter body content."}<br /></span>

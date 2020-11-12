@@ -210,7 +210,7 @@ class Link {
 	 * Get the domain minus any subdomain.
 	 */
 	public static function base_domain () {
-		$parts = explode ('.', Appconf::admin ('Site Settings', 'site_domain'));
+		$parts = explode ('.', conf ('General', 'site_domain'));
 		if (count ($parts) === 3) {
 			array_shift ($parts);
 		}

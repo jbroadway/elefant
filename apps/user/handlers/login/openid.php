@@ -9,7 +9,7 @@ if (! in_array ('openid', $appconf['User']['login_methods'])) {
 	return;
 }
 
-$openid = new LightOpenID (Appconf::admin ('Site Settings', 'site_domain'));
+$openid = new LightOpenID (conf ('General', 'site_domain'));
 
 // handle the openid request
 if (! $openid->mode) {

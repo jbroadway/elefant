@@ -191,9 +191,9 @@ class User extends ExtendedModel {
 			$handler_class = conf ('General', 'session_save_handler');
 
 			if ($domain === 'full') {
-				$domain = Appconf::admin ('Site Settings', 'site_domain');
+				$domain = conf ('General', 'site_domain');
 			} elseif ($domain === 'top') {
-				$parts = explode ('.', Appconf::admin ('Site Settings', 'site_domain'));
+				$parts = explode ('.', conf ('General', 'site_domain'));
 				$tld = array_pop ($parts);
 				$domain = '.' . array_pop ($parts) . '.' . $tld;
 			}
@@ -571,9 +571,9 @@ class User extends ExtendedModel {
 			$domain = $domain ? $domain : conf ('General', 'session_domain');
 
 			if ($domain === 'full') {
-				$domain = Appconf::admin ('Site Settings', 'site_domain');
+				$domain = conf ('General', 'site_domain');
 			} elseif ($domain === 'top') {
-				$parts = explode ('.', Appconf::admin ('Site Settings', 'site_domain'));
+				$parts = explode ('.', conf ('General', 'site_domain'));
 				$tld = array_pop ($parts);
 				$domain = '.' . array_pop ($parts) . '.' . $tld;
 			}

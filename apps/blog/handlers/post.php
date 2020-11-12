@@ -84,7 +84,7 @@ switch (Appconf::blog ('Blog', 'comments')) {
 }
 
 $protocol = $this->is_https () ? 'https' : 'http';
-$domain = Appconf::admin ('Site Settings', 'site_domain');
+$domain = conf ('General', 'site_domain');
 
 // add rss + jsonfeed discovery
 $page->add_script (sprintf (
@@ -120,7 +120,7 @@ if ($post->thumbnail == '') {
 if ($post->thumbnail != '') {
 	$page->add_meta (
 		'og:image',
-		($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . str_replace (' ', '%20', $post->thumbnail),
+		($this->is_https () ? 'https' : 'http') . '://'. conf ('General', 'site_domain') . str_replace (' ', '%20', $post->thumbnail),
 		'property'
 	);
 	
@@ -141,6 +141,6 @@ $page->add_meta ('twitter:description', $desc);
 if ($post->thumbnail !== '') {
 	$page->add_meta (
 		'twitter:image',
-		($this->is_https () ? 'https' : 'http') . '://'. Appconf::admin ('Site Settings', 'site_domain') . str_replace (' ', '%20', $post->thumbnail)
+		($this->is_https () ? 'https' : 'http') . '://'. conf ('General', 'site_domain') . str_replace (' ', '%20', $post->thumbnail)
 	);
 }

@@ -8,11 +8,11 @@
 	xmlns="http://purl.org/rss/1.0/"
 >
 
-<channel rdf:about="http://{{ Appconf::admin ('Site Settings', 'site_domain') }}/blog">
+<channel rdf:about="http://{{ conf ('General', 'site_domain') }}/blog">
 
 	<title>{{ title }}</title>
-	<link>http://{{ Appconf::admin ('Site Settings', 'site_domain') }}/blog</link>
-	<description>{{ Appconf::admin ('Site Settings', 'site_domain') }} {"official blog"}.</description>
+	<link>http://{{ conf ('General', 'site_domain') }}/blog</link>
+	<description>{{ conf ('General', 'site_domain') }} {"official blog"}.</description>
 
 	<dc:language>{{ i18n.language }}</dc:language>
 	<dc:date>{{ date }}+00:00</dc:date>
@@ -20,7 +20,7 @@
 	<items>
 		<rdf:Seq>
 {% foreach posts %}
-			<rdf:li rdf:resource="http://{{ Appconf::admin ('Site Settings', 'site_domain') }}{{ loop_value->url }}" />
+			<rdf:li rdf:resource="http://{{ conf ('General', 'site_domain') }}{{ loop_value->url }}" />
 {% end %}
 		</rdf:Seq>
 	</items>
@@ -28,9 +28,9 @@
 </channel>
 
 {% foreach posts %}
-<item rdf:about="http://{{ Appconf::admin ('Site Settings', 'site_domain') }}{{ loop_value->url }}">
+<item rdf:about="http://{{ conf ('General', 'site_domain') }}{{ loop_value->url }}">
 	<title>{{ loop_value->title }}</title>
-	<link>http://{{ Appconf::admin ('Site Settings', 'site_domain') }}{{ loop_value->url }}</link>
+	<link>http://{{ conf ('General', 'site_domain') }}{{ loop_value->url }}</link>
 	<description>{{ loop_value->body }}</description>
 	<dc:date>{{ loop_value->ts|str_replace (' ', 'T', %s) }}+00:00</dc:date>
 	{% if loop_value->image != '' %}
