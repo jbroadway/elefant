@@ -375,7 +375,7 @@ class Controller {
 		ob_clean ();
 
 		// Call the error handler
-		return $this->run (conf ('General', 'error_handler'), array (
+		return $this->run (envconf ('General', 'error_handler'), array (
 			'code' => $code,
 			'title' => $title,
 			'message' => $message
@@ -536,7 +536,7 @@ class Controller {
 	 * Route a request URI to a file.
 	 */
 	public function route ($uri) {
-		$exp = explode ('/', conf ('General', 'default_handler'));
+		$exp = explode ('/', envconf ('General', 'default_handler'));
 		$this->app = array_shift ($exp);
 		$this->params = array ();
 
@@ -544,7 +544,7 @@ class Controller {
 		$uri = preg_replace ('/(\?|#).*$/', '', $uri);
 
 		if (! $this->clean ($uri) || $uri === '/') {
-			$uri = conf ('General', 'default_handler');
+			$uri = envconf ('General', 'default_handler');
 		}
 
 		// Remove leading /
@@ -557,7 +557,7 @@ class Controller {
 				$uri .= '/index';
 			} else {
 				$this->add_param ($uri);
-				$uri = conf ('General', 'default_handler');
+				$uri = envconf ('General', 'default_handler');
 			}
 		}
 
@@ -573,7 +573,7 @@ class Controller {
 					$this->uri = $app . '/index';
 					return 'apps/' . $app . '/handlers/index.php';
 				}
-				$this->uri = conf ('General', 'default_handler');
+				$this->uri = envconf ('General', 'default_handler');
 				$this->add_param ($app);
 				list ($this->app, $handler) = explode ('/', $this->uri);
 				return sprintf ('apps/%s/handlers/%s.php', $this->app, $handler);

@@ -32,7 +32,7 @@ class JobQueue {
 			return self::$service;
 		}
 		
-		self::$backend = conf ('JobQueue', 'backend');
+		self::$backend = envconf ('JobQueue', 'backend');
 		
 		switch (self::$backend) {
 			case 'beanstalkd':

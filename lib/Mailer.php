@@ -145,8 +145,8 @@ class Mailer {
 			Zend_Mail::setDefaultTransport (self::$transport);
 
 			// Set default from info
-			$email_from = (self::$config['email_from'] !== 'default') ? self::$config['email_from'] : conf ('General', 'email_from');
-			$email_name = (self::$config['email_name'] !== 'default') ? self::$config['email_name'] : conf ('General', 'site_name');
+			$email_from = (self::$config['email_from'] !== 'default') ? self::$config['email_from'] : envconf ('General', 'email_from');
+			$email_name = (self::$config['email_name'] !== 'default') ? self::$config['email_name'] : envconf ('General', 'site_name');
 			Zend_Mail::setDefaultFrom ($email_from, $email_name);
 		}
 

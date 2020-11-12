@@ -1,6 +1,12 @@
-<div class="e-row" id="body">
+<div id="body">
+
+<div class="e-row">
 	<div class="e-col-100" id="content">
 		{% if title != '' %}<h1>{{ title|none }}</h1>{% end %}
 		{{ body|none }}
 	</div>
+</div>
+
+{! blocks/group?wildcard=[id]-*&rows=on !}
+
 </div>

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{{ conf('General', 'site_name') }} - {{ window_title|none }}</title>
+	<title>{{ envconf('General', 'site_name') }} - {{ window_title|none }}</title>
 	<meta charset="{{ i18n.charset }}" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu+Condensed|Montserrat:400,700" />
 	{! admin/util/minimal-grid !}
 	<link rel="stylesheet" href="/layouts/minimal/style.css?v=2" />
+	<link rel="stylesheet" href="/layouts/minimal/blocks.css?v=2" />
 	{! admin/head !}
 	{{ head|none }}
 	{! admin/util/twemoji?body=true !}
