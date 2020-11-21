@@ -150,6 +150,10 @@ if (! $wildcard) {
 	$query = Block::query ()->where ('id in(' . join (', ', $qs) . ')');
 	$query->query_params = $ids;
 	$blocks = $query->fetch_orig ();
+	
+	if (! is_array ($blocks)) {
+		$blocks = [];
+	}
 } else {
 	$idsearch = str_replace ('*', '%', $data['wildcard']);
 	$blocks = Block::query ()->where ('id like ?', $idsearch)
@@ -157,6 +161,10 @@ if (! $wildcard) {
 		->fetch_orig ();
 
 	$order_id = $data['wildcard'];
+	
+	if (! is_array ($blocks)) {
+		$blocks = [];
+	}
 	
 	$ids = array_column ($blocks, 'id');
 	$locks = $lock->exists ('Block', $ids);
