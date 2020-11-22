@@ -13,6 +13,8 @@ services:
       - "3306:3306"
     networks:
       - app-network
+    volumes:
+      - mysql-db:/var/lib/mysql
     restart: always
   redis:
     image: "redis:alpine"
@@ -46,3 +48,6 @@ services:
 networks:
   app-network:
     driver: "bridge"
+
+volumes:
+  mysql-db:

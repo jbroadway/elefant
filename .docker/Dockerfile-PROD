@@ -26,8 +26,7 @@ RUN chown -R www-data:www-data /www \
 	&& a2enmod rewrite \
 	&& chmod -R 777 /www/cache /www/conf /www/files /www/lang /www/layouts \
 	&& chmod 777 /www/apps \
+	&& touch /www/conf/installed \
 	&& composer install
-
-ENTRYPOINT [ ".docker/entrypoint.sh" ]
 
 EXPOSE 80
