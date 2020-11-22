@@ -17,6 +17,12 @@ if (! $this->cli) {
 
 $page->layout = false;
 
+$no_installed_error = false;
+if (isset ($_SERVER['argv'][2]) && $_SERVER['argv'][2] == '--no-installed-error') {
+	$no_installed_error = true;
+	unset ($_SERVER['argv'][2]);
+}
+
 if (isset ($_SERVER['argv'][2])) {
 	// Install an app
 	$url = $_SERVER['argv'][2];
@@ -73,7 +79,11 @@ if (isset ($_SERVER['argv'][2])) {
 }
 
 if (@file_exists ('conf/installed')) {
-	Cli::out ('** Error: Installer has already been run.', 'error');
+	if ($no_installed_error) {
+		Cli::out ('Installer has already been run.');
+	} else {
+		Cli::out ('** Error: Installer has already been run.', 'error');
+	}
 	return;
 }
 
