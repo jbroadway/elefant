@@ -1,3 +1,4 @@
+# Create a development server via `docker-compose up -d`
 version: '3'
 
 services:
@@ -24,7 +25,7 @@ services:
     networks:
       - app-network
   www:
-    image: elefant
+    image: elefant-dev
     container_name: www
     environment:
       ELEFANT_DB_DRIVER: mysql
@@ -32,6 +33,7 @@ services:
       ELEFANT_DB_NAME: www_db
       ELEFANT_DB_USER: db_user
       ELEFANT_DB_PASS: youll_never_guess
+      ELEFANT_DOMAIN: "localhost:8080"
       ELEFANT_DEFAULT_PASS: log_me_in
       ELEFANT_SESSION_HANDLER: "redis:tcp://redis:6379?timeout=0.5"
     depends_on:
