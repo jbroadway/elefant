@@ -28,10 +28,11 @@ services:
     container_name: www
     environment:
       ELEFANT_DB_DRIVER: mysql
-      ELEFANT_DB_HOST: mysql
+      ELEFANT_DB_HOST: "mysql:3306"
       ELEFANT_DB_NAME: www_db
       ELEFANT_DB_USER: db_user
       ELEFANT_DB_PASS: youll_never_guess
+      ELEFANT_DEFAULT_PASS: log_me_in
       ELEFANT_SESSION_HANDLER: "redis:tcp://redis:6379?timeout=0.5"
     depends_on:
       - mysql
