@@ -176,6 +176,7 @@ prefix = "elefant_"
 
 admin/edit[] = navigation/hook/edit
 admin/delete[] = navigation/hook/delete
+admin/edit[] = blocks/hook/edit
 ;admin/add[] = search/add
 ;admin/edit[] = search/add
 ;admin/delete[] = search/delete
