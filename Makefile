@@ -3,7 +3,7 @@ default: build
 # Run `make build` to build a production container
 build:
 	cp .docker/Dockerfile-PROD Dockerfile
-	docker build -t elefant-prod .
+	docker build -t elefant .
 	rm Dockerfile
 
 # Run `make dev` to build a development container
