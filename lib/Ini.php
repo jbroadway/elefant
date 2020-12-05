@@ -46,14 +46,14 @@ class Ini {
 			$out .= ";\n; $header\n;\n";
 		}
 
-		$write_value = function ($value) {
+		$write_value = function ($value, $strict = false) {
 			if (is_bool ($value)) {
 				return ($value) ? 'On' : 'Off';
 			} elseif ($value === '0' || $value === '') {
 				return 'Off';
 			} elseif ($value === '1') {
 				return 'On';
-			} elseif (preg_match ('/[^a-z0-9\/\.@<> _-]/i', $value)) {
+			} elseif (preg_match (($strict) ? '/[^a-z0-9_-]/i' : '/[^a-z0-9\/\.@<> _-]/i', $value)) {
 				return '"' . str_replace ('"', '\"', $value) . '"';
 			}
 			return $value;
@@ -75,9 +75,9 @@ class Ini {
 					if (is_array ($v)) {
 						foreach ($v as $subkey => $val) {
 							if (is_int ($subkey)) {
-								$out .= str_pad ($k . '[]', 24) . '= ' . $write_value ($val) . "\n";
+								$out .= str_pad ($k . '[]', 24) . '= ' . $write_value ($val, true) . "\n";
 							} else {
-								$out .= str_pad ($k . '[' . $subkey . ']', 24) . '= ' . $write_value ($val) . "\n";
+								$out .= str_pad ($k . '[' . $subkey . ']', 24) . '= ' . $write_value ($val, true) . "\n";
 							}
 						}
 					} else {
@@ -88,9 +88,9 @@ class Ini {
 				if (is_array ($value)) {
 					foreach ($value as $subkey => $val) {
 						if (is_int ($subkey)) {
-							$out .= str_pad ($key . '[' . $subkey . ']', 24) . '= ' . $write_value ($val) . "\n";
+							$out .= str_pad ($key . '[' . $subkey . ']', 24) . '= ' . $write_value ($val, true) . "\n";
 						} else {
-							$out .= str_pad ($key . '[]', 24) . '= ' . $write_value ($val) . "\n";
+							$out .= str_pad ($key . '[]', 24) . '= ' . $write_value ($val, true) . "\n";
 						}
 					}
 				} else {
