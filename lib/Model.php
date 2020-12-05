@@ -1027,7 +1027,7 @@ class Model {
 		
 		$res = DB::execute ($sql, $this->query_params);
 		if (! $res) {
-			$this->Error = DB::error ();
+			$this->error = DB::error ();
 		}
 		return $res;
 	}
