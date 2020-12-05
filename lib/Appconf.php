@@ -78,6 +78,7 @@ class Appconf {
 					: array ();
 			} catch (Exception $e) {
 				// Catch and set to empty
+				error_log ($e->getMessage ());
 				self::$appconf[$app] = array ();
 			}
 			
@@ -91,6 +92,7 @@ class Appconf {
 					: self::$appconf[$app];
 			} catch (Exception $e) {
 				// Do nothing because self::$appconf[$app] is already set
+				error_log ($e->getMessage ());
 			}
 			
 			if (defined ('ELEFANT_ENV') && ELEFANT_ENV !== 'config') {
@@ -104,6 +106,7 @@ class Appconf {
 						: self::$appconf[$app];
 				} catch (Exception $e) {
 					// Do nothing
+					error_log ($e->getMessage ());
 				}
 			}
 		}
