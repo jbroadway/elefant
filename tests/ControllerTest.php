@@ -68,10 +68,15 @@ class ControllerTest extends TestCase {
 		$_SERVER['HTTPS'] = 'on';
 		$this->assertTrue ($this->c->is_https ());
 		$_SERVER['HTTPS'] = 'off';
+		$this->assertFalse ($this->c->is_https ());
+		$_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https';
+		$this->assertTrue ($this->c->is_https ());
+		unset ($_SERVER['HTTP_X_FORWARDED_PROTO']);
+		$this->assertFalse ($this->c->is_https ());
 	}
 
 	function test_absolutize () {
-		Appconf::admin ('Site Settings', 'site_domain', 'www.example.com');
+		conf ('General', 'site_domain', 'www.example.com');
 		$this->assertEquals ('http://www.example.com/page', $this->c->absolutize ('/page'));
 		$this->assertEquals ('http://www.example.com/page', $this->c->absolutize ('//www.example.com/page'));
 		$this->assertEquals ('http://www.example.com/page', $this->c->absolutize ('http://www.example.com/page'));

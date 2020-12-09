@@ -1015,10 +1015,15 @@ class Controller {
 	 * Returns whether the current request is made over HTTPS or not.
 	 */
 	public function is_https () {
-		if (! isset ($_SERVER['HTTPS']) || strtolower ($_SERVER['HTTPS']) !== 'on') {
-			return false;
+		if (isset ($_SERVER['HTTPS']) && strtolower ($_SERVER['HTTPS']) === 'on') {
+			return true;
 		}
-		return true;
+		
+		if (isset ($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+			return true;
+		}
+		
+		return false;
 	}
 
 	/**
