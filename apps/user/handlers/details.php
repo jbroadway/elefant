@@ -21,7 +21,7 @@ if ($user->error) {
 
 $user = $user->orig ();
 
-if ($user->photo != '' && strpos ($user->photo, '/') !== 0) {
+if ($user->photo != '' && strpos ($user->photo, '/') !== 0 && strpos ($user->photo, '://') === false) {
 	$user->photo = '/' . $user->photo;
 }
 
