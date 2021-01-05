@@ -30,9 +30,9 @@
  * https://github.com/twitter/twemoji
  */
 
-$page->add_script ('https://twemoji.maxcdn.com/v/12.1.5/twemoji.min.js', 'head', '', 'sha384-E4PZh8MWwKQ2W7ANni7xwx6TTuPWtd3F8mDRnaMvJssp5j+gxvP2fTsk1GnFg2gG', 'anonymous');
+$page->add_script ('https://twemoji.maxcdn.com/v/13.0.1/twemoji.min.js', 'head', '', 'sha384-5f4X0lBluNY/Ib4VhGx0Pf6iDCF99VGXJIyYy7dDLY5QlEd7Ap0hICSSZA1XYbc4', 'anonymous');
 $page->add_style ('<style>img.emoji { height: 1em; width: 1em; margin: 0 0.5em 0 0.1em; vertical-align: -0.1em; } </style>');
 
 if (isset ($data['body'])) {
-	$page->add_script ('<script>$(function () { twemoji.parse (document.body); }); </script>');
+	$page->add_script ('<script>document.addEventListener (\'DOMContentLoaded\', function () { twemoji.parse (document.body); });</script>', 'tail');
 }
