@@ -2,3 +2,15 @@
 .block-outer:last-of-type .block-move-down {
 	display: none;
 }
+
+table.editable-layout-options {
+	table-layout: fixed;
+}
+
+table.editable-layout-options tr:nth-child(even) {
+	background-color: inherit;
+}
+
+table.editable-layout-options img {
+	max-width: 100%;
+}
