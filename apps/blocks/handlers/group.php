@@ -335,9 +335,12 @@ if ($rows) {
 			'column_layout' => __ ('Column layout'),
 			'add_layout' => __ ('Choose a column layout')
 		];
+		
 		$this->run ('admin/util/modal');
-		$page->add_style ('/apps/blocks/css/grouporder.css');
+		
+		$v = 2;
+		$page->add_style ('/apps/blocks/css/grouporder.css?v=' . $v);
 		$page->add_script ('<script>window._i18n_ = ' . json_encode ($labels) . ';</script>', 'tail');
-		$page->add_script ('/apps/blocks/js/grouporder.js', 'tail');
+		$page->add_script ('/apps/blocks/js/grouporder.js?v=' . $v, 'tail');
 	}
 }
