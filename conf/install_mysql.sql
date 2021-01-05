@@ -25,6 +25,11 @@ create table #prefix#block (
 	show_title enum('yes','no') not null default 'yes',
 	background char(128) not null default '',
 	style char(72) not null default '',
+	column_layout char(24) not null default '100',
+	col2 text,
+	col3 text,
+	col4 text,
+	col5 text,
 	index (access)
 ) default charset=utf8;
 
