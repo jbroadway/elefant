@@ -36,6 +36,10 @@ if ($f->submit ()) {
 	$b->show_title = 'yes';
 	$b->background = '';
 	$b->yes_no = array ('yes' => __ ('Yes'), 'no' => __ ('No'));
+	$b->column_layout = isset ($_GET['column_layout']) ? $_GET['column_layout'] : '100';
+	$b->columns = explode ('-', $b->column_layout);
+	$b->column = 1;
+	$b->layout_options = Block::$column_layouts;
 
 	$b->failed = $f->failed;
 	$b = $f->merge_values ($b);

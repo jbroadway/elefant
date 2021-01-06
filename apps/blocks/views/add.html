@@ -1,6 +1,7 @@
 {! admin/util/emojiarea !}
 {! filemanager/util/browser !}
 {! admin/util/twemoji !}
+{! admin/util/modal !}
 
 <div class="editform">
 
@@ -8,7 +9,7 @@
 
 <div class="e-row-variable e-no-padding-left">
 	<div class="e-col-25 e-no-padding-left editform-title">
-		<h2>{"Add Block"}</h2>
+		<h2>{"Add Content Block"}</h2>
 	</div>
 	<div id="save-buttons" class="e-col-75 e-no-padding editform-buttons">
 		<p style="text-align: right">
@@ -50,6 +51,12 @@
 </div>
 
 <div class="editform-section info">
+
+<input type="hidden" name="column_layout" id="column-layout" value="{{column_layout}}">
+<p>
+	{"Column Layout"}<br />
+	<img src="/apps/blocks/pix/layout/{{column_layout}}.png" id="display-column-layout" alt="{"Column Layout"}: {{column_layout}}" />
+</p>
 
 <p>{"Style"}<br />
 <select name="style">
@@ -148,6 +155,60 @@ $(function () {
 		$('#background-preview').css ('background-image', 'url(\'/apps/admin/css/default.jpg\')');
 		$(e.target).hide ();
 	});
+	
+	var cols_html = `<table class="editable-layout-options">
+			<tr>
+				<td><a href="#" class="editable-layout-option" data-layout="100"><img src="/apps/blocks/pix/layout/100.png" alt="100" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="50-50"><img src="/apps/blocks/pix/layout/50-50.png" alt="50-50" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="60-40"><img src="/apps/blocks/pix/layout/60-40.png" alt="60-40" /></a></td>
+			</tr>
+			<tr>
+				<td><a href="#" class="editable-layout-option" data-layout="40-60"><img src="/apps/blocks/pix/layout/40-60.png" alt="40-60" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="66-33"><img src="/apps/blocks/pix/layout/66-33.png" alt="66-33" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="33-66"><img src="/apps/blocks/pix/layout/33-66.png" alt="33-66" /></a></td>
+			</tr>
+			<tr>
+				<td><a href="#" class="editable-layout-option" data-layout="70-30"><img src="/apps/blocks/pix/layout/70-30.png" alt="70-30" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="30-70"><img src="/apps/blocks/pix/layout/30-70.png" alt="30-70" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="75-25"><img src="/apps/blocks/pix/layout/75-25.png" alt="75-25" /></a></td>
+			</tr>
+			<tr>
+				<td><a href="#" class="editable-layout-option" data-layout="25-75"><img src="/apps/blocks/pix/layout/25-75.png" alt="25-75" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="80-20"><img src="/apps/blocks/pix/layout/80-20.png" alt="80-20" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="20-80"><img src="/apps/blocks/pix/layout/20-80.png" alt="20-80" /></a></td>
+			</tr>
+			<tr>
+				<td><a href="#" class="editable-layout-option" data-layout="33-33-33"><img src="/apps/blocks/pix/layout/33-33-33.png" alt="33-33-33" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="50-25-25"><img src="/apps/blocks/pix/layout/50-25-25.png" alt="50-25-25" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="25-50-25"><img src="/apps/blocks/pix/layout/25-50-25.png" alt="25-50-25" /></a></td>
+			</tr>
+			<tr>
+				<td><a href="#" class="editable-layout-option" data-layout="25-25-50"><img src="/apps/blocks/pix/layout/25-25-50.png" alt="25-25-50" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="25-25-25-25"><img src="/apps/blocks/pix/layout/25-25-25-25.png" alt="25-25-25-25" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="20-20-20-20-20"><img src="/apps/blocks/pix/layout/20-20-20-20-20.png" alt="20-20-20-20-20" /></a></td>
+			</tr>
+		</table>`;
+	
+	var modal_opts = {width: 640, height: 585};
+	
+	$('#display-column-layout').click (function (e) {
+		e.preventDefault ();
+		
+		$.open_dialog ('{"Choose a column layout"}', cols_html, modal_opts);
+		
+		$('.editable-layout-option').on ('click', function (e) {
+			e.preventDefault ();
+			
+			var layout = $(this).data ('layout');
+			
+			$('#column-layout').val (layout);
+			$('#display-column-layout')
+				.attr ('src', '/apps/blocks/pix/layout/' + layout + '.png')
+				.attr ('alt', '{"Column Layout"}: ' + layout);
+			
+			$.close_dialog ();
+		});
+	});
 });
 </script>
 
@@ -165,5 +226,37 @@ $(function () {
 
 .toggle {
 	margin-bottom: 1.5em !important;
+}
+
+img#display-column-layout {
+	max-width: 96%;
+	margin-top: 3px;
+	cursor: pointer;
+}
+
+table.editable-layout-options {
+	table-layout: fixed;
+}
+
+table.editable-layout-options tr:nth-child(even) {
+	background-color: inherit;
+}
+
+table.editable-layout-options tr:hover {
+	background-color: inherit;
+}
+
+table.editable-layout-options tr td {
+	border-bottom: 0;
+}
+
+table.editable-layout-options img {
+	max-width: 100%;
+}
+
+table.editable-layout-options a:hover img {
+	box-sizing: border-box;
+	outline: solid 2px #93278f;
+	outline-offset: -2px;
 }
 </style>

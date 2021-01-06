@@ -125,7 +125,7 @@ if ($rows || $divs || isset ($data['units'])) {
 }
 
 if (isset ($data['units'])) {
-	$units = explode (',', $data['units']);
+	$units = preg_split ('/[,-]/', $data['units']);
 	$divs = true;
 } elseif ($rows) {
 	$units = ['100'];
@@ -338,7 +338,7 @@ if ($rows) {
 		
 		$this->run ('admin/util/modal');
 		
-		$v = 2;
+		$v = 3;
 		$page->add_style ('/apps/blocks/css/grouporder.css?v=' . $v);
 		$page->add_script ('<script>window._i18n_ = ' . json_encode ($labels) . ';</script>', 'tail');
 		$page->add_script ('/apps/blocks/js/grouporder.js?v=' . $v, 'tail');
