@@ -65,25 +65,6 @@
 
 <div class="editform-section info">
 
-<input type="hidden" name="column_layout" id="column-layout" value="{{column_layout}}">
-{% if rows %}
-	<p>
-		{"Column Layout"}<br />
-		<img src="/apps/blocks/pix/layout/{{column_layout}}.png" id="display-column-layout" alt="{"Column Layout"}: {{column_layout}}" />
-	</p>
-
-	<p>{"Style"}<br />
-		<select name="style">
-			<option value="">{"- select -"}</option>
-		{% foreach Block::get_styles() as _style, _name %}
-			<option value="{{ _style }}"{% if _style == $data->style %} selected{% end %}>{{ _name }}</option>
-		{% end %}
-		</select>
-	</p>
-{% else %}
-	<input type="hidden" name="style" value="{{style|quotes}}" />
-{% end %}
-
 <div>
 	{"Access"}<br />
 	<p class="toggle" data-field="access">
@@ -99,6 +80,25 @@
 	</p>
 	<input type="hidden" name="show_title" id="show_title" value="{{ show_title }}" />
 </div>
+
+<input type="hidden" name="column_layout" id="column-layout" value="{{column_layout}}">
+{% if rows %}
+	<p>
+		{"Column Layout"}<br />
+		<img src="/apps/blocks/pix/layout/{{column_layout}}.png" id="display-column-layout" alt="{"Column Layout"}: {{column_layout}}" />
+	</p>
+
+	<p>{"Style"}<br />
+		<select name="style">
+			<option value="">{"Default"}</option>
+		{% foreach Block::get_styles() as _style, _name %}
+			<option value="{{ _style }}"{% if _style == $data->style %} selected{% end %}>{{ _name }}</option>
+		{% end %}
+		</select>
+	</p>
+{% else %}
+	<input type="hidden" name="style" value="{{style|quotes}}" />
+{% end %}
 
 </div>
 
