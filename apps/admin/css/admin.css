@@ -536,6 +536,7 @@ input[disabled] {
 	
 select {
 	padding: 6px 7px 5px 5px;
+	outline: none;
 }
 
 input[type=submit], button, .dynamic-embed-object-back {
