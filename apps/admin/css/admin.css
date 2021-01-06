@@ -533,6 +533,10 @@ input[disabled] {
 	background: #eee;
 	outline: none;
 }
+	
+select {
+	padding: 6px 7px 5px 5px;
+}
 
 input[type=submit], button, .dynamic-embed-object-back {
     font-size: 14px;
