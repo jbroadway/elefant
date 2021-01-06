@@ -215,7 +215,7 @@ foreach ($ids as $k => $id) {
 		}
 
 		if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
-			echo $tpl->render ('blocks/editable', (object) ['id' => $id, 'locked' => false, 'sorting' => true, 'column' => 1]) . PHP_EOL;
+			echo $tpl->render ('blocks/editable', (object) ['id' => $id, 'locked' => false, 'sorting' => true, 'column' => 1, 'rows' => $rows]) . PHP_EOL;
 		}
 
 		if ($rows) {
@@ -266,6 +266,7 @@ foreach ($ids as $k => $id) {
 		if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
 			$b->locked = is_array ($locks) ? in_array ($id, $locks) : false;
 			$b->column = $i;
+			$b->rows = $rows;
 
 			if ($rows) {
 				$b->sorting = true;
@@ -323,7 +324,7 @@ foreach ($ids as $k => $id) {
 // Add wildcard add block link
 if ($wildcard && $rows && User::require_acl ('admin', 'blocks', 'admin/add')) {
 	$next_id = str_replace ('*', $next_wildcard, $data['wildcard']);
-	echo $tpl->render ('blocks/editable', (object) ['id' => $next_id, 'locked' => false, 'column' => 1]) . PHP_EOL;
+	echo $tpl->render ('blocks/editable', (object) ['id' => $next_id, 'locked' => false, 'column' => 1, 'rows' => $rows]) . PHP_EOL;
 }
 
 // Add group order script

@@ -1,7 +1,6 @@
 {! admin/util/emojiarea !}
 {! filemanager/util/browser !}
 {! admin/util/twemoji !}
-{! admin/util/modal !}
 
 <div class="editform">
 
@@ -31,7 +30,21 @@
 <span class="notice" id="id-notice">{"Your ID must be a lowercase alphanumeric value and can't already exist."}</span></p>
 
 <p><span class="notice" id="body-notice">{"You must enter body content."}<br /></span>
-<textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
+
+{% if rows %}
+	<p>
+		{"Column"}:
+		<div id="column-tabs"><button>1</button> <button>2</button></div>
+	</p>
+	<textarea id="webpage-body" cols="90" rows="28"></textarea></p>
+	<input type="hidden" name="body" value="{{body|quotes}}" />
+	<input type="hidden" name="col2" value="{{col2|quotes}}" />
+	<input type="hidden" name="col3" value="{{col3|quotes}}" />
+	<input type="hidden" name="col4" value="{{col4|quotes}}" />
+	<input type="hidden" name="col5" value="{{col5|quotes}}" />
+{% else %}
+	<textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
+{% end %}
 
 	</div>
 	<div class="e-col-25 editform-side">
@@ -53,34 +66,38 @@
 <div class="editform-section info">
 
 <input type="hidden" name="column_layout" id="column-layout" value="{{column_layout}}">
-<p>
-	{"Column Layout"}<br />
-	<img src="/apps/blocks/pix/layout/{{column_layout}}.png" id="display-column-layout" alt="{"Column Layout"}: {{column_layout}}" />
-</p>
+{% if rows %}
+	<p>
+		{"Column Layout"}<br />
+		<img src="/apps/blocks/pix/layout/{{column_layout}}.png" id="display-column-layout" alt="{"Column Layout"}: {{column_layout}}" />
+	</p>
 
-<p>{"Style"}<br />
-<select name="style">
-	<option value="">{"- select -"}</option>
-{% foreach Block::get_styles() as _style, _name %}
-	<option value="{{ _style }}"{% if _style == $data->style %} selected{% end %}>{{ _name }}</option>
+	<p>{"Style"}<br />
+		<select name="style">
+			<option value="">{"- select -"}</option>
+		{% foreach Block::get_styles() as _style, _name %}
+			<option value="{{ _style }}"{% if _style == $data->style %} selected{% end %}>{{ _name }}</option>
+		{% end %}
+		</select>
+	</p>
+{% else %}
+	<input type="hidden" name="style" value="{{style|quotes}}" />
 {% end %}
-</select>
-</p>
 
 <div>
-{"Access"}<br />
-<p class="toggle" data-field="access">
-{% foreach User::access_list () %}<a href="#" data-value="{{ loop_index }}">{{ loop_value }}</a>{% end %}
-</p>
-<input type="hidden" name="access" id="access" value="{{ access }}" />
+	{"Access"}<br />
+	<p class="toggle" data-field="access">
+		{% foreach User::access_list () %}<a href="#" data-value="{{ loop_index }}">{{ loop_value }}</a>{% end %}
+	</p>
+	<input type="hidden" name="access" id="access" value="{{ access }}" />
 </div>
 
 <div>
-{"Show title"}<br />
-<p class="toggle" data-field="show_title">
-{% foreach yes_no %}<a href="#" data-value="{{ loop_index }}">{{ loop_value }}</a>{% end %}
-</p>
-<input type="hidden" name="show_title" id="show_title" value="{{ show_title }}" />
+	{"Show title"}<br />
+	<p class="toggle" data-field="show_title">
+		{% foreach yes_no %}<a href="#" data-value="{{ loop_index }}">{{ loop_value }}</a>{% end %}
+	</p>
+	<input type="hidden" name="show_title" id="show_title" value="{{ show_title }}" />
 </div>
 
 </div>
@@ -156,6 +173,10 @@ $(function () {
 		$(e.target).hide ();
 	});
 	
+	/**
+	 * Column layout behaviours.
+	 */
+	
 	var cols_html = `<table class="editable-layout-options">
 			<tr>
 				<td><a href="#" class="editable-layout-option" data-layout="100"><img src="/apps/blocks/pix/layout/100.png" alt="100" /></a></td>
@@ -209,6 +230,13 @@ $(function () {
 			$.close_dialog ();
 		});
 	});
+	
+	/**
+	 * Tabbed editing for multi-column rows.
+	 */
+	{% if rows %}
+	
+	{% end %}
 });
 </script>
 

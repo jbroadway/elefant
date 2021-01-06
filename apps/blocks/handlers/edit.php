@@ -55,12 +55,16 @@ if ($f->submit ()) {
 } else {
 	$b->yes_no = array ('yes' => __ ('Yes'), 'no' => __ ('No'));
 	$b->columns = explode ('-', $b->column_layout);
-	$b->column = isset ($_GET['column']) ? $_GET['column'] : 1;
+	$b->rows = isset ($_GET['column']);
+	$b->column = $b->rows ? $_GET['column'] : 1;
 	$b->layout_options = Block::$column_layouts;
 
 	$b->failed = $f->failed;
 	$b = $f->merge_values ($b);
 	$page->window_title = __ ('Edit Block') . ': ' . Template::sanitize ($b->title);
+	$page->add_script ('/js/jquery-migrate-1.2.1.js');
+	$page->add_script ('/js/jquery-ui/jquery-ui.min.js');
+	$page->add_script ('/apps/user/js/jquery.tools.min.js');
 	$this->run ('admin/util/wysiwyg');
 	echo $tpl->render ('blocks/edit/head', $b);
 	echo $tpl->render ('blocks/edit', $b);

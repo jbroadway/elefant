@@ -6,7 +6,7 @@
 		<a href="javascript:void(0)" title="{"Editing Locked"}" class="ediable-lock"></a>
 	{% else %}
 		{% if User::require_acl ('admin', 'blocks') %}{% if new_id %}{% if User::require_acl ('admin/add') %}<a href="/blocks/add?id={{ new_id }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Add Page-Specific Block"}" class="editable-add"><i class="fa fa-lg fa-plus"></i></a
-			>{% end %}{% end %}<a href="/blocks/edit?id={{ id }}&column={{ column }}&return={{ $_SERVER.REQUEST_URI }}" title="{"Edit Block"}" class="editable-edit"><i class="fa fa-lg fa-pencil"></i></a
+			>{% end %}{% end %}<a href="/blocks/edit?id={{ id }}{% if rows %}&column={{ column }}{% end %}&return={{ $_SERVER.REQUEST_URI }}" title="{"Edit Block"}" class="editable-edit"><i class="fa fa-lg fa-pencil"></i></a
 			>{% end %}{% if $data->column == 1 && $data->sorting && User::require_acl ('admin', 'blocks') %}<a href="#" title="{"Move Up"}" class="block-move-up"><i class="fa fa-lg fa-chevron-up"></i></a
 			><a href="#" title="{"Move Down"}" class="block-move-down"><i class="fa fa-lg fa-chevron-down"></i></a
 			><a href="#" title="{"Column Layout"}" class="editable-layout"><i class="fa fa-lg fa-columns"></i></a
