@@ -34,15 +34,18 @@
 {% if rows %}
 	<p>
 		<span class="columns-label">{"Column"}:</span>
-		<span id="column-tabs"><button>1</button> <button>2</button></span>
+		<span id="column-tabs">
+			<button class="column-option" data-column="1">1</button>
+			<button class="column-option" data-column="2">2</button>
+		</span>
 	</p>
-	<input type="hidden" name="col1" value="{{body|quotes}}" />
-	<input type="hidden" name="col2" value="{{col2|quotes}}" />
-	<input type="hidden" name="col3" value="{{col3|quotes}}" />
-	<input type="hidden" name="col4" value="{{col4|quotes}}" />
-	<input type="hidden" name="col5" value="{{col5|quotes}}" />
+	<input type="hidden" name="col1" id="webpage-col1" value="{{body|quotes}}" />
+	<input type="hidden" name="col2" id="webpage-col2" value="{{col2|quotes}}" />
+	<input type="hidden" name="col3" id="webpage-col3" value="{{col3|quotes}}" />
+	<input type="hidden" name="col4" id="webpage-col4" value="{{col4|quotes}}" />
+	<input type="hidden" name="col5" id="webpage-col5" value="{{col5|quotes}}" />
 {% end %}
-<textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
+<textarea name="body" id="webpage-body" cols="90" rows="28"{% if rows %}>{{ body }}</textarea></p>
 
 	</div>
 	<div class="e-col-25 editform-side">
