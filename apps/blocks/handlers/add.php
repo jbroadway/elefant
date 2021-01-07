@@ -12,6 +12,10 @@ $f = new Form ('post', 'blocks/add');
 
 if ($f->submit ()) {
 	unset ($_POST['_token_']);
+	if (isset ($_POST['col1'])) {
+		$_POST['body'] = $_POST['col1'];
+		unset ($_POST['col1']);
+	}
 	$b = new Block ($_POST);
 	$b->put ();
 	Versions::add ($b);

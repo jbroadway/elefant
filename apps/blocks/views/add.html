@@ -33,18 +33,16 @@
 
 {% if rows %}
 	<p>
-		{"Column"}:
-		<div id="column-tabs"><button>1</button> <button>2</button></div>
+		<span class="columns-label">{"Column"}:</span>
+		<span id="column-tabs"><button>1</button> <button>2</button></span>
 	</p>
-	<textarea id="webpage-body" cols="90" rows="28"></textarea></p>
-	<input type="hidden" name="body" value="{{body|quotes}}" />
+	<input type="hidden" name="col1" value="{{body|quotes}}" />
 	<input type="hidden" name="col2" value="{{col2|quotes}}" />
 	<input type="hidden" name="col3" value="{{col3|quotes}}" />
 	<input type="hidden" name="col4" value="{{col4|quotes}}" />
 	<input type="hidden" name="col5" value="{{col5|quotes}}" />
-{% else %}
-	<textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 {% end %}
+<textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 
 	</div>
 	<div class="e-col-25 editform-side">
@@ -173,6 +171,7 @@ $(function () {
 		$(e.target).hide ();
 	});
 	
+	{% if rows %}
 	/**
 	 * Column layout behaviours.
 	 */
@@ -230,6 +229,7 @@ $(function () {
 			$.close_dialog ();
 		});
 	});
+	{% end %}
 	
 	/**
 	 * Tabbed editing for multi-column rows.

@@ -24,7 +24,7 @@ $f = new Form ('post', 'blocks/edit');
 if ($f->submit ()) {
 	$b->id = $_POST['id'];
 	$b->title = $_POST['title'];
-	$b->body = $_POST['body'];
+	$b->body = isset ($_POST['col1']) ? $_POST['col1'] : $_POST['body'];
 	$b->access = $_POST['access'];
 	$b->show_title = $_POST['show_title'];
 	$b->background = $_POST['background'];

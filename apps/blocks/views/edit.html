@@ -33,6 +33,17 @@
 
 <p><span class="notice" id="body-notice">{"You must enter body content."}<br /></span>
 
+{% if rows %}
+	<p>
+		<span class="columns-label">{"Column"}:</span>
+		<span id="column-tabs"><button>1</button> <button>2</button></span>
+	</p>
+	<input type="hidden" name="col1" value="{{body|quotes}}" />
+	<input type="hidden" name="col2" value="{{col2|quotes}}" />
+	<input type="hidden" name="col3" value="{{col3|quotes}}" />
+	<input type="hidden" name="col4" value="{{col4|quotes}}" />
+	<input type="hidden" name="col5" value="{{col5|quotes}}" />
+{% end %}
 <textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 
 	</div>
@@ -162,6 +173,11 @@ $(function () {
 		$(e.target).hide ();
 	});
 	
+	{% if rows %}
+	/**
+	 * Column layout behaviours.
+	 */
+	
 	var cols_html = `<table class="editable-layout-options">
 			<tr>
 				<td><a href="#" class="editable-layout-option" data-layout="100"><img src="/apps/blocks/pix/layout/100.png" alt="100" /></a></td>
@@ -215,6 +231,18 @@ $(function () {
 			$.close_dialog ();
 		});
 	});
+	{% end %}
+	
+	{% if rows %}
+	/**
+	 * Tabbed editing for multi-column rows.
+	 */
+	var show_column = {{column}};
+	
+	$('#webpage-body').on ('change', function (e) {
+		console.log (e);
+	});
+	{% end %}
 });
 </script>
 
