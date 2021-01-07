@@ -261,7 +261,21 @@ $(function () {
 		e.preventDefault ();
 		
 		active_column = $(this).data ('column');
+		
+		update_from_active_column ();
 	});
+	
+	function update_from_active_column () {
+		switch (active_column) {
+			case 1: $(webpage_body).redactor ('code.set', webpage_col1.value); break;
+			case 2: $(webpage_body).redactor ('code.set', webpage_col2.value); break;
+			case 3: $(webpage_body).redactor ('code.set', webpage_col3.value); break;
+			case 4: $(webpage_body).redactor ('code.set', webpage_col4.value); break;
+			case 5: $(webpage_body).redactor ('code.set', webpage_col5.value); break;
+		}
+	}
+	
+	update_from_active_column ();
 	{% end %}
 });
 </script>
