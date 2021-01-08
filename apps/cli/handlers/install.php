@@ -17,6 +17,12 @@ if (! $this->cli) {
 
 $page->layout = false;
 
+$no_installed_error = false;
+if (isset ($_SERVER['argv'][2]) && $_SERVER['argv'][2] == '--no-installed-error') {
+	$no_installed_error = true;
+	unset ($_SERVER['argv'][2]);
+}
+
 if (isset ($_SERVER['argv'][2])) {
 	// Install an app
 	$url = $_SERVER['argv'][2];
@@ -73,14 +79,18 @@ if (isset ($_SERVER['argv'][2])) {
 }
 
 if (@file_exists ('conf/installed')) {
-	Cli::out ('** Error: Installer has already been run.', 'error');
+	if ($no_installed_error) {
+		Cli::out ('Installer has already been run.');
+	} else {
+		Cli::out ('** Error: Installer has already been run.', 'error');
+	}
 	return;
 }
 
 require_once ('apps/cli/lib/Functions.php');
 
 // set the necessary folder permissions
-system ('chmod -R 777 cache conf css files lang layouts');
+system ('chmod -R 777 cache conf files lang layouts');
 system ('chmod 777 apps');
 
 // update config file 
@@ -91,23 +101,42 @@ if (! file_put_contents ('conf/config.php', $config_plain)) {
 	Cli::out ('** Warning: Failed to write to conf/config.php.');
 }
 
-$conf = parse_ini_file ('conf/config.php', true);
+$conf = ['Database' => conf ('Database')];
 
 // connect to the database
 $connected = false;
-DB::$prefix = isset ($conf['Database']['prefix']) ? $conf['Database']['prefix'] : '';
-unset ($conf['Database']['prefix']);
+DB::$prefix = conf ('Database', 'prefix');
 foreach (array_keys ($conf['Database']) as $key) {
 	if ($key == 'master') {
 		$conf['Database'][$key]['master'] = true;
-		if (! DB::open ($conf['Database'][$key])) {
+		
+		// Retry several times in case the database container is still coming online
+		// when ./elefant install starts running.
+		$tries = 12;
+		$tried = 0;
+		
+		while (true) {
+			Cli::out ('Connecting to database ' . $conf['Database'][$key]['name']);
+			if (! DB::open ($conf['Database'][$key])) {
+				Cli::out ('** Error connecting to the database, trying again.');
+				sleep (1);
+				$tried++;
+				if ($tried >= $tries) {
+					break;
+				}
+			} else {
+				$connected = true;
+				break;
+			}
+		}
+		
+		if (! $connected) {
 			Cli::out ('** Error: Could not connect to the database. Please check the', 'error');
 			Cli::out ('          settings in conf/config.php and try again.', 'error');
 			echo "\n";
 			Cli::out ('          ' . DB::error (), 'error');
 			return;
 		}
-		$connected = true;
 		break;
 	}
 }
@@ -126,6 +155,11 @@ foreach ($sqldata as $sql) {
 	if (trim ($sql) === 'begin' || trim ($sql) === 'commit') {
 		continue;
 	}
+	
+	$sql = str_replace ('#ELEFANT_VERSION#', ELEFANT_VERSION, $sql);
+	while (preg_match ('/#appconf\.([^.#]+)\.([^.#]+)\.([^.#]+)#/', $sql, $regs)) {
+		$sql = str_replace ($regs[0], Appconf::get ($regs[1], $regs[2], $regs[3]), $sql);
+	}
 
 	if (! DB::execute ($sql)) {
 		Cli::out ('** Error: ' . DB::error (), 'error');
@@ -135,6 +169,7 @@ foreach ($sqldata as $sql) {
 }
 
 // change the admin user's password
+$user = conf ('General', 'email_from');
 $pass = getenv ('ELEFANT_DEFAULT_PASS');
 if ($pass === false) {
 	$pass = generate_password (8);
@@ -142,7 +177,7 @@ if ($pass === false) {
 $date = gmdate ('Y-m-d H:i:s');
 if (! DB::execute (
 	"update `#prefix#user` set `email` = ?, `password` = ? where `id` = 1",
-	$conf['General']['email_from'],
+	$user,
 	User::encrypt_pass ($pass)
 )) {
 	Cli::out ('Error: ' . DB::error (), 'error');
@@ -154,7 +189,7 @@ DB::commit ();
 
 // respond with the root password
 echo "Database created. Your initial admin account is:\n";
-Cli::block ('Username: <info>' . $conf['General']['email_from'] . "</info>\n");
+Cli::block ('Username: <info>' . $user . "</info>\n");
 Cli::block ('Password: <info>' . $pass . "</info>\n");
 
 // create versions entries for initial content

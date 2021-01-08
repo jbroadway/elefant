@@ -1,0 +1,56 @@
+# Create a development server via `docker-compose up -d`
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: super_secret_shh
+      MYSQL_DATABASE: www_db
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: youll_never_guess
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    volumes:
+      - mysql-db:/var/lib/mysql
+    restart: always
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+  www:
+    image: elefant-dev
+    container_name: www
+    environment:
+      ELEFANT_DB_DRIVER: mysql
+      ELEFANT_DB_HOST: "mysql:3306"
+      ELEFANT_DB_NAME: www_db
+      ELEFANT_DB_USER: db_user
+      ELEFANT_DB_PASS: youll_never_guess
+      ELEFANT_DOMAIN: "localhost:8080"
+      ELEFANT_DEFAULT_PASS: log_me_in
+      ELEFANT_SESSION_HANDLER: "redis:tcp://redis:6379?timeout=0.5"
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - .:/www
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+
+networks:
+  app-network:
+    driver: "bridge"
+
+volumes:
+  mysql-db:
