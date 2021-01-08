@@ -55,6 +55,8 @@
 	</div>
 	<div class="e-col-25 editform-side">
 
+<input type="hidden" name="background" id="background" size="40" value="{{ background|quotes }}" />
+{% if rows %}
 <div id="background-div">
 	{"Background image"}<br />
 	<div class="thumbnail-wrapper">
@@ -64,10 +66,10 @@
 		{% end %}
 		></div>
 	</div>
-	<input type="hidden" name="background" id="background" size="40" value="{{ background|quotes }}" />
 	<input type="submit" id="background-browse" value="{"Choose"}" />
 	<input type="submit" id="background-clear" value="{"Clear"}" />
 </div>
+{% end %}
 
 <div class="editform-section info">
 
@@ -91,7 +93,7 @@
 {% if rows %}
 	<p>
 		{"Column Layout"}<br />
-		<img src="/apps/blocks/pix/layout/{{column_layout}}.png" id="display-column-layout" data-i18n-prefix="{"Column Layout"}" alt="{"Column Layout"}: {{column_layout}}" />
+		<img src="/apps/blocks/pix/layout/{{column_layout}}.png" id="display-column-layout" alt="{"Column Layout"}: {{column_layout}}" />
 	</p>
 
 	<p>{"Style"}<br />
@@ -150,6 +152,8 @@ $(function () {
 
 		$this.find ('a[data-value=' + $field.val () + ']').addClass ('toggle-active');
 	});
+	
+	{% if rows %}
 
 	/**
 	 * Background field behaviours.
@@ -178,8 +182,7 @@ $(function () {
 		$('#background-preview').css ('background-image', 'url(\'/apps/admin/css/default.jpg\')');
 		$(e.target).hide ();
 	});
-	
-	{% if rows %}
+
 	/**
 	 * Column layout behaviours.
 	 */
@@ -339,6 +342,7 @@ $(function () {
 	
 	update_visible_columns ();
 	update_active_column ();
+	
 	{% end %}
 });
 </script>

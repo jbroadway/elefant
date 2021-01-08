@@ -23,7 +23,7 @@
 
 <p class="autosave-notice">{"Auto-saved data found for this form."} <a href="#" class="autosave-restore">{"Click here to restore."}</a></p>
 
-<p>{"Block title"}<br /><input type="text" name="title" size="50" value="{{ title }}" onblur="webpage_add_title_to_id (this.form)" />
+<p>{"Block title"}<br /><input type="text" name="title" size="50" value="{{ title|quotes }}" onblur="webpage_add_title_to_id (this.form)" />
 <span class="notice" id="title-notice">{"You must enter a block title."}</span></p>
 
 <p>{"Block ID"} (ex: <tt>{<span></span>! blocks/<strong>your-block-id</strong> !<span></span>}</tt>)<br /><input type="text" name="id" size="55" value="{{ id }}" onblur="this.value = this.value.toLowerCase ()" />
@@ -48,11 +48,13 @@
 	<input type="hidden" name="col4" id="webpage-col4" value="{{col4|quotes}}" />
 	<input type="hidden" name="col5" id="webpage-col5" value="{{col5|quotes}}" />
 {% end %}
-<textarea name="body" id="webpage-body" cols="90" rows="28"{% if rows %}>{{ body }}</textarea></p>
+<textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 
 	</div>
 	<div class="e-col-25 editform-side">
 
+<input type="hidden" name="background" id="background" size="40" value="{{ background|quotes }}" />
+{% if rows %}
 <div id="background-div">
 	{"Background image"}<br />
 	<div class="thumbnail-wrapper">
@@ -62,10 +64,10 @@
 		{% end %}
 		></div>
 	</div>
-	<input type="hidden" name="background" id="background" size="40" value="{{ background|quotes }}" />
 	<input type="submit" id="background-browse" value="{"Choose"}" />
 	<input type="submit" id="background-clear" value="{"Clear"}" />
 </div>
+{% end %}
 
 <div class="editform-section info">
 
@@ -148,6 +150,8 @@ $(function () {
 
 		$this.find ('a[data-value=' + $field.val () + ']').addClass ('toggle-active');
 	});
+	
+	{% if rows %}
 
 	/**
 	 * Background field behaviours.
@@ -176,8 +180,7 @@ $(function () {
 		$('#background-preview').css ('background-image', 'url(\'/apps/admin/css/default.jpg\')');
 		$(e.target).hide ();
 	});
-	
-	{% if rows %}
+
 	/**
 	 * Column layout behaviours.
 	 */
@@ -337,6 +340,7 @@ $(function () {
 	
 	update_visible_columns ();
 	update_active_column ();
+	
 	{% end %}
 });
 </script>
