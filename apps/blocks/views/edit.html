@@ -36,9 +36,12 @@
 {% if rows %}
 	<p>
 		<span class="columns-label">{"Column"}:</span>
-		<span id="column-tabs">
-			<button class="column-option" data-column="1">1</button>
-			<button class="column-option" data-column="2">2</button>
+		<span class="column-tabs toggle">
+			<a href="#" class="column-option" data-column="1">1</a
+			><a href="#" class="column-option" data-column="2">2</a
+			><a href="#" class="column-option" data-column="3">3</a
+			><a href="#" class="column-option" data-column="4">4</a
+			><a href="#" class="column-option" data-column="5">5</a>
 		</span>
 	</p>
 	<input type="hidden" name="col1" id="webpage-col1" value="{{body|quotes}}" />
@@ -232,15 +235,16 @@ $(function () {
 				.attr ('alt', '{"Column Layout"}: ' + layout);
 			
 			$.close_dialog ();
+			
+			update_visible_columns ();
 		});
 	});
-	{% end %}
 	
-	{% if rows %}
 	/**
 	 * Tabbed editing for multi-column rows.
 	 */
 	var active_column = {{column}},
+		column_layout = document.getElementById ('column-layout'),
 		webpage_body = document.getElementById ('webpage-body'),
 		webpage_col1 = document.getElementById ('webpage-col1'),
 		webpage_col2 = document.getElementById ('webpage-col2'),
@@ -262,20 +266,79 @@ $(function () {
 		
 		active_column = $(this).data ('column');
 		
-		update_from_active_column ();
+		update_active_column ();
 	});
 	
-	function update_from_active_column () {
+	function update_active_column () {
+		$('.column-option').removeClass ('toggle-active');
+
 		switch (active_column) {
-			case 1: $(webpage_body).redactor ('code.set', webpage_col1.value); break;
-			case 2: $(webpage_body).redactor ('code.set', webpage_col2.value); break;
-			case 3: $(webpage_body).redactor ('code.set', webpage_col3.value); break;
-			case 4: $(webpage_body).redactor ('code.set', webpage_col4.value); break;
-			case 5: $(webpage_body).redactor ('code.set', webpage_col5.value); break;
+			case 1:
+				$('.column-option[data-column=1]').addClass ('toggle-active');
+				$(webpage_body).redactor ('code.set', webpage_col1.value);
+				break;
+			case 2:
+				$('.column-option[data-column=2]').addClass ('toggle-active');
+				$(webpage_body).redactor ('code.set', webpage_col2.value);
+				break;
+			case 3:
+				$('.column-option[data-column=3]').addClass ('toggle-active');
+				$(webpage_body).redactor ('code.set', webpage_col3.value);
+				break;
+			case 4:
+				$('.column-option[data-column=4]').addClass ('toggle-active');
+				$(webpage_body).redactor ('code.set', webpage_col4.value);
+				break;
+			case 5:
+				$('.column-option[data-column=5]').addClass ('toggle-active');
+				$(webpage_body).redactor ('code.set', webpage_col5.value);
+				break;
 		}
 	}
 	
-	update_from_active_column ();
+	function update_visible_columns () {
+		var cols = column_layout.value.split ('-').length;
+		
+		$('.column-option').removeClass ('last-visible-child');
+		
+		switch (cols) {
+			case 1:
+				$('.column-option[data-column=2]').hide ();
+				$('.column-option[data-column=3]').hide ();
+				$('.column-option[data-column=4]').hide ();
+				$('.column-option[data-column=5]').hide ();
+				break;
+			case 2:
+				$('.column-option[data-column=2]').show ();
+				$('.column-option[data-column=3]').hide ();
+				$('.column-option[data-column=4]').hide ();
+				$('.column-option[data-column=5]').hide ();
+				break;
+			case 3:
+				$('.column-option[data-column=2]').show ();
+				$('.column-option[data-column=3]').show ();
+				$('.column-option[data-column=4]').hide ();
+				$('.column-option[data-column=5]').hide ();
+				break;
+			case 4:
+				$('.column-option[data-column=2]').show ();
+				$('.column-option[data-column=3]').show ();
+				$('.column-option[data-column=4]').show ();
+				$('.column-option[data-column=5]').hide ();
+				break;
+			case 5:
+				$('.column-option[data-column=2]').show ();
+				$('.column-option[data-column=3]').show ();
+				$('.column-option[data-column=4]').show ();
+				$('.column-option[data-column=5]').show ();
+				break;
+		}
+		
+		$('.column-option:visible:last').addClass ('last-visible-child');
+	}
+	
+	update_visible_columns ();
+	update_active_column ();
 	{% end %}
 });
 </script>
