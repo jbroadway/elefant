@@ -38,7 +38,7 @@ if (isset ($data['id'])) {
 }
 if (! $id) {
 	if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
-		echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false));
+		echo $tpl->render ('blocks/editable', (object) array ('id' => $id, 'locked' => false, 'column' => 1));
 	}
 	return;
 }
@@ -57,7 +57,7 @@ if ($b->error) {
 	if ($b->error) {
 		if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
 			$fallback_id = $id;
-			echo $tpl->render ('blocks/editable', (object) array ('id' => $fallback_id, 'locked' => false, 'title' => false));
+			echo $tpl->render ('blocks/editable', (object) array ('id' => $fallback_id, 'locked' => false, 'title' => false, 'column' => 1));
 		}
 		return;
 	}
@@ -78,6 +78,7 @@ if ($b->show_title == 'yes') {
 }
 
 $b->locked = $lock->exists ();
+$b->column = 1;
 
 if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
 	echo $tpl->render ('blocks/editable', $b);

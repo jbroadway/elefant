@@ -125,7 +125,7 @@ if ($rows || $divs || isset ($data['units'])) {
 }
 
 if (isset ($data['units'])) {
-	$units = explode (',', $data['units']);
+	$units = preg_split ('/[,-]/', $data['units']);
 	$divs = true;
 } elseif ($rows) {
 	$units = ['100'];
@@ -204,6 +204,7 @@ $next_wildcard = 1;
 if ($rows) echo '<div class="block-group-wrapper">' . PHP_EOL;
 
 foreach ($ids as $k => $id) {
+	// missing blocks
 	if (! isset ($list[$id])) {
 		if ($rows) {
 			printf ('<div class="block-outer block-outer-missing" id="block-outer-%s">%s', $id, PHP_EOL);
@@ -214,7 +215,7 @@ foreach ($ids as $k => $id) {
 		}
 
 		if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
-			echo $tpl->render ('blocks/editable', (object) ['id' => $id, 'locked' => false, 'sorting' => true]) . PHP_EOL;
+			echo $tpl->render ('blocks/editable', (object) ['id' => $id, 'locked' => false, 'sorting' => true, 'column' => 1, 'rows' => $rows]) . PHP_EOL;
 		}
 
 		if ($rows) {
@@ -238,17 +239,19 @@ foreach ($ids as $k => $id) {
 			continue;
 		}
 	}
+	
+	// render block
+	$cols = ($rows) ? explode ('-', $b->column_layout) : $units;
 
 	if ($rows) {
 		if ($b->background != '') {
 			printf ('<div class="block-outer %s" id="block-outer-%s" data-block-id="%s" data-order-id="%s" style="background-image: url(\'%s\'); background-size: cover; background-position: 50%% 50%%">%s', $b->style, $b->id, $b->id, $order_id, $b->background, PHP_EOL);
-			printf ('<div class="e-row">%s', PHP_EOL);
-			printf ('<div class="e-col-%d block" id="block-%s">%s', $units[$k], $b->id, PHP_EOL);
 		} else {
 			printf ('<div class="block-outer %s" id="block-outer-%s" data-block-id="%s" data-order-id="%s">%s', $b->style, $b->id, $b->id, $order_id, PHP_EOL);
-			printf ('<div class="e-row">%s', PHP_EOL);
-			printf ('<div class="e-col-%d block" id="block-%s">%s', $units[$k], $b->id, PHP_EOL);
 		}
+		
+		printf ('<div class="e-row">%s', PHP_EOL);
+		printf ('<div class="e-col-%d block" id="block-%s">%s', $cols[0], $b->id, PHP_EOL);
 	} elseif ($divs) {
 		if ($b->background != '') {
 			printf ('<div class="e-col-%d block" id="block-%s" style="background-image: url(\'%s\'); background-size: cover; background-position: 50%% 50%%">%s', $units[$k], $b->id, $b->background, PHP_EOL);
@@ -257,18 +260,45 @@ foreach ($ids as $k => $id) {
 		}
 	}
 
-	if ($b->show_title == 'yes') {
-		printf ('<' . $level . '>%s</' . $level . '>' . PHP_EOL, $b->title);
+	$col_count = count ($cols);
+	for ($i = 1; $i <= $col_count; $i++) {
+		// show edit buttons
+		if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
+			$b->locked = is_array ($locks) ? in_array ($id, $locks) : false;
+			$b->column = $i;
+			$b->rows = $rows;
+
+			if ($rows) {
+				$b->sorting = true;
+				echo $tpl->render ('blocks/editable', $b) . PHP_EOL;
+			} else {
+				echo $tpl->render ('blocks/editable', $b) . PHP_EOL;
+			}
+		}
+		
+		// only show title in first column so it doesn't repeat
+		if ($i == 1 && $b->show_title == 'yes') {
+			printf ('<' . $level . '>%s</' . $level . '>' . PHP_EOL, $b->title);
+		}
+
+		// determine which field to render for this column and render it		
+		$field = 'body';
+		switch ($i) {
+			case 1: $field = 'body'; break;
+			case 2: $field = 'col2'; break;
+			case 3: $field = 'col3'; break;
+			case 4: $field = 'col4'; break;
+			case 5: $field = 'col5'; break;
+		}
+
+		echo $tpl->run_includes ($b->{$field}) . PHP_EOL;
+		
+		// there will be another column, close this one and start the next
+		if ($i < $col_count) {
+			echo '</div>' . PHP_EOL;
+			printf ('<div class="e-col-%d block" id="block-%s">%s', $cols[$i], $b->id, PHP_EOL);
+		}
 	}
-
-	$b->locked = is_array ($locks) ? in_array ($id, $locks) : false;
-
-	if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
-		if ($rows) $b->sorting = true;
-		echo $tpl->render ('blocks/editable', $b) . PHP_EOL;
-	}
-
-	echo $tpl->run_includes ($b->body) . PHP_EOL;
 	
 	if ($rows) {
 		echo '</div>' . PHP_EOL;
@@ -294,7 +324,7 @@ foreach ($ids as $k => $id) {
 // Add wildcard add block link
 if ($wildcard && $rows && User::require_acl ('admin', 'blocks', 'admin/add')) {
 	$next_id = str_replace ('*', $next_wildcard, $data['wildcard']);
-	echo $tpl->render ('blocks/editable', (object) ['id' => $next_id, 'locked' => false]) . PHP_EOL;
+	echo $tpl->render ('blocks/editable', (object) ['id' => $next_id, 'locked' => false, 'column' => 1, 'rows' => $rows]) . PHP_EOL;
 }
 
 // Add group order script
@@ -302,7 +332,16 @@ if ($rows) {
 	echo '</div>' . PHP_EOL; // End block-group-wrapper
 
 	if (User::require_acl ('admin', 'blocks')) {
-		$page->add_style ('/apps/blocks/css/grouporder.css');
-		$page->add_script ('/apps/blocks/js/grouporder.js', 'tail');
+		$labels = [
+			'column_layout' => __ ('Column layout'),
+			'add_layout' => __ ('Choose a column layout')
+		];
+		
+		$this->run ('admin/util/modal');
+		
+		$v = 3;
+		$page->add_style ('/apps/blocks/css/grouporder.css?v=' . $v);
+		$page->add_script ('<script>window._i18n_ = ' . json_encode ($labels) . ';</script>', 'tail');
+		$page->add_script ('/apps/blocks/js/grouporder.js?v=' . $v, 'tail');
 	}
 }

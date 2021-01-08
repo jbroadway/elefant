@@ -2,3 +2,25 @@
 .block-outer:last-of-type .block-move-down {
 	display: none;
 }
+
+table.editable-layout-options {
+	table-layout: fixed;
+}
+
+table.editable-layout-options tr:nth-child(even) {
+	background-color: inherit;
+}
+
+table.editable-layout-options img {
+	max-width: 100%;
+}
+
+table.editable-layout-options a:hover img {
+	box-sizing: border-box;
+	outline: solid 2px #93278f;
+	outline-offset: -2px;
+}
+
+table.editable-layout-options img {
+	max-width: 100%;
+}

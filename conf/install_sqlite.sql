@@ -25,7 +25,12 @@ create table #prefix#block (
 	access char(12) not null,
 	show_title char(3) not null,
 	background char(128) not null default '',
-	style char(72) not null default ''
+	style char(72) not null default '',
+	column_layout char(24) not null default '100',
+	col2 text,
+	col3 text,
+	col4 text,
+	col5 text
 );
 
 create table #prefix#block_group_order (

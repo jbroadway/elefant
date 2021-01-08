@@ -29,11 +29,19 @@
  *
  * Fields:
  *
- * id
- * title
- * body
- * access
- * show_title
+ * id - Unique block ID, which is used to link blocks to page layouts.
+ *      Note that some block IDs are auto-generated and shouldn't be
+ *      modified or their association to layouts or pages can break.
+ * title - Block title
+ * body - Body content, or the first column for multi-column rows.
+ * access - Whether this block is public, members-only, or private.
+ * show_title - Whether to show the block title or keep it hidden.
+ * background - Link to an optional background image.
+ * column_layout - Column layout for blocks representing rows (see `blocks/group`)
+ * col2 - Content for column 2 in a multi-column row.
+ * col3 - Content for column 3 in a multi-column row.
+ * col4 - Content for column 4 in a multi-column row.
+ * col5 - Content for column 5 in a multi-column row.
  */
 class Block extends Model {
 	/**
@@ -51,6 +59,27 @@ class Block extends Model {
 	 */
 	public static $versions_display_fields = [
 		'title' => 'Title'
+	];
+	
+	public static $column_layouts = [
+		'100',
+		'50-50',
+		'60-40',
+		'40-60',
+		'66-33',
+		'33-66',
+		'70-30',
+		'30-70',
+		'75-25',
+		'25-75',
+		'80-20',
+		'20-80',
+		'33-33-33',
+		'50-25-25',
+		'25-50-25',
+		'25-25-50',
+		'25-25-25-25',
+		'20-20-20-20-20'
 	];
 
 	/**

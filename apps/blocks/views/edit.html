@@ -8,7 +8,7 @@
 
 <div class="e-row-variable e-no-padding-left">
 	<div class="e-col-25 e-no-padding-left editform-title">
-		<h2>{"Edit Block"}</h2>
+		<h2>{"Edit Content Block"}</h2>
 	</div>
 	<div id="save-buttons" class="e-col-75 e-no-padding editform-buttons">
 		<p style="text-align: right">
@@ -32,11 +32,31 @@
 <span class="notice" id="id-notice">{"Your ID must be a lowercase alphanumeric value."}</span></p>
 
 <p><span class="notice" id="body-notice">{"You must enter body content."}<br /></span>
+
+{% if rows %}
+	<p>
+		<span class="columns-label">{"Column"}:</span>
+		<span class="column-tabs toggle">
+			<a href="#" class="column-option" data-column="1">1</a
+			><a href="#" class="column-option" data-column="2">2</a
+			><a href="#" class="column-option" data-column="3">3</a
+			><a href="#" class="column-option" data-column="4">4</a
+			><a href="#" class="column-option" data-column="5">5</a>
+		</span>
+	</p>
+	<input type="hidden" name="col1" id="webpage-col1" value="{{body|quotes}}" />
+	<input type="hidden" name="col2" id="webpage-col2" value="{{col2|quotes}}" />
+	<input type="hidden" name="col3" id="webpage-col3" value="{{col3|quotes}}" />
+	<input type="hidden" name="col4" id="webpage-col4" value="{{col4|quotes}}" />
+	<input type="hidden" name="col5" id="webpage-col5" value="{{col5|quotes}}" />
+{% end %}
 <textarea name="body" id="webpage-body" cols="90" rows="28">{{ body }}</textarea></p>
 
 	</div>
 	<div class="e-col-25 editform-side">
 
+<input type="hidden" name="background" id="background" size="40" value="{{ background|quotes }}" />
+{% if rows %}
 <div id="background-div">
 	{"Background image"}<br />
 	<div class="thumbnail-wrapper">
@@ -46,37 +66,47 @@
 		{% end %}
 		></div>
 	</div>
-	<input type="hidden" name="background" id="background" size="40" value="{{ background|quotes }}" />
 	<input type="submit" id="background-browse" value="{"Choose"}" />
 	<input type="submit" id="background-clear" value="{"Clear"}" />
 </div>
+{% end %}
 
 <div class="editform-section info">
 
-<p>{"Style"}<br />
-<select name="style">
-	<option value="">{"- select -"}</option>
-{% foreach Block::get_styles() as _style, _name %}
-	<option value="{{ _style }}"{% if _style == $data->style %} selected{% end %}>{{ _name }}</option>
+<div>
+	{"Access"}<br />
+	<p class="toggle" data-field="access">
+		{% foreach User::access_list () %}<a href="#" data-value="{{ loop_index }}">{{ loop_value }}</a>{% end %}
+	</p>
+	<input type="hidden" name="access" id="access" value="{{ access }}" />
+</div>
+
+<div>
+	{"Show title"}<br />
+	<p class="toggle" data-field="show_title">
+		{% foreach yes_no %}<a href="#" data-value="{{ loop_index }}">{{ loop_value }}</a>{% end %}
+	</p>
+	<input type="hidden" name="show_title" id="show_title" value="{{ show_title }}" />
+</div>
+
+<input type="hidden" name="column_layout" id="column-layout" value="{{column_layout}}">
+{% if rows %}
+	<p>
+		{"Column Layout"}<br />
+		<img src="/apps/blocks/pix/layout/{{column_layout}}.png" id="display-column-layout" alt="{"Column Layout"}: {{column_layout}}" />
+	</p>
+
+	<p>{"Style"}<br />
+		<select name="style">
+			<option value="">{"Default"}</option>
+		{% foreach Block::get_styles() as _style, _name %}
+			<option value="{{ _style }}"{% if _style == $data->style %} selected{% end %}>{{ _name }}</option>
+		{% end %}
+		</select>
+	</p>
+{% else %}
+	<input type="hidden" name="style" value="{{style|quotes}}" />
 {% end %}
-</select>
-</p>
-
-<div>
-{"Access"}<br />
-<p class="toggle" data-field="access">
-{% foreach User::access_list () %}<a href="#" data-value="{{ loop_index }}">{{ loop_value }}</a>{% end %}
-</p>
-<input type="hidden" name="access" id="access" value="{{ access }}" />
-</div>
-
-<div>
-{"Show title"}<br />
-<p class="toggle" data-field="show_title">
-{% foreach yes_no %}<a href="#" data-value="{{ loop_index }}">{{ loop_value }}</a>{% end %}
-</p>
-<input type="hidden" name="show_title" id="show_title" value="{{ show_title }}" />
-</div>
 
 </div>
 
@@ -123,6 +153,8 @@ $(function () {
 
 		$this.find ('a[data-value=' + $field.val () + ']').addClass ('toggle-active');
 	});
+	
+	{% if rows %}
 
 	/**
 	 * Background field behaviours.
@@ -151,6 +183,168 @@ $(function () {
 		$('#background-preview').css ('background-image', 'url(\'/apps/admin/css/default.jpg\')');
 		$(e.target).hide ();
 	});
+
+	/**
+	 * Column layout behaviours.
+	 */
+	
+	var cols_html = `<table class="editable-layout-options">
+			<tr>
+				<td><a href="#" class="editable-layout-option" data-layout="100"><img src="/apps/blocks/pix/layout/100.png" alt="100" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="50-50"><img src="/apps/blocks/pix/layout/50-50.png" alt="50-50" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="60-40"><img src="/apps/blocks/pix/layout/60-40.png" alt="60-40" /></a></td>
+			</tr>
+			<tr>
+				<td><a href="#" class="editable-layout-option" data-layout="40-60"><img src="/apps/blocks/pix/layout/40-60.png" alt="40-60" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="66-33"><img src="/apps/blocks/pix/layout/66-33.png" alt="66-33" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="33-66"><img src="/apps/blocks/pix/layout/33-66.png" alt="33-66" /></a></td>
+			</tr>
+			<tr>
+				<td><a href="#" class="editable-layout-option" data-layout="70-30"><img src="/apps/blocks/pix/layout/70-30.png" alt="70-30" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="30-70"><img src="/apps/blocks/pix/layout/30-70.png" alt="30-70" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="75-25"><img src="/apps/blocks/pix/layout/75-25.png" alt="75-25" /></a></td>
+			</tr>
+			<tr>
+				<td><a href="#" class="editable-layout-option" data-layout="25-75"><img src="/apps/blocks/pix/layout/25-75.png" alt="25-75" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="80-20"><img src="/apps/blocks/pix/layout/80-20.png" alt="80-20" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="20-80"><img src="/apps/blocks/pix/layout/20-80.png" alt="20-80" /></a></td>
+			</tr>
+			<tr>
+				<td><a href="#" class="editable-layout-option" data-layout="33-33-33"><img src="/apps/blocks/pix/layout/33-33-33.png" alt="33-33-33" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="50-25-25"><img src="/apps/blocks/pix/layout/50-25-25.png" alt="50-25-25" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="25-50-25"><img src="/apps/blocks/pix/layout/25-50-25.png" alt="25-50-25" /></a></td>
+			</tr>
+			<tr>
+				<td><a href="#" class="editable-layout-option" data-layout="25-25-50"><img src="/apps/blocks/pix/layout/25-25-50.png" alt="25-25-50" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="25-25-25-25"><img src="/apps/blocks/pix/layout/25-25-25-25.png" alt="25-25-25-25" /></a></td>
+				<td><a href="#" class="editable-layout-option" data-layout="20-20-20-20-20"><img src="/apps/blocks/pix/layout/20-20-20-20-20.png" alt="20-20-20-20-20" /></a></td>
+			</tr>
+		</table>`;
+	
+	var modal_opts = {width: 640, height: 585};
+	
+	$('#display-column-layout').click (function (e) {
+		e.preventDefault ();
+		
+		$.open_dialog ('{"Choose a column layout"}', cols_html, modal_opts);
+		
+		$('.editable-layout-option').on ('click', function (e) {
+			e.preventDefault ();
+			
+			var layout = $(this).data ('layout');
+			
+			$('#column-layout').val (layout);
+			$('#display-column-layout')
+				.attr ('src', '/apps/blocks/pix/layout/' + layout + '.png')
+				.attr ('alt', '{"Column Layout"}: ' + layout);
+			
+			$.close_dialog ();
+			
+			update_visible_columns ();
+		});
+	});
+	
+	/**
+	 * Tabbed editing for multi-column rows.
+	 */
+	var active_column = {{column}},
+		column_layout = document.getElementById ('column-layout'),
+		webpage_body = document.getElementById ('webpage-body'),
+		webpage_col1 = document.getElementById ('webpage-col1'),
+		webpage_col2 = document.getElementById ('webpage-col2'),
+		webpage_col3 = document.getElementById ('webpage-col3'),
+		webpage_col4 = document.getElementById ('webpage-col4'),
+		webpage_col5 = document.getElementById ('webpage-col5'),
+		webpage_body_monitor = setInterval (function () {
+			switch (active_column) {
+				case 1: webpage_col1.value = webpage_body.value; break;
+				case 2: webpage_col2.value = webpage_body.value; break;
+				case 3: webpage_col3.value = webpage_body.value; break;
+				case 4: webpage_col4.value = webpage_body.value; break;
+				case 5: webpage_col5.value = webpage_body.value; break;
+			}
+		}, 100);
+	
+	$('.column-option').on ('click', function (e) {
+		e.preventDefault ();
+		
+		active_column = $(this).data ('column');
+		
+		update_active_column ();
+	});
+	
+	function update_active_column () {
+		$('.column-option').removeClass ('toggle-active');
+
+		switch (active_column) {
+			case 1:
+				$('.column-option[data-column=1]').addClass ('toggle-active');
+				$(webpage_body).redactor ('code.set', webpage_col1.value);
+				break;
+			case 2:
+				$('.column-option[data-column=2]').addClass ('toggle-active');
+				$(webpage_body).redactor ('code.set', webpage_col2.value);
+				break;
+			case 3:
+				$('.column-option[data-column=3]').addClass ('toggle-active');
+				$(webpage_body).redactor ('code.set', webpage_col3.value);
+				break;
+			case 4:
+				$('.column-option[data-column=4]').addClass ('toggle-active');
+				$(webpage_body).redactor ('code.set', webpage_col4.value);
+				break;
+			case 5:
+				$('.column-option[data-column=5]').addClass ('toggle-active');
+				$(webpage_body).redactor ('code.set', webpage_col5.value);
+				break;
+		}
+	}
+	
+	function update_visible_columns () {
+		var cols = column_layout.value.split ('-').length;
+		
+		$('.column-option').removeClass ('last-visible-child');
+		
+		switch (cols) {
+			case 1:
+				$('.column-option[data-column=2]').hide ();
+				$('.column-option[data-column=3]').hide ();
+				$('.column-option[data-column=4]').hide ();
+				$('.column-option[data-column=5]').hide ();
+				break;
+			case 2:
+				$('.column-option[data-column=2]').show ();
+				$('.column-option[data-column=3]').hide ();
+				$('.column-option[data-column=4]').hide ();
+				$('.column-option[data-column=5]').hide ();
+				break;
+			case 3:
+				$('.column-option[data-column=2]').show ();
+				$('.column-option[data-column=3]').show ();
+				$('.column-option[data-column=4]').hide ();
+				$('.column-option[data-column=5]').hide ();
+				break;
+			case 4:
+				$('.column-option[data-column=2]').show ();
+				$('.column-option[data-column=3]').show ();
+				$('.column-option[data-column=4]').show ();
+				$('.column-option[data-column=5]').hide ();
+				break;
+			case 5:
+				$('.column-option[data-column=2]').show ();
+				$('.column-option[data-column=3]').show ();
+				$('.column-option[data-column=4]').show ();
+				$('.column-option[data-column=5]').show ();
+				break;
+		}
+		
+		$('.column-option:visible:last').addClass ('last-visible-child');
+	}
+	
+	update_visible_columns ();
+	update_active_column ();
+	
+	{% end %}
 });
 </script>
 
@@ -168,5 +362,37 @@ $(function () {
 
 .toggle {
 	margin-bottom: 1.5em !important;
+}
+
+img#display-column-layout {
+	max-width: 96%;
+	margin-top: 3px;
+	cursor: pointer;
+}
+
+table.editable-layout-options {
+	table-layout: fixed;
+}
+
+table.editable-layout-options tr:nth-child(even) {
+	background-color: inherit;
+}
+
+table.editable-layout-options tr:hover {
+	background-color: inherit;
+}
+
+table.editable-layout-options tr td {
+	border-bottom: 0;
+}
+
+table.editable-layout-options img {
+	max-width: 100%;
+}
+
+table.editable-layout-options a:hover img {
+	box-sizing: border-box;
+	outline: solid 2px #93278f;
+	outline-offset: -2px;
 }
 </style>

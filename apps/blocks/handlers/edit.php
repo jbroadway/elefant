@@ -24,11 +24,16 @@ $f = new Form ('post', 'blocks/edit');
 if ($f->submit ()) {
 	$b->id = $_POST['id'];
 	$b->title = $_POST['title'];
-	$b->body = $_POST['body'];
+	$b->body = isset ($_POST['col1']) ? $_POST['col1'] : $_POST['body'];
 	$b->access = $_POST['access'];
 	$b->show_title = $_POST['show_title'];
 	$b->background = $_POST['background'];
 	$b->style = $_POST['style'];
+	$b->column_layout = $_POST['column_layout'];
+	$b->col2 = $_POST['col2'];
+	$b->col3 = $_POST['col3'];
+	$b->col4 = $_POST['col4'];
+	$b->col5 = $_POST['col5'];
 	$b->put ();
 	Versions::add ($b);
 	if (! $b->error) {
@@ -49,9 +54,17 @@ if ($f->submit ()) {
 	echo __ ('Error Message') . ': ' . $b->error;
 } else {
 	$b->yes_no = array ('yes' => __ ('Yes'), 'no' => __ ('No'));
+	$b->columns = explode ('-', $b->column_layout);
+	$b->rows = isset ($_GET['column']);
+	$b->column = $b->rows ? $_GET['column'] : 1;
+	$b->layout_options = Block::$column_layouts;
+
 	$b->failed = $f->failed;
 	$b = $f->merge_values ($b);
 	$page->window_title = __ ('Edit Block') . ': ' . Template::sanitize ($b->title);
+	$page->add_script ('/js/jquery-migrate-1.2.1.js');
+	$page->add_script ('/js/jquery-ui/jquery-ui.min.js');
+	$page->add_script ('/apps/user/js/jquery.tools.min.js');
 	$this->run ('admin/util/wysiwyg');
 	echo $tpl->render ('blocks/edit/head', $b);
 	echo $tpl->render ('blocks/edit', $b);
