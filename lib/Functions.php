@@ -202,14 +202,14 @@ function conf ($section = false, $value = false, $update = null) {
 			}
 		}
 		
-		return @$conf[$section][$value];
+		return (isset ($conf[$section]) && isset ($conf[$section][$value])) ? $conf[$section][$value] : null;
 	}
 	
 	if ($section) {
-		return @$conf[$section];
+		return isset ($conf[$section]) ? $conf[$section] : null;
 	}
 	
-	return @$conf;
+	return $conf;
 }
 
 /**
