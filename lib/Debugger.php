@@ -143,6 +143,9 @@ class Debugger {
 	 * Shows a step in the trace.
 	 */
 	public static function show_trace_step ($trace) {
+		if (! isset ($trace['args'])) {
+			$trace['args'] = [];
+		}
 		if (! isset ($trace['line'])) {
 			$trace['line'] = $trace['args'][3];
 		}
