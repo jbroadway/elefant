@@ -319,7 +319,7 @@ class I18n {
 
 		if ($method === 'http') {
 			$accepted = array ();
-			$keys = explode (',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+			$keys = explode (',', isset ($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '');
 
 			foreach ($keys as $lang) {
 				// Remove trailing ";q=" data
