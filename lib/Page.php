@@ -289,7 +289,7 @@ class Page {
 		if ($crossorigin !== '') {
 			$crossorigin = ' crossorigin="' . $crossorigin . '"';
 		}
-		$extra = ($add_to === 'defer') ? ' ' . $add_to : '';
+		$extra = ($add_to === 'defer' || $add_to === 'async') ? ' ' . $add_to : '';
 
 		if (preg_match ('/\.css$/i', $script) || strpos ($script, '.css?') !== false) {
 			return '<link rel="stylesheet"' . $type . ' href="' . self::assets_version ($script) . '"' . $integrity . $crossorigin . " />\n";
