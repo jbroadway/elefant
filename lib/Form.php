@@ -427,9 +427,9 @@ class Form {
 	/**
 	 * Generate and initialize the CSRF token.
 	 */
-	public function initialize_csrf () {
+	public function initialize_csrf ($timeshift = false, $uri = '') {
 		if ($this->verify_csrf) {
-			$this->csrf_token = $this->generate_csrf_token ();
+			$this->csrf_token = $this->generate_csrf_token ($timeshift, $uri);
 		
 			// Append the CSRF token Javascript if there is a page object
 			if (isset ($GLOBALS['page'])) {
