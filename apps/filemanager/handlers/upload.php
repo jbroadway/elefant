@@ -9,7 +9,7 @@ $page->layout = 'admin';
 $this->require_acl ('admin', 'filemanager');
 
 $f = new Form ('post', $this);
-if (! $f->verify_csrf ()) {
+if (! $f->verify_csrf ('/filemanager')) {
 	$page->title = __ ('Validation Error');	
 	echo '<p><a href="/filemanager">' . __ ('Back') . '</a></p>';
 	return;

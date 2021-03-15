@@ -13,7 +13,7 @@ if (! User::require_acl ('admin') || ! User::require_acl ('filemanager')) {
 
 $f = new Form ('post', $this);
 $_POST['_token_'] = $_POST['token'];
-if (! $f->verify_csrf ()) {
+if (! $f->verify_csrf ('/filemanager')) {
 	echo json_encode (array ('success' => false, 'error' => __ ('Validation error')));
 	return;
 }

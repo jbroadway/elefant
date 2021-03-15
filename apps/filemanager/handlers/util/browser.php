@@ -40,7 +40,7 @@
 echo $this->run ('admin/util/modal');
 
 $f = new Form ('post', $this);
-$f->initialize_csrf ();
+$f->initialize_csrf (false, '/filemanager');
 
 $page->add_style ('/apps/filemanager/css/filebrowser.css?v=4');
 $page->add_script (

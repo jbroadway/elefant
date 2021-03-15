@@ -13,7 +13,7 @@ $root = getcwd () . '/' . conf('Paths','filemanager_path') .'/';
 $o = new StdClass;
 
 $f = new Form ('post', $this);
-$f->initialize_csrf ();
+$f->initialize_csrf (false, '/filemanager');
 $o->csrf_token = $f->csrf_token;
 
 if (isset ($_GET['path'])) {

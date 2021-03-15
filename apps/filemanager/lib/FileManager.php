@@ -455,7 +455,7 @@ class FileManager {
 	 * extension.
 	 */
 	public static function verify_file_name ($name) {
-		if (! preg_match ('/^([a-zA-Z0-9 _-]+\.)+[a-zA-Z0-9_-]+$/', $name)) {
+		if (! preg_match ('/^([a-zA-Z0-9 @_-]+\.)+[a-zA-Z0-9_-]+$/', $name)) {
 			return false;
 		}
 		if (preg_match ('/\.(php|phtml|pht|php3|php4|php5|phar|js|rb|py|pl|sh|bash|exe|htaccess|htpasswd)$/i', $name)) {
