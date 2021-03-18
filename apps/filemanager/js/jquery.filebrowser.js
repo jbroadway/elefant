@@ -260,7 +260,7 @@
 
 		var form =
 			'<div id="filebrowser-dropzone">' +
-				'<form method="post" enctype="multipart/form-data">' +
+				'<form method="post" id="filebrowser-upload-form" enctype="multipart/form-data">' +
 					'<div id="filebrowser-upload">' +
 						'<div id="filebrowser-upload-form">' +
 							self.opts.new_file + ': ' +
