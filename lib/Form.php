@@ -420,14 +420,17 @@ class Form {
 			? $_SERVER['HTTP_X_FORWARDED_FOR']
 			: $_SERVER['REMOTE_ADDR'];
 		$client .= $_SERVER['HTTP_USER_AGENT'];
-
-		return hash_hmac ('sha256', ($uri !== '') ? $uri : $_SERVER['REQUEST_URI'], '' . $timeshift . $client);
+		
+		$data = ($uri !== '') ? $uri : $_SERVER['REQUEST_URI'];
+		$key = '' . $timeshift . $client;
+		
+		return hash_hmac ('sha256', $data, $key);
 	}
 
 	/**
 	 * Generate and initialize the CSRF token.
 	 */
-	public function initialize_csrf ($timeshift = false, $uri = '') {
+	public function initialize_csrf ($timeshift = false, $uri = '', $form_id = '') {
 		if ($this->verify_csrf) {
 			$this->csrf_token = $this->generate_csrf_token ($timeshift, $uri);
 		
@@ -435,7 +438,7 @@ class Form {
 			if (isset ($GLOBALS['page'])) {
 				$GLOBALS['page']->cache_control = false;
 				$GLOBALS['page']->add_script (
-					$this->generate_csrf_script (),
+					$this->generate_csrf_script ($form_id),
 					'tail'
 				);
 			}
@@ -448,9 +451,14 @@ class Form {
 	 * in your layout template, since `initialize_csrf()` will automatically
 	 * add this to the tail if it can.
 	 */
-	function generate_csrf_script () {
+	function generate_csrf_script ($form_id = '') {
+		$selector = ($form_id !== '')
+			? 'form#' . $form_id
+			: 'form[method=\'post\']';
+
 		return sprintf (
-			'<script>$(function(){$("form[method=\'post\']").append("<input type=\'hidden\' name=\'%s\' value=\'%s\'/>");});</script>',
+			'<script>$(function(){$("%s").append("<input type=\'hidden\' name=\'%s\' value=\'%s\'/>");});</script>',
+			$selector,
 			$this->csrf_field_name,
 			$this->csrf_token
 		);
