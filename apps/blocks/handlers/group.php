@@ -339,7 +339,7 @@ if ($rows) {
 		
 		$this->run ('admin/util/modal');
 		
-		$v = 3;
+		$v = 4;
 		$page->add_style ('/apps/blocks/css/grouporder.css?v=' . $v);
 		$page->add_script ('<script>window._i18n_ = ' . json_encode ($labels) . ';</script>', 'tail');
 		$page->add_script ('/apps/blocks/js/grouporder.js?v=' . $v, 'tail');

@@ -90,7 +90,7 @@
 		save_updated_order (order_id, ids);
 	});
 	
-	$('.editable-add').on ('click', function (e) {
+	$('.block-group-wrapper .editable-add').on ('click', function (e) {
 		e.preventDefault ();
 		
 		var $a = (e.target.nodeName == 'A') ? $(e.target) : $(e.target.parentNode),
