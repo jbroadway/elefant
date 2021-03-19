@@ -139,10 +139,7 @@ $blocks = [];
 $order_id = '';
 
 if (! $wildcard) {
-	$qs = array ();
-	foreach ($ids as $id) {
-		$qs[] = '?';
-	}
+	$qs = array_fill (0, count ($ids), '?');
 	
 	$order_id = join (',', $ids);
 
@@ -252,59 +249,71 @@ foreach ($ids as $k => $id) {
 		
 		printf ('<div class="e-row">%s', PHP_EOL);
 		printf ('<div class="e-col-%d block" id="block-%s">%s', $cols[0], $b->id, PHP_EOL);
+
+		$col_count = count ($cols);
+		for ($i = 1; $i <= $col_count; $i++) {
+			// show edit buttons
+			if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
+				$b->locked = is_array ($locks) ? in_array ($id, $locks) : false;
+				$b->column = $i;
+				$b->rows = $rows;
+
+				$b->sorting = true;
+				echo $tpl->render ('blocks/editable', $b) . PHP_EOL;
+			}
+		
+			// only show title in first column so it doesn't repeat
+			if ($i == 1 && $b->show_title == 'yes') {
+				printf ('<' . $level . '>%s</' . $level . '>' . PHP_EOL, $b->title);
+			}
+
+			// determine which field to render for this column and render it		
+			$field = 'body';
+			switch ($i) {
+				case 1: $field = 'body'; break;
+				case 2: $field = 'col2'; break;
+				case 3: $field = 'col3'; break;
+				case 4: $field = 'col4'; break;
+				case 5: $field = 'col5'; break;
+			}
+
+			echo $tpl->run_includes ($b->{$field}) . PHP_EOL;
+		
+			// there will be another column, close this one and start the next
+			if ($i < $col_count) {
+				echo '</div>' . PHP_EOL;
+				printf ('<div class="e-col-%d block" id="block-%s">%s', $cols[$i], $b->id, PHP_EOL);
+			}
+		}
+
+		echo '</div>' . PHP_EOL;
+		echo '</div>' . PHP_EOL;
+		echo '</div>' . PHP_EOL;
+
 	} elseif ($divs) {
+	
 		if ($b->background != '') {
 			printf ('<div class="e-col-%d block" id="block-%s" style="background-image: url(\'%s\'); background-size: cover; background-position: 50%% 50%%">%s', $units[$k], $b->id, $b->background, PHP_EOL);
 		} else {
 			printf ('<div class="e-col-%d block" id="block-%s">%s', $units[$k], $b->id, PHP_EOL);
 		}
-	}
 
-	$col_count = count ($cols);
-	for ($i = 1; $i <= $col_count; $i++) {
 		// show edit buttons
 		if (User::require_acl ('admin', 'admin/edit', 'blocks')) {
-			$b->locked = is_array ($locks) ? in_array ($id, $locks) : false;
-			$b->column = $i;
+			$b->locked = is_array ($locks) ? in_array ($b->id, $locks) : false;
+			$b->column = 0;
 			$b->rows = $rows;
 
-			if ($rows) {
-				$b->sorting = true;
-				echo $tpl->render ('blocks/editable', $b) . PHP_EOL;
-			} else {
-				echo $tpl->render ('blocks/editable', $b) . PHP_EOL;
-			}
+			echo $tpl->render ('blocks/editable', $b) . PHP_EOL;
 		}
-		
+	
 		// only show title in first column so it doesn't repeat
 		if ($i == 1 && $b->show_title == 'yes') {
 			printf ('<' . $level . '>%s</' . $level . '>' . PHP_EOL, $b->title);
 		}
 
-		// determine which field to render for this column and render it		
-		$field = 'body';
-		switch ($i) {
-			case 1: $field = 'body'; break;
-			case 2: $field = 'col2'; break;
-			case 3: $field = 'col3'; break;
-			case 4: $field = 'col4'; break;
-			case 5: $field = 'col5'; break;
-		}
+		echo $tpl->run_includes ($b->body) . PHP_EOL;
 
-		echo $tpl->run_includes ($b->{$field}) . PHP_EOL;
-		
-		// there will be another column, close this one and start the next
-		if ($i < $col_count) {
-			echo '</div>' . PHP_EOL;
-			printf ('<div class="e-col-%d block" id="block-%s">%s', $cols[$i], $b->id, PHP_EOL);
-		}
-	}
-	
-	if ($rows) {
-		echo '</div>' . PHP_EOL;
-		echo '</div>' . PHP_EOL;
-		echo '</div>' . PHP_EOL;
-	} elseif ($divs) {
 		echo '</div>' . PHP_EOL;
 	}
 	
