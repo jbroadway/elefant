@@ -29,28 +29,15 @@ if (file_exists ('../conf/installed') || file_exists ('installed')) {
 }
 
 function encrypt_pass ($plain) {
-	$base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	$salt = '$2a$07$';
-	for ($i = 0; $i < 22; $i++) {
-		$salt .= $base[rand (0, 61)];
+	if (defined ('PASSWORD_DEFAULT')) {
+		return password_hash ($plain, PASSWORD_BCRYPT);
 	}
-	return crypt ($plain, $salt . '$');
+	return crypt ($plain, '$2a$10$' . substr (sha1 (mt_rand ()), 0, 22) . '$');
 }
 
 // check the error log for errors
 error_reporting (E_ALL & ~E_NOTICE);
 ini_set ('display_errors', 'Off');
-
-// apparently we still have to deal with this... *sigh*
-if (get_magic_quotes_gpc ()) {
-	function stripslashes_gpc (&$value) {
-		$value = stripslashes ($value);
-	}
-	array_walk_recursive ($_GET, 'stripslashes_gpc');
-	array_walk_recursive ($_POST, 'stripslashes_gpc');
-	array_walk_recursive ($_COOKIE, 'stripslashes_gpc');
-	array_walk_recursive ($_REQUEST, 'stripslashes_gpc');
-}
 
 // get the global configuration
 date_default_timezone_set('GMT');
