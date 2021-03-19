@@ -87,7 +87,7 @@ switch ($_GET['step']) {
 
 	case 'requirements':
 		// check permissions
-		$apache = ($_SERVER['SERVER_SOFTWARE'] == 'Apache') ? true : (strpos (php_sapi_name (), 'apache') === 0) ? true : false;
+		$apache = ($_SERVER['SERVER_SOFTWARE'] == 'Apache' || strpos (php_sapi_name (), 'apache') === 0) ? true : false;
 		$data = array (
 			'req' => array (
 				__ ('PHP version must be 5.3+') => PHP_VERSION > '5.3',
