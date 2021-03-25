@@ -138,6 +138,8 @@ class User extends ExtendedModel {
 	public static $versions_display_fields = [
 		'name' => 'Name'
 	];
+	
+	private static $_error = false;
 
 	/**
 	 * Get all social links for the current user.
@@ -153,6 +155,13 @@ class User extends ExtendedModel {
 	 */
 	public function notes () {
 		return user\Note::for_user ($this->id);
+	}
+	
+	/**
+	 * Fetch reason for login failure, or false if none.
+	 */
+	public static function error () {
+		return self::$_error;
 	}
 
 	/**
@@ -259,6 +268,7 @@ class User extends ExtendedModel {
 			$attempts = 0;
 		}
 		if ($attempts > Appconf::user ('User', 'login_attempt_limit')) {
+			self::$_error = 'Too many login attempts, please wait before trying again.';
 			$called[$user] = FALSE;
 			$controller->redirect ('/user/too-many-attempts');
 		}
@@ -269,6 +279,7 @@ class User extends ExtendedModel {
 			if (Appconf::user ('User', 'multi_login')) {
 				self::$session = user\Session::create ($u->id);
 				if (self::$session === false) {
+					self::$_error = 'Unable to create login session, please try again later.';
 					$called[$user] = FALSE;
 					return false;
 				}
@@ -283,6 +294,7 @@ class User extends ExtendedModel {
 					self::$user->session_id = md5 (uniqid (mt_rand (), 1));
 					$try++;
 					if ($try == 5) {
+						self::$_error = 'Unable to create login session, please try again later.';
 						$called[$user] = FALSE;
 						return FALSE;
 					}
@@ -305,6 +317,7 @@ class User extends ExtendedModel {
 			$cache->replace ('_user_login_attempts_' . session_id (), $attempts, 0, Appconf::user ('User', 'block_attempts_for'));
 		}
 
+		self::$_error = 'Username or password did not match, please try again.';
 		$called[$user] = FALSE;
 		return FALSE;
 	}
@@ -343,6 +356,7 @@ class User extends ExtendedModel {
 					global $cache;
 					$ua = $cache->get ('_user_session_agent_' . $_SESSION['session_id']);
 					if ($ua && $ua !== $_SERVER['HTTP_USER_AGENT']) {
+						self::$_error = __ ('Security check failed: Your browser\'s user agent has changed.');
 						return FALSE;
 					}
 
@@ -352,6 +366,8 @@ class User extends ExtendedModel {
 				}
 			}
 		}
+		
+		self::$_error = __ ('No login session found, please log in to continue.');
 		return FALSE;
 	}
 
