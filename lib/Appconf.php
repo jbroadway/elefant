@@ -145,10 +145,10 @@ class Appconf {
 	public static function get ($app, $section = null, $setting = null) {
 		$conf = self::_conf ($app);
 		if ($setting && $section) {
-			return $conf[$section][$setting];
+			return (isset ($conf[$section]) && isset ($conf[$section][$setting])) ? $conf[$section][$setting] : null;
 		}
 		if ($section) {
-			return $conf[$section];
+			return isset ($conf[$section]) ? $conf[$section] : null;
 		}
 		return $conf;
 	}
