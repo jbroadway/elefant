@@ -46,7 +46,7 @@ curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
 curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
 
 if ($hmac_token !== false) {
-	$hashdata = 'get' . preg_replace ('|^[a-z]+:\/\/|', '', $url);
+	$hashdata = strtolower ('get' . preg_replace ('|^[a-z]+:\/\/|', '', $url));
 	$hash = hash_hmac ('sha256', $hashdata, $hmac_secret);
 	curl_setopt ($ch, CURLOPT_USERPWD, $hmac_token . ':' . $hash);
 }

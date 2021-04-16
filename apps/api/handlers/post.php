@@ -50,7 +50,7 @@ curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
 curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
 
 if ($hmac_token !== false) {
-	$hashdata = 'post' . preg_replace ('|^[a-z]+:\/\/|', '', $url) . $params;
+	$hashdata = strtolower ('post' . preg_replace ('|^[a-z]+:\/\/|', '', $url) . $params);
 	$hash = hash_hmac ('sha256', $hashdata, $hmac_secret);
 	curl_setopt ($ch, CURLOPT_USERPWD, $hmac_token . ':' . $hash);
 	echo "Sending with token:hash " . $hmac_token . ':' . $hash . PHP_EOL;
