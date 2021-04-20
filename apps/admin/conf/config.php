@@ -26,6 +26,10 @@ default_thumbnail = Off
 
 vendor_autoload = Off
 
+; Should Elefant opt users in or out of FLoC tracking?
+
+disable_floc = On
+
 [General]
 
 ; Set this to the location you want to redirect admins to after

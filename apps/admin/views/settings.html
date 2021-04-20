@@ -40,6 +40,14 @@
 </p>
 
 <p>
+	{"Disable FLoC cohort tracking"} <a href="https://www.eff.org/deeplinks/2021/03/googles-floc-terrible-idea" target="_blank">{"More info"}</a><br />
+	<select name="disable_floc">
+		<option value="enabled"{% if disable_floc == 'enabled' %} selected{% end %}>{"Yes"}</option>
+		<option value="disabled"{% if disable_floc == 'disabled' %} selected{% end %}>{"No"}</option>
+	</select>
+</p>
+
+<p>
 	<input type="submit" value="{"Save Settings"}" />
 	&nbsp;
 	<a href="/" onclick="return confirm ('{"Are you sure you want to cancel and lose any changes?"}')">{"Cancel"}</a>

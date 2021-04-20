@@ -287,6 +287,10 @@ class Controller {
 			conf ('General', 'compress_output', false);
 			
 			set_exception_handler('Cli::exception_handler');
+		} else {
+			if (conf ('General', 'disable_floc')) {
+				$this->header ('Permissions-Policy: interest-cohort=()');
+			}
 		}
 		self::$hooks = $hooks;
 	}

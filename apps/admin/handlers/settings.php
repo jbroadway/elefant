@@ -22,7 +22,8 @@ $form->data = array (
     'email_from' => conf ('General', 'email_from'),
     'timezone' => conf ('General', 'timezone'),
     'google_analytics_id' => conf ('General', 'google_analytics_id'),
-    'vendor_autoload' => conf ('General', 'vendor_autoload') ? 'enabled' : 'disabled'
+    'vendor_autoload' => conf ('General', 'vendor_autoload') ? 'enabled' : 'disabled',
+    'disable_floc' => conf ('General', 'disable_floc') ? 'enabled' : 'disabled'
 );
 
 echo $form->handle (function ($form) {
@@ -35,7 +36,8 @@ echo $form->handle (function ($form) {
             'email_from' => $_POST['email_from'],
             'timezone' => $_POST['timezone'],
             'google_analytics_id' => $_POST['google_analytics_id'],
-            'vendor_autoload' => ($_POST['vendor_autoload'] == 'enabled') ? true : false
+            'vendor_autoload' => ($_POST['vendor_autoload'] == 'enabled') ? true : false,
+            'disable_floc' => ($_POST['disable_floc'] == 'enabled') ? true : false
         )
     ));
 
