@@ -63,5 +63,22 @@ if ($res === false) {
 	die;
 }
 
+$header_size = curl_getinfo ($ch, CURLINFO_HEADER_SIZE);
+$headers = substr ($res, 0, $header_size);
+$body = substr ($res, $header_size);
+
 curl_close ($ch);
-Cli::block ($res . PHP_EOL);
+Cli::block ($headers);
+
+$first = substr ($body, 0, 1);
+if ($first == '{' || $first == '[') {
+	$res = json_decode ($body);
+	
+	if (json_last_error () === JSON_ERROR_NONE) {
+		Cli::block (json_encode ($res, JSON_PRETTY_PRINT) . PHP_EOL);
+	} else {
+		Cli::block ($body . PHP_EOL);
+	}
+} else {
+	Cli::block ($body . PHP_EOL);
+}
