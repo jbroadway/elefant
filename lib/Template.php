@@ -190,6 +190,7 @@
  * - `sanitize` - Sanitize output against XSS. See `Template::sanitize()`.
  * - `autolink` - Replace links in text with HTML links. See `Template::autolink()`.
  * - `absolutize` - Ensure a URL value is absolute. See `Template::absolutize()`.
+ * - `comma` - Outputs the value followed by a comma only if the value is not empty.
  *
  * ## String translations
  *
@@ -457,6 +458,8 @@ class Template {
 			} elseif (trim ($filter) === 'absolutize') {
 				$out .= '$this->absolutize (';
 				$end = ')' . $end;
+			} elseif (trim ($filter) === 'comma') {
+				$end = '.(' . $val . '!=\'\'?\', \':\'\')' . $end;
 			} else {
 				$out .= $filter . ' (';
 				$end = ')' . $end;
