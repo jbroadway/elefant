@@ -459,7 +459,8 @@ class Template {
 				$out .= '$this->absolutize (';
 				$end = ')' . $end;
 			} elseif (trim ($filter) === 'comma') {
-				$end = '.(' . $val . '!=\'\'?\', \':\'\')' . $end;
+				$out .= 'Template::sanitize (';
+				$end = ') . ((' . $val . ' != \'\') ? \', \' : \'\')' . $end;
 			} else {
 				$out .= $filter . ' (';
 				$end = ')' . $end;
