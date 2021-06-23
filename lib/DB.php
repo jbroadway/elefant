@@ -199,6 +199,14 @@ class DB {
 		self::$last_conn = $keys[array_rand ($keys)];
 		return self::$connections[self::$last_conn];
 	}
+	
+	/**
+	 * Discard existing connections. Note: Will auto-reconnect on the next
+	 * request, so no need for an equivalent `connect()` method.
+	 */
+	public static function disconnect () {
+		self::$connections = [];
+	}
 
 	/**
 	 * Returns a count of active database connections.
