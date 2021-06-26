@@ -264,7 +264,7 @@ class Model {
 		} elseif ($vals !== false) {
 			$res = DB::single ('select * from `' . $this->table . '` where `' . $this->key . '` = ?' . $lock, $vals);
 			if (! $res) {
-				$this->error = 'No object by that ID.';
+				$this->error = (DB::error () != false) ? DB::error () : 'No object by that ID.';
 			} else {
 				$this->data = (array) $res;
 				$this->keyval = $this->data[$this->key];
@@ -513,7 +513,7 @@ class Model {
 		$q = new $class;
 		$res = (array) DB::single ('select * from `' . $q->table . '` where `' . $q->key . '` = ?', $id);
 		if (! $res) {
-			$q->error = 'No object by that ID.';
+			$q->error = (DB::error != false) ? DB::error () : 'No object by that ID.';
 			$q->data = array ();
 		} else {
 			$q->data = (array) $res;

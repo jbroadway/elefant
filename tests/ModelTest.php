@@ -444,7 +444,7 @@ class ModelTest extends TestCase {
 		try {
 			$this->assertTrue ($b->fake ());
 		} catch (Exception $e) {
-			$this->assertRegExp (
+			$this->assertMatchesRegularExpression (
 				'/Call to undefined method Bar::fake in .+tests\/ModelTest\.php on line [0-9]+/',
 				$e->getMessage ()
 			);
