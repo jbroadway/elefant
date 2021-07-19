@@ -42,9 +42,14 @@ if ($f->submit ()) {
 				'headers' => $headers,
 				'samples' => $samples
 			));
+
 			return;
 		} else {
 			echo '<p><strong>' . __ ('Unable to parse the uploaded file.') . '</strong></p>';
+	
+			if (file_exists ($file)) {
+				unlink ($file);
+			}
 		}
 	} else {
 		echo '<p><strong>' . __ ('Error uploading file.') . '</strong></p>';

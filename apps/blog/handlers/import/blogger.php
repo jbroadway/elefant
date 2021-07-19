@@ -91,6 +91,11 @@ if ($f->submit ()) {
 			echo '<p><strong>' . __ ('Error importing file') . ': ' . $e->getMessage () . '</strong></p>';
 			echo '<p><a href="/blog/admin">' . __ ('Back') . '</a></p>';
 		}
+	
+		if (file_exists ($file)) {
+			unlink ($file);
+		}
+		
 		return;
 	} else {
 		echo '<p><strong>' . __ ('Error uploading file.') . '</strong></p>';

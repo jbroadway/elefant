@@ -80,3 +80,5 @@ foreach ($res as $row) {
 
 echo '<p>' . __ ('Imported %d posts.', $imported) . '</p>';
 echo '<p><a href="/blog/admin">' . __ ('Continue') . '</a></p>';
+
+unlink ($file);
