@@ -3,6 +3,7 @@
 namespace filemanager;
 
 use DB, FileManager, I18n, Restful, Zipper;
+use RecursiveDirectoryIterator, RecursiveIteratorIterator;
 
 /**
  * Provides the JSON API for the admin file manager/browser, as well as functions
@@ -257,14 +258,29 @@ class API extends Restful {
 			return $this->error ($e->getMessage ());
 		}
 
-		// move the unzipped folder
 		$created = Zipper::find_folder (FileManager::root () . $file);
-		error_log ($created);
+		
 		if (! $created) {
-			if (! rename (Zipper::$folder, FileManager::root () . $folder)) {
-				return $this->error (__ ('Unable to save unzipped folder.'));
+			$created = Zipper::$folder;
+		}
+		
+		// clean the unzipped folder of any .php or .ht* files
+		$strip_files = [];
+		$dir_iterator = new RecursiveDirectoryIterator ($created);
+		$iterator = new RecursiveIteratorIterator ($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
+		
+		foreach ($iterator as $eval_file) {
+			$fname = $eval_file->getFilename ();
+
+			if (preg_match ('/\.(php|phtml)$/', $fname)) {
+				unlink ($eval_file->getPathname ());
+			} elseif (preg_match ('/^\.ht/', $fname)) {
+				unlink ($eval_file->getPathname ());
 			}
-		} elseif (! rename ($created, FileManager::root () . $folder)) {
+		}
+
+		// move the unzipped folder
+		if (! rename ($created, FileManager::root () . $folder)) {
 			return $this->error (__ ('Unable to save unzipped folder.'));
 		}
 
