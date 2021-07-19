@@ -9,6 +9,12 @@ $this->require_admin ();
 $page->layout = 'admin';
 $page->title = __ ('Wordpress importer');
 
+if (! class_exists ('SimpleXMLElement')) {
+	echo '<p>' . __ ('Please install the php-xml extension to use the Wordpress importer.') . '</p>';
+	echo '<p><a href="/blog/admin">' . __ ('Back') . '</a></p>';
+	return;
+}
+
 $f = new Form ('post');
 
 if ($f->submit ()) {
