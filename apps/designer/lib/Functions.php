@@ -264,6 +264,11 @@ function invalid_php_functions ($text) {
 			return true;
 		}
 	}
+	
+	// Block other forms of calling functions from strings
+	if (preg_match ('/[\]\)\'\"]\s?\(\s?\)/', $text)) {
+		return true;
+	}
 
 	return false;
 }
