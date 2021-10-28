@@ -122,8 +122,12 @@ class MemcacheRedis {
 	/**
 	 * Emulates `Memcache::get`.
 	 */
-	public function get ($key) {
-		return self::$redis->get ($key);
+	public function get ($key, $default_value = false) {
+		$res = self::$redis->get ($key);
+		if ($res !== false) {
+			return $res;
+		}
+		return $default_value;
 	}
 
 	/**

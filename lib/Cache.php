@@ -151,10 +151,10 @@ class Cache {
 	/**
 	 * Emulates `Memcache::get`.
 	 */
-	public function get ($key) {
+	public function get ($key, $default_value = false) {
 		if (file_exists ($this->dir . '/' . md5 ($key))) {
 			if ($this->_has_timed_out ($key)) {
-				return false;
+				return $default_value;
 			}
 			$val = file_get_contents ($this->dir . '/' . md5 ($key));
 			if (preg_match ('/^(a|O):[0-9]+:/', $val)) {
@@ -162,7 +162,7 @@ class Cache {
 			}
 			return $val;
 		}
-		return false;
+		return $default_value;
 	}
 
 	/**
