@@ -6,7 +6,7 @@ class TemplateTest extends TestCase {
 	function test_replace_vars () {
 		$t = new Template ('UTF-8');
 
-		$this->assertEquals ($t->replace_vars ('foo'), '<?php echo Template::sanitize ($data->foo, \'UTF-8\'); ?>');
+		$this->assertEquals ($t->replace_vars ('foo'), '<?php echo Template::sanitize ($data->foo, \'UTF-8\', \'foo\'); ?>');
 		$this->assertEquals ($t->replace_vars ('foo|none'), '<?php echo $data->foo; ?>');
 		$this->assertEquals ($t->replace_vars ('foo|strtoupper|strtolower'), '<?php echo strtolower (strtoupper ($data->foo)); ?>');
 		$this->assertEquals ($t->replace_vars ('foo|date (\'F j\', %s)'), '<?php echo date (\'F j\', $data->foo); ?>');
@@ -63,8 +63,8 @@ class TemplateTest extends TestCase {
 		$this->assertEquals ($t->replace_includes ('app/handler?foo=bar&asdf=qwerty'), '<?php echo $this->controller->run (\'app/handler\', array (\'foo\' => \'bar\', \'asdf\' => \'qwerty\')); ?>');
 
 		// Test sub-expressions
-		$this->assertEquals ($t->replace_includes ('app/handler?foo=[bar]'), '<?php echo $this->controller->run (\'app/handler\', array (\'foo\' => Template::sanitize ($data->bar, \'UTF-8\'))); ?>');
-		$this->assertEquals ($t->replace_includes ('app/handler?foo=[bar]&bar=a[sd]f'), '<?php echo $this->controller->run (\'app/handler\', array (\'foo\' => Template::sanitize ($data->bar, \'UTF-8\'), \'bar\' => \'a\' . Template::sanitize ($data->sd, \'UTF-8\') . \'f\')); ?>');
+		$this->assertEquals ($t->replace_includes ('app/handler?foo=[bar]'), '<?php echo $this->controller->run (\'app/handler\', array (\'foo\' => Template::sanitize ($data->bar, \'UTF-8\', \'bar\'))); ?>');
+		$this->assertEquals ($t->replace_includes ('app/handler?foo=[bar]&bar=a[sd]f'), '<?php echo $this->controller->run (\'app/handler\', array (\'foo\' => Template::sanitize ($data->bar, \'UTF-8\', \'bar\'), \'bar\' => \'a\' . Template::sanitize ($data->sd, \'UTF-8\', \'sd\') . \'f\')); ?>');
 	}
 
 	function test_parse_template () {
