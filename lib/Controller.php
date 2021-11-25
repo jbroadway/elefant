@@ -727,12 +727,16 @@ class Controller {
 
 	/**
 	 * Wrapper around exit to work with subfolder installations.
+	 * For more info: https://gist.github.com/jbroadway/1558300
 	 */
 	public function quit () {
 		if (! defined ('SUB_FOLDER')) {
 			exit;
 		}
-		throw new SubfolderException ();
+		if (class_exists ('SubfolderException')) {
+			throw new SubfolderException ();
+		}
+		exit;
 	}
 
 	/**
@@ -774,7 +778,7 @@ class Controller {
 			if (function_exists ('http_response_code')) {
 				http_response_code ($code);
 			} else {
-				$proto = isset ($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0';
+				$protocol = isset ($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0';
 
 				switch ($code) {
 					case 100: $text = 'Continue'; break;
