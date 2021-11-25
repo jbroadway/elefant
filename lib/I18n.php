@@ -71,6 +71,11 @@ class I18n {
 	 * The full name of language in use (ie. 'English' for 'en').
 	 */
 	public $fullname = '';
+	
+	/**
+	 * Default language, as read from the configuration in `__construct()`.
+	 */
+	public $default = '';
 
 	/**
 	 * The full date format to send to jQuery.localize.
