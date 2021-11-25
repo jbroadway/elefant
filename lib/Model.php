@@ -513,7 +513,7 @@ class Model {
 		$q = new $class;
 		$res = (array) DB::single ('select * from `' . $q->table . '` where `' . $q->key . '` = ?', $id);
 		if (! $res) {
-			$q->error = (DB::error != false) ? DB::error () : 'No object by that ID.';
+			$q->error = (DB::$error != false) ? DB::error () : 'No object by that ID.';
 			$q->data = array ();
 		} else {
 			$q->data = (array) $res;
