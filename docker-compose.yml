@@ -1,9 +1,9 @@
-# Create a development server via `docker-compose up -d`
+# Create a development server via `docker compose up -d`
 version: '3'
 
 services:
   mysql:
-    image: mysql:5.7
+    image: mariadb:10.5.8
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: super_secret_shh
