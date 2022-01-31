@@ -1,5 +1,9 @@
 # Elefant CMS
 
+<!-- ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/jbroadway/elefant/Continuous%20Integration/master) -->
+![GitHub](https://img.shields.io/github/license/jbroadway/elefant)
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/elefant/cms)
+
 [Elefant](https://www.elefantcms.com/) is a refreshingly simple PHP content management
 system and web framework. Elefant is a fast, lean tool for building everything from
 simple websites to complete web applications.
