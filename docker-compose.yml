@@ -1,5 +1,12 @@
-# Create a development server via `docker compose up -d`
+# Create a development server via `docker compose -p elefant up -d`
 version: '3'
+
+networks:
+  app-network:
+    driver: "bridge"
+
+volumes:
+  mysql-db:
 
 services:
   mysql:
@@ -47,10 +54,3 @@ services:
       - app-network
     stdin_open: true # docker run -i
     tty: true        # docker run -t
-
-networks:
-  app-network:
-    driver: "bridge"
-
-volumes:
-  mysql-db:
