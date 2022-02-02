@@ -24,6 +24,7 @@ WORKDIR /www
 
 RUN chown -R www-data:www-data /www \
 	&& a2enmod rewrite \
+	&& a2enmod headers \
 	&& chmod -R 777 /www/cache /www/conf /www/files /www/lang /www/layouts \
 	&& chmod 777 /www/apps \
 	&& composer install
