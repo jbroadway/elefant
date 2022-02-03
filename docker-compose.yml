@@ -11,7 +11,6 @@ volumes:
 services:
   mysql:
     image: mariadb:10.5.8
-    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: super_secret_shh
       MYSQL_DATABASE: www_db
@@ -26,14 +25,12 @@ services:
     restart: always
   redis:
     image: "redis:alpine"
-    container_name: redis
     ports:
       - "6379:6379"
     networks:
       - app-network
   www:
     image: elefant-dev
-    container_name: www
     environment:
       ELEFANT_DB_DRIVER: mysql
       ELEFANT_DB_HOST: "mysql:3306"
