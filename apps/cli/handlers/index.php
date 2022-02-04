@@ -49,6 +49,7 @@ Commands:
   <info>generate-password <length(8)> [--no-symbols]</info> Generate a random password
   <info>encrypt-password <password></info>                  Encrypt a password for the db
   <info>bundle-translations <appname></info>                Bundle translations into an app
+  <info>start-workers</info>                                Start background workers
   <info>version</info>                                      Output the Elefant version number
   <info>help</info>                                         Print this help output
 
