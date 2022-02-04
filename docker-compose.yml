@@ -35,6 +35,18 @@ services:
       - "11300:11300"
     networks:
       - app-network
+  beanstalk-console:
+    image: schickling/beanstalkd-console
+    environment:
+      AUTH: enable
+      AUTH_USERNAME: bean_admin
+      AUTH_PASSWORD: bean_pass
+    depends_on:
+      - beanstalkd
+    ports:
+      - "2080:2080"
+    networks:
+      - app-network
   www:
     image: elefant-dev
     environment:
