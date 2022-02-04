@@ -96,7 +96,7 @@ class CsvParser {
 				// end of quoted field, but split by comma
 				$tmp[$i] = str_replace ('""', '"', $tmp[$i]);
 				$fields[$field] .= self::$delimiter . substr ($tmp[$i], 0, -1);
-				$fields++;
+				$field++;
 				$is_split = false;
 
 			} else {
