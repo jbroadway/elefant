@@ -12,6 +12,12 @@ dev:
 	docker build -t elefant-dev .
 	rm Dockerfile
 
+# Run `make worker` to build a worker container
+worker:
+	cp .docker/Dockerfile-WORKER Dockerfile
+	docker build -t elefant-worker .
+	rm Dockerfile
+
 # Run `make run` to spin up a development environment
 run:
 	docker-compose up -d
