@@ -6,6 +6,7 @@ use \Appconf;
 use \DB;
 use \User;
 use \Ini;
+use \Exception;
 
 /**
  * Fetches apps for the Elefant toolbar.
@@ -321,5 +322,40 @@ class Toolbar {
 	public static function save ($data){
 		$path = (conf('Paths','toolbar'))?conf('Paths','toolbar'):'conf/tools.php';
 		return (bool) Ini::write($data, $path);
+	}
+	
+	/**
+	 * Override names of any tools that have name_override set for the app.
+	 */
+	public static function override_names (&$tools) {
+		// override name with a callback method, if provided
+		foreach ($tools as $column => $links) {
+			foreach ($links as $handler => $details) {
+				$app = substr ($handler, 0, strpos ($handler, '/'));
+				$appconf = Appconf::get ($app);
+				
+				// Make sure app has a handler set
+				if (! isset ($appconf['Admin']['handler'])) {
+					continue;
+				}
+				
+				// Make sure we're dealing with an app handler and not another tool
+				if ($appconf['Admin']['handler'] != $handler) {
+					continue;
+				}
+				
+				// No override defined for this app
+				if (! isset ($appconf['Admin']['name_override'])) {
+					continue;
+				}
+
+				try {
+					$tools[$column][$handler]['name'] = call_user_func ($appconf['Admin']['name_override'], $details['name']);
+				} catch (Exception $e) {
+					error_log ($e->getMessage ());
+				}
+			}
+		}
+
 	}
 }

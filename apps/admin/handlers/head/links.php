@@ -12,6 +12,7 @@ header ('Content-Type: application/json');
 if (! User::require_admin ()) return;
 
 $tools = admin\Toolbar::tools ($this);
+
 if (count($tools) === 0 && admin\Toolbar::$autofill === false) {
 	$tools = admin\Toolbar::apps($this);
 	$is_apps = true;
@@ -40,6 +41,8 @@ if (count($tools) === 0 && admin\Toolbar::$autofill === false) {
 	}
 	$is_apps = false;
 }
+
+admin\Toolbar::override_names ($tools);
 
 $editable = User::require_acl('admin/toolbar');
 $out = array (
