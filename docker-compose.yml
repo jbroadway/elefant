@@ -29,6 +29,17 @@ services:
       - "6379:6379"
     networks:
       - app-network
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      REDIS_HOSTS: "local:redis:6379"
+      HTTP_USER: redis_admin
+      HTTP_PASSWORD: redis_pass
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
   beanstalkd:
     image: schickling/beanstalkd
     ports:
