@@ -9,8 +9,6 @@ if (! in_array ('google', $appconf['User']['login_methods'])) {
 	return;
 }
 
-require_once 'apps/user/lib/google-api-php-client/vendor/autoload.php';
-
 $session_key = 'google_id_token';
 $current_page = '/user/login/google';
 
@@ -20,7 +18,7 @@ if (isset ($_GET['redirect'])) {
 	$_SESSION['google_login_redirect'] = $_GET['redirect'];
 }
 
-$client = new Google_Client ();
+$client = new Google\Client ();
 $client->setClientId (Appconf::user ('Google', 'oauth_client_id'));
 $client->setClientSecret (Appconf::user ('Google', 'oauth_client_secret'));
 $client->setRedirectUri ($this->absolutize ($current_page));
