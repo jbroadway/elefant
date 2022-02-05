@@ -127,7 +127,7 @@ class DB {
 						$conf['host'] = str_replace (':', ';port=', $conf['host']);
 					}
 					if (! isset($conf['charset'])) {
-						$conf['charset']='utf8';
+						$conf['charset']='utf8mb4';
 					}
 					self::$connections[$id] = new PDO ($conf['driver'] . ':host=' . $conf['host'] . ';dbname=' . $conf['name'] . ';charset=' . $conf['charset'], $conf['user'], $conf['pass']);
 			}
