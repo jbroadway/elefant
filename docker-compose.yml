@@ -1,5 +1,5 @@
 # Create a development server via `docker compose -p elefant up -d`
-version: '3'
+version: '3.4'
 
 networks:
   app-network:
@@ -7,6 +7,16 @@ networks:
 
 volumes:
   mysql-db:
+
+x-common-variables: &common-variables
+  ELEFANT_DB_DRIVER: mysql
+  ELEFANT_DB_HOST: "mysql:3306"
+  ELEFANT_DB_NAME: www_db
+  ELEFANT_DB_USER: db_user
+  ELEFANT_DB_PASS: youll_never_guess
+  ELEFANT_DOMAIN: "www.elefant.lo"
+  ELEFANT_DEFAULT_PASS: log_me_in
+  ELEFANT_SESSION_HANDLER: "redis:tcp://redis:6379?timeout=0.5"
 
 services:
   mysql:
@@ -60,38 +70,20 @@ services:
       - app-network
   www:
     image: elefant-dev
-    environment:
-      ELEFANT_DB_DRIVER: mysql
-      ELEFANT_DB_HOST: "mysql:3306"
-      ELEFANT_DB_NAME: www_db
-      ELEFANT_DB_USER: db_user
-      ELEFANT_DB_PASS: youll_never_guess
-      ELEFANT_DOMAIN: "localhost:8080"
-      ELEFANT_DEFAULT_PASS: log_me_in
-      ELEFANT_SESSION_HANDLER: "redis:tcp://redis:6379?timeout=0.5"
+    environment: *common-variables
     depends_on:
       - mysql
       - redis
       - beanstalkd
     volumes:
       - .:/www
-    ports:
-      - "8080:80"
     networks:
       - app-network
     stdin_open: true # docker run -i
     tty: true        # docker run -t
   worker:
     image: elefant-worker
-    environment:
-      ELEFANT_DB_DRIVER: mysql
-      ELEFANT_DB_HOST: "mysql:3306"
-      ELEFANT_DB_NAME: www_db
-      ELEFANT_DB_USER: db_user
-      ELEFANT_DB_PASS: youll_never_guess
-      ELEFANT_DOMAIN: "localhost:8080"
-      ELEFANT_DEFAULT_PASS: log_me_in
-      ELEFANT_SESSION_HANDLER: "redis:tcp://redis:6379?timeout=0.5"
+    environment: *common-variables
     depends_on:
       - mysql
       - redis
@@ -102,3 +94,17 @@ services:
       - app-network
     stdin_open: true # docker run -i
     tty: true        # docker run -t
+  proxy:
+    image: nginx:1.19.10-alpine
+    environment: *common-variables
+    depends_on:
+      - www
+    volumes:
+      - ./.docker/nginx-proxy.conf:/etc/nginx/nginx.conf
+      - ./.docker/templates:/etc/nginx/templates
+      - ./.docker/certs:/etc/nginx/certs
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - app-network
