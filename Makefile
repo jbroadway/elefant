@@ -25,3 +25,11 @@ run:
 # Run `make down` to spin down a development environment
 down:
 	docker-compose down
+# Run `make local-cert DOMAIN=www.elefant.lo` to generate an SSL certificate
+# for your development environment. Note: Requires mkcert
+DOMAIN=www.elefant.lo
+export DOMAIN
+local-cert:
+	mkcert -cert-file .docker/certs/$(DOMAIN).crt \
+		-key-file .docker/certs/$(DOMAIN).key \
+		$(DOMAIN)
