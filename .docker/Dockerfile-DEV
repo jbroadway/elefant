@@ -3,6 +3,7 @@ FROM php:7.4-apache
 RUN apt-get update -y \
 	&& apt-get upgrade -y \
 	&& apt-get install -y git \
+	&& apt-get install -y zip \
 	&& apt-get install -y libicu-dev \
 	&& apt-get install -y libfreetype6-dev \
 	&& apt-get install -y libjpeg-dev \
