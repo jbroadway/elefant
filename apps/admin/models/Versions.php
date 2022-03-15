@@ -243,8 +243,7 @@ class Versions extends Model {
 			$name = substr ($name, strrpos ($name, '\\') + 1);
 		}
 		
-		$ar = new ActiveResource;
-		return $ar->pluralize ($name);
+		return Pluralizer::pluralize ($name);
 	}
 
 	/**

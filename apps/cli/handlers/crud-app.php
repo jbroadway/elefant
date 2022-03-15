@@ -64,8 +64,7 @@ if (! isset ($_SERVER['argv'][3])) {
 $name = strtolower ($_SERVER['argv'][2]);
 
 // get plural name
-$ar = new ActiveResource;
-$plural = $ar->pluralize ($name);
+$plural = Pluralizer::pluralize ($name);
 unset ($ar);
 
 if (file_exists ('apps/' . $plural)) {
