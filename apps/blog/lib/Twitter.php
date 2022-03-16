@@ -58,7 +58,7 @@ class twitter{
 	 */
 	 var $debug = false;
     
-	function twitter()
+	function __construct()
 	{
 		// Nothing
 	}

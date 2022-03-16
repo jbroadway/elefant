@@ -311,7 +311,7 @@ class LightOpenID
     protected function request($url, $method='GET', $params=array())
     {
         if (function_exists('curl_init')
-            && (!in_array('https', stream_get_wrappers()) || !ini_get('safe_mode') && !ini_get('open_basedir'))
+            && (!in_array('https', stream_get_wrappers()) && !ini_get('open_basedir'))
         ) {
             return $this->request_curl($url, $method, $params);
         }
@@ -682,7 +682,7 @@ class LightOpenID
             # wants to verify. stripslashes() should solve that problem, but we can't
             # use it when magic_quotes is off.
             $value = $this->data['openid_' . str_replace('.','_',$item)];
-            $params['openid.' . $item] = get_magic_quotes_gpc() ? stripslashes($value) : $value;
+            $params['openid.' . $item] = $value;
 
         }
 
