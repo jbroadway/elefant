@@ -65,10 +65,14 @@
 
 $page->add_script('/apps/admin/js/async/core.js','head');
 
-$helpers = ($data['helpers'])?$data['helpers']:($_GET['helpers'])?$_GET['helpers']:false;
+$helpers = ($data['helpers'])
+	? $data['helpers']
+	: (($_GET['helpers']) ? $_GET['helpers'] : false);
+
 if ($helpers) {
-	$helpers = array_map(trim,explode(',',$helpers));
+	$helpers = array_map ('trim', explode (',', $helpers));
+
 	foreach ($helpers as $helper) {
-		$page->add_script('/apps/admin/js/async/helper.'. $helper .'.js','head');
+		$page->add_script ('/apps/admin/js/async/helper.'. $helper .'.js', 'head');
 	}
 }
