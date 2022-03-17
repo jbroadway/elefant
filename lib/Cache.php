@@ -74,7 +74,7 @@ class Cache {
 				try {
 					$cache->setServers ($server);
 				} catch (Exception $e) {
-					@error_log ('Cache Exception: ' . $e->getMessage ());
+					error_log ('Cache Exception: ' . $e->getMessage ());
 					return new Cache ($dir);
 				}
 			} elseif (extension_loaded ('memcache')) {

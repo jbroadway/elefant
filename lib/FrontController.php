@@ -77,8 +77,8 @@ class FrontController {
 		 * and configure session settings.
 		 */
 		date_default_timezone_set (conf ('General', 'timezone'));
-		@ini_set ('session.cookie_httponly', 1);
-		@ini_set ('session.use_only_cookies', 1);
+		ini_set ('session.cookie_httponly', 1);
+		ini_set ('session.use_only_cookies', 1);
 
 		/**
 		 * Set the default error reporting level to All except Notices,
@@ -259,7 +259,7 @@ class FrontController {
 		if (extension_loaded ('zlib') && conf ('General', 'compress_output')) {
 			ini_set ('zlib.output_compression', 4096);
 		}
-		@session_write_close ();
+		session_write_close ();
 		echo $out;
 		return true;
 	}
