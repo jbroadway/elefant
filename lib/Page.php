@@ -196,6 +196,18 @@ class Page {
 		}
 		$out = $tpl->render ($this->layout, $this);
 		$res = $controller->hook ('page/render', array ('html' => $out));
+		
+		// If we've left debug on, provide query statistics
+		if (conf ('General', 'debug') && User::require_admin ()) {
+			$execution_time = (microtime (true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000;
+			$stats = '<div class="admin-page-stats">Execution Time: ' . $execution_time . 'ms, Database Queries: ' . DB::$query_count . ', Results: ' . DB::$result_count . '</div>';
+			if ($res) {
+				$res = str_replace ('</html>', $stats . "\n</html>", $res);
+			} else {
+				$out = str_replace ('</html>', $stats . "\n</html>", $out);
+			}
+		}
+		
 		return ($res) ? $res : $out;
 	}
 

@@ -436,10 +436,31 @@ div.admin-options a {
 	}
 }
 
+.admin-page-stats {
+	display: block;
+	position: fixed;
+	bottom: 0px;
+	left: 50%;
+	transform: translateX(-50%);
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	background-color: #f5f5f5;
+	border: 1px solid #ccc;
+	color: #222;
+	padding: 2px 7px;
+	font-size: 13px;
+	opacity: 0.5;
+}
+
+.admin-page-stats:hover {
+	opacity: 1;
+}
+
 #admin-links #admin-tools-website,
 #preview-bar,
 .is-preview #admin-bar,
 .is-preview .admin-options,
+.is-preview .admin-page-stats,
 .is-admin #admin-links .admin-tools-show-preview {
     display: none !important;
 }
