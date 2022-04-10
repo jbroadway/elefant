@@ -101,6 +101,16 @@ class DB {
 	 * Table name prefix to replace `#prefix#` occurrences with.
 	 */
 	public static $prefix = '';
+	
+	/**
+	 * The total number of queries executed so far during the current request.
+	 */
+	public static $query_count = 0;
+	
+	/**
+	 * The total number of query results so far during the current request.
+	 */
+	public static $result_count = 0;
 
 	/**
 	 * Open a database connection and add it to the pool. Accepts
@@ -280,7 +290,9 @@ class DB {
 	public static function fetch () {
 		try {
 			list ($stmt, $args) = self::prepare (func_get_args ());
+			self::$query_count++;
 			$stmt->execute ($args);
+			self::$result_count += $stmt->rowCount ();
 			return $stmt->fetchAll ();
 		} catch (Exception $e) {
 			self::$error = $e->getMessage ();
@@ -294,6 +306,7 @@ class DB {
 	public static function execute () {
 		try {
 			list ($stmt, $args) = self::prepare (func_get_args (), 1);
+			self::$query_count++;
 			return $stmt->execute ($args);
 		} catch (PDOException $e) {
 			self::$error = $e->getMessage ();
@@ -308,6 +321,7 @@ class DB {
 	public static function query () {
 		try {
 			list ($stmt, $args) = self::prepare (func_get_args ());
+			self::$query_count++;
 			$stmt->execute ($args);
 			return $stmt;
 		} catch (Exception $e) {
@@ -322,7 +336,9 @@ class DB {
 	public static function single () {
 		try {
 			list ($stmt, $args) = self::prepare (func_get_args ());
+			self::$query_count++;
 			$stmt->execute ($args);
+			self::$result_count++;
 			return $stmt->fetchObject ();
 		} catch (PDOException $e) {
 			self::$error = $e->getMessage ();
@@ -338,7 +354,9 @@ class DB {
 	public static function shift () {
 		try {
 			list ($stmt, $args) = self::prepare (func_get_args ());
+			self::$query_count++;
 			$stmt->execute ($args);
+			self::$result_count++;
 			$res = $stmt->fetch (PDO::FETCH_NUM);
 			if (! is_array ($res)) {
 				self::$error = 'Result not found';
@@ -357,7 +375,9 @@ class DB {
 	public static function shift_array () {
 		try {
 			list ($stmt, $args) = self::prepare (func_get_args ());
+			self::$query_count++;
 			$stmt->execute ($args);
+			self::$result_count += $stmt->rowCount ();
 			return $stmt->fetchAll (PDO::FETCH_COLUMN);
 		} catch (PDOException $e) {
 			self::$error = $e->getMessage ();
@@ -372,7 +392,9 @@ class DB {
 	public static function pairs () {
 		try {
 			list ($stmt, $args) = self::prepare (func_get_args ());
+			self::$query_count++;
 			$stmt->execute ($args);
+			self::$result_count += $stmt->rowCount ();
 			$res = $stmt->fetchAll (PDO::FETCH_NUM);
 			$out = array ();
 			foreach ($res as $row) {
