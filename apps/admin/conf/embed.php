@@ -46,4 +46,9 @@ id[message] = Please enter some HTML.
 id[require] = "apps/admin/lib/Functions.php"
 id[filter] = admin_embed_filter
 
+[admin/empty]
+
+label = "Empty Contents"
+icon = code
+
 ; */ ?>
