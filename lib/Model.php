@@ -726,15 +726,18 @@ class Model {
 	public function where_search ($query, $fields, $exact = array ()) {
 		$q = $this;
 		$exact_matches = false;
+		$additional_matches = false;
 
 		$query = trim ($query);
 
 		if (count ($exact) > 0) {
 			$query = preg_replace_callback (
 				'/ ?(' . join ('|', $exact) . '):(""|"[a-z0-9\'\\\"\. _-]+"|[a-z0-9\'\._-]+) ?/i',
-				function ($regs) use ($q, &$exact_matches) {
-					$q->where ($regs[1], trim ($regs[2], '"'));
+				function ($regs) use ($q, &$exact_matches, &$additional_matches) {
+					$where_method = $additional_matches ? 'or_where' : 'where';
+					$q->{$where_method} ($regs[1], trim ($regs[2], '"'));
 					$exact_matches = true;
+					$additional_matches = true;
 					return '';
 				},
 				$query
