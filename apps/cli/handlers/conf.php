@@ -44,7 +44,7 @@ if (isset ($_SERVER['argv'][3])) {
 		Cli::out ('Please provide a setting name to update its value.', 'error');
 		return;
 	}
-	
+
 	if (! preg_match ($valid_section_name, $section)) {
 		Cli::out ('Invalid section name: ' . $section, 'error');
 		return;
@@ -59,7 +59,7 @@ if (isset ($_SERVER['argv'][3])) {
 		Cli::out ('Invalid setting key name: ' . $inner, 'error');
 		return;
 	}
-	
+
 	// build an updated config to save
 	$settings = conf ();
 	if ($inner !== null) {
@@ -95,7 +95,7 @@ if (isset ($_SERVER['argv'][3])) {
 			Cli::out ('Invalid section name: ' . $section, 'error');
 			return;
 		}
-		
+
 		$settings = conf ($section);
 		$names = array_keys ($settings);
 		sort ($names);
