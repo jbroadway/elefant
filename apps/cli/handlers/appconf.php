@@ -43,9 +43,9 @@ if (isset ($_SERVER['argv'][3])) {
 		Cli::out ('Please provide a setting name to update its value.', 'error');
 		return;
 	}
-	
+
 	list ($app, $section, $setting) = $parts;
-	
+
 	if (! preg_match ($valid_app_name, $app) || ! is_dir ('apps/' . $app)) {
 		Cli::out ('Invalid app name: ' . $app, 'error');
 		return;
@@ -60,7 +60,7 @@ if (isset ($_SERVER['argv'][3])) {
 		Cli::out ('Invalid setting name: ' . $setting, 'error');
 		return;
 	}
-	
+
 	// build an updated config to save
 	$merged = Appconf::merge ($app, array ($section => array ($setting => $value)));
 
@@ -79,7 +79,7 @@ if (isset ($_SERVER['argv'][3])) {
 			Cli::out ('Invalid app name: ' . $app, 'error');
 			return;
 		}
-		
+
 		$settings = Appconf::get ($app);
 		$sections = array_keys ($settings);
 		sort ($sections);
@@ -98,7 +98,7 @@ if (isset ($_SERVER['argv'][3])) {
 			Cli::out ('Invalid section name: ' . $section, 'error');
 			return;
 		}
-		
+
 		$settings = Appconf::get ($app, $section);
 		$names = array_keys ($settings);
 		sort ($names);

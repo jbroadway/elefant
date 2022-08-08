@@ -182,7 +182,7 @@ class Restful {
 				if ($value === true && ! isset ($data->{$key})) {
 					$this->error ('Missing parameter: ' . $key, 400);
 					return false;
-				
+
 				// If values are an array, they're a list of validation rules
 				} elseif (is_array ($value)) {
 					$failed = Validator::validate_list ([$key => $data->{$key}], [$key => $value]);
