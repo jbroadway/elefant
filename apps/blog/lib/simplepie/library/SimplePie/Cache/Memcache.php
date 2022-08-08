@@ -69,7 +69,14 @@ class SimplePie_Cache_Memcache implements SimplePie_Cache_Base
 	 *
 	 * @var array
 	 */
-	protected $options;
+	protected $options = array(
+			'host' => '127.0.0.1',
+			'port' => 11211,
+			'extras' => array(
+				'timeout' => 3600, // one hour
+				'prefix' => 'simplepie_',
+			),
+		);
 
 	/**
 	 * Cache name
@@ -87,14 +94,6 @@ class SimplePie_Cache_Memcache implements SimplePie_Cache_Base
 	 */
 	public function __construct($location, $name, $type)
 	{
-		$this->options = array(
-			'host' => '127.0.0.1',
-			'port' => 11211,
-			'extras' => array(
-				'timeout' => 3600, // one hour
-				'prefix' => 'simplepie_',
-			),
-		);
 		$parsed = SimplePie_Cache::parse_URL($location);
 		$this->options['host'] = empty($parsed['host']) ? $this->options['host'] : $parsed['host'];
 		$this->options['port'] = empty($parsed['port']) ? $this->options['port'] : $parsed['port'];
