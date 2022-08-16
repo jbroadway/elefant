@@ -427,7 +427,7 @@ class Template {
 
 		// Does it have an assignment?
 		if (strstr ($val, '=')) {
-			return '<?php ' . $val . '; ?>';
+			return '<?php ' . str_replace (' ?? \'\'', '', $val) . '; ?>';
 		}
 
 		// Apply default filter or none
