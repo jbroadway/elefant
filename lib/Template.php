@@ -407,23 +407,23 @@ class Template {
 		$filters = explode ('|', $val);
 		$val = array_shift ($filters);
 
-		// Change `$_GLOBAL.value` into `$_GLOBAL['value']`
+		// Change `$_GLOBAL.value` into `$_GLOBAL['value'] ?? ''`
 		if (strstr ($val, '$_')) {
 			if (strstr ($val, '.')) {
-				$val = preg_replace ('/\.([a-zA-Z0-9_]+)/', '[\'\1\']', $val, 1);
+				$val = preg_replace ('/\.([a-zA-Z0-9_]+)/', '[\'\1\'] ?? \'\'', $val, 1);
 			}
 
-		// Change `object.value` into `$GLOBALS['object']->value`
+		// Change `object.value` into `$GLOBALS['object']->value ?? ''`
 		} elseif (strstr ($val, '.')) {
-			$val = '$GLOBALS[\'' . preg_replace ('/\./', '\']->', $val, 1);
+			$val = '$GLOBALS[\'' . preg_replace ('/\./', '\']->', $val, 1) . ' ?? \'\'';
 
-		// Ordinary request for `$data->value`
+		// Ordinary request for `$data->value ?? ''`
 		} elseif (! strstr ($val, '::') && ! strstr ($val, '(')) {
-			$val = '$data->' . $val;
+			$val = '$data->' . $val . ' ?? \'\'';
 		}
 		
-		// Change `[foo]` into `['foo']`
-		$val = preg_replace ('/\[([a-zA-Z0-9_]+)\]/', '[\'\1\']', $val);
+		// Change `[foo]` into `['foo'] ?? ''`
+		$val = preg_replace ('/\[([a-zA-Z0-9_]+)\]/', '[\'\1\'] ?? \'\'', $val);
 
 		// Does it have an assignment?
 		if (strstr ($val, '=')) {
