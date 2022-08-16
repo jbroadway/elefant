@@ -18,7 +18,8 @@ function navigation_print_context ($tree, $path) {
 	echo '<ul>';
 	foreach ($tree as $item) {
 		$_id = Tree::attr_id ($item);
-		if ($_id == $path[count ($path) - 1]) {
+		$_count = count ($path) - 1;
+		if (isset ($path[$_count]) && $_id == $path[$_count]) {
 			echo '<li class="current">' . Link::make ($_id, $item['data'] ?? '');
 			if (isset ($item['children'])) {
 				navigation_print_context ($item['children'], $path);
