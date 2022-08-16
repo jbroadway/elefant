@@ -17,20 +17,21 @@
 function navigation_print_context ($tree, $path) {
 	echo '<ul>';
 	foreach ($tree as $item) {
-		if ($item->attr->id == $path[count ($path) - 1]) {
-			echo '<li class="current">' . Link::make ($item->attr->id, $item->data);
-			if (isset ($item->children)) {
-				navigation_print_context ($item->children, $path);
+		$_id = Tree::attr_id ($item);
+		if ($_id == $path[count ($path) - 1]) {
+			echo '<li class="current">' . Link::make ($_id, $item['data'] ?? '');
+			if (isset ($item['children'])) {
+				navigation_print_context ($item['children'], $path);
 			}
 			echo '</li>';
-		} elseif (in_array ($item->attr->id, $path)) {
-			echo '<li class="parent">' . Link::make ($item->attr->id, $item->data);
-			if (isset ($item->children)) {
-				navigation_print_context ($item->children, $path);
+		} elseif (in_array ($_id, $path)) {
+			echo '<li class="parent">' . Link::make ($_id, $item['data'] ?? '');
+			if (isset ($item['children'])) {
+				navigation_print_context ($item['children'], $path);
 			}
 			echo '</li>';
 		} else {
-			printf ('<li><a href="/%s">%s</a></li>', $item->attr->id, $item->data);
+			printf ('<li><a href="/%s">%s</a></li>', $_id, $item['data'] ?? '');
 		}
 	}
 	echo '</ul>';
@@ -42,9 +43,9 @@ function navigation_print_context ($tree, $path) {
 function navigation_print_level ($tree) {
 	echo '<ul>';
 	foreach ($tree as $item) {
-		echo '<li>' . Link::make ($item->attr->id, $item->data);
-		if (isset ($item->children)) {
-			navigation_print_level ($item->children);
+		echo '<li>' . Link::make (Tree::attr_id ($item), $item['data'] ?? '');
+		if (isset ($item['children'])) {
+			navigation_print_level ($item['children']);
 		}
 		echo '</li>';
 	}
@@ -62,13 +63,14 @@ function navigation_print_dropmenu ($tree, $id = false) {
 	}
 
 	foreach ($tree as $item) {
-		$current = ($item->attr->id == Link::current()) ? ' class="current"' : '';
+		$_id = Tree::attr_id ($item);
+		$current = ($_id == Link::current()) ? ' class="current"' : '';
 		if (empty ($current)) {
-			$current = in_array ($item->attr->id, Link::active()) ? ' class="active"' : $current;
+			$current = in_array ($_id, Link::active()) ? ' class="active"' : $current;
 		}
-		echo '<li' . $current . '>' . Link::make ($item->attr->id, $item->data);
-		if (isset ($item->children)) {
-			navigation_print_level ($item->children);
+		echo '<li' . $current . '>' . Link::make ($_id, $item['data'] ?? '');
+		if (isset ($item['children'])) {
+			navigation_print_level ($item['children']);
 		}
 		echo '</li>';
 	}
@@ -95,9 +97,10 @@ function navigation_get_other_pages ($ids) {
 	//Adds apps to Navigation, the new way
 	$nav = Appconf::options ('nav');
 	foreach ($nav as $id => $title) {
-		$appObj = new StdClass ();
-		$appObj->id = $id;
-		$appObj->title = $title;
+		$appObj = [
+			'id' => $id,
+			'title' => $title
+		];
 		$res[] = $appObj;
 	}
 
@@ -109,15 +112,15 @@ function navigation_get_other_pages ($ids) {
 		foreach ($ini as $section) {
 			if (array_key_exists ('include_in_nav', $section) && $section['include_in_nav']
 					&& array_key_exists ('title', $section) && $section['title'] != '') {
-				$appObj = new stdClass ();
+				$appObj = [];
 				if (! in_array ($section['include_in_nav'], array ('1', 1, true), true)) {
-					$appObj->id = ltrim ($section['include_in_nav'], '/');
+					$appObj['id'] = ltrim ($section['include_in_nav'], '/');
 				} else {
 					$appPath = explode ('/',$app);
-					$appObj->id = $appPath[0];
+					$appObj['id'] = $appPath[0];
 				}
-				$appObj->title = $section['title'];
-				$appObj->menu_title = array_key_exists ('menu_title', $section) ? $section['menu_title'] : $section['title'];
+				$appObj['title'] = $section['title'];
+				$appObj['menu_title'] = array_key_exists ('menu_title', $section) ? $section['menu_title'] : $section['title'];
 				$res[] = $appObj;
 				break;
 			}
@@ -125,14 +128,15 @@ function navigation_get_other_pages ($ids) {
 	}
    	
 	foreach ($res as $p) {
-		if (in_array ($p->id, $ids)) {
+		$p = is_object ($p) ? get_object_vars ($p) : $p;
+		if (isset ($p['id']) && in_array ($p['id'], $ids)) {
 			// skip if in tree
 			continue;
 		}
-		if (! empty ($p->menu_title)) {
-			$pages[$p->id] = $p->menu_title;
+		if (isset ($p['menu_title']) && ! empty ($p['menu_title'])) {
+			$pages[$p['id']] = $p['menu_title'];
 		} else {
-			$pages[$p->id] = $p->title;
+			$pages[$p['id']] = $p['title'] ?? '';
 		}
 	}
 
@@ -150,9 +154,10 @@ function navigation_get_other_pages ($ids) {
 function navigation_print_admin_tree ($tree, $tree_root=true) {
 	echo ($tree_root) ?'<ul class="tdd-tree">' : "<ul>";
 	foreach ($tree as $item) {
-		printf ('<li id="%s"><i class="%s"></i> %s <span>/%s</span>', $item->attr->id, $item->attr->classname,  $item->data, $item->attr->id);
-		if (isset ($item->children)) {
-			navigation_print_admin_tree ($item->children, false);
+		$_id = Tree::attr_id ($item);
+		printf ('<li id="%s"><i class="%s"></i> %s <span>/%s</span>', $_id, Tree::attr_classname ($item),  $item['data'] ?? '', $_id);
+		if (isset ($item['children'])) {
+			navigation_print_admin_tree ($item['children'], false);
 		}
 		echo '</li>';
 	}

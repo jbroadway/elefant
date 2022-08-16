@@ -72,12 +72,12 @@ class Navigation extends Tree {
 	 * the ID is passed.
 	 */
 	public function add ($id, $parent = false, $title = false) {
-		if (! is_object ($id) && $title === false) {
+		if (! is_array ($id) && $title === false) {
 			$pg = DB::single ('select title, menu_title from #prefix#webpage where id = ?', $id);
 			$title = (! empty ($pg->menu_title)) ? $pg->menu_title : $pg->title;
-			$id = (object) array (
+			$id = array (
 				'data' => $title,
-				'attr' => (object) array (
+				'attr' => array (
 					'id' => $id,
 					'sort' => 0
 				)
