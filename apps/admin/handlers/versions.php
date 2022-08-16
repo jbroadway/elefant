@@ -54,7 +54,7 @@ if (! empty ($_GET['id'])) {
 }
 
 echo $tpl->render ('admin/versions', array (
-	'id' => (! empty ($_GET['id'])) ? $_GET['id'] : false,
+	'id' => (! isset ($_GET['id']) && ! empty ($_GET['id'])) ? $_GET['id'] : false,
 	'type' => $_GET['type'],
 	'name' => $name,
 	'plural' => $plural,
@@ -63,7 +63,7 @@ echo $tpl->render ('admin/versions', array (
 	'limit' => $limit,
 	'total' => $count,
 	'count' => count ($history),
-	'url' => sprintf ('/admin/versions?type=%s&id=%s&offset=%%d', $_GET['type'], $_GET['id']),
+	'url' => sprintf ('/admin/versions?type=%s&id=%s&offset=%%d', $_GET['type'], $_GET['id'] ?? ''),
 	'deleted' => $deleted,
 	'display_fields' => Versions::display_fields ($_GET['type']),
 	'link' => Versions::link ($_GET['type'])
