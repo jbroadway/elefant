@@ -762,31 +762,36 @@ class Template {
 			$extra = preg_replace ('/^(.*) in (.*)$/', '\2 as \1', $extra);
 		}
 
+		$or_false = '';
+
 		if (strstr ($extra, '$_')) {
 			if (strstr ($val, '.')) {
 				$extra = preg_replace ('/\.([a-zA-Z0-9_]+)/', '[\'\1\']', $extra, 1);
+				$or_false = ' ?? false';
 			}
 		} elseif (strstr ($extra, '.')) {
 			$extra = '$GLOBALS[\'' . preg_replace ('/\./', '\']->', $extra, 1);
+			$or_false = ' ?? false';
 		} elseif (! strstr ($extra, '::') && ! strstr ($extra, '(')) {
 			$extra = '$data->' . $extra;
+			$or_false = ' ?? false';
 		}
 		if ($block === 'foreach' || $block === 'for') {
 			if (strpos ($extra, ' as ') !== false) {
 				if (strpos ($extra, ', ') === false) {
-					return '<?php foreach (' . str_replace (' as ', ' as $data->loop_index => $data->', $extra) . ') { ?>';
+					return '<?php foreach (' . str_replace (' as ', ' ?? [] as $data->loop_index => $data->', $extra) . ') { ?>';
 				}
 				return '<?php foreach (' . str_replace (
 					array (' as ', ', '),
-					array (' as $data->', ' => $data->'),
+					array (' ?? [] as $data->', ' => $data->'),
 					$extra
 				) . ') { ?>';
 			}
-			return '<?php foreach (' . $extra . ' as $data->loop_index => $data->loop_value) { ?>';
+			return '<?php foreach (' . $extra . ' ?? [] as $data->loop_index => $data->loop_value) { ?>';
 		} elseif ($block === 'if') {
-			return '<?php if (' . $not . $extra . ') { ?>';
+			return '<?php if (' . $not . '(' . $extra . $or_false . ')) { ?>';
 		} elseif ($block === 'elseif') {
-			return '<?php } elseif (' . $not . $extra . ') { ?>';
+			return '<?php } elseif (' . $not . '(' . $extra . $or_false . ')) { ?>';
 		} elseif ($block === 'else') {
 			return '<?php } else { ?>';
 		}
