@@ -24,10 +24,10 @@ if (! isset (self::$called['social/twitter/init'])) {
 
 if (! isset ($data['via']) || empty ($data['via'])) {
 	$id = Appconf::user ('Twitter', 'twitter_id');
-	$data['via'] = (! empty ($id)) ? $id : $appconf['Twitter']['id'];
+	$data['via'] = (! empty ($id)) ? $id : Appconf::social ('Twitter', 'id');
 }
 
-if (strpos ($data['url'], '/') === 0) {
+if (isset ($data['url']) && strpos ($data['url'], '/') === 0) {
 	$data['url'] = '//' . conf ('General', 'site_domain') . $data['url'];
 }
 echo $tpl->render ('social/twitter/tweet', $data);
