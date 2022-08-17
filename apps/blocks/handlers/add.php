@@ -35,7 +35,7 @@ if ($f->submit ()) {
 	echo __ ('Error Message') . ': ' . $b->error;
 } else {
 	$b = new Block;
-	$b->id = $_GET['id'];
+	$b->id = $_GET['id'] ?? '';
 	$b->access = 'public';
 	$b->show_title = 'yes';
 	$b->background = '';

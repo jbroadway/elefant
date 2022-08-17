@@ -30,10 +30,10 @@ if ($f->submit ()) {
 	$b->background = $_POST['background'];
 	$b->style = $_POST['style'];
 	$b->column_layout = $_POST['column_layout'];
-	$b->col2 = $_POST['col2'];
-	$b->col3 = $_POST['col3'];
-	$b->col4 = $_POST['col4'];
-	$b->col5 = $_POST['col5'];
+	$b->col2 = $_POST['col2'] ?? '';
+	$b->col3 = $_POST['col3'] ?? '';
+	$b->col4 = $_POST['col4'] ?? '';
+	$b->col5 = $_POST['col5'] ?? '';
 	$b->put ();
 	Versions::add ($b);
 	if (! $b->error) {
