@@ -54,7 +54,7 @@ if (! empty ($_GET['id'])) {
 }
 
 echo $tpl->render ('admin/versions', array (
-	'id' => (! isset ($_GET['id']) && ! empty ($_GET['id'])) ? $_GET['id'] : false,
+	'id' => (isset ($_GET['id']) && ! empty ($_GET['id'])) ? $_GET['id'] : false,
 	'type' => $_GET['type'],
 	'name' => $name,
 	'plural' => $plural,
