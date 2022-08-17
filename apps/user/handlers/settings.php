@@ -13,44 +13,47 @@ $page->title = __ ('Member Settings');
 
 $form = new Form ('post', $this);
 
-$appconf['User']['login_methods'] = is_array ($appconf['User']['login_methods'])
-	? $appconf['User']['login_methods']
-	: array ();
+$appconf['User']['login_methods'] = (
+	isset ($appconf['User']) &&
+	isset ($appconf['User']['login_methods']) &&
+	is_array ($appconf['User']['login_methods']))
+		? $appconf['User']['login_methods']
+		: array ();
 
 $form->data = array (
-	'facebook_app_id' => $appconf['Facebook']['application_id'],
-	'facebook_app_secret' => $appconf['Facebook']['application_secret'],
-	'google_oauth_client_id' => $appconf['Google']['oauth_client_id'],
-	'google_oauth_client_secret' => $appconf['Google']['oauth_client_secret'],
-	'twitter_id' => $appconf['Twitter']['twitter_id'],
-	'twitter_key' => $appconf['Twitter']['consumer_key'],
-	'twitter_secret' => $appconf['Twitter']['consumer_secret'],
-	'twitter_access_token' => $appconf['Twitter']['access_token'],
-	'twitter_access_token_secret' => $appconf['Twitter']['access_token_secret'],
+	'facebook_app_id' => Appconf::user ('Facebook', 'application_id'),
+	'facebook_app_secret' => Appconf::user ('Facebook', 'application_secret'),
+	'google_oauth_client_id' => Appconf::user ('Google', 'oauth_client_id'),
+	'google_oauth_client_secret' => Appconf::user ('Google', 'oauth_client_secret'),
+	'twitter_id' => Appconf::user ('Twitter', 'twitter_id'),
+	'twitter_key' => Appconf::user ('Twitter', 'consumer_key'),
+	'twitter_secret' => Appconf::user ('Twitter', 'consumer_secret'),
+	'twitter_access_token' => Appconf::user ('Twitter', 'access_token'),
+	'twitter_access_token_secret' => Appconf::user ('Twitter', 'access_token_secret'),
 	'login_openid' => in_array ('openid', $appconf['User']['login_methods']),
 	'login_google' => in_array ('google', $appconf['User']['login_methods']),
 	'login_facebook' => in_array ('facebook', $appconf['User']['login_methods']),
 	'login_twitter' => in_array ('twitter', $appconf['User']['login_methods']),
 	'login_persona' => in_array ('persona', $appconf['User']['login_methods']),
-	'default_role' => $appconf['User']['default_role'],
+	'default_role' => Appconf::user ('User', 'default_role'),
 	'roles' => array_keys (User::acl ()->rules)
 );
 
 echo $form->handle (function ($form) {
 	$login_methods = array ();
-	if ($_POST['login_openid'] === 'yes') {
+	if (isset ($_POST['login_openid']) && $_POST['login_openid'] === 'yes') {
 		$login_methods[] = 'openid';
 	}
-	if ($_POST['login_google'] === 'yes') {
+	if (isset ($_POST['login_google']) && $_POST['login_google'] === 'yes') {
 		$login_methods[] = 'google';
 	}
-	if ($_POST['login_facebook'] === 'yes') {
+	if (isset ($_POST['login_facebook']) && $_POST['login_facebook'] === 'yes') {
 		$login_methods[] = 'facebook';
 	}
-	if ($_POST['login_twitter'] === 'yes') {
+	if (isset ($_POST['login_twitter']) && $_POST['login_twitter'] === 'yes') {
 		$login_methods[] = 'twitter';
 	}
-	if ($_POST['login_persona'] === 'yes') {
+	if (isset ($_POST['login_persona']) && $_POST['login_persona'] === 'yes') {
 		$login_methods[] = 'persona';
 	}
 	if (count ($login_methods) === 0) {
