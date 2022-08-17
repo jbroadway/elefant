@@ -82,9 +82,12 @@ foreach ($sources as $source) {
 						'str' => array ($file)
 					);
 				} else {
-					$list[$str]['src'] = is_array ($list[$str]['src'])
-						? $list[$str]['src']
-						: array ($list[$str]['src']);
+					$list[$str]['src'] = (
+						isset ($list[$str]) &&
+						isset ($list[$str]['src']) &&
+						is_array ($list[$str]['src']))
+							? $list[$str]['src']
+							: array ($list[$str]['src'] ?? []);
 
 					if (! in_array ($file, $list[$str]['src'])) {
 						$list[$str]['src'][] = $file;

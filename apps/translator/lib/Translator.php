@@ -124,7 +124,7 @@ class Translator extends Restful {
 			return 0;
 		}
 
-		if (! is_array ($this->lang_hash[$lang]) && file_exists ('lang/' . $lang . '.php')) {
+		if ((! isset ($this->lang_hash[$lang]) || ! is_array ($this->lang_hash[$lang])) && file_exists ('lang/' . $lang . '.php')) {
 			require ('lang/' . $lang . '.php');
 		}
 
