@@ -17,6 +17,9 @@ timezone = GMT
 ; Google Analytics ID
 google_analytics_id = Off
 
+; Google Analytics version
+google_analytics_version = ua
+
 ; Default thumbnail for social shares.
 default_thumbnail = Off
 
