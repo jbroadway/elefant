@@ -34,8 +34,8 @@
 <p>
 	{"Google Analytics version"}<br />
 	<select name="google_analytics_version">
-		<option value="ga4"{% if vendor_autoload == 'ga4' %} selected{% end %}>{"Google Analytics 4"}</option>
-		<option value="ua"{% if vendor_autoload == 'ua' %} selected{% end %}>{"Unversal Analytics (deprecated)"}</option>
+		<option value="ga4"{% if google_analytics_version == 'ga4' %} selected{% end %}>{"Google Analytics 4"}</option>
+		<option value="ua"{% if google_analytics_version == 'ua' %} selected{% end %}>{"Unversal Analytics (deprecated)"}</option>
 	</select>
 </p>
 
