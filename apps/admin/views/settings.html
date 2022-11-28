@@ -32,6 +32,14 @@
 </p>
 
 <p>
+	{"Google Analytics version"}<br />
+	<select name="google_analytics_version">
+		<option value="ga4"{% if vendor_autoload == 'ga4' %} selected{% end %}>{"Google Analytics 4"}</option>
+		<option value="ua"{% if vendor_autoload == 'ua' %} selected{% end %}>{"Unversal Analytics (deprecated)"}</option>
+	</select>
+</p>
+
+<p>
 	{"Auto-include Composer autoloader"}<br />
 	<select name="vendor_autoload">
 		<option value="enabled"{% if vendor_autoload == 'enabled' %} selected{% end %}>{"Yes"}</option>
