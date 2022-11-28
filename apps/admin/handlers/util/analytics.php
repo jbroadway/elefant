@@ -14,7 +14,9 @@
 $analytics_id = Appconf::admin ('Site Settings', 'google_analytics_id');
 if ($analytics_id) {
 	echo $tpl->render (
-		'admin/util/analytics',
+		(Appconf::admin ('Site Settings', 'google_analytics_version') == 'ga4')
+			? 'admin/util/analytics4'
+			: 'admin/util/analytics',
 		array (
 			'analytics_id' => $analytics_id
 		)
