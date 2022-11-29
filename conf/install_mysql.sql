@@ -34,7 +34,7 @@ create table #prefix#block (
 ) engine=InnoDB default charset=utf8mb4;
 
 create table #prefix#block_group_order (
-	order_id char(255) not null primary key,
+	order_id char(191) not null primary key,
 	sorting_order text
 ) engine=InnoDB default charset=utf8mb4;
 
@@ -79,7 +79,7 @@ create table #prefix#user_session (
 ) engine=InnoDB default charset=utf8mb4;
 
 create table #prefix#user_openid (
-	token char(200) primary key,
+	token char(191) primary key,
 	user_id int not null
 ) engine=InnoDB default charset=utf8mb4;
 
@@ -165,12 +165,12 @@ create table `#prefix#lock` (
 create table #prefix#filemanager_prop (
 	file char(128) not null,
 	prop char(32) not null,
-	value char(255) not null,
+	value char(191) not null,
 	primary key (file, prop)
 ) engine=InnoDB default charset=utf8mb4;
 
 create table #prefix#filemanager_bitly_link (
-	link char(255) not null primary key,
+	link char(191) not null primary key,
 	bitly_link char(30) not null
 ) engine=InnoDB default charset=utf8mb4;
 
@@ -192,7 +192,7 @@ create table #prefix#extended_fields (
 	label char(48) not null,
 	type char(24) not null,
 	required int not null,
-	options char(255) not null,
+	options char(191) not null,
 	index (class, sort)
 ) engine=InnoDB default charset=utf8mb4;
 
