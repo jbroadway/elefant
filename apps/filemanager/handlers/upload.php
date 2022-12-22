@@ -49,7 +49,7 @@ foreach ($_FILES['file']['error'] as $error) {
 }
 
 for ($i = 0; $i < count ($_FILES['file']['name']); $i++) {
-	$_FILES['file']['name'][$i] = trim (urldecode ($_FILES['file']['name'][$i]));
+	$_FILES['file']['name'][$i] = trim (urldecode ($_FILES['file']['name'][$i]), ". \n\r\t\v\x00");
 	if (strpos ($_FILES['file']['name'][$i], '..') !== false) {
 		$page->title = __ ('Invalid File Name') . ': ' . $_FILES['file']['name'][$i];
 		echo '<p>' . __ ('The file name contains invalid characters.') . '</p>';
