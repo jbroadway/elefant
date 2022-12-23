@@ -52,7 +52,7 @@ if (preg_match ('/\.(php|phtml|pht|php3|php4|php5|phar|js|rb|py|pl|sh|bash|exe|h
 	return;
 }
 
-if (strpos ($_FILES['file']['name'], '..') !== false || strpbrk ($_FILES['file']['name'], '?*<>:') !== false) {
+if (strpos ($_FILES['file']['name'], '..') !== false || strpbrk ($_FILES['file']['name'], '?*<>:|\\/"') !== false) {
 	echo json_encode (array ('success' => false, 'error' => __ ('The file name contains invalid characters.')));
 	return;
 }
