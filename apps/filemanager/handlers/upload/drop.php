@@ -45,14 +45,14 @@ if (isset ($_FILES['file']['error']) && $_FILES['file']['error'] > 0) {
 }
 
 // some browsers may urlencode the file name
-$_FILES['file']['name'] = trim (urldecode ($_FILES['file']['name']));
+$_FILES['file']['name'] = rtrim (ltrim (urldecode ($_FILES['file']['name'])), ". \n\r\t\v\x00");
 
 if (preg_match ('/\.(php|phtml|pht|php3|php4|php5|phar|js|rb|py|pl|sh|bash|exe|htaccess|htpasswd)$/i', $_FILES['file']['name'])) {
 	echo json_encode (array ('success' => false, 'error' => __ ('Cannot upload executable files due to security.')));
 	return;
 }
 
-if (strpos ($_FILES['file']['name'], '..') !== false) {
+if (strpos ($_FILES['file']['name'], '..') !== false || strpbrk ($_FILES['file']['name'], '?*<>:|\\/"') !== false) {
 	echo json_encode (array ('success' => false, 'error' => __ ('The file name contains invalid characters.')));
 	return;
 }
