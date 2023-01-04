@@ -54,6 +54,17 @@
  *        &id[]=block-two
  *        &level=h2 !}
  *
+ * Note that headings will appear by default inside the first block div.
+ * If you want to change that, add an `outer_title` parameter and the
+ * heading tag will appear inside the `<div class="e-row">` before the
+ * first `<div class="block">`, like this:
+ *
+ *     {! blocks/group
+ *        ?id[]=block-one
+ *        &id[]=block-two
+ *        &level=h2
+ *        &outer_title=on !}
+ *
  * Additionally, you can set a `divs` parameter to specify that each block
  * should be wrapped in a `<div class="block" id="block-ID"></div>` tag,
  * where the `id` attribute's value is the block ID prefixed with `block-`:
@@ -119,6 +130,7 @@ if (! $wildcard) {
 $level = (isset ($data['level']) && preg_match ('/^h[1-6]$/', $data['level'])) ? $data['level'] : 'h3';
 $rows = (isset ($data['rows']) && $data['rows'] == 'on') ? true : false;
 $divs = ($rows || (isset ($data['divs']) && $data['divs'] == 'on')) ? true : false;
+$outer_title = (isset ($data['outer_title']) && $data['outer_title'] == 'on') ? true : false;
 
 if ($rows || $divs || isset ($data['units'])) {
 	echo $this->run ('admin/util/minimal-grid');
@@ -248,6 +260,12 @@ foreach ($ids as $k => $id) {
 		}
 		
 		printf ('<div class="e-row">%s', PHP_EOL);
+
+		// if &outer_title, show title outside of blocks but inside of row div
+		if ($outer_title && $b->show_title == 'yes') {
+			printf ('<' . $level . '>%s</' . $level . '>' . PHP_EOL, $b->title);
+		}
+
 		printf ('<div class="e-col-%d block" id="block-%s">%s', $cols[0], $b->id, PHP_EOL);
 
 		$col_count = count ($cols);
@@ -263,7 +281,7 @@ foreach ($ids as $k => $id) {
 			}
 		
 			// only show title in first column so it doesn't repeat
-			if ($i == 1 && $b->show_title == 'yes') {
+			if (! $outer_title && $i == 1 && $b->show_title == 'yes') {
 				printf ('<' . $level . '>%s</' . $level . '>' . PHP_EOL, $b->title);
 			}
 
