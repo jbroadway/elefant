@@ -258,14 +258,13 @@ foreach ($ids as $k => $id) {
 		} else {
 			printf ('<div class="block-outer %s" id="block-outer-%s" data-block-id="%s" data-order-id="%s">%s', $b->style, $b->id, $b->id, $order_id, PHP_EOL);
 		}
-		
-		printf ('<div class="e-row">%s', PHP_EOL);
 
-		// if &outer_title, show title outside of blocks but inside of row div
+		// if &outer_title=on, show title outside of blocks but inside of block-outer div
 		if ($outer_title && $b->show_title == 'yes') {
 			printf ('<' . $level . '>%s</' . $level . '>' . PHP_EOL, $b->title);
 		}
-
+		
+		printf ('<div class="e-row">%s', PHP_EOL);
 		printf ('<div class="e-col-%d block" id="block-%s">%s', $cols[0], $b->id, PHP_EOL);
 
 		$col_count = count ($cols);
