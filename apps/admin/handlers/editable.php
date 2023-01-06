@@ -13,4 +13,6 @@
  *     {! admin/editable?id=[id] !}
  */
 
+if (! User::require_acl ('admin', 'admin/pages', 'admin/edit')) return;
+
 echo $tpl->render ('admin/editable', $this->data);
