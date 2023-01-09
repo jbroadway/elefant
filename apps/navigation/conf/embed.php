@@ -40,4 +40,11 @@ icon = globe
 label = "Multilingual Homepage Redirect"
 icon = globe
 
+[navigation/aname]
+
+label = "Navigation: Named Anchor Link"
+
+linkname[label] = "Anchor Name (e.g., #link-to-me)"
+linkname[not empty] = 1
+
 ; */ ?>
