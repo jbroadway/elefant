@@ -1,6 +1,6 @@
 <?php
 
-use PragmaRX\Google2FA\Google2FA;
+use PragmaRX\Google2FAQRCode\Google2FA;
 
 /**
  * Enables a user to update their profile information.
@@ -26,8 +26,11 @@ $form->data = $form->merge_values ($form->data);
 $form->data->failed = $form->failed;
 $form->data->_states = user\Data::states ();
 $form->data->_countries = user\Data::countries ();
+
+// 2fa
+$global_2fa = Appconf::user ('User', '2fa');
+$form->data->global_2fa = $global_2fa;
 $form->data->_2fa = isset ($u->userdata['2fa']) ? $u->userdata['2fa'] : 'on';
-$form->data->global_2fa = Appconf::user ('User', '2fa');
 
 $form->data->photo_url = $form->data->photo;
 if ($form->data->photo_url != '' && strpos ($form->data->photo_url, '/') != 0) {
@@ -91,13 +94,24 @@ echo $form->handle (function ($form) use ($u, $page) {
 	}
 
 	// 2-factor authentication
+	$was_2fa_enabled = isset ($u->userdata['2fa']) ? ($u->userdata['2fa'] == 'on') : false;
+	$is_2fa_enabled = false;
+
+	if ($global_2fa == 'all' || ($global_2fa == 'admin' && User::require_admin ())) {
+		$_POST['_2fa'] = 'on';
+	}
+
 	if ($_POST['_2fa'] == 'on') {
-		$g2fa = new Google2FA ();
+		$is_2fa_enabled = true;
 		$data = $u->userdata;
-		if (! isset ($data['2fa_secret'])) $data['2fa_secret'] = $g2fa->generateSecretKey ();
+		if (! isset ($data['2fa_secret'])) {
+			$g2fa = new Google2FA ();
+			$data['2fa_secret'] = $g2fa->generateSecretKey (32);
+		}
 		$data['2fa'] = 'on';
 		$u->userdata = $data;
 	} else {
+		$is_2fa_enabled = false;
 		$data = $u->userdata;
 		$data['2fa'] = 'off';
 		$u->userdata = $data;
@@ -106,6 +120,10 @@ echo $form->handle (function ($form) use ($u, $page) {
 	$u->put ();
 	Versions::add ($u);
 	if (! $u->error) {
+		if (!$was_2fa_enabled && $is_2fa_enabled) {
+			$this->redirect ('/user/2fa');
+		}
+
 		$page->title = __ ('Profile Updated');
 		echo '<p><a href="/user">' . __ ('Continue') . '</a></p>';
 		return;

@@ -1,0 +1,23 @@
+<style type="text/css">
+.notice { display: none; }
+</style>
+
+<p>{"Scan the following QR code using your 2-factor authentication app of choice:"}</p>
+
+<p><img src="{{qrcode_url}}" id="qrcode-2fa" /></p>
+
+<form method="POST" id="{{_form}}">
+
+<p>
+	{"Enter one-time password to verify your authenticator code"}:<br />
+	<input type="text" name="code" /> <button>{"Verify"}</button>
+	<span class="notice" id="code-notice"><br />Invalid or expired code. Please try again.</span>
+</p>
+
+</form>
+
+<style>
+#qrcode-2fa {
+	max-width: 400px;
+}
+</style>
