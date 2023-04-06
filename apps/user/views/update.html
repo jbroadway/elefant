@@ -18,6 +18,21 @@
 <p>{"Verify new password"}:<br /><input type="password" name="verify_pass" size="20" value="{{ verify_pass }}" />
 <span class="notice" id="verify_pass-notice">{"Your password doesn't match."}</span></p>
 
+{% if $data->global_2fa == 'all' || ($data->global_2fa == 'admin' && User::require_admin ()) %}
+<input type="hidden" name="_2fa" value="on" />
+{% else %}
+<p>
+	{"2-factor authentication"}:<br />
+	<select name="_2fa">
+		<option value="on"{% if _2fa == 'on' %} selected{% end %}>Enabled</option>
+		<option value="off"{% if _2fa == 'off' %} selected{% end %}>Disabled</option>
+	{% foreach _countries as _country, _name %}
+		<option value="{{ _country|quotes }}"{% if country === $data->_country %} selected {% end %}>{{ _name|ucfirst }}</option>
+	{% end %}
+	</select>
+</p>
+{% end %}
+
 <h2>{"About you"}</h2>
 
 <p>

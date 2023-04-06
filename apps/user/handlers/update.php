@@ -1,5 +1,7 @@
 <?php
 
+use PragmaRX\Google2FA\Google2FA;
+
 /**
  * Enables a user to update their profile information.
  */
@@ -24,6 +26,8 @@ $form->data = $form->merge_values ($form->data);
 $form->data->failed = $form->failed;
 $form->data->_states = user\Data::states ();
 $form->data->_countries = user\Data::countries ();
+$form->data->_2fa = isset ($u->userdata['2fa']) ? $u->userdata['2fa'] : 'on';
+$form->data->global_2fa = Appconf::user ('User', '2fa');
 
 $form->data->photo_url = $form->data->photo;
 if ($form->data->photo_url != '' && strpos ($form->data->photo_url, '/') != 0) {
@@ -84,6 +88,19 @@ echo $form->handle (function ($form) use ($u, $page) {
 			}
 			unlink ($tmp_file);
 		}
+	}
+
+	// 2-factor authentication
+	if ($_POST['_2fa'] == 'on') {
+		$g2fa = new Google2FA ();
+		$data = $u->userdata;
+		if (! isset ($data['2fa_secret'])) $data['2fa_secret'] = $g2fa->generateSecretKey ();
+		$data['2fa'] = 'on';
+		$u->userdata = $data;
+	} else {
+		$data = $u->userdata;
+		$data['2fa'] = 'off';
+		$u->userdata = $data;
 	}
 
 	$u->put ();
