@@ -18,6 +18,8 @@ if ($appconf['Scripts']['jquery_source'] === 'local') {
 	$page->add_script ('<script src="' . $appconf['Scripts']['jquery_source'] . '"></script>');
 }
 
+$page->add_script ('<script>jQuery.htmlPrefilter = function(html) { return html; };</script>');
+
 if (User::require_admin () && $page->preview == false) {
 	$page->add_style ('/apps/admin/css/jquery.jgrowl.css');
 	$page->add_style ('/apps/admin/css/modal.css');
