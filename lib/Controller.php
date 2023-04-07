@@ -1060,6 +1060,9 @@ class Controller {
 	 */
 	public function require_login ($redirect = '/user/login') {
 		if (! User::require_login ()) {
+			if (User::require_2fa ()) {
+				$this->redirect ('/user/login/2fa?redirect=' . urlencode ($_SERVER['REQUEST_URI']));
+			}
 			$this->redirect ($redirect . '?redirect=' . urlencode ($_SERVER['REQUEST_URI']));
 		}
 	}
@@ -1070,6 +1073,9 @@ class Controller {
 	 */
 	public function require_admin ($redirect = '/admin') {
 		if (! User::require_admin ()) {
+			if (User::require_2fa ()) {
+				$this->redirect ('/user/verify2fa?redirect=' . urlencode ($_SERVER['REQUEST_URI']));
+			}
 			$this->redirect ($redirect . '?redirect=' . urlencode ($_SERVER['REQUEST_URI']));
 		}
 	}
