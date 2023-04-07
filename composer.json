@@ -8,7 +8,9 @@
 	"require": {
 		"php": ">=7.2",
 		"pda/pheanstalk": "^4.0",
-		"google/apiclient": "^2.12.1"
+		"google/apiclient": "^2.12.1",
+		"pragmarx/google2fa-qrcode": "^3.0",
+		"chillerlan/php-qrcode": "^4.3"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^8.5"

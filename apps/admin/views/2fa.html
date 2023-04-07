@@ -1,0 +1,17 @@
+<style type="text/css">
+	.notice { display: none; }
+	</style>
+	
+	<form method="POST" id="{{_form}}">
+
+	<h2>{"2-Factor Authentication"}</h2>
+	
+	<p>
+		{"Enter your one-time password to continue"}:<br />
+		<input type="text" name="code" /> <button>{"Verify"}</button>
+		<span class="notice" id="code-notice"><br />Please enter a one-time password code.</span>
+		<span class="notice" id="invalid-notice"><br />Invalid or expired code. Please try again.</span>
+	</p>
+	
+	</form>
+	

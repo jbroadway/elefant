@@ -39,6 +39,10 @@ default_role = "member"
 
 multi_login = Off
 
+; Is 2-factor authentication "optional", required for "all", or "admin".
+
+2fa = optional
+
 [Custom Handlers]
 
 ; You can override some of the built-in handlers with your own

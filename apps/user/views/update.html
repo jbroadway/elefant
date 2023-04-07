@@ -8,15 +8,29 @@
 
 <p>
 	{"Email address"}:<br />
-	<input type="text" name="email" size="40" value="{{ email }}" />
+	<input type="text" name="email" size="40" value="{{ email }}" autocomplete="username" />
 	<span class="notice" id="email-notice">{"You must enter an email address."}</span>
 	<span class="notice" id="email-in-use-notice">{"There is already an account that belongs to this email address."}</span>
 </p>
 
-<p>{"Change password"}:<br /><input type="password" name="password" size="20" value="{{ password }}" />
+<p>{"Change password"}:<br /><input type="password" name="password" size="20" autocomplete="new-password" value="{{ password }}" />
 <span class="notice" id="password-notice">{"Your password must be at least 6 characters."}</span></p>
-<p>{"Verify new password"}:<br /><input type="password" name="verify_pass" size="20" value="{{ verify_pass }}" />
+<p>{"Verify new password"}:<br /><input type="password" name="verify_pass" size="20" autocomplete="new-password" value="{{ verify_pass }}" />
 <span class="notice" id="verify_pass-notice">{"Your password doesn't match."}</span></p>
+
+{% if $data->global_2fa == 'all' || ($data->global_2fa == 'admin' && User::require_admin ()) %}
+<input type="hidden" name="_2fa" value="on" />
+<p><a href="/user/update2fa">{"Manage authenticator connection"}</a></p>
+{% else %}
+<p>
+	{"2-factor authentication"}:<br />
+	<select name="_2fa">
+		<option value="on"{% if _2fa == 'on' %} selected{% end %}>Enabled</option>
+		<option value="off"{% if _2fa == 'off' %} selected{% end %}>Disabled</option>
+	</select>
+</p>
+<p><a href="/user/update2fa">{"Manage authenticator connection"}</a></p>
+{% end %}
 
 <h2>{"About you"}</h2>
 
