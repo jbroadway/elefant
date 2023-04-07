@@ -49,6 +49,11 @@ if ($redir === false || $_POST['redirect'] !== $redir['path'] && $_POST['redirec
 }
 
 if (! User::require_login ()) {
+	
+	if (! $this->internal && User::require_2fa ()) {
+		$this->redirect ('/user/2fa?redirect=' . $_POST['redirect']);
+	}
+
 	if (! $this->internal && ! empty ($_POST['username'])) {
 		echo '<p>' . __ ('Incorrect email or password, please try again.') . '</p>';
 	}

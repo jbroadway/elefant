@@ -121,7 +121,7 @@ echo $form->handle (function ($form) use ($u, $page) {
 	Versions::add ($u);
 	if (! $u->error) {
 		if (!$was_2fa_enabled && $is_2fa_enabled) {
-			$this->redirect ('/user/2fa');
+			$this->redirect ('/user/update2fa');
 		}
 
 		$page->title = __ ('Profile Updated');

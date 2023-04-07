@@ -1,8 +1,12 @@
 <?php
 
+/**
+ * 2FA verification handler.
+ */
+
 use PragmaRX\Google2FAQRCode\Google2FA;
 
-if (! User::require_login ()) {
+if (! User::is_session_valid ()) {
 	$page->title = __ ('Members');
 	echo $this->run ('user/login');
 	return;
@@ -10,44 +14,32 @@ if (! User::require_login ()) {
 
 $u = User::$user;
 
+$page->title = __ ('2-Factor Authentication');
+
 $form = new Form ('post', $this);
 
 // 2fa
 $global_2fa = Appconf::user ('User', '2fa');
-$g2fa = new Google2FA (
-	new \PragmaRX\Google2FAQRCode\QRCode\Chillerlan ()
-);
-$secret = '';
+$g2fa = new Google2FA ();
+
 if (! isset ($u->userdata['2fa_secret'])) {
-	$secret = $g2fa->generateSecretKey (32);
-	$u->userdata['2fa_secret'] = $secret;
-	if (! $u->put ()) {
-		$page->title = __ ('2-Factor Authentication');
-		echo '<p>' . __ ('Unable to generate 2-factor secret code. Please try again later.') . '</p>';
-		echo '<p><a href="/user">' . __ ('Continue') . '</a></p>';
-		return;
-	}
-} else {
-	$secret = $u->userdata['2fa_secret'];
+	echo '<p>' . __ ('2-factor authentication is not set up for this account.') . '</p>';
+	echo '<p><a href="/">' . __ ('Continue') . '</a></p>';
+	return;
 }
 
-$page->title = __ ('2-Factor Authentication');
+$secret = $u->userdata['2fa_secret'];
 
-$form->data = [
-	'qrcode_url' => $g2fa->getQRCodeInline (
-		Appconf::admin ('Site Settings', 'site_name'),
-		$u->email,
-		$secret
-	)
-];
+if (! isset ($_GET['redirect'])) {
+	$_GET['redirect'] = '/user';
+}
 
 echo $form->handle (function ($form) use ($u, $page, $g2fa, $secret) {
 	if ($g2fa->verifyKey ($secret, $_POST['code'])) {
-		$page->title = __ ('2-Factor Authentication Verified');
-		echo '<p><a href="/user">' . __ ('Continue') . '</a></p>';
-		return;
+		User::verify_2fa ();
+		$form->controller->redirect ($_GET['redirect']);
 	} else {
-		$form->failed[] = 'code';
+		$form->failed[] = 'invalid';
 		return false;
 	}
 });

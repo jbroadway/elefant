@@ -20,7 +20,7 @@
 
 {% if $data->global_2fa == 'all' || ($data->global_2fa == 'admin' && User::require_admin ()) %}
 <input type="hidden" name="_2fa" value="on" />
-<p><a href="/user/2fa">{"Manage authenticator connection"}</a></p>
+<p><a href="/user/update2fa">{"Manage authenticator connection"}</a></p>
 {% else %}
 <p>
 	{"2-factor authentication"}:<br />
@@ -29,7 +29,7 @@
 		<option value="off"{% if _2fa == 'off' %} selected{% end %}>Disabled</option>
 	</select>
 </p>
-<p><a href="/user/2fa">{"Manage authenticator connection"}</a></p>
+<p><a href="/user/update2fa">{"Manage authenticator connection"}</a></p>
 {% end %}
 
 <h2>{"About you"}</h2>
