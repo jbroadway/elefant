@@ -18,16 +18,14 @@ if ($appconf['Scripts']['jquery_source'] === 'local') {
 	$page->add_script ('<script src="' . $appconf['Scripts']['jquery_source'] . '"></script>');
 }
 
-$page->add_script ('<script>jQuery.htmlPrefilter = function(html) { return html; };</script>');
-
 if (User::require_admin () && $page->preview == false) {
 	$page->add_style ('/apps/admin/css/jquery.jgrowl.css');
 	$page->add_style ('/apps/admin/css/modal.css');
 	$page->add_style (Product::toolbar_stylesheet ());
 	$page->add_style ('/apps/admin/css/font-awesome/css/font-awesome.min.css');
 
-	$page->add_script ("<script>$(function(){\$.elefant_version='" . ELEFANT_VERSION . "';});</script>\n");
-	$page->add_script ("<script>$(function(){\$.elefant_updates=" . (int) conf ('General', 'check_for_updates') . ";});</script>\n");
+	$page->add_script ("<script>\$(function(){\$.elefant_version='" . ELEFANT_VERSION . "';});</script>\n");
+	$page->add_script ("<script>\$(function(){\$.elefant_updates=" . (int) conf ('General', 'check_for_updates') . ";});</script>\n");
 	$page->add_script ('/apps/admin/js/modal.js');
 	$page->add_script ('/apps/admin/js/jquery.jgrowl.min.js');
 	$page->add_script ('/apps/admin/js/jquery.triggers.js');
@@ -39,3 +37,5 @@ if (User::require_admin () && $page->preview == false) {
 		'Keyboard shortcuts'
 	));
 }
+
+$page->add_script ('<script>$(function(){$.htmlPrefilter=function(html){return html;};});</script>');
