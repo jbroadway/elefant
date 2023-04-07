@@ -28,6 +28,11 @@ if ($redir === false || $_POST['redirect'] !== $redir['path'] && $_POST['redirec
 }
 
 if (! User::require_admin ()) {
+
+	if (User::require_2fa ()) {
+		$this->redirect ('/admin/2fa?redirect=' . urlencode ($_POST['redirect']));
+	}
+
 	$page->title = sprintf (
 		'<img src="%s" alt="%s" style="margin-left: -7px" />',
 		Product::logo_login (),
