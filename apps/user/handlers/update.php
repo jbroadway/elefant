@@ -10,10 +10,14 @@ use PragmaRX\Google2FAQRCode\Google2FA;
 $res = $this->override ('user/update');
 if ($res) { echo $res; return; }
 
-if (! User::require_login ()) {
+if (! User::require_login (true)) {
 	$page->title = __ ('Members');
 	echo $this->run ('user/login');
 	return;
+}
+	
+if (User::require_2fa ()) {
+	$this->redirect ('/user/2fa?redirect=/user/update');
 }
 
 $u = User::$user;
