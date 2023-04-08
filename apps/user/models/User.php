@@ -422,8 +422,18 @@ class User extends ExtendedModel {
 	 *
 	 *     ?>
 	 */
-	public static function require_admin () {
-		return self::require_acl ('admin');
+	public static function require_admin ($skip_2fa = false) {
+		return self::require_acl ('admin', $skip_2fa);
+
+		if (! self::require_login (true)) return false;
+		if (! User::is_valid ($skip_2fa)) {
+			return false;
+		}
+		$acl = self::acl ();
+		if (! $acl->allowed ('admin', self::$user)) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -431,6 +441,7 @@ class User extends ExtendedModel {
 	 * a given resource.
 	 */
 	public static function require_acl ($resource) {
+		if (! self::require_login (true)) return false;
 		if (! User::is_valid ()) {
 			return false;
 		}
@@ -447,14 +458,17 @@ class User extends ExtendedModel {
 	/**
 	 * Check if a user is valid.
 	 */
-	public static function is_valid () {
+	public static function is_valid ($skip_2fa = false) {
 		if (is_object (self::$user) && self::$user->session_id == $_SESSION['session_id']) {
+			if ($skip_2fa) return true;
+
 			if (self::is_2fa_required ()) {
 				return self::has_verified_2fa ();
 			}
+
 			return true;
 		}
-		return self::require_login ();
+		return self::require_login ($skip_2fa);
 	}
 
 	/**
@@ -500,7 +514,13 @@ class User extends ExtendedModel {
 			case 'admin':
 				if (is_object (self::$user)) {
 					$acl = self::acl ();
-					return $acl->allowed ('admin', self::$user);
+					if ($acl->allowed ('admin', self::$user)) {
+						return true;
+					}
+
+					if (isset (self::$user->userdata['2fa']) && self::$user->userdata['2fa'] == 'on') {
+						return true;
+					}
 				}
 				return false;
 				break;
@@ -511,8 +531,11 @@ class User extends ExtendedModel {
 
 			case 'optional':
 			default:
-					return false;
-					break;
+				if (isset (self::$user->userdata['2fa']) && self::$user->userdata['2fa'] == 'on') {
+					return true;
+				}
+				return false;
+				break;
 				
 			}
 	}

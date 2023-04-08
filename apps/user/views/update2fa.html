@@ -1,3 +1,11 @@
+{% if global_2fa == 'admin' %}
+	{% if User::require_admin (true) %}
+		<p>{"2-factor authentication is required for your account."}</p>
+	{% end %}
+{% elseif global_2fa == 'all' %}
+	<p>{"2-factor authentication is required for your account."}</p>
+{% end %}
+
 <p>{"Scan the following QR code using your 2-factor authentication app of choice:"}</p>
 
 <p><img src="{{qrcode_url}}" id="qrcode-2fa" /></p>

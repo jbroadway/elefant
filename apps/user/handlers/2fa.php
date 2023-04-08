@@ -22,10 +22,8 @@ $form = new Form ('post', $this);
 $global_2fa = Appconf::user ('User', '2fa');
 $g2fa = new Google2FA ();
 
-if (! isset ($u->userdata['2fa_secret'])) {
-	echo '<p>' . __ ('2-factor authentication is not set up for this account.') . '</p>';
-	echo '<p><a href="/">' . __ ('Continue') . '</a></p>';
-	return;
+if (! isset ($u->userdata['2fa_secret']) || ! isset ($u->userdata['2fa']) || $u->userdata['2fa'] != 'on') {
+	$this->redirect ('/user/update2fa');
 }
 
 $secret = $u->userdata['2fa_secret'];
