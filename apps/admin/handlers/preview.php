@@ -7,7 +7,11 @@
 
 $this->require_admin ();
 
-$wp = new Webpage ($_POST);
+if (! isset ($_POST['id'])) {
+	$page->title = __ ('Preview Expired');
+	echo '<p><a href="#" onclick="window.close()">' . __ ('Close Window') . '</a></p>';
+	return;
+}
 
 $page->id = $_POST['id'];
 $page->title = $_POST['title'];
@@ -17,5 +21,14 @@ $page->description = $_POST['description'];
 $page->keywords = $_POST['keywords'];
 $page->layout = $_POST['layout'];
 $page->head = '';
+
+$_SERVER['REQUEST_URI'] = '/' . $_POST['id'];
+
+// show admin edit buttons
+if (User::require_acl ('admin', 'admin/pages', 'admin/edit')) {
+	$lock = new Lock ('Webpage', $_POST['id']);
+	$page->locked = $lock->exists ();
+	echo $this->run ('admin/editable', $page);
+}
 
 echo $tpl->run_includes ($_POST['body']);
