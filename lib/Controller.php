@@ -1066,7 +1066,7 @@ class Controller {
 	 * If not, it will redirect to the appropriate login handler.
 	 */
 	public function require_login ($redirect = '/user/login') {
-		if (! User::require_login ()) {
+		if (! User::require_login (true)) {
 			if (User::require_2fa ()) {
 				$this->redirect ('/user/2fa?redirect=' . urlencode ($this->request_uri ()));
 			}
@@ -1079,7 +1079,7 @@ class Controller {
 	 * If not, it will redirect to the appropriate admin login handler.
 	 */
 	public function require_admin ($redirect = '/admin') {
-		if (! User::require_admin ()) {
+		if (! User::require_admin (true)) {
 			if (User::require_2fa ()) {
 				$this->redirect ('/user/2fa?redirect=' . urlencode ($this->request_uri ()));
 			}
