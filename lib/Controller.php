@@ -769,6 +769,13 @@ class Controller {
 	}
 
 	/**
+	 * Fetch the relative request URI, accounting for aliases from conf/routes.php.
+	 */
+	public function request_uri () {
+		return ($this->alias !== false) ? $this->alias : $_SERVER['REQUEST_URI'];
+	}
+
+	/**
 	 * Get or set the HTTP response status code.
 	 */
 	public function status_code ($code = null, $text = '') {
@@ -1061,9 +1068,9 @@ class Controller {
 	public function require_login ($redirect = '/user/login') {
 		if (! User::require_login ()) {
 			if (User::require_2fa ()) {
-				$this->redirect ('/user/2fa?redirect=' . urlencode ($_SERVER['REQUEST_URI']));
+				$this->redirect ('/user/2fa?redirect=' . urlencode ($this->request_uri ()));
 			}
-			$this->redirect ($redirect . '?redirect=' . urlencode ($_SERVER['REQUEST_URI']));
+			$this->redirect ($redirect . '?redirect=' . urlencode ($this->request_uri ()));
 		}
 	}
 
@@ -1074,9 +1081,9 @@ class Controller {
 	public function require_admin ($redirect = '/admin') {
 		if (! User::require_admin ()) {
 			if (User::require_2fa ()) {
-				$this->redirect ('/user/2fa?redirect=' . urlencode ($_SERVER['REQUEST_URI']));
+				$this->redirect ('/user/2fa?redirect=' . urlencode ($this->request_uri ()));
 			}
-			$this->redirect ($redirect . '?redirect=' . urlencode ($_SERVER['REQUEST_URI']));
+			$this->redirect ($redirect . '?redirect=' . urlencode ($this->request_uri ()));
 		}
 	}
 
