@@ -1103,7 +1103,7 @@ class Controller {
 		$redirect = in_array ('admin', $args) ? '/admin' : '/user/login';
 		foreach ($args as $resource) {
 			if (! User::require_acl ($resource)) {
-				$this->redirect ($redirect . '?redirect=' . urlencode ($_SERVER['REQUEST_URI']));
+				$this->redirect ($redirect . '?redirect=' . urlencode ($this->request_uri ()));
 			}
 		}
 	}
