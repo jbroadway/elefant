@@ -22,7 +22,10 @@ $g2fa = new Google2FA (
 $secret = '';
 if (! isset ($u->userdata['2fa_secret'])) {
 	$secret = $g2fa->generateSecretKey (32);
-	$u->userdata['2fa_secret'] = $secret;
+	$userdata = $u->userdata;
+	$userdata['2fa_secret'] = $secret;
+	$u->userdata = $userdata;
+
 	if (! $u->put ()) {
 		echo '<p>' . __ ('Unable to generate 2-factor secret code. Please try again later.') . '</p>';
 		echo '<p><a href="/user">' . __ ('Continue') . '</a></p>';
