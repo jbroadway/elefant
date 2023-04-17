@@ -396,6 +396,7 @@ class User extends ExtendedModel {
 		if (self::is_2fa_required ()) {
 			return self::has_verified_2fa ();
 		}
+		return true;
 	}
 
 	/**
