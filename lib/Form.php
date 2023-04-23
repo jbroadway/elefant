@@ -392,7 +392,7 @@ class Form {
 			return true;
 		}
 
-		if (strpos ($_SERVER['HTTP_REFERER'], $domain) === false && $_SERVER['HTTP_REFERER'] !== null) {
+		if ($_SERVER['HTTP_REFERER'] !== null && strpos ($_SERVER['HTTP_REFERER'], $domain) === false) {
 			return false;
 		}
 
