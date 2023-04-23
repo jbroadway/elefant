@@ -387,7 +387,7 @@ class Form {
 	public function verify_referrer () {
 		$domain = conf ('General', 'site_domain');
 
-		if ($domain === '' || $domain === false || ! isset ($_SERVER['HTTP_REFERER'])) {
+		if ($domain === '' || $domain === false || $domain === null || ! isset ($_SERVER['HTTP_REFERER'])) {
 			// Can't verify if domain isn't set
 			return true;
 		}
