@@ -669,7 +669,7 @@ class User extends ExtendedModel {
 	 */
 	public static function logout ($redirect_to = FALSE, $path = '/', $domain = false, $secure = false, $httponly = true) {
 		if (self::$user === FALSE) {
-			self::require_login ();
+			self::require_login (TRUE);
 		}
 		if (Appconf::user ('User', 'multi_login')) {
 			user\Session::clear ($_SESSION['session_id']);
