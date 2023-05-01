@@ -2,10 +2,20 @@
 
 namespace user\Auth\OAuth\Storage;
 
+use OAuth2\Storage\AuthorizationCodeInterface;
+use OAuth2\Storage\AccessTokenInterface;
+use OAuth2\Storage\ClientCredentialsInterface;
 use OAuth2\OpenID\Storage\UserClaimsInterface;
+use OAuth2\Storage\UserCredentialsInterface;
+use OAuth2\Storage\RefreshTokenInterface;
+use OAuth2\Storage\JwtBearerInterface;
+use OAuth2\Storage\ScopeInterface;
+use OAuth2\Storage\PublicKeyInterface;
 use OAuth2\OpenID\Storage\AuthorizationCodeInterface as OpenIDAuthorizationCodeInterface;
 use InvalidArgumentException;
 use DB;
+use User;
+use Appconf;
 
 /**
  * Simple DB storage for all storage types
@@ -376,12 +386,12 @@ class DBStorage implements
      * @return bool
      */
     protected function checkPassword ($user, $password) {
-        return $user['password'] == $this->hashPassword ($password);
+        return hash_equals (crypt ($password, $user['password']), $user['password']);
     }
 
     // use a secure hashing algorithm when storing passwords. Override this for your application
     protected function hashPassword ($password) {
-        return sha1 ($password);
+        return User::encrypt_pass ($password);
     }
 
     /**
@@ -389,15 +399,14 @@ class DBStorage implements
      * @return array|bool
      */
     public function getUser ($username) {
-        $userInfo = DB::single_array (sprintf ('SELECT * from %s where username=?', $this->config['user_table']), compact ('username'));
+        $userInfo = DB::single_array (sprintf ('SELECT * from %s where email=?', $this->config['user_table']), compact ('username'));
 
         if (! $userInfo) {
             return false;
         }
 
-        // the default behavior is to use "username" as the user_id
         return array_merge ([
-            'user_id' => $username
+            'user_id' => $userInfo['id']
         ], $userInfo);
     }
 
@@ -417,14 +426,23 @@ class DBStorage implements
         // if it exists, update it.
         if ($this->getUser ($username)) {
             return DB::execute (
-                sprintf ('UPDATE %s SET password=?, first_name=?, last_name=? where username=?', $this->config['user_table']),
-                compact ('password', 'firstName', 'lastName', 'username', 'username')
+                sprintf ('UPDATE %s SET password=?, name=? where email=?', $this->config['user_table']),
+                [$password, $firstName . ' ' . $lastName, $username]
             );
         }
         
         return DB::execute (
-            sprintf ('INSERT INTO %s (username, password, first_name, last_name) VALUES (?, ?, ?, ?)', $this->config['user_table']),
-            compact ('username', 'password', 'firstName', 'lastName')
+            sprintf ('INSERT INTO %s (email, password, name, type, signed_up, updated, userdata, about) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', $this->config['user_table']),
+            [
+                $username,
+                $password,
+                $firstName . ' ' . $lastName,
+                Appconf::user ('User', 'default_role'),
+                gmdate ('Y-m-d H:i:s'),
+                gmdate ('Y-m-d H:i:s'),
+                '[]',
+                ''
+            ]
         );
     }
 

@@ -37,35 +37,31 @@ use user\Auth\OAuth\Storage\DBStorage;
  * Useful for secure authentication of APIs.
  *
  * Usage:
- *
- *   <?php
- *
- *   $this->require_auth (user\Auth\OAuth::init (
- *     $this,     // Controller
- *     $cache,    // Memcache
- *     3600       // Timeout
- *   ));
+ * 
+ *   $this->require_auth (user\Auth\OAuth::init ());
  *
  *   // User has been authorized via OAuth
- *
- *   ?>
+ * 
+ *   // Or to create a token controller
+ * 
+ *   use user\Auth\OAuth;
+ * 
+ *   $server = OAuth::init_server ();
+ *   $request = OAuth2\Request::createFromGlobals ();
+ *   $response = new Oauth2\Response ();
+ * 
+ *   if (! $server->validateAuthorizeRequest ($request, $response)) {
+ *     $response->send ();
+ *     exit;
+ *   }
+ * 
+ *   // Create a form to let the user authorize the app
+ * 
+ *   $authorized = ($_POST['authorized'] === 'yes');
+ *   $server->handleAuthorizeRequest ($request, $response, $authorized, User::current ()->id);
+ *   $response->send ();
  */
 class OAuth {
-	/**
-	 * A copy of the controller object required by `init()`.
-	 */
-	public static $controller = null;
-
-	/**
-	 * A copy of the cache object required by `init()`.
-	 */
-	public static $cache = null;
-
-	/**
-	 * A timeout length for caching private API keys, set vai `init()`.
-	 * Defaults to one hour.
-	 */
-	public static $timeout = 3600;
 	
 	/**
 	 * The user ID of the last user to be verified. Defaults to 0.
@@ -73,21 +69,30 @@ class OAuth {
 	public static $user_id = 0;
 
 	private static $storage;
-	private static $provider;
+
+	private static $server;
 
 	/**
-	 * Returns an array with the verifier and request method callbacks
-	 * that will be passed to `simple_auth()`.
+	 * Initialize the server. Note: Must be done for any page interacting
+	 * with OAuth, not just the API endpoints used via `require_auth()`.
+	 * For pages that need to interact with the server directly, this
+	 * method returns the server object for you to do so.
 	 */
-	public static function init ($controller, $cache, $timeout = 3600) {
-		self::$controller = $controller;
-		self::$cache = $cache;
-		self::$timeout = $timeout;
-
+	public static function init_server () {
 		self::$storage = new DBStorage ();
 		self::$server = new Server (self::$storage);
 		self::$server->addGrantType (new ClientCredentials (self::$storage));
 		self::$server->addGrantType (new AuthorizationCode (self::$storage));
+		return self::$server;
+	}
+
+	/**
+	 * Returns an array with the verifier and request method callbacks
+	 * that will be passed to `simple_auth()`. Note: Automatically calls
+	 * `init_server()` for you.
+	 */
+	public static function init () {
+		self::init_server ();
 
 		return array (
 			array ('user\Auth\OAuth', 'verifier'),
@@ -96,16 +101,16 @@ class OAuth {
 	}
 
 	/**
-	 * Verifies the authenticity of the provided OAuth token.
+	 * Verifies the authenticity of the provided OAuth resource request.
 	 */
-	public static function verifier ($token, $nonce, $data) {
-		if (true /* token valid */) {
-			error_log (sprintf ("OAuth auth failed for token %s", $token));
+	public static function verifier ($request) {
+		if (! self::$server->verifyResourceRequest ($request)) {
 			return false;
 		}
 
-		// They have the private key, save the user
-		self::$user_id = $user_id;
+		// Get the user ID of the token owner
+		$token = self::$server->getAccessTokenData ($request);
+		self::$user_id = $token['user_id'];
 		return true;
 	}
 
@@ -117,41 +122,12 @@ class OAuth {
 	 * value.
 	 */
 	public static function method ($callback) {
-		// Check if user and pass have been sent first.
-		if (! isset ($_SERVER['PHP_AUTH_USER']) || ! isset ($_SERVER['PHP_AUTH_PW'])) {
-			header ('WWW-Authenticate: Basic realm="API Access"');
-			header ('HTTP/1.0 401 Unauthorized');
+		// Call the verifier with the resource request
+		if (! call_user_func ($callback, Request::createFromGlobals ())) {
+			self::$server->getResponse ()->send ();
 			exit;
 		}
 
-		// Compile request data for comparison
-		$method = self::$controller->request_method ();
-		$data = '';
-		switch ($method) {
-			case 'GET':
-				$data = $method . \conf ('General', 'site_domain') . $_SERVER['REQUEST_URI'];
-				break;
-			case 'PUT':
-			case 'POST':
-			case 'DELETE':
-			default:
-				$data = $method . \conf ('General', 'site_domain') . $_SERVER['REQUEST_URI'] . self::$controller->get_put_data ();
-				break;
-		}
-
-		// Avoid problems with %20 vs +		
-		$data = str_replace (['%20', '%28', '%29'], ['+', '(', ')'], $data);
-
-		// Avoid problems with %2f vs %2F
-		$data = strtolower ($data);
-
-		// Call the verifier with the token, hmac hash, and request data
-		if (! call_user_func ($callback, $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'], $data)) {
-			header ('WWW-Authenticate: Basic realm="API Access"');
-			header ('HTTP/1.0 401 Unauthorized');
-			exit;
-		}
-
-		return TRUE;
+		return true;
 	}
 }
