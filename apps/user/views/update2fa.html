@@ -1,19 +1,20 @@
 {% if global_2fa == 'admin' %}
 	{% if User::require_admin (true) %}
-		<p>{"2-factor authentication is required for your account."}</p>
+<p><b>{"2-factor authentication is required for your account."}</b></p>
 	{% end %}
 {% elseif global_2fa == 'all' %}
-	<p>{"2-factor authentication is required for your account."}</p>
+<p><b>{"2-factor authentication is required for your account."}</b></p>
 {% end %}
 
-<p>{"Scan the following QR code using your 2-factor authentication app of choice."}</p>
+<p>{"1. Scan the following QR code using your 2-factor authentication app of choice."}</p>
 
-<p><img src="{{qrcode_url}}" id="qrcode-2fa" /></p>
+<p style="padding: 0; margin: 0"><img src="{{qrcode_url}}" id="qrcode-2fa" /></p>
 
 <form method="POST" id="{{_form}}">
 
+<p>{"2. Enter one-time password from your authentication app and click <b>Verify</b> to enable 2-factor authentication."}</p>
+
 <p>
-	{"Enter one-time password to verify your authenticator code. Please note that this will enable 2-factor authentication on your account."}<br />
 	<input type="text" name="code" /> <button>{"Verify"}</button>
 	<span class="notice" id="code-notice"><br />Invalid or expired code. Please try again.</span>
 </p>
