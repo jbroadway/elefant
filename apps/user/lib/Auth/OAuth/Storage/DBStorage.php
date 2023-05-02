@@ -122,7 +122,7 @@ class DBStorage implements
      */
     public function checkRestrictedGrantType ($client_id, $grant_type) {
         $details = $this->getClientDetails ($client_id);
-        if (isset ($details['grant_types'])) {
+        if (isset ($details['grant_types']) && $details['grant_types'] != '') {
             $grant_types = explode (' ', $details['grant_types']);
 
             return in_array ($grant_type, (array) $grant_types);

@@ -21,5 +21,7 @@
  *     }
  */
 
+$page->layout = false;
+
 $server = user\Auth\OAuth::init_server ();
 $server->handleTokenRequest (OAuth2\Request::createFromGlobals ())->send ();

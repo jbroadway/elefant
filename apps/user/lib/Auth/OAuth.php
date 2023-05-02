@@ -28,8 +28,10 @@ namespace user\Auth;
 
 use OAuth2\Server;
 use OAuth2\Request;
+use OAuth2\Scope;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\ClientCredentials;
+use OAuth2\GrantType\RefreshToken;
 use user\Auth\OAuth\Storage\DBStorage;
 
 /**
@@ -78,11 +80,13 @@ class OAuth {
 	 * For pages that need to interact with the server directly, this
 	 * method returns the server object for you to do so.
 	 */
-	public static function init_server () {
+	public static function init_server ($scopes = ['basic']) {
 		self::$storage = new DBStorage ();
 		self::$server = new Server (self::$storage);
 		self::$server->addGrantType (new ClientCredentials (self::$storage));
+		self::$server->addGrantType (new RefreshToken (self::$storage));
 		self::$server->addGrantType (new AuthorizationCode (self::$storage));
+		self::$server->setScopeUtil (new Scope (['supported_scopes' => $scopes]));
 		return self::$server;
 	}
 
@@ -91,8 +95,8 @@ class OAuth {
 	 * that will be passed to `simple_auth()`. Note: Automatically calls
 	 * `init_server()` for you.
 	 */
-	public static function init () {
-		self::init_server ();
+	public static function init ($scopes = ['basic']) {
+		self::init_server ($scopes);
 
 		return array (
 			array ('user\Auth\OAuth', 'verifier'),

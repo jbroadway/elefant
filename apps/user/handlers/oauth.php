@@ -19,7 +19,8 @@ $request = OAuth2\Request::createFromGlobals ();
 $response = new OAuth2\Response ();
 
 if (! $server->validateAuthorizeRequest ($request, $response)) {
-	$response->send ();
+	info ($response);
+	//$response->send ();
 	exit;
 }
 
@@ -27,7 +28,7 @@ if (! $server->validateAuthorizeRequest ($request, $response)) {
 $form = new Form ('post', $this);
 
 echo $form->handle (function ($form) use ($server, $request, $response) {
-	$authorized = ($_POST['authorized'] === 'yes');
+	$authorized = ($_POST['authorize'] === 'yes');
 	$server->handleAuthorizeRequest ($request, $response, $authorized, User::current ()->id);
 	$response->send ();
 });
