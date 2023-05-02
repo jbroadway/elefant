@@ -19,8 +19,7 @@ $request = OAuth2\Request::createFromGlobals ();
 $response = new OAuth2\Response ();
 
 if (! $server->validateAuthorizeRequest ($request, $response)) {
-	info ($response);
-	//$response->send ();
+	$response->send ();
 	exit;
 }
 
