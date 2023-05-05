@@ -189,7 +189,7 @@ class DBStorage implements
      * @return mixed
      */
     public function getAuthorizationCode ($code) {
-        $code = DB::single_array (sprintf ('SELECT * from %s where authorization_code = :code', $this->config['code_table']), compact('code'));
+        $code = DB::single_array (sprintf ('SELECT * from %s where authorization_code = ?', $this->config['code_table']), compact('code'));
 
         if ($code) {
             // convert date string back to timestamp

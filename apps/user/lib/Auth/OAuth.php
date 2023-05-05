@@ -83,9 +83,9 @@ class OAuth {
 	public static function init_server ($scopes = ['basic']) {
 		self::$storage = new DBStorage ();
 		self::$server = new Server (self::$storage);
+		self::$server->addGrantType (new AuthorizationCode (self::$storage));
 		self::$server->addGrantType (new ClientCredentials (self::$storage));
 		self::$server->addGrantType (new RefreshToken (self::$storage));
-		self::$server->addGrantType (new AuthorizationCode (self::$storage));
 		self::$server->setScopeUtil (new Scope (['supported_scopes' => $scopes]));
 		return self::$server;
 	}
