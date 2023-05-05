@@ -203,6 +203,7 @@ CREATE TABLE #prefix#oauth_clients (
 	grant_types           VARCHAR(80),
 	scope                 VARCHAR(4000),
 	user_id               VARCHAR(80),
+	client_name           VARCHAR(80)   NOT NULL DEFAULT '',
 	PRIMARY KEY (client_id)
 );
 

@@ -1,11 +1,9 @@
 <form method="post" id="{{_form}}">
-	<p>
-		<label>Do you authorize this app to access your account on your behalf?</label>
-	</p>
+	<p>{{request_text|none}}</p>
 
 	<p>
-		<button name="authorize" value="yes">{"Yes"}</button>
+		<button name="authorize" value="yes">{"Allow"}</button>
 		&nbsp;
-		<button name="authorize" value="no">{"No"}</button>
+		<button name="authorize" value="no">{"Deny"}</button>
 	</p>
 </form>
