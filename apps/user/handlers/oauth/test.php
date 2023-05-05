@@ -17,8 +17,19 @@
  *        https://example.com/user/oauth/test/client
  * 
  * You should be forwarded to the OAuth authorization controller and if you
- * approve the request, you should see a response that includes
- * `{"authenticated": true}` on success.
+ * approve the request, you should see a response like the following on
+ * success:
+ * 
+ *     {
+ *         "success": true,
+ *         "data": {
+ *             "access_token": "2fe609f953658e0c3d40ff3fca4384683a74c074",
+ *             "refresh_token": "08522b790d6d620d4b681500fa21cbf0b400159e",
+ *             "response": {
+ *                 "authenticated": true
+ *             }
+ *         }
+ *     }
  */
 
 $page->layout = false;
@@ -30,6 +41,7 @@ class OAuthRestTest extends \Restful {
 	private static $state = 'VdxVY1SJvesRad1CJ4GJfkne0mF6nphU';
 	private static $client_id = 'abc123';
 	private static $secret = 'def456';
+	private static $redirect_uri = '';
 
 	/**
 	 * An authenticated API endpoint that returns `{"authenticated": true}` on success.
@@ -49,7 +61,14 @@ class OAuthRestTest extends \Restful {
 		// Require admin to be logged in before these will work
 		$this->controller->require_admin ();
 
-		$this->controller->redirect ('/user/oauth?client_id=' . urlencode (self::$client_id) . '&response_type=code&state=' . urlencode (self::$state));
+		$client_id = urlencode (self::$client_id);
+		$state = urlencode (self::$state);
+		$uri = urlencode ($this->controller->absolutize ('/user/oauth/test/token'));
+
+		$this->controller->redirect (sprintf (
+			'/user/oauth?client_id=%s&response_type=code&state=%s&redirect_uri=%s&scope=basic',
+			$client_id, $state, $uri
+		));
 	}
 
 	/**
@@ -80,9 +99,10 @@ class OAuthRestTest extends \Restful {
 		$url = 'http://localhost/user/oauth/token';
 
 		$q = http_build_query ([
-			'grant_type' => 'client_credentials',
+			'grant_type' => 'authorization_code',
 			'code' => $_GET['code'],
-			'client_id' => self::$client_id
+			'client_id' => self::$client_id,
+			'redirect_uri' => $this->controller->absolutize ('/user/oauth/test/token')
 		]);
 
 		curl_setopt ($ch, CURLOPT_HTTPHEADER, [
@@ -109,6 +129,7 @@ class OAuthRestTest extends \Restful {
 		}
 
 		$access_token = $res->access_token;
+		$refresh_token = $res->refresh_token;
 
 		// Make API request
 
@@ -137,7 +158,11 @@ class OAuthRestTest extends \Restful {
 			return $this->error ('Error parsing endpoint response: ' . $body);
 		}
 
-		return $res->data;
+		return [
+			'access_token' => $access_token,
+			'refresh_token' => $refresh_token,
+			'response' => $res->data
+		];
 	}
 }
 

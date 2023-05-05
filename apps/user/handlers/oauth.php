@@ -2,10 +2,12 @@
 
 /**
  * OAuth authorization controller. Authorizes the third party application with the user.
+ * The third party application will need an entry in the `#prefix#oauth_clients` database
+ * table with the associated `client_id`.
  * 
  * Usage:
  * 
- *     https://example.com/user/oauth?response_type=code&client_id=abc123&state=xyz
+ *     https://example.com/user/oauth?response_type=code&scope=basic&client_id=abc123&state=xyz&redirect_uri=https://...
  */
 
 // Ensure the user is authorized in the normal way first
