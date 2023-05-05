@@ -113,6 +113,11 @@ class DB {
 	public static $result_count = 0;
 
 	/**
+	 * The total number of rows affected by the last execute() statement.
+	 */
+	public static $execute_count = 0;
+
+	/**
 	 * Open a database connection and add it to the pool. Accepts
 	 * an array of connection info taken from the global `conf()`.
 	 */
@@ -304,14 +309,24 @@ class DB {
 	 * Execute a statement and return true/false.
 	 */
 	public static function execute () {
+		self::$execute_count = 0;
 		try {
 			list ($stmt, $args) = self::prepare (func_get_args (), 1);
 			self::$query_count++;
-			return $stmt->execute ($args);
+			$res = $stmt->execute ($args);
+			self::$execute_count = $stmt->rowCount ();
+			return $res;
 		} catch (PDOException $e) {
 			self::$error = $e->getMessage ();
 			return false;
 		}
+	}
+
+	/**
+	 * Get the affected rows from the last execute() statement.
+	 */
+	public static function execute_count () {
+		return self::$execute_count;
 	}
 
 	/**
@@ -340,6 +355,22 @@ class DB {
 			$stmt->execute ($args);
 			self::$result_count++;
 			return $stmt->fetchObject ();
+		} catch (PDOException $e) {
+			self::$error = $e->getMessage ();
+			return false;
+		}
+	}
+	
+	/**
+	 * Fetch a single result as an array.
+	 */
+	public static function single_array () {
+		try {
+			list ($stmt, $args) = self::prepare (func_get_args ());
+			self::$query_count++;
+			$stmt->execute ($args);
+			self::$result_count++;
+			return $stmt->fetch (PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 			self::$error = $e->getMessage ();
 			return false;

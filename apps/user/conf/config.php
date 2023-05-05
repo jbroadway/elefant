@@ -93,6 +93,6 @@ handler = user/admin
 name = Accounts
 install = user/upgrade
 upgrade = user/upgrade
-version = 1.1.6-stable
+version = 1.1.7-stable
 
 ; */ ?>

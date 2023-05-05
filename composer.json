@@ -10,7 +10,8 @@
 		"pda/pheanstalk": "^4.0",
 		"google/apiclient": "^2.12.1",
 		"pragmarx/google2fa-qrcode": "^3.0",
-		"chillerlan/php-qrcode": "^4.3"
+		"chillerlan/php-qrcode": "^4.3",
+		"bshaffer/oauth2-server-php": "^1.10"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^8.5"
