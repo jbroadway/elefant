@@ -34,7 +34,7 @@ $form->data->_countries = user\Data::countries ();
 // 2fa
 $global_2fa = Appconf::user ('User', '2fa');
 $form->data->global_2fa = $global_2fa;
-$form->data->_2fa = isset ($u->userdata['2fa']) ? $u->userdata['2fa'] : 'on';
+$form->data->_2fa = isset ($u->userdata['2fa']) ? $u->userdata['2fa'] : 'off';
 
 $form->data->photo_url = $form->data->photo;
 if ($form->data->photo_url != '' && strpos ($form->data->photo_url, '/') != 0) {
