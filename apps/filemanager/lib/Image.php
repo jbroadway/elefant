@@ -79,6 +79,7 @@ class Image {
 				return $file . '#unsupported-format';
 			}
 		} catch (Exception $e) {
+			error_log ('Resize failed: ' . $e->getMessage ());
 			return $file . '#exception-caught';
 		}
 
@@ -178,6 +179,7 @@ class Image {
 				return $file . '#libjpg-missing';
 			}
 		} catch (Exception $e) {
+			error_log ('Reorient failed: ' . $e->getMessage ());
 			return $file . '#exception-caught';
 		}
 
