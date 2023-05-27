@@ -138,6 +138,8 @@ class User extends ExtendedModel {
 	public static $versions_display_fields = [
 		'name' => 'Name'
 	];
+
+	private static $global_2fa = null;
 	
 	private static $_error = false;
 
@@ -286,6 +288,7 @@ class User extends ExtendedModel {
 				self::$user->session_id = self::$session->session_id;
 				self::$user->expires = self::$session->expires;
 				$_SESSION['session_id'] = self::$user->session_id;
+				unset ($_SESSION['verified_2fa']);
 			} else {
 				self::$user->session_id = md5 (uniqid (mt_rand (), 1));
 				self::$user->expires = gmdate ('Y-m-d H:i:s', time () + 2592000); // 1 month
@@ -300,6 +303,7 @@ class User extends ExtendedModel {
 					}
 				}
 				$_SESSION['session_id'] = self::$user->session_id;
+				unset ($_SESSION['verified_2fa']);
 			}
 
 			// Save the user agent so we can verify it against future sessions,
@@ -382,9 +386,17 @@ class User extends ExtendedModel {
 	 *
 	 *     ?>
 	 */
-	public static function require_login () {
+	public static function require_login ($skip_2fa = false) {
 		$class = get_called_class ();
-		return simple_auth (array ($class, 'verifier'), array ($class, 'method'));
+		$res = simple_auth (array ($class, 'verifier'), array ($class, 'method'));
+		if (!$res) return false;
+
+		if ($skip_2fa) return true;
+
+		if (self::is_2fa_required ()) {
+			return self::has_verified_2fa ();
+		}
+		return true;
 	}
 
 	/**
@@ -411,8 +423,18 @@ class User extends ExtendedModel {
 	 *
 	 *     ?>
 	 */
-	public static function require_admin () {
-		return self::require_acl ('admin');
+	public static function require_admin ($skip_2fa = false) {
+		return self::require_acl ('admin', $skip_2fa);
+
+		if (! self::require_login (true)) return false;
+		if (! User::is_valid ($skip_2fa)) {
+			return false;
+		}
+		$acl = self::acl ();
+		if (! $acl->allowed ('admin', self::$user)) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -420,6 +442,7 @@ class User extends ExtendedModel {
 	 * a given resource.
 	 */
 	public static function require_acl ($resource) {
+		if (! self::require_login (true)) return false;
 		if (! User::is_valid ()) {
 			return false;
 		}
@@ -436,11 +459,86 @@ class User extends ExtendedModel {
 	/**
 	 * Check if a user is valid.
 	 */
-	public static function is_valid () {
+	public static function is_valid ($skip_2fa = false) {
 		if (is_object (self::$user) && self::$user->session_id == $_SESSION['session_id']) {
-			return TRUE;
+			if ($skip_2fa) return true;
+
+			if (self::is_2fa_required ()) {
+				return self::has_verified_2fa ();
+			}
+
+			return true;
 		}
-		return self::require_login ();
+		return self::require_login ($skip_2fa);
+	}
+
+	/**
+	 * Check if a user session is valid, skipping the 2fa check on the login.
+	 */
+	public static function is_session_valid () {
+		if (! self::require_login (true)) return false;
+		return (is_object (self::$user) && self::$user->session_id == $_SESSION['session_id']);
+	}
+
+	/**
+	 * Has the current user verified their session via 2fa yet?
+	 */
+	public static function has_verified_2fa () {
+		return (is_object (self::$user) && isset ($_SESSION['verified_2fa']));
+	}
+
+	/**
+	 * Mark 2fa as verified so user passes authentication.
+	 */
+	public static function verify_2fa () {
+		if (is_object (self::$user)) {
+			$_SESSION['verified_2fa'] = true;
+		}
+	}
+
+	/**
+	 * Use after require_login() to verify the user has verified their 2fa.
+	 */
+	public static function require_2fa () {
+		return (User::is_session_valid () && User::is_2fa_required () && ! User::has_verified_2fa ());
+	}
+
+	/**
+	 * Is 2fa required for the current session (based on the site and user settings)?
+	 */
+	public static function is_2fa_required () {
+		if (self::$global_2fa === null) {
+			self::$global_2fa = Appconf::user ('User', '2fa');
+		}
+
+		switch (self::$global_2fa) {
+			case 'admin':
+				if (is_object (self::$user)) {
+					$acl = self::acl ();
+					if ($acl->allowed ('admin', self::$user)) {
+						return true;
+					}
+
+					if (isset (self::$user->userdata['2fa']) && self::$user->userdata['2fa'] == 'on') {
+						return true;
+					}
+				}
+				return false;
+				break;
+			
+			case 'all':
+				return true;
+				break;
+
+			case 'optional':
+			default:
+				if (isset (self::$user->userdata['2fa']) && self::$user->userdata['2fa'] == 'on') {
+					return true;
+				}
+				return false;
+				break;
+				
+			}
 	}
 
 	/**
@@ -571,7 +669,7 @@ class User extends ExtendedModel {
 	 */
 	public static function logout ($redirect_to = FALSE, $path = '/', $domain = false, $secure = false, $httponly = true) {
 		if (self::$user === FALSE) {
-			self::require_login ();
+			self::require_login (TRUE);
 		}
 		if (Appconf::user ('User', 'multi_login')) {
 			user\Session::clear ($_SESSION['session_id']);
@@ -581,6 +679,7 @@ class User extends ExtendedModel {
 			self::$user->put ();
 		}
 		$_SESSION['session_id'] = NULL;
+		unset ($_SESSION['verified_2fa']);
 
 		$name = conf ('General', 'session_name');
 		if (isset ($_COOKIE[$name])) {

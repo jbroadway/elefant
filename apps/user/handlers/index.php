@@ -11,11 +11,16 @@ if ($res) { echo $res; return; }
 $page->id = 'user';
 
 if (count ($this->params) == 0) {
-	if (! User::require_login ()) {
+	if (! User::require_login (true)) {
 		$page->title = __ ('Members');
 		echo $this->run ('user/login');
 		return;
 	}
+	
+	if (User::require_2fa ()) {
+		$this->redirect ('/user/2fa?redirect=/user');
+	}
+
 	$user = User::$user;
 	$page->title = Template::sanitize ($user->name);
 	$data = $user->orig ();

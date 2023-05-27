@@ -387,12 +387,12 @@ class Form {
 	public function verify_referrer () {
 		$domain = conf ('General', 'site_domain');
 
-		if ($domain === '' || $domain === false) {
+		if ($domain === '' || $domain === false || $domain === null || ! isset ($_SERVER['HTTP_REFERER'])) {
 			// Can't verify if domain isn't set
 			return true;
 		}
 
-		if (strpos ($_SERVER['HTTP_REFERER'], $domain) === false && $_SERVER['HTTP_REFERER'] !== null) {
+		if ($_SERVER['HTTP_REFERER'] !== null && strpos ($_SERVER['HTTP_REFERER'], $domain) === false) {
 			return false;
 		}
 

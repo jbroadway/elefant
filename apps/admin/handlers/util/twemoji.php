@@ -30,7 +30,7 @@
  * https://github.com/twitter/twemoji
  */
 
-$page->add_script ('https://unpkg.com/browse/twemoji@13.0.1/dist/twemoji.min.js');
+$page->add_script ('https://unpkg.com/twemoji@13.0.1/dist/twemoji.min.js');
 $page->add_style ('<style>img.emoji { height: 1em; width: 1em; margin: 0 0.5em 0 0.1em; vertical-align: -0.1em; } </style>');
 
 if (isset ($data['body'])) {

@@ -48,12 +48,21 @@ if ($redir === false || $_POST['redirect'] !== $redir['path'] && $_POST['redirec
 	$_POST['redirect'] = '/user';
 }
 
-if (! User::require_login ()) {
+if (! User::require_login (! $this->internal)) {
+	
+	if (! $this->internal && User::require_2fa ()) {
+		$this->redirect ('/user/2fa?redirect=' . $_POST['redirect']);
+	}
+
 	if (! $this->internal && ! empty ($_POST['username'])) {
 		echo '<p>' . __ ('Incorrect email or password, please try again.') . '</p>';
 	}
 	$_POST['signup_handler'] = Appconf::user ('Custom Handlers', 'user/signup');
 	echo $tpl->render ('user/login', $_POST);
 } elseif (! $this->internal) {
+	if (User::require_2fa ()) {
+		$this->redirect ('/user/2fa?redirect=' . $_POST['redirect']);
+	}
+
 	$this->redirect ($_POST['redirect']);
 }

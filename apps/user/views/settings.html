@@ -9,6 +9,13 @@
 <input type="checkbox" name="login_twitter" id="login_twitter" value="yes"{% if login_twitter %} checked{% end %} /> {"Twitter"}<br />
 <input type="checkbox" name="login_persona" id="login_persona" value="yes"{% if login_persona %} checked{% end %} /> {"Persona"}<br />
 
+<p>{"2-factor authentication"}:<br />
+	<select name="_2fa">
+		<option value="optional"{% if _2fa == 'optional' %} selected{% end %}>Optional (user decides)</option>
+		<option value="admin"{% if _2fa == 'admin' %} selected{% end %}>Required for admin users</option>
+		<option value="all"{% if _2fa == 'all' %} selected{% end %}>Required for all users</option>
+</select></p>
+
 <p>{"Default member role"}:<br />
 <select name="default_role">
 {% foreach roles %}

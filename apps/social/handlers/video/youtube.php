@@ -34,9 +34,9 @@ if (isset ($params['v'])) {
 }
 
 if (isset ($params['t'])) {
-	$data['timecode'] = '?start=' . youtube_to_seconds ($params['t']);
+	$data['timecode'] = '?start=' . youtube_to_seconds ($params['t']) . '&rel=0';
 } else {
-	$data['timecode'] = '';
+	$data['timecode'] = '?rel=0';
 }
 
 $data['width'] = isset ($data['width']) ? $data['width'] : 480;
