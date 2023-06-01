@@ -201,6 +201,11 @@ class User extends ExtendedModel {
 			$domain = $domain ? $domain : conf ('General', 'session_domain');
 			$handler_class = conf ('General', 'session_save_handler');
 
+			global $controller;
+			if (! $secure && $controller->is_https ()) {
+				$secure = true;
+			}
+
 			if ($domain === 'full') {
 				$domain = conf ('General', 'site_domain');
 			} elseif ($domain === 'top') {
