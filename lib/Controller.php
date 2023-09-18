@@ -1037,6 +1037,10 @@ class Controller {
 		if (isset ($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
 			return true;
 		}
+
+		if (isset ($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+			return true; // Cloudflare as proxy
+		}
 		
 		return false;
 	}
