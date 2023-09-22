@@ -1158,4 +1158,18 @@ class Controller {
 		}
 		return DB::execute ('insert into #prefix#apps (name, version) values (?, ?)', $app, $version);
 	}
+
+	/**
+	 * Log an error via `error_log()`, but if debug is on then also send it to the client
+	 * via an X-Logged-Error header. These can be used to pass a sequence of error logs
+	 * to the client for easier debugging. Can be substituted for `error_log()` in handlers
+	 * with `$this->error_log ('Log me')` or in form handlers with the slightly longer
+	 * `$form->controller->error_log()`.
+	 */
+	public function error_log ($message, $message_type = 0) {
+		if (conf ('General', 'debug')) {
+			$this->header ('X-Logged-Error: ' . $message, false);
+		}
+		return error_log ($message, $message_type);
+	}
 }
