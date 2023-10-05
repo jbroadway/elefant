@@ -1021,9 +1021,11 @@ class Controller {
 	 * from HTTP_X_FORWARDED_FOR which may be set by a load balancer.
 	 */
 	public function remote_addr () {
-		return isset ($_SERVER['HTTP_X_FORWARDED_FOR'])
-			? $_SERVER['HTTP_X_FORWARDED_FOR']
-			: $_SERVER['REMOTE_ADDR'];
+		return isset ($_SERVER['HTTP_CF_CONNECTING_IP'])
+			? $_SERVER['HTTP_CF_CONNECTING_IP']
+			: (isset ($_SERVER['HTTP_X_FORWARDED_FOR'])
+				? $_SERVER['HTTP_X_FORWARDED_FOR']
+				: $_SERVER['REMOTE_ADDR']);
 	}
 
 	/**
