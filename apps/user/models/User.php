@@ -392,6 +392,8 @@ class User extends ExtendedModel {
 	 *     ?>
 	 */
 	public static function require_login ($skip_2fa = false) {
+		if (self::bypass_for_phpunit ()) return true;
+
 		$class = get_called_class ();
 		$res = simple_auth (array ($class, 'verifier'), array ($class, 'method'));
 		if (!$res) return false;
@@ -465,6 +467,8 @@ class User extends ExtendedModel {
 	 * Check if a user is valid.
 	 */
 	public static function is_valid ($skip_2fa = false) {
+		if (self::bypass_for_phpunit ()) return true;
+
 		if (is_object (self::$user) && self::$user->session_id == $_SESSION['session_id']) {
 			if ($skip_2fa) return true;
 
@@ -716,5 +720,12 @@ class User extends ExtendedModel {
 			global $controller;
 			$controller->redirect ($redirect_to);
 		}
+	}
+
+	/**
+	 * Returns whether we should bypass certain checks for PHPUnit tests.
+	 */
+	private static function bypass_for_phpunit () {
+		return (ELEFANT_ENV == 'test' && User::$user !== false);
 	}
 }
