@@ -141,6 +141,23 @@ class Page {
 	 */
 	public static $bypass_layout = false;
 
+	// Avoid deperated creation of dynamic properties by pre-defining allowed list here
+	public $id = '';
+	public $num = 0;
+	public $count = 0;
+	public $last = 0;
+	public $more = 0;
+	public $next = 0;
+	public $limit = 0;
+	public $offset = 0;
+	public $template_id = '';
+	public $window_title = '';
+	public $description = '';
+	public $keywords = '';
+	public $thumbnail = '';
+	public $extra = '';
+	public $access = 'public';
+
 	/**
 	 * Constructor method
 	 */
