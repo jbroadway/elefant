@@ -416,14 +416,16 @@ class Form {
 		$timeshift = ($timeshift !== false) ? $timeshift : $this->timeshift ();
 		$site_key = conf ('General', 'site_key');
 		$client = isset ($site_key) ? $site_key : $_SERVER['DOCUMENT_ROOT'];
-		$client .= isset ($_SERVER['HTTP_X_FORWARDED_FOR'])
-			? $_SERVER['HTTP_X_FORWARDED_FOR']
-			: $_SERVER['REMOTE_ADDR'];
+		$client .= isset ($_SERVER['HTTP_CF_CONNECTING_IP'])
+			? $_SERVER['HTTP_CF_CONNECTING_IP']
+			: (isset ($_SERVER['HTTP_X_FORWARDED_FOR'])
+				? $_SERVER['HTTP_X_FORWARDED_FOR']
+				: $_SERVER['REMOTE_ADDR']);
 		$client .= $_SERVER['HTTP_USER_AGENT'];
 		
 		$data = ($uri !== '') ? $uri : $_SERVER['REQUEST_URI'];
 		$key = '' . $timeshift . $client;
-		
+
 		return hash_hmac ('sha256', $data, $key);
 	}
 
@@ -481,9 +483,11 @@ class Form {
 		$timeshift = $this->timeshift (); // Token can be verified for between 120 and 180 minutes 
 		$site_key = conf ('General', 'site_key');
 		$client = isset ($site_key) ? $site_key : $_SERVER['DOCUMENT_ROOT'];
-		$client .= isset ($_SERVER['HTTP_X_FORWARDED_FOR'])
-			? $_SERVER['HTTP_X_FORWARDED_FOR']
-			: $_SERVER['REMOTE_ADDR'];
+		$client .= isset ($_SERVER['HTTP_CF_CONNECTING_IP'])
+			? $_SERVER['HTTP_CF_CONNECTING_IP']
+			: (isset ($_SERVER['HTTP_X_FORWARDED_FOR'])
+				? $_SERVER['HTTP_X_FORWARDED_FOR']
+				: $_SERVER['REMOTE_ADDR']);
 		$client .= $_SERVER['HTTP_USER_AGENT'];
 		
 		if ($uri === '') {

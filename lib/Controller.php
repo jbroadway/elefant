@@ -1021,9 +1021,11 @@ class Controller {
 	 * from HTTP_X_FORWARDED_FOR which may be set by a load balancer.
 	 */
 	public function remote_addr () {
-		return isset ($_SERVER['HTTP_X_FORWARDED_FOR'])
-			? $_SERVER['HTTP_X_FORWARDED_FOR']
-			: $_SERVER['REMOTE_ADDR'];
+		return isset ($_SERVER['HTTP_CF_CONNECTING_IP'])
+			? $_SERVER['HTTP_CF_CONNECTING_IP']
+			: (isset ($_SERVER['HTTP_X_FORWARDED_FOR'])
+				? $_SERVER['HTTP_X_FORWARDED_FOR']
+				: $_SERVER['REMOTE_ADDR']);
 	}
 
 	/**
@@ -1036,6 +1038,10 @@ class Controller {
 		
 		if (isset ($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
 			return true;
+		}
+
+		if (isset ($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+			return true; // Cloudflare as proxy
 		}
 		
 		return false;
@@ -1153,5 +1159,19 @@ class Controller {
 			return DB::execute ('update #prefix#apps set version = ? where name = ?', $version, $app);
 		}
 		return DB::execute ('insert into #prefix#apps (name, version) values (?, ?)', $app, $version);
+	}
+
+	/**
+	 * Log an error via `error_log()`, but if debug is on then also send it to the client
+	 * via an X-Logged-Error header. These can be used to pass a sequence of error logs
+	 * to the client for easier debugging. Can be substituted for `error_log()` in handlers
+	 * with `$this->error_log ('Log me')` or in form handlers with the slightly longer
+	 * `$form->controller->error_log()`.
+	 */
+	public function error_log ($message, $message_type = 0) {
+		if (conf ('General', 'debug')) {
+			$this->header ('X-Logged-Error: ' . $message, false);
+		}
+		return error_log ($message, $message_type);
 	}
 }
