@@ -122,9 +122,9 @@ class Appconf {
 	public static function __callStatic ($app, $args) {
 		array_unshift ($args, $app);
 		if (count ($args) === 4 && $args[3] !== null) {
-			return call_user_func_array ('self::set', $args);
+			return call_user_func_array ('Appconf::set', $args);
 		}
-		return call_user_func_array ('self::get', $args);
+		return call_user_func_array ('Appconf::get', $args);
 	}
 
 	/**
