@@ -30,7 +30,7 @@ foreach ($n->tree as $item) {
 	switch ($i18n->negotiation) {
 		case 'http':
 		case 'url':
-			echo Link::single ($_id, $item['data'] ?? '');
+			echo Link::single ($_id, $item->data ?? '');
 			break;
 		case 'cookie':
 			echo Link::single (
