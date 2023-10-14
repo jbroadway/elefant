@@ -20,32 +20,32 @@ class TreeTest extends TestCase {
 		/**
 		 * This is the tree on first install, just an index page.
 		 */
-		self::$n->tree = array (
-			(object) array (
+		self::$n->tree = [
+			(object) [
 				'data' => 'Home',
-				'attr' => (object) array (
+				'attr' => (object) [
 					'id' => 'index',
 					'sort' => 0
-				)
-			)
-		);
+				]
+			]
+		];
 
 		/**
 		 * Should have only one id:
 		 *
 		 * index
 		 */
-		$this->assertEquals (self::$n->get_all_ids (), array ('index'));
+		$this->assertEquals (self::$n->get_all_ids (), ['index']);
 	}
 
 	function test_adding_node () {
-		self::$blog_node = (object) array (
+		self::$blog_node = (object) [
 			'data' => 'Blog',
-			'attr' => (object) array (
+			'attr' => (object) [
 				'id' => 'blog',
 				'sort' => 0
-			)
-		);
+			]
+		];
 
 		/**
 		 * Add blog page with title.
@@ -58,28 +58,28 @@ class TreeTest extends TestCase {
 		 * index
 		 * - blog
 		 */
-		$this->assertEquals (self::$n->get_all_ids (), array ('index', 'blog'));
+		$this->assertEquals (self::$n->get_all_ids (), ['index', 'blog']);
 	}
 
 	function test_adding_subnode () {
-		self::$about_node = (object) array (
+		self::$about_node = (object) [
 			'data' => 'About',
-			'attr' => (object) array (
+			'attr' => (object) [
 				'id' => 'about',
 				'sort' => 0
-			)
-		);
+			]
+		];
 
 		/**
 		 * Add about page under blog as array.
 		 */
-		self::$n->add (array (
+		self::$n->add ((object) [
 			'data' => 'About',
-			'attr' => array (
+			'attr' => (object) [
 				'id' => 'about',
 				'sort' => 0
-			)
-		), 'blog');
+			]
+		], 'blog');
 
 		/**
 		 * Should have third id now under blog:
@@ -88,7 +88,7 @@ class TreeTest extends TestCase {
 		 * - blog
 		 *   - about
 		 */
-		$this->assertEquals (self::$n->get_all_ids (), array ('index', 'blog', 'about'));
+		$this->assertEquals (self::$n->get_all_ids (), ['index', 'blog', 'about']);
 
 		// Make sure about is under blog.
 		$this->assertEquals (self::$n->parent ('about')->attr->id, self::$blog_node->attr->id);
@@ -101,17 +101,17 @@ class TreeTest extends TestCase {
 
 	function test_paths () {
 		// Test all paths
-		$this->assertEquals (self::$n->path ('index'), array ('index'));
-		$this->assertEquals (self::$n->path ('blog'), array ('index', 'blog'));
-		$this->assertEquals (self::$n->path ('about'), array ('index', 'blog', 'about'));
+		$this->assertEquals (self::$n->path ('index'), ['index']);
+		$this->assertEquals (self::$n->path ('blog'), ['index', 'blog']);
+		$this->assertEquals (self::$n->path ('about'), ['index', 'blog', 'about']);
 		
 		// Test paths with titles
-		$this->assertEquals (self::$n->path ('blog', true), array ('index' => 'Home', 'blog' => 'Blog'));
+		$this->assertEquals (self::$n->path ('blog', true), ['index' => 'Home', 'blog' => 'Blog']);
 	}
 
 	function test_sections () {
 		// Test sections
-		$this->assertEquals (self::$n->sections (), array ('index', 'blog'));
+		$this->assertEquals (self::$n->sections (), ['index', 'blog']);
 	}
 
 	function test_remove () {
@@ -119,7 +119,7 @@ class TreeTest extends TestCase {
 		self::$n->remove ('about');
 		$this->assertFalse (isset (self::$n->node ('blog')->children));
 		$this->assertNull (self::$n->node ('about'));
-		$this->assertEquals (self::$n->get_all_ids (), array ('index', 'blog'));
+		$this->assertEquals (self::$n->get_all_ids (), ['index', 'blog']);
 	}
 
 	function test_remove_with_children () {
@@ -133,11 +133,11 @@ class TreeTest extends TestCase {
 		 *   - about
 		 */
 		self::$n->add (self::$about_node, 'blog');
-		$this->assertEquals (self::$n->get_all_ids (), array ('index', 'blog', 'about'));
+		$this->assertEquals (self::$n->get_all_ids (), ['index', 'blog', 'about']);
 		self::$n->remove ('blog');
 		$this->assertNull (self::$n->node ('about'));
 		$this->assertNull (self::$n->node ('blog'));
-		$this->assertEquals (self::$n->get_all_ids (), array ('index'));
+		$this->assertEquals (self::$n->get_all_ids (), ['index']);
 	}
 
 	function test_add_remove () {
@@ -149,16 +149,16 @@ class TreeTest extends TestCase {
 		 * index
 		 * about
 		 */
-		self::$about_node = (object) array (
+		self::$about_node = (object) [
 			'data' => 'About',
-			'attr' => (object) array (
+			'attr' => (object) [
 				'id' => 'about',
 				'sort' => 0
-			)
-		);
+			]
+		];
 
 		self::$n->add (self::$about_node);
-		$this->assertEquals (self::$n->get_all_ids (), array ('index', 'about'));
+		$this->assertEquals (self::$n->get_all_ids (), ['index', 'about']);
 		$this->assertEquals (self::$n->node ('about')->attr->sort, 1);
 		self::$n->remove ('about');
 		$this->assertEquals (count (self::$n->tree), 1);
@@ -175,37 +175,37 @@ class TreeTest extends TestCase {
 		 * - contact
 		 * - blog
 		 */
-		self::$about_node = (object) array (
+		self::$about_node = (object) [
 			'data' => 'About',
-			'attr' => (object) array (
+			'attr' => (object) [
 				'id' => 'about',
 				'sort' => 0
-			)
-		);
+			]
+		];
 
-		self::$contact_node = (object) array (
+		self::$contact_node = (object) [
 			'data' => 'Contact',
-			'attr' => (object) array (
+			'attr' => (object) [
 				'id' => 'contact',
 				'sort' => 0
-			)
-		);
+			]
+		];
 
-		self::$blog_node = (object) array (
+		self::$blog_node = (object) [
 			'data' => 'Blog',
-			'attr' => (object) array (
+			'attr' => (object) [
 				'id' => 'blog',
 				'sort' => 0
-			)
-		);
+			]
+		];
 
 		self::$n->add (self::$about_node);
 		self::$n->add (self::$contact_node, 'about');
 		self::$n->add (self::$blog_node, 'about');
-		$this->assertEquals (self::$n->get_all_ids (), array ('index', 'about', 'contact', 'blog'));
+		$this->assertEquals (self::$n->get_all_ids (), ['index', 'about', 'contact', 'blog']);
 
 		self::$n->remove ('about', false);
-		$this->assertEquals (self::$n->get_all_ids (), array ('index', 'contact', 'blog'));
+		$this->assertEquals (self::$n->get_all_ids (), ['index', 'contact', 'blog']);
 		$this->assertEquals (self::$n->parent ('contact'), null);
 		$this->assertEquals (self::$n->parent ('blog'), null);
 		self::$n->remove ('contact');
@@ -223,27 +223,27 @@ class TreeTest extends TestCase {
 		 *   - about
 		 * about
 		 */
-		self::$about_node = (object) array (
+		self::$about_node = (object) [
 			'data' => 'About',
-			'attr' => (object) array (
+			'attr' => (object) [
 				'id' => 'about',
 				'sort' => 0
-			)
-		);
+			]
+		];
 
-		self::$contact_node = (object) array (
+		self::$contact_node = (object) [
 			'data' => 'Contact',
-			'attr' => (object) array (
+			'attr' => (object) [
 				'id' => 'contact',
 				'sort' => 0
-			)
-		);
+			]
+		];
 
 		self::$n->add (self::$about_node);
 		self::$n->add (self::$contact_node, 'index');
 		self::$n->add (self::$about_node, 'contact');
-		$this->assertEquals (self::$n->get_all_ids (), array ('index', 'contact', 'about'));
-		self::$n->remove_path (array ('index', 'contact', 'about'));
+		$this->assertEquals (self::$n->get_all_ids (), ['index', 'contact', 'about']);
+		self::$n->remove_path (['index', 'contact', 'about']);
 		$contact = self::$n->node ('contact');
 		$this->assertFalse (isset ($contact->children));
 		self::$n->remove ('contact');
@@ -261,34 +261,34 @@ class TreeTest extends TestCase {
 		 *   - blog
 		 * - contact
 		 */
-		self::$about_node = (object) array (
+		self::$about_node = (object) [
 			'data' => 'About',
-			'attr' => (object) array (
+			'attr' => (object) [
 				'id' => 'about',
 				'sort' => 0
-			)
-		);
+			]
+		];
 
-		self::$contact_node = (object) array (
+		self::$contact_node = (object) [
 			'data' => 'Contact',
-			'attr' => (object) array (
+			'attr' => (object) [
 				'id' => 'contact',
 				'sort' => 0
-			)
-		);
+			]
+		];
 
-		self::$blog_node = (object) array (
+		self::$blog_node = (object) [
 			'data' => 'Blog',
-			'attr' => (object) array (
+			'attr' => (object) [
 				'id' => 'blog',
 				'sort' => 0
-			)
-		);
+			]
+		];
 
 		self::$n->add (self::$about_node, 'index');
 		self::$n->add (self::$contact_node, 'index');
 		self::$n->add (self::$blog_node, 'about');
-		$this->assertEquals (self::$n->get_all_ids (), array ('index', 'about', 'blog', 'contact'));
+		$this->assertEquals (self::$n->get_all_ids (), ['index', 'about', 'blog', 'contact']);
 
 		/**
 		 * Move contact under about. New structure:
