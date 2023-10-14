@@ -146,22 +146,31 @@ class AppTest extends TestCase {
 			}
 		}
 
+		// Remove existing user from install_sqlite.sql
+		if (! DB::execute ('delete from `user` where 1 = 1')) {
+			die ('SQL failed: ' . DB::error ());
+		}
+
 		// Create default admin and member users
 		$date = gmdate ('Y-m-d H:i:s');
-		DB::execute (
+		if (! DB::execute (
 			"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, 'Admin User', 'admin', ?, ?, ?)",
 			'admin@test.com',
 			User::encrypt_pass ('testing'),
 			$date, $date, $date,
 			json_encode (array ())
-		);
-		DB::execute (
+		)) {
+			die ('SQL failed: ' . DB::error ());
+		}
+		if (! DB::execute (
 			"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (2, ?, ?, null, ?, 'Joe Member', 'member', ?, ?, ?)",
 			'member@test.com',
 			User::encrypt_pass ('testing'),
 			$date, $date, $date,
 			json_encode (array ())
-		);
+		)) {
+			die ('SQL failed: ' . DB::error ());
+		}
 
 		$i18n = new I18n ('lang', array ('negotiation_method' => 'http'));
 		$page = new Page;
@@ -172,6 +181,7 @@ class AppTest extends TestCase {
 		self::$c->cache ($cache);
 		self::$c->page ($page);
 		self::$c->i18n ($i18n);
+		$GLOBALS['controller'] = self::$c;
 	}
 
 	/**
