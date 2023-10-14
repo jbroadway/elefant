@@ -81,8 +81,8 @@ class Tree {
 	public function __construct ($file) {
         $this->file = $file;
 		$this->tree = json_decode (file_exists ($file) ? file_get_contents ($file) : '[]');
-		if (json_last_error () != JSON_ERROR_NONE || ! is_object ($this->tree)) {
-			$this->tree = (object) [];
+		if (json_last_error () != JSON_ERROR_NONE || ! is_array ($this->tree)) {
+			$this->tree = [];
 		}
 	}
 
