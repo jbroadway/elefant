@@ -3,6 +3,8 @@
 use PHPUnit\Framework\TestCase;
 
 class ControllerTest extends TestCase {
+	private $c = null;
+
 	function setUp (): void {
 		$this->c = new Controller ();
 		$GLOBALS['conf'] = parse_ini_file ('conf/test.php', true);
