@@ -25,7 +25,7 @@ if ($user->photo != '' && strpos ($user->photo, '/') !== 0 && strpos ($user->pho
 	$user->photo = '/' . $user->photo;
 }
 
-if (! is_array ($user->tabs)) {
+if (! isset ($user->tabs) || ! is_array ($user->tabs)) {
 	$user->tabs = array ();
 }
 

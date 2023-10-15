@@ -82,6 +82,8 @@ class AppTest extends TestCase {
 	 */
 	protected static $c;
 
+	protected static $bufferLevel;
+
 	/**
 	 * Make the current user an admin.
 	 */
@@ -142,26 +144,35 @@ class AppTest extends TestCase {
 		// Initializes PDO connection automatically
 		foreach (sql_split (file_get_contents ('conf/install_sqlite.sql')) as $sql) {
 			if (! DB::execute ($sql)) {
-				die ('SQL failed: ' . $sql);
+				die ('SQL faile installing SQLite schema: ' . $sql);
 			}
+		}
+
+		// Remove existing user from install_sqlite.sql
+		if (! DB::execute ('delete from `#prefix#user` where 1 = 1')) {
+			die ('SQL failed flushing users: ' . DB::error ());
 		}
 
 		// Create default admin and member users
 		$date = gmdate ('Y-m-d H:i:s');
-		DB::execute (
-			"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, 'Admin User', 'admin', ?, ?, ?)",
+		if (! DB::execute (
+			"insert into `#prefix#user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (1, ?, ?, null, ?, 'Admin User', 'admin', ?, ?, ?)",
 			'admin@test.com',
 			User::encrypt_pass ('testing'),
 			$date, $date, $date,
 			json_encode (array ())
-		);
-		DB::execute (
-			"insert into `user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (2, ?, ?, null, ?, 'Joe Member', 'member', ?, ?, ?)",
+		)) {
+			die ('SQL failed inserting admin user: ' . DB::error ());
+		}
+		if (! DB::execute (
+			"insert into `#prefix#user` (id, email, password, session_id, expires, name, type, signed_up, updated, userdata) values (2, ?, ?, null, ?, 'Joe Member', 'member', ?, ?, ?)",
 			'member@test.com',
 			User::encrypt_pass ('testing'),
 			$date, $date, $date,
 			json_encode (array ())
-		);
+		)) {
+			die ('SQL failed inserting member user: ' . DB::error ());
+		}
 
 		$i18n = new I18n ('lang', array ('negotiation_method' => 'http'));
 		$page = new Page;
@@ -172,6 +183,10 @@ class AppTest extends TestCase {
 		self::$c->cache ($cache);
 		self::$c->page ($page);
 		self::$c->i18n ($i18n);
+		$GLOBALS['controller'] = self::$c;
+
+		self::$bufferLevel = ob_get_level ();
+		//info ('Level at start: ' . ob_get_level ());
 	}
 
 	/**
@@ -192,6 +207,13 @@ class AppTest extends TestCase {
 
 		if (isset (User::$user)) {
 			User::$user = FALSE;
+		}
+
+		if (ob_get_level () != self::$bufferLevel) {
+			//info ('Level at end: ' . ob_get_level ());
+			while (ob_get_level () >= self::$bufferLevel) {
+				ob_end_clean ();
+			}
 		}
 	}
 }

@@ -25,10 +25,16 @@
 $n = Link::nav ();
 $section = $n->node ($data['section']);
 
-if (is_array ($section->children)) {
-	echo '<ul>';
-	foreach ($section->children as $item) {
-		echo Link::single ($item->attr->id, $item->data);
-	}
-	echo '</ul>';
+if ($section === null || ! isset ($section->children)) {
+	return '';
 }
+
+if (is_object ($section->children)) {
+	$section->children = (array) $section->children;
+}
+
+echo '<ul>';
+foreach ($section->children as $item) {
+	echo Link::single (Tree::attr_id ($item), $item->data);
+}
+echo '</ul>';

@@ -44,6 +44,7 @@
  * The convention is to use the body property for the main body
  * content.
  */
+#[\AllowDynamicProperties]
 class Page {
 	/**
 	 * Data to place in the `<head>` of the document. To use,

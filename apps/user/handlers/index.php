@@ -10,7 +10,7 @@ if ($res) { echo $res; return; }
 
 $page->id = 'user';
 
-if (! $this->params[0]) {
+if (count ($this->params) == 0) {
 	if (! User::require_login (true)) {
 		$page->title = __ ('Members');
 		echo $this->run ('user/login');

@@ -122,7 +122,7 @@ class Debugger {
 			'_COOKIE' => isset ($_COOKIE) ? $_COOKIE : array (),
 			'_SERVER' => $_SERVER
 		);
-		if (isset ($trace[0]['args']) && is_array ($trace[0]['args'][4])) {
+		if (isset ($trace[0]['args']) && count ($trace[0]['args']) >= 5 && is_array ($trace[0]['args'][4])) {
 			$context = array_merge ($context, $trace[0]['args'][4]);
 		}
 		Debugger::show_context ($context);

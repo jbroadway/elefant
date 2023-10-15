@@ -55,7 +55,7 @@ class Envconf {
 	 */
 	public static function __callStatic ($app, $args) {
 		array_unshift ($args, $app);
-		return call_user_func_array ('self::get', $args);
+		return call_user_func_array ('Envconf::get', $args);
 	}
 	
 	/**

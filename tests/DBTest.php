@@ -3,6 +3,10 @@
 use PHPUnit\Framework\TestCase;
 
 class DBTest extends TestCase {
+	private $bad_conf = [];
+	private $conf = [];
+	private $conf2 = [];
+
 	function setUp (): void {
 		$this->bad_conf = array (
 			'master' => true,

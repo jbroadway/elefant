@@ -22,7 +22,7 @@ if (! isset (self::$called['social/google/init'])) {
 	echo $this->run ('social/google/init');
 }
 
-if (strpos ($data['url'], '/') === 0) {
+if (isset ($data['url']) && strpos ($data['url'], '/') === 0) {
 	$data['url'] = '//' . conf ('General', 'site_domain') . $data['url'];
 }
 echo $tpl->render ('social/google/plusone', $data);

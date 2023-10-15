@@ -372,7 +372,7 @@ class Data {
 	 * Fetch a state/province name from its code.
 	 */
 	public static function state ($code) {
-		return self::$states[$code];
+		return self::$states[$code] ?? '';
 	}
 	
 	/**
@@ -386,6 +386,6 @@ class Data {
 	 * Fetch a state/province name from its code.
 	 */
 	public static function country ($code) {
-		return self::$countries[$code];
+		return self::$countries[$code] ?? '';
 	}
 }

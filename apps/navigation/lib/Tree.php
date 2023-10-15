@@ -68,7 +68,7 @@ class Tree {
 	/**
 	 * The tree structure.
 	 */
-	public $tree = array ();
+	public $tree = null;
 
 	/**
 	 * The error message if an error occurs, or false if no errors.
@@ -82,8 +82,38 @@ class Tree {
         $this->file = $file;
 		$this->tree = json_decode (file_exists ($file) ? file_get_contents ($file) : '[]');
 		if (json_last_error () != JSON_ERROR_NONE || ! is_array ($this->tree)) {
-			$this->tree = array ();
+			$this->tree = [];
 		}
+	}
+
+	/**
+	 * Fetches the ->attr->id value for an item in the tree, verifying that the
+	 * array keys exist to keep php 8 happy.
+	 */
+	public static function attr_id ($item) {
+		if (! isset ($item->attr)) return '';
+		if (! isset ($item->attr->id)) return '';
+		return $item->attr->id;
+	}
+
+	/**
+	 * Fetches the ->attr->classname value for an item in the tree, verifying that the
+	 * array keys exist to keep php 8 happy.
+	 */
+	public static function attr_classname ($item) {
+		if (! isset ($item->attr)) return '';
+		if (! isset ($item->attr->classname)) return '';
+		return $item->attr->classname;
+	}
+
+	/**
+	 * Fetches the ->attr->classname value for an item in the tree, verifying that the
+	 * array keys exist to keep php 8 happy.
+	 */
+	public static function attr_sort ($item) {
+		if (! isset ($item->attr)) return '';
+		if (! isset ($item->attr->sort)) return '';
+		return $item->attr->sort;
 	}
 
 	/**
@@ -96,7 +126,7 @@ class Tree {
 
 		$ids = array ();
 		foreach ($tree as $item) {
-			$ids[] = $item->attr->id;
+			$ids[] = self::attr_id ($item);
 			if (isset ($item->children)) {
 				$ids = array_merge ($ids, $this->get_all_ids ($item->children));
 			}
@@ -115,7 +145,7 @@ class Tree {
 		$sections = array ();
 		foreach ($tree as $item) {
 			if (isset ($item->children)) {
-				$sections[] = $item->attr->id;
+				$sections[] = self::attr_id ($item);
 				$sections = array_merge ($sections, $this->sections ($item->children));
 			}
 		}
@@ -131,7 +161,7 @@ class Tree {
 		}
 		
 		foreach ($tree as $item) {
-			if ($item->attr->id == $id) {
+			if (self::attr_id ($item) == $id) {
 				return $item;
 			}
 			if (isset ($item->children)) {
@@ -154,13 +184,13 @@ class Tree {
 
 		$parent = null;		
 		foreach ($tree as $item) {
-			if ($item->attr->id == $id) {
+			if (self::attr_id ($item) == $id) {
 				// found item itself, should have found parent by now
 				return null;
 			}
 			if (isset ($item->children)) {
 				foreach ($item->children as $child) {
-					if ($child->attr->id == $id) {
+					if (self::attr_id ($child) == $id) {
 						// we're on the parent!
 						return $item;
 					}
@@ -188,12 +218,13 @@ class Tree {
 		}
 
 		foreach ($tree as $item) {
-			if ($item->attr->id == $id) {
-				return $titles ? array ($item->attr->id => $item->data) : array ($id);
+			$_id = self::attr_id ($item);
+			if ($_id == $id) {
+				return $titles ? array ($id => $item->data ?? '') : [$id];
 			} elseif (isset ($item->children)) {
 				$res = $this->path ($id, $titles, $item->children);
 				if ($res) {
-					return $titles ? array_merge (array ($item->attr->id => $item->data), $res) : array_merge (array ($item->attr->id), $res);
+					return $titles ? array_merge (array ($_id => $item->data ?? ''), $res) : array_merge ([$_id], $res);
 				}
 			}
 		}
@@ -210,28 +241,21 @@ class Tree {
 	 *     $mytree->add ('id-value', 'parent-id', 'Title here');
 	 */
 	public function add ($obj, $parent = false, $data = false) {
-		if (is_array ($obj)) {
-			$obj = (object) $obj;
-			if (isset ($obj->attr) && is_array ($obj->attr)) {
-				$obj->attr = (object) $obj->attr;
-			}
-		}
-
 		if (! is_object ($obj)) {
 			$data = $data ? $data : $obj;
-			$obj = (object) array (
+			$obj = (object) [
 				'data' => $data,
-				'attr' => (object) array (
+				'attr' => (object) [
 					'id' => $obj,
 					'sort' => 0
-				)
-			);
+				]
+			];
 		}
 
 		// locate $parent and add child
 		if ($parent && ($ref = $this->node ($parent))) {
 			if (! isset ($ref->children)) {
-				$ref->children = array ();
+				$ref->children = [];
 			}
 			$obj->attr->sort = count ($ref->children);
 			$ref->children[] = $obj;
@@ -253,12 +277,12 @@ class Tree {
 
 		if ($ref) {
 			foreach ($ref->children as $key => $child) {
-				if ($child->attr->id == $id) {
+				if (self::attr_id ($child) == $id) {
 					if (! $recursive) {
 						// move all children to parent
 						if (isset ($child->children)) {
 							foreach ($child->children as $item) {
-								$this->add ($item, $ref->attr->id);
+								$this->add ($item, self::attr_id ($ref));
 							}
 						}
 					}
@@ -276,7 +300,7 @@ class Tree {
 			}
 		} else {
 			foreach ($this->tree as $key => $child) {
-				if ($child->attr->id == $id) {
+				if (self::attr_id ($child) == $id) {
 					if (! $recursive) {
 						// move all children to root
 						if (isset ($child->children)) {
@@ -311,19 +335,23 @@ class Tree {
 		}
 
 		if ($ref) {
-			foreach ($ref->children as $key => $child) {
-				if ($child->attr->id == $id) {
-					unset ($ref->children[$key]);
-					if (count ($ref->children) == 0) {
-						unset ($ref->children);
-						unset ($ref->state);
+			if (isset ($ref->children)) {
+				foreach ($ref->children as $key => $child) {
+					if (self::attr_id ($child) == $id) {
+						unset ($ref->children[$key]);
+						if (count ($ref->children) == 0) {
+							unset ($ref->children);
+							if (isset ($ref->state)) {
+								unset ($ref->state);
+							}
+						}
+						return true;
 					}
-					return true;
 				}
 			}
 		} else {
 			foreach ($this->tree as $key => $child) {
-				if ($child->attr->id == $id) {
+				if (self::attr_id ($child) == $id) {
 					unset ($this->tree[$key]);
 					return true;
 				}
@@ -347,11 +375,11 @@ class Tree {
 
 				// add sorted
 				if ($ref_parent) {
-					$old_children = $ref_parent->children;
+					$old_children = $ref_parent->children ?? [];
 					$new_children = array ();
 					$sort = 0;
 					foreach ($old_children as $child) {
-						if ($child->attr->id == $ref) {
+						if (self::attr_id ($child) == $ref) {
 							$node->attr->sort = $sort;
 							$new_children[] = $node;
 							$sort++;
@@ -366,7 +394,7 @@ class Tree {
 					$new_children = array ();
 					$sort = 0;
 					foreach ($old_children as $child) {
-						if ($child->attr->id == $ref) {
+						if (self::attr_id ($child) == $ref) {
 							$node->attr->sort = $sort;
 							$new_children[] = $node;
 							$sort++;
@@ -384,14 +412,14 @@ class Tree {
 
 				// add sorted
 				if ($ref_parent) {
-					$old_children = $ref_parent->children;
+					$old_children = $ref_parent->children ?? [];
 					$new_children = array ();
 					$sort = 0;
 					foreach ($old_children as $child) {
 						$child->attr->sort = $sort;
 						$new_children[] = $child;
 						$sort++;
-						if ($child->attr->id == $ref) {
+						if (self::attr_id ($child) == $ref) {
 							$node->attr->sort = $sort;
 							$new_children[] = $node;
 							$sort++;
@@ -406,7 +434,7 @@ class Tree {
 						$child->attr->sort = $sort;
 						$new_children[] = $child;
 						$sort++;
-						if ($child->attr->id == $ref) {
+						if (self::attr_id ($child) == $ref) {
 							$node->attr->sort = $sort;
 							$new_children[] = $node;
 							$sort++;

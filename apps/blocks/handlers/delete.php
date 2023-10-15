@@ -38,6 +38,5 @@ if (isset ($_POST['return'])) {
 	if (Validator::validate ($_POST['return'], 'localpath')) {
 		$this->redirect ($_POST['return']);
 	}
-	
-	$this->redirect ('/blocks/admin');
 }
+$this->redirect ('/blocks/admin');

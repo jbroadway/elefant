@@ -26,25 +26,26 @@ $n = Link::nav ();
 
 echo '<ul>';
 foreach ($n->tree as $item) {
+	$_id = Tree::attr_id ($item);
 	switch ($i18n->negotiation) {
 		case 'http':
 		case 'url':
-			echo Link::single ($item->attr->id, $item->data);
+			echo Link::single ($_id, $item->data ?? '');
 			break;
 		case 'cookie':
 			echo Link::single (
-				$item->attr->id,
-				$item->data,
-				'/navigation/cookie/' . $item->attr->id . '?redirect=/' . $item->attr->id
+				$_id,
+				$item->data ?? '',
+				'/navigation/cookie/' . $_id . '?redirect=/' . $_id
 			);
 			break;
 		case 'subdomain':
 			echo Link::single (
-				$item->attr->id,
-				$item->data,
+				$_id,
+				$item['data'] ?? '',
 				$this->is_https ()
-					? 'https://' . $item->attr->id . '.' . Link::base_domain () . '/' . $item->attr->id
-					: 'http://' . $item->attr->id . '.' . Link::base_domain () . '/' . $item->attr->id
+					? 'https://' . $_id . '.' . Link::base_domain () . '/' . $_id
+					: 'http://' . $_id . '.' . Link::base_domain () . '/' . $_id
 			);
 			break;
 	}

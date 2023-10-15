@@ -13,7 +13,7 @@
  *     
  *     echo '<ul>';
  *     foreach ($nav->tree as $item) {
- *         echo Link::single ($item->attr->id, $item->data);
+ *         echo Link::single (Tree::attr_id ($item), $item['data'] ?? '');
  *     }
  *     echo '</ul>';
  *     

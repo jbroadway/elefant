@@ -57,7 +57,7 @@ if (! $this->internal) {
 	}
 }
 
-$data['photo'] = Image::for_key ($data['key'], $data['photo']);
+$data['photo'] = Image::for_key ($data['key'], $data['photo'] ?? '');
 
 if ((! isset ($data['link']) || ! $data['link'] || $data['link'] === '') && $data['photo'] !== null) {
 	$photo = preg_replace ('|^/files/|', '', $data['photo']);

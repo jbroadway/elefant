@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         bootstrap="./tests/bootstrap.php"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
->
-    <testsuites>
-        <testsuite name="Elefant Test Suite">
-            <directory suffix="Test.php" phpVersion="5.3.2" phpVersionOperator=">=">./tests</directory>
-            <directory suffix="Test.php" phpVersion="5.3.2" phpVersionOperator=">=">./apps/*/tests</directory>
-        </testsuite>
-    </testsuites>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" bootstrap="./tests/bootstrap.php" colors="true" processIsolation="false" stopOnFailure="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.3/phpunit.xsd" cacheDirectory=".phpunit.cache" backupStaticProperties="false">
+  <testsuites>
+    <testsuite name="Elefant Test Suite">
+      <directory suffix="Test.php" phpVersion="7.4.0" phpVersionOperator="&gt;=">./tests</directory>
+      <directory suffix="Test.php" phpVersion="7.4.0" phpVersionOperator="&gt;=">./apps/*/tests</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>

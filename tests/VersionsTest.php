@@ -49,17 +49,13 @@ class VersionsTest extends TestCase {
 		sleep (1);
 	}
 
-	/**
-	 * @depends test_add
-	 */
+	#[Depends('test_add')]
 	function test_restore () {
 		self::$foo2 = self::$v->restore ();
 		$this->assertEquals (self::$foo, self::$foo2);
 	}
 
-	/**
-	 * @depends test_restore
-	 */
+	#[Depends('test_restore')]
 	function test_diff () {
 		// test diff
 		self::$foo->name = 'Test2';
@@ -72,9 +68,7 @@ class VersionsTest extends TestCase {
 		$this->assertEquals ($modified[0], 'name');
 	}
 
-	/**
-	 * @depends test_diff
-	 */
+	#[Depends('test_diff')]
 	function test_history () {
 		// test history
 		$history = Versions::history (self::$foo);
@@ -83,9 +77,9 @@ class VersionsTest extends TestCase {
 		$modified = Versions::diff ($history[0], $history[1]);
 		$this->assertEquals ($modified[0], 'name');
 
-		// get a count with class name (groups by pkey, so one result)
+		// get a count with class name (all for the item, so two results)
 		$history = Versions::history ('Foobar', true);
-		$this->assertEquals ($history, 1);
+		$this->assertEquals ($history, 2);
 
 		// get a count with object (all for the item, so two results)
 		$history = Versions::history (self::$foo, true);
@@ -96,9 +90,7 @@ class VersionsTest extends TestCase {
 		$this->assertEquals (count ($history), 1);
 	}
 
-	/**
-	 * @depends test_history
-	 */
+	#[Depends('test_history')]
 	function test_recent () {
 		// test recent
 		$recent = Versions::recent ();
@@ -108,17 +100,13 @@ class VersionsTest extends TestCase {
 		$this->assertEquals ($restored->name, 'Test2');
 	}
 
-	/**
-	 * @depends test_recent
-	 */
+	#[Depends('test_recent')]
 	function test_get_classes () {
 		$res = self::$v->get_classes ();
 		$this->assertEquals (array ('Foobar'), $res);
 	}
 
-	/**
-	 * @depends test_get_classes
-	 */
+	#[Depends('test_get_classes')]
 	function test_restore_deleted () {
 		// test restore on deleted item
 		$foo = new Foobar (array ('id' => 5, 'name' => 'Deleted'));
@@ -128,10 +116,8 @@ class VersionsTest extends TestCase {
 		$this->assertEquals ($foo, $foo2);
 	}
 
-	/**
-	 * @depends test_get_classes
-	 */
-	function test_recent_user () {
+	#[Depends('test_get_classes')]
+	 function test_recent_user () {
 		// recent with user
 		DB::execute ('update #prefix#versions set user = 1');
 		$recent = Versions::recent (1);

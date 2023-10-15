@@ -36,13 +36,13 @@ class NavigationTest extends TestCase {
 	function test_adding_node () {
 		$n = new Navigation;
 
-		$blog_node = (object) array (
+		$blog_node = (object) [
 			'data' => 'Blog',
-			'attr' => (object) array (
+			'attr' => (object) [
 				'id' => 'blog',
 				'sort' => 0
-			)
-		);
+			]
+		];
 
 		/**
 		 * Add blog page.
@@ -55,22 +55,22 @@ class NavigationTest extends TestCase {
 		 * index
 		 * - blog
 		 */
-		$this->assertEquals ($n->get_all_ids (), array ('index', 'blog'));
+		$this->assertEquals ($n->get_all_ids (), ['index', 'blog']);
 		
 		// Remove and re-add index
 		$n->remove ('index');
-		$this->assertEquals ($n->get_all_ids (), array ('blog'));
+		$this->assertEquals ($n->get_all_ids (), ['blog']);
 
 		$n->add ('index');
 		$index_node = $n->node ('index');
 
-		$expected_index = (object) array (
+		$expected_index = (object) [
 			'data' => 'Home',
-			'attr' => (object) array (
+			'attr' => (object) [
 				'id' => 'index',
 				'sort' => 1
-			)
-		);
+			]
+		];
 
 		/*
 		 * Should have index node with title 'Home' from the database.

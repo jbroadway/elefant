@@ -17,6 +17,22 @@ if (! User::require_acl ('admin') || ! User::require_acl ('designer')) {
 
 $error = false;
 
+if (! isset ($_GET['file'])) {
+	$res = new StdClass;
+	$res->success = false;
+	$res->error = 'Missing parameter: file';
+	echo json_encode ($res);
+	return;
+}
+
+if (! isset ($_POST['body'])) {
+	$res = new StdClass;
+	$res->success = false;
+	$res->error = 'Missing parameter: body';
+	echo json_encode ($res);
+	return;
+}
+
 if (! preg_match ('/^(css|layouts|layouts\/[a-z0-9 _-]+|layouts\/[a-z0-9 _-]+\/[a-z0-9 _-]+)\/[a-z0-9 _-]+\.(html|css)$/i', $_GET['file'])) {
 	$res = new StdClass;
 	$res->success = false;
@@ -53,7 +69,7 @@ if ($error) {
 	$res->error = $error;
 } else {
 	$res->success = true;
-	$res->data = $_GET['id'];
+	$res->data = $_GET['file'];
 }
 
 echo json_encode ($res);

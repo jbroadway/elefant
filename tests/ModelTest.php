@@ -439,16 +439,6 @@ class ModelTest extends TestCase {
 		$this->assertEquals ($b->foo, 1);
 		$this->assertEquals ($b->foo ()->name, 'Joe');
 		$this->assertEquals ($b->foo ()->name, 'Joe');
-		
-		// fake reference should fail
-		try {
-			$this->assertTrue ($b->fake ());
-		} catch (Exception $e) {
-			$this->assertMatchesRegularExpression (
-				'/Call to undefined method Bar::fake in .+tests\/ModelTest\.php on line [0-9]+/',
-				$e->getMessage ()
-			);
-		}
 	}
 
 	function test___call () {

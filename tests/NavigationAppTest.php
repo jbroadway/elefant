@@ -12,39 +12,39 @@ class NavigationAppTest extends AppTest {
 			'conf/navigation.json',
 			json_encode (
 				array (
-					array (
+					(object) array (
 						'data' => 'Home',
-						'attr' => array ('id' => 'index')
+						'attr' => (object) array ('id' => 'index')
 					),
-					array (
+					(object) array (
 						'data' => 'Other',
-						'attr' => array ('id' => 'other')
+						'attr' => (object) array ('id' => 'other')
 					),
-					array (
+					(object) array (
 						'data' => 'English',
-						'attr' => array ('id' => 'en'),
-						'children' => array (
-							array (
+						'attr' => (object) array ('id' => 'en'),
+						'children' => (object) array (
+							(object) array (
 								'data' => 'About',
-								'attr' => array ('id' => 'about')
+								'attr' => (object) array ('id' => 'about')
 							),
-							array (
+							(object) array (
 								'data' => 'Contact us',
-								'attr' => array ('id' => 'contact-us')
+								'attr' => (object) array ('id' => 'contact-us')
 							)
 						)
 					),
-					array (
+					(object) array (
 						'data' => 'Français',
-						'attr' => array ('id' => 'fr'),
+						'attr' => (object) array ('id' => 'fr'),
 						'children' => array (
-							array (
+							(object) array (
 								'data' => 'À propos',
-								'attr' => array ('id' => 'a-propos')
+								'attr' => (object) array ('id' => 'a-propos')
 							),
-							array (
+							(object) array (
 								'data' => 'Contactez-nous',
-								'attr' => array ('id' => 'contactez-nous')
+								'attr' => (object) array ('id' => 'contactez-nous')
 							)
 						)
 					)
@@ -77,6 +77,7 @@ class NavigationAppTest extends AppTest {
 		Link::reset ();
 		Link::current ('about');
 		$res = $this->get ('navigation/section', array ('section' => 'en'));
+		info ($res, true);
 		$this->assertStringContainsString ('<li class="current"><a href="/about">About', $res);
 		$this->assertStringContainsString ('<li><a href="/contact-us">Contact us', $res);
 		
