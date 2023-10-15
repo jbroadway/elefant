@@ -21,8 +21,11 @@ function navigation_print_context ($tree, $path) {
 		$_count = count ($path) - 1;
 		if (isset ($path[$_count]) && $_id == $path[$_count]) {
 			echo '<li class="current">' . Link::make ($_id, $item->data ?? '');
-			if (isset ($item['children'])) {
-				navigation_print_context ($item['children'], $path);
+			if (isset ($item->children)) {
+				if (is_object ($item->children)) {
+					$item->children = (array) $item->children;
+				}
+				navigation_print_context ($item->children, $path);
 			}
 			echo '</li>';
 		} elseif (in_array ($_id, $path)) {
