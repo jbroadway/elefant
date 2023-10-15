@@ -3,6 +3,19 @@
 use PHPUnit\Framework\TestCase;
 
 class FormTest extends TestCase {
+	/**
+	 * Add assertMatchesRegularExpression() method for phpunit >= 8.0 < 9.0 for compatibility with PHP 7.2.
+	 *
+	 * @TODO Remove once PHP 7.2 support is not needed for testing anymore.
+	 */
+	public function assertRegexCompatFix (string $pattern, string $string, string $message = ''): void {
+		if (method_exists (parent::class, 'assertMatchesRegularExpression')) {
+			parent::assertMatchesRegularExpression ($pattern, $string, $message);
+		} else {
+			static::assertRegExp ($pattern, $string, $message);
+		}
+	}
+
 	function test_merge_values () {
 		$_POST['foo'] = 'bar';
 		$obj = new StdClass;
@@ -70,7 +83,7 @@ class FormTest extends TestCase {
 		$_SERVER['REQUEST_URI'] = '/foo';
 		$form = new Form ();
 		$form->initialize_csrf ();
-		$this->assertMatchesRegularExpression ('/^[a-zA-Z0-9]+$/', $form->csrf_token);
+		$this->assertRegexCompatFix ('/^[a-zA-Z0-9]+$/', $form->csrf_token);
 
 		$token = $form->csrf_token;
 		$form->initialize_csrf ();
