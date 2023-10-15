@@ -20,19 +20,22 @@ function navigation_print_context ($tree, $path) {
 		$_id = Tree::attr_id ($item);
 		$_count = count ($path) - 1;
 		if (isset ($path[$_count]) && $_id == $path[$_count]) {
-			echo '<li class="current">' . Link::make ($_id, $item['data'] ?? '');
+			echo '<li class="current">' . Link::make ($_id, $item->data ?? '');
 			if (isset ($item['children'])) {
 				navigation_print_context ($item['children'], $path);
 			}
 			echo '</li>';
 		} elseif (in_array ($_id, $path)) {
-			echo '<li class="parent">' . Link::make ($_id, $item['data'] ?? '');
-			if (isset ($item['children'])) {
-				navigation_print_context ($item['children'], $path);
+			echo '<li class="parent">' . Link::make ($_id, $item->data ?? '');
+			if (isset ($item->children)) {
+				if (is_object ($item->children)) {
+					$item->children = (array) $item->children;
+				}
+				navigation_print_context ($item->children, $path);
 			}
 			echo '</li>';
 		} else {
-			printf ('<li><a href="/%s">%s</a></li>', $_id, $item['data'] ?? '');
+			printf ('<li><a href="/%s">%s</a></li>', $_id, $item->data ?? '');
 		}
 	}
 	echo '</ul>';
@@ -44,9 +47,12 @@ function navigation_print_context ($tree, $path) {
 function navigation_print_level ($tree) {
 	echo '<ul>';
 	foreach ($tree as $item) {
-		echo '<li>' . Link::make (Tree::attr_id ($item), $item['data'] ?? '');
-		if (isset ($item['children'])) {
-			navigation_print_level ($item['children']);
+		echo '<li>' . Link::make (Tree::attr_id ($item), $item->data ?? '');
+		if (isset ($item->children)) {
+			if (is_object ($item->children)) {
+				$item->children = (array) $item->children;
+			}
+			navigation_print_level ($item->children);
 		}
 		echo '</li>';
 	}
@@ -69,9 +75,12 @@ function navigation_print_dropmenu ($tree, $id = false) {
 		if (empty ($current)) {
 			$current = in_array ($_id, Link::active()) ? ' class="active"' : $current;
 		}
-		echo '<li' . $current . '>' . Link::make ($_id, $item['data'] ?? '');
-		if (isset ($item['children'])) {
-			navigation_print_level ($item['children']);
+		echo '<li' . $current . '>' . Link::make ($_id, $item->data ?? '');
+		if (isset ($item->children)) {
+			if (is_object ($item->children)) {
+				$item->children = (array) $item->children;
+			}
+			navigation_print_level ($item->children);
 		}
 		echo '</li>';
 	}
@@ -156,9 +165,12 @@ function navigation_print_admin_tree ($tree, $tree_root=true) {
 	echo ($tree_root) ?'<ul class="tdd-tree">' : "<ul>";
 	foreach ($tree as $item) {
 		$_id = Tree::attr_id ($item);
-		printf ('<li id="%s"><i class="%s"></i> %s <span>/%s</span>', $_id, Tree::attr_classname ($item),  $item['data'] ?? '', $_id);
-		if (isset ($item['children'])) {
-			navigation_print_admin_tree ($item['children'], false);
+		printf ('<li id="%s"><i class="%s"></i> %s <span>/%s</span>', $_id, Tree::attr_classname ($item),  $item->data ?? '', $_id);
+		if (isset ($item->children)) {
+			if (is_object ($item->children)) {
+				$item->children = (array) $item->children;
+			}
+			navigation_print_admin_tree ($item->children, false);
 		}
 		echo '</li>';
 	}
