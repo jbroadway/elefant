@@ -1,6 +1,6 @@
 # Elefant CMS
 
-<!-- ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/jbroadway/elefant/Continuous%20Integration/master) -->
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/jbroadway/elefant/ci.yml?branch=master)
 ![GitHub](https://img.shields.io/github/license/jbroadway/elefant)
 ![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/elefant/cms)
 
