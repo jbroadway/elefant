@@ -35,7 +35,7 @@ foreach ($n->tree as $item) {
 		case 'cookie':
 			echo Link::single (
 				$_id,
-				$item['data'] ?? '',
+				$item->data ?? '',
 				'/navigation/cookie/' . $_id . '?redirect=/' . $_id
 			);
 			break;

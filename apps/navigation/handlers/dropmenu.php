@@ -26,9 +26,11 @@ require_once ('apps/navigation/lib/Functions.php');
 
 if (conf ('I18n', 'multilingual')) {
 	$section = $n->node ($i18n->language);
-	if (is_array ($section['children'])) {
-		navigation_print_dropmenu ($section['children'], $data['id']);
+	if ($section === null || ! isset ($section->children)) return;
+	if (is_object ($section->children)) {
+		$section->children = (array) $section->children;
 	}
+	navigation_print_dropmenu ($section->children, $data['id']);
 } else {
 	navigation_print_dropmenu ($n->tree, $data['id']);
 }
