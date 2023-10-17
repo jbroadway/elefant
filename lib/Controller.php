@@ -269,6 +269,11 @@ class Controller {
 	 * Template object.
 	 */
 	private $_tpl;
+
+	/**
+	 * Controller object.
+	 */
+	private static $_instance;
 	
 	/**
 	 * A list of apps whose hooks have been loaded already.
@@ -293,6 +298,14 @@ class Controller {
 			}
 		}
 		self::$hooks = $hooks;
+		self::$_instance = $this;
+	}
+
+	/**
+	 * Get the controller instance.
+	 */
+	public static function instance () {
+		return self::$_instance;
 	}
 
 	/**
