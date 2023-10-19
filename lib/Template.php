@@ -622,6 +622,10 @@ class Template {
 	 * your data beforehand.
 	 */
 	public static function sanitize ($val, $charset = 'UTF-8', $label = '') {
+		if (is_array ($val) || is_object ($val)) {
+			return $val;
+		}
+
 		if (! defined ('ENT_SUBSTITUTE')) {
 			define ('ENT_SUBSTITUTE', ENT_IGNORE);
 		}
