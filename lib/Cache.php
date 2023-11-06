@@ -39,6 +39,11 @@ class Cache {
 	public $dir = 'cache/datastore';
 
 	/**
+	 * Cache object.
+	 */
+	private static $_instance;
+
+	/**
 	 * Constructor method creates the directory if it's missing.
 	 */
 	public function __construct ($dir = 'cache/datastore') {
@@ -51,6 +56,8 @@ class Cache {
 			mkdir ($this->dir);
 			chmod ($this->dir, 0777);
 		}
+
+		self::$_instance = $this;
 	}
 
 	/**
@@ -100,6 +107,13 @@ class Cache {
 
 		// No server, use fs
 		return new Cache ($dir);
+	}
+
+	/**
+	 * Get the cache instance.
+	 */
+	public static function instance () {
+		return self::$_instance;
 	}
 
 	/**
