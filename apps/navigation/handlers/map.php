@@ -25,7 +25,7 @@ if (conf ('I18n', 'multilingual')) {
 	if (is_object ($section->children)) {
 		$section->children = (array) $section->children;
 	}
-	navigation_print_level ($section['children']);
+	navigation_print_level ($section->children);
 } else {
 	navigation_print_level ($n->tree);
 }
