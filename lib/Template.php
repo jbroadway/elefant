@@ -629,7 +629,7 @@ class Template {
 		if (! defined ('ENT_SUBSTITUTE')) {
 			define ('ENT_SUBSTITUTE', ENT_IGNORE);
 		}
-		return htmlspecialchars ($val, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
+		return htmlspecialchars ($val ?? '', ENT_QUOTES | ENT_SUBSTITUTE, $charset);
 	}
 
 	/**
