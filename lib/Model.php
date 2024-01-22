@@ -511,7 +511,7 @@ class Model {
 	public static function get ($id) {
 		$class = get_called_class ();
 		$q = new $class;
-		$res = (array) DB::single ('select * from `' . $q->table . '` where `' . $q->key . '` = ?', $id);
+		$res = DB::single ('select * from `' . $q->table . '` where `' . $q->key . '` = ?', $id);
 		if (! $res) {
 			$q->error = (DB::$error != false) ? DB::error () : 'No object by that ID.';
 			$q->data = array ();
