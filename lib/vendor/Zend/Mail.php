@@ -1213,7 +1213,7 @@ class Zend_Mail extends Zend_Mime_Message
                       '>'  => '',
         );
 
-        return strtr($email, $rule);
+        return strtr($email ?? '', $rule);
     }
 
     /**
@@ -1232,7 +1232,7 @@ class Zend_Mail extends Zend_Mime_Message
                       '>'  => ']',
         );
 
-        return trim(strtr($name, $rule));
+        return trim(strtr($name ?? '', $rule));
     }
 
     /**
@@ -1248,7 +1248,7 @@ class Zend_Mail extends Zend_Mime_Message
                       "\t" => '',
         );
 
-        return strtr($data, $rule);
+        return strtr($data ?? '', $rule);
     }
 
     /**
