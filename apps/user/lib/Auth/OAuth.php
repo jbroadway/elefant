@@ -74,6 +74,15 @@ class OAuth {
 
 	private static $server;
 
+	private static $server_config = [
+		'refresh_token_lifetime' => 2592000 // 30 days
+	];
+
+	private static $refresh_config = [
+		'always_issue_new_refresh_token' => true,
+		'unset_refresh_token_after_use' => true
+	];
+
 	/**
 	 * Initialize the server. Note: Must be done for any page interacting
 	 * with OAuth, not just the API endpoints used via `require_auth()`.
@@ -82,10 +91,10 @@ class OAuth {
 	 */
 	public static function init_server ($scopes = ['basic']) {
 		self::$storage = new DBStorage ();
-		self::$server = new Server (self::$storage);
+		self::$server = new Server (self::$storage, self::$server_config);
 		self::$server->addGrantType (new AuthorizationCode (self::$storage));
 		self::$server->addGrantType (new ClientCredentials (self::$storage));
-		self::$server->addGrantType (new RefreshToken (self::$storage));
+		self::$server->addGrantType (new RefreshToken (self::$storage, self::$refresh_config));
 		self::$server->setScopeUtil (new Scope (['supported_scopes' => $scopes]));
 		return self::$server;
 	}
@@ -95,8 +104,12 @@ class OAuth {
 	 * that will be passed to `simple_auth()`. Note: Automatically calls
 	 * `init_server()` for you.
 	 */
-	public static function init ($scopes = ['basic']) {
+	public static function init ($scopes = ['basic'], $lifetime = 0) {
 		self::init_server ($scopes);
+
+		if ($lifetime !== 0) {
+			self::$server_config['refresh_token_lifetime'] = $lifetime;
+		}
 
 		return array (
 			array ('user\Auth\OAuth', 'verifier'),
