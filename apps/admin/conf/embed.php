@@ -9,7 +9,7 @@ to[label] = Link
 to[type] = text
 to[initial] = "http://"
 to[not empty] = 1
-to[regex] = "/^(https?:\/)?\/.+$/"
+to[url] = 1
 to[message] = Please enter a valid URL.
 
 code[label] = Status
@@ -26,7 +26,7 @@ icon = external-link
 to[label] = Link
 to[type] = text
 to[initial] = "http://"
-to[regex] = "/^(https?:\/)?\/.+$/"
+to[url] = 1
 to[message] = Please enter a valid URL.
 
 user_type[label] = User role
